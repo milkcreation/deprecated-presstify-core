@@ -1,0 +1,6 @@
+pos:        'left'
+width:      300
+max-width:  991
+toggle:     ''
+enqueue:    true  
+display:    true
