@@ -1,0 +1,62 @@
+#tify-debugbar {
+    background: none repeat scroll 0 0 #222;
+    color: #ccc;
+    direction: ltr;
+    font: 400 13px/32px "Open Sans",sans-serif;
+    height: 32px;
+    left: 0;
+    min-width: 600px;
+    position: fixed;
+    bottom: 0;
+    left:0; right:0;
+    z-index: 100005;
+}
+#tify-debugbar > ul{
+	margin:0; padding:0;
+	margin-left:0px; margin-right:0px;
+}
+#tify-debugbar > ul > li{
+	float:left;
+	padding-left:10px; padding-right:10px;
+	display:block;
+}
+#tify-debugbar > ul > li > i{
+	vertical-align:middle;
+}
+/** == RESPONSIVE == **/
+#tify-debugbar > ul > li.responsive > ul.context,
+#tify-debugbar > ul > li.responsive > ul.context > li{
+	float:left;
+	padding-left:2px; padding-right:2px;
+}	
+#tify-debugbar > ul > li.responsive > ul.context > li > a{
+	color:#CCC;
+	font-size:24px;
+	margin:4px 2px;
+}
+#tify-debugbar > ul > li.responsive > ul.context > li.active > a{
+	color:#45bbe6;
+}
+#tify-debugbar-resize{
+	position:fixed;
+	top:0; left:0; right:0; bottom:32px;
+	margin:0 auto;
+	display:none;
+	background-color:#2B2B2B;
+}
+#tify-debugbar-resize .overlay{
+	position:fixed;
+	top:0; left:0; right:0; bottom:32px;
+	margin:0 auto;
+	z-index:1;
+	background-color: rgba( 0, 0, 0, 0.5 );
+}
+#tify-debugbar-resize .overlay > i{
+	position:absolute;
+	top:50%; left:50%;
+	display:block;
+	width:32px; height:32px;
+	margin-top:-16px;
+	font-size:32px;
+	color:#FFF;	
+}
