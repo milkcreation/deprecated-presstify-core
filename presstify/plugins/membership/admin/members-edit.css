@@ -1,0 +1,11 @@
+.taboox-container h3.hndle{
+	position:relative;
+}
+.taboox-container h3.hndle .activate_account{
+	position:absolute;
+	top:8px; right:12px;
+}
+.taboox-container h3.hndle .activate_account .tify_control_switch{
+	display:inline-block;
+	vertical-align:middle;
+}

@@ -1,0 +1,66 @@
+<?php
+namespace tiFy\Taboox\Front;
+
+use tiFy\Taboox\Front;
+
+class MiscLinks extends Front
+{
+	/* = ARGUMENTS = */
+	// Identifiant des fonctions
+	protected $ID 				= 'misclinks';
+	
+	// Liste des methodes à translater en Helpers
+	protected $Helpers 			= array( 'Has', 'Display' );
+		
+	// Attributs par défaut
+	public static $DefaultAttrs	= array(
+		'name'		=> 'tify_taboox_misclinks',
+		'title'   	=> true,
+		'caption' 	=> false,
+		'image'	  	=> false
+	);
+		
+	/* = VÉRIFICATION = */
+	public static function Has( $args = array() )
+	{
+		return self::Get( $args );
+	}
+	
+	/* = RÉCUPÉRATION = */
+	public static function Get( $args = array() )
+	{
+		$args = wp_parse_args( $args, self::$DefaultAttrs );	
+			
+		return get_option( $args['name'], false );
+	}
+	
+	/* = AFFICHAGE = */
+	public static function Display( $args = array() )
+	{
+		if( ! $links = self::Get( $args ) )
+			return;
+
+		$output = "<ul class=\"tify_taboox_misclinks\">\n";
+		
+		foreach( $links as $link ) :				
+			$url 	= ( ! empty( $link['url'] ) ) 	? $link['url'] : '#';				
+			$title 	= ( ! empty( $link['title'] ) )	? sprintf( __( 'Lien vers %s', 'tify' ), $link['title'] ) : sprintf( __( 'Lien vers %s','tify' ), $link['url'] );
+			
+			$output .= "\t<li>\n";
+			$output .= "\t\t<a href=\"{$url}\" title=\"$title\">\n";
+			
+			if( ! empty( $link['image'] ) )
+				$output .= wp_get_attachment_image( $link['image'], 'thumbnail' );
+				
+			if( ! empty( $link['caption'] ) )
+				$output .= "\t\t\t<div class=\"tify_taboox_misclinks_caption\">{$link['caption']}</div>";
+				
+			$output .= "\t\t</a>\n";
+			$output .= "\t</li>\n";
+		endforeach;
+			
+		$output .= "</ul>";
+		
+		return $output;
+	}
+}
