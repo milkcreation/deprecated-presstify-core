@@ -1,5 +1,0 @@
-restricted_access:
-  active:     false
-  title:      "<?php _e( 'Site inaccessible', 'tify' );?>"
-  message:    "<?php _e( '<h1>Ce site est actuellement en cours de développement</h1><h3>Son accès est strictement réservé au personnel habilité</h3><p>Veuillez vous identifier pour accéder à la consultation</p>', 'tify' );?>"
-  http_code:  403
