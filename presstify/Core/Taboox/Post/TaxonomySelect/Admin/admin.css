@@ -1,0 +1,47 @@
+.tify_taboox_taxonomy_select,
+.tify_taboox_taxonomy_select::before,
+.tify_taboox_taxonomy_select::after,
+.tify_taboox_taxonomy_select *,
+.tify_taboox_taxonomy_select *::before,
+.tify_taboox_taxonomy_select *::after{
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+}
+.tify_taboox_taxonomy_select > ul::before,
+.tify_taboox_taxonomy_select > ul::after{
+	display:table;
+	content:"";
+}
+.tify_taboox_taxonomy_select > ul::after{
+	clear:both;
+}
+.tify_taboox_taxonomy_select > ul{
+	display:block;
+	margin:0; padding:0;
+	list-style-type:none;
+	margin-left:-10px; margin-right:-10px;
+}
+.tify_taboox_taxonomy_select > ul > li{
+	float:left;
+	
+	padding-left:10px; padding-right:10px;
+}
+.tify_taboox_taxonomy_select > ul.cols-1 > li{
+	width:100%;
+}
+.tify_taboox_taxonomy_select > ul.cols-2 > li{
+	width:50%;
+}
+.tify_taboox_taxonomy_select > ul.cols-3 > li{
+	width:33.333333%;
+}
+.tify_taboox_taxonomy_select > ul.cols-4 > li{
+	width:25%;
+}
+.tify_taboox_taxonomy_select > ul.cols-5 > li{
+	width:20%;
+}
+.tify_taboox_taxonomy_select > ul.cols-6 > li{
+	width:16.666666%;
+}
