@@ -1,0 +1,261 @@
+/**************************************************
+ * 		ADAPTATION DU DESIGN
+ **************************************************/
+/* = COL-LG = */
+@media (min-width: 1200px){	
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/* = COL-MD = */
+@media (max-width: 1199px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/* = COL-SM = */
+@media (max-width: 991px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/* = COL-XS = */
+@media (max-width: 767px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/* = CUSTOM 640 = */
+@media (max-width: 640px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/* = WP ADMINBAR RESPONSIVE = */
+@media (max-width: 600px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}
+
+/** = CUSTOM 480 = **/
+@media screen and (max-width: 480px){ 
+	/* = GLOBAL = */
+	/** == BALISES == **/
+	
+	/* = STRUCTURE = */
+	/** == GLOBAL == **/
+	
+	/** == PANNEAU POUSSEUR == **/
+	
+	/* = ENTÊTE = */
+	/** == GLOBAL == **/
+	
+	/** == MENU DE NAVIGATION SECONDAIRE == **/
+	
+	/** == MENU DE NAVIGATION PRINCIPAL == **/
+	
+	/* = CORPS DE PAGE = */
+	/** == GLOBAL == **/
+	
+	/** == JUMBOTRON == **/
+	
+	/** == FIL D'ARIANE == **/
+	
+	/** == CONTENU DU SITE == **/
+	/*** === GLOBAL === ***/
+	
+	/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+	
+	/*** === ARTICLE - CONTENU SIMPLE === ***/
+	
+	/*** === ARTICLE - CONTENU ARCHIVE === ***/
+	
+	/* = FOOTER = */
+	/** == GLOBAL == **/
+}

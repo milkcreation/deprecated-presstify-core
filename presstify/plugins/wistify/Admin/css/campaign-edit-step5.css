@@ -1,0 +1,151 @@
+#wistify_campaign-edit #step-edit-5 #send-test-submit{
+	position:relative;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > input[type="text"]{
+	background-color: #fff;
+    font-size: 1.7em;
+    height: 1.7em;
+    line-height: 100%;
+    margin: 0;
+    outline: 0 none;
+    padding: 3px 8px;
+    width: 100%;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > input[type="text"][readonly]{
+	background-color:#EEE;
+	color:#AAA;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > button{
+	position:absolute; 
+	right:0; top:0; bottom:0;
+	border-radius:0 3px 3px 0;
+	font-size: 1.2em;
+	width:50px;
+	height:auto;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > button > .tify_spinner{
+	position:absolute;
+	top:50%; left:50%;
+	margin-top:-12px; margin-left:-12px;
+	display:none;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > button.active > .tify_spinner{
+	display:inherit;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-submit > button.active > i{
+	display:none;
+}
+#wistify_campaign-edit #step-edit-5 #send-test-resp span{
+	display:block;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside:before,
+#wistify_campaign-edit #step-edit-5 #prepare .inside:after{
+	display: table;
+	content: "";
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside:after{
+	clear:both;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside{
+	margin-left:-10px; margin-right:-10px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > *{
+	box-sizing: border-box;
+	padding-left:10px; padding-right:10px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #logs > div{
+	display:none;
+	font-size:11px;
+	line-height:1;
+	float:left;
+	width:66.6667%;
+	margin-bottom:20px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #logs > div > h5{
+	font-size:18px;
+	margin:0;
+	margin-bottom:10px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #logs > div > ul{
+	margin:0; padding:0;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #logs > div > ul > li{
+	padding:5px 0;
+	border-bottom:dashed 1px #E4E4E4;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #actions{
+	float:right;
+	width:33.3334%; 
+	padding-left:10px; padding-right:10px;
+	margin-bottom:20px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #actions .button-primary.button-wistify-action{
+	height:auto;
+	font-size:20px;
+	padding:10px 20px;
+	box-shadow: none;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #actions .button-primary.button-wistify-action#campaign-prepare{
+	background: none repeat scroll 0 0 #2ecc71;
+	border-color: #27ae60;
+	display:block;
+	text-align:center;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #actions .button-primary.button-wistify-action#campaign-prepare:hover,
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #actions .button-primary.button-wistify-action#campaign-prepare:focus{
+	background: none repeat scroll 0 0 #27ae60;
+
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #totals::before,
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #totals::after{
+	display:table;
+	content:"";
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #totals::after{
+	clear:both;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #totals{
+	clear:both;
+	padding-top:10px;
+	border-top:solid 1px #E4E4E4;
+	font-size:16px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside > #totals *{
+	box-sizing: border-box;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #totals > h5{	
+	margin:0;
+	width:33.3334%;
+	float:left;
+	font-size:20px;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #totals > ul{
+	width:66.6667%;
+	float:left;
+	margin:0;
+}
+#wistify_campaign-edit #step-edit-5 #prepare .inside #totals > ul > li{
+	width:50%;
+	float:left;
+}
+#wistify_campaign-edit #programmation .inside #set_send label{
+	font-size:16px;
+	font-weight:bold;
+	text-align:right;
+	display:block;
+	padding-top:5px;
+	color:#DDD;
+	cursor:default;
+}
+#wistify_campaign-edit #programmation .inside #set_send.active label{
+	color:#444;
+	cursor:pointer;
+}
+#wistify_campaign-edit #programmation .inside #set_send label > input[type="checkbox"]{
+	vertical-align:middle;
+	margin:0;
+	cursor:default;
+}
+#wistify_campaign-edit #programmation .inside #set_send.active label > input[type="checkbox"]{
+	cursor:pointer;
+}

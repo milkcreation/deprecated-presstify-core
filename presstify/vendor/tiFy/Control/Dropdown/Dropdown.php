@@ -1,0 +1,96 @@
+<?php
+namespace tiFy\Control\Dropdown;
+
+use tiFy\Control\Control;
+
+class Dropdown extends Control
+{
+	/* = ARGUMENTS = */	
+	// Identifiant de la classe		
+	protected $ID = 'dropdown';
+	
+	/* = MISE EN FILE DES SCRIPTS = */
+	public function enqueue_scripts()
+	{
+		wp_enqueue_style( 'tify_controls-dropdown', $this->Url ."/dropdown.css", array( ), '141212' );
+		wp_enqueue_script( 'tify_controls-dropdown', $this->Url ."/dropdown.js", array( 'jquery' ), '141212', true );
+	}
+		
+	/* = AFFICHAGE = */
+	public static function display( $args = array() ){
+		static $instance = 0;
+		$instance++;
+		
+		$defaults = array(
+			'id'				=> 'tify_control_dropdown-'. $instance,
+			'class'				=> '',
+			'name'				=> 'tify_control_dropdown-'. $instance,		
+			'type'				=> 'single',	// @TODO single | multi						
+			'echo'				=> 1,			
+			
+			'choices'			=> array(),
+			'selected' 			=> 0,
+			'show_option_none' 	=> __( 'Aucun', 'tify' ),
+			'option_none_value' => -1
+		);
+		
+		$args = wp_parse_args( $args, $defaults );
+		extract( $args );
+		
+		// Ajout du choix aucun au début de la liste des choix
+		if( $show_option_none ) :
+			$choices = array_reverse($choices, true);
+			$choices[$option_none_value] = $show_option_none;
+			$choices = array_reverse($choices, true);
+		endif;
+		
+		if( $show_option_none && ! $selected  )
+			$selected = $option_none_value;
+		
+
+		$output  = "";
+		$output .= "<noscript>\n";
+		$output .= "\t<style type=\"text/css\">";
+		$output .= "\t\t.tify_dropdown{ display:none; }\n";
+		$output .= "\t</style>";
+		$output .= "\t<select name=\"{$name}\">";
+		foreach( (array) $choices as $value => $label )
+			$output .= "";
+		$output .= "\t</select>\n";
+		$output .= "</noscript>\n";
+		
+		$output .= "<div id=\"{$id}\" class=\"tify_control_dropdown {$class}\" data-tify_control=\"dropdown\">\n";
+		$output .= "\t<span class=\"selected\">\n";
+		$output .= "\t\t<b>". ( ( isset( $choices[$selected] ) ) ? $choices[$selected] : ( $show_option_none ? $show_option_none : current( $choices ) ) ) ."</b>\n";
+		$output .= "\t\t<i class=\"caret\"></i>\n";
+		$output .= "\t</span>\n";
+		$output .= "\t<ul>\n";
+		
+		foreach((array) $choices as $value => $label ) :
+			$output .= "\t\t<li";
+			if( $selected == $value )
+				 $output .= " class=\"checked\""; 
+			$output .= ">\n";
+			switch( $type ) :
+				default :
+				case 'single' :
+					$output .= "\t\t\t<label>\n";
+					$output .= "\t\t\t\t<input type=\"radio\" name=\"{$name}\" value=\"{$value}\" autocomplete=\"off\" ". checked( $selected == $value, true, false ) .">\n";
+					$output .= "\t\t\t\t<span>{$label}</span>\n";
+					$output .= "\t\t\t</label>\n";
+					break;
+				case 'multi' :
+					// @TODO
+					break;		
+			endswitch;
+			$output .= "\t\t</li>\n";
+		endforeach;
+		$output .= "\t</ul>\n";
+		$output .= "</div>\n";
+		
+		if( $echo )
+			echo $output;
+		else
+			return $output;
+	}
+}

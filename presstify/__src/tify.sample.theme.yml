@@ -1,0 +1,71 @@
+config:
+  allowed_users: ['milkcreation', 'tigreblanc', 'julien.picard']
+  admin_footer_text: 'Merci de faire de <a class="tigreblanc-logo" href="http://www.tigreblanc.fr" style="font-size:40px; vertical-align:middle; display:inline-block;" target="_blank"></a> le partenaire de votre communication digitale'
+  admin_bar_menu_logo: 
+    - id      : 'tb-logo' 
+      title   : '<span class="tigreblanc-logo" style="font-size:35px;"></span>'
+      href    : 'http://www.tigreblanc.fr'
+      meta    : { title : 'A propos de Tigre Blanc', target : '_blank' }
+    - id      : 'tb-logo-site'
+      parent  : 'tb-logo'      
+      title   : 'Site Officiel de Tigre Blanc'
+      href    : 'http://www.tigreblanc.fr'
+    - id      : 'tb-logo-external'
+      parent  : 'tb-logo'
+      group   : true   
+      meta    : { class : 'ab-sub-secondary' }
+    - id      : 'tb-logo-blog'
+      parent  : 'tb-logo-external'     
+      title   : 'Blog'
+      href    : 'http://www.tigreblanc.fr/blog/'
+      meta    : { target : '_blank' }
+    - id      : 'tb-logo-facebook'
+      parent  : 'tb-logo-external'     
+      title   : 'Page Facebook'
+      href    : 'http://www.facebook.com/tigreblancdouai'
+      meta    : { target : '_blank' }
+    - id      : 'tb-logo-twitter'
+      parent  : 'tb-logo-external'     
+      title   : 'Compte Twitter'
+      href    : 'https://twitter.com/TigreBlancDouai'
+      meta    : { target : '_blank' }
+    - id      : 'tb-logo-googeplus'
+      parent  : 'tb-logo-external'     
+      title   : 'Compte Google+'
+      href    : 'https://plus.google.com/106685428512975603729/posts'
+      meta    : { target : '_blank' }
+    - id      : 'tb-logo-mailing'
+      parent  : 'tb-logo'
+      group   : true   
+      meta    : { class : 'ab-sub-primary' }
+    - id      : 'tb-logo-mailing-contact'
+      parent  : 'tb-logo-mailing'     
+      title   : 'Contact'
+      href    : 'mailto:contact@tigreblanc.fr'
+    - id      : 'tb-logo-mailing-support'
+      parent  : 'tb-logo-mailing'     
+      title   : 'Support Technique'
+      href    : 'mailto:support@tigreblanc.fr'        
+      
+plugins:
+  breadcrumb
+  custom-columns
+  editor
+  forum
+  interface-cleaner
+  imprint
+  outdated
+  pagination
+  tinymce-plugins
+  social-share:
+    active:
+      facebook:     true
+      googleplus:   true
+      instagram:    false
+      linkedin:     false
+      pinterest:    false
+      twitter:      true
+      viadeo:       false
+      youtube:      true
+    tify_options: true 
+  seo
