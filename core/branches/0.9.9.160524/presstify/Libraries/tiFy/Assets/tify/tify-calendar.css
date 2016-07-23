@@ -1,0 +1,50 @@
+.tify_calendar{
+	overflow:hidden;
+}
+.tify_calendar.load{
+	opacity:0.5;
+}
+.tify_calendar ul::before,
+.tify_calendar ul::after{
+	display:table;
+	content:"";
+}
+.tify_calendar ul::after{
+	clear:both;
+}
+.tify_calendar ul{
+	list-style-type: none;
+	margin:0; padding:0;
+}
+.tify_calendar ul li{
+	margin:0; padding:0;
+	float:left;
+	display:block;
+}
+.tify_calendar ul.nav > li{
+	width:33.3333%;
+}
+.tify_calendar ul.nav > li.prev{
+	text-align:left;
+}
+.tify_calendar ul.nav > li.current{
+	text-align:center;
+}
+.tify_calendar ul.nav > li.next{
+	text-align:right;
+}
+.tify_calendar ul.header > li{
+	width:14.286%;
+	text-align:center;
+}
+.tify_calendar ul.dates > li{
+	width:100%;	
+}
+.tify_calendar ul.dates > li> ul > li{	
+	width:14.286%;	
+}
+.tify_calendar ul.dates > li> ul > li > a,
+.tify_calendar ul.dates > li> ul > li > span{
+	display:block;
+	text-align:center;
+}

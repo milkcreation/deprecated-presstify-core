@@ -1,0 +1,14 @@
+View:
+  Admin:
+    Menu:
+      menu_slug:        'tify_emailing'
+      menu_title:       "<?php _e( 'Emailing', 'tify' );?>" 
+      cb:               '\tiFy\Plugins\Emailing\Admin\Dashboard'
+      icon_url:         'dashicons-email-alt'
+    Dashboard:
+      parent_slug:      'tify_emailing'
+      menu_slug:        'tify_emailing'
+      page_title:       "<?php _e( 'Tableau de bord', 'tify' );?>"
+      menu_title:       "<?php _e( 'Tableau de bord', 'tify' );?>" 
+      cb:               '\tiFy\Plugins\Emailing\Admin\Dashboard'
+      position:         0            

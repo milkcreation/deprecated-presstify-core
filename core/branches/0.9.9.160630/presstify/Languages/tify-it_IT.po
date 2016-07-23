@@ -1,0 +1,3276 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Presstify\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-06-01 10:09+0100\n"
+"PO-Revision-Date: 2015-06-25 11:16+0100\n"
+"Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
+"Language-Team: Milkcreation <contact@milkcreation.fr>\n"
+"Language: it_IT\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:2c,1\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-SearchPath-0: ..\n"
+"X-Poedit-SearchPath-1: .\n"
+"X-Poedit-SearchPathExcluded-0: assets\n"
+"X-Poedit-SearchPathExcluded-1: ../assets\n"
+"X-Poedit-SearchPathExcluded-2: __src\n"
+"X-Poedit-SearchPathExcluded-3: ../__src\n"
+
+#: ../inc/dashboard.php:17 ../plugins/forms/add-ons/dashboard/dashboard.php:17
+#: ../plugins/premium/addons/membership/_bak/business_area.php:130
+#: ../plugins/premium/addons/wistify/inc/dashboard.php:14
+msgid "Tableau de bord"
+msgstr "Dashboard"
+
+#: ../inc/dashboard.php:25
+msgid "A propos de PresstiFy"
+msgstr "Informazioni su PresstiFy"
+
+#: ../inc/dashboard.php:32
+msgid "Tableau de bord Presstify"
+msgstr "Dashboard - PresstiFy"
+
+#: ../inc/dashboard.php:56
+msgid "Version"
+msgstr "Version"
+
+#: ../inc/milk_form_class/inc/class-dirs.php:66
+msgid ""
+"<h1>ERREUR SYSTEME</h1><p>Impossible de créer le dossier de stockage des "
+"fichiers téléchargés.</p>"
+msgstr ""
+"<h1>ERRORE DI SISTEMA</ h1><p>Impossibile creare la cartella dei file "
+"scaricati.</ p>"
+
+#: ../inc/milk_form_class/inc/class-fields.php:536
+msgid "Chaines de caractères"
+msgstr "Stringhe"
+
+#: ../inc/milk_form_class/inc/class-fields.php:537
+msgid "Champs de saisie"
+msgstr "Campi di immissione"
+
+#: ../inc/milk_form_class/inc/class-fields.php:538
+msgid "Listes de selection"
+msgstr "Elenchi di selezione"
+
+#: ../inc/milk_form_class/inc/class-fields.php:539
+msgid "Eléments riche"
+msgstr "Elementi avanzati"
+
+#: ../inc/milk_form_class/inc/class-fields.php:551
+msgid "HTML"
+msgstr "HTML"
+
+#: ../inc/milk_form_class/inc/class-fields.php:558
+msgid "String"
+msgstr "String"
+
+#: ../inc/milk_form_class/inc/class-fields.php:565
+msgid "Text Input"
+msgstr "Text Input"
+
+#: ../inc/milk_form_class/inc/class-fields.php:572
+msgid "Textarea"
+msgstr "Textarea"
+
+#: ../inc/milk_form_class/inc/class-fields.php:579
+msgid "Password"
+msgstr "Password"
+
+#: ../inc/milk_form_class/inc/class-fields.php:586
+msgid "Hidden (embedded datas)"
+msgstr "Hidden (embedded datas)"
+
+#: ../inc/milk_form_class/inc/class-fields.php:593
+msgid "Radio Button"
+msgstr "Radio Button"
+
+#: ../inc/milk_form_class/inc/class-fields.php:600
+msgid "Checkbox"
+msgstr "Checkbox"
+
+#: ../inc/milk_form_class/inc/class-fields.php:607
+msgid "Dropdown"
+msgstr "Dropdown"
+
+#: ../inc/milk_form_class/inc/class-fields.php:614
+msgid "Multi selection list"
+msgstr "Multi selection list"
+
+#: ../inc/milk_form_class/inc/class-forms.php:96
+msgid "Envoyer"
+msgstr "Invia"
+
+#: ../inc/milk_form_class/inc/class-forms.php:102
+msgid "Le formulaire contient des erreurs :"
+msgstr "Il modulo contiene degli errori:"
+
+#: ../inc/milk_form_class/inc/class-forms.php:108
+msgid ""
+"Votre demande a bien été prise en compte et sera traitée dès que possible"
+msgstr "La richiesta è stata accettata e verrà elaborata il prima possibile"
+
+#: ../inc/milk_form_class/inc/class-handle.php:191
+msgid ""
+"<h2>Erreur lors de la soumission du formulaire</h2><p>Votre session de "
+"soumission de formulaire est invalide ou arrivée à expiration</p>"
+msgstr ""
+"<h2>Errore durante l'invio del modulo</h2><p>La sessione di invio del modulo "
+"non è valida o è scaduta</p>"
+
+#: ../inc/milk_form_class/inc/class-handle.php:202
+msgid ""
+"<h2>Erreur lors de la vérification d'origine de la soumission de formulaire</"
+"h2><p>Impossible de déterminer l'origine de la soumission de votre "
+"formulaire.</p>"
+msgstr ""
+"<h2>Errore durante la verifica dell'origine dell'invio del modulo</"
+"h2><p>Impossibile stabilire l'origine dell'invio del modulo.</p>"
+
+#: ../inc/milk_form_class/inc/class-handle.php:205
+msgid ""
+"<h2>Erreur lors de la vérification d'origine de la soumission de formulaire</"
+"h2><p>Impossible de définir l'ID votre formulaire.<p>"
+msgstr ""
+"<h2>Errore durante la verifica dell'origine dell'invio del modulo</"
+"h2><p>Impossibile stabilire l'ID del modulo.<p>"
+
+#: ../inc/milk_form_class/inc/class-handle.php:345
+#, php-format
+msgid "Le champ \"%s\" ne peut être vide"
+msgstr "Il campo \"%s\" non può essere vuoto"
+
+#: ../inc/milk_form_class/inc/class-integrity.php:57
+#, php-format
+msgid "Le format du champ \"%s\" est invalide"
+msgstr "Il formato del campo \"%s\" non è valido"
+
+#: ../inc/options.php:20 ../inc/options.php:24
+msgid "Réglages des options"
+msgstr "Impostazioni opzioni"
+
+#: ../inc/options.php:20 ../plugins/premium/addons/forum/inc/options.php:64
+#: ../plugins/premium/addons/membership/membership.php:126
+msgid "Options"
+msgstr "Opzioni"
+
+#: ../inc/options.php:37
+msgid "Réglages des options de Presstify"
+msgstr "Impostazioni delle opzioni di PresstiFy"
+
+#: ../inc/options.php:64
+msgid "Aucun réglage disponible pour cette section"
+msgstr "Nessuna impostazione per questa sezione"
+
+#: ../inc/pluggable.php:200 ../inc/pluggable.php:220
+msgid "<h1>Téléchargement du fichier impossible</h1><p>Fichier non trouvé</p>"
+msgstr "<h1>Impossibile scaricare il file</h1><p>File non trovato</p>"
+
+#: ../inc/pluggable.php:200 ../inc/pluggable.php:220
+msgid "Impossible de trouver le fichier"
+msgstr "Impossibile trovare il file"
+
+#: ../inc/pluggable.php:228
+msgid ""
+"<h1>Téléchargement du fichier impossible</h1><p>Impossible de définir le "
+"type de fichier</p>"
+msgstr ""
+"<h1>Impossibile scaricare il file</h1><p>Impossibile stabilire il tipo di "
+"file</p>"
+
+#: ../inc/pluggable.php:228
+msgid "Type de fichier erroné"
+msgstr "Tipo di file errato"
+
+#: ../inc/pluggable.php:233
+msgid ""
+"<h1>Téléchargement du fichier impossible</h1><p>Type de fichier interdit</p>"
+msgstr ""
+"<h1>Impossibile scaricare il file</h1><p>Tipo di file non consentito</p>"
+
+#: ../inc/pluggable.php:233
+msgid "Type de fichier interdit"
+msgstr "Tipo di file non consentito"
+
+#: ../inc/pluggable.php:237
+msgid ""
+"<h1>Téléchargement du fichier impossible</h1><p>Le téléchargement de ce "
+"fichier n'est pas autorisé</p>"
+msgstr ""
+"<h1>Impossibile scaricare il file</h1><p>Il download di questo file non è "
+"consentito</p>"
+
+#: ../inc/pluggable.php:237
+msgid "Téléchargement interdit"
+msgstr "Download non consentito"
+
+#: ../inc/pluggable.php:488
+#: ../inc/tify_controls/tify_control/touch_time/touch_time.php:71
+#, php-format
+msgid "%2$s %1$s %3$s"
+msgstr "%2$s %1$s %3$s"
+
+#: ../inc/pluggable.php:493
+#, php-format
+msgid "à %1$s : %2$s"
+msgstr "a %1$s:%2$s"
+
+#: ../inc/plugins.php:33
+msgid "Extensions & modules"
+msgstr "Plug-in e moduli"
+
+#: ../inc/plugins.php:33
+msgid "Extensions/Modules"
+msgstr "Plug-in/Moduli"
+
+#: ../inc/plugins.php:43
+msgid "Extensions et Modules PresstiFy"
+msgstr "Plug-in e moduli PresstiFy"
+
+#: ../inc/plugins.php:412
+msgid "Extension"
+msgstr "Estensione"
+
+#: ../inc/plugins.php:413
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:731
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:405
+msgid "Description"
+msgstr "Descrizione"
+
+#: ../inc/plugins.php:471 ../inc/plugins.php:541
+msgid "Activer"
+msgstr "Attiva"
+
+#: ../inc/plugins.php:483 ../inc/plugins.php:542
+msgid "Désactiver"
+msgstr "Disattiva"
+
+#: ../inc/plugins.php:498
+#, php-format
+msgid "Version %s"
+msgstr "Version %s"
+
+#: ../inc/plugins.php:503
+#, php-format
+msgid "Par %s"
+msgstr "Di %s"
+
+#: ../inc/plugins.php:508
+msgid "Allez sur la page de l'extension"
+msgstr "Vai alla pagina dei plug-in"
+
+#: ../inc/plugins.php:516
+msgid "Activation/Désactivation des modules de l'extension"
+msgstr "Attivazione/Disattivazione dei moduli di plug-in"
+
+#: ../inc/plugins.php:557 ../inc/plugins.php:570 ../inc/plugins.php:582
+#: ../inc/plugins.php:596
+msgid ""
+"<h1>Action non permise</h1><p>Vous n'avez pas les habilitations suffisantes "
+"pour effectuer cette action.</p>"
+msgstr ""
+"<h1>Azione non consentita</h1><p>L'utente non dispone delle autorizzazioni "
+"per eseguire l'azione.</p>"
+
+#: ../inc/tify_admin_view/tify_admin_view.php:147
+#: ../inc/tify_admin_view/tify_admin_view.php:168
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:136
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:104
+#: ../plugins/premium/addons/membership/inc/members.php:155
+msgid "Enregistrer"
+msgstr "Salva"
+
+#: ../inc/tify_admin_view/tify_admin_view.php:331
+#: ../plugins/premium/addons/membership/inc/members.php:353
+msgid "Tous"
+msgstr "Tutti"
+
+#: ../inc/tify_controls/tify_control/checkbox/checkbox.php:25
+#: ../inc/tify_controls/tify_control/dropdown/dropdown.php:29
+#: ../inc/tify_controls/tify_control/dropdown_menu/dropdown_menu.php:26
+#: ../inc/tify_tabooxes/taboox/taxonomy_select/taxonomy_select.php:13
+#: ../plugins/premium/addons/membership/inc/members.php:480
+msgid "Aucun"
+msgstr "Nessuno"
+
+#: ../inc/tify_controls/tify_control/dropdown_colors/dropdown_colors.php:30
+msgid "Transparent"
+msgstr "Trasparente"
+
+#: ../inc/tify_controls/tify_control/dynamic_inputs/dynamic_inputs.php:30
+#: ../inc/tify_tabooxes/taboox/custom_fields/custom_fields.php:46
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:112
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:229
+#: ../plugins/forms/field-type/dynamic/dynamic.php:42
+#: ../plugins/forms/field-type/dynamic/dynamic.php:103
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:30
+msgid "Ajouter"
+msgstr "Aggiungi"
+
+#: ../inc/tify_controls/tify_control/media_image/media_image.php:37
+msgid "Personnalisation de l'image"
+msgstr "Personalizza immagine"
+
+#: ../inc/tify_controls/tify_control/media_image/media_image.php:38
+msgid "Utiliser cette image"
+msgstr "Utilizza immagine"
+
+#: ../inc/tify_controls/tify_control/media_image/media_image.php:59
+msgid "Modification de l'image"
+msgstr "Modifica immagine"
+
+#: ../inc/tify_controls/tify_control/media_image/media_image.php:65
+#, php-format
+msgid "%dpx / %dpx"
+msgstr "%dpx / %dpx"
+
+#: ../inc/tify_controls/tify_control/media_image/media_image.php:70
+msgid "Rétablir l'image originale"
+msgstr "Ripristina immagine originale"
+
+#: ../inc/tify_controls/tify_control/switch/switch.php:30
+msgctxt "tify_control_switch"
+msgid "Oui"
+msgstr "Sì"
+
+#: ../inc/tify_controls/tify_control/switch/switch.php:31
+msgctxt "tify_control_switch"
+msgid "Non"
+msgstr "No"
+
+#: ../inc/tify_controls/tify_control/text_remaining/text_remaining.php:21
+msgid "caractères restants"
+msgstr "caratteri rimanenti"
+
+#: ../inc/tify_controls/tify_control/text_remaining/text_remaining.php:22
+msgid "caractère restant"
+msgstr "carattere rimanente"
+
+#: ../inc/tify_controls/tify_control/text_remaining/text_remaining.php:23
+msgid "Aucun caractère restant"
+msgstr "Nessun carattere rimanente"
+
+#: ../inc/tify_controls/tify_control/touch_time/touch_time.php:78
+#, php-format
+msgid "%1$s : %2$s %3$s"
+msgstr "%1$s : %2$s %3$s"
+
+#: ../inc/tify_mailer/tify_mailer.php:105
+msgid "Format de contact invalide"
+msgstr "Formato dei contatti non valido"
+
+#: ../inc/tify_mailer/tify_mailer.php:124
+#: ../plugins/forms/add-ons/mailer/mailer.php:354
+#, php-format
+msgid "Vous avez reçu nouvelle demande sur le site %1$s, %2$s"
+msgstr "Hai ricevuto una nuova richiesta sul sito %1$s, %2$s"
+
+#: ../inc/tify_tabooxes/inc/tabooxes-option.php:26
+#: ../inc/tify_tabooxes/tify_tabooxes.php:357
+msgid "Réglages généraux"
+msgstr "Impostazioni generali"
+
+#: ../inc/tify_tabooxes/inc/tabooxes-user.php:22
+#: ../inc/tify_tabooxes/inc/tabooxes-user.php:30
+msgid "Informations Complémentaires"
+msgstr "Ulteriori informazioni"
+
+#: ../inc/tify_tabooxes/taboox/__todo_slideshow/slideshow.php:57
+#: ../inc/tify_tabooxes/taboox/__todo_slideshow/slideshow.php:80
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:62
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:81
+msgid "Diaporama"
+msgstr "Presentazione"
+
+#: ../inc/tify_tabooxes/taboox/__todo_slideshow/slideshow.php:58
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:63
+msgid "Diaporama de l'accueil"
+msgstr "Presentazione home page"
+
+#: ../inc/tify_tabooxes/taboox/__todo_slideshow/slideshow.php:92
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:93
+msgid "Diaporama de la page d'accueil"
+msgstr "Presentazione home page"
+
+#: ../inc/tify_tabooxes/taboox/__todo_slideshow/slideshow.php:138
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:141
+msgid "Configurer le Diaporama"
+msgstr "Configura presentazione"
+
+#: ../inc/tify_tabooxes/taboox/color_palette/color_palette.php:70
+msgid "Ajouter une couleur"
+msgstr "Aggiungi colore"
+
+#: ../inc/tify_tabooxes/taboox/color_palette/color_palette.php:80
+#, php-format
+msgid "Nouvelle couleur #%d"
+msgstr "Nuovo colore #%d"
+
+#: ../inc/tify_tabooxes/taboox/custom_background/custom_background.php:22
+msgid "Rétablir l'original"
+msgstr "Ripristina originale"
+
+#: ../inc/tify_tabooxes/taboox/custom_fields/custom_fields.php:29
+msgid "Champs personnalisés"
+msgstr "Campi personalizzati"
+
+#: ../inc/tify_tabooxes/taboox/custom_header/custom_header.php:58
+msgid "Personnalisation de l'image d'entête"
+msgstr "Personalizza immagine intestazione"
+
+#: ../inc/tify_tabooxes/taboox/custom_header/custom_header.php:59
+msgid "Utiliser comme image d'entête"
+msgstr "Utilizza come immagine intestazione"
+
+#: ../inc/tify_tabooxes/taboox/date_range/date_range.php:36
+msgid "date de début"
+msgstr "data di inizio"
+
+#: ../inc/tify_tabooxes/taboox/date_range/date_range.php:44
+msgid "date de fin"
+msgstr "data di fine"
+
+#: ../inc/tify_tabooxes/taboox/dynamic_tabs/dynamic_tabs.php:60
+#: ../inc/tify_tabooxes/taboox/dynamic_tabs/dynamic_tabs.php:85
+msgid "Couleur du fond"
+msgstr "Colore di sfondo"
+
+#: ../inc/tify_tabooxes/taboox/fileshare/fileshare.php:54
+msgid "Sélectionner les fichiers à associer"
+msgstr "Seleziona i file da associare"
+
+#: ../inc/tify_tabooxes/taboox/fileshare/fileshare.php:57
+msgid "Ajouter des fichiers"
+msgstr "Aggiungi file"
+
+#: ../inc/tify_tabooxes/taboox/fileshare/fileshare.php:193
+msgid "Télécharger le fichier"
+msgstr "Scarica file"
+
+#: ../inc/tify_tabooxes/taboox/fileshare/fileshare.php:211
+msgid "Télécharger"
+msgstr "Scarica"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:40
+msgid "Marqueur principal"
+msgstr "Indicatore principale"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:49
+msgid "Loisirs"
+msgstr "Divertimento"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:54
+msgid "&Eacute;coles"
+msgstr "Scuole"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:59
+msgid "Commerces"
+msgstr "Negozi"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:64
+msgid "Mairies"
+msgstr "Municipi"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:69
+msgid "Transports"
+msgstr "Trasporti"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:74
+msgid "Services"
+msgstr "Servizi"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:113
+#: ../plugins/premium/addons/forum/inc/subscribers.php:91
+#: ../plugins/premium/addons/membership/membership.php:269
+msgid "Mettre à jour"
+msgstr "Aggiorna"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:114
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:757
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:432
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:698
+msgid "Éditer"
+msgstr "Modifica"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:115
+#: ../plugins/forms/add-ons/record/record.php:447
+msgid "Supprimer"
+msgstr "Elimina"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:116
+msgid "Nombre maximum de géocode de ce type atteint sur cette carte"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:117
+msgid "Le géocode a été créé avec succès"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:118
+msgid "Le géocode a été mis à jour avec succès"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:119
+msgid "Le géocode a été supprimé avec succès"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:120
+msgid "Informations sur la carte"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:121
+msgid "Nord"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:122
+msgid "Est"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:123
+msgid "Sud"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:124
+msgid "Ouest"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:152
+msgid "Niveau de zoom"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:158
+msgid "Centrage de la carte"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:161
+msgid "X"
+msgstr "X"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:165
+msgid "Y"
+msgstr "Y"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:170
+msgid "Réinitialiser la carte"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:188
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:730
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:404
+msgid "Intitulé"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:193
+msgid "Type de marqueur"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:204
+msgid "Infobulle"
+msgstr "Tooltip"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:211
+msgid "Saisir l'adresse du marqueur"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:216
+msgid "Lat"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:221
+msgid "Long"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:230
+msgid "Annuler"
+msgstr "Annulla"
+
+#: ../inc/tify_tabooxes/taboox/google_map/google_map.php:231
+msgid "Supprimer le géocode"
+msgstr ""
+
+#: ../inc/tify_tabooxes/taboox/images_gallery/images_gallery.php:67
+#: ../inc/tify_tabooxes/taboox/taxonomy_image/taxonomy_image.php:24
+#: ../inc/tify_tabooxes/taboox/taxonomy_image/taxonomy_image.php:61
+msgid "Galerie d'image"
+msgstr "Galleria immagini"
+
+#: ../inc/tify_tabooxes/taboox/images_gallery/images_gallery.php:68
+msgid "Ajouter les images"
+msgstr "Aggiungi immagini"
+
+#: ../inc/tify_tabooxes/taboox/images_gallery/images_gallery.php:69
+msgid "Ajouter des images"
+msgstr "Aggiungi immagini"
+
+#: ../inc/tify_tabooxes/taboox/password_protect/password_protect.php:48
+msgid "Protection d'accès"
+msgstr "Protezione accesso"
+
+#: ../inc/tify_tabooxes/taboox/password_protect/password_protect.php:52
+#: ../plugins/premium/addons/forum/inc/general-template.php:146
+#: ../plugins/premium/addons/forum/inc/general-template.php:148
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:120
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:199
+msgid "Mot de passe"
+msgstr "Password"
+
+#: ../inc/tify_tabooxes/taboox/password_protect/password_protect.php:77
+msgid ""
+"Il s'agit d'un espace réservé aux professionnels, veuillez vous identifier "
+"afin de pouvoir y accèder"
+msgstr ""
+"È uno spazio riservato ai professionisti. Esegui l'accesso per connetterti."
+
+#: ../inc/tify_tabooxes/taboox/password_protect/password_protect.php:108
+msgid "Le mot de passe ne peut être vide"
+msgstr "Il campo Password non può essere vuoto"
+
+#: ../inc/tify_tabooxes/taboox/password_protect/password_protect.php:110
+msgid "Le mot de passe saisie ne correspond pas"
+msgstr "La password inserita non corrisponde"
+
+#: ../inc/tify_tabooxes/taboox/related_posts/related_posts.php:17
+msgid "Nombre maximum de contenu en relation atteint"
+msgstr "Hai raggiunto il numero massimo di prodotti correlati"
+
+#: ../inc/tify_tabooxes/taboox/related_posts/related_posts.php:36
+msgid "Rechercher un contenu en relation"
+msgstr "Cerca un prodotto correlato"
+
+#: ../inc/tify_tabooxes/taboox/related_posts/related_posts.php:120
+#, php-format
+msgid "%1$s"
+msgstr "%1$s"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:37
+msgid "Url ou code d'intégration de la vidéo (iframe)"
+msgstr "URL o codice integrazione del video (iframe)"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:42
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:171
+msgid "ou"
+msgstr "o"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:42
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:76
+msgid "Sélectionner une vidéo"
+msgstr "Seleziona un video"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:42
+msgid "Depuis la médiathèque"
+msgstr "Dalla libreria multimediale"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:47
+msgid "Jaquette de la video"
+msgstr "Copertina video"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:55
+msgid "Personnalisation de la jaquette de la vidéo"
+msgstr "Personalizzazione della copertina del video"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:56
+msgid "Utiliser comme jaquette"
+msgstr "Utilizza come copertina video"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:58
+msgid "Modifier la jaquette"
+msgstr "Modifica copertina video"
+
+#: ../inc/tify_tabooxes/taboox/simple_video/simple_video.php:61
+msgid "Supprimer la jaquette"
+msgstr "Elimina copertina video"
+
+#: ../inc/tify_tabooxes/taboox/taxonomy_image/taxonomy_image.php:100
+#: ../plugins/admin-manager/addons/custom-columns/post_thumbnail.php:45
+#: ../plugins/admin-manager/addons/custom-columns/post_thumbnail.php:51
+msgid "Mini."
+msgstr "Mini."
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:37
+msgid "Ajouter une vidéo"
+msgstr "Aggiungi un video"
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:61
+msgid "Sélectionner une jaquette"
+msgstr "Seleziona una copertina"
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:62
+msgid "Ajouter la jaquette"
+msgstr "Aggiungi una copertina"
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:65
+msgid "Changer la jaquette"
+msgstr "Modifica copertina"
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:72
+msgid "Vidéo de la galerie ou iframe"
+msgstr "Video della libreria multimediale o iframe"
+
+#: ../inc/tify_tabooxes/taboox/videos_gallery/videos_gallery.php:77
+msgid "Ajouter la vidéo"
+msgstr "Aggiungi video"
+
+#: ../inc/tify_tabooxes/tify_tabooxes.php:431
+msgid "Vous n'êtes pas habilité à administrer cette section"
+msgstr "Non hai le autorizzazioni per amministrare questa sezione"
+
+#: ../plugins/admin-manager/addons/custom-columns/display-order.php:47
+#: ../plugins/admin-manager/addons/custom-columns/display-order.php:53
+msgid "Ordre d'aff."
+msgstr "Ordine di visualizzazione"
+
+#: ../plugins/admin-manager/addons/custom-columns/post_thumbnail.php:72
+msgid "Indisponible"
+msgstr "Non disponibile"
+
+#: ../plugins/admin-manager/addons/custom-fields/fields/subtitle.php:32
+msgid "Sous-titre (optionnel)"
+msgstr "Sottotitoli (facoltativi)"
+
+#: ../plugins/admin-manager/addons/custom-fields/fields/subtitle.php:51
+#, php-format
+msgid "Protected: %s"
+msgstr "Protetto: %s"
+
+#: ../plugins/admin-manager/addons/custom-fields/fields/subtitle.php:54
+#, php-format
+msgid "Private: %s"
+msgstr "Privato: %s"
+
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:64
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:76
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:127
+msgid "Réglages du thème"
+msgstr "Impostazioni tema"
+
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:77
+msgid "Thème"
+msgstr "Tema"
+
+#: ../plugins/admin-manager/addons/theme_options/theme_options.php:97
+msgid "Réglage des options du thème"
+msgstr "Impostazione delle opzioni del tema"
+
+#: ../plugins/admin-manager/addons/tinymce-plugins/tinymce-dashicons/tinymce-dashicons.php:49
+msgid "Police de caractères Wordpress"
+msgstr "Carattere Wordpress"
+
+#: ../plugins/admin-manager/addons/tinymce-plugins/tinymce-fontawesome/tinymce-fontawesome.php:50
+msgid "Police de caractères fontAwesome"
+msgstr "Carattere FontAwesome"
+
+#: ../plugins/admin-manager/addons/tinymce-plugins/tinymce-glyphicon/tinymce-glyphicon.php:40
+msgid "Police de caractères Bootstrap"
+msgstr "Carattere Bootstrap"
+
+#: ../plugins/admin-manager/addons/tinymce-plugins/tinymce-own_glyphs/tinymce-own_glyphs.php:50
+msgid "Police de caractères personnalisée"
+msgstr "Carattere personalizzato"
+
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:81
+#, php-format
+msgid "v. %s"
+msgstr "v. %s"
+
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:86
+#, php-format
+msgid "%s sec."
+msgstr "%s sec."
+
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:92
+msgid "Smartphone"
+msgstr "Smartphone"
+
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:95
+msgid "Tablette"
+msgstr "Tablet"
+
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:98
+#: ../plugins/dev-tools/addons/debugbar/debugbar.php:101
+msgid "Plein écran"
+msgstr "Schermo intero"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:36
+msgid "Field editor"
+msgstr "Editor di campi"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:47
+msgid "Form preview"
+msgstr "Anteprima modulo"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:83
+msgid "(new)"
+msgstr "(nuovo)"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:89
+msgid "Titles"
+msgstr "Titoli"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:93
+msgid "choices"
+msgstr "Scelte"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:98
+msgid "Checks"
+msgstr "Caselle di controllo:"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:107
+msgid "Label :"
+msgstr "Etichetta:"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:113
+msgid "Placeholder :"
+msgstr "Placeholder:"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:130
+msgid "Required field :"
+msgstr "Campo obbligatorio:"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:132
+msgid "yes"
+msgstr "sì"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:134
+msgid "no"
+msgstr "no"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:137
+msgid "Field value :"
+msgstr "Valore campo:"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:139
+msgid "No verification"
+msgstr "Nessuna verifica"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:150
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:201
+msgid "Delete"
+msgstr "Elimina"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:152
+msgid "Add field"
+msgstr "Aggiungi campo"
+
+#: ../plugins/forms/add-ons/_editor/editor.php:154
+msgid "Update field"
+msgstr "Aggiorna campo"
+
+#: ../plugins/forms/add-ons/_shopping-cart/gateways/CMCIC/cmcic.php:185
+#: ../plugins/forms/add-ons/_shopping-cart/gateways/CMCIC/cmcic.php:190
+msgid "Paiement CMCIC en erreur"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/gateways/CMCIC/cmcic.php:290
+msgid "Retour à la boutique"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/gateways/CMCIC/cmcic.php:302
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:86
+msgid "Paiement effectué avec succès"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:36
+msgid "Panier"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:174
+#: ../plugins/forms/add-ons/record/record.php:384
+msgid "Formulaire"
+msgstr "Modulo"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:177
+#: ../plugins/forms/add-ons/record/record.php:387
+#: ../plugins/forms/field-type/touchtime/touchtime.php:52
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:407
+msgid "Date"
+msgstr "Data"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:238
+#: ../plugins/forms/add-ons/record/record.php:446
+msgid "Aperçu de l'item"
+msgstr "Anteprima oggetto"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:238
+#: ../plugins/forms/add-ons/record/record.php:446
+msgid "Afficher"
+msgstr "Visualizza"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:281
+#: ../plugins/forms/add-ons/record/record.php:498
+msgid "Tous les formulaires"
+msgstr "Tutti i moduli"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:288
+msgid "Filter"
+msgstr "Filtra"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/admin.php:346
+#: ../plugins/forms/add-ons/record/record.php:521
+msgid "Chargement en court ..."
+msgstr "Caricamento in corso..."
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:44
+msgid "Votre panier est vide"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:76
+msgid "Paiement en erreur"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:100
+msgid "Modifier"
+msgstr "Modifica"
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:102
+msgid "Précedent"
+msgstr "Prec."
+
+#: ../plugins/forms/add-ons/_shopping-cart/inc/template-loader.php:104
+msgid "Suivant"
+msgstr "Succ."
+
+#: ../plugins/forms/add-ons/_shopping-cart/shopping-cart.php:165
+msgid "Déposer ma marque"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/shopping-cart.php:186
+msgid "Vous avez déjà une commande en cours."
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/shopping-cart.php:187
+msgid ""
+"Avant d'effectuer une nouvelle commande, veuillez terminer votre commande ou "
+"supprimez la."
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/shopping-cart.php:190
+msgid "Continuer ma commande"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_shopping-cart/shopping-cart.php:191
+msgid "Supprimer ma commande"
+msgstr ""
+
+#: ../plugins/forms/add-ons/_summary/summary.php:145
+#: ../plugins/forms/add-ons/_summary/summary.php:148
+msgid "-- non renseigné --"
+msgstr "-- Nessuna informazione --"
+
+#: ../plugins/forms/add-ons/dashboard/dashboard.php:16
+msgid "Formulaires dynamiques"
+msgstr "Moduli dinamici"
+
+#: ../plugins/forms/add-ons/dashboard/dashboard.php:16
+msgid "Formulaires"
+msgstr "Moduli"
+
+#: ../plugins/forms/add-ons/dashboard/dashboard.php:23
+msgid "A propos des formulaires"
+msgstr "Informazioni sui moduli"
+
+#: ../plugins/forms/add-ons/dashboard/dashboard.php:30
+msgid "Tableau de bord des formulaires"
+msgstr "Dashboard moduli"
+
+#: ../plugins/forms/add-ons/mailer/mailer.php:138
+#, php-format
+msgid "Vous avez une nouvelle demande de contact sur le site %s"
+msgstr "Hai una nuova richiesta di contatto sul sito Web %s"
+
+#: ../plugins/forms/add-ons/mailer/mailer.php:161
+#, php-format
+msgid "Votre demande de contact sur le site %s"
+msgstr "La tua richiesta di contatto sul sito Web %s"
+
+#: ../plugins/forms/add-ons/mailer/mailer.php:265
+#, php-format
+msgid "Nouvelle demande sur le site %1$s, <a href=\"%2$s\">%2$s<a>"
+msgstr "Nuova richiesta sul sito Web %1$s, <a href=\"%2$s\">%2$s<a>"
+
+#: ../plugins/forms/add-ons/record/export.php:48
+#: ../plugins/forms/add-ons/record/export.php:260
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:174
+msgid "Chargement ..."
+msgstr "Caricamento..."
+
+#: ../plugins/forms/add-ons/record/export.php:49
+msgid "Traitement terminé"
+msgstr "Elaborazione completata"
+
+#: ../plugins/forms/add-ons/record/export.php:209
+msgid "Options d'export"
+msgstr "Opzioni di esportazione"
+
+#: ../plugins/forms/add-ons/record/export.php:225
+msgid "Numéroter les lignes"
+msgstr "Numero di righe"
+
+#: ../plugins/forms/add-ons/record/export.php:229
+#: ../plugins/forms/add-ons/record/export.php:241
+#: ../plugins/premium/addons/timeline/timeline.php:363
+#: ../plugins/premium/addons/timeline/timeline.php:380
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:245
+msgid "Oui"
+msgstr "Sì"
+
+#: ../plugins/forms/add-ons/record/export.php:233
+#: ../plugins/forms/add-ons/record/export.php:245
+#: ../plugins/premium/addons/timeline/timeline.php:364
+#: ../plugins/premium/addons/timeline/timeline.php:381
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:246
+msgid "Non"
+msgstr "No"
+
+#: ../plugins/forms/add-ons/record/export.php:237
+msgid "Afficher la date d'enregistrement"
+msgstr "Mostra data di registrazione"
+
+#: ../plugins/forms/add-ons/record/export.php:249
+msgid "Choix des champs à exporter"
+msgstr "Seleziona i campi da esportare"
+
+#: ../plugins/forms/add-ons/record/export.php:266
+msgid "Télecharger"
+msgstr "Scarica"
+
+#: ../plugins/forms/add-ons/record/record.php:103
+msgid "Tous les enregistrements"
+msgstr "Tutti i record"
+
+#: ../plugins/forms/add-ons/record/record.php:131
+msgid "Enregistrement de formulaire"
+msgstr "Modulo di registrazione"
+
+#: ../plugins/forms/add-ons/record/record.php:503
+#: ../plugins/premium/addons/membership/inc/members.php:396
+#: ../plugins/premium/addons/wistify/inc/reports.php:260
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:659
+msgid "Filtrer"
+msgstr "Filtra"
+
+#: ../plugins/forms/add-ons/user/user.php:183
+#: ../plugins/premium/addons/membership/_bak/business_area-form_addon_user.php:138
+#: ../plugins/premium/addons/membership/membership.php:450
+msgid "Cet identifiant est déjà utilisé par un autre utilisateur"
+msgstr "Questo identificativo è già utilizzato da un altro utente"
+
+#: ../plugins/forms/add-ons/user/user.php:185
+#: ../plugins/premium/addons/membership/_bak/business_area-form_addon_user.php:140
+#: ../plugins/premium/addons/membership/membership.php:452
+msgid "Cet email est déjà utilisé par un autre utilisateur"
+msgstr "Questa e-mail è già utilizzata da un altro utente"
+
+#: ../plugins/forms/field-type/dynamic/dynamic.php:31
+msgid "Champ dynamique"
+msgstr "Campo dinamico"
+
+#: ../plugins/forms/field-type/file/file.php:33
+msgid "File upload"
+msgstr "Caricamento file"
+
+#: ../plugins/forms/field-type/file/file.php:94
+#: ../plugins/forms/field-type/plupload/plupload.php:114
+#, php-format
+msgid ""
+"<h1>ERREUR SYSTEME</h1><p>Impossible de déplacer le fichier du champs \"%s\" "
+"dans le repertoire de stockage temporaire.</p>"
+msgstr ""
+"<h1>ERRORE DI SISTEMA</h1><p>Impossibile spostare il file dal campo \"%s\\\" "
+"nella cartella di archiviazione temporanea.</p>"
+
+#: ../plugins/forms/field-type/file/file.php:120
+#, php-format
+msgid ""
+"La taille du fichier téléchargé excède la valeur autorisée pour le champ \"%s"
+"\"."
+msgstr ""
+"La dimensione del file caricato supera il valore consentito per il campo \\"
+"\"%s\"."
+
+#: ../plugins/forms/field-type/file/file.php:123
+#, php-format
+msgid ""
+"ERREUR SYSTÈME : Le fichier du champs \"%s\" n'a été que partiellement "
+"téléchargé."
+msgstr ""
+"ERRORE DI SISTEMA: il file per il campo \"%s\" è stato scaricato solo "
+"parzialmente."
+
+#: ../plugins/forms/field-type/file/file.php:127
+#, php-format
+msgid "Aucun fichier n'a été téléchargé dans le champs \"%s\"."
+msgstr "Non è stato caricato alcun file nel campo \"%s\"."
+
+#: ../plugins/forms/field-type/file/file.php:130
+msgid "ERREUR SYSTÈME : Le dossier temporaire est manquant"
+msgstr "ERRORE DI SISTEMA: manca la cartella temporanea"
+
+#: ../plugins/forms/field-type/file/file.php:133
+msgid "ERREUR SYSTÈME : Échec de l'écriture du fichier sur le disque."
+msgstr "ERRORE DI SISTEMA: scrittura del file sul disco non riuscita"
+
+#: ../plugins/forms/field-type/file/file.php:136
+msgid "ERREUR SYSTÈME : Une extension PHP a arrêté l'envoi de fichier."
+msgstr "ERRORE DI SISTEMA: un'estensione PHP ha interrotto l'invio del file"
+
+#: ../plugins/forms/field-type/file/file.php:141
+#, php-format
+msgid "Type de fichier non autorisé dans le champ \"%s\"."
+msgstr "Tipo di file non autorizzato per il campo \"%s\""
+
+#: ../plugins/forms/field-type/file/file.php:162
+#: ../plugins/forms/field-type/plupload/plupload.php:207
+#, php-format
+msgid ""
+"<h1>ERREUR SYSTEME</h1><p>Impossible de déplacer le fichier du champ \"%s\"."
+"</p>"
+msgstr ""
+"<h1>ERRORE DI SISTEMA</h1><p>Impossibile spostare il file dal campo \"%s\\\"."
+"</p>"
+
+#: ../plugins/forms/field-type/plupload/plupload.php:53
+msgid "Ajax File upload"
+msgstr "Caricamento file Ajax"
+
+#: ../plugins/forms/field-type/plupload/plupload.php:171
+msgid "Déposez vos fichiers ici"
+msgstr "Rilascia i file qui"
+
+#: ../plugins/forms/field-type/plupload/plupload.php:174
+msgid "Selectionnez un fichier"
+msgstr "Seleziona un file"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:61
+#: ../plugins/forms/field-type/recaptcha/recaptcha.php:59
+msgid "ReCaptcha"
+msgstr "ReCaptcha"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:168
+msgid "Saisie incorrecte, essayez à nouveau"
+msgstr "Voce non corretta. Riprova."
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:169
+msgid "Saisissez le texte afficher"
+msgstr "Inserisci il testo visualizzato"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:170
+msgid "Entrez les nombre que vous entendez"
+msgstr "Inserisci i numeri che senti"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:172
+msgid "Nouveau test"
+msgstr "Nuovo test"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:173
+msgid "Test audio"
+msgstr "Test audio"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:174
+msgid "Test visuel"
+msgstr "Test video"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:175
+msgid "Aide"
+msgstr "Guida"
+
+#: ../plugins/forms/field-type/recaptcha/recaptcha.old.php:209
+#: ../plugins/forms/field-type/recaptcha/recaptcha.php:178
+msgid "La saisie de la protection antispam est incorrect"
+msgstr "La protezione antispam non è corretta."
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:64
+msgid "Captcha Image"
+msgstr "Immagine Captcha"
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:83
+msgid "Captcha Introuvable"
+msgstr "Captcha non trovato"
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:108
+msgid "captcha introuvable"
+msgstr "captcha non trovato"
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:109
+msgid "code de sécu."
+msgstr "Codice di sicurezza"
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:123
+msgid "ERREUR SYSTÈME : Impossible de définir le code de sécurité"
+msgstr "ERRORE DI SISTEMA: impossibile impostare il codice di sicurezza"
+
+#: ../plugins/forms/field-type/simple-captcha-image/simple-captcha-image.php:125
+msgid "La valeur du champs de sécurité doit être identique à celle de l'image"
+msgstr ""
+"Il valore del campo di sicurezza deve essere identico a ciò che viene "
+"visualizzato nell'immagine"
+
+#: ../plugins/forms/field-type/tify_dropdown/tify_dropdown.php:41
+msgid "tiFy Dropdown"
+msgstr "tiFy Dropdown"
+
+#: ../plugins/multilingual/multilingual.php:206
+msgid "English (United States)"
+msgstr ""
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:34
+msgid "Accueil"
+msgstr "Home page"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:34
+msgid "Retour à l'accueil"
+msgstr "Torna alla pagina iniziale"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:37
+#: ../plugins/theme-manager/addons/seo/seo.php:116
+#: ../plugins/theme-manager/addons/seo/seo.php:214
+msgid "Erreur 404 - Impossible de trouver la page"
+msgstr "Errore 404 - Pagina non trovata"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:40
+#: ../plugins/theme-manager/addons/seo/seo.php:119
+#: ../plugins/theme-manager/addons/seo/seo.php:217
+msgid "Recherche de"
+msgstr "Risultati per"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:53
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:65
+#, php-format
+msgid "%1$s<span class=\"current\">News page %2$s of %3$s</span>"
+msgstr "%1$s<span class=\"current\">Pagina Notizie %2$s di %3$s</span>"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:55
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:67
+msgid "All News"
+msgstr "Tutte le notizie"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:81
+msgid "All the News"
+msgstr "Tutte le notizie"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:85
+#, php-format
+msgid "Retour à %3$s"
+msgstr "Torna a %3$s"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:124
+#, php-format
+msgid "%1$s<span class=\"current\">Tag : %2$s</span>"
+msgstr "%1$s<span class=\"current\">Tag: %2$s</span>"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:128
+#, php-format
+msgid "%1$sDaily Archives: %2$s"
+msgstr "%1$sArchivi giornalieri: %2$s"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:130
+#, php-format
+msgid "%1$sMonthly Archives: %2$s"
+msgstr "%1$sArchivi mensili: %2$s"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:132
+#, php-format
+msgid "%1$sYearly Archives: %2$s"
+msgstr "%1$sArchivi annuali: %2$s"
+
+#: ../plugins/navigation/addons/breadcrumb/breadcrumb.php:139
+msgid "Blog Archives"
+msgstr "Archivi blog"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:38
+msgid ""
+"En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de "
+"cookies pour vous proposer des services et offres adaptés à vos centres "
+"d’intérêts."
+msgstr ""
+"Continuando la navigazione su questo sito, si accetta l'uso di cookie "
+"finalizzati a garantire una migliore esperienza sul nostro sito"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:40
+#: ../plugins/policy/addons/outdated/outdated.php:69
+msgid "Fermer"
+msgstr "Chiudi"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:67
+msgid "Politique des cookies"
+msgstr "Politica dei cookie"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:71
+msgid "Page d'affichage de la politique des cookies"
+msgstr "Pagina di visualizzazione della politica dei cookie"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:89
+msgid "Accepter"
+msgstr "Accetto"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:91
+#: ../plugins/premium/addons/timeline/timeline.php:96
+msgid "En savoir plus"
+msgstr "Ulteriori informazioni"
+
+#: ../plugins/policy/addons/cookie_policy/cookie_policy.php:118
+#: ../plugins/policy/addons/imprint/imprint.php:49
+#: ../plugins/post4archive/post4archive.php:166
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:176
+#: ../plugins/premium/addons/membership/membership.php:180
+msgid "Aucune page choisie"
+msgstr "Nessuna pagina selezionata"
+
+#: ../plugins/policy/addons/imprint/imprint.php:33
+#: ../plugins/policy/addons/imprint/imprint.php:65
+msgid "Mentions légales"
+msgstr "Note legali"
+
+#: ../plugins/policy/addons/imprint/imprint.php:37
+msgid "Page d'affichage des mentions légales"
+msgstr "Pagina di visualizzazione delle note legali"
+
+#: ../plugins/policy/addons/imprint/imprint.php:64
+#, php-format
+msgid "En savoir plus sur %s"
+msgstr "Ulteriori informazioni su %s"
+
+#: ../plugins/policy/addons/imprint/imprint.php:64
+msgid "Les mentions légales"
+msgstr "Note legali"
+
+#: ../plugins/policy/addons/outdated/outdated.php:67
+msgid "La version de votre navigateur est trop ancienne"
+msgstr "Il tuo browser non è aggiornato"
+
+#: ../plugins/policy/addons/outdated/outdated.php:68
+msgid "Pour afficher de manière satisfaisante le contenu de ce site"
+msgstr "Per visualizzare questo sito Web nel modo corretto"
+
+#: ../plugins/policy/addons/outdated/outdated.php:68
+msgid "Télécharger Google Chrome"
+msgstr "Scarica Google Chrome"
+
+#: ../plugins/policy/addons/restricted_access/restricted_access.php:27
+msgid "Ce site est actuellement en cours de développement"
+msgstr "Il sito è attualmente in fase di sviluppo."
+
+#: ../plugins/policy/addons/restricted_access/restricted_access.php:27
+msgid "Son accès est strictement réservé au personnel habilité, "
+msgstr "L'accesso è riservato solo agli account autorizzati."
+
+#: ../plugins/policy/addons/restricted_access/restricted_access.php:27
+msgid "Veuillez vous identifier pour accéder à la consultation"
+msgstr "Esegui l'accesso per visitare il sito."
+
+#: ../plugins/policy/addons/restricted_access/restricted_access.php:28
+msgid "Site inaccessible"
+msgstr "Sito Web non disponibile"
+
+#: ../plugins/post4archive/post4archive.php:137
+msgid "Affichage des archives (page de flux)"
+msgstr "Mostra archivi (pagina feed RSS)"
+
+#: ../plugins/post4archive/post4archive.php:145
+#, php-format
+msgid "Archives \"%s\""
+msgstr "Archivi \"%s\""
+
+#: ../plugins/post4archive/post4archive.php:333
+#: ../plugins/post4archive/post4archive.php:337
+#: ../plugins/post4archive/post4archive.php:358
+#: ../plugins/post4archive/post4archive.php:363
+#: ../plugins/post4archive/post4archive.php:388
+#: ../plugins/post4archive/post4archive.php:397
+#: ../plugins/post4archive/post4archive.php:399
+#, php-format
+msgid "Vers %2$s"
+msgstr "A %2$s"
+
+#: ../plugins/post4archive/post4archive.php:359
+#: ../plugins/post4archive/post4archive.php:392
+#, php-format
+msgid "Page %d"
+msgstr "Pagina %d"
+
+#: ../plugins/post4archive/post4archive.php:390
+#, php-format
+msgid "page %d - "
+msgstr "pagina %d -"
+
+#: ../plugins/post4archive/post4archive.php:390
+#: ../plugins/post4archive/post4archive.php:400
+#, php-format
+msgid "Recherche de \"%s\""
+msgstr "Risultati della ricerca per \"%s\""
+
+#: ../plugins/premium/addons/forum/forum.php:37
+msgid "Contributeur du forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:64
+#: ../plugins/premium/addons/forum/forum.php:76
+#: ../plugins/premium/addons/forum/forum.php:162
+msgid "Forums"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:65
+#: ../plugins/premium/addons/forum/inc/options.php:74
+msgid "Forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:66
+#: ../plugins/premium/addons/forum/forum.php:166
+msgid "Ajouter un forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:67
+#: ../plugins/premium/addons/forum/forum.php:165
+msgid "Tous les forums"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:68
+msgid "Ajouter un nouveau forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:69
+msgid "Éditer le forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:70
+msgid "Nouveau forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:71
+msgid "Afficher le forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:72
+msgid "Rechercher un forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:73
+msgid "Aucun forum trouvé"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:74
+msgid "Aucun forum dans la corbeille"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:75
+msgid "Forum parent"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:78
+msgid "Forum PressTiFy basé sur les commentaires"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/forum.php:94
+msgid "forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/contribs.php:17
+msgid "Toutes les contributions aux sujets de forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/contribs.php:17
+msgid "Toutes les contributions"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/deprecated.php:71
+#: ../plugins/premium/addons/forum/inc/topics.php:77
+msgid "Forum associé"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/deprecated.php:86
+msgid "Aucun forum associé"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/deprecated.php:103
+msgid "All Forums"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:56
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:151
+#: ../plugins/premium/addons/membership/inc/general-template.php:31
+msgid "Vous êtes déjà connecté"
+msgstr "Sei già connesso"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:64
+#: ../plugins/premium/addons/membership/inc/general-template.php:39
+msgid "Cet espace est réservé aux utilisateurs connectés"
+msgstr "Questo spazio è riservato agli utenti registrati"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:66
+msgid ""
+"La modification de paramètres du compte est réservée uniquement aux "
+"contributeurs de forum"
+msgstr ""
+"La modifica delle impostazioni dell'account è riservata solo ai partecipanti "
+"del forum"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:91
+msgid "Gras"
+msgstr "Grassetto"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:94
+msgid "Mettre le texte en gras"
+msgstr "Applica il grassetto al testo"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:97
+msgid "Italique"
+msgstr "Corsivo"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:100
+msgid "Mettre le texte en italique"
+msgstr "Applica il corsivo al testo"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:103
+msgid "Souligné"
+msgstr "Sottolineato"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:106
+msgid "Soulignement du texte"
+msgstr "Sottolinea il testo"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:109
+msgid "Barré"
+msgstr "Barrato"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:112
+msgid "Texte barré"
+msgstr "Barra il testo"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:117
+msgid "Insérer un lien"
+msgstr "Inserisci un link"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:117
+msgid "Lien"
+msgstr "Link"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:126
+msgid "Saisissez l'adresse du site"
+msgstr "Inserisci l'indirizzo del sito Web"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:145
+#: ../plugins/premium/addons/forum/inc/general-template.php:147
+msgid "Identifiant"
+msgstr "Login"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:149
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:121
+msgid "Se souvenir de moi"
+msgstr "Memorizza dati"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:150
+msgid "Connexion"
+msgstr "Accedi"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:196
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:205
+#: ../plugins/premium/addons/membership/inc/general-template.php:75
+msgid "Récupération de mot de passe oublié"
+msgstr "Ripristino password"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:196
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:205
+#: ../plugins/premium/addons/membership/inc/general-template.php:75
+msgid "Mot de passe oublié"
+msgstr "Password dimenticata?"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:209
+#: ../plugins/premium/addons/membership/inc/general-template.php:88
+msgid "Déconnection du forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:209
+#: ../plugins/premium/addons/membership/inc/general-template.php:88
+msgid "Se déconnecter"
+msgstr "Disconnetti"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:224
+msgid "Inscription au forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:224
+#: ../plugins/premium/addons/forum/inc/subscribers.php:91
+#: ../plugins/premium/addons/membership/inc/general-template.php:108
+#: ../plugins/premium/addons/membership/membership.php:269
+msgid "S'inscrire"
+msgstr "Registrati"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:242
+#: ../plugins/premium/addons/membership/inc/general-template.php:123
+msgid "Modification des paramètres du compte"
+msgstr "Modifica impostazioni account"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:242
+#: ../plugins/premium/addons/membership/inc/general-template.php:123
+msgid "Modifier mes paramètres"
+msgstr "Modifica impostazioni personali"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:256
+#: ../plugins/premium/addons/forum/inc/topics.php:24
+#: ../plugins/premium/addons/wistify/inc/reports.php:276
+msgid "Sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:257
+msgid "Réponses"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:258
+msgid "Dernière réponse"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:265
+#, php-format
+msgid "Consulter le sujet : %s"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:268
+#, php-format
+msgid "%s à %s"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:372
+msgid "Comment navigation"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:374
+msgid "Older Comments"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:376
+msgid "Newer Comments"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:400
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:156
+msgid "Name"
+msgstr "Nome"
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:402
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:670
+msgid "Email"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:404
+msgid "Website"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:408
+#, php-format
+msgid "Required fields are marked %s"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:411
+msgctxt "noun"
+msgid "Comment"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:412
+#, php-format
+msgid ""
+"Vous devez <a href=\"%s\">être connecté(e)</a> pour rédiger une réponse."
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:413
+#, php-format
+msgid ""
+"Logged in as <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out of "
+"this account\">Log out?</a>"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:414
+msgid "Your email address will not be published."
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:418
+#: ../plugins/premium/addons/forum/inc/general-template.php:421
+#: ../plugins/premium/addons/forum/inc/general-template.php:471
+msgid "Laisser une réponse"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:419
+#, php-format
+msgid "Apporter une réponse à %s"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:420
+msgid "Annuler la réponse"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/general-template.php:472
+#, php-format
+msgid "Laisser une réponse à %s"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:78
+msgid "Page d'affichage des forums"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:83
+msgid "Contributions"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:89
+msgid "Généralités"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:92
+msgid "Envoi de mail"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:95
+msgid "Modération"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:111
+msgid "Réglages des options de forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:128
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:764
+msgid "Aucune"
+msgstr "Nessuno"
+
+#: ../plugins/premium/addons/forum/inc/options.php:140
+msgid ""
+"L'auteur d’une réponse doit renseigner son nom et son adresse de messagerie"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:145
+msgid ""
+"Un utilisateur doit être enregistré et connecté pour publier des réponses"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:158
+#, php-format
+msgid "Activer les commentaires imbriqués jusqu’à %s niveaux"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:167
+msgid "last"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:169
+msgid "first"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:170
+#, php-format
+msgid ""
+"Break comments into pages with %1$s top level comments per page and the %2$s "
+"page displayed by default"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:178
+msgid "older"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:180
+msgid "newer"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:181
+#, php-format
+msgid ""
+"Comments should be displayed with the %s comments at the top of each page"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:190
+msgid "Anyone posts a comment"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:192
+msgid "A comment is held for moderation"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:201
+msgid "An administrator must always approve the comment"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/options.php:203
+msgid "Comment author must have a previously approved comment"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:24
+msgid "Formulaire d'inscription aux forums"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:29
+#: ../plugins/premium/addons/forum/inc/subscribers.php:30
+#: ../plugins/premium/addons/membership/membership.php:207
+#: ../plugins/premium/addons/membership/membership.php:208
+msgid "Identifiant (obligatoire)"
+msgstr "Login (campo obbligatorio)"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:39
+#: ../plugins/premium/addons/forum/inc/subscribers.php:40
+#: ../plugins/premium/addons/membership/membership.php:217
+#: ../plugins/premium/addons/membership/membership.php:218
+msgid "E-mail (obligatoire)"
+msgstr "E-mail (campo obbligatorio)"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:50
+#: ../plugins/premium/addons/forum/inc/subscribers.php:51
+#: ../plugins/premium/addons/membership/membership.php:228
+#: ../plugins/premium/addons/membership/membership.php:229
+msgid "Prénom"
+msgstr "Nome"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:59
+#: ../plugins/premium/addons/forum/inc/subscribers.php:60
+#: ../plugins/premium/addons/membership/inc/members.php:408
+#: ../plugins/premium/addons/membership/membership.php:237
+#: ../plugins/premium/addons/membership/membership.php:238
+msgid "Nom"
+msgstr "Cognome"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:68
+#: ../plugins/premium/addons/forum/inc/subscribers.php:69
+#: ../plugins/premium/addons/membership/membership.php:246
+#: ../plugins/premium/addons/membership/membership.php:247
+msgid "Mot de passe (obligatoire)"
+msgstr "Password (campo obbligatorio)"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:79
+#: ../plugins/premium/addons/forum/inc/subscribers.php:80
+#: ../plugins/premium/addons/membership/membership.php:257
+#: ../plugins/premium/addons/membership/membership.php:258
+msgid "Confirmation de mot de passe (obligatoire)"
+msgstr "Conferma password (campo obbligatorio)"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:86
+#: ../plugins/premium/addons/membership/membership.php:264
+msgid ""
+"Les champs \"Mot de passe\" et \"Confirmation de mot de passe\" doivent "
+"correspondre"
+msgstr "I campi \"Password\" e \"Conferma password\" devono corrispondere"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:93
+msgid "Votre demande d'inscription au forum a été enregistrée"
+msgstr "La tua domanda di iscrizione al forum è stata registrata"
+
+#: ../plugins/premium/addons/forum/inc/subscribers.php:93
+#: ../plugins/premium/addons/membership/membership.php:271
+msgid "Vos informations personnelles ont été mises à jour"
+msgstr "Le tue informazioni personali sono state aggiornate"
+
+#: ../plugins/premium/addons/forum/inc/topics.php:23
+msgid "Sujets"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:25
+msgid "Sujet de forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:26
+msgid "Sujets de forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:27
+#: ../plugins/premium/addons/forum/inc/topics.php:29
+#: ../plugins/premium/addons/forum/inc/topics.php:62
+msgid "Ajouter un sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:28
+#: ../plugins/premium/addons/forum/inc/topics.php:61
+msgid "Tous les sujets"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:30
+msgid "Éditer le sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:31
+msgid "Nouveau sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:32
+msgid "Afficher le sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:33
+msgid "Rechercher un sujet"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:34
+msgid "Aucun sujet trouvé"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:35
+msgid "Aucun sujet dans la corbeille"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:37
+msgid "Sujets de Forum PressTiFy"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:52
+msgid "topics"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:62
+msgid "Ajouter un sujet de forum"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:74
+msgid "Permettre les contributions"
+msgstr ""
+
+#: ../plugins/premium/addons/forum/inc/topics.php:103
+msgid "Aucun Forum associé"
+msgstr ""
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:87
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:91
+msgid "Page d'affichage de l'accès pro."
+msgstr "Pagina di visualizzazione dell'accesso Pro"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:119
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:194
+msgid "Nom d'utilisateur"
+msgstr "Identificativo di accesso"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:122
+msgid "Me connecter"
+msgstr "Accedi"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:157
+msgid "Seuls les utilisateurs connectés sont habilités à modifier leur profil"
+msgstr "Solo gli utenti registrati possono modificare il loro profilo"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:188
+msgid "Bienvenue dans l'espace client Calingaert"
+msgstr "Ti diamo il benvenuto all'area dedicata ai professionisti"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:190
+msgid "Déjà inscrit"
+msgstr "Già registrato"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:227
+msgid "Première visite"
+msgstr "Prima visita"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:238
+msgid "Se deconnecter"
+msgstr "Esci"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:245
+msgid "Mon compte"
+msgstr "Account personale"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-form.php:252
+msgid "Créer un compte"
+msgstr "Registrati"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-taboox.php:39
+msgid "Ville"
+msgstr "Città"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-taboox.php:41
+msgid "Aucune ville choisie"
+msgstr "Nessuna città selezionata"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:41
+#: ../plugins/premium/addons/membership/membership.php:369
+#, php-format
+msgid "Modification de l'utilisateur : %s"
+msgstr "Modifica utente: %s"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:44
+#: ../plugins/premium/addons/membership/membership.php:374
+#, php-format
+msgid "Actif : %s"
+msgstr "Attivo: %s"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:55
+#: ../plugins/premium/addons/membership/membership.php:385
+msgid "Création d'un nouvel utilisateur"
+msgstr "Crea un nuovo utente"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:87
+msgid "Édition d'utilisateur"
+msgstr "Modifica utente"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_edit.php:109
+msgid "Mettre à jour l'utilisateur"
+msgstr "Aggiorna utente"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:30
+msgid "Tous les clients"
+msgstr "Tutti gli utenti"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:52
+msgid "Liste des utilisateurs de l'espace pro."
+msgstr "Elenco utenti Accesso Pro"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:155
+#: ../plugins/premium/addons/membership/inc/members.php:407
+msgid "Username"
+msgstr "Nome utente"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:157
+#: ../plugins/premium/addons/membership/inc/members.php:409
+msgid "E-mail"
+msgstr "E-mail"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:158
+msgid "Role"
+msgstr "Ruolo"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:195
+#: ../plugins/theme-manager/templates/image.php:14
+msgid "Edit"
+msgstr "Modifica"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:203
+msgid "Remove"
+msgstr "Rimuovi"
+
+#: ../plugins/premium/addons/membership/_bak/business_area-user_list.php:219
+msgid "None"
+msgstr "Nessuno"
+
+#: ../plugins/premium/addons/membership/_bak/business_area.php:50
+msgid "Client"
+msgstr "Cliente"
+
+#: ../plugins/premium/addons/membership/_bak/business_area.php:102
+#: ../plugins/premium/addons/membership/membership.php:121
+msgid "Accès Pro."
+msgstr "Accesso Pro"
+
+#: ../plugins/premium/addons/membership/inc/general-template.php:41
+msgid "Cet espace est réservé aux utilisateurs possédant un compte accès pro."
+msgstr "Questo spazio è riservato agli utenti con un account Accesso Pro."
+
+#: ../plugins/premium/addons/membership/inc/general-template.php:108
+msgid "Inscription à l'accès pro."
+msgstr "Registrati all'Accesso Pro"
+
+#: ../plugins/premium/addons/membership/inc/members.php:61
+msgid "Listes des clients"
+msgstr "Elenco dei clienti"
+
+#: ../plugins/premium/addons/membership/inc/members.php:62
+#: ../plugins/premium/addons/membership/inc/members.php:84
+msgid "Ajouter un client"
+msgstr "Aggiungi un cliente"
+
+#: ../plugins/premium/addons/membership/inc/members.php:70
+msgid "Recherche de client"
+msgstr "Cerca un cliente"
+
+#: ../plugins/premium/addons/membership/inc/members.php:83
+msgid "Editer un client"
+msgstr "Modifica un cliente"
+
+#: ../plugins/premium/addons/membership/inc/members.php:221
+msgid "L'utilisateur a été enregistrée avec succès"
+msgstr "L'utente è stato registrato"
+
+#: ../plugins/premium/addons/membership/inc/members.php:255
+msgid "Actif"
+msgstr "Attivo"
+
+#: ../plugins/premium/addons/membership/inc/members.php:255
+msgid "Inactif"
+msgstr "Inattivo"
+
+#: ../plugins/premium/addons/membership/inc/members.php:255
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:28
+msgid "En attente"
+msgstr "In attesa"
+
+#: ../plugins/premium/addons/membership/inc/members.php:388
+#: ../plugins/premium/addons/wistify/inc/reports.php:251
+msgid "Filtre par campagne"
+msgstr "Filtra per campagna"
+
+#: ../plugins/premium/addons/membership/inc/members.php:392
+msgid "Tous les rôles"
+msgstr "Tutti i ruoli"
+
+#: ../plugins/premium/addons/membership/inc/members.php:410
+msgid "Enregistrement"
+msgstr "Registrazione"
+
+#: ../plugins/premium/addons/membership/inc/members.php:411
+msgid "Rôle"
+msgstr "Ruolo"
+
+#: ../plugins/premium/addons/membership/inc/members.php:446
+msgid "Editer"
+msgstr "Modifica"
+
+#: ../plugins/premium/addons/membership/inc/members.php:463
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:500
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:771
+msgid "d/m/Y à H:i"
+msgstr "d/m/Y alle ore H:i"
+
+#: ../plugins/premium/addons/membership/membership.php:79
+msgid "Membre"
+msgstr "Membro"
+
+#: ../plugins/premium/addons/membership/membership.php:123
+msgid "Membres"
+msgstr "Membri"
+
+#: ../plugins/premium/addons/membership/membership.php:124
+msgid "Ajouter un membre"
+msgstr "Aggiungi un membro"
+
+#: ../plugins/premium/addons/membership/membership.php:164
+msgid "Réglage des options"
+msgstr "Impostazione delle opzioni del tema"
+
+#: ../plugins/premium/addons/membership/membership.php:172
+msgid "Page  d'affichage de l'Accès Pro."
+msgstr "Pagina di visualizzazione dell'Accesso Pro."
+
+#: ../plugins/premium/addons/membership/membership.php:202
+msgid "Formulaire d'inscription à l'accès pro"
+msgstr "Modulo di registrazione Accesso Pro"
+
+#: ../plugins/premium/addons/membership/membership.php:271
+msgid "Votre demande d'inscription à l'espace pro. a été enregistrée"
+msgstr ""
+"La sua domanda di registrazione alla sezione PRO ACCESS è stata registrata"
+
+#: ../plugins/premium/addons/membership/membership.php:371
+msgid "En attente de validation"
+msgstr "In attesa di approvazione"
+
+#: ../plugins/premium/addons/membership/membership.php:395
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:349
+msgid "Informations générales"
+msgstr "Informazioni generali"
+
+#: ../plugins/premium/addons/membership/membership.php:404
+msgid "Informations complémentaires"
+msgstr "Informazioni aggiuntive"
+
+#: ../plugins/premium/addons/timeline/timeline.php:331
+msgid "Date de début"
+msgstr "Data di inizio"
+
+#: ../plugins/premium/addons/timeline/timeline.php:332
+msgid "Date de publication de l'article si vide"
+msgstr "Data di pubblicazione dell'articolo, se vuoto"
+
+#: ../plugins/premium/addons/timeline/timeline.php:341
+msgid "Date de fin"
+msgstr "Data di fine"
+
+#: ../plugins/premium/addons/timeline/timeline.php:342
+msgid "Date de début si vide"
+msgstr "Data di inizio, se vuoto"
+
+#: ../plugins/premium/addons/timeline/timeline.php:351
+msgid "Titre"
+msgstr "Titolo"
+
+#: ../plugins/premium/addons/timeline/timeline.php:352
+msgid "Titre original de l'article si vide"
+msgstr "Titolo originale dell'articolo, se vuoto"
+
+#: ../plugins/premium/addons/timeline/timeline.php:360
+msgid "Masquer le texte de description"
+msgstr "Nascondi la descrizione testo"
+
+#: ../plugins/premium/addons/timeline/timeline.php:369
+msgid "Texte de description"
+msgstr "Descrizione testo"
+
+#: ../plugins/premium/addons/timeline/timeline.php:377
+msgid "Masquer le lien de suite de lecture vers le contenu"
+msgstr "Nascondi il link per leggere ulteriori informazioni"
+
+#: ../plugins/premium/addons/timeline/timeline.php:386
+msgid "Intitulé du lien de suite de lecture vers le contenu"
+msgstr "Titolo del link per leggere ulteriori informazioni"
+
+#: ../plugins/premium/addons/timeline/timeline.php:389
+msgid "Lire la suite"
+msgstr "Per saperne di più"
+
+#: ../plugins/premium/addons/timeline/timeline.php:404
+msgid "Citation"
+msgstr "Citazione"
+
+#: ../plugins/premium/addons/timeline/timeline.php:405
+msgid "Site Web"
+msgstr "Sito Web"
+
+#: ../plugins/premium/addons/timeline/timeline.php:406
+msgid "Image"
+msgstr "Immagine"
+
+#: ../plugins/premium/addons/timeline/timeline.php:407
+#: ../plugins/theme-manager/addons/social-share/twitter-api.php:52
+msgid "Twitter"
+msgstr "Twitter"
+
+#: ../plugins/premium/addons/timeline/timeline.php:408
+#: ../plugins/theme-manager/addons/social-share/youtube-api.php:48
+msgid "YouTube"
+msgstr "YouTube"
+
+#: ../plugins/premium/addons/timeline/timeline.php:409
+msgid "Dailymotion"
+msgstr "Dailymotion"
+
+#: ../plugins/premium/addons/timeline/timeline.php:410
+msgid "Vimeo"
+msgstr "Vimeo"
+
+#: ../plugins/premium/addons/timeline/timeline.php:411
+msgid "Flickr"
+msgstr "Flickr"
+
+#: ../plugins/premium/addons/timeline/timeline.php:412
+msgid "Soundcloud"
+msgstr "Soundcloud"
+
+#: ../plugins/premium/addons/timeline/timeline.php:413
+msgid "Instagram"
+msgstr "Instagram"
+
+#: ../plugins/premium/addons/timeline/timeline.php:414
+msgid "TwitPic"
+msgstr "TwitPic"
+
+#: ../plugins/premium/addons/timeline/timeline.php:419
+msgid "Média"
+msgstr "Media"
+
+#: ../plugins/premium/addons/timeline/timeline.php:431
+msgid "Sélectionner une image"
+msgstr "Seleziona un'immagine"
+
+#: ../plugins/premium/addons/timeline/timeline.php:432
+msgid "Image de la médiathèque"
+msgstr "Immagine della libreria multimediale"
+
+#: ../plugins/premium/addons/timeline/timeline.php:434
+msgid "Sélectionner une video"
+msgstr "Seleziona un video"
+
+#: ../plugins/premium/addons/timeline/timeline.php:435
+msgid "Video de la médiathèque"
+msgstr "Video della libreria multimediale"
+
+#: ../plugins/premium/addons/timeline/timeline.php:457
+msgid "Crédit"
+msgstr "Credito"
+
+#: ../plugins/premium/addons/timeline/timeline.php:465
+msgid "Légende"
+msgstr "Didascalia"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:13
+msgid "En composition"
+msgstr "In composizione"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:14
+msgid "Prête à acheminer"
+msgstr "Pronta consegna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:15
+msgid "En preparation"
+msgstr "In preparazione"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:16
+msgid "En cours d'acheminement"
+msgstr "In transito"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:17
+msgid "Distribuée"
+msgstr "Distribuito"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:30
+msgid "Campagnes"
+msgstr "Campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:54
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:97
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:605
+msgid "Préparation en cours ..."
+msgstr "Elaborazione in corso..."
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:55
+msgid "Envoi en cours ..."
+msgstr "Invio in corso..."
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:56
+msgid "Emails prêts"
+msgstr "E-mail pronte"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:57
+msgid "Emails envoyés"
+msgstr "E-mail inviate"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:82
+msgid "Campagnes d'emailing"
+msgstr "Campagne e-mail"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:83
+msgid "Ajouter une campagne"
+msgstr "Aggiungi una campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:91
+msgid "Recherche de campagne"
+msgstr "Cerca una campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:116
+msgid "Éditer la campagne d'emailing"
+msgstr "Modifica campagna e-mail"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:219
+msgid "La campagne a été enregistré avec succès"
+msgstr "La campagna è stata registrata"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:226
+msgid "L'email de l'expéditeur n'est pas valide"
+msgstr "L'indirizzo email del mittente non è valido"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:246
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:247
+msgid ""
+"Vous tentez de modifier un contenu qui n’existe pas. Peut-être a-t-il été "
+"supprimé ?"
+msgstr ""
+"Stai cercando di modificare un contenuto che non esiste. Verifica che non "
+"sia stato già rimosso."
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:248
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:249
+msgid "Vous n’avez pas l’autorisation de modifier ce contenu."
+msgstr "Non hai l'autorizzazione per modificare il contenuto."
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:251
+#, php-format
+msgid "Une campagne \"%s\" ne peuvent être éditée."
+msgstr "Una campagna \"%s\" non può essere modificata."
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:258
+msgid ""
+"Ne soyez pas trop impatient et complétez d'abord toutes les étapes "
+"précédentes"
+msgstr ""
+"Non essere troppo impaziente, completa prima tutti i passaggi precedenti"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:350
+msgid "Préparation du Message"
+msgstr "Preparazione del messaggio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:351
+msgid "Choix des destinataires"
+msgstr "Scelta dei destinatari"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:352
+msgid "Options d'envoi"
+msgstr "Opzioni di invio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:353
+msgid "Test et distribution"
+msgstr "Testo e distribuzione"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:359
+#, php-format
+msgid "Étape %d"
+msgstr "Passaggio %d"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:389
+msgid "Intitulé de la campagne"
+msgstr "Titolo della campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:391
+msgid "Brève description de la campagne"
+msgstr "Breve descrizione della campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:426
+msgid "Tapez un email ou un intitulé"
+msgstr "Digita un'e-mail o un titolo"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:428
+msgid ""
+"Emails : abonné ou utilisateur Wordpress | Intitulés : liste/groupe de "
+"diffusion ou rôle Wordpress"
+msgstr ""
+"E-mail: utente registrato o utente Wordpress | Titolo: elenco/mailing list o "
+"ruolo Wordpress"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:438
+#: ../plugins/premium/addons/wistify/wistify.php:146
+msgid "Abonné"
+msgstr "Utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:452
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:671
+#: ../plugins/premium/addons/wistify/wistify.php:168
+msgid "Liste de diffusion"
+msgstr "Mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:491
+msgid "Total :"
+msgstr "Totale:"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:521
+msgid "Sujet du message"
+msgstr "Oggetto del messaggio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:525
+msgid "Email de l'expéditeur"
+msgstr "E-mail mittente"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:529
+msgid "Nom de l'expéditeur"
+msgstr "Nome mittente"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:533
+msgid "Marqué le message comme important"
+msgstr "Segna il messaggio come importante"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:537
+msgid "Suivi de l'ouverture des messages"
+msgstr "Segui apertura messaggio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:541
+msgid "Suivi des clics depuis les liens du message"
+msgstr "Monitora click sui link contenuti nel messaggio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:568
+msgid "Tester la campagne"
+msgstr "Testa la campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:592
+msgid "Délivrer la campagne"
+msgstr "Invia la campagna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:595
+msgid "Programmer l'envoi"
+msgstr "Programma l'invio"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:596
+msgid "à venir"
+msgstr "prossimamente "
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:599
+msgid "Envoyer maintenant"
+msgstr "Invia ora"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:635
+msgid "Étape précédente"
+msgstr "Passaggio precedente"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:638
+msgid "Étape suivante"
+msgstr "Passaggio successivo"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:658
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:795
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:342
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:447
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:563
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:713
+msgid "Mise à la corbeille de l'élément"
+msgstr "Sposta elemento nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:659
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:343
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:564
+msgid "Déplacer dans la corbeille"
+msgstr "Sposta nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:663
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:347
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:568
+msgid "Sauver les modifications"
+msgstr "Salva le modifiche"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:701
+msgid "La campagne a été dupliquée avec succès"
+msgstr "La campagna è stata duplicata con successo"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:702
+msgid "La campagne a été mise à la corbeille"
+msgstr "La campagna è stata spostata nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:703
+msgid "La campagne a été rétablie avec succès"
+msgstr "La campagna è stata ripristinata"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:710
+msgid "Toutes"
+msgstr "Tutto"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:711
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:385
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:610
+msgid "Corbeille"
+msgstr "Cestino"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:734
+msgid "État de distribution"
+msgstr "Stato consegna"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:745
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:421
+msgid "(Pas de titre)"
+msgstr "(Senza titolo)"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:756
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:761
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:431
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:697
+msgid "Éditer cet item"
+msgstr "Modifica questo elemento"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:762
+msgid "Reprendre"
+msgstr "Riprendere"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:778
+msgid "Dupliquer de la campagne"
+msgstr "Campagna duplicata"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:779
+msgid "Dupliquer"
+msgstr "Duplicare"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:796
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:448
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:714
+msgid "Mettre à la corbeille"
+msgstr "Sposta nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:814
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:466
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:732
+msgid "Rétablissement de l'élément"
+msgstr "Ripristina elemento"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:815
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:467
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:733
+msgid "Rétablir"
+msgstr "Ripristina"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:830
+msgid "Suppression définitive de l'élément"
+msgstr "Elimina definitivamente l'elemento"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:831
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:483
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:749
+msgid "Supprimer définitivement"
+msgstr "Elimina definitivamente"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:848
+msgid "Envoi effectué"
+msgid_plural "Envois effectués"
+msgstr[0] "Invio effettuato"
+msgstr[1] "Invii effettuati"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:848
+msgid "sur"
+msgstr "su"
+
+#: ../plugins/premium/addons/wistify/inc/campaigns.php:849
+#, php-format
+msgid "dernier envoi %s"
+msgstr "ultimo invio %s"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:13
+msgid "Publiée"
+msgstr "Pubblicato"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:31
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:74
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:518
+msgid "Listes de diffusion"
+msgstr "Mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:75
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:96
+msgid "Ajouter une liste de diffusion"
+msgstr "Aggiungi a mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:83
+msgid "Recherche de liste de diffusion"
+msgstr "Cerca una mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:95
+msgid "Éditer la liste diffusion"
+msgstr "Modifica la mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:215
+msgid "Il y a déjà une autre liste de diffusion pourtant le même nom"
+msgstr "Esiste già un'altra mailing list con lo stesso nome"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:222
+msgid "La liste de diffusion a été enregistrée avec succès"
+msgstr "La mailing list è stata registrata"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:324
+msgid "Intitulé de la liste de diffusion"
+msgstr "Nome della mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:325
+msgid "Brève description de la liste de diffusion"
+msgstr "Breve descrizione della mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:377
+msgid "La liste de diffusion a été supprimé avec succès"
+msgstr "La mailing list è stata eliminata con successo"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:378
+msgid "La liste de diffusion a été mise à la corbeille"
+msgstr "La mailing list è stata spostata nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:379
+msgid "La liste de diffusion a été rétablie"
+msgstr "La mailing list è stata ripristinata"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:406
+msgid "Nombre d'abonnés"
+msgstr "Numero di utenti registrati"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:482
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:748
+msgid "Supprimer cet item"
+msgstr "Elimina questo elemento"
+
+#: ../plugins/premium/addons/wistify/inc/mailing-lists.php:502
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:773
+msgid "Indéterminé"
+msgstr "Non determinato"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:12
+msgid "Envoyé"
+msgstr "Inviato"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:13
+msgid "Différé"
+msgstr "Ritardato"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:14
+msgid "Hard Bounced"
+msgstr "Hard Bounced"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:15
+msgid "Rejeté"
+msgstr "Respinto"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:16
+msgid "Soft Bounced"
+msgstr "Soft Bounced"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:17
+msgid "Posté"
+msgstr "Spedito"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:21
+msgid ""
+"(État permanent) Adresse email de destination pour laquelle le message n'a "
+"pu être distribué pour l'une des raisons suivantes : <br/>   - L'adresse "
+"email est incorrecte (mal orthographiée)<br/>   - Cette adresse email "
+"n’existe pas ou plus"
+msgstr ""
+"(Stato permanente) Indirizzo e-mail al quale il messaggio non può essere "
+"consegnato, perché: <br/> - L'indirizzo e-mail è errato (incorretto)<br/> - "
+"Questo indirizzo email non esiste"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:27
+msgid ""
+"(État temporaire) Adresse email de destination enregistrée en liste noire "
+"pour les raisons suivantes :<br/>   - L'adresse email de destination est "
+"déclaré comme un spam<br/>   - L'adresse email de destination est déclaré "
+"comme désinscrit pour l'adresse email d'expédition<br/>   - L'adresse email "
+"a été ajouté automatiquement dans la liste noire (Statut d'envoi précédent "
+"en bounced)<br/>   - L'adresse email a été ajouté manuellement dans la liste "
+"noire"
+msgstr ""
+"(Stato temporaneo) Indirizzo e-mail nella lista nera per i seguenti motivi: "
+"<br/> - L'indirizzo email viene riconosciuto come spam<br/> - L'indirizzo "
+"email è riconosciuto come cancellato <br/> - L'indirizzo email è stato "
+"aggiunto automaticamente al la lista nera (precedente invio in stato  "
+"\"rimbalzato\") <br/> - L'indirizzo email è stato aggiunto manualmente alla "
+"lista nera"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:34
+msgid ""
+"(État temporaire) Adresse email de destination pour laquelle le message n\\a "
+"pu être distribué pour l'une des raisons suivantes : <br/>   - La boîte de "
+"réception du destinataire est pleine<br/>   - Le serveur de reception du "
+"destinataire rencontre un dysfonctionnement<br/>   - Un système de filtrage "
+"du serveur du destinataire, empêche la reception du message"
+msgstr ""
+"(Stato temporaneo) Indirizzo e-mail a cui il messaggio non può essere "
+"consegnato, perché: <br/> - casella di posta del destinatario è piena <br/> "
+"- Il server di ricevimento riscontra un malfunzionamento <br/> - Sistema di "
+"filtraggio del server del destinatario impedisce la ricezione del messaggio "
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:41
+msgid ""
+"Le message a été envoyé au serveur d'envoi mais n'a pas encore été traité "
+msgstr ""
+"Il messaggio è stato consegnato al server di invio, ma non ancora processato"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:60
+msgid "Rapport d'envoi"
+msgstr "Report d'invio"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:106
+msgid "Rapport d'expédition"
+msgstr "Report di spedizione"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:112
+msgid "Recherche de destinataire"
+msgstr "Ricerca di un destinatario"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:255
+msgid "Toutes les campagnes"
+msgstr "Tutte le campagne"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:271
+msgid "Mise à jour"
+msgstr "Aggiornamento"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:272
+msgid "Campagne"
+msgstr "Campagna"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:273
+msgid "Statut"
+msgstr "Stato"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:274
+msgid "Destinataire"
+msgstr "Destinatario"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:275
+msgid "Expéditeur"
+msgstr "Mittente"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:277
+msgid "Ouverture"
+msgstr "Apertura"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:278
+msgid "Clics"
+msgstr "Click"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:295
+msgid "Jamais"
+msgstr "Mai"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:295
+msgid "d/m/Y à H:i:s"
+msgstr "d/m/Y alle ore H:i:s"
+
+#: ../plugins/premium/addons/wistify/inc/reports.php:297
+msgid "Rafraichir"
+msgstr "Aggiorna"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:26
+msgid "Inscrits"
+msgstr "Utenti registrati"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:27
+msgid "Désinscrits"
+msgstr "Utenti che hanno annullato la registrazione"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:46
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:89
+msgid "Abonnés"
+msgstr "Utenti registrati"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:90
+msgid "Ajouter un abonné"
+msgstr "Aggiungi un utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:98
+msgid "Recherche d'abonné"
+msgstr "Cerca un utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:111
+msgid "Éditer un abonné"
+msgstr "Modifica un utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:112
+msgid "Ajouter un autre abonné"
+msgstr "Aggiungi un altro utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:394
+msgid "L'adresse email de l'abonné doit être renseignée"
+msgstr "L'indirizzo e-mail dell'utente registrato deve essere compilato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:395
+msgid "Le format de l'adresse email n'est pas valide"
+msgstr "Il formato dell'indirizzo email non è valido"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:396
+msgid "Cet email est déjà utilisé pour un autre abonné"
+msgstr "L'e-mail è già utilizzata da un altro utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:403
+msgid "L'utilisateur a été enregistré avec succès"
+msgstr "L'utente è stato registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:420
+msgid ""
+"Vous tentez de modifier un abonné qui n’existe pas. Peut-être a-t-il été "
+"supprimé ?"
+msgstr ""
+"Tentativo di modificare un abbonato che non esiste. Forse è stato rimosso?"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:422
+msgid "Vous n’avez pas l’autorisation de modifier cet abonné."
+msgstr "Non hai il permesso di modificare tale registrato."
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:516
+msgid "Adresse email de l'abonné"
+msgstr "Indirizzo e-mail utente registrato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:538
+msgid "Status"
+msgstr "Stato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:601
+msgid "L'abonné a été supprimé avec succès"
+msgstr "Il sottoscrittore è stato eliminato con successo"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:602
+msgid "L'abonné a été mis à la corbeille"
+msgstr "Il sottoscrittore è stato spostato nel cestino"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:603
+msgid "L'abonné a été rétabli"
+msgstr "Il sottoscrittore è stato riabilitato"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:651
+msgid "Filtre par liste de diffusion"
+msgstr "Filtro elenco/mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:655
+msgid "Toutes les listes de diffusion"
+msgstr "Tutte le mailing list"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:672
+msgid "Depuis le"
+msgstr "Da"
+
+#: ../plugins/premium/addons/wistify/inc/subscribers.php:687
+msgid "(Pas d'email)"
+msgstr "(Nessuna e-mail)"
+
+#: ../plugins/premium/addons/wistify/wistify.php:88
+msgid "Newsletters"
+msgstr "Newsletter"
+
+#: ../plugins/theme-manager/addons/appearance.php:71
+msgid "Apparence"
+msgstr "Aspetto"
+
+#: ../plugins/theme-manager/addons/appearance.php:80
+msgid "Palette de couleur"
+msgstr "Selezione colori"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:120
+msgid "Nombre maximum de vignettes atteint"
+msgstr "Numero massimo di anteprime raggiunto"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:169
+msgid "Choisissez un contenu à afficher dans le diaporama"
+msgstr "Scegli il contenuto da visualizzare in questa presentazione"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:170
+msgid "Ajouter un contenu du site"
+msgstr "Aggiungi un contenuto del sito Web"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:171
+msgid "Ajouter un lien personnalisé"
+msgstr "Aggiungi un collegamento personalizzato"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:225
+msgid "Illustration de la vignette du diporama"
+msgstr "Illustrazione dell'anteprima della presentazione"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:244
+msgid "Vignette cliquable"
+msgstr "Anteprima selezionabile"
+
+#: ../plugins/theme-manager/addons/homeslideshow/homeslideshow.php:251
+msgid "Saisissez l'url du site"
+msgstr "Inserisci URL del sito Web"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:85
+msgid "Référencement"
+msgstr "SEO"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:94
+msgid "Google Analytics"
+msgstr "Google Analytics"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:133
+#: ../plugins/theme-manager/addons/seo/seo.php:145
+#: ../plugins/theme-manager/addons/seo/seo.php:229
+#: ../plugins/theme-manager/addons/seo/seo.php:241
+#, php-format
+msgid "Actualités page %1$s sur %2$s"
+msgstr "Notizie: pagina %1$s su %2$s"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:135
+#: ../plugins/theme-manager/addons/seo/seo.php:147
+#: ../plugins/theme-manager/addons/seo/seo.php:231
+#: ../plugins/theme-manager/addons/seo/seo.php:243
+msgid "Actualités"
+msgstr "Notizie"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:170
+#: ../plugins/theme-manager/addons/seo/seo.php:262
+#, php-format
+msgid "Mot clef : %1$s"
+msgstr "Parola chiave: %1$s"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:176
+#: ../plugins/theme-manager/addons/seo/seo.php:268
+#, php-format
+msgid "Archive quotidienne : %1$s"
+msgstr "Archivi giornalieri: %1$s"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:178
+#: ../plugins/theme-manager/addons/seo/seo.php:270
+#, php-format
+msgid "Archive mensuelle : %1$s"
+msgstr "Archivi mensili: %1$s"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:180
+#: ../plugins/theme-manager/addons/seo/seo.php:272
+#, php-format
+msgid "Archive annuelle : %1$s"
+msgstr "Archivi annuali: %1$s"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:187
+#: ../plugins/theme-manager/addons/seo/seo.php:279
+msgid "Archives"
+msgstr "Archivi"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:367
+msgid "Code Google Analytics"
+msgstr "Google Analytics ID"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:368
+msgid "Vers le site officiel de Google Analytics"
+msgstr "Al sito Web ufficiale di Google Analytics"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:368
+msgid "Site Google Analytics"
+msgstr "Sito Web di Google Analytics"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:446
+msgid "Personnalisation"
+msgstr "Personalizzazione"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:451
+msgid "Balise titre"
+msgstr "Tag titolo"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:459
+msgid "Url canonique"
+msgstr "URL canonico"
+
+#: ../plugins/theme-manager/addons/seo/seo.php:467
+msgid "Balise description"
+msgstr "Tag descrizione"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:54
+msgid "Facebook"
+msgstr "Facebook"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:114
+msgid "Identifiant de l'API Facebook"
+msgstr "Facebook API id"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:115
+msgid "Requis"
+msgstr "Obbligatorio"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:123
+msgid "Url de la page Facebook"
+msgstr "URL pagina Facebook"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:126
+msgid "https://www.facebook.com/[nom de la page]"
+msgstr "https://www.facebook.com/[nome pagina]"
+
+#: ../plugins/theme-manager/addons/social-share/facebook-api.php:195
+#, php-format
+msgid "Vers la page Facebook du site %s"
+msgstr "Alla pagina Facebook del sito Web \"%s\""
+
+#: ../plugins/theme-manager/addons/social-share/google-plus-api.php:50
+msgid "Google+"
+msgstr "Google+"
+
+#: ../plugins/theme-manager/addons/social-share/google-plus-api.php:85
+msgid "Url de la page Google Plus"
+msgstr "URL pagina Google+"
+
+#: ../plugins/theme-manager/addons/social-share/google-plus-api.php:88
+msgid "https://plus.google.com/[nom de la page]"
+msgstr "https://plus.google.com/[nome pagina]"
+
+#: ../plugins/theme-manager/addons/social-share/google-plus-api.php:147
+#, php-format
+msgid "Vers la page Google+ du site %s"
+msgstr "Alla pagina Google+ del sito Web \"%s\""
+
+#: ../plugins/theme-manager/addons/social-share/linkedin-api.php:43
+msgid "Url du compte Linkedin"
+msgstr "URL pagina Linkedin"
+
+#: ../plugins/theme-manager/addons/social-share/linkedin-api.php:46
+msgid "https://www.linkedin.com/profile/[nom du compte]"
+msgstr "https://www.linkedin.com/profile/[nome account]"
+
+#: ../plugins/theme-manager/addons/social-share/linkedin-api.php:81
+#, php-format
+msgid "Vers le compte Linkedin du site %s"
+msgstr "Alla pagina Linkedin del sito Web \"%s\""
+
+#: ../plugins/theme-manager/addons/social-share/social-share.php:103
+msgid "Réseaux sociaux"
+msgstr "Social network"
+
+#: ../plugins/theme-manager/addons/social-share/social-share.php:111
+msgid "Globales"
+msgstr "Opzioni globali"
+
+#: ../plugins/theme-manager/addons/social-share/social-share.php:220
+msgid "Activer l'OpenGraph"
+msgstr "Attiva OpenGraph"
+
+#: ../plugins/theme-manager/addons/social-share/social-share.php:228
+msgid "Image représentative du site (pour le partage)"
+msgstr ""
+"Immagine rappresentativa del sito Web (per la condivisione sui social "
+"network)"
+
+#: ../plugins/theme-manager/addons/social-share/social-share.php:229
+#, php-format
+msgid "HD : %s | LD : %s"
+msgstr "HD : %s | LD : %s"
+
+#: ../plugins/theme-manager/addons/social-share/twitter-api.php:77
+msgid "Url du compte Twitter"
+msgstr "URL account Twitter"
+
+#: ../plugins/theme-manager/addons/social-share/twitter-api.php:80
+msgid "https://twitter.com/[nom de la page]"
+msgstr "https://twitter.com/[nome account]"
+
+#: ../plugins/theme-manager/addons/social-share/twitter-api.php:142
+#, php-format
+msgid "Vers le compte Twitter du site %s"
+msgstr "All'account Twitter del sito Web \"%s\""
+
+#: ../plugins/theme-manager/addons/social-share/youtube-api.php:66
+msgid "Url de la chaîne You Tube"
+msgstr "URL canale YouTube"
+
+#: ../plugins/theme-manager/addons/social-share/youtube-api.php:69
+msgid "https://www.youtube.com/channel/[nom de la chaîne]"
+msgstr "https://www.youtube.com/channel/[nome canale]"
+
+#: ../plugins/theme-manager/addons/social-share/youtube-api.php:107
+#, php-format
+msgid "Vers la chaîne YouTube+ du site %s"
+msgstr "Al canale YouTube del sito Web \"%s\""
+
+#: ../plugins/theme-manager/inc/video-embed.php:12
+#: ../plugins/theme-manager/inc/video-embed.php:32
+msgid "Format de vidéo invalide"
+msgstr "Formato video non valido"
+
+#: ../plugins/theme-manager/templates/image.php:13
+msgid "0 comments"
+msgstr "0 commento"
+
+#: ../plugins/theme-manager/templates/image.php:13
+msgid "1 comment"
+msgstr "1 commento"
+
+#: ../plugins/theme-manager/templates/image.php:13
+#, php-format
+msgid "% comments"
+msgstr "% commenti"
+
+#: ../plugins/theme-manager/templates/image.php:13
+msgid "Comments are Disabled"
+msgstr "I commenti sono disattivati"
+
+#: ../plugins/theme-manager/templates/image.php:18
+#, php-format
+msgid ""
+"Taille originale : <a href=\"%1$s\" title=\"Lien vers la taille originale de "
+"l'image\">%2$s &times; %3$s</a> Apparaît dans : <a href=\"%4$s\" title="
+"\"Retour à  %5$s\" rel=\"gallery\">%6$s</a>."
+msgstr ""
+"Dimensioni originali: <a href=\"%1$s\" title=\"Link al formato immagine "
+"originale\">%2$s &times; %3$s</a> | Compare in: <a href=\"%4$s\\\" title="
+"\"Torna a %5$s\" rel=\"gallery\">%6$s</a>."
+
+#: ../plugins/theme-manager/templates/image.php:74
+msgid "Sorry, no posts matched your criteria"
+msgstr "Nessun post corrisponde ai tuoi criteri."
+
+#: ../tiFy.php:153
+msgid "PresstiFy"
+msgstr "PresstiFy"
+
+#~ msgctxt "../inc/tify_controls/tify_control/switch/switch.php:30"
+#~ msgid "Oui"
+#~ msgstr "Sì"
+
+#~ msgctxt "../inc/tify_controls/tify_control/switch/switch.php:31"
+#~ msgid "Non"
+#~ msgstr "No"
+
+#~ msgctxt ""
+#~ "../plugins/forms/add-ons/record/export.php:229 ../plugins/forms/add-ons/"
+#~ "record/export.php:241 ../plugins/premium/addons/timeline/timeline."
+#~ "php:331 ../plugins/premium/addons/timeline/timeline.php:348 ../plugins/"
+#~ "theme-manager/addons/homeslideshow/homeslidesh"
+#~ msgid "Oui"
+#~ msgstr "Sì"
+
+#~ msgctxt ""
+#~ "../plugins/forms/add-ons/record/export.php:233 ../plugins/forms/add-ons/"
+#~ "record/export.php:245 ../plugins/premium/addons/timeline/timeline."
+#~ "php:332 ../plugins/premium/addons/timeline/timeline.php:349 ../plugins/"
+#~ "theme-manager/addons/homeslideshow/homeslidesh"
+#~ msgid "Non"
+#~ msgstr "No"
+
+#~ msgid "Journaliste"
+#~ msgstr "Giornalista"
+
+#~ msgid "Distributeur"
+#~ msgstr "Distributore"
+
+#~ msgid "Bigben Interne"
+#~ msgstr "Team Bigben"
+
+#~ msgid "Formulaire d'inscription à l'espace Pro"
+#~ msgstr "Modulo di iscrizione all'Accesso Pro."
+
+#~ msgid "Vous n'avez pas encore de compte Bigben Pro, demandez votre accès."
+#~ msgstr "Non hai ancora un account Bigben Pro. Richiedi l'accesso."
+
+#~ msgid "Modifiez les informations de votre compte Bigben Pro."
+#~ msgstr "Modifica le informazioni del tuo account Bigben Pro."
+
+#~ msgid "Vous êtes :"
+#~ msgstr "La tua attività:"
+
+#~ msgid "Vous êtes (non modifiable) :"
+#~ msgstr "La tua attività (non modificabile):"
+
+#~ msgid "Identifiant de connexion"
+#~ msgstr "ID accesso"
+
+#~ msgid "Identifiant de connexion (non modifiable)"
+#~ msgstr "ID accesso (non modificabile):"
+
+#~ msgid "Société"
+#~ msgstr "Società"
+
+#~ msgid "URL de la société"
+#~ msgstr "URL della società"
+
+#~ msgid "Téléphone"
+#~ msgstr "Telefono"
+
+#~ msgid "Nombre de point de vente"
+#~ msgstr "Numero di punti vendita"
+
+#~ msgid "Pays de distribution"
+#~ msgstr "Paesi di distribuzione"
+
+#~ msgid "Produits concernés à cocher"
+#~ msgstr "Seleziona i prodotti corrispondenti"
+
+#~ msgid "Produits concernés à cocher (non modifiable)"
+#~ msgstr "Prodotti corrispondenti (non modificabile)"
+
+#~ msgid "Audio"
+#~ msgstr "Audio"
+
+#~ msgid "Jeux vidéo"
+#~ msgstr "Videogiochi"
+
+#~ msgid "Accessoires Gaming"
+#~ msgstr "Accessori di gioco"
+
+#~ msgid "Accessoires Smartphones/Tablettes"
+#~ msgstr "Accessori Smartphone/Tablet"
+
+#~ msgid "Raison de votre demande"
+#~ msgstr "Motivo della richiesta"
+
+#~ msgid "Confirmation de mot de passe"
+#~ msgstr "Conferma password"
+
+#~ msgid "Informations nouveautés"
+#~ msgstr "Informazioni sulle novità"
+
+#~ msgid ""
+#~ "Je souhaite recevoir les ajouts de nouveautés produits Bigben Interactive "
+#~ "par email"
+#~ msgstr ""
+#~ "Desidero ricevere informazioni sui nuovi prodotti di Bigben Interactive "
+#~ "via e-mail"
+
+#~ msgid "Offres partenaires"
+#~ msgstr "Offerte partner"
+
+#~ msgid ""
+#~ "Je souhaite recevoir les offres des partenaires de Bigben Interactive"
+#~ msgstr "Desidero ricevere le offerte dei partner di Bigben Interactive"
+
+#~ msgid "Offres newsletter"
+#~ msgstr "Offerte newsletter"
+
+#~ msgid "Je souhaite recevoir les offres newsletter de Bigben Interactive"
+#~ msgstr ""
+#~ "Desidero ricevere le newsletter con le offerte di Bigben Interactive"
+
+#~ msgid "Protection anti-spam"
+#~ msgstr "Protezione anti-spam"
+
+#~ msgid ""
+#~ "Les demandes d’accès à l'Espace Pro sont étudiées sous 7 jours ouvrés. Si "
+#~ "vous ne recevez pas de code d'accès une fois ce délai dépassé, merci de "
+#~ "contacter le service Télévente avec votre numéro de client."
+#~ msgstr ""
+#~ "Le richieste di iscrizione all'Accesso Pro vengono elaborate entro 7 "
+#~ "giorni lavorativi. Se, trascorsi 7 giorni, non ricevi il codice "
+#~ "d'accesso, contattaci tramite il numero del servizio clienti."
+
+#~ msgid "Les données de votre compte ont été mises à jour"
+#~ msgstr "I dati del tuo account sono stati aggiornati."
+
+#~ msgid "Brouillon"
+#~ msgstr "Bozza"
+
+#~ msgid "Le format de l'email n'est pas valide"
+#~ msgstr "Il formato dell'e-mail non è valido"

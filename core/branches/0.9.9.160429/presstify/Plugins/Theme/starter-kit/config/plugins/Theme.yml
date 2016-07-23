@@ -1,0 +1,2 @@
+namespace:     Theme
+dirname:        "<?php printf( get_template_directory() .'/inc' );?>"

@@ -1,0 +1,75 @@
+#tiFyComponentsCustomFieldsPostTypePermalink{
+	margin-top:5px;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink label{
+	cursor:pointer;
+	color: #666;
+	font-weight:600;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink input[type="checkbox"]{
+	margin:0;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink h4{
+	color:#444;
+	margin:0.2em 0 0.5em; 
+}
+
+/* = = */
+#tiFyComponentsCustomFieldsPostTypePermalink-cancel{
+	font-size:13px;	
+}
+
+/* = Sélecteurs = */
+#tiFyComponentsCustomFieldsPostTypePermalink-selectors{
+	margin-top:5px;
+	display:none;
+	margin-bottom:10px;
+}
+
+/** == Liste de selection d'éléments prédéfinis == **/
+#tiFyComponentsCustomFieldsPostTypePermalink-dropdown{
+	min-width:350px;
+	width:100%;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink-dropdown > .selected{
+	padding:0.2em 0.4em;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink-dropdown-picker{
+	z-index:1001;
+	max-height:15em;
+	font-weight:normal;
+	font-size:12px;
+}
+
+/** == Champ de recherche par autocomplétion == **/
+#tiFyComponentsCustomFieldsPostTypePermalink-suggest > input{
+	padding:0.4em;
+	font-size:13px;
+	font-weight:600;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink-suggest_response{
+	z-index:1001;
+}
+
+/** == Champ de saisie de lien personnalisé == **/
+#tiFyComponentsCustomFieldsPostTypePermalink-custom{
+	position:relative;
+	padding-right:90px;
+}
+#tiFyComponentsCustomFieldsPostTypePermalink-custom > input{
+	box-shadow:none;
+	padding:0.2em 0.4em;
+	margin:0;
+	width:100%;	
+}
+#tiFyComponentsCustomFieldsPostTypePermalink-custom > a{
+	position:absolute;
+	display:block;
+	top:0; right:0; bottom:0; 
+	width:90px;
+	color:#333;
+	background-color:#E4E4E4;
+	border:solid 1px #DDD;
+	text-align:center;
+	text-decoration:none;
+}

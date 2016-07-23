@@ -1,0 +1,5 @@
+default:
+  posts_per_section:  4
+  show_all:           true
+  fields:             [ 'post_title', 'post_excerpt', 'post_content' ]
+sections:

@@ -1,0 +1,16 @@
+a[data-tify_facebook_sdk_login]{
+	position:relative;
+}
+a[data-tify_facebook_sdk_login] > .tify_spinner{
+	position:absolute;
+	top:50%; right:5px;
+	margin-top:-12px;
+	display:none;
+}
+a[data-tify_facebook_sdk_login].process > .tify_spinner{
+	display:inherit;
+}
+a[data-tify_facebook_sdk_login] + .tify_facebook_sdk_login-error{
+	color:#c0392b;
+}
+

@@ -1,0 +1,11 @@
+# STYLES
+## ID HTML du conteneur
+id:           ''
+## Classe HTML du conteneur   
+class:        ''
+## Thème
+theme:        'base'
+## HTML affiché avant le fil d'Ariane 
+before:       ''
+## HTML affiché après le fil d'Ariane
+after:        ''

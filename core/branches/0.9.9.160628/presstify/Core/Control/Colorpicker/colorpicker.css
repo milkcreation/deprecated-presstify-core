@@ -1,0 +1,12 @@
+.sp-replacer{
+	border:solid 1px #CCC;
+	background-color:#F4F4F4;
+}
+.sp-preview{
+	width:40px;
+	height:40px;
+}
+.sp-dd{
+	line-height: 36px;
+	color:#666;
+}

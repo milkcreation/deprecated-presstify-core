@@ -1,0 +1,44 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+}
+body {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    text-rendering: optimizeLegibility;
+    color: #000;
+    line-height: 1.625em;
+ 	margin:0;
+ 	width:100%;
+    font-weight:400;
+   /* -webkit-text-stroke: 0.3px;*/
+}
+/** Titres **/
+h1, h2, h3, h4, h5, h6{
+    text-transform: none;
+    margin: 0 0 .8125em;
+    font-family: 'Open Sans', sans-serif;
+    /*-webkit-text-stroke: 0.3px;*/
+}
+/** Liens **/
+a,	
+a:hover,
+a:focus,
+a:active {
+    color:#009ADC;
+    outline: none;
+    text-decoration:none;
+}
+:focus,
+:active {
+    -moz-outline-style: none;
+}
+/** Liste **/
+ul{
+    margin:0; padding:0;
+    list-style-type: none;
+}
+li{
+    margin:0; padding:0;
+}

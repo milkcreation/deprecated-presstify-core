@@ -1,0 +1,5 @@
+networks:
+  - Facebook
+  - Twitter
+  - GooglePlus
+tify_options:   true       

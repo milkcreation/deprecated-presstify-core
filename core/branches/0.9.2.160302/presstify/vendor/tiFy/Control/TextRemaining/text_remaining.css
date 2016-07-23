@@ -1,0 +1,30 @@
+.tify_control_text_remaining-container{
+	position:relative;
+}
+[data-tify_control="text_remaining"]{
+	display:block;
+	width:100%;
+	padding:0.4em;
+	margin:0;
+	box-shadow:none;
+	border-color:#E4E4E4;
+}
+textarea[data-tify_control="text_remaining"] {
+	min-height:5.6em;
+	resize:none;
+}
+.tify_control_text_remaining-container .feedback_area{
+	display:block;
+	text-align:right;
+	color:#16A086;
+	background-color:#F4F4F4;
+	border-color:#E4E4E4;
+	border-style: solid;
+	border-width:1px;
+	border-top:none;
+	padding:0.4em;
+	font-size:0.8em;
+}
+.tify_control_text_remaining-container .feedback_area.reached{
+	color:#C1392B;
+}

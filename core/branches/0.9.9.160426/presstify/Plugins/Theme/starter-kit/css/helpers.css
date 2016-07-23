@@ -1,0 +1,373 @@
+/* = HACK GOOGLE CHROME (SAUT DE LIGNE) = */
+.nowrap {
+    white-space: nowrap;
+}
+/** == Alternative == **/
+.spacefix{
+	font-size:0;
+}
+.spacefix > *{
+	display:inline-block;
+	font-size:1rem;
+}
+
+/* = RESPONSIVITE DES SVG = 
+ * @see http://demosthenes.info/blog/744/Make-SVG-Responsive
+ */
+.svg-container-relative{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+.svg-container-absolute{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+
+/* = ALIGNEMENT VERTICAL =
+ * 	Alignement vertical
+ * 		<div class="valign-wrapper">
+			<div class="valign-content">
+				-- CONTENT --
+			</div>
+		</div>
+ */
+.valign-wrapper{
+	display: table;
+	height:100%;
+}
+.valign-content{
+    display: table-cell;
+    vertical-align: middle;
+}
+/** == Alternative == **/
+/** @todo trnaslate-Y **/
+
+
+/* = GRAISSE DU TEXTE = */
+.weight-extra-light,
+.weight-100{
+	font-weight:100;	
+}
+.weight-200{
+	font-weight:200;	
+}
+.weight-light,
+.weight-300{
+	font-weight:300;	
+}
+.weight-normal,
+.weight-400{
+	font-weight:400;	
+}
+.weight-500{
+	font-weight:500;	
+}
+.weight-semi-bold,
+.weight-600{
+	font-weight:600;	
+}
+.weight-bold,
+.weight-700{
+	font-weight:700;	
+}
+.weight-extra-bold,
+.weight-800{
+	font-weight:800;	
+}
+.weight-900{
+	font-weight:900;	
+}
+
+/* = BOUTONS = */
+.button-primary,
+.button-secondary,
+.button-thirdary,
+.button-primary:visited,
+.button-secondary:visited,
+.button-thirdary:visited{
+    display:inline-block;
+    padding:20px 25px;
+    color:#FFF;
+    font-weight:400;
+    font-size: 20px;
+    line-height:1;
+    text-decoration:none;
+    border:none;
+    text-transform:normal;	
+}
+.button-primary:hover,
+.button-primary:active,
+.button-primary:focus,
+.button-secondary:hover,
+.button-secondary:active,
+.button-secondary:focus,
+.button-thirdary:hover,
+.button-thirdary:active,
+.button-thirdary:focus{
+    color:#FFF;
+    text-decoration:none;
+}
+.button-primary{
+    background-color:#000;
+}
+.button-primary:hover,
+.button-primary:active,
+.button-primary:focus{
+    background-color:#333;
+}
+.button-secondary{
+    background-color:#333;
+}
+.button-secondary:hover,
+.button-secondary:active,
+.button-secondary:focus{
+    background-color:#666;
+}
+.button-thirdary{
+    background-color:#666;
+}
+.button-thirdary:hover,
+.button-thirdary:active,
+.button-thirdary:focus{
+    background-color:#999;
+}
+
+/* = FONDS = */
+.cover,
+.contain{
+  	background-attachment	: scroll;
+  	background-repeat		: no-repeat;
+  	background-position		: center;
+}  
+.cover{
+	-webkit-background-size: 	cover; /* pour Chrome et Safari */
+	-moz-background-size: 		cover; /* pour Firefox */
+	-o-background-size: 		cover; /* pour Opera */
+	background-size: 			cover; /* version standardisée */
+}
+.contain{
+	-webkit-background-size: 	contain; /* pour Chrome et Safari */
+	-moz-background-size: 		contain; /* pour Firefox */
+	-o-background-size: 		contain; /* pour Opera */
+	background-size: 			contain; /* version standardisée */
+}
+
+/* = PAGINATION = */
+.pagination{
+	width:100%;
+	text-align:center;
+}
+.pagination > li{
+	float:none;
+	display:inline-block;
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    border-radius:0;
+}
+.pagination > li > a, .pagination > li > span{
+	background-color:#CCC;
+    border-color:#CCC;
+    margin-right:10px;
+}
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-radius:0; margin-right:0px;
+}
+.pagination > li > a{	
+	color:#333;
+}
+.pagination > li > span{
+	color:#FFF;
+}
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus{
+    background-color:#999;
+    border-color:#999;
+    color:#FFF;
+}
+
+/* = LISTES = */
+.list-1-item-by-row,
+.list-2-items-by-row,
+.list-3-items-by-row,
+.list-4-items-by-row{
+	margin:0; padding:0;
+    list-style-type: none;	
+}
+.list-1-item-by-row::before,
+.list-1-item-by-row::after,
+.list-2-items-by-row::before,
+.list-2-items-by-row::after,
+.list-3-items-by-row::before,
+.list-3-items-by-row::after,
+.list-4-items-by-row::before,
+.list-4-items-by-row::after{
+  display: table;
+  content: "";
+}
+.list-1-item-by-row::after,
+.list-2-items-by-row::after,
+.list-3-items-by-row::after,
+.list-4-items-by-row::after{
+  clear: both;
+}
+.list-1-items-by-row > li,
+.list-2-items-by-row > li,
+.list-3-items-by-row > li,
+.list-4-items-by-row > li{
+	margin:0; padding:0;
+	float:left;
+}
+/** == 1 élément par ligne == **/
+.list-1-items-by-row > li{
+    width:100%;
+    float:none;  
+}	
+/** == 2 éléments par ligne == **/
+.list-2-items-by-row > li{
+    width:50%;    
+}
+.list-2-items-by-row > li:nth-child(2n+1){
+	clear:left;
+}	
+/** == 3 éléments par ligne == **/
+.list-3-items-by-row > li{
+    width:33.333333%;
+}
+.list-3-items-by-row > li:nth-child(3n+1){
+    clear:left;
+}
+/** == 4 éléments par ligne == **/
+.list-4-items-by-row > li{
+    width:25%;
+}
+.list-4-items-by-row > li:nth-child(4n+1){
+    clear:left;
+}
+/** == 5 éléments par ligne == **/
+.list-5-items-by-row > li{
+    width:20%;
+}
+.list-5-items-by-row > li:nth-child(4n+1){
+    clear:left;
+}
+
+/* = GALLERY = */
+/* = GALERIE = */
+.gallery {
+	margin-bottom: 20px;
+}
+.gallery .gallery-item {
+	float: left;
+	margin: 0 4px 4px 0;
+	overflow: hidden;
+	padding: 0;
+	position: relative;
+}
+.gallery-columns-1 .gallery-item {
+	max-width: 100%;
+	width: auto;
+}
+.gallery-columns-2 .gallery-item {
+	max-width: 48%;
+	max-width: -webkit-calc(50% - 14px);
+	max-width:         calc(50% - 14px);
+	width: auto;
+}
+.gallery-columns-3 .gallery-item {
+	max-width: 32%;
+	max-width: -webkit-calc(33.3% - 11px);
+	max-width:         calc(33.3% - 11px);
+	width: auto;
+}
+.gallery-columns-4 .gallery-item {
+	max-width: 23%;
+	max-width: -webkit-calc(25% - 9px);
+	max-width:         calc(25% - 9px);
+	width: auto;
+}
+.gallery-columns-5 .gallery-item {
+	max-width: 19%;
+	max-width: -webkit-calc(20% - 8px);
+	max-width:         calc(20% - 8px);
+	width: auto;
+}
+.gallery-columns-6 .gallery-item {
+	max-width: 15%;
+	max-width: -webkit-calc(16.7% - 7px);
+	max-width:         calc(16.7% - 7px);
+	width: auto;
+}
+.gallery-columns-7 .gallery-item {
+	max-width: 13%;
+	max-width: -webkit-calc(14.28% - 7px);
+	max-width:         calc(14.28% - 7px);
+	width: auto;
+}
+.gallery-columns-8 .gallery-item {
+	max-width: 11%;
+	max-width: -webkit-calc(12.5% - 6px);
+	max-width:         calc(12.5% - 6px);
+	width: auto;
+}
+.gallery-columns-9 .gallery-item {
+	max-width: 9%;
+	max-width: -webkit-calc(11.1% - 6px);
+	max-width:         calc(11.1% - 6px);
+	width: auto;
+}
+.gallery-columns-1 .gallery-item:nth-of-type(1n),
+.gallery-columns-2 .gallery-item:nth-of-type(2n),
+.gallery-columns-3 .gallery-item:nth-of-type(3n),
+.gallery-columns-4 .gallery-item:nth-of-type(4n),
+.gallery-columns-5 .gallery-item:nth-of-type(5n),
+.gallery-columns-6 .gallery-item:nth-of-type(6n),
+.gallery-columns-7 .gallery-item:nth-of-type(7n),
+.gallery-columns-8 .gallery-item:nth-of-type(8n),
+.gallery-columns-9 .gallery-item:nth-of-type(9n) {
+	margin-right: 0;
+}
+.gallery .gallery-caption {
+	background-color: rgba(0, 0, 0, 0.7);
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
+	color: #fff;
+	font-size: 12px;
+	line-height: 1.5;
+	margin: 0;
+	max-height: 50%;
+	opacity: 0;
+	padding: 6px 8px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	text-align: left;
+	width: 100%;
+}
+.gallery .gallery-caption:before {
+	content: "";
+	height: 100%;
+	min-height: 49px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+.gallery-item:hover .gallery-caption {
+	opacity: 1;
+}
+.gallery-columns-7 .gallery-caption,
+.gallery-columns-8 .gallery-caption,
+.gallery-columns-9 .gallery-caption {
+	display: none;
+}

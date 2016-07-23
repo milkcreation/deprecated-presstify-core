@@ -1,0 +1,55 @@
+init :
+  # @see https://www.tinymce.com/docs/configure/editor-appearance/#toolbarn
+  toolbar1: 'bold italic underline strikethrough blockquote | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link unlink hr | dfw wp_adv'
+  toolbar2: 'undo redo | pastetext | styleselect formatselect | fontselect fontsizeselect  forecolor backcolor | removeformat | subscript superscript charmap'
+  # @see https://www.tinymce.com/docs/plugins/textcolor/#textcolor_map
+  textcolor_map: [ 
+      "000000", "Noir",
+      "FFFFFF", "Blanc"
+    ]
+  # @see https://www.tinymce.com/docs/configure/content-formatting/#block_formats  
+  block_formats: 'Paragraphe=p;Paragraphe sans espace=div;Titre 3=h3;Titre 4=h4;Titre 5=h5;Titre 6=h6'
+  # @see https://www.tinymce.com/docs/configure/content-formatting/#font_formats
+  font_formats: "Open Sans=OpenSans,sans-serif"
+  # @see https://www.tinymce.com/docs/configure/content-formatting/#fontsize_formats
+  fontsize_formats: "10px 11px 12px 13px 14px 16px 18px 20px 24px 28px 32px 36px 40px 44px 48px 52px 64px 128px 256px"
+  # @see https://www.tinymce.com/docs/configure/content-formatting/#formatparameters
+  # @see https://www.tinymce.com/docs/configure/content-formatting/#style_formats
+  style_formats: [
+      { title: 'Alignement à Gauche', selector: 'p, span, img, a', classes: 'alignleft' },
+      { title: 'Alignement au Centre', selector: 'p, span, img, a', classes: 'aligncenter' },
+      { title: 'Alignement à Droite', selector: 'p, span, img, a', classes: 'alignright' },
+      { title: 'Alignement vertical en haut', selector: 'p, span, img, a', classes: 'aligntop' },
+      { title: 'Alignement vertical au milieu', selector: 'p, span, img, a', classes: 'alignmiddle' },
+      { title: 'Alignement vertical en bas', selector: 'p, span, img, a', classes: 'alignbottom' },
+      { title: 'Texte en majuscules', inline: 'span', classes: 'uppercase' },
+      { title: 'Bouton 1', inline: 'span', classes: 'button_primary' },
+      { title: 'Bouton 2', inline: 'span', classes: 'button_secondary' },
+      { title: 'Bouton 3', inline: 'span', classes: 'button_thirdary' }
+    ]
+
+# Activation des plugins externes
+external_plugins:
+  # Selecteur de glyphs Dashicons (native à Wordpress)
+  dashicons:
+  # Selecteur de glyphs Font Awesome
+  fontawesome:  
+  # Selecteur de glyphs Genericons (incluse dans le thème twentysixteen)
+  genericons:
+  # Selecteur de glyphs personnalisés
+  ownglyphs:
+    hookname      : 'tify-font'
+    css           : '<?php echo get_template_directory_uri();?>/assets/fonts/presstify/styles.css'
+    version       : '0.2.151207'
+    dependencies  : []    
+    prefix        : 'tify'
+    'font-family' : 'pressTiFy'
+    button        : 'logo'
+    title         : <?php _e( 'Police de glyphs Presstify', 'tify' );?>,
+    cols          : 8
+  # Gestion des tableaux
+  table:
+  # Gestion des gabarits
+  template:
+  # Affichage/Masquage des blocks
+  visualblocks:  

@@ -1,0 +1,7 @@
+Options -Indexes
+deny from all
+
+<FilesMatch "image.php$">
+Order Allow,Deny
+allow from all
+</FilesMatch>

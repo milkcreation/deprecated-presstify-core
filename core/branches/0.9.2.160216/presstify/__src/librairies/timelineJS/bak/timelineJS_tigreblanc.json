@@ -1,0 +1,143 @@
+{
+    "timeline":
+    {
+        "headline":"Présentation de la timeline",
+        "type":"default",
+		"text":"Ceci est la présentation des possibilités de l'outil de timeline<br/>Basé sur timelineJS il permet d'afficher toute sorte de médias ...<br/>Sans être exhaustive, voici une liste des possibilités offerte par ce service <br/>Plus de détails sur http://timeline.verite.co",
+		"startDate":"1900",
+        "date": [
+        	{
+                "startDate":"1901,2,7",
+                "headline":"Citations",
+                "text":"Affichez des citations",
+                "asset":
+                {
+                    "media":"<blockquote>Je ne connais pas la clef du succès mais celle de l'échec est d'essayer de plaire à tout le monde</blockquote>",
+                    "credit":"Bill Cosby",
+                    "caption":"Acteur Americain"
+                }
+            },
+          	{
+                "startDate":"1915,1,18",
+                "headline":"Google Map",
+                "text":"Affichez des cartes interactives issue du service googleMap",
+                "asset":
+                {
+                    "media":"http://maps.google.com/maps?q=Agence+TIGRE+BLANC,+Rue+Saint-Albin,+Douai&sll=50.3799005,3.100446499999991&sspn=0.09677346903438336,0.28843995879382994&t=m&hq=Agence+TIGRE+BLANC,&hnear=Rue+Saint-Albin,+59500+Douai&z=16",
+                    "credit":"http://maps.google.com",
+                    "caption":"Agence Tigre Blanc à Douai"
+                }
+            },
+			{
+                "startDate":"1930",
+                "headline":"Wikipédia",
+                "text":"Affichez des définitions issues de Wikipédia",
+                "asset":
+                {
+                    "media":"http://fr.wikipedia.org/wiki/Tigre_blanc_royal",
+                    "credit":"http://fr.wikipedia.org/wiki/Tigre_blanc_royal",
+                    "caption":"Page Wikipédia sur le Tigre Blanc Royal"
+                }
+            },
+			{
+                "startDate":"1950",
+                "headline":"Youtube",
+                "text":"Affichez des videos issues du service de Streaming YouTube",
+                "asset":
+                {
+                    "media":"http://youtu.be/DD8pmV4WK5Y",
+                    "credit":"&copy; Tigre Blanc 2013",
+                    "caption":"Making of Projections 2013 "
+                }
+            },
+            {
+                "startDate":"1955,8,23",
+                "headline":"Vimeo",
+                "text":"Affichez des videos issues du service de Streaming Vimeo",
+                "asset":
+                {
+                    "media":"http://vimeo.com/20134927",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+       		{
+				"startDate":"1960,1,18",
+				"headline":"Vine",
+				"text":"Affichez des videos issues du service de Streaming Vine",
+				"asset":
+                {
+                    "media":"https://vine.co/v/bjHh0zHdgZT",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+            {
+				"startDate":"1965,1,18",
+				"headline":"Dailymotion...",
+				"text":"Affichez des videos issues de Dailymotion et de nombreux autres services de Streaming vidéo ...",
+				"asset":
+                {
+                    "media":"http://www.dailymotion.com/video/x154afm_c2c-delta_music",
+                    "credit":"",
+                    "caption":""
+                }
+            },				
+			{
+                "startDate":"1980,2,7",
+                "headline":"Site internet",
+                "text":"Afficher simplement des aperçus de sites internet, facilement personnalisables sur le site pagePeeker",
+                "asset":
+                {
+                    "media":"http://tigreblanc.fr/",
+                    "credit":"Site vitrine de tigre blanc",
+                    "caption":"http://tigreblanc.fr"
+                }
+            },
+			{
+                "startDate":"1990,2,7",
+                "headline":"Flickr",
+                "text":"Afficher des photos issue du service de partage d'image Flickr",
+                "asset":
+                {
+                    "media":"http://www.flickr.com/photos/bigal81/4986684544/",
+                    "credit":"BigAl 81",
+                    "caption":"Photo d'un Tigre Blanc"
+                }
+            },
+			{
+                "startDate":"2012,2,10",
+                "headline":"Twitter",
+                "text":"Afficher un Tweet",
+                "asset":
+                {
+                    "media":"https://twitter.com/TigreBlancDouai/status/378830039233867776",
+                    "credit":"",
+                    "caption":""
+                }
+            },
+            {
+                "startDate":"2000,1,18",
+                "headline":"SoundCloud ",
+                "text":"Afficher de la musique issue du service de streaming SoundCloud.",
+                "asset":
+                {
+                    "media": "https://soundcloud.com/izzy-bizu/7-white-tiger",
+                    "credit":"Izzy Bizu",
+                    "caption":"White Tiger"
+                }
+            },
+            {
+                "startDate":"2020,2,7",
+                "headline":"Polices Web",
+                "text":"Affichez vos textes avec des polices de caractères originales",
+                "asset":
+                {
+                    "media":"<blockquote>Toutes les polices Web Google sont disponibles</blockquote>",
+                    "credit":"http://www.google.com/fonts",
+                    "caption":"Google Font"
+                }
+            }
+        ]
+    }
+}

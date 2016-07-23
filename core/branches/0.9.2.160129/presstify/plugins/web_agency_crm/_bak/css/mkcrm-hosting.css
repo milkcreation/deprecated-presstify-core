@@ -1,0 +1,51 @@
+/*** NOMS DE DOMAINES ***/
+#post-domain_name .domain_name{
+	position:relative;
+	border-bottom:dashed 1px #E4E4E4;
+}
+#post-domain_name .domain_name a{
+	text-decoration:none;
+}
+#post-domain_name .domain_name ul,
+#post-domain_name .domain_name li{
+	margin:0;
+}
+#post-domain_name .domain_name .remove-domain-name{
+	position:absolute;
+	right:5px; top:5px;
+	font-size:18px;
+}
+#post-domain_name .domain_name table th,
+#post-domain_name .domain_name table td{
+	padding:0;
+	padding-bottom:5px;
+	vertical-align:middle;
+}
+#post-domain_name .domain_name_edit{
+	background-color:#F6FBFD;
+	margin-top:10px;
+	border-bottom:none;
+}
+#post-domain_name .domain_name_edit h3{
+	background-color:#F4F4F4;
+	color:#666;
+	font-size:18px;
+}
+#post-domain_name .domain_name_edit .spinner{
+	display:inline-block;
+	float:none;
+	margin-top:4px;
+}
+#post-domain_name .domain_name.sample .remove-domain-name{
+	display:none;
+}
+#post-domain_name .sub_domains li{
+	display:inline-block;
+	margin-right:5px;
+}
+#post-domain_name .sub_domains li:before{
+	content:", "
+}
+#post-domain_name .sub_domains li:first-child:before{
+	content:" "
+}

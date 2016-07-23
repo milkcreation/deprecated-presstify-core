@@ -1,0 +1,34 @@
+/** Pagination**/
+.tify_pagination{
+	width:100%;
+	text-align:center;
+}
+.tify_pagination > li{
+	float:none;
+	display:inline-block;
+}
+.tify_pagination > li > a, 
+.tify_pagination > li > span{
+	float:left;
+	background-color:#CCC;
+    border-color:#CCC;
+    position: relative;
+    padding: 6px 12px;
+    text-decoration: none;
+}
+.tify_pagination > li > a{	
+	color:#333;
+}
+.tify_pagination > li > span{
+	color:#FFF;
+}
+.tify_pagination > li > a:hover,
+.tify_pagination > li > a:focus,
+.tify_pagination > .active > a,
+.tify_pagination > .active > span,
+.tify_pagination > .active > a:hover,
+.tify_pagination > .active > a:focus{
+    background-color:#999;
+    border-color:#999;
+    color:#FFF;
+}

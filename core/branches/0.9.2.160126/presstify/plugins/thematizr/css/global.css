@@ -1,0 +1,281 @@
+/**************************************************
+ * 		BALISES ET CLASSES GLOBALES 
+ **************************************************/
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+}
+body {
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
+    text-rendering: optimizeLegibility;
+    color: #000;
+    line-height: 1.625em;
+ 	margin:0;
+ 	width:100%;
+    font-weight:400;
+   /* -webkit-text-stroke: 0.3px;*/
+}
+/** Titres **/
+h1, h2, h3, h4, h5, h6{
+    text-transform: none;
+    margin: 0 0 .8125em;
+    font-family: 'Open Sans', sans-serif;
+    /*-webkit-text-stroke: 0.3px;*/
+}
+/** Liens **/
+a,	
+a:hover,
+a:focus,
+a:active {
+    color:#009ADC;
+    outline: none;
+    text-decoration:none;
+}
+:focus,
+:active {
+    -moz-outline-style: none;
+}
+/** Liste **/
+ul{
+    margin:0; padding:0;
+    list-style-type: none;
+}
+li{
+    margin:0; padding:0;
+}
+/** Boutons **/
+.button-primary,
+.button-secondary,
+.button-thirdary,
+.button-primary:visited,
+.button-secondary:visited,
+.button-thirdary:visited{
+    display:inline-block;
+    padding:20px 25px;
+    color:#FFF;
+    font-weight:400;
+    font-size: 20px;
+    line-height:1;
+    text-decoration:none;
+    border:none;
+    text-transform:normal;	
+}
+.button-primary:hover,
+.button-primary:active,
+.button-primary:focus,
+.button-secondary:hover,
+.button-secondary:active,
+.button-secondary:focus,
+.button-thirdary:hover,
+.button-thirdary:active,
+.button-thirdary:focus{
+    color:#FFF;
+    text-decoration:none;
+}
+.button-primary{
+    background-color:#000;
+}
+.button-primary:hover,
+.button-primary:active,
+.button-primary:focus{
+    background-color:#333;
+}
+.button-secondary{
+    background-color:#333;
+}
+.button-secondary:hover,
+.button-secondary:active,
+.button-secondary:focus{
+    background-color:#666;
+}
+.button-thirdary{
+    background-color:#666;
+}
+.button-thirdary:hover,
+.button-thirdary:active,
+.button-thirdary:focus{
+    background-color:#999;
+}
+/** == FONDS == **/
+.cover,
+.contain{
+  	background-attachment	: scroll;
+  	background-repeat		: no-repeat;
+  	background-position		: center;
+}  
+.cover{
+	-webkit-background-size: 	cover; /* pour Chrome et Safari */
+	-moz-background-size: 		cover; /* pour Firefox */
+	-o-background-size: 		cover; /* pour Opera */
+	background-size: 			cover; /* version standardisée */
+}
+.contain{
+	-webkit-background-size: 	contain; /* pour Chrome et Safari */
+	-moz-background-size: 		contain; /* pour Firefox */
+	-o-background-size: 		contain; /* pour Opera */
+	background-size: 			contain; /* version standardisée */
+}
+/** == Pagination == **/
+.pagination{
+	width:100%;
+	text-align:center;
+}
+.pagination > li{
+	float:none;
+	display:inline-block;
+}
+.pagination > li:first-child > a, .pagination > li:first-child > span {
+    border-radius:0;
+}
+.pagination > li > a, .pagination > li > span{
+	background-color:#CCC;
+    border-color:#CCC;
+    margin-right:10px;
+}
+.pagination > li:last-child > a, .pagination > li:last-child > span {
+    border-radius:0; margin-right:0px;
+}
+.pagination > li > a{	
+	color:#333;
+}
+.pagination > li > span{
+	color:#FFF;
+}
+.pagination > li > a:hover,
+.pagination > li > a:focus,
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > a:focus{
+    background-color:#999;
+    border-color:#999;
+    color:#FFF;
+}
+/** Affichage d'élement en liste **/
+/*** Global ***/
+.list-1-item-by-row,
+.list-2-items-by-row,
+.list-3-items-by-row,
+.list-4-items-by-row{
+	margin:0; padding:0;
+    list-style-type: none;	
+}
+.list-1-item-by-row:before,
+.list-1-item-by-row:after,
+.list-2-items-by-row:before,
+.list-2-items-by-row:after,
+.list-3-items-by-row:before,
+.list-3-items-by-row:after,
+.list-4-items-by-row:before,
+.list-4-items-by-row:after{
+  display: table;
+  content: " ";
+}
+.list-1-item-by-row:after,
+.list-2-items-by-row:after,
+.list-3-items-by-row:after,
+.list-4-items-by-row:after{
+  clear: both;
+}
+.list-1-items-by-row > li,
+.list-2-items-by-row > li,
+.list-3-items-by-row > li,
+.list-4-items-by-row > li{
+	margin:0; padding:0;
+	float:left;
+}
+/*** 1 élément par ligne ***/
+.list-1-items-by-row > li{
+    width:100%;
+    float:none;  
+}	
+/*** 2 éléments par ligne ***/
+.list-2-items-by-row > li{
+    width:50%;    
+}
+.list-2-items-by-row > li:nth-child(2n+1){
+	clear:left;
+}	
+/*** 3 éléments par ligne ***/
+.list-3-items-by-row > li{
+    width:33.333333%;
+}
+.list-3-items-by-row > li:nth-child(3n+1){
+    clear:left;
+}
+/*** 4 éléments par ligne ***/
+.list-4-items-by-row > li{
+    width:25%;
+}
+.list-4-items-by-row > li:nth-child(4n+1){
+    clear:left;
+}	
+/** Classes */
+.weight-extra-light{
+	font-weight:100;	
+}
+.weight-light{
+	font-weight:300;	
+}
+.weight-normal{
+	font-weight:400;	
+}
+.weight-semi-bold{
+	font-weight:600;	
+}
+.weight-bold{
+	font-weight:700;	
+}
+.weight-extra-bold{
+	font-weight:800;	
+}
+/** == HACK GOOGLE CHROME == **/
+.nowrap {
+    white-space: nowrap;
+}
+/** 
+ * Responsivité des svg
+ * @see http://demosthenes.info/blog/744/Make-SVG-Responsive
+ */
+.svg-container-relative{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+.svg-container-absolute{
+	display: inline-block;
+	position: relative;
+	width: 100%;
+	vertical-align: middle; 
+	overflow: hidden; 
+}
+/**
+ * 	Alignement vertical
+ * 		<div class="valign-wrapper">
+			<div class="valign-content">
+				-- CONTENT --
+			</div>
+		</div>
+ */
+.valign-wrapper{
+	display: table;
+	height:100%;
+}
+.valign-content{
+    display: table-cell;
+    vertical-align: middle;
+} 
+/**
+ * 	Display inline block no white space
+ */
+.spacefix{
+	font-size:0;
+}
+.spacefix > *{
+	display:inline-block;
+	font-size:1rem;
+}

@@ -1,0 +1,82 @@
+# Nettoyage des entrées de menu de l'interface d'administration
+remove_menu:
+  dashboard         : false
+  posts             : false
+  media             : false
+  pages             : false
+  comments          : false
+  appearence        : false
+  plugins           : false
+  users             : false
+  tools             : false
+  settings          : false
+unregister_widget:
+  pages             : false
+  calendar          : false
+  archives          : false
+  links             : false
+  meta              : false
+  search            : false
+  text              : false
+  categories        : false
+  recent posts      : false
+  recent comments   : false
+  rss               : false
+  tag cloud         : false
+  nav menu          : false 
+#-------------------------------------------------------------------------------------------------------  
+# Suppression des boîtes de saisie du tableau de bord
+remove_dashboard_meta_box:
+  right_now         : false
+  recent_comments   : false
+  incoming_links    : false
+  plugins           : false
+  quick_press       : false
+  recent_drafts     : false
+  activity          : false
+  primary           : false
+  secondary         : false
+
+#-------------------------------------------------------------------------------------------------------  
+# Suppression de support  
+## Suppression de support des propriétés d'articles
+remove_support_post:
+# ex: [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'post-formats' ]
+
+## Suppression de support des propriétés de page
+remove_support_page:
+# ex: [ 'title', 'editor', 'author', 'thumbnail', 'page-attributes', 'custom-fields', 'comments', 'revisions' ]
+
+## Suppression de support des propriétés d'un type de post personnalisé (%%custom_post_type%%)
+#remove_support_%%custom_post_type%% : [ 'title', 'editor' ]
+
+#-------------------------------------------------------------------------------------------------------
+# Suppression des boîtes de saisie
+## Suppression des boîtes de saisie des articles
+remove_meta_box_post:
+# ex: { authordiv: 'normal', categorydiv: 'side', commentstatusdiv: 'normal', commentsdiv: 'normal', formatdiv: 'normal', postcustom: 'normal', postexcerpt: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side', tagsdiv-post_tag: 'side', trackbacksdiv: 'normal' }
+
+## Suppression des boîtes de saisie des pages
+remove_meta_box_page:
+# ex : { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
+
+## Suppression des boîtes de saisie d'un type de post personnalisé (%%custom_post_type%%)
+# remove_meta_box_%%custom_post_type%% : { authordiv: 'normal' }
+
+remove_admin_bar_menu:
+  wp_logo           : false
+  about             : false
+  wporg             : false
+  documentation     : false
+  support-forums    : false
+  feedback          : false
+  site-name         : false
+  view-site         : false
+  updates           : false
+  comments          : false
+  new-content       : false
+  my-account        : false
+disable_post              : false
+disable_post_category     : false
+disable_post_tag          : false
+disable_comment           : false

@@ -1,0 +1,8 @@
+namespace:     Theme
+dirname:        "<?php printf( get_template_directory() .'/inc' );?>"
+
+# Permettre l'administration des options du thèmes : palette, ...
+tify_options: []
+colors:
+  - { name: "<?php _e( 'Blanc', 'tify');?>", hex: '#FFFFFF' }
+  - { name: "<?php _e( 'Noir', 'tify');?>", hex: '#000000' }

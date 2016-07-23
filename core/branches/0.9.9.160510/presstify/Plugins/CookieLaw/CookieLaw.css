@@ -1,0 +1,30 @@
+#tiFy_CookieLaw{
+	position: fixed; bottom: 0; left: 0; right:0;
+	padding:10px 100px;
+    text-align: center; z-index:1500;
+    background-color: #2B2B2B; color: #FFF;
+}
+#tiFy_CookieLaw #tiFy_CookieLaw-accept,
+#tiFy_CookieLaw #tiFy_CookieLaw-read{
+	display:inline-block;
+	border:solid 1px #FFF;
+	padding:0.6em 1.2em;
+	color:#FFF;
+	line-height:1;
+	margin-bottom:10px;
+	white-space: nowrap;
+}
+#tiFy_CookieLaw #tiFy_CookieLaw-close{
+    display:block; position: absolute; top:10px; right:10px;
+    text-decoration: none; color: #FFF; font-size:14px; line-height: 1;
+}
+#tiFy_CookieLaw #tiFy_CookieLaw-close:before{
+	content: "\f158";
+	font: normal 16px/1 dashicons;
+	vertical-align:middle;
+}
+#tiFy_CookieLaw #tiFy_CookieLaw-accept:hover,
+#tiFy_CookieLaw #tiFy_CookieLaw-read:hover{
+	color:#999;
+	border-color:#999;
+}

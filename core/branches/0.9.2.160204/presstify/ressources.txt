@@ -1,0 +1,6 @@
+# Awesome PHP :
+https://github.com/ziadoz/awesome-php
+
+# PSR4 Class Loader :
+http://www.php-fig.org/psr/psr-4/examples/
+https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md

@@ -1,0 +1,4 @@
+- désinscription / réinscription rapide depuis la page liste
+- lien de désinscription
+- Affichage en ligne de la campagne - Ajout d'un token campaign et d'un token utilisateur
+- Utilisateur de test qui permette de tester les interactions (lien désinscription / affichage en ligne) 

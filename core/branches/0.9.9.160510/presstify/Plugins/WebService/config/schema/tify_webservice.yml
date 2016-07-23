@@ -1,0 +1,8 @@
+View:
+  Admin:     
+    Menu:
+      menu_slug:        'tify_webservice'
+          
+Labels:
+  plural:               'Webservices'
+  singular:             'Webservice'      

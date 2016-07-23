@@ -1,0 +1,2 @@
+#0.2.151214
+- Déplacement de la configuration yml dans des sous-dossiers config (impact theme + plugin) 

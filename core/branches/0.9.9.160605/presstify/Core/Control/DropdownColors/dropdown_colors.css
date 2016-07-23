@@ -1,0 +1,82 @@
+[data-tify_control='dropdown_colors']{
+	position:relative;
+	display:inline-block;
+}
+[data-tify_control='dropdown_colors'].disabled{
+	opacity:0.5;
+}
+[data-tify_control='dropdown_colors'] > .selected{
+	cursor:pointer;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+	display:block;
+}
+[data-tify_control='dropdown_colors'] > .selected > b{
+	display:block;
+	margin-right:15px;
+	padding:0.4em;
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#E4E4E4;
+	background-color:#FFF;
+}
+[data-tify_control='dropdown_colors'] > .selected > .caret{
+	position:absolute;
+	right:4px; top:50%;
+	margin-top:-2px;
+	border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid;
+    display: inline-block;
+    height: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+    width: 0;
+    cursor:pointer;
+}
+[data-tify_control='dropdown_colors'] .color-square{
+	display:inline-block;
+	vertical-align:middle; 
+	width:18px; height:18px;  
+	border:solid 1px #F4F4F4;
+}
+[data-tify_control='dropdown_colors'] .color-square.none{
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAIAAADZF8uwAAAAGUlEQVQYV2M4gwH+YwCGIasIUwhT25BVBADtzYNYrHvv4gAAAABJRU5ErkJggg==);
+}
+[data-tify_control='dropdown_colors'] > ul{
+	position:absolute;
+	top:auto;
+	left:0; right:0;
+	display:none;
+	z-index:1;
+}
+[data-tify_control='dropdown_colors'].active > ul{
+	display:inherit;
+	overflow:auto;
+	max-height:10em;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+	border-top:none;
+	margin-top:-1px;
+}
+[data-tify_control='dropdown_colors'].active > ul > li{
+	margin:0; padding:0;
+}
+[data-tify_control='dropdown_colors'].active > ul > li > label{
+	display:block;
+	background-color:#FFF;
+	padding:0.1em 0.4em;
+	margin:0;
+}
+[data-tify_control='dropdown_colors'].active > ul > li > label:hover{
+	background-color:#F4F4F4;
+}
+[data-tify_control='dropdown_colors'].active > ul > li.checked > label{
+	background-color:DodgerBlue;
+	color:#FFF;
+}
+[data-tify_control='dropdown_colors'].active > ul > li > label > input{
+	display:none;
+}

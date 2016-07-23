@@ -1,0 +1,25 @@
+.ui-autocomplete{
+	max-height:250px;
+	overflow-y:auto;
+}
+.ui-autocomplete li{
+	position:relative;
+	border-bottom:solid 1px #DDD;
+}
+#mkpbx_related_posts-list li{
+	width:180px;
+}
+#mkpbx_related_posts-list li .post_title,
+#mkpbx_related_posts-list li .post_type{
+	display:block;
+	line-height:1.1;
+	height:2.2em;
+	overflow:hidden;
+	text-overflow: ellipsis;
+	margin-bottom:5px;
+}
+#mkpbx_related_posts-list li .post_status{
+	position:absolute;
+	left:10px; bottom:15px;
+	font-weight:600;
+}

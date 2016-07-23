@@ -1,0 +1,36 @@
+#tify_seo_taboox_meta #tify_seo_meta-preview{	
+	font-family: Arial,Helvetica,sans-serif;
+	font-style: normal;
+    margin-bottom: 10px;
+    max-width: 520px;
+    padding: 0;
+    width: auto;
+}
+#tify_seo_taboox_meta #tify_seo_meta-preview #tify_seo_meta_title-preview {
+	display:block;
+	color: #1e0fbe;
+    display: block;
+    font-size: 18px !important;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 512px;
+}
+#tify_seo_taboox_meta #tify_seo_meta-preview #tify_seo_meta_url-preview {
+	display:block;
+    color: #006621;
+    font-size: 13px;
+    line-height: 16px;
+}
+#tify_seo_taboox_meta #tify_seo_meta-preview  #tify_seo_meta_desc-preview {
+    font-size: small;
+    line-height: 1.4;
+    word-wrap: break-word;
+	margin: 0 !important;
+}
+#tify_seo_taboox_meta #tify_seo_meta_title,
+#tify_seo_taboox_meta #tify_seo_meta_url,
+#tify_seo_taboox_meta #tify_seo_meta_desc-wrapper{
+	width: 512px;
+}

@@ -1,0 +1,52 @@
+#mkreloc-tools #controllers{
+	margin:0; padding:0;
+	list-style-type:none;
+	margin-top:20px;
+	margin-bottom:10px;
+}
+#mkreloc-tools #controllers li{
+	display:inline-block;
+	margin-right:20px;
+}
+#mkreloc-tools #options{
+	margin:0; padding:0;
+	list-style-type:none;
+	background-color:#F4F4F4;
+	border:solid 1px #E4E4E4;
+	border-radius:3px;
+	padding: 0px 10px 20px;
+	margin-bottom:10px;
+}
+#mkreloc-tools #options th{
+	width:270px;
+}
+#mkreloc-tools #progress{
+	display:none;
+	margin:10px auto;
+}
+#mkreloc-tools #progressbar {
+	position: relative;
+	margin-bottom:5px;	
+}
+#mkreloc-tools #progressbar .label {
+	position: absolute;
+	width:100%;
+	line-height:2em;	
+	text-align:center;
+	font-weight: bold;
+	text-shadow: 1px 1px 0 #fff;
+}
+#mkreloc-tools #details label{
+	width:200px;
+	display:block;
+	float:left;
+}
+#mkreloc-tools #details .detail-value{
+	margin-left:210px;
+}
+#mkreloc-tools #logs .valid{
+	color:green;
+}
+#mkreloc-tools #logs .alert{
+	color:red;
+}

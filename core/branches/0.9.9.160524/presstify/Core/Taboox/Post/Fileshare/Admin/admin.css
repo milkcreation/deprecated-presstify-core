@@ -1,0 +1,27 @@
+.fileshare-list li{
+	position:relative;
+	display:block;
+	min-height :65px;
+	margin-bottom:5px;
+	border:solid 1px #E4E4E4;
+	padding:5px;
+	background-color:#F4F4F4;
+	cursor:move;
+}
+.fileshare-list li .icon{
+	float:left;
+	margin-right:5px;
+	margin-bottom:5px;
+}
+.fileshare-list li .title{
+	font-weight:bold;
+	display:block;
+}
+.fileshare-list li .mime{
+	font-style:italic;
+	color:#666;
+}
+.fileshare-list .ui-sortable-placeholder{ 
+	border:dashed 3px #E4E4E4;
+	background:#F4F4F4;
+}

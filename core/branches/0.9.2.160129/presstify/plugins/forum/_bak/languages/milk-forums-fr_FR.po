@@ -1,0 +1,549 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Milkcreation Forums\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-09 09:26+0100\n"
+"PO-Revision-Date: 2012-10-09 09:27+0100\n"
+"Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
+"Language-Team: Milkcreation <contact@milkcreation.fr>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_x:2c,1;_n:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n>1;\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPath-1: ..\n"
+
+#: ../milk-forums.php:73
+msgid "Milkcreation Forums"
+msgstr "Forums Milkcreation"
+
+#: ../milk-forums.php:75
+#, php-format
+msgid "All topics | %s"
+msgstr "Tous les sujets | %s"
+
+#: ../milk-forums.php:75 ../inc/topics.php:25
+msgid "All topics"
+msgstr "Tous les sujets"
+
+#: ../milk-forums.php:76
+#, php-format
+msgid "Add topic | %s"
+msgstr "Ajout d'un sujet | %s"
+
+#: ../milk-forums.php:76 ../inc/topics.php:24
+msgid "Add topic"
+msgstr "Ajout d'un sujet"
+
+#: ../milk-forums.php:77
+#, php-format
+msgid "All contributions | %s"
+msgstr "Toutes les contributions | %s"
+
+#: ../milk-forums.php:77
+msgid "All contribs"
+msgstr "Toutes les contributions"
+
+#: ../milk-forums.php:78
+#, php-format
+msgid "Topic's category | %s"
+msgstr "Catégories de sujet | %s"
+
+#: ../milk-forums.php:78
+msgid "Add topic category"
+msgstr "Ajout d'une catégorie de sujet"
+
+#: ../milk-forums.php:79
+#, php-format
+msgid "Topic's tag | %s"
+msgstr "Mots-clefs de sujet | %s"
+
+#: ../milk-forums.php:79
+msgid "Add topic tag"
+msgstr "Ajout d'un mot-clef de sujet"
+
+#: ../inc/custom-columns.php:21
+msgid "Attached to Forum"
+msgstr "Lié au forum"
+
+#: ../inc/custom-columns.php:39
+msgid "No attached forum"
+msgstr "Aucun forum lié"
+
+#: ../inc/custom-columns.php:56
+msgid "All Forums"
+msgstr "Tous les forums"
+
+#: ../inc/forums.php:21 ../inc/forums.php:33 ../inc/options.php:99
+#: ../inc/options.php:100 ../inc/options.php:127
+msgid "Forums"
+msgstr "Forums"
+
+#: ../inc/forums.php:22
+msgid "Forum"
+msgstr "Forum"
+
+#: ../inc/forums.php:23
+msgid "Add forum"
+msgstr "Ajout de forum"
+
+#: ../inc/forums.php:24
+msgid "All forums"
+msgstr "Tous les forums"
+
+#: ../inc/forums.php:25
+msgid "Add a new forum"
+msgstr "Ajout d'un nouveau forum"
+
+#: ../inc/forums.php:26
+msgid "Edit forum"
+msgstr "Editer un forum"
+
+#: ../inc/forums.php:27
+msgid "New forum"
+msgstr "Nouveau forum"
+
+#: ../inc/forums.php:28
+msgid "Display forum"
+msgstr "Afficher le forum"
+
+#: ../inc/forums.php:29
+msgid "Search forum"
+msgstr "Recherche d'un forum"
+
+#: ../inc/forums.php:30
+msgid "No forum found"
+msgstr "Aucun forum touvé"
+
+#: ../inc/forums.php:31
+msgid "No forum in trash"
+msgstr "Aucun forum dans la corbeille"
+
+#: ../inc/forums.php:32
+msgid "Parent"
+msgstr "Parent"
+
+#: ../inc/forums.php:35
+msgid "Forums based on Wordpress Posts"
+msgstr "Forums Wordpress basé sur les posts"
+
+#: ../inc/forums.php:54
+msgid "mkforums"
+msgstr "forums"
+
+#: ../inc/general-template.php:24 ../inc/topics.php:21
+msgid "Topics"
+msgstr "Sujets"
+
+#: ../inc/general-template.php:27
+msgid "Date"
+msgstr "Date"
+
+#: ../inc/general-template.php:30
+msgid "Author"
+msgstr "Author"
+
+#: ../inc/general-template.php:33
+msgid "Last contribs"
+msgstr "Dernières contributions"
+
+#: ../inc/general-template.php:44
+msgid "This forum has no topics for this moment"
+msgstr "Aucun sujet pour ce forum jusqu'à maintenant "
+
+#: ../inc/general-template.php:81
+#, php-format
+msgid "on %s by %s"
+msgstr "le %s par %s"
+
+#: ../inc/general-template.php:83
+msgid "No contribution for this moment"
+msgstr "Aucune contribution pour le moment"
+
+#: ../inc/general-template.php:211
+msgid "Name"
+msgstr "Nom"
+
+#: ../inc/general-template.php:213
+msgid "Email"
+msgstr "Email"
+
+#: ../inc/general-template.php:215
+msgid "Website"
+msgstr "Site Web"
+
+#: ../inc/general-template.php:219
+#, php-format
+msgid "Required fields are marked %s"
+msgstr ""
+
+#: ../inc/general-template.php:222
+msgctxt "noun"
+msgid "Comment"
+msgstr ""
+
+#: ../inc/general-template.php:223
+#, php-format
+msgid "You must be <a href=\"%s\">logged in</a> to post a comment."
+msgstr ""
+
+#: ../inc/general-template.php:224
+#, php-format
+msgid ""
+"Logged in as <a href=\"%1$s\">%2$s</a>. <a href=\"%3$s\" title=\"Log out of "
+"this account\">Log out?</a>"
+msgstr ""
+
+#: ../inc/general-template.php:225
+msgid "Your email address will not be published."
+msgstr ""
+
+#: ../inc/general-template.php:226
+#, php-format
+msgid ""
+"You may use these <abbr title=\"HyperText Markup Language\">HTML</abbr> tags "
+"and attributes: %s"
+msgstr ""
+
+#: ../inc/general-template.php:229
+msgid "Leave a Reply"
+msgstr ""
+
+#: ../inc/general-template.php:230
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: ../inc/general-template.php:231
+msgid "Cancel reply"
+msgstr ""
+
+#: ../inc/general-template.php:232
+msgid "Post Comment"
+msgstr ""
+
+#: ../inc/meta-boxes.php:20
+msgid "Select forum attachment"
+msgstr "Séléction du forum lié"
+
+#: ../inc/meta-boxes.php:32
+msgid "No Forum"
+msgstr "Aucun Forum"
+
+#: ../inc/nav-menu.php:26
+msgid "Topics archives"
+msgstr "Archives des sujets"
+
+#: ../inc/options.php:164
+msgid "General"
+msgstr "Général"
+
+#: ../inc/options.php:169
+msgid "Page for forums archives"
+msgstr "Page d'archive des forums"
+
+#: ../inc/options.php:181
+msgid "No Page"
+msgstr "Aucune Page"
+
+#: ../inc/options.php:193
+msgid "Contribs"
+msgstr "Contributions"
+
+#: ../inc/options.php:199
+msgid "Global params"
+msgstr "Paramètres globaux"
+
+#: ../inc/options.php:202
+msgid "Email params"
+msgstr "Paramètres des emails"
+
+#: ../inc/options.php:205
+msgid "Moderation params"
+msgstr "Paramètres de modération"
+
+#: ../inc/options.php:216
+msgid "Comment author must fill out name and e-mail"
+msgstr ""
+
+#: ../inc/options.php:219
+msgid "Users must be registered and logged in to comment"
+msgstr ""
+
+#: ../inc/options.php:233
+#, php-format
+msgid "Enable threaded (nested) comments %s levels deep"
+msgstr ""
+
+#: ../inc/options.php:240
+msgid "last"
+msgstr ""
+
+#: ../inc/options.php:242
+msgid "first"
+msgstr ""
+
+#: ../inc/options.php:243
+#, php-format
+msgid ""
+"Break comments into pages with %1$s top level comments per page and the %2$s "
+"page displayed by default"
+msgstr ""
+
+#: ../inc/options.php:251
+msgid "older"
+msgstr ""
+
+#: ../inc/options.php:253
+msgid "newer"
+msgstr ""
+
+#: ../inc/options.php:254
+#, php-format
+msgid ""
+"Comments should be displayed with the %s comments at the top of each page"
+msgstr ""
+
+#: ../inc/options.php:265
+msgid "Anyone posts a comment"
+msgstr ""
+
+#: ../inc/options.php:267
+msgid "A comment is held for moderation"
+msgstr ""
+
+#: ../inc/options.php:278
+msgid "An administrator must always approve the comment"
+msgstr ""
+
+#: ../inc/options.php:280
+msgid "Comment author must have a previously approved comment"
+msgstr ""
+
+#: ../inc/topics.php:22 ../inc/topics.php:23
+msgid "Topic"
+msgstr "Sujet"
+
+#: ../inc/topics.php:26
+msgid "Add a new topic"
+msgstr "Ajout d'un nouveau sujet"
+
+#: ../inc/topics.php:27
+msgid "Edit topic"
+msgstr "Editer un sujet"
+
+#: ../inc/topics.php:28
+msgid "New topic"
+msgstr "Nouveau sujet"
+
+#: ../inc/topics.php:29
+msgid "Display topic"
+msgstr "Afficher le sujet"
+
+#: ../inc/topics.php:30
+msgid "Search topic"
+msgstr "Recherche d'un sujet"
+
+#: ../inc/topics.php:31
+msgid "No topic found"
+msgstr "Aucun sujet touvé"
+
+#: ../inc/topics.php:32
+msgid "No topic in trash"
+msgstr "Aucun sujet dans la corbeille"
+
+#: ../inc/topics.php:34
+msgid "Wordpress Forums based on posts"
+msgstr "Forums Wordpress basé sur les posts"
+
+#: ../inc/topics.php:53
+msgid "mktopics"
+msgstr "sujets"
+
+#: ../inc/topics.php:68
+msgid "Topic's categories"
+msgstr "Catégories de sujet"
+
+#: ../inc/topics.php:69
+msgid "Topic's category"
+msgstr "Catégorie de sujet"
+
+#: ../inc/topics.php:70
+msgid "Search topic's category"
+msgstr "Recherche d'une catégorie de sujet"
+
+#: ../inc/topics.php:71
+msgid "Most popular topic's categories"
+msgstr "Les plus utilisées"
+
+#: ../inc/topics.php:72
+msgid "All topic's categories"
+msgstr "Toutes les catégories de sujet"
+
+#: ../inc/topics.php:73
+msgid "Parent topic's category"
+msgstr "Categorie de sujet parente"
+
+#: ../inc/topics.php:75
+msgid "Edit topic's category"
+msgstr "Editer la catégorie de sujet"
+
+#: ../inc/topics.php:76
+msgid "Update topic's category"
+msgstr "Mettre à jour la catégorie de sujet"
+
+#: ../inc/topics.php:77
+msgid "Add topic's category"
+msgstr "Ajout d'une catégorie de sujet"
+
+#: ../inc/topics.php:78
+msgid "New topic's category"
+msgstr "Nouvelle catégorie de sujet"
+
+#: ../inc/topics.php:90
+msgid "topic-category"
+msgstr "categorie-de-sujet"
+
+#: ../inc/topics.php:95
+msgid "Topic's tags"
+msgstr "Mots clefs de sujet"
+
+#: ../inc/topics.php:96
+msgid "Topic's tag"
+msgstr "Mot-clef de sujet"
+
+#: ../inc/topics.php:97
+msgid "Search topic's tag"
+msgstr "Recherche de mot-clef de sujet"
+
+#: ../inc/topics.php:98
+msgid "Most popular topic's tags"
+msgstr "Les plus utilisés"
+
+#: ../inc/topics.php:99
+msgid "All topic's tags"
+msgstr "Tous les mots-clefs de sujet"
+
+#: ../inc/topics.php:100
+msgid "Parent topic's tag"
+msgstr "Mots-clefs de sujet parent"
+
+#: ../inc/topics.php:102
+msgid "Edit topic's tag"
+msgstr "Editer le mot-clef de sujet"
+
+#: ../inc/topics.php:103
+msgid "Update topic's tag"
+msgstr "Mettre à jour le mot-clef de sujet"
+
+#: ../inc/topics.php:104
+msgid "Add topic's tag"
+msgstr "Ajout d'un mot-clef de sujet"
+
+#: ../inc/topics.php:105
+msgid "New topic's tag"
+msgstr "Nouveau mot-clef de sujet"
+
+#: ../inc/topics.php:117
+msgid "topic-tag"
+msgstr "mot-clef-de-sujet"
+
+#, fuzzy
+#~ msgid "View all categories"
+#~ msgstr "Catégories de sujet"
+
+#~ msgid "Topics Homepage"
+#~ msgstr "Page d'accueil des sujets"
+
+#~ msgid "Mocca - Milkcreation's posts based forum's Wordpress plugin"
+#~ msgstr ""
+#~ "Mocca - Extension Wordpress de forum basée sur les posts par Milkcreation"
+
+#, fuzzy
+#~ msgctxt "add new on admin bar"
+#~ msgid "Topic"
+#~ msgstr "Sujet"
+
+#~ msgid "Options | %s"
+#~ msgstr "Options | %s"
+
+#~ msgid "Options"
+#~ msgstr "Options"
+
+#~ msgid "Readmore"
+#~ msgstr "Lire la suite"
+
+#~ msgid "No item."
+#~ msgstr "Aucun élément"
+
+#~ msgid "&laquo;"
+#~ msgstr "&laquo;"
+
+#~ msgid "&raquo;"
+#~ msgstr "&raquo;"
+
+#~ msgid "View All"
+#~ msgstr "View All"
+
+#~ msgid ""
+#~ "Use this widget to display a list of posts according to its type in "
+#~ "widget's areas"
+#~ msgstr ""
+#~ "Utiliser ce widget pour afficher une liste de post selon leur type dans "
+#~ "une zone de widget."
+
+#~ msgid "List of Posts by Type"
+#~ msgstr "Liste de contenus par type"
+
+#~ msgid "Title : "
+#~ msgstr "Titre :"
+
+#~ msgid "Use template part : "
+#~ msgstr "Utiliser le modèle du thème :"
+
+#~ msgid "Post Type : "
+#~ msgstr "Type de post"
+
+#~ msgid "Selected post: "
+#~ msgstr "Post sélectionné :"
+
+#~ msgid "Selected posts: "
+#~ msgstr "Liste des posts sélectionnés :"
+
+#~ msgid "Showcase"
+#~ msgstr "Vitrine"
+
+#~ msgid "X"
+#~ msgstr "X"
+
+#~ msgid "Showcase thumbnail"
+#~ msgstr "Image de la vitrine"
+
+#~ msgid "Add a showcase thumbnail"
+#~ msgstr "Ajout d'une image dans la vitrine"
+
+#~ msgid "Remove from showcase"
+#~ msgstr "Retirer de la vitrine"
+
+#~ msgid "Activate showcase for post types"
+#~ msgstr "Types de post pour lesquels activer la vitrine "
+
+#~ msgid "Milk Showcase - dynamic gallery by Milkcreation"
+#~ msgstr "Milk Showcase - Galerie dynamique par Milkcreation"
+
+#~ msgid "Showcase Theme Options"
+#~ msgstr "Options de la vitrine"
+
+#~ msgid "Slideshow of a Showcase"
+#~ msgstr "Diaporama d'images d'une vitrine"
+
+#~ msgid "Showcase:"
+#~ msgstr "Vitrine:"
+
+#~ msgid "Select a showcase"
+#~ msgstr "Choisir une vitrine"

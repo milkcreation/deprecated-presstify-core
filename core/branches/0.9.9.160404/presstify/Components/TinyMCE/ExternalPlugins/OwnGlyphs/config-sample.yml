@@ -1,0 +1,9 @@
+hookname      : ''
+css           : ''
+version       : ''
+dependencies  : []    
+prefix        : ''
+'font-family' : 'fontAwesome'
+button        : 'wordpress'
+title         : <?php __( '', 'tify' );?>,
+cols          : 32

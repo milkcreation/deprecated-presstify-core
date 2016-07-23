@@ -1,0 +1,378 @@
+# CAMPAGNES
+wistify_campaign:
+  labels:
+    name:               "<?php _e( 'Campagnes', 'tify' );?>"
+    singular_name:      "<?php _e( 'Campagne', 'tify' );?>"
+    menu_name:          "<?php _e( 'Campagnes', 'tify' );?>"
+    name_admin_bar:     "<?php _e( 'Campagne', 'tify' );?>"
+    all_items:          "<?php _e( 'Toutes les campagnes', 'tify' );?>"
+    add_new:            "<?php _e( 'Ajouter une campagne', 'tify' );?>"
+    edit_item:          "<?php _e( 'Editer la campagne', 'tify' );?>"
+    new_item:           "<?php _e( 'Nouvelle campagne', 'tify' );?>"
+    view_item:          "<?php _e( 'Voir la campagne', 'tify' );?>"
+    search_items:       "<?php _e( 'Rechercher une campagne', 'tify' );?>"
+    not_found:          "<?php _e( 'Aucune campagne trouvée', 'tify' );?>"
+    not_found_in_trash: "<?php _e( 'Aucune campagne dans la corbeille', 'tify' );?>"
+    
+  Db:
+    install:        false
+    col_prefix:     'campaign_'
+    meta:           true
+    columns:
+      id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        auto_increment: true
+  
+      uid:
+        type:           VARCHAR
+        size:           32
+        default:        null
+  
+      title:
+        type:           VARCHAR
+        size:           255
+        default:        null
+  
+      description:
+        type:           VARCHAR
+        size:           255
+        default:        null
+  
+      author:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        default:        0
+  
+      date: 
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+  
+      modified:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+  
+      status:
+        type:           VARCHAR
+        size:           25
+        default:        'draft'
+  
+      step: 
+        type:           INT
+        size:           2
+        default:        0
+  
+      template_name:
+        type:           LONGTEXT
+  
+      content_html:
+        type:           LONGTEXT
+  
+      content_txt:
+        type:           LONGTEXT
+  
+      recipients:
+        type:           LONGTEXT
+  
+      message_options:
+        type:           LONGTEXT
+  
+      send_options:
+        type:           LONGTEXT
+  
+      send_datetime:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+  
+    search:
+      title
+      description
+
+# LISTES DE DIFFUSION		
+wistify_list:
+  labels:
+    name:               "<?php _e( 'Listes de diffusion', 'tify' );?>"
+    singular_name:      "<?php _e( 'Liste de diffusion', 'tify' );?>"
+    menu_name:          "<?php _e( 'Listes de diffusion', 'tify' );?>"
+    name_admin_bar:     "<?php _e( 'Liste de diffusion', 'tify' );?>"
+    all_items:          "<?php _e( 'Toutes les listes de diffusion', 'tify' );?>"
+    add_new:            "<?php _e( 'Ajouter une liste de diffusion', 'tify' );?>"
+    edit_item:          "<?php _e( 'Editer la liste de diffusion', 'tify' );?>"
+    new_item:           "<?php _e( 'Nouvelle liste de diffusion', 'tify' );?>"
+    view_item:          "<?php _e( 'Voir la liste de diffusion', 'tify' );?>"
+    search_items:       "<?php _e( 'Rechercher une liste de diffusion', 'tify' );?>"
+    not_found:          "<?php _e( 'Aucune liste de diffusion trouvée', 'tify' );?>"
+    not_found_in_trash: "<?php _e( 'Aucune liste de diffusion dans la corbeille', 'tify' );?>"
+    
+  Db:
+    install:        false
+    col_prefix:     'list_'
+    meta:           false
+    columns:
+      id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        auto_increment: true
+
+      uid:
+        type:           VARCHAR
+        size:           32
+
+      title:
+        type:           VARCHAR
+        size:           255
+
+      description:
+        type:           LONGTEXT
+
+      date:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+
+      modified:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+
+      status:
+        type:           VARCHAR
+        size:           20
+        default:        'publish'
+
+      menu_order:
+        type:           BIGINT
+        size:           20
+        default:        0
+
+      public:
+        type:           TINYINT
+        size:           1
+        default:        1
+
+    search:
+      title
+      description
+
+# RELATION LISTES <> ABONNES
+wistify_list_relationships:
+  Db:
+    install:        false
+    col_prefix:     'rel_'
+    meta:           false
+    columns:
+      id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        auto_increment: true
+
+      subscriber_id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+
+      list_id:
+        type:           BIGINT
+        size:           20
+        default:        0
+        unsigned:       true
+
+      active:
+        type:           TINYINT
+        size:           1
+
+      created:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+
+      modified:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+
+# FILE DES MAILS
+wistify_queue:
+  Db:
+    install:        false
+    col_prefix:     'queue_'
+    meta:           false
+    columns:
+      id:
+        type:           BIGINT
+        size:           20
+
+      email: 
+        type:           VARCHAR
+        size:           255
+
+      campaign_id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+
+      message:
+        type:           BLOB
+  
+      locked:
+        type:           TINYINT
+        size:           1
+        default:        0
+
+    search:
+      email
+
+# RAPPORT D'ENVOI
+wistify_report:
+  labels:
+    name:               "<?php _e( 'Rapports d\'envois', 'tify' );?>"
+    singular_name:      "<?php _e( 'Rapport d\'envois', 'tify' );?>"
+    menu_name:          "<?php _e( 'Rapports d\'envois', 'tify' );?>"
+    name_admin_bar:     "<?php _e( 'Rapport d\'envoi', 'tify' );?>"
+    all_items:          "<?php _e( 'Toutes les rapports d\'envois', 'tify' );?>"
+    search_items:       "<?php _e( 'Rechercher un rapport d\'envoi', 'tify' );?>"
+    not_found:          "<?php _e( 'Aucun rapport d\'envoi trouvé', 'tify' );?>"
+    not_found_in_trash: "<?php _e( 'Aucun rapport d\'envoi dans la corbeille', 'tify' );?>"
+
+  Db:
+    install:      false
+    col_prefix:   'report_'
+    meta:         false
+    columns:  
+      id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        auto_increment: true
+
+      campaign_id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        default:        0
+
+      posted_ts:
+        type:           INT
+        size:           13
+        default:        0
+
+      updated_ts:
+        type:           INT
+        size:           13
+        default:        0
+
+      md_ts:
+        type:           INT
+        size:           13
+        default:        0
+
+      md__id:
+        type:           VARCHAR
+        size:           32
+
+      md_sender:
+        type:           VARCHAR
+        size:           255
+
+      md_template:
+        type:           VARCHAR
+        size:           255
+
+      md_subject:
+        type:           VARCHAR
+        size:           255
+
+      md_email:
+        type:           VARCHAR
+        size:           255
+
+      md_tags:
+        type:           LONGTEXT
+
+      md_opens:
+        type:           INT
+        size:           5
+
+      md_opens_detail:
+        type:           LONGTEXT
+
+      md_clicks:
+        type:           INT
+        size:           5
+
+      md_clicks_detail:
+        type:           LONGTEXT
+
+      md_state:
+        type:           VARCHAR
+        size:           25
+
+      md_metadata:
+        type:           LONGTEXT
+
+      md_smtp_events:
+        type:           LONGTEXT
+
+      md_resends:
+        type:           LONGTEXT
+
+      md_reject_reason:
+        type:           LONGTEXT
+
+    search:
+      md_email
+
+# ABONNÉS
+wistify_subscriber:
+  labels:
+    name:               "<?php _e( 'Abonnés', 'tify' );?>"
+    singular_name:      "<?php _e( 'Abonné', 'tify' );?>"
+    menu_name:          "<?php _e( 'Abonnés', 'tify' );?>"
+    name_admin_bar:     "<?php _e( 'Abonné', 'tify' );?>"
+    all_items:          "<?php _e( 'Tous les abonnés', 'tify' );?>"
+    add_new:            "<?php _e( 'Ajouter un abonné', 'tify' );?>"
+    edit_item:          "<?php _e( 'Editer l\'abonné', 'tify' );?>"
+    new_item:           "<?php _e( 'Nouvel abonné', 'tify' );?>"
+    view_item:          "<?php _e( 'Voir l\'abonné', 'tify' );?>"
+    search_items:       "<?php _e( 'Rechercher un abonné', 'tify' );?>"
+    not_found:          "<?php _e( 'Aucun abonné trouvé', 'tify' );?>"
+    not_found_in_trash: "<?php _e( 'Aucun abonné dans la corbeille', 'tify' );?>"
+  Db:
+    install:      false
+    col_prefix:   'subscriber_'
+    meta:         true
+    columns:
+      id:
+        type:           BIGINT
+        size:           20
+        unsigned:       true
+        auto_increment: true
+  
+      uid:
+        type:           VARCHAR
+        size:           32
+        default:        null
+  
+      email:
+        type:           VARCHAR
+        size:           255
+  
+      date:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+  
+      modified:
+        type:           DATETIME
+        default:        '0000-00-00 00:00:00'
+  
+      status:
+        type:           VARCHAR
+        size:           255
+        default:        'registred'
+  
+    search:
+      email
+
+    relations:
+      wistify_list_relationships:
+        rel_subscriber_id

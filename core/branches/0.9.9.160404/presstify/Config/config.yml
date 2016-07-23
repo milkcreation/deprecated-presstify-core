@@ -1,0 +1,3 @@
+allowed_users       : []
+admin_footer_text   : 'Merci de faire de <a href="http://www.wordpress-fr.net/" target="_blank">Wordpress</a> + <a href="http://www.presstify.com" target="_blank">PressTiFY</a> votre outil de développement de site'
+admin_bar_menu_logo : false

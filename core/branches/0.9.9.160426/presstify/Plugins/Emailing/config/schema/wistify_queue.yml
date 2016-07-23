@@ -1,0 +1,29 @@
+Db:
+  install:        false
+  col_prefix:     'queue_'
+  meta:           false
+  columns:
+    id:
+      type:           BIGINT
+      size:           20
+
+    email: 
+      type:           VARCHAR
+      size:           255
+
+    campaign_id:
+      type:           BIGINT
+      size:           20
+      unsigned:       true
+
+    message:
+      type:           BLOB
+  
+    locked:
+      type:           TINYINT
+      size:           1
+      default:        0
+
+  search:             [ 'email' ]
+  
+  cb:                 'tiFy\Plugins\Emailing\Db\MailQueue'  

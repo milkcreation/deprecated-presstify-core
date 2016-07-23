@@ -1,0 +1,64 @@
+roles:
+  tify_membership:
+    name:                   "<?php _e( 'Membre', 'tify' );?>"
+    capabilities:           [ ]   
+    show_admin_bar_front:   false
+form:
+  ID:       'tify_membership_subscribe_form'
+  title:    <?php _e( 'Formulaire d\'inscription à l\'accès pro', 'tify' );?>
+  prefix:   'tify_membership_subscribe_form'
+  fields: 
+    -
+      slug:         'login'
+      label:        <?php _e( 'Identifiant (obligatoire)', 'tify' );?>
+      placeholder:  <?php _e( 'Identifiant (obligatoire)', 'tify' );?>
+      type:         'input'
+      autocomplete: 'off'
+      required:     true
+      add-ons:
+        tify_membership:  { userdata: 'user_login' }
+    -
+      slug:         'email'
+      label:        <?php _e( 'E-mail (obligatoire)', 'tify' );?>
+      placeholder:  <?php _e( 'E-mail (obligatoire)', 'tify' );?>
+      type:         'input'
+      autocomplete: 'off'
+      integrity_cb: 'is_email'
+      required:     true
+      add-ons:
+        tify_membership:  { userdata: 'user_email' }       
+    -
+      slug:         'firstname'
+      label:        <?php _e( 'Prénom', 'tify' );?>
+      placeholder:  <?php _e( 'Prénom', 'tify' );?>
+      type:         'input'
+      autocomplete: 'off'
+      add-ons:
+        tify_membership:  { userdata: 'first_name' }
+    -
+      slug:         'lastname'
+      label:        <?php _e( 'Nom', 'tify' );?>
+      placeholder:  <?php _e( 'Nom', 'tify' );?>
+      type:         'input'
+      autocomplete: 'off'
+      add-ons:
+        tify_membership:  { userdata: 'last_name' }       
+    -
+      slug:         'password'
+      label:        <?php _e( 'Mot de passe (obligatoire)', 'tify' );?>
+      placeholder:  <?php _e( 'Mot de passe (obligatoire)', 'tify' );?>
+      type:         'password'
+      autocomplete: 'off'
+      required:     true
+      add-ons:
+        tify_membership:  { userdata: 'user_pass' }
+    -
+      slug:         'confirm'
+      label:        <?php _e( 'Confirmation de mot de passe (obligatoire)', 'tify' );?>
+      placeholder:  <?php _e( 'Confirmation de mot de passe (obligatoire)', 'tify' );?>
+      type:         'password'
+      autocomplete: 'off'
+      integrity_cb: 
+        function:     'compare' 
+        args:         [ '%%password%%' ] 
+        error:        <?php _e( 'Les champs "Mot de passe" et "Confirmation de mot de passe" doivent correspondre', 'tify' );?>

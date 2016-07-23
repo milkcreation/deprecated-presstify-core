@@ -1,0 +1,24 @@
+/* = LISTE DES SUJETS = */
+.tify_forum-topic_list{
+
+}
+.tify_forum-topic_list .tr:before,
+.tify_forum-topic_list .tr:after{
+	display:table;
+	content:"";
+}
+.tify_forum-topic_list .tr:after{
+	clear:both;
+}
+.tify_forum-topic_list .th,
+.tify_forum-topic_list .td{
+	float:left;
+	width:33%;
+	padding:5px;
+}
+.tify_forum-topic_list > .thead > .tr > .th{
+	background-color:#E4E4E4;
+}
+.tify_forum-topic_list > .tbody > .tr:nth-child(2n) > .td{
+	background-color:#F4F4F4;
+}
