@@ -1,0 +1,32 @@
+#tiFy_CustomFields_PostType_Permalink{
+	margin:0;
+	margin-left:5px;
+	line-height: 15px;
+}
+#tiFy_CustomFields_PostType_Permalink label{
+	cursor:pointer;
+	color: #72777c;
+	font-weight:600;
+}
+#tiFy_CustomFields_PostType_Permalink [type="checkbox"]{
+
+}
+#tiFy_CustomFields_PostType_Permalink #tiFy_CustomFields_PostType_Permalink-dropdown{
+	width:250px;
+	vertical-align:middle;
+	height:2em;
+	font-size:12px;
+	line-height:1em;
+	padding:0.1em 0.2em;
+}
+#tiFy_CustomFields_PostType_Permalink #tiFy_CustomFields_PostType_Permalink-dropdown[data-tify_control="dropdown"]{
+	padding:0;
+	min-width:350px;
+	width:auto;
+}
+#tiFy_CustomFields_PostType_Permalink-dropdown-picker{
+	z-index:1001;
+	max-height:15em;
+	font-weight:normal;
+	font-size:12px;
+}
