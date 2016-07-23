@@ -1,0 +1,48 @@
+.modal-backdrop.in {
+    opacity: 0.9;
+}
+
+.tify_video.modal{
+	/*z-index:99998;*/
+}
+.tify_video.modal .modal-dialog.modal-lg{
+	width:80%;
+}
+.tify_video.modal > button.close{
+	position:fixed;
+	right:1vw; top:1%;
+	text-shadow:none;
+	margin:10px;
+	font-size:11px;
+	color:#FFF;
+	text-transform:uppercase;
+	font-weight:normal;
+	opacity:1;
+	letter-spacing:2px;
+	line-height:26px;
+}
+.tify_video.modal > button.close > span{
+	display:block;
+	float:right;
+	font-size:50px;
+	font-weight:100;
+	color:#FFF;
+}
+.tify_video.modal .modal-dialog{
+	top:10%;
+}
+.tify_video.modal .modal-content{
+	border-radius:0;
+}
+.tify_video.modal .modal-header{
+	border-bottom:none;
+}
+.tify_video.modal .modal-footer{
+	border-top:none;
+}
+.tify_video.modal > .modal-dialog > .modal-content{
+	padding:10px;
+}
+.tify_video.modal > .modal-dialog > .modal-content > .modal-header{
+	padding:0; min-height:0;
+}

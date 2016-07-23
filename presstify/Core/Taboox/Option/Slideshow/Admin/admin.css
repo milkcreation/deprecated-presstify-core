@@ -1,0 +1,173 @@
+.tify_taboox_slideshow{}
+
+/* = SELECTEURS = */
+.tify_taboox_slideshow > .selectors{
+	border-bottom: #E4E4E4 solid 1px;
+	padding-bottom:15px;
+}
+/** == SUGGEST == **/
+.tify_taboox_slideshow > .selectors > .suggest .tify_control_suggest_response > ul.ui-autocomplete > li > a > .id{
+	display:none;
+}
+
+/* = LISTE DES ELEMENTS = */
+.tify_taboox_slideshow > .items{
+	position:relative;
+	width:700px;
+}
+/** == OVERLAY == **/
+.tify_taboox_slideshow > .items > .overlay{
+	position:absolute;
+	left:0; right:0;
+	top:0px; bottom:0px;
+	background-color:#FFF;
+	opacity:0.8;	
+	z-index:10;
+	color:#000;
+	font-weight:bold;
+	padding:60px 0;
+	text-align:center;
+	font-size:20px;
+	display:none;
+}
+/** == ELEMENTS == **/
+.tify_taboox_slideshow > .items > ul{
+	width:700px;
+}
+.tify_taboox_slideshow > .items > ul > li::before,
+.tify_taboox_slideshow > .items > ul > li::after{
+	display:table;
+	content:"";
+}
+.tify_taboox_slideshow > .items > ul > li::after{
+	clear:both;
+}
+.tify_taboox_slideshow > .items > ul > li{
+	position:relative;
+	border:solid 1px #E4E4E4;
+	margin-bottom:10px;
+	padding:10px 40px 10px 10px;
+	background-color:#FFF;
+	min-height:175px;
+}
+.tify_taboox_slideshow > .items > ul > li.ui-sortable-helper{
+	background-color:#F6F6F6;
+}
+.tify_taboox_slideshow > .items > ul > li.ui-sortable-placeholder{
+	background-color: rgba( 0, 116, 162, 0.1 );
+	visibility:visible !important;
+	border:dashed 1px #CCC;
+}
+/*** === CHAMPS DE SAISIE === ***/
+.tify_taboox_slideshow > .items > ul > li > .input-fields{
+
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields > .col-left,
+.tify_taboox_slideshow > .items > ul > li > .input-fields > .col-right{
+	box-sizing: border-box;
+	float:left;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields > .col-left{
+	width:170px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields > .col-right{
+	width:470px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields h3{
+	margin:0 0 6px;
+	font-weight:100;
+	font-size:12px;
+	text-transform:uppercase;
+	color:#666;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields > .col > div{
+	margin-bottom:10px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields label{
+	margin-bottom:8px;
+	display:block;
+	font-weight:bold;
+}
+/**** ==== IMAGE D'ILLUSTRATION ==== ****/
+.tify_taboox_slideshow > .items > ul > li > .input-fields .thumbnail{
+	position:relative;
+	border:dashed 3px #E4E4E4;
+	width:156px; height:156px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields .thumbnail > a{
+	position:absolute;
+	top:0; right:0; bottom:0; left:0;
+	display:block;
+	background-color:#F4F4F4;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields .thumbnail > a::before{
+	position:absolute;
+	content:"+";
+	font-size:48px;
+	color:#D4D4D4;
+	top:50%; left:50%;
+	text-align:center;
+	margin-left:-14px; margin-top:-12px;
+	font-weight:700;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields .thumbnail > a > img{
+	position:relative;
+	width:100%;
+	height:auto;
+	object-fit: cover;
+	z-index:1;
+}
+/**** ==== TITRE ==== ****/
+.tify_taboox_slideshow > .items > ul > li > .input-fields .title > input{
+	margin:0; padding:0;
+	font-weight:bold;
+	text-transform:uppercase;
+	margin-bottom:5px;
+	font-size:14px;
+	padding:0.4em;
+	background-color:#FFF; 
+	border:solid 1px #E4E4E4;
+	width:100%;
+}
+/**** ==== VIGNETTE CLIQUABLE ==== ****/
+.tify_taboox_slideshow > .items > ul > li > .input-fields .clickable{	
+	margin:0;
+	margin-bottom:5px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields .url{
+	margin:0;
+	margin-bottom:5px;
+	width:100%;
+	font-size:12px;
+}
+/**** ==== LEGENDE ==== ****/
+.tify_taboox_slideshow > .items > ul > li > .input-fields .caption > div{
+	position:relative;
+	left:0; right:0;
+	height:70px;
+	background-color:#FFF; 
+	border:solid 1px #E4E4E4; 
+	padding:5px;
+}
+.tify_taboox_slideshow > .items > ul > li > .input-fields .caption > div > p{
+	margin:0;
+	margin-bottom:0.5em;
+}
+/*** === AIDE A LA SAISIE === ***/
+.tify_taboox_slideshow > .items > ul > li > .helpers > .order{
+	position:absolute;
+	right:-2px; bottom:-2px;
+}
+.tify_taboox_slideshow > .items > ul > li > .helpers > .order > input{
+	font-size:10px;
+	width:20px;
+}
+.tify_taboox_slideshow > .items > ul > li > .helpers > .tify_handle_sort{
+	position:absolute;
+	top:50%; right:0px;
+	margin-top:-15px;
+	font-size:20px;
+	padding:5px;
+	width:auto; height:auto;
+	cursor:move;
+}
