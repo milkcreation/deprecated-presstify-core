@@ -1,0 +1,251 @@
+<?php
+/* = Déclaration = */
+add_action( 'tify_taboox_register_form', 'tify_taboox_register_form_fileshare' );
+function tify_taboox_register_form_fileshare(){
+	tify_taboox_register_form( 'tiFy_Taboox_Fileshare' );
+}
+
+/* = Formulaire de saisie = */
+class tiFy_Taboox_Fileshare extends tiFy_Taboox{
+	/* = CHARGEMENT = */	
+	public function current_screen( $current_screen ){
+		// Traitement des arguments
+		$this->args = 	wp_parse_args( 
+							$this->args, 
+							array(
+								'name' 		=> '_fileshare',
+								'filetype' 	=> '', // video || application/pdf || video/flv, video/mp4,
+								'max' 		=> -1
+							)
+						);
+		
+		// Déclaration des metadonnées à enregistrer
+		register_post_meta( $current_screen->id, $this->args['name'] );
+		register_post_meta( $current_screen->id, '_taboox_fileshare_names' );
+		
+		// Mise en file des scripts
+		add_action( 'admin_enqueue_scripts', array( $this, 'wp_admin_enqueue_scripts' ) );				
+	}
+	
+	/* = MISE EN FILE DES SCRIPTS = */
+	public function wp_admin_enqueue_scripts(){
+		wp_enqueue_style( 'tify_taboox_fileshare', $this->uri .'/admin.css', array( ), '151216' );
+		wp_enqueue_media();
+		wp_enqueue_script( 'tify_taboox_fileshare', $this->uri .'/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '151216', true );		
+	}
+	
+	/* = FORMULAIRE DE SAISIE = */
+	public function form( $post ){
+		extract( $this->args, EXTR_SKIP );
+		$metadatas = tify_get_post_meta( $post->ID, $name );			
+	?>
+		<div id="fileshare-postbox">
+			<input type="hidden" name="tify_post_meta[single][_taboox_fileshare_names][]" value="<?php echo esc_attr( $name );?>" />
+			<ul id="fileshare-<?php echo sanitize_title($name);?>-list" class="fileshare-list">
+			<?php foreach( (array) $metadatas as $meta_id => $meta_value ) : ?>
+				<li>
+					<span class="icon"><?php echo wp_get_attachment_image( $meta_value, array( 46, 60 ), true );?></span>
+					<span class="title"><?php echo get_the_title( $meta_value );?></span>
+					<span class="mime"><?php echo get_post_mime_type( $meta_value );?></span>							
+					<a href="#" class="remove tify_button_remove"></a>
+					<input type="hidden" name="tify_post_meta[multi][<?php echo $name;?>][<?php echo $meta_id;?>]" value="<?php echo esc_attr( $meta_value );?>" />					
+				</li>
+			<?php endforeach;?>		
+			</ul>
+			<a href="#" class="add-fileshare button-secondary" 
+				<?php if( $filetype ) echo "data-type=\"{$filetype}\"";?> 
+				data-item_name="<?php echo $name;?>" 
+				data-target="#fileshare-<?php echo sanitize_title($name);?>-list"
+				data-max="<?php echo $max;?>"
+				data-uploader_title="<?php _e( 'Sélectionner les fichiers à associer', 'tify' );?>"
+			>
+				<div class="dashicons dashicons-media-text" style="vertical-align:middle;"></div>&nbsp;
+				<?php echo _n( __(  'Ajouter le fichier', 'tify' ), __(  'Ajouter des fichiers', 'tify' ), ( ( $max === 1 ) ? 1 : 2 ), 'tify'  );?>
+			</a>
+		</div>			
+	<?php	
+	}
+}
+
+/* = HELPERS = */
+/** == Vérification de l'existance de fichiers partagés pour le contenu == **/ 
+function mkpbx_fileshare_has_file( $post_id = null, $args = array() ){
+	global $post;
+	
+	// Récupération du post 
+	$post = ( $post_id ) ? get_post( $post_id ) : get_post( $post );
+	
+	// Bypass
+	if( ! $post ) 
+		return;
+	
+	// Traitement des arguments
+	$args = wp_parse_args( $args, array(
+			'name' 		=> '_fileshare',
+			'filetype' 	=> '', // video || application/pdf || video/flv, video/mp4,
+			'max' 		=> -1
+		)
+	);
+	extract( $args );
+	
+	if( ! $fileshare = get_post_meta( $post->ID, $name ) )
+		return false;
+
+	return $fileshare;
+}
+
+/** == Récupération des fichiers partagés == **/
+function mkpbx_fileshare_get_files( $post_id = null, $args = array() ){
+	global $post;
+
+	if( $post_id )
+		$post = get_post( $post_id );
+	else
+		$post = get_post( $post );	
+	
+	// Bypass
+	if( !$post )
+		return;
+	
+	$args = wp_parse_args( $args, array(
+			'name' => 'fileshare',
+			'filetype' => '', // video || application/pdf || video/flv, video/mp4,
+			'max' => -1
+		)
+	);
+	extract( $args );
+		
+	if( ! $attachment_ids = get_post_meta( $post->ID, '_'.$name ) )
+		return;
+	
+	// Trie des fichiers
+	if( $attachment_order = get_post_meta( $post->ID, '_'.$name.'_order', true ) ) :
+		$_attachment_ids = array(); $_attachment_order = array();
+		foreach ( (array) $attachment_ids as $key => $attachment_id ) :
+			$_attachment_ids[$key] = $attachment_id;
+			$_attachment_order[$key] = array_search( $attachment_id, $attachment_order );
+		endforeach;
+		@array_multisort( $_attachment_order, $_attachment_ids );
+	else : 
+		$_attachment_ids = $attachment_ids;
+	endif;
+	
+	return $_attachment_ids;
+}
+
+/**
+ * Récupération des fichiers en partage
+ */
+function get_the_fileshare( $args = array() ){
+	// Bypass
+	global $post;
+	if( ! $post )
+		return $return;
+	
+	$defaults = array(
+		'echo' => true,
+		'name' => 'fileshare',
+		'filetype' => '', // video || application/pdf || video/flv, video/mp4,
+		'max' => -1
+	);		
+	$args = wp_parse_args( $args, $defaults);	
+	extract( $args );	
+			
+	$upload_dir = wp_upload_dir();
+	$upload_path = $upload_dir['path'];
+	$upload_url = $upload_dir['url']; 
+	
+	$output  = ""; 
+	$output .= "<ul>";
+	foreach( (array) mkpbx_fileshare_get_files( $post->ID, $args ) as $file_id ) :
+		$fileurl = wp_get_attachment_url( $file_id );
+		$filename = $upload_path.'/'.wp_basename( $fileurl );
+		$ext = preg_replace( '/^.+?\.([^.]+)$/', '$1', $fileurl );
+		$filesize = 0;
+		if( file_exists( $filename ) )
+			$filesize = round( filesize( $filename ), 2);
+		
+		$thumb_url = false;	
+		if ( ( $attachment_id = intval( $file_id ) ) && $thumb_url = wp_get_attachment_image_src( $attachment_id, 'thumbnail', false ) )
+			$thumb_url = $thumb_url[0];
+		
+		$output .= "\n<li class=\"mkpbx_fileshare mkpbx_fileshare-".$name."\">";
+		$output .= "\n\t<a href=\"" . add_query_arg( array( 'file_upload_media' => $file_id, 'post_id' => $post->ID, 'fileshare_name' => $name ), site_url() ) . "\" class=\"fileshare_link clearfix\"  title=\"" . __( 'Télécharger le fichier', 'tify' ) ."\">";
+		
+		// Icone
+		if( $thumb_url )
+			$output .= "\n\t\t<img src=\"$thumb_url\" class=\"mimetype_ico\" />"; 
+		else
+			$output .= "\n\t\t<i class=\"mkpbx_fileshare_ico mkpbx_fileshare_ico-" . $ext ."\"></i>"; 
+		
+		// Titre du fichier		
+		$output .= "\n\t\t<span class=\"fileshare_title\">". get_the_title( $file_id ) ."</span>";
+		
+		// Nom du fichier
+		$output .= "\n\t\t<span class=\"fileshare_basename\">" . wp_basename( $fileurl ) . "</span>";
+		
+		// Poids du fichiers				
+		if(  $filesize )
+			$output .= "\n\t\t<span class=\"fileshare_size\">". mkpbx_fileshare_format_bytes( $filesize ) . "\n\t\t</span>";
+		
+		$output .= "\n\t\t<span class=\"download-label\">".__( 'Télécharger', 'tify'  )."</span>";
+		
+		$output .= "\n\t</a>";
+		$output .= "\n</li>";
+		
+		$output = apply_filters( 'mk_file_share_display_element', $output, $file_id );
+		
+	 endforeach;
+	$output .= "</ul>"; 
+	
+	if( $echo)
+		echo $output;
+	else
+		return $output; 
+}
+
+/**
+ * Autorisation de forçage de téléchargement du fichier
+ */
+add_filter( 'mk_force_file_upload_allowed', 'mkpbx_fileshare_allow_file_upload', 10, 2 );
+function mkpbx_fileshare_allow_file_upload( $return, $filename ){
+	// Bypass
+	if( !isset( $_REQUEST['post_id'] ) )
+		return $return;
+	if( !isset( $_REQUEST['fileshare_name'] ) )
+		return $return;	
+	if( ! $attachment_ids = get_post_meta( $_REQUEST['post_id'], '_'.$_REQUEST['fileshare_name'] ) )
+		return $return;
+	
+	$attachment_path = array();
+	foreach( $attachment_ids as $attachment_id )
+		$attachment_path[] = get_attached_file( $attachment_id );	
+	
+	return in_array( $filename, $attachment_path );
+}
+
+
+/**
+ * Convertion du poids des fichiers
+ */
+function mkpbx_fileshare_format_bytes($a_bytes){
+    if ($a_bytes < 1024) {
+        return $a_bytes .' B';
+    } elseif ($a_bytes < 1048576) {
+        return round($a_bytes / 1024, 2) .' Ko';
+    } elseif ($a_bytes < 1073741824) {
+        return round($a_bytes / 1048576, 2) . ' Mo';
+    } elseif ($a_bytes < 1099511627776) {
+        return round($a_bytes / 1073741824, 2) . ' Go';
+    } elseif ($a_bytes < 1125899906842624) {
+        return round($a_bytes / 1099511627776, 2) .' To';
+    } elseif ($a_bytes < 1152921504606846976) {
+        return round($a_bytes / 1125899906842624, 2) .' Po';
+    } elseif ($a_bytes < 1180591620717411303424) {
+        return round($a_bytes / 1152921504606846976, 2) .' Eo';
+    } elseif ($a_bytes < 1208925819614629174706176) {
+        return round($a_bytes / 1180591620717411303424, 2) .' Zo';
+    } else {
+        return round($a_bytes / 1208925819614629174706176, 2) .' Yo';
+    }
+}

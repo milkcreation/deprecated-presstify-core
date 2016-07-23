@@ -1,0 +1,54 @@
+.tify_events-taboox {
+	padding-bottom:80px;
+}
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li::before,
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li::after{
+	display:table;
+	content:"";
+}
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li::after{
+	clear:both;
+}
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li > .col{
+	position:relative;
+	width:50%;
+	float:left;
+}
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li > .col.preview > textarea{
+	width:90%; height:100px;
+	resize:none;
+	background-color:#FFF;
+	box-shadow:none;
+}
+.tify_events-taboox .tify_control_dynamic_inputs > ul > li.load_preview > .col.preview > textarea{
+	background-color:#F4F4F4;
+	color:#DDD;
+}
+.tify_events-taboox .tify_control_dynamic_inputs table{
+	margin:0 5px;
+	width:550px;
+}
+.tify_events-taboox table > tbody > tr > th,
+.tify_events-taboox table > tbody > tr > td{
+	padding-bottom:5px;
+}
+.tify_events-taboox table > tbody > tr > th{
+	width:80px;
+	text-align:left;
+}
+.tify_events-taboox table > tbody > tr > td.label{
+	text-align:left;
+	width:80px;
+	font-weight: bold;
+	padding-left:0;
+}
+.tify_events-taboox table > tbody > tr > td.label.to{
+	width:30px;
+}
+.tify_events-taboox table > tbody > tr > td.hour{
+	width:auto;
+}
+.tify_events-taboox .date_range_error{
+	color:red;
+	font-size:0.8;
+}
