@@ -1,0 +1,15 @@
+#tify_timeline{
+	position:relative;
+}
+#tify_timeline > .tify_timeline-overlay{
+	position:absolute;
+	top:0;right:0;bottom:0;left:0;
+	background-color:rgba( 255, 255, 255, 0.8 );
+	z-index:1;
+}
+#tify_timeline > .tify_timeline-overlay > .tify_timeline-spinner{
+	position:absolute;
+	top:50%;left:50%;
+	margin-top:-15px; margin-left:-15px;
+	z-index:2;
+}
