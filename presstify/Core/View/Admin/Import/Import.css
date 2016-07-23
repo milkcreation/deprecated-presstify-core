@@ -1,0 +1,33 @@
+#tify_adminview_import-uploadfile .spinner{
+	float:none;
+}
+
+#tify_adminview_import-table_preview .tablenav.top,
+#tify_adminview_import-table_preview .tablenav.bottom{
+	display:none;
+}
+#tify_adminview_import-table_preview .wp-list-table #row{
+	width:3em;
+}
+#tify_adminview_import-table_preview .wp-list-table tr.imported td{
+	color:#AAA;
+}
+#tify_adminview_import-import.active{
+	display:inline-block;
+}
+#submitdiv.tify_submitdiv h4{
+	margin:0.5em 0;
+}
+#submitdiv.tify_submitdiv label{
+	font-weight:bold;
+	display:block;
+	line-height:1.2;
+	margin-bottom:0.5em;
+}
+#submitdiv.tify_submitdiv li{
+	border-bottom:solid 1px #DDD;
+	padding-bottom:0.4em;
+}
+#submitdiv.tify_submitdiv select{
+	max-width:100%;
+}

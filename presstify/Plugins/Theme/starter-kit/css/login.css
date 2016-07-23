@@ -1,0 +1,50 @@
+body.login {}
+body.login div#login {}
+body.login div#login h1 {
+	text-align:center;
+}
+body.login div#login h1 a {
+    background-size:contain;
+    width:300px; height:90px;
+}
+body.login div#login form#loginform {}
+body.login div#login form#loginform p {}
+body.login div#login form#loginform p label {}
+body.login div#login form#loginform input {}
+body.login div#login form#loginform input#user_login {}
+body.login div#login form#loginform input#user_pass {}
+body.login div#login form#loginform p.forgetmenot {}
+body.login div#login form#loginform p.forgetmenot input#rememberme {}
+body.login div#login form#loginform p.submit {}
+body.login div#login form#loginform p.submit input#wp-submit {
+	background: #5C7E8F !important;
+	box-shadow: none;
+	border:none;
+	border-radius:0px;
+	font-weight: bold;
+	-webkit-transition: background-color 300ms ease-in-out;
+    -moz-transition: background-color 300ms ease-in-out;
+    -ms-transition: background-color 300ms ease-in-out;
+    -o-transition: background-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out;
+}
+body.login div#login form#loginform p.submit input#wp-submit:hover,
+body.login div#login form#loginform p.submit input#wp-submit:active {
+	background: #4A6572 !important;
+}
+body.login div#login p#nav {}
+body.login div#login p#nav a{
+	color: #5C7E8F !important;
+}
+body.login div#login p#nav a:hover,
+body.login div#login p#nav a:active{
+	color: #4A6572 !important;
+}
+body.login div#login p#backtoblog {}
+body.login div#login p#backtoblog a{
+	color: #5C7E8F !important;
+}
+body.login div#login p#backtoblog a:hover,
+body.login div#login p#backtoblog a:active{
+	color: #4A6572 !important;
+}
