@@ -1,0 +1,30 @@
+#tify_cookie_policy{
+	position: fixed; bottom: 0; left: 0; right:0;
+	padding:10px 100px;
+    text-align: center; z-index:1500;
+    background-color: #2B2B2B; color: #FFF;
+}
+#tify_cookie_policy #tify_cookie_policy-accept,
+#tify_cookie_policy #tify_cookie_policy-read{
+	display:inline-block;
+	border:solid 1px #FFF;
+	padding:0.6em 1.2em;
+	color:#FFF;
+	line-height:1;
+	margin-bottom:10px;
+	white-space: nowrap;
+}
+#tify_cookie_policy #tify_cookie_policy-close{
+    display:block; position: absolute; top:10px; right:10px;
+    text-decoration: none; color: #FFF; font-size:14px; line-height: 1;
+}
+#tify_cookie_policy #tify_cookie_policy-close:before{
+	content: "\f158";
+	font: normal 16px/1 dashicons;
+	vertical-align:middle;
+}
+#tify_cookie_policy #tify_cookie_policy-accept:hover,
+#tify_cookie_policy #tify_cookie_policy-read:hover{
+	color:#999;
+	border-color:#999;
+}
