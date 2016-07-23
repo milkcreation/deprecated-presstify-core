@@ -1,0 +1,75 @@
+/* = MODALE = */
+#tify_video-modal{
+	display:none;
+}
+#tify_video-modal.active{
+	display:block;
+}
+/** == OVERLAY == **/
+#tify_video-modal #tify_video-overlay {
+	position:fixed;
+	top:0; right:0; bottom:0; left:0;
+	background-color: rgba( 0, 0, 0, 0.8 );
+	cursor:pointer;
+	z-index:100000;
+}
+#tify_video-modal #tify_video-overlay:before{
+	position:fixed;
+	top:10px; right:10px;
+	content :"\d7";
+	font-size:32px;
+	color:#FFF;
+}
+#tify_video-modal #tify_video-overlay.active{
+	display:inherit;
+}
+/** == PRELOADER == **/
+#tify_video-modal #tify_video-spinner.sk-spinner-three-bounce.sk-spinner {
+	position:fixed;
+	top:50%; right:50%;
+}
+#tify_video-modal #tify_video-spinner.sk-spinner-three-bounce div {
+  background-color: #FFF;
+}
+/** == CONTENEUR == **/
+#tify_video-modal #tify_video-wrapper{
+	position:fixed;
+	top:0; left:0; bottom:0; right:0;
+	margin: 0 auto;		
+	padding:50px;
+}
+#tify_video-modal #tify_video-wrapper > .tify_video-embedded{
+    width: 100%;
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0; 
+    margin: 0 auto;
+    transform:translateX( -50%);
+}	
+#tify_video-modal #tify_video-wrapper > .tify_video-embedded > object,
+#tify_video-modal #tify_video-wrapper > .tify_video-embedded > iframe,
+#tify_video-modal #tify_video-wrapper > .tify_video-embedded > embed,
+#tify_video-modal #tify_video-wrapper > .tify_video-embedded > video{ 
+	position: absolute;
+    top: 0;
+    left: 50%;
+    width: 75%;
+    height: 75%;    
+}
+
+/** == DEPRECATED == **/
+#tify_video-modal #tify_video-wrapper > .tify_video-shortcode video{
+	width: 100%; height: 100%;	
+}
+#tify_video_player .mejs-poster {
+  	background-size:cover;
+}
+#tify_video_player .me-cannotplay a:before{
+	position:absolute;
+	color:#FFF;
+	content: "\f317";
+	top:50%; left:50%;
+	font:normal 128px/1 dashicons;
+	margin-top:-64px; margin-left:-64px;
+	text-shadow:0px 0px 5px #444;
+}
