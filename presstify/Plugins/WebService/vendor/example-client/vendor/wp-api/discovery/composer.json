@@ -1,0 +1,15 @@
+{
+	"name": "wp-api/discovery",
+	"license": "MIT",
+	"require": {
+		"rmccue/requests": "^1.6"
+	},
+	"autoload": {
+		"psr-4": {
+			"WordPress\\Discovery\\": "lib/"
+		},
+		"files": [
+			"lib/namespace.php"
+		]
+	}
+}

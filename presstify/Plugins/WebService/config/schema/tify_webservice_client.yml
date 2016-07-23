@@ -1,0 +1,37 @@
+View:
+  Admin:     
+    AjaxListTable:
+      parent_slug:      'tify_webservice'
+      position:         3
+      
+      cb:               '\tiFy\Plugins\WebService\Client\Admin\Admin'
+      
+      columns:
+        ID:             "<?php _e( 'ID', 'tify' );?>"
+        post_thumbnail: "<?php _e( 'Mini.', 'tify' );?>"
+        _title:         "<?php _e( 'Titre', 'tify' );?>"
+        post_excerpt:   "<?php _e( 'Extrait', 'tify' );?>"
+        author:         "<?php _e( 'Auteur', 'tify' );?>"
+        date_gmt:       "<?php _e( 'Date de création', 'tify' );?>"
+        modified_gmt:   "<?php _e( 'Dernière modification', 'tify' );?>"
+        
+      primary:          '_title'
+      
+      per_page:         50
+      
+      transport:
+        ID:             'id'
+        _title:         'title'
+        post_excerpt:   'excerpt'
+      
+      response: 
+        guid:           'rendered'       
+        title:          'rendered'  
+        content:        'rendered'
+        author:         'name'
+        post_thumbnail: 'rendered'
+        
+      hiddens:          [ 'ID', 'post_excerpt' ]
+      
+Labels:
+  menu_name:            "<?php _e( 'Interface client', 'tify' );?>"     

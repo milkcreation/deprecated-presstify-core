@@ -1,0 +1,8 @@
+[data-tify_control='dynamic_inputs']{
+	position:relative;
+}
+[data-tify_control='dynamic_inputs'] > ul > li{
+	position:relative;
+	border:solid 1px #E4E4E4;
+	padding:5px 10px;
+}

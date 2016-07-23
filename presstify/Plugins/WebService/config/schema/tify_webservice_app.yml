@@ -1,0 +1,73 @@
+Db:
+  install:      true
+  col_prefix:   'wsapp_'
+  meta:         true
+  columns:
+    id:
+      type:           'BIGINT'
+      size:           20
+      unsigned:       true
+      auto_increment: true
+      
+    name:
+      type:           'VARCHAR'
+      size:           255
+    
+    desc:
+      type:           'LONGTEXT'
+      
+    key_hash:
+      type:           'VARCHAR'
+      size:           152
+    
+    public_key:
+      type:           'VARCHAR'
+      size:           32
+      default:        null  
+    
+    private_key:
+      type:           'VARCHAR'
+      size:           64
+      default:        null
+      
+    caps:
+      type:           'LONGTEXT'
+      
+    ips:
+      type:           'LONGTEXT'
+    
+    active:
+      type:           'TINYINT'
+      size:           1
+      default:        0  
+      
+View:
+  Admin:     
+    ListTable:
+      parent_slug:      'tify_webservice'
+      menu_slug:        'tify_webservice'
+      position:         1
+      cb:               'tiFy\Plugins\WebService\Server\Admin\App\ListTable\ListTable'
+      columns:
+        wsapp_name:         "<?php _e( 'Nom', 'tify' );?>"
+        wsapp_desc:         "<?php _e( 'Description', 'tify' );?>"
+        wsapp_key_hash:     <?php _e( "Clé d'authentification", 'tify' );?>
+        wsapp_caps:         "<?php _e( 'Habilitations', 'tify' );?>"
+        wsapp_ips:          "<?php _e( 'Ips autorisées', 'tify' );?>"
+        wsapp_active:       "<?php _e( 'Activation', 'tify' );?>"
+    EditForm:
+      parent_slug:      'tify_webservice'
+      position:         2
+      cb:               'tiFy\Plugins\WebService\Server\Admin\App\EditForm\EditForm'
+      fields:
+        wsapp_name:         "<?php _e( 'Nom', 'tify' );?>"
+        wsapp_desc:         "<?php _e( 'Description', 'tify' );?>"
+        wsapp_key_hash:     <?php _e( "Clé d'authentification", 'tify' );?>
+        wsapp_caps:         "<?php _e( 'Habilitations', 'tify' );?>"
+        wsapp_ips:          "<?php _e( 'Ips autorisées', 'tify' );?>"
+        wsapp_active:       "<?php _e( 'Activation', 'tify' );?>"
+      
+Labels:
+  plural:               'accès'
+  singular:             'accès'
+  gender:               false      
