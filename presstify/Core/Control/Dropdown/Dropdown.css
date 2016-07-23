@@ -1,0 +1,96 @@
+/* = SELECTEUR = */
+[data-tify_control='dropdown']{
+	position:relative;
+	display:inline-block;
+}
+[data-tify_control='dropdown'].disabled{
+	opacity:0.5;
+}
+[data-tify_control='dropdown'] > .selected{
+	cursor:pointer;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+	display:block;
+}
+[data-tify_control='dropdown'] > .selected > .selection{
+	display:block;
+	margin-right:15px;
+	padding:0.4em;
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#E4E4E4;
+	background-color:#FFF;
+	height:auto;
+	overflow:hidden;
+	text-overflow: ellipsis;
+}
+[data-tify_control='dropdown'] > .selected > .selection > input{
+	display:none;
+}
+[data-tify_control='dropdown'] > .selected > .caret{
+	position:absolute;
+	right:4px; top:50%;
+	margin-top:-2px;
+	border-color:inherit transparent;
+	border-style:solid;
+	border-top-width: 4px;
+	border-right-width: 4px;
+	border-bottom-width: 0;
+	border-left-width: 4px; 
+    display: inline-block;
+    height: 0; width: 0;
+    margin-left: 4px;
+    vertical-align: middle;    
+    cursor:pointer;
+}
+[data-tify_control='dropdown'].active > .selected > .caret{
+	position:absolute;
+	right:4px; top:50%;
+	margin-top:-2px;
+	border-top-width: 0;
+	border-right-width: 4px;
+	border-bottom-width: 4px;
+	border-left-width: 4px;
+    display: inline-block;
+    height: 0; width: 0;
+    margin-left: 4px;
+    vertical-align: middle;    
+    cursor:pointer;
+}
+
+/* = LISTE DEROULANTE = */
+.tify_control_dropdown-picker{
+	position:absolute;
+	display:none;
+	overflow:auto;
+	z-index:99;
+	background-color:#FFF;
+	margin:0;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+}
+.tify_control_dropdown-picker.active{
+	display:inherit;	
+}
+.tify_control_dropdown-picker ul,
+.tify_control_dropdown-picker li{
+	margin:0; padding:0;
+}
+.tify_control_dropdown-picker > ul > li > label{
+	display:block;
+	padding:0.1em 0.4em;
+	margin:0;
+}
+.tify_control_dropdown-picker > ul > li > label:hover{
+	background-color:#F4F4F4;
+	cursor:pointer;
+}
+.tify_control_dropdown-picker > ul > li.checked > label{
+	background-color:DodgerBlue;
+	color:#FFF;
+}
+.tify_control_dropdown-picker > ul > li > label > .selection > input{
+	display:none;
+}
