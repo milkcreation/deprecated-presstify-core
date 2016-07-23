@@ -1,0 +1,65 @@
+/** Affichage en colonnes **/
+.tify-2cols,
+.tify-3cols,
+.tify-4cols,
+.tify-2cols > div,
+.tify-3cols > div,
+.tify-4cols > div{
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing:    border-box;
+	box-sizing:         border-box;
+}
+.tify-2cols,
+.tify-3cols,
+.tify-4cols{
+    margin-left:-15px;
+    margin-right:-15px;
+}
+.tify-2cols:before,
+.tify-2cols:after,
+.tify-3cols:before,
+.tify-3cols:after,
+.tify-4cols:before,
+.tify-4cols:after {
+    display: table;
+    content: "";
+}
+.tify-2cols:after,
+.tify-3cols:after,
+.tify-4cols:after{
+    clear: both;
+}
+.tify-2cols > div,
+.tify-3cols > div,
+.tify-4cols > div{
+    float:left;
+    margin:0;
+    padding:0 15px;
+}
+.tify-2cols > div img,
+.tify-3cols > div img,
+.tify-4cols > div img{
+	max-width:100%;
+	height:auto;
+}
+.tify-quarter-col-simple{
+    width:25%;    
+}
+.tify-quarter-col-triple{
+    width:75%;    
+}
+.tify-third-col-simple{
+    width:33.333333%;    
+}
+.tify-third-col-double{
+    width:66.666666%;    
+}
+.tify-half-col-simple{
+	width:50%; 
+}
+/** Helper **/
+.tify-2cols > div,
+.tify-3cols > div,
+.tify-4cols > div{
+    border: 1px dashed #bbb;
+}
