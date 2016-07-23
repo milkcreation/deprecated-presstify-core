@@ -1,0 +1,84 @@
+remove_menu               :
+  dashboard         : false
+  posts             : false
+  media             : false
+  pages             : false
+  comments          : false
+  appearence        : false
+  plugins           : false
+  users             : false
+  tools             : false
+  settings          : false
+remove_post_support       :
+  title             : false
+  editor            : false 
+  author            : false
+  thumbnail         : false
+  excerpt           : false
+  post-formats      : false
+  comments          : false
+  trackbacks        : false
+  custom-fields     : false
+  revisions         : false
+remove_page_support       :
+  title             : false
+  editor            : false 
+  author            : false
+  thumbnail         : false
+  page-attributes   : false
+  comments          : false
+  trackbacks        : false
+  custom-fields     : false
+  revisions         : false
+unregister_widget         :
+  pages             : false
+  calendar          : false
+  archives          : false
+  links             : false
+  meta              : false
+  search            : false
+  text              : false
+  categories        : false
+  recent posts      : false
+  recent comments   : false
+  rss               : false
+  tag cloud         : false
+  nav menu          : false 
+remove_dashboard_meta_box :
+  right_now         : false
+  recent_comments   : false
+  incoming_links    : false
+  plugins           : false
+  quick_press       : false
+  recent_drafts     : false
+  activity          : false
+  primary           : false
+  secondary         : false
+remove_post_meta_box      :
+  authordiv         : false
+  categorydiv       : false
+  commentstatusdiv  : false
+  commentsdiv       : false
+  formatdiv         : false
+  postcustom        : false
+  postexcerpt       : false
+  postimagediv      : false
+  revisionsdiv      : false
+  slugdiv           : false
+  submitdiv         : false
+  tagsdiv-post_tag  : false
+  trackbacksdiv     : false
+remove_page_meta_box      :
+  authordiv         : false
+  commentstatusdiv  : false
+  commentsdiv       : false
+  pageparentdiv     : false
+  postcustom        : false
+  postimagediv      : false
+  revisionsdiv      : false
+  slugdiv           : false
+  submitdiv         : false
+disable_post              : false
+disable_post_category     : false
+disable_post_tag          : false
+disable_comment           : false

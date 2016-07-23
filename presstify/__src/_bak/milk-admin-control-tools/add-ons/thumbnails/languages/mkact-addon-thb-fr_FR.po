@@ -1,0 +1,444 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: MKCAT Addon - Thumbnails\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-07 11:38+0100\n"
+"PO-Revision-Date: 2012-08-07 12:22+0100\n"
+"Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
+"Language-Team: Milkcreation <contact@milkcreation.fr>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=n>1\n"
+"X-Poedit-SearchPath-0: ../inc\n"
+
+#: ../inc/regenerate-thumbnails.php:56
+msgid "Regenerate the thumbnails for this single image"
+msgstr "Recréer les miniatures de cette image"
+
+#: ../inc/regenerate-thumbnails.php:56 ../inc/regenerate-thumbnails.php:70
+#: ../inc/regenerate-thumbnails.php:87 ../inc/regenerate-thumbnails.php:125
+msgid "Regenerate Thumbnails"
+msgstr "Recréation des Miniatures"
+
+#: ../inc/regenerate-thumbnails.php:132
+msgid "Cheatin&#8217; uh?"
+msgstr "Alors, on triche ?"
+
+#: ../inc/regenerate-thumbnails.php:161
+msgid ""
+"Please be patient while the thumbnails are regenerated. This can take a "
+"while if your server is slow (inexpensive hosting) or if you have many "
+"images. Do not navigate away from this page until this script is done or the "
+"thumbnails will not be resized. You will be notified via this page when the "
+"regenerating is completed."
+msgstr ""
+"Soyez patient durant la regénération des miniatures. Ceci peut prendre plus "
+"ou moins de temps selon la vitesse de votre serveur (hébérgement) ou si vous "
+"avez beaucoup d'images. Ne quittez pas cette page durant la procédure sinon "
+"elle sera interrompue. Vous serez averti lorsque la regénération sera "
+"terminée."
+
+#: ../inc/regenerate-thumbnails.php:165
+#, php-format
+msgid "To go back to the previous page, <a href=\"%s\">click here</a>."
+msgstr "Pour revenir à la page précédente,  <a href=\"%s\">cliquez ici</a>"
+
+#: ../inc/regenerate-thumbnails.php:166
+#, php-format
+msgid ""
+"All done! %1$s image(s) were successfully resized in %2$s seconds and there "
+"were %3$s failure(s). To try regenerating the failed images again, <a href="
+"\"%4$s\">click here</a>. %5$s"
+msgstr ""
+"Tout est ok! %1$s image(s) ont été recalculées en %2$s seconds avec %3$s "
+"echec(s). Pour tenter la regénération des images en échec, <a href=\"%4$s"
+"\">cliquez ici</a>. %5$s"
+
+#: ../inc/regenerate-thumbnails.php:167
+#, php-format
+msgid ""
+"All done! %1$s image(s) were successfully resized in %2$s seconds and there "
+"were 0 failures. %3$s"
+msgstr ""
+"Tout est ok! %1$s image(s) ont été recalculées en %2$s secondes sans images "
+"en échec. %3$s"
+
+#: ../inc/regenerate-thumbnails.php:171 ../inc/regenerate-thumbnails.php:314
+msgid "You must enable Javascript in order to proceed!"
+msgstr ""
+"Vous devez activer le Javascript dans votre navigateur pour continuer !"
+
+#: ../inc/regenerate-thumbnails.php:177
+msgid "Abort Resizing Images"
+msgstr "Abandonner le redimensionnement des images"
+
+#: ../inc/regenerate-thumbnails.php:179
+msgid "Debugging Information"
+msgstr "Information de Deboggage"
+
+#: ../inc/regenerate-thumbnails.php:182
+#, php-format
+msgid "Total Images: %s"
+msgstr "Total des Images: %s"
+
+#: ../inc/regenerate-thumbnails.php:183
+#, php-format
+msgid "Images Resized: %s"
+msgstr "Images redimensionnées: %s"
+
+#: ../inc/regenerate-thumbnails.php:184
+#, php-format
+msgid "Resize Failures: %s"
+msgstr "Echec du redimensionnement :%s"
+
+#: ../inc/regenerate-thumbnails.php:215
+msgid "Stopping..."
+msgstr "Arrêter ..."
+
+#: ../inc/regenerate-thumbnails.php:304
+#, php-format
+msgid ""
+"Use this tool to regenerate thumbnails for all images that you have uploaded "
+"to your blog. This is useful if you've changed any of the thumbnail "
+"dimensions on the <a href='%s'>media settings page</a>. Old thumbnails will "
+"be kept to avoid any broken images due to hard-coded URLs."
+msgstr ""
+"Utilisez cet outil pour regénérer les miniatures de toutes les images que "
+"vous avez téléchargé sur votre site. Pratique lorsque vous modifiez les "
+"dimensions de miniature dans la   <a href='%s'>Gestion de paramètres des "
+"médias</a>. Les anciennes miniatures seront conservées pour éviter les liens "
+"morts dans votre site."
+
+#: ../inc/regenerate-thumbnails.php:306
+#, php-format
+msgid ""
+"You can regenerate specific images (rather than all images) from the <a "
+"href='%s'>Media</a> page. Hover over an image's row and click the link to "
+"resize just that one image or use the checkboxes and the &quot;Bulk "
+"Actions&quot; dropdown to resize multiple images (WordPress 3.1+ only)."
+msgstr ""
+"Vous pourrez aussi redimensionner spécifiquement certaine images depuis la "
+"page d'administration des <a href='%s'>Medias</a>. Cochez les images à "
+"redimensionner et lancez l'action groupée de redimensionnement d'image "
+"multiple. "
+
+#: ../inc/regenerate-thumbnails.php:308
+msgid ""
+"Thumbnail regeneration is not reversible, but you can just change your "
+"thumbnail dimensions back to the old values and click the button again if "
+"you don't like the results."
+msgstr ""
+"Il ne sera pas possible de revenir en arrière, mais vous pourrez toujours "
+"rétablir les dimensions de miniatures initiales et réactiver une nouvelle "
+"fois la regénération de miniatures."
+
+#: ../inc/regenerate-thumbnails.php:310
+msgid "To begin, just press the button below."
+msgstr "Pour commencer, appuyer sur le bouton suivant."
+
+#: ../inc/regenerate-thumbnails.php:312
+msgid "Regenerate All Thumbnails"
+msgstr "Recréation de toutes les miniatures"
+
+#: ../inc/regenerate-thumbnails.php:336
+#, php-format
+msgid "Failed resize: %s is an invalid image ID."
+msgstr "Redimensionnement impossible: %s n'est pas une image valide."
+
+#: ../inc/regenerate-thumbnails.php:339
+msgid "Your user account doesn't have permission to resize images"
+msgstr "Vous n'êtes pas autorisé à redimensionner les images"
+
+#: ../inc/regenerate-thumbnails.php:344
+#, php-format
+msgid "The originally uploaded image file cannot be found at %s"
+msgstr "L'image originale n'a pu être retrouvé à l'emplacement suivant %s"
+
+#: ../inc/regenerate-thumbnails.php:353
+msgid "Unknown failure reason."
+msgstr "Echec pour une raison inconnue"
+
+#: ../inc/regenerate-thumbnails.php:358
+#, php-format
+msgid "&quot;%1$s&quot; (ID %2$s) was successfully resized in %3$s seconds."
+msgstr ""
+
+#: ../inc/regenerate-thumbnails.php:364
+#, php-format
+msgid ""
+"&quot;%1$s&quot; (ID %2$s) failed to resize. The error message was: %3$s"
+msgstr ""
+
+#: ../inc/tools.php:20
+msgid "Post Thumbnails Tools"
+msgstr "Outils des Miniatures"
+
+#: ../inc/tools.php:21 ../inc/tools.php:36
+msgid "Post Thumbnails"
+msgstr "Miniatures"
+
+#~ msgid "Database"
+#~ msgstr "Base de données"
+
+#~ msgid "Admin Control Tools Settings"
+#~ msgstr "Paramètres des outils de contrôle de l'administration"
+
+#~ msgid "Admin Control Tools"
+#~ msgstr "Outils de contrôle de l'administration"
+
+#~ msgid "Admin Controller Tools Settings"
+#~ msgstr "Outils de contrôle de l'administration"
+
+#~ msgid "Done"
+#~ msgstr "Enregistré"
+
+#~ msgid "deleting..."
+#~ msgstr "Effacement ..."
+
+#~ msgid "In progress ..."
+#~ msgstr "En cours ..."
+
+#~ msgid "SYSTEM ERROR"
+#~ msgstr "ERREUR SYSTEME"
+
+#~ msgid "Showcase"
+#~ msgstr "Vitrine"
+
+#~ msgid "Showcase shortcode"
+#~ msgstr "Shortcode de la vitrine"
+
+#~ msgid "One shot showcase"
+#~ msgstr "Vitrine \"One Shot\""
+
+#~ msgid "Add an image to showcase"
+#~ msgstr "Ajouter une image à la vitrine"
+
+#~ msgid "Add an image"
+#~ msgstr "Ajout d'une image"
+
+#~ msgid "Edit image"
+#~ msgstr "Editer l'image"
+
+#~ msgid "Remove from showcase"
+#~ msgstr "Retirer de la vitrine"
+
+#~ msgid "yes"
+#~ msgstr "oui"
+
+#~ msgid "no"
+#~ msgstr "non"
+
+#~ msgid "Showcase width"
+#~ msgstr "Largeur de la vitrine"
+
+#~ msgid "Showcase height"
+#~ msgstr "Hauteur de la vitrine"
+
+#~ msgid "Showcases theme"
+#~ msgstr "Thème des vitrines"
+
+#~ msgid "Preview image size"
+#~ msgstr "Taille de l'image de prévisualisation"
+
+#~ msgid "Clickable preview image"
+#~ msgstr "Image de prévisualisation cliquable"
+
+#~ msgid "Enable autoscroll"
+#~ msgstr "Activation du défilement automatique"
+
+#~ msgid "Autoscroll delay"
+#~ msgstr "Temporisation du défilement automatique"
+
+#~ msgid "Display fullscreen button"
+#~ msgstr "Afficher le bouton plein écran"
+
+#~ msgid "Display nav buttons"
+#~ msgstr "Afficher dans les bouton de navigation"
+
+#~ msgid "Display progressbar"
+#~ msgstr "Afficher la barre de progression"
+
+#~ msgid "Display tab navigation"
+#~ msgstr "Afficher les onglet de navigation"
+
+#~ msgid "Display thumbnail in tabs"
+#~ msgstr "Afficher la miniature dans les onglets"
+
+#~ msgid "Size of tab thumbnail"
+#~ msgstr "Taille de miniature d'onglet"
+
+#~ msgid "Amount of tabs per page"
+#~ msgstr "Pagination des onglets"
+
+#~ msgid "Enable caption"
+#~ msgstr "Activer la legende"
+
+#~ msgid "Showcase default options"
+#~ msgstr "Options par défaut des vitrines"
+
+#~ msgid "Options"
+#~ msgstr "Options"
+
+#~ msgid "Default options"
+#~ msgstr "Options par défaut"
+
+#~ msgid "Commons showcases params"
+#~ msgstr "Paramètres communs des vitrines"
+
+#~ msgid "Showcases Theme"
+#~ msgstr "Theme des vitrines"
+
+#~ msgid "None"
+#~ msgstr "Aucune"
+
+#~ msgid "One Shot showcase default params"
+#~ msgstr "Paramètres par défaut des vitrines \"one shot\""
+
+#~ msgid "Enable for next post types"
+#~ msgstr "Activer pour les types de post suivant"
+
+#~ msgid "Show in dedicated Widget form list of showcase choice"
+#~ msgstr "Montrer dans la liste de choix des vitrine du Widget dédié"
+
+#~ msgid "Display shortcode in a column of list, to put it in any post editor"
+#~ msgstr ""
+#~ "Afficher le shortcode dans une colonne de la liste afin de pouvoir les "
+#~ "utiliser dans l'éditeur de n'importe quel post"
+
+#~ msgid "Shortcodes showcase default params"
+#~ msgstr "Paramètres par défaut des vitrines \"shortcodes\""
+
+#~ msgid "Widgets showcase default params"
+#~ msgstr "Paramètres par défaut des vitrines dans les widgets"
+
+#~ msgid ""
+#~ "For use this type of showcase, you must have enabling metaboxe for post "
+#~ "type and use PHP showcase display function in your templates files. Put "
+#~ "next code in the loop of your templates files :"
+#~ msgstr ""
+#~ "Pour utiliser ce type de vitrine, vous devez activer la metaboxe pour le "
+#~ "type de post et utiliser la fonction PHP d'affichage des vitrines dans "
+#~ "vos fichiers de templates. Déposer le code suivant dans la boucle des "
+#~ "fichiers de votre thème :"
+
+#~ msgid ""
+#~ "Usualy you will can replace the post thumbnail area with the showcase."
+#~ msgstr ""
+#~ "Vous pourrez éventuellement remplacer l'image  à la une par la vitrine."
+
+#~ msgid ""
+#~ "You can use this type of showcase on copying and pasting shortcode in "
+#~ "post editor"
+#~ msgstr ""
+#~ "Vous pouvez utiliser ce type de vitrine en copiant et en collant le "
+#~ "shortcode dans l'éditeur des posts"
+
+#~ msgid "You can use this type of showcase with wordpress widget interface"
+#~ msgstr ""
+#~ "Vous pouvez utiliser ce type de vitrine avec l'interface Wordpress de "
+#~ "gestion des widgets"
+
+#~ msgid "Showcases"
+#~ msgstr "Vitrines"
+
+#~ msgid "Add a showcase"
+#~ msgstr "Ajout d'une vitrine"
+
+#~ msgid "All the showcases"
+#~ msgstr "Toutes les vitrines"
+
+#~ msgid "Add a new showcase"
+#~ msgstr "Ajouter une nouvelle vitrine"
+
+#~ msgid "Edit the showcase"
+#~ msgstr "&Eacute;diter la vitrine "
+
+#~ msgid "New showcase"
+#~ msgstr "Nouvelle vitrine"
+
+#~ msgid "View the showcase"
+#~ msgstr "Voir la vitrine"
+
+#~ msgid "Search a showcase"
+#~ msgstr "Rechercher une vitrine"
+
+#~ msgid "No showcase found"
+#~ msgstr "Aucune vitrine trouvée "
+
+#~ msgid "No showcase in the trash"
+#~ msgstr "Aucune vitrine dans la corbeille"
+
+#~ msgid "Parent showcase"
+#~ msgstr "Vitrine parente"
+
+#~ msgid "Milkcreation showcase galleries"
+#~ msgstr "Galerie de vitrine milkcreation"
+
+#~ msgid "milk-showcase"
+#~ msgstr "milk-showcase"
+
+#~ msgid "Use this widget to display a showcase's slideshow"
+#~ msgstr ""
+#~ "Utiliser ce widget pour afficher un diaporama des images de la vitrine"
+
+#~ msgid "Slideshow of a Showcase"
+#~ msgstr "Diaporama d'images d'une vitrine"
+
+#~ msgid "Title:"
+#~ msgstr "Titre:"
+
+#~ msgid "Showcase:"
+#~ msgstr "Vitrine:"
+
+#~ msgid "Select a showcase"
+#~ msgstr "Choisir une vitrine"
+
+#~ msgid "Customize params"
+#~ msgstr "Paramètres personnalisés"
+
+#~ msgid "Enable \"One Shot Showcases\" metaboxe for post types"
+#~ msgstr "Types de post pour lesquels activer les vitrines \"One Shot\""
+
+#~ msgid "Reset to default"
+#~ msgstr "Réinitialiser les valeurs par défaut"
+
+#~ msgid "Images of showcase"
+#~ msgstr "Images de la vitrine"
+
+#~ msgid "Post types"
+#~ msgstr "Types de post"
+
+#~ msgid "Close"
+#~ msgstr "Fermer"
+
+#~ msgid "X"
+#~ msgstr "X"
+
+#~ msgid "Milk Showcase - dynamic gallery by Milkcreation"
+#~ msgstr "Milk Showcase - Galerie dynamique par Milkcreation"
+
+#~ msgid "width :"
+#~ msgstr "largeur :"
+
+#~ msgid "height :"
+#~ msgstr "hauteur :"
+
+#~ msgid "Prev"
+#~ msgstr "Précedent"
+
+#~ msgid "Next"
+#~ msgstr "Suivant"
+
+#~ msgid "Edit"
+#~ msgstr "Modifier"
+
+#~ msgid "Add to showcase"
+#~ msgstr "Ajouter à la vitrine"
+
+#~ msgid "Add a showcase thumbnail"
+#~ msgstr "Ajout d'une image dans la vitrine"
