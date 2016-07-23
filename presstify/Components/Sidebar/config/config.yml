@@ -1,0 +1,13 @@
+# Position de la sidebar
+pos:        'left'
+# Taille de la sidebar
+width:      300
+# Responsive
+min-width:  991
+# Bouton de bascule
+toggle:     true
+# Mise en file des scripts
+enqueue:    true  
+
+# Greffons
+nodes:
