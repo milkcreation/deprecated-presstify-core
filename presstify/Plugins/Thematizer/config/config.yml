@@ -1,0 +1,3 @@
+colors:
+  "<?php _e( 'Blanc', 'tify');?>":       '#FFFFFF'
+  "<?php _e( 'Noir', 'tify');?>":        '#474747'

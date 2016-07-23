@@ -1,0 +1,7 @@
+#cboxLoadedContent{
+	padding :10px;
+} 
+#cboxLoadedContent h3{
+	font-size:2em;
+	font-weight:bold;
+}
