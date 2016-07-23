@@ -1,0 +1,63 @@
+/* = GLOBAL = */
+.links-taboox, 
+.links-taboox *{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing:    border-box;
+    box-sizing:         border-box;
+}
+.links-taboox > ul{
+	margin-left:-5px; margin-right:-5px,
+}
+.links-taboox > ul > li{
+	display:inline-block;
+	padding:0 10px; margin:5px;
+}
+[data-tify_control='dynamic_inputs'] > ul > li:before,
+[data-tify_control='dynamic_inputs'] > ul > li:after,
+.link:before,
+.link:after{
+	display:table;
+	content:" ";
+}
+[data-tify_control='dynamic_inputs'] > ul > li:after,
+.link:after{
+	clear:both;
+}
+.link{
+	min-height:190px;
+}
+.link .wrapper{	
+	float:left;
+	padding:20px 35px 20px 0;
+}
+.link .link-url,
+.link .link-title,
+.link .link-caption{
+	width:100%;
+	margin-bottom:10px;
+}
+.link .link-url > label,
+.link .link-title > label,
+.link .link-caption > label{
+	display:block;
+	font-weight:700;
+	color:#23282D;
+	margin-bottom:5px;
+}
+/* = IMAGE = */
+.link .tify_control_media_image{
+	float:left;
+	margin:20px;
+	width:150px;
+	height:150px;
+}
+/* = URL = */
+.link .link-url > input{
+	margin-right:0;
+}
+.link .link-url.tify_input_link:before{
+  	top: auto;
+  	right:1px;
+  	bottom:10px;
+  	font-size:17px;
+}

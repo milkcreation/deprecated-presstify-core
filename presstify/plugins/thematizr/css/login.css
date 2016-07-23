@@ -1,0 +1,62 @@
+body.login {
+	font-family: 'Maven Pro', sans-serif !important;
+	background-color:#F5F5F5 !important;
+}
+body.login div#login {}
+body.login div#login h1 {
+	text-align:center;
+}
+body.login div#login h1 a {
+    background-size:contain;
+    width:300px; height:120px;
+}
+body.login div#login form#loginform {}
+body.login div#login form#loginform p {}
+body.login div#login form#loginform p label {}
+body.login div#login form#loginform input {}
+body.login div#login form#loginform input#user_login {}
+body.login div#login form#loginform input#user_pass {}
+body.login div#login form#loginform p.forgetmenot {}
+body.login div#login form#loginform p.forgetmenot input#rememberme {}
+body.login div#login form#loginform p.submit {}
+body.login div#login form#loginform p.submit input#wp-submit {	
+	box-shadow: none;
+	border:none;
+	font-weight:400;
+	-webkit-border-radius:15px;
+	-moz-border-radius:15px;
+	border-radius:15px;
+	-webkit-transition: background-color 300ms ease-in-out;
+    -moz-transition: background-color 300ms ease-in-out;
+    -ms-transition: background-color 300ms ease-in-out;
+    -o-transition: background-color 300ms ease-in-out;
+    transition: background-color 300ms ease-in-out;
+    text-shadow:none;
+    background: #E53437 !important;
+    background-image:-moz-linear-gradient(left, #DF1026, #EB5748) !important;
+	background-image:-webkit-linear-gradient(left, #DF1026, #EB5748) !important;
+	background-image:-o-linear-gradient(left, #DF1026, #EB5748) !important;
+	background-image:-ms-linear-gradient(left, #DF1026, #EB5748) !important;
+	background-image:linear-gradient(left, #DF1026, #EB5748) !important;
+}
+body.login div#login form#loginform p.submit input#wp-submit:hover,
+body.login div#login form#loginform p.submit input#wp-submit:active {
+	background:transparent !important;
+	background-color:#DF1026 !important;	
+}
+body.login div#login p#nav {}
+body.login div#login p#nav a{
+	color: #E11E2C !important;
+}
+body.login div#login p#nav a:hover,
+body.login div#login p#nav a:active{
+	color: #E11E2C !important;
+}
+body.login div#login p#backtoblog {}
+body.login div#login p#backtoblog a{
+	color: #E11E2C !important;
+}
+body.login div#login p#backtoblog a:hover,
+body.login div#login p#backtoblog a:active{
+	color: #E11E2C !important;
+}

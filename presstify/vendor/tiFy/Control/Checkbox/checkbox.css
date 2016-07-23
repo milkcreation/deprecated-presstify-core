@@ -1,0 +1,61 @@
+[data-tify_control='checkbox'] > label{
+	position:relative;
+	display:block;
+	margin-bottom:0;
+	line-height:1;
+	cursor: pointer;
+	font-weight:400;
+}
+[data-tify_control='checkbox'] > label > input[type="checkbox"]{
+	display:none;
+}
+[data-tify_control='checkbox'][data-label_position='left'] > label{
+	padding-right:20px;
+}
+[data-tify_control='checkbox'][data-label_position='right'] > label{
+	padding-left:20px;
+}
+[data-tify_control='checkbox'] > label::before{
+	position:absolute;
+	display:block;
+	top:50%; 
+	margin-top:-6px;	
+	border:1px solid #000;
+	width:13px; height:13px;
+	content:"";
+}
+[data-tify_control='checkbox'][data-label_position='left'] > label::before{
+	right:0;
+}
+[data-tify_control='checkbox'][data-label_position='right'] > label::before{
+	left:0;
+}
+[data-tify_control='checkbox'] > label::after{
+	position:absolute;
+	top:50%;
+	content: "";	
+	width:18px; height:18px;
+	margin-top:-7px;
+	z-index:1;
+	text-align:left;
+}
+[data-tify_control='checkbox'] > label::after path{
+	fill:#27AE60;
+}
+[data-tify_control='checkbox'][data-label_position='left'] > label::after{
+	right:0;
+}
+[data-tify_control='checkbox'][data-label_position='right'] > label::after{
+	left:0;
+}
+.checked[data-tify_control='checkbox'] > label::after{
+	display:inherit;
+	content: url("data:image/svg+xml;charset=UTF-8,%3Csvg version%3D%221.1%22 xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22 x%3D%220px%22 y%3D%220px%22 viewBox%3D%220 0 24 24%22 enable-background%3D%22new 0 0 24 24%22 xml%3Aspace%3D%22preserve%22 fill%3D%22%23000000%22%3E%3Cpath d%3D%22M21.653%2C0.221c-0.291-0.294-0.768-0.294-1.061%2C0L9.412%2C11.351c-0.293%2C0.296-0.771%2C0.296-1.062%2C0L3.451%2C6.36  C3.306%2C6.214%2C3.116%2C6.141%2C2.925%2C6.14C2.732%2C6.138%2C2.536%2C6.211%2C2.389%2C6.36L0.225%2C8.308C0.08%2C8.456%2C0.002%2C8.64%2C0.002%2C8.833  c0%2C0.194%2C0.078%2C0.398%2C0.223%2C0.545l4.94%2C5.182c0.292%2C0.296%2C0.771%2C0.777%2C1.062%2C1.07l2.124%2C2.141c0.292%2C0.293%2C0.769%2C0.293%2C1.062%2C0  l14.367-14.34c0.293-0.293%2C0.293-0.777%2C0-1.07L21.653%2C0.221z%22%2F%3E%3C%2Fsvg%3E");
+	/* RAW :	 	
+		<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" fill="#000000">
+			<path d="M21.653,0.221c-0.291-0.294-0.768-0.294-1.061,0L9.412,11.351c-0.293,0.296-0.771,0.296-1.062,0L3.451,6.36  C3.306,6.214,3.116,6.141,2.925,6.14C2.732,6.138,2.536,6.211,2.389,6.36L0.225,8.308C0.08,8.456,0.002,8.64,0.002,8.833  c0,0.194,0.078,0.398,0.223,0.545l4.94,5.182c0.292,0.296,0.771,0.777,1.062,1.07l2.124,2.141c0.292,0.293,0.769,0.293,1.062,0  l14.367-14.34c0.293-0.293,0.293-0.777,0-1.07L21.653,0.221z"/>
+		</svg>
+		ENCODAGE :
+		preg_replace( '/\+/', ' ', urlencode( '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve" fill="#000000"><path d="M21.653,0.221c-0.291-0.294-0.768-0.294-1.061,0L9.412,11.351c-0.293,0.296-0.771,0.296-1.062,0L3.451,6.36  C3.306,6.214,3.116,6.141,2.925,6.14C2.732,6.138,2.536,6.211,2.389,6.36L0.225,8.308C0.08,8.456,0.002,8.64,0.002,8.833  c0,0.194,0.078,0.398,0.223,0.545l4.94,5.182c0.292,0.296,0.771,0.777,1.062,1.07l2.124,2.141c0.292,0.293,0.769,0.293,1.062,0  l14.367-14.34c0.293-0.293,0.293-0.777,0-1.07L21.653,0.221z"/></svg>' ) );
+	 */	
+}
