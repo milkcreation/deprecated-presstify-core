@@ -1,0 +1,67 @@
+install:        false
+col_prefix:     'user_'
+meta:           'user'
+columns:
+  ID:
+    type:           'BIGINT'
+    size:           20
+    unsigned:       true
+    auto_increment: true
+    prefix:         false
+    
+  login:
+    type:           'VARCHAR'
+    size:           60
+    default:        ''
+ 
+  pass:
+    type:           'VARCHAR'
+    size:           255
+    default:        ''
+  
+  nicename:
+    type:           'VARCHAR'
+    size:           50
+    default:        ''
+    
+  email:
+    type:           'VARCHAR'
+    size:           100
+    default:        ''
+      
+  url:
+    type:           'VARCHAR'
+    size:           100
+    default:        ''
+     
+  registered:
+    type:           'DATETIME'
+    default:        '0000-00-00 00:00:00'      
+  
+  activation_key:
+    type:           'VARCHAR'
+    size:           255
+    default:        ''
+    
+  status:
+    type:           'INT'
+    size:           11
+    default:        0
+     
+  display_name:
+    type:           'VARCHAR'
+    size:           250
+    prefix:         false
+    default:        ''
+
+  spam:
+    type:           'TINYINT'
+    size:           2
+    prefix:         false
+    default:        0
+  
+  deleted:
+    type:           'TINYINT'
+    size:           2
+    prefix:         false
+    default:        0
