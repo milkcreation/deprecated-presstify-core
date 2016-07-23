@@ -1,0 +1,32 @@
+[data-tify_control="dropdown_menu"]{
+	position:relative;
+}
+[data-tify_control="dropdown_menu"] .selected{
+	cursor:pointer;
+}
+[data-tify_control="dropdown_menu"] .selected > a,
+[data-tify_control="dropdown_menu"] .selected > .caret{
+	display:inline-block;
+}
+[data-tify_control="dropdown_menu"] .selected > .caret{
+	border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 6px solid;
+    display: inline-block;
+    height: 0;
+    margin-left: 6px;
+    vertical-align: middle;
+    width: 0;
+    cursor:pointer;
+}
+[data-tify_control="dropdown_menu"] > ul{
+	position:absolute;
+	top:auto;
+	display:none;
+}
+[data-tify_control="dropdown_menu"].active > ul{
+	display:inherit;	
+}
+[data-tify_control="dropdown_menu"].active > ul > li > a{
+	display:block;
+}

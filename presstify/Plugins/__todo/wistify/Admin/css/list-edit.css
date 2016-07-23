@@ -1,0 +1,21 @@
+/**** ==== TITRE ==== ****/
+#wistify_mailing_list-edit #title{
+	background-color: #fff;
+    font-size: 1.7em;
+    height: 1.7em;
+    line-height: 100%;
+    margin: 0;
+    margin-bottom:20px;
+    outline: 0 none;
+    padding: 3px 8px;
+    width: 100%;
+}
+#wistify_mailing_list-edit #content textarea{
+	height:10em;
+	font-size:16px;
+}
+#wistify_mailing_list-edit .tify_control_switch{
+	display:inline-block;
+	vertical-align:middle;
+	margin-left:5px;
+}
