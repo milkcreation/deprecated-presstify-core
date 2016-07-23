@@ -1,0 +1,51 @@
+/* = GLOBAL = */
+/** == BALISES == **/
+body, h1, h2, h3, h4, h5, h6{}
+
+/* = STRUCTURE = */
+/** == GLOBAL == **/
+#page{}
+
+/** == PANNEAU POUSSEUR == **/
+.tify-pusher_panel{}
+
+/* = ENTÊTE = */
+/** == GLOBAL == **/
+#site-header{ }
+
+/** == MENU DE NAVIGATION SECONDAIRE == **/
+#site-header #secondary-navigation{}
+#site-header #secondary-navigation #primary-navigation-menu > ul{}
+#site-header #secondary-navigation #primary-navigation-menu > ul > li{}
+
+/** == MENU DE NAVIGATION PRINCIPAL == **/
+#site-header #primary-navigation{}	
+#site-header #primary-navigation #primary-navigation-menu > ul{}
+#site-header #primary-navigation #primary-navigation-menu > ul > li{}
+
+/* = CORPS DE PAGE = */
+/** == GLOBAL == **/
+#main{}
+
+/** == JUMBOTRON == **/
+#main #jumbotron{ }
+
+/** == FIL D'ARIANE == **/
+#main #breadcrumb{ }
+
+/** == CONTENU DU SITE == **/
+/*** === GLOBAL === ***/
+#main #site-content{ }
+
+/*** === ARTICLES - MISE EN FORME STANDARD === ***/
+#main #site-content article{}
+
+/*** === ARTICLE - CONTENU SIMPLE === ***/
+#main #site-content .content-singular{}
+
+/*** === ARTICLE - CONTENU ARCHIVE === ***/
+#main #site-content .content-archive{}
+
+/* = FOOTER = */
+/** == GLOBAL == **/
+#site-footer{}

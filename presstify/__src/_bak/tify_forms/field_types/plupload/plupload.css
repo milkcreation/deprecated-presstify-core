@@ -1,0 +1,87 @@
+.tify-forms-plupload-upload-ui{
+
+}
+.tify-forms-plupload-upload-ui .drag-drop-area{
+	border: 4px dashed #bbb; 
+	text-align:center;
+	background-color:#F1F1F1;	
+	margin-bottom:5px;
+}
+.wp-admin .tify-forms-plupload-upload-ui .drag-drop-area{
+	min-width:250px;
+	min-height:100px;
+	max-width:250px;
+	max-height:250px;
+}
+.tify-forms-plupload-upload-ui .drag-drop-area .preview{
+	text-align:center;
+	float:none;
+}
+.tify-forms-plupload-upload-ui .drag-drop-area .preview img{
+	max-width:100%;
+	height:auto;
+}
+.tify-forms-plupload-upload-ui .file-items{
+	margin:0; padding:0;
+	list-style-type: none;
+}
+.tify-forms-plupload-upload-ui .file-item:before,
+.tify-forms-plupload-upload-ui .file-item:after{
+	display:table;
+	content:"";
+}
+.tify-forms-plupload-upload-ui .file-item:after{
+	clear:both;
+}
+.tify-forms-plupload-upload-ui .file-item{
+	margin:0; padding:0;
+	text-indent:0;
+	min-height:50px:
+}
+.wp-admin .tify-forms-plupload-upload-ui .file-item.uploaded{
+	display:none;
+}
+.tify-forms-plupload-upload-ui .file-item > div{
+	width:50%; 
+	float:left;
+}
+.tify-forms-plupload-upload-ui .file-item .progress-bar{
+	min-width:2em;
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview{
+	text-align:right;
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview > img{
+	height:50px;
+	width:auto;
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico{
+	font: normal 50px/1 "Dashicons";
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-archive:before {
+	content: "\f501"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-audio:before {
+	content: "\f500"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-code:before {
+	content: "\f499"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-default:before {
+	content: "\f498"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-document:before {
+	content: "\f497"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-interactive:before {
+	content: "\f496"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-spreadsheet:before {
+	content: "\f495"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-text:before {
+	content: "\f491"
+}
+.tify-forms-plupload-upload-ui .file-item .small-preview .plupload-ico-video:before {
+	content: "\f490"
+}
