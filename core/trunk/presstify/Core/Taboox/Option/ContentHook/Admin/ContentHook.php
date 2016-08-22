@@ -10,7 +10,7 @@ class ContentHook extends Admin
 	
 	/* = INITIALISATION GLOBALE = */
 	public function init()
-	{
+	{		
 		foreach( (array) $this->args as $id => $args ) :
 			$this->Register( $id, $args );
 		endforeach;
@@ -27,6 +27,7 @@ class ContentHook extends Admin
 	/* = FORMULAIRE DE SAISIE = */
 	public function form()
 	{
+		
 	?>
 	<table class="form-table">
 		<tbody>

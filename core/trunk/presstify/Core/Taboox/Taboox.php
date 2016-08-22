@@ -310,15 +310,12 @@ class Taboox extends Core
 		$AdminFormClass->env			= self::$Boxes[$hookname]['env'];
 		$AdminFormClass->args 			= $node['args'];
 		
-		// Déclenchement de l'action "Initialisation global" dans l'ensemble classes de rappel de formulaire
-		foreach( (array) $this->AdminFormClass as $Screen => $Classes ) :
-			foreach( (array) $Classes as $ID => $Class ) :
-				if( is_callable( array( $Class, 'init' ) ) ) :
-					call_user_func( array( $Class, 'init' ) );
-				endif;
-			endforeach;
-		endforeach;
+		if( is_callable( array( $AdminFormClass, 'init' ) ) ) :
+			call_user_func( array( $AdminFormClass, 'init' ) );
+		endif;
 		
+		$this->AdminFormClass[$hookname][$node['id']] = $AdminFormClass;
+				
 		return $this->AdminFormClass[$hookname][$node['id']] = $AdminFormClass;
 	}	
 }

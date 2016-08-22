@@ -22,7 +22,7 @@ abstract class Admin extends App
 	/* = INITIALISATION GLOBALE = */
 	public function init()
 	{
-	
+
 	}			
 		
 	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
@@ -34,7 +34,7 @@ abstract class Admin extends App
 	/* = CHARGEMENT DE LA PAGE COURANTE = */
 	public function current_screen( $current_screen )
 	{
-		
+
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS DE L'INTERFACE D'ADMINISTRATION = */
