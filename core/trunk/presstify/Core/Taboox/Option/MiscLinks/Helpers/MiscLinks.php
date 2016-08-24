@@ -35,14 +35,15 @@ class MiscLinks extends Helpers
 	}
 	
 	/* = AFFICHAGE = */
-	public static function Display( $args = array() )
+	public static function Display( $args = array(), $echo = true )
 	{
+		
 		if( ! $links = self::Get( $args ) )
 			return;
 
 		$output = "<ul class=\"tify_taboox_misclinks\">\n";
 		
-		foreach( $links as $link ) :				
+		foreach( (array) $links as $link ) :				
 			$url 	= ( ! empty( $link['url'] ) ) 	? $link['url'] : '#';				
 			$title 	= ( ! empty( $link['title'] ) )	? sprintf( __( 'Lien vers %s', 'tify' ), $link['title'] ) : sprintf( __( 'Lien vers %s','tify' ), $link['url'] );
 			
@@ -60,6 +61,9 @@ class MiscLinks extends Helpers
 		endforeach;
 			
 		$output .= "</ul>";
+		
+		if( $echo )
+			echo $output; 
 		
 		return $output;
 	}
