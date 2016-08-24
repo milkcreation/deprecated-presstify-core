@@ -5,7 +5,7 @@ use tiFy\Core\Taboox\Helpers;
 
 class MiscLinks extends Helpers
 {
-	/* = ARGUMENTS = */
+	/* = ARGUMENTS = */	
 	// Identifiant des fonctions
 	protected $ID 				= 'misclinks';
 	

@@ -330,6 +330,8 @@ final class HookArchive extends Component
 		
 		$hooks = array();
 		foreach( $object as $obj ) :
+			if( ! isset( self::$Hooks[$obj] ) )
+				continue;
 			foreach( (array) self::$Hooks[$obj] as $archive => $Class ) :	
 				if( $permalink && ! $Class->GetOption( 'rewrite' ) )
 					continue;
