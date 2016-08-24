@@ -319,8 +319,8 @@ class AdminUI extends Component
 		$wp_admin_bar->remove_node( 'comments' );
 		
 		if( is_multisite() ) :
-	   		foreach( wp_get_sites() as $site ) :
-				$wp_admin_bar->remove_menu( 'blog-'. $site['blog_id'] .'-c' );
+	   		foreach( get_sites() as $site ) :
+				$wp_admin_bar->remove_menu( 'blog-'. $site->blog_id .'-c' );
 			endforeach;
 		endif;
 	}
