@@ -43,7 +43,7 @@ class MiscLinks extends Admin
 			array( 
 				'default' 			=> array( 'url' => '', 'title' => '', 'caption' => '', 'image' => '' ),
 				'add_button_txt'	=> __( 'Ajouter un partenaire', 'tify' ),
-				'name' 				=> 'links',
+				'name' 				=> $this->args['name'],
 				'class'				=> 'links-taboox',
 				'values' 			=> $values, 
 				'values_cb'			=> $values ? array( $this, 'item_render' ) : false,
@@ -112,13 +112,13 @@ class MiscLinks extends Admin
 	/* = AFFICHAGE D'UN ÉLÉMENT = */
 	public function item_render( $index, $value )
 	{		
-	 	$output = "<div class=\"link\">\n"; 
+	 	$output = "<div class=\"tify_taboox_misclinks\">\n"; 
 		
 		// IMAGE
 		if( $this->args['image'] )
 			$output .= tify_control_media_image( 
 				array(
-					'name'					=> "links[{$index}][image]",
+					'name'					=> "{$this->args['name']}[{$index}][image]",
 					'value'					=> $value['image'],
 					'width' 				=> 150,
 					'height' 				=> 150,
@@ -131,14 +131,14 @@ class MiscLinks extends Admin
 		// LIEN
 		$output .= "\t\t<div class=\"link-url tify_input_link\">\n";
 		$output .= "\t\t\t<label>".__( 'Lien vers le site :','tify' )."</label>\n";
-		$output .= "\t\t\t<input type=\"text\" class=\"link-url\" name=\"links[{$index}][url]\" value=\"{$value['url']}\" placeholder=\"". __( 'Les liens externes doivent être prefixés par http:// ou https://', 'tify' ) ."\" size=\"40\" autocomplete=\"off\">\n";
+		$output .= "\t\t\t<input type=\"text\" class=\"link-url\" name=\"{$this->args['name']}[{$index}][url]\" value=\"{$value['url']}\" placeholder=\"". __( 'Les liens externes doivent être prefixés par http:// ou https://', 'tify' ) ."\" size=\"40\" autocomplete=\"off\">\n";
 		$output .= "\t\t</div>\n";
 		
 		// INTITULÉ
 		if( $this->args['title'] ) :
 			$output .= "\t\t<div class=\"link-title\">\n";
 			$output .= "\t\t\t<label>".__( 'Intitulé du lien :','tify' )."</label>\n";
-			$output .= "\t\t\t<input type=\"text\" class=\"link-title\" name=\"links[{$index}][title]\" value=\"{$value['title']}\" placeholder=\"". __( 'L\'intitulé apparait au survol du lien', 'tify' ) ."\" size=\"40\" autocomplete=\"off\">\n";
+			$output .= "\t\t\t<input type=\"text\" class=\"link-title\" name=\"{$this->args['name']}[{$index}][title]\" value=\"{$value['title']}\" placeholder=\"". __( 'L\'intitulé apparait au survol du lien', 'tify' ) ."\" size=\"40\" autocomplete=\"off\">\n";
 			$output .= "\t\t</div>\n";
 		endif;
 		
@@ -150,7 +150,7 @@ class MiscLinks extends Admin
 				array( 
 					'length' 		=> 150,
 					'value' 		=> $value['caption'], 
-					'name' 			=> "links[{$index}][caption]",
+					'name' 			=> "{$this->args['name']}[{$index}][caption]",
 					'echo'			=> 0
 				) 
 			);

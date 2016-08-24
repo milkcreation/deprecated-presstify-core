@@ -19,12 +19,6 @@ remove_menu:
 # Nettoyage des entrées de menu de l'interface d'administration
 unregister_widget:
 # ex: [ 'pages', 'calendar', 'archives', 'links', 'meta', 'search', 'text', 'categories', 'recent posts', 'recent comments', 'rss', 'tag cloud', 'nav menu' ]
- 
-#-------------------------------------------------------------------------------------------------------  
-# Suppression des boîtes de saisie du tableau de bord
-remove_dashboard_meta_box:
-# ex: [ 'right_now', 'recent_comments', 'incoming_links', 'plugins', 'quick_press', 'recent_drafts', 'activity', 'primary', 'secondary' ]
-# alt: { right_now: 'normal', recent_comments: 'normal', incoming_links: 'normal', plugins: 'normal', quick_press: 'normal', recent_drafts: 'normal', activity: 'normal', primary: 'normal', 'secondary': 'normal' }
 
 #-------------------------------------------------------------------------------------------------------  
 # Suppression de support  
