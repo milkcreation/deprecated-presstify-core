@@ -8,6 +8,8 @@ class ContentHook extends Admin
 	/* = ARGUMENTS = */
 	public static $Registered		= array();
 	
+	private $InstanceRegistred		= array();
+	
 	/* = INITIALISATION GLOBALE = */
 	public function init()
 	{		
@@ -19,7 +21,7 @@ class ContentHook extends Admin
 	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
 	public function admin_init()
 	{
-		foreach( (array) self::$Registered as $id => $args ) :
+		foreach( (array) $this->InstanceRegistred as $id => $args ) :
 			\register_setting( $this->page, $args['name'] );
 		endforeach;
 	}
@@ -31,7 +33,7 @@ class ContentHook extends Admin
 	?>
 	<table class="form-table">
 		<tbody>
-		<?php foreach( (array) self::$Registered as $id => $args ) : ?>
+		<?php foreach( (array) $this->InstanceRegistred as $id => $args ) : ?>
 			<tr>
 				<th><?php echo $args['title'];?></th>
 				<td>
@@ -69,6 +71,6 @@ class ContentHook extends Admin
 		
 		$args['selected'] =  ( $selected = (int) get_option( $args['name'], 0 ) ) ? $selected: 0;
 		
-		self::$Registered[$id] = $args;
+		$this->InstanceRegistred[$id] = self::$Registered[$id] = $args;		
 	}
 }
