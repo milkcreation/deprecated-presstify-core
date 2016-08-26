@@ -10,6 +10,7 @@ final class PostType extends Factory
 		
 		add_action( 'registered_post_type', array( $this, 'registered_post_type' ), 10, 2 );
 		add_action( 'edit_form_top', array( $this, 'edit_form_top' ), 10 );
+		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 		add_filter( 'post_type_archive_link', array( $this, 'post_type_archive_link' ), 99, 2 );
 		
 		add_filter( 'tify_breadcrumb_is_single', array( $this, 'tify_breadcrumb_is_single' ) );
@@ -74,6 +75,33 @@ final class PostType extends Factory
 		echo 	"<div class=\"notice notice-info inline\">\n".
 					"\t<p>". sprintf( __( 'Vous éditez actuellement la page d\'affichage des "%s"', 'tify' ), $label ) . "</p>\n".
 				"</div>";	
+	}
+	
+	/** == == **/
+	final public function display_post_states( $post_states, $post )
+	{
+		 // Vérification de correspondance
+		$is_hook = false; 
+		foreach( (array) $this->GetHooks() as $hook ) :
+			if( get_post_type( $post ) !== $hook['post_type'] ) :
+				continue;			
+			elseif( (int) $post->ID !== (int) $hook['id'] ) :
+				continue;
+			else :
+				$is_hook = true;
+				break;
+			endif;
+		endforeach;
+
+		// Bypass
+		if( ! $is_hook )
+			return $post_states;
+			
+		$label = get_post_type_object( $this->Archive )->label;
+		
+		$post_states[ 'hookarchive_for_'. get_post_type( $post ) ] = sprintf( __( 'Page des %s', 'tify' ), strtolower( $label ) );
+		
+		return $post_states;
 	}
 	
 	/** == == **/
