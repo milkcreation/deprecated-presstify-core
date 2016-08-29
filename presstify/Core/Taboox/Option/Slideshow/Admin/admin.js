@@ -49,6 +49,7 @@ jQuery(document).ready( function($){
 				initItem( $item );
 				orderItem( $container );
 				$( document ).trigger( 'tify_taboox_slideshow_item_load', $item );
+				//$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).val( '' );
 			}
 		});		
 		return false;
@@ -81,7 +82,7 @@ jQuery(document).ready( function($){
 	
 	// Autocomplete
 	/// Modification de l'autocomplete pour éviter les doublons		
-	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > .ui-autocomplete-input' ).on( "autocompletesearch", function( e, ui ) {
+	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).on( "autocompletesearch", function( e, ui ) {
 		var $input		= $( e.target ),
 			$container	= $input.closest( '.tify_taboox_slideshow' ),
 			$suggest 	= $input.closest( '.tify_control_suggest' );
@@ -108,9 +109,10 @@ jQuery(document).ready( function($){
 	});
 	
 	/// Modification de la selection de l'autocomplete
-	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest > .ui-autocomplete-input' ).on( "autocompleteselect", function( e, ui ) {
+	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest > input[type="text"]' ).on( "autocompleteselect", function( e, ui ) {
 		e.preventDefault;
 		
+		ui.item.value = '';
 		getItem( e.target, ui.item.id );
 	});
 		
