@@ -54,7 +54,7 @@ class tiFy
 		// Instanciation des plugins
 		if( ! defined( 'TIFY_PLUGINS_DIR' ) )
 			define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );
-
+		
 		if( file_exists( TIFY_PLUGINS_DIR .'/Plugins.php' ) ) :
 			$loader = new \Psr4ClassLoader;
 			$loader->addNamespace( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
