@@ -16,16 +16,7 @@ class EditUser extends Form
 	protected $ParamsMap			= array( 
 		'BaseUri', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'Roles'
 	);
-		
-	/* = CONSTRUCTEUR = */
-	public function __construct( \tiFy\Core\Admin\Factory $viewObj )
-	{
-		parent::__construct( $viewObj );
-		
-		if( is_null( $this->View ) )
-			$this->View = $viewObj;
-	}
-	
+			
 	/* = DECLARATION DES PARAMETRES = */
 	/** == Définition des rôles des utilisateurs de la table == **/
 	public function set_roles()
