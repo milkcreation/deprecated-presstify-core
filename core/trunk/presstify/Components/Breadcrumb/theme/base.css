@@ -1,10 +1,10 @@
-.tify_breadcrumb{
+.tiFyBreadcrumb{
 	margin:0; padding:0;
 }
-.tify_breadcrumb > li + li::before {
+.tiFyBreadcrumb > li + li::before {
     padding: 0 5px;
     content: "/\00a0";
 }
-.tify_breadcrumb > li {
+.tiFyBreadcrumb > li {
     display: inline-block;
 }

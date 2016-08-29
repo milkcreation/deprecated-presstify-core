@@ -153,7 +153,7 @@ final class PostType extends Factory
 				endif;	
 				
 				$post_type_archive_link = sprintf( '<li><a href="%1$s">%2$s</a></li>', get_post_type_archive_link( get_post_type() ), get_the_title( $hook_id ) );
-				$output = $ancestors . $post_type_archive_link . '<li class="active">'. esc_html( wp_strip_all_tags( get_the_title() ) ) .'</li>';
+				$output = $ancestors . $post_type_archive_link . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title() ) ) .'</li>';
 			endif;
 		endif;
 		
@@ -179,7 +179,7 @@ final class PostType extends Factory
 					$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 			endif;	
 			
-			$output = $ancestors . '<li class="active">'. esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) .'</li>';
+			$output = $ancestors . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) .'</li>';
 		endif;
 		
 		// Empêche l'execution multiple du filtre

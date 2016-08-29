@@ -39,10 +39,10 @@ class Breadcrumb extends Component
 		extract( $config, EXTR_SKIP );
 		
 		if( empty( $id )  )
-			$id = 'tify_breadcrumb-'. self::$Instance++;		
+			$id = 'tiFyBreadcrumb-'. self::$Instance++;		
 		
 		$output  = "";
-		$output .= $before ."<ol id=\"{$id}\" class=\"tify_breadcrumb $class\">";
+		$output .= $before ."<ol id=\"{$id}\" class=\"tiFyBreadcrumb". ( ! empty( $class ) ? ' '. $class : '' ) ."\">";
 		
 		// Retour à la racine du site
 		$output .= self::root();
@@ -117,7 +117,7 @@ class Breadcrumb extends Component
 		$name		= ( $front_page ) ? self::title_render( $front_page ) : __( 'Accueil', 'tify' );
 		$title		= ( $front_page ) ? sprintf( __( 'Retour à %s', 'tify' ), self::title_render( $front_page ) ) : __( 'Retour à l\'accueil', 'tify' );
 		
-		return apply_filters( 'tify_breadcrumb_root', sprintf( '<li><a href="%1$s" title="%3$s">%2$s</a></li>', $url, $name, $title ) );
+		return apply_filters( 'tify_breadcrumb_root', sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" title="%3$s">%2$s</a></li>', $url, $name, $title ) );
 	}
 
 	/** == Page 404 == **/
@@ -125,7 +125,7 @@ class Breadcrumb extends Component
 	{
 		$name	= __( 'Erreur 404 - Impossible de trouver la page', 'tify' );
 		
-		return apply_filters( 'tify_breadcrumb_404', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_404', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page de résultat de recherche == **/
@@ -133,7 +133,7 @@ class Breadcrumb extends Component
 	{
 		$name	= sprintf( __( 'Résultat de recherche pour : "%s"' , 'tify' ), get_search_query() );
 		
-		return apply_filters( 'tify_breadcrumb_is_search', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_search', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page de contenus associés à une taxonomie == **/
@@ -142,7 +142,7 @@ class Breadcrumb extends Component
 		$tax 	= get_queried_object();
 		$name 	= sprintf( '%s : %s', get_taxonomy( $tax->taxonomy )->label, $tax->name );
 				
-		return apply_filters( 'tify_breadcrumb_is_tax', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_tax', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page d'accueil du site == **/
@@ -159,7 +159,7 @@ class Breadcrumb extends Component
 			endif;
 		endif;
 		
-		return apply_filters( 'tify_breadcrumb_is_front_page', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_front_page', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page liste des articles du blog == **/
@@ -176,7 +176,7 @@ class Breadcrumb extends Component
 			endif;
 		endif;
 		
-		return apply_filters( 'tify_breadcrumb_is_home', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_home', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page de fichier média == **/
@@ -191,7 +191,7 @@ class Breadcrumb extends Component
 				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 		endif;		
 		
-		return apply_filters( 'tify_breadcrumb_is_attachment', sprintf( '%s<li class="active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
+		return apply_filters( 'tify_breadcrumb_is_attachment', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
 	}
 	
 	/** == Page de contenu de type post == **/
@@ -201,12 +201,12 @@ class Breadcrumb extends Component
 		// Le type du contenu est un article de blog
 		if( is_singular( 'post' ) ) :
 			if( $page_for_posts = get_option( 'page_for_posts' ) )
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $page_for_posts ), self::title_render( $page_for_posts ) );
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $page_for_posts ), self::title_render( $page_for_posts ) );
 			else
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', home_url(), __( 'Actualités', 'tify' ) );		
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', home_url(), __( 'Actualités', 'tify' ) );		
 		// Le type de contenu autorise les pages d'archives
 		elseif( ( $post_type_obj = get_post_type_object( get_post_type() ) ) &&  $post_type_obj->has_archive ) :
-			$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_post_type_archive_link( get_post_type() ), $post_type_obj->labels->name );
+			$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_post_type_archive_link( get_post_type() ), $post_type_obj->labels->name );
 		endif;	
 
 		// Le contenu a des ancêtres
@@ -214,7 +214,7 @@ class Breadcrumb extends Component
 			foreach( array_reverse( $parents ) as $parent )
 				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 
-		return apply_filters( 'tify_breadcrumb_is_single', sprintf( '%s<li class="active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
+		return apply_filters( 'tify_breadcrumb_is_single', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
 	}
 
 	/** == Page de contenu de type page == **/
@@ -225,7 +225,7 @@ class Breadcrumb extends Component
 			foreach( array_reverse( $parents ) as $parent )
 				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 	
-		return apply_filters( 'tify_breadcrumb_is_page', sprintf( '%s<li class="active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
+		return apply_filters( 'tify_breadcrumb_is_page', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
 	}
 	
 	/** == Page de contenus associés à une catégorie == **/
@@ -233,7 +233,7 @@ class Breadcrumb extends Component
 	{
  		$category = get_category( get_query_var( 'cat' ), false );
 		
-		return apply_filters( 'tify_breadcrumb_is_category', sprintf( '<li class="active">Catégorie : %s</li>', $category->name ) );
+		return apply_filters( 'tify_breadcrumb_is_category', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Catégorie : %s</li>', $category->name ) );
 	}
 
 	/** == Page de contenus associés à un mot-clef == **/
@@ -241,7 +241,7 @@ class Breadcrumb extends Component
 	{
  		$tag = get_tag( get_query_var( 'tag' ), false );
 		
-		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="active">Mot-Clef : %s</li>', $tag->name ) );
+		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Mot-Clef : %s</li>', $tag->name ) );
 	}
 	
 	/** == Page de contenus associés à un auteur == **/
@@ -249,7 +249,7 @@ class Breadcrumb extends Component
 	{
  		$author_name = get_author_name( get_query_var( 'author' ) );
 		
-		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="active">Auteur : %s</li>', $author_name ) );
+		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Auteur : %s</li>', $author_name ) );
 	}
 	
 	/** == Page de contenus relatifs à une date == **/
@@ -262,7 +262,7 @@ class Breadcrumb extends Component
 		elseif ( is_year() )
 			$name = sprintf( __( 'Archives de l\'année : %s', 'tify' ), get_the_date( 'Y' ) );
 		
-		return apply_filters( 'tify_breadcrumb_is_date', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_date', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 	
 	/** == Page de contenus == **/
@@ -273,6 +273,6 @@ class Breadcrumb extends Component
 		else
 			$name = __( 'Actualités', 'tify' ); 
 		
-		return apply_filters( 'tify_breadcrumb_is_archive', sprintf( '<li class="active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_archive', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
 	}
 }
