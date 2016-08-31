@@ -49,7 +49,7 @@ class DropdownImages extends Factory
 		extract( $args );
 		
 		$pickerID = 'tify_control_dropdown_images-picker'. $instance;
-		
+
 		if( ! $choices ) :
 			$client = Emojione::getClient();			
 			$n = 0;
@@ -89,18 +89,19 @@ class DropdownImages extends Factory
 		$output  .= "<div id=\"{$pickerID}\" class=\"dropdown_images-picker\" data-selector=\"#{$id}\">\n";
 		$output .= "\t<ul>\n";
 		$col = 0;	
-		foreach( $choices as $value => $url ) :
+		foreach( $choices as $value => $path ) :
 			/// Ouverture de ligne
 			if( ! $col )
 				$output .= "\t\t<li>\n\t\t\t<ul>\n";
 			$output .= "\t\t\t\t<li";
 			if( $selected == $value )
 				$output .= " class=\"checked\"";
+	
 			$output .= ">\n";
 			$output .= "\t\t\t\t\t<label>\n";
 			$output .= "\t\t\t\t\t\t<b class=\"selection\">";
 			$output .= "\t\t\t\t\t\t\t<input type=\"radio\" name=\"{$name}\" value=\"{$value}\" autocomplete=\"off\" ". checked( ( $selected == $value ), true, false ) .">\n";
-			$output .= "\t\t\t\t\t\t\t<img src=\"". self::base64ImgSrc( $url ) ."\" style=\"width:100%;height:auto;\" />";
+			$output .= "\t\t\t\t\t\t\t<img src=\"". self::base64ImgSrc( $path ) ."\" style=\"width:100%;height:auto;\" />";
 			$output .= "\t\t\t\t\t\t</b>";
 			$output .= "\t\t\t\t\t</label>\n";
 			$output .= "\t\t\t\t</li>\n";
@@ -125,9 +126,10 @@ class DropdownImages extends Factory
 	}
 	
 	/* = =*/
-	public static function base64ImgSrc( $src )
+	public static function base64ImgSrc( $path )
 	{
-		$ext = pathinfo( $src, PATHINFO_EXTENSION );
+		$ext = pathinfo( $path, PATHINFO_EXTENSION );
+
 		if( ! in_array( $ext, array( 'svg', 'png', 'jpg', 'jpeg' ) ) )
 			return;
 		
@@ -138,14 +140,18 @@ class DropdownImages extends Factory
 			default :
 				$data = 'image/'. $ext;
 				break;
-		endswitch;
+		endswitch;		
 		
-		if( preg_match( '/^http/', $src ) ) :
-			/* @todo : utiliser curl de wordpress */
-			$content = '';
-		else :
-			$content = file_get_contents( wp_normalize_path( ABSPATH . $src ) );
+		if( preg_match( '#^'. get_bloginfo( 'url' ) .'#', $path ) ) :
+			$path = ltrim( preg_replace( '#^'. get_bloginfo( 'url' ) .'#', '', $path ),  '/' );
+		elseif( ! preg_match( '#^http#', $path )  ) :			
 		endif;
+		
+		$filename = wp_normalize_path( ABSPATH . $path ); 
+		if( ! file_exists( $filename ) )
+			return;
+		if( ! $content = file_get_contents( $filename ) )
+			return;
 		
 		return "data:{$data};base64,". base64_encode( $content );
 	}
