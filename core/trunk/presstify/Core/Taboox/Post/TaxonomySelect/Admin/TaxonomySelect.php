@@ -37,11 +37,24 @@ class TaxonomySelect extends Admin
 		extract( $this->args );
 		
 		$taxonomies = get_terms( 
-			array( 
+			array(
 				'taxonomy' 	=> $taxonomy, 
-				'orderby'	=> 'title', 
-				'order'=>'ASC', 
-				'get' => 'all' 
+				'meta_query'	=> array(
+					'relation'		=> 'OR',
+					array(
+						'key' 		=> '_order',
+						'value'		=> 0,
+						'compare'	=> '>=',
+						'type'		=> 'NUMERIC'
+					),
+					array(
+						'key' 		=> '_order',
+						'compare'	=> 'NOT EXISTS'
+					)
+				),
+				'orderby'	=> 'meta_value_num', 
+				'order'		=> 'ASC', 
+				'get' 		=> 'all' 
 			) 
 		);
 		
