@@ -185,10 +185,10 @@ class Breadcrumb extends Component
 		$ancestors = '';
 		if( $parents = get_ancestors( get_the_ID(), get_post_type() ) ) :
 			if( ( 'post' === get_post_type( current( $parents ) ) )  && ( $page_for_posts = get_option( 'page_for_posts' ) ) )
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $page_for_posts ), self::title_render( $page_for_posts ) );
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $page_for_posts ), self::title_render( $page_for_posts ) );
 			reset( $parents );
 			foreach( array_reverse( $parents ) as $parent )
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 		endif;		
 		
 		return apply_filters( 'tify_breadcrumb_is_attachment', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
@@ -212,7 +212,7 @@ class Breadcrumb extends Component
 		// Le contenu a des ancêtres
 		if( $parents = get_ancestors( get_the_ID(), get_post_type() ) )
 			foreach( array_reverse( $parents ) as $parent )
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 
 		return apply_filters( 'tify_breadcrumb_is_single', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
 	}
@@ -223,7 +223,7 @@ class Breadcrumb extends Component
 		$ancestors = '';
 		if( $parents = get_ancestors( get_the_ID(), get_post_type() ) )
 			foreach( array_reverse( $parents ) as $parent )
-				$ancestors .= sprintf( '<li><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
+				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), self::title_render( $parent ) );
 	
 		return apply_filters( 'tify_breadcrumb_is_page', sprintf( '%s<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $ancestors, self::title_render( get_the_ID() ) ) );
 	}
