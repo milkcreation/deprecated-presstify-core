@@ -20,6 +20,7 @@ final class Lightbox extends Component
 	/* = DECLENCHEURS = */
 	public function wp_enqueue_scripts()
 	{
-		//wp_enqueue_script( 'tiFyComponentsLightbox', self::getUrl() .'/Lightbox.js', array( 'jquery', 'imagelightbox' ), '160902' );
+		wp_enqueue_style( 'tiFyComponentsLightbox', self::getUrl() .'/Lightbox.css', array( 'imagelightbox' ), '160902' );
+		wp_enqueue_script( 'tiFyComponentsLightbox', self::getUrl() .'/Lightbox.js', array( 'imagelightbox' ), '160902', true );
 	}
 }
