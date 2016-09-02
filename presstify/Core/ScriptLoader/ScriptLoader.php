@@ -176,6 +176,16 @@ class ScriptLoader extends App
 				'version'	=> '1.3',
 				'in_footer'	=> true 
 			),
+			
+			// Image Lightbox
+                        'imagelightbox'                                        => array(
+                                'src'           => array(
+                                        'local'         => tiFy::$AbsUrl .'/Libraries/tiFy/Assets/imagelightbox.min.js',
+                                ),
+                                'deps'          => array( 'jquery' ),
+                                'version'       => '160902',
+                                'in_footer'     => true
+                        ),
 				
 			// Easing
 			'holder'					=> array(
@@ -449,7 +459,17 @@ class ScriptLoader extends App
 				'deps'		=> array(),
 				'version'	=> '4.4.0',
 				'media'		=> 'all' 
-			),			
+			),	
+			
+			// Image Lightbox
+                        'imagelightbox'                            => array(
+                                'src'           => array(
+                                        'local'         => tiFy::$AbsUrl .'/Libraries/tiFy/Assets/imagelightbox.min.css',
+                                ),
+                                'deps'          => array(),
+                                'version'       => '160902',
+                                'media'         => 'all'
+                        ),		
 			
 			// NanoScroller	
 			'nanoscroller'				=> array(
