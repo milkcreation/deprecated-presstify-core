@@ -57,7 +57,7 @@ final class DuplicatePost extends Component
 		endif;
 	}
 	
-	/* = CONTRÔLEURS = */
+	/* = DECLENCHEURS = */
 	public function row_actions( $actions, $post )
 	{
 		if( ! in_array( $post->post_type, $this->PostType ) )
