@@ -74,7 +74,7 @@ class Pagination extends Component
 		$output .= "<ul id=\"{$id}\" class=\"tiFyPagination {$class}\">\n";
 		// Page précédente	
 		if( $paged > 1 && ! empty( $previous ) )
-			$output .= "\t<li class=\"tiFyPagination-Item tiFyPagination--prev\">". sprintf( "<a href=\"%s\">%s</a>", $prevlink, stripslashes( $previous ) )."</li>\n";
+			$output .= "\t<li class=\"tiFyPagination-Item tiFyPagination-Item--prev\">". sprintf( "<a href=\"%s\">%s</a>", $prevlink, stripslashes( $previous ) )."</li>\n";
 		
 		// Numérotation des pages
 		if( $num ) :
