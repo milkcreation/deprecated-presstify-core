@@ -37,7 +37,7 @@ class Pagination extends Component
 		extract( $config, EXTR_SKIP );
 		
 		if( ! $id )
-			$id = 'tify_pagination-'. self::$Instance++;
+			$id = 'tiFyPagination-'. self::$Instance++;
 		
 		// Traitement des variables	
 		/// Requête
@@ -71,10 +71,10 @@ class Pagination extends Component
 		$nextlink = esc_url( get_pagenum_link( $paged + 1 ) ); 
 		
 		$output = "";
-		$output .= "<ul id=\"{$id}\" class=\"tify_pagination {$class}\">\n";
+		$output .= "<ul id=\"{$id}\" class=\"tiFyPagination {$class}\">\n";
 		// Page précédente	
 		if( $paged > 1 && ! empty( $previous ) )
-			$output .= "\t<li class=\"prev\">". sprintf( "<a href=\"%s\">%s</a>", $prevlink, stripslashes( $previous ) )."</li>\n";
+			$output .= "\t<li class=\"tiFyPagination-Item tiFyPagination--prev\">". sprintf( "<a href=\"%s\">%s</a>", $prevlink, stripslashes( $previous ) )."</li>\n";
 		
 		// Numérotation des pages
 		if( $num ) :
@@ -84,7 +84,7 @@ class Pagination extends Component
 			$block_high = max( $paged + $range, $min_links );
 			$left_gap 	= ( ( $block_min - $anchor - $gap ) > 0 ) ? true : false;
 			$right_gap 	= ( ( $block_high + $anchor + $gap ) < $total ) ? true : false;
-			$ellipsis 	= "\t<li><span class=\"gap\">...</span></li>\n";
+			$ellipsis 	= "\t<li class=\"tiFyPagination-Item tiFyPagination-Item--gap\"><span>...</span></li>\n";
 			
 			// Numéros de pages
 			if( $left_gap && ! $right_gap )
@@ -99,7 +99,7 @@ class Pagination extends Component
 		
 		// Page suivante	
 		if( ( $paged < $total ) && ! empty( $next ) )
-			$output .= "\t<li class=\"next\">". sprintf( "<a href=\"%s\">%s</a>", $nextlink, stripslashes( $next ) ) ."</li>\n";
+			$output .= "\t<li class=\"tiFyPagination-Item tiFyPagination-Item--next\">". sprintf( "<a href=\"%s\">%s</a>", $nextlink, stripslashes( $next ) ) ."</li>\n";
 
 		$output .= "</ul>\n";
 	
@@ -114,7 +114,7 @@ class Pagination extends Component
 	{
 		$output = "";
 		for ( $i = $start; $i <= $max; $i++ )
-			$output .= ( $paged == intval( $i ) ) ? "\t<li class=\"active\"><span>{$i}</span></li>\n" : "\t<li class=\"navi\"><a href=\"". esc_url( get_pagenum_link( $i ) ) ."\">{$i}</a></li>\n";
+			$output .= ( $paged == intval( $i ) ) ? "\t<li class=\"tiFyPagination-Item tiFyPagination-Item--active\"><span>{$i}</span></li>\n" : "\t<li class=\"tiFyPagination-Item tiFyPagination-Item--nav\"><a href=\"". esc_url( get_pagenum_link( $i ) ) ."\">{$i}</a></li>\n";
 		
 		return $output;
 	}	
