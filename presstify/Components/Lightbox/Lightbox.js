@@ -173,7 +173,6 @@ jQuery(document).ready( function($){
 				}
 			}	
 		);
-		console.log( opts );	
 		instance[i] = $( selector[i] ).filter( function(){
 			return $(this).attr('href').match(/\.(jpg|png|gif)/i);
 		}).imageLightbox( opts );
