@@ -74,9 +74,11 @@ Class tiFy_Forms_Addon_Record extends tiFy_Forms_Addon
 	/** == Enregistrement des données de formulaire en base == **/
 	function cb_handle_before_redirect( $parsed_request, $original_request ){
 		global $wpdb;
-
+		
 		if( $wpdb->query( $wpdb->prepare( "SELECT form_id FROM $wpdb->mktzr_forms_records WHERE record_session = %s", $parsed_request['session'] ) ) )
 			return;
+		
+		$bypass = apply_filters( 'tify_forms_record_handle_bypass', false, $parsed_request );
 		
 		$wpdb->insert( 
 			$wpdb->mktzr_forms_records, 
@@ -86,7 +88,10 @@ Class tiFy_Forms_Addon_Record extends tiFy_Forms_Addon
 				'record_date' 		=> current_time( 'mysql' ) 
 			)
 		);
-
+		
+		if( $bypass )
+			return;
+		
 		if( $record_id = $wpdb->insert_id )	:	
 			foreach( $parsed_request['fields'] as $slug => $field ) :
 				if( ! $field['add-ons']['record']['save'] ) :
@@ -95,7 +100,7 @@ Class tiFy_Forms_Addon_Record extends tiFy_Forms_Addon
 					add_metadata( 'mktzr_forms_record', $record_id, $slug, $field['value'], true );
 				endif;
 			endforeach;
-		endif;		
+		endif;
 	}
 
 	/* = ACTIONS ET FILTRES WORDPRESS = */
