@@ -43,20 +43,19 @@ class InfiniteScroll extends App
 	public function wp_ajax()
 	{
 		// Récupération des arguments
-		$query_args 	= $_POST['query_args'];	
+		$query_args 	= $_POST['query_args'];					
 		$before			= stripslashes( html_entity_decode( $_POST['before'] ) );
 		$after			= stripslashes( html_entity_decode( $_POST['after'] ) );
-		$posts_per_page = $_POST['per_page'];
-		$paged 			= ceil( $_POST['from'] / $posts_per_page )+1;
 		$template 		= $_POST['template'];
-
-		// Traitement des arguments		
-		parse_str( $_POST['query_args'], $query_args );	
-		$query_args['posts_per_page'] = $posts_per_page;
-		$query_args['paged'] = $paged;
-		if( ! isset( $query_args['post_status'] ) )
-			$query_args['post_status'] = 'publish';
 		
+		// Traitement des arguments
+		parse_str( $_POST['query_args'], $query_args );
+		$query_args['posts_per_page'] 	= ( ! empty( $query_args['posts_per_page'] ) ) ? $query_args['posts_per_page'] : $_POST['per_page'];
+		$query_args['paged']			= ceil( $_POST['from'] / $query_args['posts_per_page'] )+1;
+		if( ! isset( $query_args['post_status'] ) )
+			$query_args['post_status'] = 'publish';		
+		
+		// Requête		
 		$query_post = new \WP_Query;
 		$posts = $query_post->query( $query_args );
 		
@@ -68,7 +67,7 @@ class InfiniteScroll extends App
 				$output .= $before. ob_get_contents() .$after;
 				ob_end_clean();
 			endwhile;
-			if( $query_post->max_num_pages == $paged ) :
+			if( $query_post->max_num_pages == $query_args['paged'] ) :
 				$output .= "<!-- tiFy_Infinite_Scroll_End -->";
 			endif;
 		else :
