@@ -344,24 +344,29 @@ abstract class Table extends \WP_List_Table
 	
 	/* = DECLENCHEURS = */
 	/** == Affichage de l'écran courant == **/
-	final public function _current_screen( $current_screen )
+	final public function _current_screen( $current_screen = null )
 	{	
 		// Définition de l'écran courant
-		$this->Screen = $current_screen;
+		if( $current_screen )
+			$this->Screen = $current_screen;
 				
 		// Initialisation des paramètres de configuration de la table
 		$this->init_params();
 		
 		// Initialisation de la classe de table native de Wordpress
-		$this->_wp_list_table_init( array( 'screen' => $current_screen->id ) );
+		$args = array();
+		if( $this->Screen )
+			$args = array( 'screen' => $this->Screen->id );
+		$this->_wp_list_table_init( $args );
 		
 		// Activation de l'interface de gestion du nombre d'éléments par page
-		$this->Screen->add_option(
-			'per_page',
-			array(
-					'option' => $this->PerPageOptionName
-			)
-		);
+		if( $this->Screen )
+			$this->Screen->add_option(
+				'per_page',
+				array(
+						'option' => $this->PerPageOptionName
+				)
+			);
 				
 		// Traitement
 		/// Exécution des actions

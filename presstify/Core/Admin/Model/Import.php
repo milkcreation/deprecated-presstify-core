@@ -125,8 +125,8 @@ class Import extends App
 	{
 		if( empty( $this->sample ) )
 			wp_die( __( '<h1>Téléchargement du fichier impossible</h1><p>La fonctionnalité n\'est pas active</p>', 'tify' ), __( 'Impossible de télécharger le fichier', 'tify' ), 404 );
-		
-		@ini_set("auto_detect_line_endings", true);
+
+		@ini_set( "auto_detect_line_endings", true );
 		
 		$rows = array();
 		if( ! empty( $this->sample['rows'] ) ) :
@@ -139,7 +139,7 @@ class Import extends App
 				$rows[$i+1] = $wpdb->get_row( "SELECT * FROM {$this->View->getDb()->Name}", ARRAY_A, $i );
 		endif;
 		reset( $rows );
-				
+
 		header( 'Content-Encoding: UTF-8' );
 		header( 'Content-Type: application/csv; charset=UTF-8' );
 	    header( 'Content-Disposition: attachment; filename="'. ( $this->sample['name'] ? sanitize_file_name( $this->sample['name'] ) : 'export-sample' ) .'.csv";' );
@@ -158,6 +158,8 @@ class Import extends App
 		$file 		= current( $_FILES );	
 		$filename 	= sanitize_file_name( basename( $file['name'] ) );
 		
+		
+		
 		$response = array();
 		if( ! @move_uploaded_file( $file['tmp_name'],  $this->upload_dir . "/" . $filename  ) ) :
 			$response = array( 
@@ -168,7 +170,6 @@ class Import extends App
 			$this->filename = $this->upload_dir . "/" . $filename;
 			$this->header	= $_POST['header']; 		
 			$data = array();
-			
 			$data['table'] = $this->get_table_preview();
 						
 			ob_start();
@@ -177,6 +178,7 @@ class Import extends App
 			
 			$response = array( 'success' => true, 'data' => $data );
 		endif;
+		
 							
 		wp_send_json( $response );
 	}

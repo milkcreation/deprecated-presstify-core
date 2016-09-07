@@ -254,6 +254,7 @@ class Mailer extends App
 				$this->prepare_output_text();						
 				break;
 		endswitch;
+		
 		return $output;		
 	}
 		

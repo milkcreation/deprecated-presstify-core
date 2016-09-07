@@ -11,7 +11,7 @@ class ListTable extends tiFyCoreAdminModelTable
 	{
 		$this->main = $Main;
 		$this->View = $this->main->View;	
-		$this->_current_screen( get_current_screen() );
+		$this->_current_screen();
 	}
 	
 	/** == Définition des colonnes == **/

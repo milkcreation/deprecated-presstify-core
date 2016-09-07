@@ -8,11 +8,12 @@ jQuery( document ).ready( function( $ ){
 	var filename, header = 0, offset = 0, limit = -1, per_pass = 10, passed = 0, options = {};
 
 	/* = FICHIER D'EXEMPLE = */
-	/*$( '#tify_adminview_import-download_sample' ).click( function(e){
+	$( '#tify_adminview_import-download_sample' ).click( function(e){
 		e.stopPropagation();
     	e.preventDefault();
-    	$.post( tify_ajaxurl, { action : 'tify_csv_download_sample_'+ id }, function( resp ){ });
-	});*/
+    	window.location.href = tify_ajaxurl + '?action=tiFyCoreAdminModelImport_download_sample_' + id;
+    	//$.post( tify_ajaxurl, { action : 'tiFyCoreAdminModelImport_download_sample_'+ id }, function( resp ){ });
+	});
 	
 	/* = TELECHARGEMENT DU FICHIER D'IMPORT = */
 	/** == Déclenchement == **/		
