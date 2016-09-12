@@ -9,13 +9,8 @@ class TabooxEditUser extends EditUser
 	private $Hookname;
 	
 	/* = CONSTRUCTEUR = */
-	public function __construct( \tiFy\Core\Admin\Factory $viewObj )
+	public function __construct()
 	{
-		parent::__construct( $viewObj );
-
-		if( is_null( $this->View ) )
-			$this->View = $viewObj;
-
 		// Actions et Filtres PressTiFy		
 		add_action( 'tify_taboox_register_box', array( $this, '_tify_taboox_register_box' ) );
 		add_action( 'tify_taboox_register_node', array( $this, '_tify_taboox_register_node' ) );
