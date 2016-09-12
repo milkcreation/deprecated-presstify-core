@@ -3,7 +3,7 @@
 ### TEXT REMAINING
 - Permettre de gérer le nombre de lignes 
 
-# LIBRARIES
+# Vendor
 ## ASSETS
 - Intégrer la librairie JS nude.js
 - Intégrer la librairies JS profanityfilter

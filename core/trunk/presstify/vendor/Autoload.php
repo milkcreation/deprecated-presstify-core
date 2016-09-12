@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Libraries;
+namespace tiFy\Vendor;
 
 class Autoload
 {

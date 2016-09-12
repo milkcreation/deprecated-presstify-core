@@ -12,7 +12,7 @@ class Icon extends Factory
 			'title'		=> 	__( 'Icone.', 'tify' ),
 			'position'	=> 1,
 			'name'		=> '_icon',
-			'dir' 		=> \tiFy\tiFy::$AbsDir .'/Libraries/Assets/svg',
+			'dir' 		=> \tiFy\tiFy::$AbsDir .'/vendor/Assets/svg',
 				
 		);	
 	}

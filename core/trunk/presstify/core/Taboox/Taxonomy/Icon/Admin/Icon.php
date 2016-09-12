@@ -14,7 +14,7 @@ class Icon extends Admin
 			$this->args, 
 			array(
 				'name' 		=> '_icon',
-				'dir' 		=> \tiFy\tiFy::$AbsDir .'/Libraries/Assets/svg'
+				'dir' 		=> \tiFy\tiFy::$AbsDir .'/vendor/Assets/svg'
 			)
 		);
 		$this->args['dir'] = wp_normalize_path( rtrim( $this->args['dir'], '/' ) );
