@@ -46,7 +46,7 @@ class Params extends App
 		);
 		
 		// Récupération du paramétrage natif
-		$_dir = @ opendir( tiFy::$AbsDir ."/Config" );
+		$_dir = @ opendir( tiFy::$AbsDir ."/config" );
 		if( $_dir ) :
 			while ( ( $file = readdir( $_dir ) ) !== false ) :
 				if ( substr( $file, 0, 1 ) == '.' )
@@ -58,7 +58,7 @@ class Params extends App
 				if( ! isset( ${$basename} ) )
 					${$basename} = array();				
 				
-				${$basename} = self::_parseFilename( tiFy::$AbsDir ."/Config/{$file}", ${$basename}, 'yml', $attr );
+				${$basename} = self::_parseFilename( tiFy::$AbsDir ."/config/{$file}", ${$basename}, 'yml', $attr );
 			endwhile;
 			closedir( $_dir );
 		endif;

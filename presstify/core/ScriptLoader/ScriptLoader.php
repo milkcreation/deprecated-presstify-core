@@ -80,7 +80,7 @@ class ScriptLoader extends App
 			// Bootstrap
 			'bootstrap'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap.min.js',
 					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'					
 				),
 				'deps'		=> array( 'jquery' ),
@@ -90,7 +90,7 @@ class ScriptLoader extends App
 			/// Bootstrap - Transitions
 			'bootstrap-transitions'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap-transitions.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-transitions.min.js',
 					'cdn'		=> ''
 				),
 				'deps'		=> array( 'jquery' ),
@@ -100,7 +100,7 @@ class ScriptLoader extends App
 			/// Bootstrap - Modals
 			'bootstrap-modals'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap-modals.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-modals.min.js',
 					'cdn'		=> ''
 				),
 				'deps'		=> array( 'bootstrap-transitions' ),
@@ -110,7 +110,7 @@ class ScriptLoader extends App
 			/// Bootstrap - Tooltips
 			'bootstrap-tooltips'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap-tooltips.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-tooltips.min.js',
 				),
 				'deps'		=> array( 'bootstrap-transitions' ),
 				'version'	=> '3.3.5',
@@ -119,7 +119,7 @@ class ScriptLoader extends App
 			/// Bootstrap - Popovers
 			'bootstrap-popovers'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap-popovers.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-popovers.min.js',
 				), 
 				'deps'		=> array( 'bootstrap-tooltips' ),
 				'version'	=> '3.3.5',
@@ -128,7 +128,7 @@ class ScriptLoader extends App
 			/// Bootstrap - Togglable tabs 
 			'bootstrap-togglable-tabs'	=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/js/bootstrap-togglable-tabs.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-togglable-tabs.min.js',
 				), 
 				'deps'		=> array( 'bootstrap-transitions' ),
 				'version'	=> '3.3.5',
@@ -158,7 +158,7 @@ class ScriptLoader extends App
 			// Dentist	
 			'dentist'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/dentist.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/dentist.min.js',
 					'cdn'		=> '//cdn.rawgit.com/kelvintaywl/dentist.js/master/build/js/dentist.min.js'	
 				),
 				'deps'		=> array( 'jquery' ),
@@ -169,7 +169,7 @@ class ScriptLoader extends App
 			// Easing
 			'easing'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/jquery.easing.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/jquery.easing.min.js',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
@@ -180,7 +180,7 @@ class ScriptLoader extends App
 			// Image Lightbox
                         'imagelightbox'                                        => array(
                                 'src'           => array(
-                                        'local'         => tiFy::$AbsUrl .'/Libraries/tiFy/Assets/imagelightbox.min.js',
+                                        'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.js',
                                 ),
                                 'deps'          => array( 'jquery' ),
                                 'version'       => '160902',
@@ -190,7 +190,7 @@ class ScriptLoader extends App
 			// Easing
 			'holder'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/holder.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/holder.min.js',
 					'cdn'		=> '//cdn.rawgit.com/imsky/holder/master/holder.min.js'
 				),
 				'deps'		=> array(),
@@ -201,7 +201,7 @@ class ScriptLoader extends App
 			// Moment
 			'moment'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/moment.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/moment.min.js',
 					'cdn'		=> '//cdn.rawgit.com/moment/moment/develop/min/moment.min.js'
 				),
 				'deps'		=> array(), 
@@ -212,7 +212,7 @@ class ScriptLoader extends App
 			// MouseWheel
 			'mousewheel'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/jquery.mousewheel.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/jquery.mousewheel.min.js',
 					'cdn'		=> '//cdn.rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
@@ -223,7 +223,7 @@ class ScriptLoader extends App
 			// Nanoscroller
 			'nanoscroller'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/nanoscroller/jquery.nanoscroller.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/nanoscroller/jquery.nanoscroller.min.js',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.7/javascripts/jquery.nanoscroller.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
@@ -244,7 +244,7 @@ class ScriptLoader extends App
 			// jQuery Parallax
 			'jquery-parallax'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/jquery-parallax-min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/jquery-parallax-min.js',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax-min.js'
 				),
 				'deps'		=> array( 'jquery' ),
@@ -267,7 +267,7 @@ class ScriptLoader extends App
 			/// wp_register_script( 'spectrum-i10n', '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/i18n/jquery.spectrum-'. $_locale[0] .'.js', array( ), '1.7.0', true );
 			'spectrum'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spectrum/spectrum.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spectrum/spectrum.min.js',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/spectrum.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
@@ -278,7 +278,7 @@ class ScriptLoader extends App
 			// ThreeSixty Slider
 			'threesixty'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/threesixty/threesixty.min.js',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/threesixty/threesixty.min.js',
 				),
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '2.0.5',
@@ -289,7 +289,7 @@ class ScriptLoader extends App
 			/// TiFy - Calendar
 			'tify-calendar'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-calendar.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-calendar.js'
 				),
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '150409',
@@ -298,7 +298,7 @@ class ScriptLoader extends App
 			/// TiFy - Find Posts
 			'tify-findposts'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-findposts.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-findposts.min.js'
 				),
 				'deps'		=> array( 'jquery', 'jquery-ui-draggable', 'wp-ajax-response' ),
 				'version'	=> '2.2.2',
@@ -307,7 +307,7 @@ class ScriptLoader extends App
 			/// TiFy - Infinite Scroll
 			'tify-infinite-scroll'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-infinite-scroll.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-infinite-scroll.js'
 				),
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '160126',
@@ -316,7 +316,7 @@ class ScriptLoader extends App
 			/// TiFy - Modal
 			'tify-modals'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-modals.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-modals.min.js'
 				),
 				'deps'		=> array( 'bootstrap-modals' ),
 				'version'	=> '150825',
@@ -325,7 +325,7 @@ class ScriptLoader extends App
 			/// TiFy - Lightbox
 			'tify-lightbox'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-lightbox.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-lightbox.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '150325',
@@ -334,8 +334,8 @@ class ScriptLoader extends App
 			/// TiFy - Lightbox
 			'tify-onepage-scroll'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-onepage-scroll.min.js',
-					'dev'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-onepage-scroll.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-onepage-scroll.min.js',
+					'dev'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-onepage-scroll.js'
 				),
 				'deps'		=> array( 'jquery', 'easing', 'mousewheel' ),
 				'version'	=> '150325',
@@ -344,7 +344,7 @@ class ScriptLoader extends App
 			/// TiFy - Smooth Anchor
 			'tify-smooth-anchor'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-smooth-anchor.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-smooth-anchor.min.js'
 				),
 				'deps'		=> array( 'jquery', 'easing' ),
 				'version'	=> '150329',
@@ -353,7 +353,7 @@ class ScriptLoader extends App
 			/// TiFy - Slideshow
 			'tify-slideshow'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-slideshow.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-slideshow.min.js'
 				),
 				'deps'		=> array( 'jquery', 'easing' ),
 				'version'	=> '160602',
@@ -362,7 +362,7 @@ class ScriptLoader extends App
 			/// TiFy - Fixed SubmitDiv
 			'tify-fixed_submitdiv'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-fixed_submitdiv.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-fixed_submitdiv.min.js'
 				),
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '151023',
@@ -371,7 +371,7 @@ class ScriptLoader extends App
 			/// TiFy - Video
 			'tify-video'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-video.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video.js'
 				),
 				'deps'		=> array( 'jquery', 'tify-modals', 'froogaloop', 'wp-mediaelement' ),
 				'version'	=> '150828',
@@ -380,7 +380,7 @@ class ScriptLoader extends App
 			/// TiFy - Threesixty View
 			'tify-threesixty_view'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-threesixty_view.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-threesixty_view.min.js'
 				),
 				'deps'		=> array( 'jquery', 'threesixty' ),
 				'version'	=> '150904',
@@ -391,7 +391,7 @@ class ScriptLoader extends App
 			// Bootstrap
 			'bootstrap'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/css/bootstrap.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap.min.css',
 					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
 				),
 				'deps'		=> array(),
@@ -401,7 +401,7 @@ class ScriptLoader extends App
 			//// Bootstrap - Tooltips
 			'bootstrap-tooltips'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/css/bootstrap-tooltips.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap-tooltips.min.css'
 				), 
 				'deps'		=> array(),
 				'version'	=> '3.3.5',
@@ -410,7 +410,7 @@ class ScriptLoader extends App
 			//// Bootstrap - Popovers
 			'bootstrap-popovers'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/bootstrap/css/bootstrap-popovers.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap-popovers.min.css'
 				),
 				'deps'		=> array( 'bootstrap-tooltips' ),
 				'version'	=> '3.3.5',
@@ -440,9 +440,9 @@ class ScriptLoader extends App
 			// FontAwesome
 			'font-awesome'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/font-awesome/css/font-awesome.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/font-awesome/css/font-awesome.min.css',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css',
-					'dev'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/font-awesome/css/font-awesome.css',	// Pour les références plugin
+					'dev'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/font-awesome/css/font-awesome.css',	// Pour les références plugin
 				),
 				'deps'		=> array(),
 				'version'	=> '4.4.0',
@@ -452,9 +452,9 @@ class ScriptLoader extends App
 			// Genericons
 			'genericons'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/genericons/genericons.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/genericons/genericons.css',
 					'cdn'		=> '//cdn.rawgit.com/Automattic/Genericons/master/genericons/genericons.css',
-					'dev'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/genericons/genericons.css',	// Pour les références plugin
+					'dev'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/genericons/genericons.css',	// Pour les références plugin
 				),
 				'deps'		=> array(),
 				'version'	=> '4.4.0',
@@ -464,7 +464,7 @@ class ScriptLoader extends App
 			// Image Lightbox
                         'imagelightbox'                            => array(
                                 'src'           => array(
-                                        'local'         => tiFy::$AbsUrl .'/Libraries/tiFy/Assets/imagelightbox.min.css',
+                                        'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.css',
                                 ),
                                 'deps'          => array(),
                                 'version'       => '160902',
@@ -474,7 +474,7 @@ class ScriptLoader extends App
 			// NanoScroller	
 			'nanoscroller'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/nanoscroller/nanoscroller.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/nanoscroller/nanoscroller.min.css',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.7/css/nanoscroller.min.css'
 				),
 				'deps'		=> array(),
@@ -485,7 +485,7 @@ class ScriptLoader extends App
 			// Owl Carousel
 			'owlcarousel'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/owlcarousel/assets/owl.carousel.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/owlcarousel/assets/owl.carousel.min.css',
 					'cdn'		=> '//cdn.rawgit.com/smashingboxes/OwlCarousel2/master/dist/assets/owl.carousel.min.css'
 				),
 				'deps'		=> array(),
@@ -496,7 +496,7 @@ class ScriptLoader extends App
 			// Spectrum
 			'spectrum'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spectrum/spectrum.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spectrum/spectrum.min.css',
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/spectrum.min.css'
 				),
 				'deps'		=> array(),
@@ -525,7 +525,7 @@ class ScriptLoader extends App
 			// SpinKit
 			'spinkit'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/spinkit.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/spinkit.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -534,7 +534,7 @@ class ScriptLoader extends App
 			/// Rotating Plane
 			'spinkit-rotating-plane'	=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/1-rotating-plane.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/1-rotating-plane.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -543,7 +543,7 @@ class ScriptLoader extends App
 			/// Fading Circle
 			'spinkit-fading-circle'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/10-fading-circle.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/10-fading-circle.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -552,7 +552,7 @@ class ScriptLoader extends App
 			/// Folding Cube
 			'spinkit-folding-cube'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/11-folding-cube.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/11-folding-cube.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -561,7 +561,7 @@ class ScriptLoader extends App
 			/// Double Bounce
 			'spinkit-double-bounce'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/2-double-bounce.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/2-double-bounce.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -570,7 +570,7 @@ class ScriptLoader extends App
 			/// Wave
 			'spinkit-wave'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/3-wave.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/3-wave.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -579,7 +579,7 @@ class ScriptLoader extends App
 			/// Wandering Cubes
 			'spinkit-wandering-cubes'		=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/4-wandering-cubes.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/4-wandering-cubes.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -588,7 +588,7 @@ class ScriptLoader extends App
 			/// Pulse
 			'spinkit-pulse'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/5-pulse.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/5-pulse.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -597,7 +597,7 @@ class ScriptLoader extends App
 			/// Chasing Dots
 			'spinkit-chasing-dots'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/6-chasing-dots.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/6-chasing-dots.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -606,7 +606,7 @@ class ScriptLoader extends App
 			/// Three bounce
 			'spinkit-three-bounce'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/7-three-bounce.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/7-three-bounce.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -615,7 +615,7 @@ class ScriptLoader extends App
 			/// Circle
 			'spinkit-circle'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/8-circle.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/8-circle.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -624,7 +624,7 @@ class ScriptLoader extends App
 			/// Cube Grid
 			'spinkit-cube-grid'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/spinkit/9-cube-grid.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/spinkit/9-cube-grid.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '1.2.2',
@@ -634,7 +634,7 @@ class ScriptLoader extends App
 			// ThreeSixty Slider
 			'threesixty'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/threesixty/threesixty.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/threesixty/threesixty.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '2.0.5',
@@ -645,7 +645,7 @@ class ScriptLoader extends App
 			/// TiFy - Front Styles
 			'tify-front_styles'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-front_styles.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-front_styles.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '150907',
@@ -654,7 +654,7 @@ class ScriptLoader extends App
 			/// TiFy - Admin Styles
 			'tify-admin_styles'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-admin_styles.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-admin_styles.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '150409',
@@ -663,7 +663,7 @@ class ScriptLoader extends App
 			/// TiFy - Calendar	
 			'tify-calendar'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-calendar.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-calendar.css'
 				),
 				'deps'		=> array(
 					'spinkit-pulse'		
@@ -674,7 +674,7 @@ class ScriptLoader extends App
 			/// TiFy - Slideshow
 			'tify-slideshow'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-slideshow.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-slideshow.min.css'
 				),
 				'deps'		=> array(),
 				'version'	=> '160602',
@@ -683,7 +683,7 @@ class ScriptLoader extends App
 			/// TiFy - Video
 			'tify-video'					=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-video.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video.min.css'
 				),
 				'deps'		=> array( 'wp-mediaelement', 'dashicons', 'spinkit-three-bounce' ),
 				'version'	=> '150828',
@@ -691,7 +691,7 @@ class ScriptLoader extends App
 			),
 			'tify-video-theme'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-video-theme.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video-theme.css',
 				),
 				'deps'		=> array( 'tify-video' ),
 				'version'	=> '150828',
@@ -700,7 +700,7 @@ class ScriptLoader extends App
 			/// TiFy - Threesixty View
 			'tify-threesixty_view'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/Libraries/tiFy/Assets/tify/tify-threesixty_view.min.css',
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-threesixty_view.min.css',
 				),
 				'deps'		=> array( 'threesixty', 'dashicons' ),
 				'version'	=> '150904',

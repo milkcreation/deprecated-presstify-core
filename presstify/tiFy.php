@@ -1,7 +1,7 @@
 <?php
 namespace tiFy;
 
-class tiFy
+final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
@@ -27,16 +27,28 @@ class tiFy
 
 		global $tiFy;
 		$tiFy = $this;
-
+		
+		
+		// Définition des constantes
+		/// Répertoire des plugins
+		if( ! defined( 'TIFY_PLUGINS_DIR' ) )
+			define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );
+		
 		// Déclaration de l'espace de nom dédié
-		require_once __DIR__ .'/Libraries/ClassLoader/Psr4ClassLoader.php';
+		require_once __DIR__ .'/vendor/ClassLoader/Psr4ClassLoader.php';
 		$loader = new \Psr4ClassLoader;
-		$loader->addNamespace( 'tiFy', __DIR__ );
+
+		$loader->addNamespace( 'tiFy\Components', __DIR__ .'/components' );
+		$loader->addNamespace( 'tiFy\Core', __DIR__ .'/core' );
+		$loader->addNamespace( 'tiFy\Environment', __DIR__ .'/env' );
+		$loader->addNamespace( 'tiFy\Helpers', __DIR__ .'/helpers' );
+		$loader->addNamespace( 'tiFy\Vendor', __DIR__ .'/vendor' );
+		$loader->addNamespace( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
 		$loader->register();
-
+				
 		// Instanciation des librairies
-		new Libraries\Autoload;
-
+		new Vendor\Autoload;
+	
 		// Définition des chemins vers la racine de PresstiFy
 		self::$AbsPath = ( $AbsPath ) ? $AbsPath : ABSPATH;
 		self::$AbsDir = dirname( __FILE__ );
@@ -50,23 +62,32 @@ class tiFy
 
 		// Instanciation des fonctions d'aides au développement
 		new Helpers\Autoload;
-
-		// Instanciation des plugins
-		if( ! defined( 'TIFY_PLUGINS_DIR' ) )
-			define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );
-		
-		if( file_exists( TIFY_PLUGINS_DIR .'/Plugins.php' ) ) :
-			$loader = new \Psr4ClassLoader;
-			$loader->addNamespace( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
-			$loader->register();
-
-			new Plugins\Plugins;
-		endif;
-
+				
+		add_action( 'after_setup_tify', array( $this, 'load_plugins' ) );
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 	}
 
-	/* = ACTIONS = */
+	/* = DECLENCHEURS = */
+	/** == Chargement des plugins == **/
+	final public function load_plugins()
+	{
+		if( empty( tiFy::$Params['plugins'] ) )
+			return;
+
+		foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
+			
+			if( class_exists( $plugin ) ) :
+				$ClassName	= $plugin;
+			elseif( class_exists( "tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
+				$ClassName	= "tiFy\\Plugins\\{$plugin}\\{$plugin}";
+			else :
+				continue;
+			endif;
+
+			new $ClassName;			
+		endforeach;
+	}
+	
 	/** == Initialisation globale == **/
 	final public function load_textdomain()
 	{

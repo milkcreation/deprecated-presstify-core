@@ -25,7 +25,7 @@ class Icon extends Helpers
 		
 		static::$DefaultArgs	= array(
 			'name' 	=> '_icon',
-			'dir' 	=> \tiFy\tiFy::$AbsDir .'/Libraries/Assets/svg',
+			'dir' 	=> \tiFy\tiFy::$AbsDir .'/vendor/Assets/svg',
 			'attrs'	=> array()
 		);
 	}
