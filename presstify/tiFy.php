@@ -51,7 +51,7 @@ final class tiFy
 		$loader->addNamespace( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
 		$loader->register();
 				
-		// Instanciation des librairies
+		// Instanciation des librairies tiers partie
 		new Vendor\Autoload;
 	
 		// Définition des chemins vers la racine de PresstiFy
@@ -59,7 +59,7 @@ final class tiFy
 		self::$AbsDir = dirname( __FILE__ );
 		self::$AbsUrl = \tiFy\Lib\Utils::get_filename_url( self::$AbsDir, self::$AbsPath );
 
-		// Instanciation des librairies
+		// Instanciation du coeur
 		new Core\Autoload;
 
 		// Instanciation des composants
@@ -96,6 +96,6 @@ final class tiFy
 	/** == Initialisation globale == **/
 	final public function load_textdomain()
 	{
-		return load_textdomain( 'tify', self::$AbsDir .'/Languages/tify-' . get_locale() . '.mo' );
+		return load_textdomain( 'tify', self::$AbsDir .'/languages/tify-' . get_locale() . '.mo' );
 	}
 }

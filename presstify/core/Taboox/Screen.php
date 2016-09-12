@@ -133,7 +133,7 @@ class Screen extends App
 	{
 		// Récupération des arguments
 		$this->box_render_args = ( func_num_args() ) ? func_get_args() : array();
-
+	
 		// Création de l'arborescence des onglets	
 		$this->create_nodes_tree( $this->ID );
 			
