@@ -48,7 +48,7 @@ class Options extends Core
 			$args['id'] = $node_id;				
 			$this->registerNode( $args );
 		endforeach;
-		
+
 		// Configuration
 		$this->page_title 		= __( 'Réglages des options du thème', 'tify' );
 		$this->menu_title 		= get_bloginfo( 'name' );

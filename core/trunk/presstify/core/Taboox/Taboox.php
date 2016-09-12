@@ -89,7 +89,7 @@ class Taboox extends Core
 				
 		// Déclaration des helpers
 		do_action( 'tify_taboox_register_helpers' );
-		
+				
 		// Initialisation des sections de boîtes à onglets			
 		foreach( (array) self::$HooknameMap as $hookname ) :
 			if( isset( self::$Nodes[$hookname] ) ) :
@@ -130,13 +130,13 @@ class Taboox extends Core
 	
 	/** == Chargement de l'écran courant == **/
 	protected function current_screen( $current_screen )
-	{		
+	{							
 		$Hookname = false;
 		if( in_array( $current_screen->id, array_keys( self::$HooknameMap ) ) )
 			$Hookname = $current_screen->id;
 		if( isset( self::$ScreenHooknameMap[$current_screen->id] ) )
 			$Hookname = self::$ScreenHooknameMap[$current_screen->id];
-		
+
 		// Bypass
 		if( ! $Hookname )
 			return;
@@ -168,7 +168,7 @@ class Taboox extends Core
 					add_action( 'edit_form_advanced', array( self::$Screen, 'box_render' ) );
 				endif;
 				break;
-			case 'option' :	
+			case 'option' :
 				add_settings_section( self::$Screen->ID, null, array( self::$Screen, 'box_render' ), self::$Boxes[$Hookname]['page'] );
 				break;
 			case 'taxonomy' :
