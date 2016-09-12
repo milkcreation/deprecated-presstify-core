@@ -28,8 +28,13 @@ final class tiFy
 		global $tiFy;
 		$tiFy = $this;
 		
-		
 		// Définition des constantes
+		/// Attribut de configuration
+		if( ! defined( 'TIFY_CONFIG_DIR' ) )
+			define( 'TIFY_CONFIG_DIR', get_template_directory() .'/config' );
+		if( ! defined( 'TIFY_CONFIG_EXT' ) )
+			define( 'TIFY_CONFIG_EXT', 'yml' );		
+		
 		/// Répertoire des plugins
 		if( ! defined( 'TIFY_PLUGINS_DIR' ) )
 			define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );

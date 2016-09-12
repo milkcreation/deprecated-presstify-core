@@ -6,12 +6,7 @@ use tiFy\tiFy;
 
 class Params extends App
 {
-	/* = ARGUMENTS = */
-	// 
-	public static $ConfigDir;
-	//
-	public static $ConfigExt;
-	
+	/* = ARGUMENTS = */	
 	// Liste des actions à déclencher
 	protected $CallActions				= array(
 		'after_setup_theme'	
@@ -23,10 +18,7 @@ class Params extends App
 	
 	/* = PARAMETRAGE = */	
 	final public function after_setup_theme()
-	{
-		$dir = self::$ConfigDir = ( defined( 'TIFY_CONFIG_DIR' ) ) ? TIFY_CONFIG_DIR : get_template_directory() .'/config';
-		$ext = self::$ConfigExt = ( defined( 'TIFY_CONFIG_EXT' ) && in_array( TIFY_CONFIG_EXT, array( 'json', 'yml' ) ) ) ? TIFY_CONFIG_EXT : 'yml';
-		
+	{		
 		$attrs = array(
 			'config'		=> array(
 				'eval'			=> true		
@@ -62,21 +54,21 @@ class Params extends App
 			endwhile;
 			closedir( $_dir );
 		endif;
-		
+
 		// Récupération du paramétrage personnalisé		
-		$_dir = @ opendir( $dir );
+		$_dir = @ opendir( TIFY_CONFIG_DIR );
 		if( $_dir ) :
 			while ( ( $file = readdir( $_dir ) ) !== false ) :
 				if ( substr( $file, 0, 1 ) == '.' )
 						continue;
-				$basename = basename( $file, ".{$ext}" );
+				$basename = basename( $file, ".". TIFY_CONFIG_EXT );
 				if( ! isset( $attrs[$basename] ) )
 				 	continue;
 				$attr = $attrs[$basename];
 				if( ! isset( ${$basename} ) )
 					${$basename} = array();
 
-				${$basename} += self::_parseFilename( "{$dir}/{$file}", ${$basename}, $ext, $attr );
+				${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
 			endwhile;
 			closedir( $_dir );
 		endif;
