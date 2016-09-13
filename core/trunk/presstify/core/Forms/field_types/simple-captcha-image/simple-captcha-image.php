@@ -77,8 +77,8 @@ class tiFy_Forms_FieldType_SimpleCaptchaImage extends tiFy_Forms_FieldType{
 		if( $field['type'] != 'simple-captcha-image' )
 			return;	
 				
-		$output .= "<img src=\"". $this->uri ."image.php\" alt=\"".__( 'captcha introuvable', 'tify' )."\" style=\"float:left;\" />";
-		$output .= "<input type=\"text\" name=\"". esc_attr( $this->master->fields->get_name( $field ) ) ."\" value=\"\" size=\"8\" autocomplete=\"off\" placeholder=\"{$field['placeholder']}\" />";
+		$output .= "<img src=\"". $this->uri ."image.php\" alt=\"".__( 'captcha introuvable', 'tify' )."\" style=\"vertical-align: middle;\" />";
+		$output .= "<input type=\"text\" name=\"". esc_attr( $this->master->fields->get_name( $field ) ) ."\" value=\"\" size=\"8\" autocomplete=\"off\" placeholder=\"{$field['placeholder']}\" style=\"height:50px;vertical-align: middle;\" />";
 	}
 	
 	/** == Vérification des données du champ au moment du traitement de la requête == */

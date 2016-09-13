@@ -12,8 +12,8 @@ class DropdownMenu extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dropdown_menu', $this->Url ."/dropdown_menu.css", array( ), '141212' );
-		wp_register_script('tify_control-dropdown_menu', $this->Url ."/dropdown_menu.js", array( 'jquery' ), '141212', true );
+		wp_register_style( 'tify_control-dropdown_menu', $this->Url ."/DropdownMenu.css", array( ), '160913' );
+		wp_register_script('tify_control-dropdown_menu', $this->Url ."/DropdownMenu.js", array( 'jquery' ), '160913', true );
 	}
 			
 	/* = Déclaration des scripts = */
@@ -24,7 +24,7 @@ class DropdownMenu extends Factory
 	}
 		
 	/* = Affichage du controleur = */
-	public static function display( $args = array() )
+	public static function display( $args = array(), $echo = true )
 	{
 		static $instance = 0;
 		$instance++;
@@ -32,19 +32,43 @@ class DropdownMenu extends Factory
 		$defaults = array(
 			'id'				=> 'tify_control_dropdown_menu-'. $instance,
 			'class'				=> 'tify_control_dropdown_menu',
-			'selected' 			=> 0,	
-			'echo'				=> 1,
+			'selected' 			=> 0,
 			'links'				=> array(),
-			'show_option_none'	=> __( 'Aucun', 'tify' )
+			'show_option_none'	=> __( 'Aucun', 'tify' ),
+				
+			// Liste de selection
+			'picker'			=> array(
+				'append' 	=> 'body',
+				'position'	=> 'default', // default: vers le bas | top |  clever: positionnement intelligent
+				'width'		=> 'auto'
+			)
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 		
+		
+		// Traitement des arguments de la liste de selection
+		$picker = wp_parse_args(
+			$picker,
+			array(
+				'id'		=> $id .'-picker',
+				'append' 	=> 'body',
+				'position'	=> 'default', // default: vers le bas | top | clever: positionnement intelligent
+				'width'		=> 'auto'
+			)
+		);
+		
 		$output  = "";
-		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_menu\">\n";	
-		$output .= "\t<span class=\"selected\"><b>". ( isset( $links[$selected] ) ? strip_tags( $links[$selected] ) : $show_option_none  ). "</b><i class=\"caret\"></i></span>\n";
-		$output .= "\t<ul>\n";
-		foreach( $links as $value => $link ) :  if( $value === $selected ) continue;
+		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_menu\" data-picker=\"". htmlentities( json_encode( $picker ), ENT_QUOTES, 'UTF-8') ."\">\n";	
+		$output .= "\t<span class=\"selected\">";
+		$output .= isset( $links[$selected] ) ? strip_tags( $links[$selected] ) : $show_option_none;
+		$output .= "</span>\n";
+		$output .= "</div>\n";
+					
+		// Picker HTML
+		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown_menu-picker\" class=\"tify_control_dropdown_menu-picker\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
+		$output .= "\t<ul>\n";	
+		foreach( (array) $links as $value => $link ) : if( $value === $selected ) continue;
 			$output .= "\t\t<li>{$link}</li>\n";
 		endforeach;
 		$output .= "\t</ul>\n";
@@ -52,7 +76,7 @@ class DropdownMenu extends Factory
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output;
+		
+		return $output;
 	}
 }
