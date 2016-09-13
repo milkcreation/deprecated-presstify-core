@@ -156,7 +156,7 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 		// Bypass
 		if( ! $userdata = $this->parse_user_datas( $parsed_request ) )
 			return;
-		
+
 		if( $current_user = get_userdata( $this->UserID ) ) :
 			if( empty( $userdata['user_pass'] ) )
 				unset( $userdata['user_pass'] );				
@@ -264,8 +264,8 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 		if( ! $role ) :
 			if( is_user_logged_in() ) :
 				$role = current( wp_get_current_user()->roles );
-			elseif( is_array( $this->roles ) ) :
-				$role = current( array_keys( $this->roles ) );
+			elseif( is_array( $this->Roles ) ) :
+				$role = current( array_keys( $this->Roles ) );
 			else :
 				$role = get_option( 'default_role', 'subscriber' );
 			endif;
