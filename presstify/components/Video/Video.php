@@ -44,7 +44,7 @@ class Video
 	/** == Responsivité des vidéos intégrées == **/
 	function wp_head()
 	{
-	?><style type="text/css">.tify_video-embedded{position:relative;padding-bottom:56.25%;padding-top:30px;height:0;} .tify_video-embedded object,.tify_video-embedded iframe,.tify_video-embedded video,.tify_video-embedded embed{max-width:100%;position:absolute;top:0;left:0;width:100%;height:100%;}</style><?php
+	?><style type="text/css">.tify_video-embedded{position:relative;padding-bottom:56.25%;/*padding-top:30px*/;height:0;} .tify_video-embedded object,.tify_video-embedded iframe,.tify_video-embedded video,.tify_video-embedded embed{max-width:100%;position:absolute;top:0;left:0;width:100%;height:100%;}</style><?php
 	}
 		
 	/** == Encapsulation des vidéo intégrées == **/

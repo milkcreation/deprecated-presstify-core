@@ -1,5 +1,5 @@
 var tify_video;
-jQuery( document ).ready( function(e){	
+jQuery( document ).ready( function($){	
 	/** == Chargement de la vidéo via Ajax == **/
 	tify_video = function( $this ){
 		$( '.modal-spinner', $this ).show();
@@ -24,7 +24,7 @@ jQuery( document ).ready( function(e){
 		$( '.modal-body', $( this ) ).empty();
 	});
 	/** == Action au redimensionnement de la modal == **/	
-	/*$( window ).on( 'resize.tify_video', function(e){
+	$( window ).on( 'resize.tify_video', function(e){
 		$( '.tify_video.modal .tify_video-container iframe, .tify_video.modal .tify_video-container object, .tify_video.modal .tify_video-container embed, .tify_video.modal .tify_video-container video' ).each( function(){
 			$this = $(this);
 			$closest = $(this).closest( '.modal-content' );
@@ -32,7 +32,7 @@ jQuery( document ).ready( function(e){
 			$this.css( 'max-height', maxHeight );
 			$( '.modal-body', $closest ).height( $this.height() );
 		});	
-	});*/
+	});
 	$( '.tify_video.modal' ).each( function(){
 		$( this ).modal( );
 	});
