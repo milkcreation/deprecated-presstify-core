@@ -209,18 +209,31 @@ class Factory
 	public function logout_link( $args = array() )
 	{
 		$defaults = array(
-				'redirect' 	=> add_query_arg( 'loggedout', 'true', $this->redirect_to ),
-				'text'		=> __( 'Se déconnecter', 'tify' ),
-				'class'		=> ''
+			'redirect' 	=> add_query_arg( 'loggedout', 'true', $this->redirect_to ),
+			'text'		=> __( 'Se déconnecter', 'tify' ),
+			'class'		=> ''
 		);
 		$args = wp_parse_args( $args, $defaults );
 
-		$output  = 	"<a href=\"". add_query_arg( 'tify_login-form-id', $this->id, wp_logout_url( $args['redirect'] ) ) ."\"".
+		$output  = 	"<a href=\"". $this->logout_url( array( 'redirect' => $args['redirect'] ) ) ."\"".
 				" title=\"". __( 'Déconnection', 'tify' ) ."\"".
 				" class=\"tify_login-logout_link {$args['class']}\">".
 				$args['text'].
 				"</a>";
 
 		return apply_filters( 'tify_login_logout_link', $output, $args, $this );
+	}
+	
+	/** == Url de déconnection == **/
+	public function logout_url( $args = array() )
+	{
+		$defaults = array(
+			'redirect' 	=> add_query_arg( 'loggedout', 'true', $this->redirect_to ),
+		);
+		$args = wp_parse_args( $args, $defaults );
+
+		$output = add_query_arg( 'tify_login-form-id', $this->id, wp_logout_url( $args['redirect'] ) );
+
+		return apply_filters( 'tify_login_logout_url', $output, $args, $this );
 	}
 }

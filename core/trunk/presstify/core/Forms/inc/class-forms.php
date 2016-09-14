@@ -321,7 +321,7 @@ Class tiFy_Forms_Forms{
 		// Balise d'ouverture du formulaire
 		
 		if( ! $this->master->handle->check_success() || ( $success['display'] === 'form' ) ) :
-			$output .= "\n\t<form method=\"{$_form['method']}\" id=\"tify_form_{$_form['ID']}\" class=\"".sprintf( $_form['form_class'], "tify_form" )."\" action=\"{$action}\"";
+			$output .= "\n\t<form method=\"{$_form['method']}\" id=\"tify_form_form-{$_form['ID']}\" class=\"". sprintf( $_form['form_class'], 'tify_form_form' ) ."\" action=\"{$action}\"";
 			if( $this->get_option( 'enctype' ) )
 				$output .= " enctype=\"multipart/form-data\"";
 			$output .= "\">";		
@@ -371,7 +371,7 @@ Class tiFy_Forms_Forms{
 		// Post-affichage HTML
 		$output .= $_form['after'];		
 		$output .= "\n</div>";
-			
+
 		$this->master->callbacks->call( 'form_after_output_display', array( &$output, $_form, $this->master ) );	
 
 		// Fonction de court-circuitage de l'affichage du formulaire
@@ -382,8 +382,8 @@ Class tiFy_Forms_Forms{
 		
 		if( $echo )
 			echo $output;
-		else 
-			return $output;	
+		
+		return $output;	
 	}
 
 	/*** === Champs cachés de soumission de formulaire === ***/

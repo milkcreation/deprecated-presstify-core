@@ -251,8 +251,8 @@ Class tiFy_Forms_Handle{
 		if( ! isset( $request['form_id'] ) )
 			return;
 		if( ! $_form = $this->master->forms->set_current( $request['form_id'] ) )
-			return;
-	
+			return;	
+			
 		foreach( $this->master->fields->get_fields_displayed() as $field ) :
 			$errors = array();
 			// Bypass : Le champ n'est pas présent dans la soumission de formulaire
@@ -270,6 +270,7 @@ Class tiFy_Forms_Handle{
 			// Tests d'integrité
 			else :			
 				if( $field['integrity_cb'] ) :
+
 					$this->master->integrity->check( $field['integrity_cb'], $request['fields'][ $field['slug'] ]['value'] );
 					if( isset( $this->master->integrity->errors ) ) :						
 						foreach( $this->master->integrity->errors as $error ) :
@@ -287,7 +288,7 @@ Class tiFy_Forms_Handle{
 			if( ! empty( $errors ) )
 				$this->master->errors->field_set( $errors, $field );			
 		endforeach;
-		
+
 		if( $this->master->errors->has() )
 			return;
 		else

@@ -74,10 +74,10 @@ Class tiFy_Forms_Integrity{
 	 private function execute( $callback ){
 	 	if( ! method_exists( $this, $callback['function'] ) )
 			return;
-		
-		if( empty( $callback['value'] ) && ( $callback['function'] !== 'is_empty' ) )
-			return;
-		
+
+		/*if( empty( $callback['value'] ) && ( $callback['function'] !== 'is_empty' ) )
+			return; */
+
 	 	if( call_user_func( array( &$this, $callback['function'] ), $callback['value'], $callback['args'] ) === false )
 			return $output = $callback['error'];
 	 }
@@ -219,10 +219,10 @@ Class tiFy_Forms_Integrity{
 	 */
 	public function compare( $value, $args = array() ){
 		$_request = $this->master->handle->original_request;
-		
+
 		if( ! $_form = $this->master->forms->get_current() )
 			return false;
-		
+
 		if( preg_match( '#%%(.*)%%#', $args[0], $matches ) && ( isset( $_request[$_form['prefix']][$_form['ID']][$matches[1]] ) ) ) :
 			if( $value === $_request[$_form['prefix']][$_form['ID']][$matches[1]] ) : 
 				return true;	
