@@ -17,12 +17,12 @@
  * COPIER LA FONCTION DANS FUNCTIONS.PHP DU THEME ACTIF
 add_action( 'admin_init', 'tify_mailer_test' );
 function tify_mailer_test(){
-	if( ! isset( $_REQUEST['tify_mailer'] ) )
+	if( ! isset( $_REQUEST['tify_mailer_test'] ) )
 		return;
 	
-	new \tiFy\Lib\Mailer\Mailer( '[monadresse@votredomaine.com]' );
+	new \tiFy\Lib\Mailer\Mailer( $_REQUEST['tify_mailer_test'] );
 }
-// > puis appeler l'url du site dans le navigateur http://urldusite/wp-admin/?tify_mailer
+// > puis appeler l'url du site dans le navigateur http://urldusite/wp-admin/?tify_mailer_test=contact@domain.ltd
 */
  
 namespace tiFy\Lib\Mailer;
@@ -677,9 +677,9 @@ class Mailer extends App
 		switch( $this->engine ) :
 			default :
 				break;
-			case 'wp_mail' :	
-				global $phpmailer;
-											
+			case 'wp_mail' :
+				global $phpmailer;	
+										
 				switch( $this->type ) :
 					case 'html' :
 						$message = $this->output_html;
@@ -709,7 +709,7 @@ class Mailer extends App
 					return $this->success = true;
 				endif;
 				break;
-			case 'smtp' :				
+			case 'smtp' :
 				$mailer = new \PHPMailer;
 				
 				// Configuration SMTP

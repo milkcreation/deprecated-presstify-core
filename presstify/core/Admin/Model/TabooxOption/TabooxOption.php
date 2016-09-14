@@ -76,7 +76,7 @@ class TabooxOption extends Form
 	{
 	?>	
 		<div class="wrap">
-			<h2><?php _e( 'Réglage', 'tify');?></h2>
+			<h2><?php _e( 'Réglages', 'tify');?></h2>
 			
 			<form method="post" action="options.php">
 				<div style="margin-right:300px; margin-top:20px;">

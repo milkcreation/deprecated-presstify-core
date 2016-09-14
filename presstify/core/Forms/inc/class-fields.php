@@ -403,8 +403,9 @@ Class tiFy_Forms_Fields{
 							case 'dropdown' :
 								$output .= "<option value=\"". esc_attr( $ovalue ) ."\" ".selected( $field['value'] == $ovalue, true, false ).">{$label}</option>";
 								break;
-							case 'checkbox' :								
-								$output .= "<label class=\"choice-title\"><input type=\"checkbox\" value=\"". esc_attr( $ovalue ) ."\" name=\"". esc_attr( $name )."[]\" ".checked( ( is_array( $field['value'] ) && in_array( $ovalue, $field['value']) ), true, false )." autocomplete=\"{$field['autocomplete']}\"". ( $field['readonly'] ? " disabled=\"disabled\" " : "" ) ."/>$label</label>";
+							case 'checkbox' :
+								$field['value'] = (array) $field['value'];
+								$output .= "<label class=\"choice-title\"><input type=\"checkbox\" value=\"". esc_attr( $ovalue ) ."\" name=\"". esc_attr( $name )."[]\" ". checked( in_array( $ovalue, $field['value'] ), true, false ) ." autocomplete=\"{$field['autocomplete']}\"". ( $field['readonly'] ? " disabled=\"disabled\" " : "" ) ."/>$label</label>";
 								break;
 							case 'radio' :
 								$output .= "<label class=\"choice-title\"><input type=\"radio\" value=\"". esc_attr( $ovalue ) ."\" name=\"". esc_attr( $name )."\" ".checked($field['value']==$ovalue, true, false )." autocomplete=\"{$field['autocomplete']}\"". ( $field['readonly'] ? " disabled=\"disabled\" " : "" ) ."/>$label</label>";

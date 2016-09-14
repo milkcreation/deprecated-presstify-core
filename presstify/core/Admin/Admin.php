@@ -109,7 +109,7 @@ class Admin extends Core
 	/* = CONTRÔLEURS = */
 	/* = Déclaration d'une entité = */	
 	public static function Register( $id, $args )
-	{
+	{		
 		return self::$Factories[$id] = new Factory( $id, $args );
 	}
 	
