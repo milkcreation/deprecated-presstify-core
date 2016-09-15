@@ -13,9 +13,13 @@ class Token
 	// Clé privée
 	private static $PrivateKey 	= NONCE_SALT;
 	
+	// Algorythme de hashage
+	// @see Liste des alog : http://php.net/manual/fr/function.hash.php && http://php.net/manual/fr/function.hash-algos.php
+	private static $Algo		= 'sha256';
+	
 	/* = METHODES PUBLIQUES = */
 	/** == Encryptage d'une chaîne de caractère == **/
-	public static function Encrypt( $plain, $key = null, $hmacSalt = null ) 
+	public static function Encrypt( $plain, $key = null, $hmacSalt = null, $algo = null ) 
 	{
 		if( $key === null ) 
 			$key = self::$PublicKey;
@@ -24,8 +28,11 @@ class Token
 
 		if( $hmacSalt === null ) 
 			$hmacSalt = self::$PrivateKey;
-
-		$key = substr( hash( 'sha256', $key . $hmacSalt ), 0, 32 ); # Generate the encryption and hmac key
+		
+		if( $algo === null )	
+			$algo = self::$Algo;
+			
+		$key = substr( hash( $algo, $key . $hmacSalt ), 0, 32 ); # Generate the encryption and hmac key
 
 		$algorithm 	= MCRYPT_RIJNDAEL_128; # encryption algorithm
 		$mode 		= MCRYPT_MODE_CBC; # encryption mode
@@ -33,13 +40,13 @@ class Token
 		$ivSize 	= mcrypt_get_iv_size( $algorithm, $mode ); # Returns the size of the IV belonging to a specific cipher/mode combination
 		$iv 		= mcrypt_create_iv( $ivSize, MCRYPT_DEV_URANDOM ); # Creates an initialization vector (IV) from a random source
 		$ciphertext = $iv . mcrypt_encrypt( $algorithm, $key, $plain, $mode, $iv ); # Encrypts plaintext with given parameters
-		$hmac 		= hash_hmac( 'sha256', $ciphertext, $key ); # Generate a keyed hash value using the HMAC method
+		$hmac 		= hash_hmac( $algo, $ciphertext, $key ); # Generate a keyed hash value using the HMAC method
 		
 		return base64_encode( $hmac . $ciphertext );
 	}
 	
 	/** == Décryptage d'une chaîne de caractère == **/
-	public static function Decrypt( $cipher, $key = null, $hmacSalt = null ) 
+	public static function Decrypt( $cipher, $key = null, $hmacSalt = null, $algo = null ) 
 	{
 		if( $key === null ) 
 			$key = self::$PublicKey;
@@ -53,15 +60,18 @@ class Token
 			
 		if ( $hmacSalt === null )
 			$hmacSalt = self::$PrivateKey;
-
-		$key = substr( hash( 'sha256', $key . $hmacSalt ), 0, 32 ); # Generate the encryption and hmac key.
 		
+		if( $algo === null )	
+			$algo = self::$Algo;
+	
+		$key = substr( hash( $algo, $key . $hmacSalt ), 0, 32 ); # Generate the encryption and hmac key.
+				
 		# Split out hmac for comparison
-		$macSize 	= 64;
+		$macSize 	= strlen( hash( $algo, 'test', false ) );
 		$hmac 		= substr( $cipher, 0, $macSize );
 		$cipher 	= substr( $cipher, $macSize );
 		
-		$compareHmac = hash_hmac( 'sha256', $cipher, $key );
+		$compareHmac = hash_hmac( $algo, $cipher, $key );
 		if ( $hmac !== $compareHmac )
 			return false;
 
