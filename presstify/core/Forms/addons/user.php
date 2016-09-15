@@ -11,13 +11,13 @@ Author URI: http://profile.milkcreation.fr/jordy.manner
 class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 	/* = ARGUMENTS = */
 	//
-	private	$Roles			= array();
+	protected $Roles			= array();
 	
 	//
-	private $UserID 		= 0;
+	protected $UserID 			= 0;
 	
 	//
-	private $ProfileEdit	= false;
+	protected $ProfileEdit		= false;
 	
 	/* = CONTROLEUR = */
 	public function __construct( tiFy_Forms $master )
@@ -51,12 +51,12 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 
 	/* = DECLENCHEURS = */	
 	/** == Initialisation de l'interface d'administration == **/
-	final public function admin_menu()
+	public function admin_menu()
 	{
-		foreach( (array) $this->master->addons->get_forms_active( 'user' ) as $form ) :
+		foreach( (array) $this->master->addons->get_forms_active( $this->ID ) as $form ) :
 			$this->master->forms->set_current( $form );
 			// Création des rôles et des habilitations
-			if( $this->Roles = $this->setRoles( $this->master->addons->get_form_option( 'roles', 'user' ) ) ) :			
+			if( $this->Roles = $this->setRoles( $this->master->addons->get_form_option( 'roles', $this->ID ) ) ) :			
 				foreach( (array) $this->Roles as $role => $args ) :
 					// Bypass
 					if( empty( $role) ) continue;
@@ -79,9 +79,9 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 				
 	/* = METHODES DE RAPPEL = */	 
 	/** == Vérification de la requête == **/
-	final public function cb_handle_check_request( &$errors, $field )
+	public function cb_handle_check_request( &$errors, $field )
 	{
-		if( ! $userdata = $this->master->addons->get_field_option( 'userdata', 'user', $field ) ) :
+		if( ! $userdata = $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) ) :
 			return;
 		elseif( ! $this->is_main_userdata( $userdata ) ) :
 			return;
@@ -97,7 +97,7 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 			
 		// Vérification d'identifiant de connexion
 		elseif( ( $userdata == 'role' ) ) :
-			$roles = $this->master->addons->get_form_option( 'roles', 'user' );
+			$roles = $this->master->addons->get_form_option( 'roles', $this->ID );
 			if( ! in_array( $field['value'], array_keys( $roles ) ) ) :
 				$_errors[] = __( 'L\'attribution de ce rôle n\'est pas autorisée.', 'tify' );
 			endif;
@@ -150,9 +150,10 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 	}
 	
 	/** == Traitement du formulaire == **/
-	final public function cb_handle_submit_request( $parsed_request, $original_request )
+	public function cb_handle_submit_request( $parsed_request, $original_request )
 	{
-		$this->Roles = $this->setRoles( $this->master->addons->get_form_option( 'roles', 'user' ) );
+		$this->Roles = $this->setRoles( $this->master->addons->get_form_option( 'roles', $this->ID ) );
+			
 		// Bypass
 		if( ! $userdata = $this->parse_user_datas( $parsed_request ) )
 			return;
@@ -183,11 +184,11 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 
 			// Création ou modification des informations personnelles
 			foreach( $parsed_request['fields'] as $slug => $field ) :
-				if( ! $this->master->addons->get_field_option( 'userdata', 'user', $field ) )
+				if( ! $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) )
 					continue;
-				if(  $this->master->addons->get_field_option( 'userdata', 'user', $field ) === 'meta' ) :
+				if(  $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) === 'meta' ) :
 					update_user_meta( $this->UserID, $slug,  $field['value'] );
-				elseif( $this->master->addons->get_field_option( 'userdata', 'user', $field ) === 'option' ) :
+				elseif( $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) === 'option' ) :
 					update_user_option( $this->UserID, $slug,  $field['value'] );
 				endif;
 			endforeach;
@@ -195,10 +196,10 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 	}
 		
 	/** == Définition des champs éditables == **/
-	final public function cb_field_set( &$field )
+	public function cb_field_set( &$field )
 	{
 		// Bypass
-		if( ! $userdata = $this->master->addons->get_field_option( 'userdata', 'user', $field ) )
+		if( ! $userdata = $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) )
 			return $field;
 		
 		if( is_string( $userdata ) && in_array( $userdata, array( 'user_pass' ) ) ) :
@@ -211,7 +212,7 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 		
 	/* = CONTRÔLEURS = */
 	/** == Traitement des rôles == **/
-	private function setRoles( $roles = array() )
+	protected function setRoles( $roles = array() )
 	{
 		$defaults = array(
 			'name' 					=> '',
@@ -230,7 +231,7 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 	}
 	
 	/** == Vérifie s'il s'agit d'une des données utilisateur principale == **/
-	private function is_main_userdata( $userdata )
+	protected function is_main_userdata( $userdata )
 	{
 		return in_array( 
 			$userdata,
@@ -250,14 +251,14 @@ class tiFy_Forms_Addon_User extends tiFy_Forms_Addon{
 	}
 		
 	/** == Traitement des données utilisateurs == **/
-	private function parse_user_datas( $parsed_request )
+	protected function parse_user_datas( $parsed_request )
 	{			
 		$userdata = array( 'user_login' => '', 'role' => '', 'first_name' => '', 'last_name' => '', 'nickname' => '', 'display_name' => '', 'user_email' => '', 'user_url' => '',  'description' => '',  'user_pass' => '' );
 		extract( $userdata );
 		
 		foreach( $parsed_request['fields'] as $field ) :
-			if( ( $field_userdata = $this->master->addons->get_field_option( 'userdata', 'user', $field ) ) && $this->is_main_userdata( $field_userdata ) ) :
-				${$field_userdata} = $field['value'];
+			if( ( $field_userdata = $this->master->addons->get_field_option( 'userdata', $this->ID, $field ) ) && $this->is_main_userdata( $field_userdata ) ) :
+				${$field_userdata} = $field['value'];				
 			endif;
 		endforeach;	
 			

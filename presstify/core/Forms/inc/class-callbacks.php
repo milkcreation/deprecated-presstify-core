@@ -100,10 +100,10 @@ class tiFy_Forms_Callbacks{
 		$callbacks = array(); 
 		foreach( (array) $this->functions[$hookname] as $type => $priorities ) :
 			switch( $type ) :
-				case 'addons' :						
+				case 'addons' :	
 					ksort( $priorities );
 					foreach( (array) $priorities as $priority => $attrs ) :							
-						foreach( (array) $attrs as $name => $functions ) :							
+						foreach( (array) $attrs as $name => $functions ) :					
 							if( ! $this->master->addons->is_form_active( $name ) )
 								continue;
 							foreach( (array) $functions as $function )	:
@@ -147,8 +147,10 @@ class tiFy_Forms_Callbacks{
 		
 		if( ! empty( $callbacks ) )
 			ksort( $callbacks );
-		foreach( $callbacks as $priority => $sets )
-			foreach( $sets as $set )
+		foreach( $callbacks as $priority => $sets ) :
+			foreach( $sets as $set ) :
 				call_user_func_array( $set[0], $set[1] );
+			endforeach;
+		endforeach;
 	}	
 }	

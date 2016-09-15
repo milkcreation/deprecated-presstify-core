@@ -53,9 +53,10 @@ Class tiFy_Forms_Addons{
 	{
 		if( array_keys( $this->master->registred_addon, $addon_id ) )
 			return;
-
+	
 		if( $filename && file_exists( $filename ) )
-			require_once $filename;		
+			require_once $filename;	
+			
 		if ( ! class_exists( $callback ) )
 			return;
 		

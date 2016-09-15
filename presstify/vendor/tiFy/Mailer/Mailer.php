@@ -11,6 +11,8 @@
  * @see http://templates.mailchimp.com/development/css/reset-styles/
  * @see http://templates.mailchimp.com/development/css/client-specific-styles/
  * @see http://templates.mailchimp.com/development/css/outlook-conditional-css/
+ * LISTE DE MERGE TAGS
+ * http://kb.mailchimp.com/merge-tags/all-the-merge-tags-cheat-sheet#Merge-tags-for-list-and-account-information
  **/
  
 /**
@@ -32,9 +34,6 @@ use tiFy\Environment\App;
 class Mailer extends App
 {
 	private	// Configuration
-			$dir,
-			$uri,
-			
 			$not_rn			= "hotmail|live|msn",	// Serveur qui ne nécéssite pas un saut de ligne de type \r\n
 			$line_break,							// Saut de ligne		
 			$boundary,								// Séparateur de niveau 1
@@ -76,7 +75,7 @@ class Mailer extends App
 			$reset_css		= true,					// CSS de réinitialisation du message HTML
 			$css			= array(),				// Chemins vers les feuilles de styles CSS
 			$custom_css 	= '',					// Attributs css personnalisés (doivent être encapsulé dans une balise style ex : "<style type=\"text/css\">h1{font-size:18px;}</style>")
-			$vars_format	= '\*\|(.*)\|\*',		// Format des variables d'environnements
+			$vars_format	= '\*\|(.*?)\|\*',		// Format des variables d'environnements
 			$merge_vars		= array(),				// Variables d'environnements
 			$additionnal	= array(),				// Attributs de configuration supplémentaires requis par les moteurs
 			
@@ -300,7 +299,7 @@ class Mailer extends App
 				$_attrs[] = "{$property}=\"$attrs\"";
 			$body_attrs = implode( ' ', $_attrs );
 		else :
-			$body_attrs = "style=\"background:#FFF; color:#000;font-family:Arial, Helvetica, sans-serif; font-size:12px\" alink=\"#FF0000\" link=\"#FF0000\" bgcolor=\"#FFFFFF\" text=\"#000000\" yahoo=\"fix\"";
+			$body_attrs = "style=\"background:#FFF;color:#000;font-family:Arial, Helvetica, sans-serif;font-size:12px\" link=\"#0000FF\" alink=\"#FF0000\" vlink=\"#800080\" bgcolor=\"#FFFFFF\" text=\"#000000\" yahoo=\"fix\"";
 		endif;
 		$output .= 	"<body {$body_attrs}>". $this->line_break;
 		
@@ -320,7 +319,7 @@ class Mailer extends App
 	private function html_body_content()
 	{
 		$output	 = "";
-		if(  $this->html_body_wrap ) :
+		if( $this->html_body_wrap ) :
 			if( is_bool( $this->html_body_wrap ) ) :
 				$output .= 	"<div id=\"body_style\" style=\"padding:15px\">". $this->line_break;
 				$output .= 		"<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#FFFFFF\" width=\"600\" align=\"center\">". $this->line_break;
@@ -395,16 +394,22 @@ class Mailer extends App
 	
 	/** == TEXTE == **/
 	/*** === Formatage du message en mode Texte === ***/
-	private function prepare_output_text(){
+	private function prepare_output_text()
+	{
 		if( $text = $this->text ) :	
 		elseif( $this->auto_text ) :
 			$text = $this->html;
 		endif;
-		$this->output_text = html_entity_decode(
+		
+		$text = $this->parse_merge_vars( $text );
+		$text = html_entity_decode(
         	trim( strip_tags( preg_replace( '/<(head|title|style|script)[^>]*>.*?<\/\\1>/si', '', $text ) ) ),
         	ENT_QUOTES,
         	get_bloginfo( 'charset' )
        	);
+		$text = nl2br( $text );
+		
+		$this->output_text = $text;
 	}
 	
 	/** == EMAIL DE TEST == **/
@@ -593,9 +598,12 @@ class Mailer extends App
 		if( $merge_vars = $this->merge_vars ) :
 			$callback = function( $matches ) use( $merge_vars ){
 				if( ! isset( $matches[1] ) )
-						return;
+						return $matches[0];
+				
 				if( isset( $merge_vars[$matches[1]] ) )
 					return $merge_vars[$matches[1]];
+				
+				return $matches[0];
 			};
 		
 			$output = preg_replace_callback( '/'. $this->vars_format .'/', $callback, $output );
