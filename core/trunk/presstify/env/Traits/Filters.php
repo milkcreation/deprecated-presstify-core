@@ -4,7 +4,7 @@ namespace tiFy\Environment\Traits;
 trait Filters
 {
 	/* = ARGUMENTS = */
-	// Liste des Filtres à déclencher
+	// Filtres à déclencher
 	protected $CallFilters				= array();
 	
 	// Fonctions de rappel des filtres
