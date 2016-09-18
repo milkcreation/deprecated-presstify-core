@@ -309,6 +309,7 @@ class Mailer extends App
 	/*** === Corps du message HTML === ***/
 	private function html_body(){
 		$output  = "";
+		
 		$output .= 	$this->html_before;
 		$output .=  $this->html_body_content();
 		$output .= 	$this->html_after;		
@@ -319,6 +320,7 @@ class Mailer extends App
 	private function html_body_content()
 	{
 		$output	 = "";
+		
 		if( $this->html_body_wrap ) :
 			if( is_bool( $this->html_body_wrap ) ) :
 				$output .= 	"<div id=\"body_style\" style=\"padding:15px\">". $this->line_break;
