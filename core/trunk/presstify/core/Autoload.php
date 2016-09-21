@@ -25,6 +25,7 @@ class Autoload extends Core
 		new	CustomType\CustomType;
 		new Db\Db;
 		new Admin\Admin;
+		new Front\Front;
 		new Options\Options;		
 		new Taboox\Taboox;
 		new Upload\Upload;
