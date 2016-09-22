@@ -23,8 +23,9 @@ jQuery(document).ready( function($){
 	// 
 	var getItem = function( target, post_id ){
 		var $target		= $( target ),
-			$container	= $target.closest( '.tify_taboox_slideshow' );
-	
+			$container	= $target.closest( '.tify_taboox_slideshow' ),
+			action		= $container.data( 'action');
+
 		var count = $( '.items > ul > li', $container ).size();
 		
 		if( ( tiFyTabooxOptionSlideshowAdmin.max > 0 ) && ( count == tiFyTabooxOptionSlideshowAdmin.max ) ){
@@ -34,7 +35,7 @@ jQuery(document).ready( function($){
 		
 		$.ajax({
 			url 		: tify_ajaxurl,
-			data 		: { action : 'tify_taboox_slideshow_item', post_id : post_id, order : parseInt( count +1 ) },
+			data 		: { action : action, post_id : post_id, order : parseInt( count +1 ) },
 			dataType 	: 'html',
 			type 		: 'post',
 			beforeSend : function(){
