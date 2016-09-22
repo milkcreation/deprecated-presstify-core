@@ -8,9 +8,13 @@ class Slideshow extends Admin
 	// Instance
 	static $Instance = 0;
 	
+	public $Action = null;
+	
 	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
 	public function admin_init()
 	{				
+		self::$Instance++;
+		
 		// Traitement des arguments
 		$this->args = wp_parse_args(
 			$this->args,
@@ -48,10 +52,11 @@ class Slideshow extends Admin
 				'progressbar'		=> false
 			)
 		);
-		
+				
 		\register_setting( $this->page, $this->args['name'] );
 		
-		add_action( 'wp_ajax_tify_taboox_slideshow_item', array( $this, 'wp_ajax' ) );
+		$this->Action = 'tify_taboox_slideshow_item-'.self::$Instance;
+		add_action( 'wp_ajax_'. $this->Action, array( $this, 'wp_ajax' ) );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS DE L'INTERFACE D'ADMINISTRATION = */	
@@ -77,9 +82,8 @@ class Slideshow extends Admin
 	/* = FORMULAIRE DE SAISIE = */
 	public function form()
 	{
-		self::$Instance++;
 	?>
-		<div id="tify_taboox_slideshow-<?php echo self::$Instance;?>" class="tify_taboox_slideshow">
+		<div id="tify_taboox_slideshow-<?php echo self::$Instance;?>" class="tify_taboox_slideshow" data-action="<?php echo $this->Action;?>">
 		
 			<div class="selectors">
 			<?php if( $this->args['suggest'] ) :?>
