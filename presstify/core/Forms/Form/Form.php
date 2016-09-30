@@ -1,0 +1,519 @@
+<?php
+namespace tiFy\Core\Forms\Form;
+
+use tiFy\Core\Forms\Addons;
+use tiFy\Core\Forms\Buttons;
+
+class Form
+{
+	/* = ARGUMENTS = */
+	// Configuration
+	/// Attributs par défaut
+	private $DefaultAttrs	= array(
+		// Attributs de configuration
+		'prefix'				=> 'tiFyForm_',
+		
+		// DOM
+		/// Identifiant HTML du conteneur
+		'container_id' 			=> 'tiFyForm-Container--%s',
+		/// Classe HTML du conteneur
+		'container_class' 		=> '',
+		/// Identifiant HTML de la balise form
+		'form_id' 				=> 'tiFyForm-Content--%s',
+		/// Classe HTML de la balise form
+		'form_class' 			=> '',
+		/// Pré-affichage avant la balise form		
+		'before' 				=> '',
+		/// Post-affichage après la balise form
+		'after' 				=> '',
+			
+		// Attributs HTML de la balise form	
+		'method'				=> 'post',
+		'action'				=> '',
+		'enctype'				=> '',
+		
+		// Attributs de paramètrage
+		'add-ons'				=> array(),
+		'buttons' 				=> array(),		
+		'fields' 				=> array(),
+		'notices'				=> array(),
+		'options' 				=> array()			
+	);
+	
+	// Paramètres
+	/// Identifiant
+	private $ID				= null;
+	
+	/// Attributs de configuration
+	private $Attrs			= array();
+		
+	/// Buttons
+	private $Buttons		= array();
+			
+	/// Options
+	private $Options		= array();
+	
+	// Contrôleurs
+	/// Addons
+	private $Addons			= array();
+	
+	/// Callbacks
+	private $Callbacks		= null;
+	
+	/// Champs de formulaire
+	private $Fields	 		= array();
+	
+	/// Traitement
+	private $Handle			= null;
+			
+	/// Notices
+	private $Notices		= null;
+	
+	/// Transports
+	private $Transport		= null;
+	
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct( $id, $attrs = array() )
+	{
+		// Définition de l'identifiant
+		$this->ID = $id;
+			
+		// Chargement des contrôleurs
+		$this->Callbacks 	= new Callbacks( $this );
+		$this->Handle 		= new Handle( $this );
+		$this->Transport 	= new Transport( $this );
+				
+		// Définition des attributs par défaut dynamiques
+		foreach( array( 'prefix', 'container_id', 'form_id' ) as $attr ) :
+			$this->DefaultAttrs[ $attr ] = sprintf( $this->DefaultAttrs[ $attr ], $this->ID );
+		endforeach;
+			
+		// Définition des attributs
+		$this->Attrs = Helpers::parseArgs( $attrs, $this->DefaultAttrs );
+		
+		// Définition des boutons
+		$this->_setButtons();
+		
+		// Définition des addons
+		$this->_setAddons();
+		
+		// Définition des options
+		$this->_setNotices();
+		
+		// Définition des options
+		$this->_setOptions();
+		
+		// Définition des champs
+		$this->_setFields();
+		
+		$this->call( 'form_set_params', array( &$this ) );
+	}
+				
+	/* = PARAMETRAGE = */
+	/** == Définition des addons == **/
+	private function _setAddons()
+	{		
+		foreach( (array) $this->getAttr( 'add-ons' ) as $k => $v ) :
+			if( ! $v ) :
+				continue;
+			elseif( is_string( $v ) ) :
+				$id = $v; $attrs = array();
+			else :
+				$id = $k; $attrs = (array) $v;
+			endif;				
+			$this->Addons[$id] = Addons::set( $id, $this, $attrs );
+		endforeach;
+
+		//Callbacks::call( 'form_set_addons', array( &$this->Addons ) );
+	}
+	
+	/** == Définition des boutons == **/
+	private function _setButtons()
+	{
+		foreach( (array) $this->getAttr( 'buttons' ) as $k => $v ) :
+			if( is_string( $k ) ):
+				$id = $k; $attrs = $v;
+			elseif( is_string( $v ) ) :
+				$id = $v; $attrs = array();
+			else :
+				$id = $k; $attrs = $v;
+			endif;
+					
+			$this->Buttons[$id] = $attrs;	
+		endforeach;
+		
+		if( ! isset( $this->Buttons['submit'] ) )
+			$this->Buttons['submit'] = true;
+				
+		//Callbacks::call( 'form_set_buttons', array( &$this->Buttons ) );
+	}
+	
+	/** == Définition des champs == **/
+	private function _setFields()
+	{
+		// Réinitialisation de l'index
+		Field::resetIndex();
+				
+		foreach( (array) $this->getAttr( 'fields' ) as $attrs ) :
+			$this->Fields[] = new Field( $this, $attrs );
+		endforeach;
+		
+		// Tri des champs
+		/*$positions = array(); $groups = array(); $position_order = array(); $group_order = array();	
+		
+		/// Définition des valeurs maximum
+		foreach ( (array) $this->Fields as $attrs ) :
+			$positions[] 	= $attrs['order']; 
+			$groups[] 		= $attrs['group'];
+		endforeach;
+		
+		$position_max 	= max( $positions );  
+		$group_max 		= max( $groups );
+		
+		foreach ( (array) $this->master->forms->current['fields'] as $key => $params ) :
+			if( ! $params['order'] ) $this->master->forms->current['fields'][$key]['order'] = ++$position_max;
+			if( ! $params['group'] ) $this->master->forms->current['fields'][$key]['group'] = $group_max+1;
+			$position_order[$key] = $this->master->forms->current['fields'][$key]['order']; 
+			$group_order[$key] = $this->master->forms->current['fields'][$key]['group'];
+		endforeach;			
+		@array_multisort( $group_order, $position_order, $this->master->forms->current['fields'] );	*/
+
+		//Callbacks::call( 'form_set_fields', array( &$this->Addons ) );
+	}
+	
+	/** == Définition des notifications == **/
+	private function _setNotices()
+	{
+		$this->Notices = new Notices( $this );
+		
+		$attrs = Helpers::parseArgs(
+			(array) $this->getAttr( 'notices' ),
+			array(	
+				// Erreurs
+				'errors' 	=> array(
+					// Intitulé de la liste des erreurs.
+					// string
+					'title' 	=> '',
+					// Affichage des erreurs. -1 : Toutes (par defaut) | 0 : Aucune | n : Nombre maximum à afficher	
+					'show'		=> -1, 
+					// Affiché seulement si toutes les erreurs ne sont pas visible. Mettre à false pour masquer 
+					'teaser' 	=> '...',
+					// Affiche les erreurs relative à chaque champs
+					'field'		=> false 	
+				),
+				// Succès	
+				'success'	=> array(
+					'message'	=> __( 'Votre demande a bien été prise en compte et sera traitée dès que possible', 'tify' )
+				)
+			)
+		);
+		
+		// Court-circuitage des attributs des notifications
+		//Callbacks::call( 'form_set_notices_attrs', array( &$attrs, $this ) );
+				
+		$this->Notices->setAttrs( $attrs );
+	}
+	
+	/** == Définition des options == **/
+	private function _setOptions()
+	{
+		$this->Options = Helpers::parseArgs( 
+			$this->getAttr( 'options' ), 
+			array(
+				// Ancrage 
+				'anchor' 		=> $this->getAttr( 'container_id' ),
+				// Gestion de formulaires par étape
+				'paged'			=> 0,
+				// Affiche un résumé des soummissions au formulaire avant le traitement définitif
+				'preview'		=> false,
+				// Affichage après le succès de soumission du formulaire ( form : affiche un nouveau formulaire )
+				'success_cb'	=> ''
+			)		
+		);
+		
+		// Post traitement de la définition des options de formulaire
+		//Callbacks::call( 'form_set_options', array( &$this->Options ) );	
+	}
+	
+	/* = PARAMETRES = */
+	/** == Récupération de l'ID du formulaire == **/
+	public function getID()
+	{
+		return $this->getAttr();
+	}
+	
+	/** == Récupération du prefixe du formulaire == **/
+	public function getPrefix()
+	{
+		return $this->getAttr( 'prefix' );
+	}
+	
+	/** == Récupération du slug de formulaire == **/
+	public function getUID()
+	{
+		return $this->getPrefix() . $this->getID();
+	}
+	
+	/** == Récupération du nonce de formulaire == **/
+	public function getNonce()
+	{
+		return '_'. $this->getUID() .'_nonce';
+	}
+	
+	/** == Récupération du titre du formulaire == **/
+	public function getTitle()
+	{
+		return $this->getAttr( 'title' );
+	}
+		
+	/** == Récupération d'un attribut de formulaire == **/
+	public function getAttr( $attr = 'ID' )
+	{		
+		if( isset( $this->Attrs[$attr] ) )
+			return $this->Attrs[$attr];
+	}
+	
+	/** == Définition d'un attribut de formulaire == **/
+	public function setAttr( $attr, $value )
+	{		
+		$this->Attrs[$attr] = $value;
+	}
+		
+	/** == Vérifie si un addon est actif == **/
+	public function hasAddon( $id )
+	{
+		return array_keys( $this->Addons, $id );
+	}
+	
+	/** == Récupération d'un addon est actif == **/
+	public function getAddon( $id )
+	{
+		if( isset( $this->Addons[$id] ) )
+			return $this->Addons[$id];
+	}
+		
+	/** == Récupération des options == **/
+	public function getButtons()
+	{
+		return $this->Buttons;
+	}
+	
+	/** == Récupération des options == **/
+	public function getOptions()
+	{
+		return $this->Options;
+	}
+	
+	/** == Récupération d'une option == **/
+	public function getOption( $option )
+	{
+		if( isset( $this->Options[ $option ] ) )	
+			return $this->Options[ $option ];
+	}
+		
+	/** == Récupération d'un champ == **/
+	public function getField( $slug )
+	{
+		foreach( (array) $this->fields() as $field ) : 
+			if( $field->getSlug() === $slug ) :
+				return $field;
+			endif;
+		endforeach;
+	}
+	
+	/** == Récupération de la session == **/
+	public function getSession()
+	{
+		return $this->transport()->getSession();
+	}
+		
+	/** == A l'initialisation du formulaire courant == **/
+	public function onSetCurrent()
+	{
+		$this->call( 'form_set_current', array( &$this ) );
+	}
+	
+	/** == A la réinitialisation du formulaire courant == **/
+	public function onResetCurrent()
+	{
+		$this->call( 'form_reset_current', array( &$this ) );
+	}
+		
+	/* = CONTROLEURS = */
+	/** == Récupération des addons == **/
+	public function addons()
+	{
+		return $this->Addons;	
+	}
+	
+	/** == Traitement du formulaire == **/ 
+	public function callbacks()
+	{
+		return $this->Callbacks;
+	}
+	
+	/** == Récupération des champs == **/
+	public function fields()
+	{
+		return $this->Fields;
+	}
+	
+	/** == Traitement du formulaire == **/ 
+	public function handle()
+	{
+		return $this->Handle;
+	}
+	
+	/** == Traitement du formulaire == **/ 
+	public function notices()
+	{
+		return $this->Notices;
+	}
+	
+	/** == Données embarquées == **/ 
+	public function transport()
+	{
+		return $this->Transport;
+	}
+	
+	/* = HELPERS = */
+	/** == Execution d'un déclencheur == **/
+	public function call( $hook, $args = array() )
+	{
+		return $this->callbacks()->call( $hook, $args );
+	}
+	
+	/** == Récupération des valeurs de champs == **/
+	public function getFieldsValues()
+	{
+		$values = array();
+		
+		foreach( $this->fields() as $field ) :
+			$values[ $field->getSlug()] = $field->getValue();
+		endforeach;
+		
+		return $values;
+	}	
+	
+	/* = AFFICHAGE = */
+	/** == Affichage d'un formulaire == **/
+	public function display( $echo = false )
+	{	
+		// Court-circuitage des propriétés du formulaire avant son affichage
+		//Callbacks::call( 'form_before_display', array( &$this ) );
+		
+		// Affichage du formulaire
+		$output = "";				
+		
+		/// Court-circuitage du pré-affichage du formulaire
+		//Callbacks::call( 'form_before_container_output_display', array( &$output, $this ) );		
+
+		/// Ouverture du conteneur
+		$output .= "<div id=\"". $this->getAttr( 'container_id' ) ."\" class=\"tiFyForm-Container". ( ( $container_class = $this->getAttr( 'container_class' ) ) ? ' '. $container_class : '' ) ."\">\n";
+		
+		/// Message en cas de succès de soumission du formulaire
+		if( $this->handle()->isSuccessful() ) :
+			$output .= "\t\t<div class=\"tiFyForm-Notices tiFyForm-Notices--success\">\n";
+			$output .= $this->notices()->display( 'success' );
+			$output .= "\t\t</div>\n";
+			
+			// Contenu affiché en cas de succès
+			$output .= $this->successContent();			
+		else :
+			$output .= $this->displayForm();
+		endif;
+				
+		/// Fermeture du conteneur
+		$output .= "</div>\n";
+		
+		/// Court-circuitage du post-affichage du formulaire
+		//Callbacks::call( 'form_after_container_output_display', array( &$output, $this ) );	
+
+		// Court-circuitage des propriétés du formulaire avant son affichage
+		//Callbacks::call( 'form_after_display', array( &$this ) );
+		
+		if( $echo )
+			echo $output;
+		
+		return $output;	
+	}
+	
+	/** == == **/
+	public function displayForm()
+	{
+		$output = "";
+		
+		// Pré-affichage HTML
+		$output .= $this->getAttr( 'before' );
+
+		// Définition de l'action
+		$action  = remove_query_arg( 'success' ); //$this->getAttr( 'action' );
+		$action .= ( $anchor = $this->getOption( 'anchor' ) ) ? '#'. $anchor : '';
+		
+		// Balise d'ouverture du formulaire
+		$output .= "\t<form method=\"". $this->getAttr( 'method' ) ."\" id=\"". $this->getAttr( 'form_id' ) ."\" class=\"tiFyForm-Content". ( ( $class = $this->getAttr( 'form_class' ) ) ? ' '. $class : '' ) ."\" action=\"{$action}\"";
+		if( $enctype = $this->getAttr( 'enctype' ) )
+			$output .= " enctype=\"{$enctype}\"";
+		$output .= ">\n";		
+		
+		// Champs cachés requis 
+		$output .= $this->hiddenFields();
+		
+		// Affichage des erreurs
+		if( $this->notices()->has( 'error' ) ) :
+			$output .= "\t\t<div class=\"tiFyForm-Notices tiFyForm-Notices--error\">\n";
+			$output .= $this->notices()->display( 'error' );
+			$output .= "\t\t</div>\n";
+		endif;
+			
+		// Affichage des champs de formulaire
+		$output .= "\t\t<div class=\"tiFyForm-Fields\">\n";
+		foreach( (array) $this->fields() as $field ) :
+			$output .= $field->display();
+		endforeach;
+		$output .= "\t\t</div>";
+				
+		// Affichage des boutons
+		$output .= "\t\t<div class=\"tiFyForm-Buttons\">\n";
+		$output .= Buttons::display();
+		$output .= "\t\t</div>";
+				
+		// Balise de fermeture du formulaire	
+		$output .= "\t</form>\n";
+		
+		// Post-affichage HTML
+		$output .= $this->getAttr( 'after' );
+		
+		return $output;
+	}
+	
+	/*** === Champs cachés de soumission de formulaire === ***/
+	public function hiddenFields()
+	{
+		$output  = "";
+		$output .= wp_nonce_field( 'submit_'. $this->getUID(), $this->getNonce(), true, false );
+		
+		if( $session = $this->getSession() )
+			$output .= "<input type=\"hidden\" name=\"session_". $this->getUID() ."\" value=\"". esc_attr( $session ) ."\">";		
+		
+		$success = $this->getOption( 'success' );
+		
+		////Callbacks::call( 'form_hidden_fields', array( &$output, $this ) );
+		
+		return $output;
+	}
+	
+	/** == Contenu affiché sur la page de succès == **/
+	public function successContent()
+	{
+		if( ! $callback = $this->getOption( 'success_cb' ) )
+			return;
+		
+		if( $callback === 'form' ) :
+			return $this->displayForm();
+		elseif( is_callable( $callback ) ) :
+			return call_user_func_array( $callback, array( $this ) );
+		endif;
+	}
+}

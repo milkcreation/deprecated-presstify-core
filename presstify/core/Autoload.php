@@ -30,7 +30,6 @@ class Autoload extends Core
 		new Taboox\Taboox;
 		new Upload\Upload;
 		/// Formulaires
-		require_once __DIR__ .'/Forms/Forms.php';
-		new \tiFy_Forms;
+		new Forms\Forms;
 	}
 }

@@ -8,8 +8,14 @@ class Admin extends Core
 	/* ARGUMENTS */
 	// Liste des actions à déclencher
 	protected $CallActions				= array(
-		'after_setup_tify',	
+		'after_setup_tify',
+		'init',
 		'admin_menu'	
+	);
+	
+	// Ordres de priorité d'exécution des actions
+	protected $CallActionsPriorityMap	= array(
+		'init'				=> 9
 	);
 	
 	// Liste des vues déclarées
@@ -21,11 +27,12 @@ class Admin extends Core
 		
 		foreach( (array) self::getConfig() as $id => $args ) :
 			self::Register( $id, $args );
-		endforeach;	
+		endforeach;
 	}
 	
 	/* = DECLENCHEUR = */
-	final public function after_setup_tify()
+	/** == Initialisation globale == **/
+	final public function init()
 	{		
 		do_action( 'tify_admin_register' );
 	}

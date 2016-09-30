@@ -6,6 +6,16 @@ use tiFy\Environment\Core;
 class Labels extends Core
 {
 	/* = ARGUMENTS = */
+	// Liste des actions à déclencher
+	protected $CallActions				= array(
+		'init',
+	);
+	
+	// Ordres de priorité d'exécution des actions
+	protected $CallActionsPriorityMap	= array(
+		'init'				=> 9
+	);
+	
 	public static $Factories	= array();
 	
 	/* = CONSTRUCTEUR = */
@@ -15,10 +25,14 @@ class Labels extends Core
 
 		foreach( (array) self::getConfig() as $id => $args ) :
 			self::Register( $id, $args );
-		endforeach;
-		
+		endforeach;		
+	}
+	
+	/* = DECLENCHEURS = */
+	/** == Initialisation globale == **/
+	final public function init()
+	{		
 		do_action( 'tify_labels_register' );
-		exit;
 	}
 	
 	/* = CONTRÔLEURS = */

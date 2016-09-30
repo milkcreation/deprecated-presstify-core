@@ -90,12 +90,13 @@ class Upload extends App
 			wp_die( __( '<h1>Téléchargement du fichier impossible</h1><p>Le type de fichier est interdit.</p>', 'tify' ), __( 'Type de fichier interdit', 'tify' ), 405 );	
 
 		// 
-		do_action( 'tify_upload_register' );
+		do_action( 'tify_upload_register', $abspath );
 		
 		// Bypass - Le téléchargement de ce fichier n'est pas autorisé
-		if( ! in_array( $abspath, self::$AllowedFiles ) )
+		if( ! in_array( $abspath, self::$AllowedFiles ) ) :
 			wp_die( __( '<h1>Téléchargement du fichier impossible</h1><p>Le téléchargement de ce fichier n\'est pas autorisé.</p>', 'tify' ), __( 'Téléchargement interdit', 'tify' ), 401  );	
-					
+		endif;
+			
 		// Définition de la taille du fichier
 		$filesize 		=  @ filesize( $abspath );
 		$rangefilesize	=  $filesize-1;
@@ -165,9 +166,13 @@ class Upload extends App
 			if( file_exists( $abspath ) ) :
 				$_file = $abspath;
 			endif;
-		else :			
-			$relpath	= trim( preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $file ), '/' );	
-			$abspath 	= ABSPATH . $relpath;
+		else :	
+			if( $relpath = preg_replace( '/'. preg_quote( ABSPATH, '/' ) .'/' , '', $file ) ) :
+			else :
+				$relpath	=  preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $file );
+			endif;
+
+			$abspath 	= ABSPATH . trim( $relpath, '/' );
 			if( file_exists( $abspath ) ) :
 				$_file = $abspath;
 			endif;
@@ -181,12 +186,16 @@ class Upload extends App
 	public static function Get( $type = null )
 	{
 		$file = null;
+		
 		if( ! $type ) :
 			if( $file = get_query_var( 'file_upload_url', false ) ) :
+				$file = \tiFy\Lib\Token::Decrypt( $file );
 			elseif( $file = (int) get_query_var( 'file_upload_media', 0 ) ) :
 			endif;
 		elseif( $type === 'url' ) :
-			$file = get_query_var( 'file_upload_url', false );
+			if( $file = get_query_var( 'file_upload_url', false ) ) :
+				$file = \tiFy\Lib\Token::Decrypt( $file );
+			endif;
 		elseif( $type === 'media' ) :
 			$file = (int) get_query_var( 'file_upload_media', 0 );
 		endif;
@@ -208,7 +217,8 @@ class Upload extends App
 				if( add_post_meta( $file, '_tify_upload_token', $token, true ) )
 					$vars['token'] = $token;
 			endif;			
-		else :			
+		else :
+			$file = urlencode_deep( \tiFy\Lib\Token::Encrypt( $file ) );
 			$vars = array( 'file_upload_url' => $file );
 		endif;
 		

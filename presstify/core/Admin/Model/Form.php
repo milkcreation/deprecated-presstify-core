@@ -37,9 +37,12 @@ abstract class Form extends App
 	/// Arguments de requête
 	protected $QueryArgs			= array();
 	
+	/// Permettre la création d'un nouvel élément
+	protected $NewItem				= true;
+	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'ListBaseUri', 'Singular', 'Notices', 'Fields', 'QueryArgs'
+		'BaseUri', 'ListBaseUri', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'NewItem'
 	);
 	
 	// Élément à éditer
@@ -68,6 +71,12 @@ abstract class Form extends App
 	public function set_query_args()
 	{
 		return array();
+	}
+	
+	/** == Permettre l'ajout d'un nouvel élément == **/
+	public function set_add_new_item()
+	{
+		return true;
 	}
 	
 	/* = INITIALISATION DES PARAMETRES = */
@@ -128,6 +137,12 @@ abstract class Form extends App
 	{
 		$this->QueryArgs = (array) $this->set_query_args();
 	}
+	
+	/** == Initialisation du paramétre de permission d'ajout d'un nouvel élément == **/
+	public function init_param_NewItem()
+	{
+		$this->NewItem = (bool) $this->set_add_new_item();
+	}	
 	
 	/* = DECLENCHEURS = */
 	/** == Affichage de l'écran courant == **/
@@ -290,7 +305,8 @@ abstract class Form extends App
 	/** == Création d'un élément par défaut == **/
 	protected function get_default_item_to_edit()
 	{
-		return $this->View->getDb()->handle()->create( wp_parse_args( $this->item_defaults, array( $this->View->getDb()->Primary => 0 ) ) );
+		if( $this->NewItem )
+			return $this->View->getDb()->handle()->create( wp_parse_args( $this->item_defaults, array( $this->View->getDb()->Primary => 0 ) ) );
 	}
 	
 	/** == Récupération de l'attribut de sécurisation d'une action == **/
@@ -484,7 +500,9 @@ abstract class Form extends App
 		<div class="wrap">
 			<h2>
 				<?php echo $this->View->getLabel( 'edit_item' );?>
+				<?php if( $this->NewItem ) : ?>
 				<a class="add-new-h2" href="<?php echo $this->BaseUri;?>"><?php echo $this->View->getLabel( 'new_item' );?></a>
+				<?php endif;?>
 			</h2>
 						
 			<form method="post">
