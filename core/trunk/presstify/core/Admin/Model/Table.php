@@ -550,7 +550,7 @@ abstract class Table extends \WP_List_Table
 	protected function process_bulk_action_delete()
 	{
 		$item_ids = $this->current_item();
-		
+
 		// Vérification des permissions d'accès
 		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
 			check_admin_referer( $this->get_item_nonce_action( 'delete', reset( $item_ids ) ) );

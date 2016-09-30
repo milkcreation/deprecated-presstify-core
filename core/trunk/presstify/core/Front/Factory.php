@@ -115,7 +115,7 @@ final class Factory extends App
 	{
 		$matches = preg_split( '/\?.*/', $_SERVER['REQUEST_URI'], 2 );
 		$route = current( $matches );
-		
+
 		/// Chargement du template
 		foreach( $this->ModelAttrs as $name => $attrs ) :
 			if( preg_match( '/^\/'. preg_quote( $attrs->route, '/' ) .'\/?$/', $route ) ) :

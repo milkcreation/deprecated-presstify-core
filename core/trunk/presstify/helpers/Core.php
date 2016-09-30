@@ -118,51 +118,48 @@ namespace
 	}
 	
 	/** == Déclaration d'un formulaire == **/
-	function tify_form_register( $form = array() )
+	function tify_form_register( $id = null, $attrs = array() )
 	{
-		global $tify_forms;
-	
-		return $tify_forms->register_form( $form );
+		// Deprecated
+		if( is_array( $id ) ) :
+			$attrs = $id;
+			$id = $attrs['ID'];
+			_deprecated_argument( __FUNCTION__, '1.1.160923', sprintf( __( 'La déclaration du formulaire %s n\'est conforme, elle doit désormais contenir un identifiant et des attributs.', 'tify' ), $id ) );
+		endif;
+		
+		return tiFy\Core\Forms\Forms::register( $id, $attrs );
 	}
 	
 	/** == Déclaration d'un addon == **/
-	function tify_form_register_addon( $id, $callback, $filename = null, $args = array() )
+	function tify_form_register_addon( $id, $callback, $args = array() )
 	{
-		global $tify_forms;
-	
-		return $tify_forms->addons->register( $id, $callback, $filename, $args );
+		return tiFy\Core\Forms\Addons::register( $id, $callback, $args );
 	}
 	
 	/** == Shortcode d'affichage de formulaire == **/
 	add_shortcode( 'formulaire', 'tify_form_shortcode' );
 	function tify_form_shortcode( $atts = array() )
 	{
-		global $tify_forms;
-	
 		extract(
-				shortcode_atts(
-						array( 'id' => null ),
-						$atts
-						)
-				);
+			shortcode_atts(
+				array( 'id' => null ),
+				$atts
+			)
+		);
 	
-		return $tify_forms->display( $id, false );
+		return tiFy\Core\Forms\Forms::display( $id, false );
 	}
 	
 	/** == Définition du formulaire courant == **/
 	function tify_form_set_current( $form_id )
 	{
-		global $tify_forms;
-	
-		return $tify_forms->forms->set_current( $form_id );
+		return tiFy\Core\Forms\Forms::setCurrent( $form_id );
 	}
 	
 	/** == Récupération du formulaire courant == **/
 	function tify_form_get_current()
 	{
-		global $tify_forms;
-	
-		return $tify_forms->forms->get_current();
+		return tiFy\Core\Forms\Forms::getCurrent();
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------

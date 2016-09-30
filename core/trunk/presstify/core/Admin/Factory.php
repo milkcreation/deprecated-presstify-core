@@ -13,7 +13,7 @@ final class Factory extends App
 		'admin_init',
 		'current_screen'	
 	); 
-	
+		
 	// PARAMETRES GENERAUX
 	/// Identifiant
 	private		$FactoryID				= null;
@@ -96,7 +96,7 @@ final class Factory extends App
 				
 			$this->ModelAttrs[$name]->menu_slug 	= 	! empty( $attrs['menu_slug'] ) 		? $attrs['menu_slug'] 		: $this->FactoryID .'_'. $name;
 			$this->ModelAttrs[$name]->parent_slug 	= 	! empty( $attrs['parent_slug'] ) 	? $attrs['parent_slug'] 	: null;
-		endforeach;	
+		endforeach;
 	}
 	
 	/* = DECLENCHEURS = */

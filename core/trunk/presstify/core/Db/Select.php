@@ -159,28 +159,32 @@ class Select
 			return null;
 			
 		// Traitement des arguments
-		$args = $this->Db->parse()->query_vars( $args );
+		$parse = $this->Db->parse();
+		$args = $parse->query_vars( $args );
 		
 		// Traitement de la requête		
 		global $wpdb;
 					
 		/// Selection de la table de base de données
 		$query  = "SELECT {$name}.{$col_name} FROM {$name}";
+		
+		// 
+		$query .= $parse->clause_join( $args );
 				
 		/// Conditions des arguments de requête
-		if( $clause_where = $this->Db->parse()->clause_where( $args ) )
+		if( $clause_where = $parse->clause_where( $args ) )
 			$query .= " ". $clause_where;
 		
 		/// Recherche de termes
-		if( $clause_search = $this->Db->parse()->clause_search( $args['s'] ) )
+		if( $clause_search = $parse->clause_search( $args['s'] ) )
 			$query .= " ". $clause_search;
 		
 		/// Inclusions
-		if( $clause__in = $this->Db->parse()->clause__in( $args['item__in'] ) )
+		if( $clause__in = $parse->clause__in( $args['item__in'] ) )
 			$query .= " ". $clause__in;
 		
 		/// Exclusions
-		if( $clause__not_in = $this->Db->parse()->clause__not_in( $args['item__not_in'] ) )
+		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 		
 		/* 	
@@ -188,7 +192,7 @@ class Select
 		if( $item__in && ( $orderby === 'item__in' ) )
 			$query .= " ORDER BY FIELD( {$this->wpdb_table}.{$this->primary_key}, $item__in )";
 		else */
-		if( $clause_order = $this->Db->parse()->clause_order( $args['orderby'], $args['order'] ) )
+		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;
 		
 		/// Limite
