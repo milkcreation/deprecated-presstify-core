@@ -399,29 +399,29 @@ class Mailer extends App
 	private function prepare_output_text()
 	{
 		if( $text = $this->text ) :	
+			$text = nl2br( $text );
 		elseif( $this->auto_text ) :
 			$text = $this->html;
 		endif;
 		
 		$text = $this->parse_merge_vars( $text );
-		$text = html_entity_decode(
-        	trim( strip_tags( preg_replace( '/<(head|title|style|script)[^>]*>.*?<\/\\1>/si', '', $text ) ) ),
-        	ENT_QUOTES,
-        	get_bloginfo( 'charset' )
-       	);
-		$text = nl2br( $text );
+		$Html2Text = new \Html2Text\Html2Text( $text );		
+		
+		$text = $Html2Text->getText();
 		
 		$this->output_text = $text;
 	}
 	
 	/** == EMAIL DE TEST == **/
 	/*** === Sujet de l'email de test === ***/
-	private function test_subject(){
+	private function test_subject()
+	{
 		return sprintf( __( 'Test d\'envoi de mail depuis le site %s', 'tify' ), get_bloginfo( 'blogname' ) );
 	}
 	
 	/*** === Message HTML de l'email de test === ***/
-	private function prepare_test_html(){
+	private function prepare_test_html()
+	{
 		$this->html  = "<h1>". sprintf( __( 'Ceci est un test d\'envoi de mail depuis le site %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."</h1>";
 		$this->html .= "<p>". __( 'Si ce mail, vous est parvenu c\'est qu\'il vous a été expédié depuis le site : ' ) ."</p>";
 		$this->html .= "<p><a href=\"". site_url( '/' ) ."\" title=\"". sprintf( __( 'Lien vers le site internet - %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."\">". get_bloginfo( 'blogname' ) ."</a><p><br>";

@@ -6,6 +6,9 @@ use tiFy\Core\Forms\FieldTypes\Factory;
 class Radio extends Factory
 {
 	/* = ARGUMENTS = */
+	// Identifiant
+	public $ID = 'radio';
+	
 	// 
 	public $Supports = array(
 		'integrity',
@@ -25,7 +28,7 @@ class Radio extends Factory
 		
 		$i = 0; 
 		foreach( (array) $this->field()->getAttr( 'choices' ) as $value => $label ) :
-			$output .= "\t<li class=\"tiFyForm-FieldChoice\">\n";
+			$output .= "\t<li class=\"tiFyForm-FieldChoice tiFyForm-FieldChoice--". $this->getID() ." tiFyForm-FieldChoice--". $this->field()->getSlug() ." tiFyForm-FieldChoice--". preg_replace( '/[^a-zA-Z0-9_\-]/', '', $value ) ."\">\n";
 			$output .= "\t\t<input type=\"radio\"";
 			$output .= " id=\"". $this->getInputID() ."-". $i ."\"";
 			$output .= "class=\"tiFyForm-FieldChoiceInput\"";

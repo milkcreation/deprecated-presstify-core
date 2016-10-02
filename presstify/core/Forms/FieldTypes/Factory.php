@@ -94,10 +94,11 @@ class Factory extends App
 	{
 		$classes = array();
 		
-		if( $this->field()->getAttr( 'label_class' ) )
-			$classes[] = $this->field()->getAttr( 'label_class' );
+		if( $this->field()->getAttr( 'input_class' ) )
+			$classes[] = $this->field()->getAttr( 'input_class' );
 		$classes[] = "tiFyForm-FieldInput";
 		$classes[] = "tiFyForm-FieldInput--". $this->getID();
+		$classes[] = "tiFyForm-FieldInput--". $this->field()->getSlug();
 		
 		return $classes;
 	}

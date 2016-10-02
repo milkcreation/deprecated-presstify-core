@@ -21,6 +21,9 @@ class Autoload
 		// GeoPattern
 		$loader->addNamespace( 'RedeyeVentures\GeoPattern', __DIR__ .'/GeoPattern' ); 
 		
+		/// Html2Text
+		$loader->addNamespace( 'Html2Text', __DIR__ .'/Html2Text/src' );
+		
 		// PHPColors
 		$loader->addNamespace( 'OAuth2', __DIR__ .'/OAuth2' );
 		

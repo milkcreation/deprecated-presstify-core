@@ -70,6 +70,10 @@
 	overflow-y: auto;
 }
 /* = Selecteur = */
+.ui-autocomplete.tify_control_suggest-picker{
+	margin:0; padding:0;
+	background-color:#FFF;
+}
 .ui-autocomplete.tify_control_suggest-picker,
 .ui-autocomplete.tify_control_suggest-picker > *{
 	box-sizing:border-box;
@@ -89,8 +93,7 @@
 }
 .ui-autocomplete.tify_control_suggest-picker > li > a{
 	position:relative;
-	display:block; 
-	background-color:#FFF;
+	display:block; 	
 	line-height:1.2;
 	text-decoration:none;
 	min-height:50px;

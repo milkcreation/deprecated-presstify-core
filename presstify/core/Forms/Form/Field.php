@@ -406,6 +406,7 @@ class Field
 			$class = array();
 			$class[] = 'tiFyForm-FieldContainer';
 			$class[] = 'tiFyForm-FieldContainer--'. $this->getType();
+			$class[] = 'tiFyForm-FieldContainer--'. $this->getSlug();
 			if( $this->getAttr( 'required' ) )
 				$class[] = 'tiFyForm-FieldWrapper--required';
 							
