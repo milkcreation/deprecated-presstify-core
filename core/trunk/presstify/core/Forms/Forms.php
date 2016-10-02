@@ -152,7 +152,7 @@ class Forms extends Core
 
 		// Traitement des options du formulaire	
 		$output  = "";
-		$output .= "\n<div id=\"tify_form-{$form_id}\" class=\"tify_form\">";
+		$output .= "\n<div id=\"tiFyForm-{$form_id}\" class=\"tiFyForm\">";
 		$output .= $form->display( false );
 		$output .= "\n</div>";
 		

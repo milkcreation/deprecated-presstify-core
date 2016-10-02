@@ -74,8 +74,8 @@ class Upload extends App
 			wp_die( __( '<h1>Téléchargement du fichier impossible</h1><p>L\'url vers le fichier n\'est pas valide.</p>', 'tify' ), __( 'Impossible de trouver le fichier', 'tify' ), 404 );
 		
 		$relpath	= trim( preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $upload_url ), '/' );	
-		$abspath 	= ABSPATH . $relpath;
-		
+		$abspath 	= ABSPATH . $relpath;		
+
 		// Bypass - Le fichier n'existe pas
 		if( ! file_exists( $abspath ) )
 			wp_die( __( '<h1>Téléchargement du fichier impossible</h1><p>Le fichier n\'existe pas.</p>', 'tify'), __( 'Impossible de trouver le fichier', 'tify' ), 404  );
@@ -190,11 +190,13 @@ class Upload extends App
 		if( ! $type ) :
 			if( $file = get_query_var( 'file_upload_url', false ) ) :
 				$file = \tiFy\Lib\Token::Decrypt( $file );
+				//$file = preg_replace( '/^'. preg_quote( site_url(), '/') .'|^'. preg_quote( ABSPATH, '/') .'/', '', $file );				
 			elseif( $file = (int) get_query_var( 'file_upload_media', 0 ) ) :
 			endif;
 		elseif( $type === 'url' ) :
 			if( $file = get_query_var( 'file_upload_url', false ) ) :
 				$file = \tiFy\Lib\Token::Decrypt( $file );
+				$file = preg_replace( '/^'. preg_quote( site_url(), '/') .'|^'. preg_quote( ABSPATH, '/') .'/', '', $file );
 			endif;
 		elseif( $type === 'media' ) :
 			$file = (int) get_query_var( 'file_upload_media', 0 );

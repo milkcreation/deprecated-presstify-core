@@ -40,6 +40,7 @@ class Dropdown extends Factory
 			'attrs'				=> array(),
 			// Liste de selection
 			'picker'			=> array(
+				'class'		=> '',
 				'append' 	=> 'body',
 				'position'	=> 'default', // default: vers le bas | top |  clever: positionnement intelligent
 				'width'		=> 'auto'
@@ -62,6 +63,7 @@ class Dropdown extends Factory
 			$picker,
 			array(
 				'id'		=> $id .'-picker',
+				'class'		=> '',
 				'append' 	=> 'body',
 				'position'	=> 'default', // default: vers le bas | top | clever: positionnement intelligent
 				'width'		=> 'auto'
@@ -103,7 +105,7 @@ class Dropdown extends Factory
 		$output .= "</div>\n";
 		
 		// Picker HTML
-		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown-picker\" class=\"tify_control_dropdown-picker\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
+		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown-picker\" class=\"tify_control_dropdown-picker". ( $picker['class'] ? ' '. $picker['class'] : '' ) ."\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
 		$output .= "\t<ul>\n";	
 		foreach( (array) $choices as $value => $label ) :
 			$output .= "\t\t<li";

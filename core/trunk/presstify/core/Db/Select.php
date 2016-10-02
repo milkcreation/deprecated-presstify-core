@@ -25,24 +25,29 @@ class Select
 			's'				=> '',
 			'limit' 		=> -1
 		);
-		$args = $this->Db->parse()->query_vars( $args, $defaults );
+		// Traitement des arguments
+		$parse = $this->Db->parse();
+		$args = $parse->query_vars( $args, $defaults );
 		
 		// Traitement de la requête		
 		global $wpdb;
 					
 		/// Selection de la table de base de données
 		$query  = "SELECT COUNT( {$name}.{$primary_key} ) FROM {$name}";	
-			
+		
+		// Conditions de jointure
+		$query .= $parse->clause_join( $args );
+		
 		/// Conditions définies par les arguments de requête
-		if( $clause_where = $this->Db->parse()->clause_where( $args ) )
+		if( $clause_where = $parse->clause_where( $args ) )
 			$query .= " ". $clause_where;		
 		
 		/// Recherche de terme
-		if( $clause_search = $this->Db->parse()->clause_search( $args['s'] ) )
+		if( $clause_search = $parse->clause_search( $args['s'] ) )
 			$query .= " ". $clause_search;
 		
 		/// Exclusions
-		if( $clause__not_in = $this->Db->parse()->clause__not_in( $args['item__not_in'] ) )
+		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 	
 		//// Limite
@@ -98,35 +103,40 @@ class Select
 			'order' 		=> 'DESC',
 			'orderby' 		=> $primary_key
 		);
-		$args = $this->Db->parse()->query_vars( $args, $defaults );
+		// Traitement des arguments
+		$parse = $this->Db->parse();
+		$args = $parse->query_vars( $args, $defaults );
 			
 		// Traitement de la requête		
 		global $wpdb;
 					
 		/// Selection de la table de base de données
 		$query  = "SELECT {$name}.{$col_name} FROM {$name}";			
-
+	
+		/// Conditions de jointure
+		$query .= $parse->clause_join( $args );
+		
 		/// Conditions des arguments de requête
-		if( $clause_where = $this->Db->parse()->clause_where( $args ) )
+		if( $clause_where = $parse->clause_where( $args ) )
 			$query .= " ". $clause_where;
 		
 		/// Recherche de terme
-		if( $clause_search = $this->Db->parse()->clause_search( $args['s'] ) )
+		if( $clause_search = $parse->clause_search( $args['s'] ) )
 			$query .= " ". $clause_search;
 		
 		/// Inclusions
-		if( $clause__in = $this->Db->parse()->clause__in( $args['item__in'] ) )
+		if( $clause__in = $parse->clause__in( $args['item__in'] ) )
 			$query .= " ". $clause__in;
 		
 		/// Exclusions
-		if( $clause__not_in = $this->Db->parse()->clause__not_in( $args['item__not_in'] ) )
+		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 		
 		/*
 		if( $item__in && ( $orderby === 'item__in' ) )
 			$query .= " ORDER BY FIELD( {$this->wpdb_table}.{$this->primary_key}, $item__in )";
 		else */
-		if( $clause_order = $this->Db->parse()->clause_order( $args['orderby'], $args['order'] ) )
+		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;
 			
 		if( $var = $wpdb->get_var( $query ) )
@@ -168,7 +178,7 @@ class Select
 		/// Selection de la table de base de données
 		$query  = "SELECT {$name}.{$col_name} FROM {$name}";
 		
-		// 
+		// Condition de jointure
 		$query .= $parse->clause_join( $args );
 				
 		/// Conditions des arguments de requête
@@ -304,7 +314,9 @@ class Select
 			'item__not_in'	=> '',
 			's'				=> ''
 		);
-		$args = $this->Db->parse()->query_vars( $args );
+		// Traitement des arguments
+		$parse = $this->Db->parse();
+		$args = $parse->query_vars( $args, $defaults );
 		unset( $args[$primary_key] );
 		
 		$op 				= $previous ? '<' : '>';
@@ -317,27 +329,30 @@ class Select
 		/// Selection de la table de base de données
 		$query = "SELECT * FROM {$name}";
 		
+		// Condition de jointure
+		$query .= $parse->clause_join( $args );
+		
 		/// Conditions definies par les arguments de requête
-		if( $clause_where = $this->Db->parse()->clause_where( $args ) )
+		if( $clause_where = $parse->clause_where( $args ) )
 			$query .= " ". $clause_where;
 		
 		/// Conditions spécifiques
 		$query .= " AND {$name}.{$primary_key} $op %d";
 		
 		/// Recherche de terme
-		if( $clause_search = $this->Db->parse()->clause_search( $args['s'] ) )
+		if( $clause_search = $parse->clause_search( $args['s'] ) )
 			$query .= " ". $clause_search;
 
 		/// Inclusions
-		if( $clause__in = $this->Db->parse()->clause__in( $args['item__in'] ) )
+		if( $clause__in = $parse->clause__in( $args['item__in'] ) )
 			$query .= " ". $clause__in;
 		
 		/// Exclusions
-		if( $clause__not_in = $this->Db->parse()->clause__not_in( $args['item__not_in'] ) )
+		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 		
 		/// Ordre
-		if( $clause_order = $this->Db->parse()->clause_order( $args['orderby'], $args['order'] ) )
+		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;
 
 		if( ! $item =  $wpdb->get_row( $wpdb->prepare( $query, $id ) ) )

@@ -36,6 +36,7 @@ class Suggest extends Factory
 			'id' 			=> 'tify_control_suggest-'. $instance,
 			'class'			=> '',
 			'name'			=> 'tify_control_suggest_term-'. $instance,
+			'value'			=> '',
 			'attrs'			=> array(),
 			'placeholder'	=> __( 'Votre recherche', 'tify' ),
 			'button_text'	=> '',
@@ -71,12 +72,10 @@ class Suggest extends Factory
 		foreach( (array) $attrs as $k => $v )
 			$output .= " {$k}=\"{$v}\"";
 		$output .= ">\n";
-		$output .= "\t<form method=\"get\" action=\"\">\n";
-		$output .= "\t\t<input type=\"text\" name=\"{$name}\" placeholder=\"{$placeholder}\" autocomplete=\"off\">\n";
-		$output .= "\t\t<button type=\"button\">{$button_text}</button>\n";
-		$output .= "\t\t<div class=\"tify_spinner\"><span></span></div>\n";
-		$output .= "\t\t<div id=\"{$id}_response\" class=\"tify_control_suggest_response\"></div>\n";
-		$output .= "\t</form>\n";
+		$output .= "\t<input type=\"text\" name=\"{$name}\" placeholder=\"{$placeholder}\" autocomplete=\"off\" value=\"{$value}\">\n";
+		$output .= "\t<button type=\"button\">{$button_text}</button>\n";
+		$output .= "\t<div class=\"tify_spinner\"><span></span></div>\n";
+		$output .= "\t<div id=\"{$id}_response\" class=\"tify_control_suggest_response\"></div>\n";
 		$output .= "</div>\n";
 		
 		if( $echo )
