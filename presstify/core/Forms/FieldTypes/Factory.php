@@ -74,6 +74,12 @@ class Factory extends App
 		return in_array( $support, $this->Supports );
 	}
 	
+	/** == Récupération des options == **/
+	final public function getOptions()
+	{
+		return $this->Options;
+	}
+	
 	/** == Récupération d'une option == **/
 	final public function getOption( $option, $default = '' )
 	{

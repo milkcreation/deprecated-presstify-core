@@ -19,6 +19,7 @@ class FieldTypes
 		'textarea'				=> 'Textarea',
 		'tify_checkbox'			=> 'tiFyCheckbox',
 		'tify_dropdown'			=> 'tiFyDropdown',
+		'tify_text_remaining'	=> 'tiFyTextRemaining',
 		'touchtime'				=> 'TouchTime'
 	);
 	
