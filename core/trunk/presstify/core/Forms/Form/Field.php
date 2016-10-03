@@ -264,13 +264,7 @@ class Field
 	{
 		return $this->type()->getID();
 	}
-		
-	/** == == **/
-	public function getOptions()
-	{
-		return $this->Options;
-	}
-		
+			
 	/** == Récupération des attributs de champ requis == **/
 	public function getRequired( $attr )
 	{
@@ -390,6 +384,18 @@ class Field
 			return $this->Addons[$id]->getFieldAttr( $this, $attr, $default );
 		
 		return $default;		
+	}
+	
+	/** == == **/
+	public function getOptions()
+	{
+		return $this->type()->getOptions();
+	}
+	
+	/** == Récupération d'une option == **/
+	public function getOption( $option, $default = '' )
+	{
+		return $this->type()->getOption( $option, $default );
 	}
 	
 	/* = AFFICHAGE = */	
