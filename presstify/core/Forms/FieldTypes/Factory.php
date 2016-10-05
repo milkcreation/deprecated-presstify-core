@@ -5,7 +5,7 @@ use tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\Form\Helpers;
 use tiFy\Environment\App;
 
-class Factory extends App
+abstract class Factory extends App
 {
 	/* = ARGUMENTS = */
 	// Configuration
@@ -171,7 +171,7 @@ class Factory extends App
 	}
 	
 	/** == Affichage == **/
-	public function display(){}
+	abstract protected function display();
 	
 	/** == Affichage de l'intitulé de champ == **/
 	public function displayLabel()

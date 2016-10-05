@@ -20,14 +20,14 @@ class Breadcrumb extends Component
 	final public function init()
 	{
 		if( $theme = self::getConfig( 'theme' ) )
-			wp_register_style( 'tify_breadcrumb', $this->Url ."/theme/{$theme}.css", array(), '160318' );
+			wp_register_style( 'tiFyBreadcrumb', $this->Url ."/theme/{$theme}.css", array(), '160318' );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function wp_enqueue_scripts()
 	{
 		if( $theme = self::getConfig( 'theme' ) )
-			wp_enqueue_style( 'tify_breadcrumb' );
+			wp_enqueue_style( 'tiFyBreadcrumb' );
 	}
 		
 	/* = AFFICHAGE = */

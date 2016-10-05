@@ -597,19 +597,24 @@ class Mailer extends App
 	/** == Traitement des variables d'environnement == **/
 	private function parse_merge_vars( $output )
 	{
-		if( $merge_vars = $this->merge_vars ) :
-			$callback = function( $matches ) use( $merge_vars ){
-				if( ! isset( $matches[1] ) )
-						return $matches[0];
-				
-				if( isset( $merge_vars[$matches[1]] ) )
-					return $merge_vars[$matches[1]];
-				
-				return $matches[0];
-			};
-		
-			$output = preg_replace_callback( '/'. $this->vars_format .'/', $callback, $output );
-		endif;
+		$defaults = array(
+			'SITE:URL'			=> site_url('/'),
+			'SITE:NAME'			=> get_bloginfo( 'name' ),
+			'SITE:DESCRIPTION'	=> get_bloginfo( 'description' ),
+		);
+		$merge_vars = wp_parse_args( $this->merge_vars, $defaults );
+					
+		$callback = function( $matches ) use( $merge_vars ){
+			if( ! isset( $matches[1] ) )
+					return $matches[0];
+			
+			if( isset( $merge_vars[$matches[1]] ) )
+				return $merge_vars[$matches[1]];
+			
+			return $matches[0];
+		};
+	
+		$output = preg_replace_callback( '/'. $this->vars_format .'/', $callback, $output );
 		
 		return $output;
 	}

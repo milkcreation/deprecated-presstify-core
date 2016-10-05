@@ -1,128 +1,61 @@
 <?php
-/**
- * Configuration :
- 	...
- 	array(
-		'ID' 		=> {form_id},
-		'title' 	=> '{form_title}',
-		'prefix' 	=> '{form_prefix}',
-		'fields' 	=> array(
-			...
-			array(
-				'slug'			=> '{field_slug}',
-				'label' 		=> '{field_label}',
-				'type' 			=> 'recaptcha',
-			),
-			...
-		),
-		'options' => array(
-			'recaptcha' => array(
- 				'sitekey' 		=> 'sitekey from recaptcha', 		// https://www.google.com/recaptcha/admin
-				'secretkey' 	=> 'secretkey  from recaptcha', 	// https://www.google.com/recaptcha/admin
-				'lang'			=> 'fr', 							// @see https://developers.google.com/recaptcha/docs/language					
-				'theme' 		=> 'light' 							// light | dark
-			)
-		)
-	)
-	... 
- */
 namespace tiFy\Core\Forms\FieldTypes\Recaptcha;
 
 use tiFy\Core\Forms\FieldTypes\Factory;
 
 class Recaptcha extends Factory
 {
-	static $instance		= 0;
+	/* = ARGUMENTS = */
+	// Identifiant
+	public $ID 			= 'recaptcha';
+	
+	// Support
+	public $Supports 	= array( 
+		'label', 
+		'request',
+		'wrapper'
+	);
+	
+	// Instance
+	static $Instance;
 	
 	/* = CONSTRUCTEUR = */				
 	public function __construct()
 	{
-		// Définition du type de champ
-		$this->attrs = array(
-			'slug'			=> 'recaptcha',
-			'label' 		=> __( 'ReCaptcha', 'tify' ),
-			'section' 		=> 'misc',
-			'supports'		=> array( 'label', 'integrity-check', 'request' )
-		);
-				
-		// Définition des fonctions de callback
-		$this->callbacks = array(
-			'form_set_options'				=> array( $this, 'cb_form_set_options' ),
-			'field_set' 					=> array( $this, 'cb_field_set' ),
-			'field_type_output_display'		=> array( $this, 'cb_field_type_output_display' ),
-			'handle_check_request'			=> array( $this, 'cb_handle_check_request' )
-		);
-		
-		parent::__construct();	
-		
-		// Chemin vers la librairie Recaptcha
-		$this->lib_path = dirname( __FILE__ ) .'/recaptcha-master/src/ReCaptcha';
-	}
-	
-	/* = CALLBACKS = */
-	/** == Définition des options de formulaire == **/
-	function cb_form_set_options( &$options ){
-		$_options['recaptcha'] = array(
+		// Options par défaut
+		$this->Defaults = array(
 			'sitekey'		=> false,
 			'secretkey'		=> false, 	
-			'lang'			=> $this->get_lang(),
-			'theme' 		=> 'light'
+			'lang'			=> $this->getLanguage(),
+			'theme' 		=> 'light'	
 		);
-		$options['recaptcha'] = wp_parse_args( ( isset( $options['recaptcha'] ) ? $options['recaptcha'] : array() ), $_options['recaptcha'] );
+		
+		// Définition des fonctions de callback
+		$this->Callbacks = array(
+			'field_set_params' 				=> array( $this, 'cb_field_set_params' ),
+			'handle_check_field'			=> array( $this, 'cb_handle_check_field' )
+		);
+		
+		parent::__construct();
 	}
 	
-	/** == Court-circuitage des attributs de champ == **/
-	function cb_field_set( &$field ){
-		// Bypass
-		if( $field['type'] != 'recaptcha' )
+	/* = COURT-CIRCUITAGE = */
+	/** == Attribut de champ requis obligatoire == **/
+	public function cb_field_set_params( &$field )
+	{			
+		if( $field->getType() !==  'recaptcha' )
 			return;
 			
-		$field['required'] = true;
+		$field->setAttr( 'required', true );
 	}
-			
-	/** == Affichage du champ == **/
-	function cb_field_type_output_display( &$output, $field ){		
-		// Bypass
-		if( $field['type'] != 'recaptcha' )
-			return;
-		
-		$ID = preg_replace( '/-/', '_', sanitize_key( $this->master->forms->get_ID() ) );
-		$instance = self::$instance;
-			
-		// Récupération des options
-		$options = $this->master->forms->get_option( 'recaptcha' );
-
-		// Instanciation de la librairie ReCaptcha
-		if( ! ini_get( 'allow_url_fopen' ) ) :
-			// allow_url_fopen = Off			
-			$recaptcha = new \ReCaptcha\ReCaptcha( $options['secretkey'], new \ReCaptcha\RequestMethod\SocketPost );
-		else :
-			// allow_url_fopen = On
-			$recaptcha = new \ReCaptcha\ReCaptcha( $options['secretkey'] );
-		endif;
 				
-		// Affichage du champ ReCaptcha
-		$output .= "<input type=\"hidden\" name=\"". $field['name'] ."\" value=\"-1\">";
-		$output .= "<div id=\"g-recaptcha-{$ID}\" class=\"g-recaptcha\" data-sitekey=\"{$options['sitekey']}\" data-theme=\"{$options['theme']}\"></div>";
-
-		$wp_footer = function () use ( $ID, $options, $instance ){
-			if( ! $instance ) :
-			?><script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=<?php echo $this->get_lang();?>&onload=onloadCallback_<?php echo $ID;?>&render=explicit" async defer></script><?php
-			endif;
-			?><script type="text/javascript">var onloadCallback_<?php echo $ID;?> = function() { grecaptcha.render('g-recaptcha-<?php echo $ID;?>',<?php echo json_encode( $options );?> );};$( document ).on( 'tify_forms_ajax_submit',function(){ onloadCallback_<?php echo $ID;?>();});</script><?php			
-		};
-		self::$instance++;		
-		
-		// Mise en file de la librairie JS
-		add_action( 'wp_footer', $wp_footer, 99 );
-	}
-	
 	/** == Contrôle d'intégrité == **/
-	function cb_handle_check_request( &$errors, $field ){		
-		if( $field['type'] != 'recaptcha' )
+	public function cb_handle_check_field( &$errors, $field )
+	{
+		if( $field->getType() !==  'simple-captcha-image' )
 			return;
 
-		$options = $this->master->forms->get_option( 'recaptcha' );
+		$options = $this->getOptions();
 		
 		// Instanciation de la librairie reCaptcha
 		if( ! ini_get( 'allow_url_fopen' ) ) :
@@ -143,7 +76,49 @@ class Recaptcha extends Factory
 	}
 	
 	/* = CONTROLEURS = */
-	function get_lang(){
+	/** == Affichage == **/
+	public function display()
+	{
+		$ID = preg_replace( '/-/', '_', sanitize_key( $this->form()->getID() ) );
+		$instance = self::$Instance;
+			
+		// Récupération des options
+		$options = $this->getOptions();		
+				
+		// Instanciation de la librairie ReCaptcha
+		if( ! ini_get( 'allow_url_fopen' ) ) :
+			// allow_url_fopen = Off			
+			new \ReCaptcha\ReCaptcha( $options['secretkey'], new \ReCaptcha\RequestMethod\SocketPost );
+		else :
+			// allow_url_fopen = On
+			new \ReCaptcha\ReCaptcha( $options['secretkey'] );
+		endif;
+			
+		// Chargement des scripts dans le pied de page
+		add_action( 
+			'wp_footer', 
+			function () use ( $ID, $options, $instance )
+			{
+				if( ! $instance ) :
+				?><script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=<?php echo $this->getLanguage();?>&onload=onloadCallback_<?php echo $ID;?>&render=explicit" async defer></script><?php
+				endif;
+				?><script type="text/javascript">var onloadCallback_<?php echo $ID;?> = function() { grecaptcha.render('g-recaptcha-<?php echo $ID;?>',<?php echo json_encode( $options );?> );};$( document ).on( 'tify_forms_ajax_submit',function(){ onloadCallback_<?php echo $ID;?>();});</script><?php			
+			},
+			99
+		);
+		self::$Instance++;		
+		
+		// Affichage du champ ReCaptcha
+		$output  = "";
+		$output .= "<input type=\"hidden\" name=\"". esc_attr( $this->field()->getDisplayName() ) ."\" value=\"-1\">";
+		$output .= "<div id=\"g-recaptcha-{$ID}\" class=\"g-recaptcha\" data-sitekey=\"{$options['sitekey']}\" data-theme=\"{$options['theme']}\"></div>";
+		
+		return $output;
+	}
+		
+	/** == Récupération de la langue == **/
+	private function getLanguage()
+	{
 		global $locale;	
 
 		switch( $locale ) :

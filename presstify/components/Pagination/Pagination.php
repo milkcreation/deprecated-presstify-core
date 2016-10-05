@@ -19,14 +19,14 @@ class Pagination extends Component
 	final public function init()
 	{
 		if( $theme = self::getConfig( 'theme' ) )
-			wp_register_style( 'tify_pagination', $this->Url ."/theme/{$theme}.css", array(), '160318' );
+			wp_register_style( 'tiFyPagination', $this->Url ."/theme/{$theme}.css", array(), '160318' );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function wp_enqueue_scripts()
 	{
 		if( $theme = self::getConfig( 'theme' ) )
-			wp_enqueue_style( 'tify_pagination' );
+			wp_enqueue_style( 'tiFyPagination' );
 	}
 	
 	/* = AFFICHAGE = */

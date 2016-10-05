@@ -8,7 +8,6 @@ class ContactForm extends Component
 	/* = ARGUMENTS = */
 	// Actions à déclencher	
 	protected $CallActions			= array(
-		'init',
 		'the_content',
 		'tify_options_register_node',
 		'tify_form_register'
@@ -23,15 +22,9 @@ class ContactForm extends Component
 	public function __construct()
 	{
 		parent::__construct();
-	
 		// Récupération de la configuration par défaut
 		self::$Defaults = \tiFy\Core\Params::parseAndEval( $this->Dirname .'/config/defaults.yml' );
-	}
-	
-	/* = DECLENCHEUR = */
-	/** == == **/
-	final public function init()
-	{
+		
 		do_action( 'tify_contact_form_register' );
 		
 		// Déclaration des formulaires passés en arguments
@@ -39,23 +32,24 @@ class ContactForm extends Component
 			$id = ( is_numeric( $i ) ) ? 'tify_contact_form-'. $i : $i;
 			self::Register( $id, $args );
 		endforeach;
-		
+
 		// Déclaration du formulaire par défaut (si aucun autre formulaire n'a été déclaré
 		if( empty( self::$Forms ) ) :
 			$id = 'tify_contact_form-0';
 			self::Register( $id );
 		endif;
 	}
-	
+		
 	/* = = */
 	final public function the_content( $content )
 	{
+		
 		// Bypass
 		if( ! in_the_loop() )
 			return $content;		
 		if( ! $id = $this->getHookPageID() )
 			return $content;
-		
+				
 		// Masque le contenu et le formulaire sur la page d'accroche	
 		if( ! self::$Forms[$id]['content'] )
 			return '';
@@ -68,9 +62,10 @@ class ContactForm extends Component
 		
 	/* = = */
 	final public function tify_options_register_node()
-	{
+	{	
 		foreach( (array) self::$Forms as $id => $args ) :
 			if( $args['admin'] ) :
+				
 				\tify_options_register_node(
 					array(
 						'id' 		=> $id,
@@ -87,7 +82,9 @@ class ContactForm extends Component
 	final public function tify_form_register()
 	{	
 		foreach( (array) self::$Forms as $id => $args ) :
-			\tify_form_register( $args['form'] );
+			if( ! isset( $args['form']['ID'] ) )
+				$args['form']['ID'] = $id;
+			\tify_form_register( $id, $args['form'] );
 		endforeach;
 	}	
 	
@@ -188,6 +185,7 @@ class ContactForm extends Component
 		if( self::$Forms[$id]['content'] === 'before' ) :
 			$output .= $content;
 		endif;
+		
 		$output .= \tify_form_display( self::$Forms[$id]['form']['ID'], false );
 		if( self::$Forms[$id]['content'] === 'after' ) :
 			$output .= $content;
