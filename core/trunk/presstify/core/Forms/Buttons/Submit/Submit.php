@@ -44,7 +44,7 @@ class Submit extends Factory
     /** == Affichage == **/
 	public function display( $form, $attrs )
 	{						
-		$class = ! empty( $attrs['class'] ) ? "submit button-submit ". $attrs['class'] : "submit button-submit";
+		$class = ! empty( $attrs['class'] ) ? "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit". $attrs['class'] : "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit";
 		
 		$output  = "";
 		$output .= "<div class=\"tiFyForm-Button tiFyForm-Button--". $this->getID() ."\">\n";

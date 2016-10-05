@@ -29,7 +29,8 @@ class TouchTime extends Factory
 	
 	/* = CALLBACKS = */
 	/** == Affichage du champ == **/	 
-	function cb_field_type_output_display( &$output, $field ){
+	public function display()
+	{
 	 	$output .= mk_touch_time( 
 			array(
 				'echo' 		=> false, 

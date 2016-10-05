@@ -77,13 +77,14 @@ class ListTable extends tiFYCoreAdminModelListTable
 	{
 		if( count( $this->activeForms ) < 2 )
 			return;
-
+	
+			
 		$output = "<div class=\"alignleft actions\">";
 		if ( 'top' == $which ) :
 			$output  .= "\t<select name=\"form_id\" autocomplete=\"off\">\n";
 			$output  .= "\t\t<option value=\"0\" ". selected( ! $this->Form, true, false ).">". __( 'Tous les formulaires', 'tify' ) ."</option>\n";
 			foreach( (array) $this->activeForms as $form ) :
-				$output  .= "\t\t<option value=\"". $form->getID() ."\" ". selected( $this->Form->getID(), $form->getID(), false ) .">". $form->getTitle() ."</option>\n";
+				$output  .= "\t\t<option value=\"". $form->getID() ."\" ". selected( ( $this->Form && ( $this->Form->getID() == $form->getID() ) ), true, false ) .">". $form->getTitle() ."</option>\n";
 			endforeach;
 			$output  .= "\t</select>";
 
