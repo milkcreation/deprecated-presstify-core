@@ -2,6 +2,7 @@
 namespace tiFy\Components\TinyMCE\ExternalPlugins\FontAwesome;
 
 use tiFy\Environment\App;
+use tiFy\Lib\File;
 
 class FontAwesome extends App
 {
@@ -63,7 +64,7 @@ class FontAwesome extends App
 		wp_register_style( 'tinymce-fontawesome', $this->Url .'/plugin.css', array(), '20141219' );
 		
 		// Récupération des glyphs
-		$css = tify_file_get_contents_curl( $this->options['css'] );
+		$css = File::getContents( $this->options['css'] );
 		preg_match_all( '/.fa-(.*):before\s*\{\s*content\:\s*"(.*)"(;?|)\s*\}\s*/', $css, $matches );
 		foreach( $matches[1] as $i => $class )
 			$this->glyphs[$class] = $matches[2][$i];

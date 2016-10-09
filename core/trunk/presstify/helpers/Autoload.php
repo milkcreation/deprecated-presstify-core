@@ -7,6 +7,7 @@ class Autoload
 	{
 		require __DIR__ .'/Components.php';
 		require __DIR__ .'/Core.php';
+		require __DIR__ .'/Lib.php';
 		require __DIR__ .'/Deprecated.php';
 	}
 }

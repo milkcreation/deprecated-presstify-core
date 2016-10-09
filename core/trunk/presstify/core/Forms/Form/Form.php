@@ -154,32 +154,25 @@ class Form
 	{
 		// Réinitialisation de l'index
 		Field::resetIndex();
-				
+		
+		$fields 	= array();
+		$groups 	= array();
+		$orders 	= array();
+		$positions 	= array(); 
+		$i 			= 0;
+	
 		foreach( (array) $this->getAttr( 'fields' ) as $attrs ) :
-			$this->Fields[] = new Field( $this, $attrs );
+			$fields[] = $field = new Field( $this, $attrs );
+			$groups[] = $field->getAttr( 'group', 0 );
+			$orders[] = $field->getAttr( 'order', 0 );
+			$positions[] = $i++; 
 		endforeach;
+					
+		array_multisort( $groups, $orders, $positions );
 		
-		// Tri des champs
-		/*$positions = array(); $groups = array(); $position_order = array(); $group_order = array();	
-		
-		/// Définition des valeurs maximum
-		foreach ( (array) $this->Fields as $attrs ) :
-			$positions[] 	= $attrs['order']; 
-			$groups[] 		= $attrs['group'];
+		foreach( $positions as $pos ) :
+			$this->Fields[] = $fields[$pos];
 		endforeach;
-		
-		$position_max 	= max( $positions );  
-		$group_max 		= max( $groups );
-		
-		foreach ( (array) $this->master->forms->current['fields'] as $key => $params ) :
-			if( ! $params['order'] ) $this->master->forms->current['fields'][$key]['order'] = ++$position_max;
-			if( ! $params['group'] ) $this->master->forms->current['fields'][$key]['group'] = $group_max+1;
-			$position_order[$key] = $this->master->forms->current['fields'][$key]['order']; 
-			$group_order[$key] = $this->master->forms->current['fields'][$key]['group'];
-		endforeach;			
-		@array_multisort( $group_order, $position_order, $this->master->forms->current['fields'] );	*/
-
-		//Callbacks::call( 'form_set_fields', array( &$this->Addons ) );
 	}
 	
 	/** == Définition des notifications == **/

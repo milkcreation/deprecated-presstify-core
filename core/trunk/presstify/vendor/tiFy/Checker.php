@@ -45,9 +45,9 @@ class Checker
 	}
 	
 	/** == Vérifie si une chaine de caractères est une url valide == **/ 
-	public static function isUrl( $value, $args = array() )
+	public static function isUrl( $value )
 	{
-		if( ! preg_match( '/^(http|https|ftp)\://[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(:[a-zA-Z0-9]*)?/?([a-zA-Z0-9\-\._\?\,\'/\\\+&amp;%\$#\=~])*$/', $value ) )
+		if( ! preg_match( '@^(https?|ftp)://[^\s/$.?#].[^\s]*$@iS', $value ) )
 			return false;
 		return true;
 	}

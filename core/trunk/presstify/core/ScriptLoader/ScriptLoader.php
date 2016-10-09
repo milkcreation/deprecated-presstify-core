@@ -23,13 +23,13 @@ class ScriptLoader extends App
 	
 	/** == CONFIGURATION == **/
 	// Liste des librairies CSS référencées
-	public static $CssLib		= array();
+	public static $CssLib			= array();
 	// Liste des librairies JS référencées
 	public static $JsLib			= array();			
 	// Contexte par défaut de la source
-	public static $DefaultSrc	= 'cdn';
-		
-	/* = ACTIONS WORDPRESS = */
+	public static $DefaultSrc		= 'cdn';
+	
+	/* = DECLENCHEURS = */
 	/** == Au chargement du thème == **/
 	public function after_setup_theme()
 	{
@@ -81,57 +81,10 @@ class ScriptLoader extends App
 			'bootstrap'					=> array(
 				'src'		=> array(
 					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap.min.js',
-					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'					
+					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'					
 				),
 				'deps'		=> array( 'jquery' ),
-				'version'	=> '3.3.5',
-				'in_footer'	=> true 
-			),
-			/// Bootstrap - Transitions
-			'bootstrap-transitions'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-transitions.min.js',
-					'cdn'		=> ''
-				),
-				'deps'		=> array( 'jquery' ),
-				'version'	=> '3.3.5',
-				'in_footer'	=> true 
-			),
-			/// Bootstrap - Modals
-			'bootstrap-modals'			=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-modals.min.js',
-					'cdn'		=> ''
-				),
-				'deps'		=> array( 'bootstrap-transitions' ),
-				'version'	=> '3.3.5',
-				'in_footer'	=> true 
-			),
-			/// Bootstrap - Tooltips
-			'bootstrap-tooltips'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-tooltips.min.js',
-				),
-				'deps'		=> array( 'bootstrap-transitions' ),
-				'version'	=> '3.3.5',
-				'in_footer'	=> true 
-			),
-			/// Bootstrap - Popovers
-			'bootstrap-popovers'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-popovers.min.js',
-				), 
-				'deps'		=> array( 'bootstrap-tooltips' ),
-				'version'	=> '3.3.5',
-				'in_footer'	=> true 
-			),
-			/// Bootstrap - Togglable tabs 
-			'bootstrap-togglable-tabs'	=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap-togglable-tabs.min.js',
-				), 
-				'deps'		=> array( 'bootstrap-transitions' ),
-				'version'	=> '3.3.5',
+				'version'	=> '3.3.7',
 				'in_footer'	=> true 
 			),
 				
@@ -178,14 +131,14 @@ class ScriptLoader extends App
 			),
 			
 			// Image Lightbox
-                        'imagelightbox'                                        => array(
-                                'src'           => array(
-                                        'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.js',
-                                ),
-                                'deps'          => array( 'jquery' ),
-                                'version'       => '160902',
-                                'in_footer'     => true
-                        ),
+			'imagelightbox'				=> array(
+				'src'           => array(
+					'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.js',
+				),
+				'deps'          => array( 'jquery' ),
+				'version'       => '160902',
+				'in_footer'     => true
+			),
 				
 			// Easing
 			'holder'					=> array(
@@ -313,15 +266,6 @@ class ScriptLoader extends App
 				'version'	=> '160126',
 				'in_footer'	=> true
 			),
-			/// TiFy - Modal
-			'tify-modals'				=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-modals.min.js'
-				),
-				'deps'		=> array( 'bootstrap-modals' ),
-				'version'	=> '150825',
-				'in_footer'	=> true 
-			),
 			/// TiFy - Lightbox
 			'tify-lightbox'				=> array(
 				'src'		=> array(
@@ -367,16 +311,7 @@ class ScriptLoader extends App
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '151023',
 				'in_footer'	=> true 
-			),	
-			/// TiFy - Video
-			'tify-video'				=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video.js'
-				),
-				'deps'		=> array( 'jquery', 'tify-modals', 'froogaloop', 'wp-mediaelement' ),
-				'version'	=> '150828',
-				'in_footer'	=> true 
-			),			
+			),				
 			/// TiFy - Threesixty View
 			'tify-threesixty_view'		=> array(
 				'src'		=> array(
@@ -392,31 +327,13 @@ class ScriptLoader extends App
 			'bootstrap'					=> array(
 				'src'		=> array(
 					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap.min.css',
-					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
+					'cdn'		=> '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'
 				),
 				'deps'		=> array(),
-				'version'	=> '3.3.5',
+				'version'	=> '3.3.7',
 				'media'		=> 'all' 
 			),
-			//// Bootstrap - Tooltips
-			'bootstrap-tooltips'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap-tooltips.min.css'
-				), 
-				'deps'		=> array(),
-				'version'	=> '3.3.5',
-				'media'		=> 'all' 
-			),
-			//// Bootstrap - Popovers
-			'bootstrap-popovers'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap-popovers.min.css'
-				),
-				'deps'		=> array( 'bootstrap-tooltips' ),
-				'version'	=> '3.3.5',
-				'media'		=> 'all' 
-			),
-				
+			
 			// DataTables
 			/// Theme par défaut
 			'datatables'				=> array(
@@ -462,14 +379,14 @@ class ScriptLoader extends App
 			),	
 			
 			// Image Lightbox
-                        'imagelightbox'                            => array(
-                                'src'           => array(
-                                        'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.css',
-                                ),
-                                'deps'          => array(),
-                                'version'       => '160902',
-                                'media'         => 'all'
-                        ),		
+			'imagelightbox'                            => array(
+				'src'           => array(
+					'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.css',
+				),
+				'deps'          => array(),
+				'version'       => '160902',
+				'media'         => 'all'
+			),		
 			
 			// NanoScroller	
 			'nanoscroller'				=> array(
@@ -680,21 +597,13 @@ class ScriptLoader extends App
 				'version'	=> '160602',
 				'media'		=> 'all'
 			),
-			/// TiFy - Video
-			'tify-video'					=> array(
+			/// TiFy - Modal
+			'tify-modal_video-theme'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-modal_video-theme.css',
 				),
-				'deps'		=> array( 'wp-mediaelement', 'dashicons', 'spinkit-three-bounce' ),
-				'version'	=> '150828',
-				'media'		=> 'all' 
-			),
-			'tify-video-theme'				=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-video-theme.css',
-				),
-				'deps'		=> array( 'tify-video' ),
-				'version'	=> '150828',
+				'deps'		=> array(),
+				'version'	=> '161008',
 				'media'		=> 'all'
 			),
 			/// TiFy - Threesixty View
