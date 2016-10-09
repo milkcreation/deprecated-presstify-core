@@ -251,24 +251,26 @@ if( ! function_exists( 'mk_unique_file_title' ) ) :
 function mk_unique_file_title( $title, $basename = null,  $query_args = array( ) ){
 	global $wpdb;
 
-	$where =  "WHERE post_type = 'attachment'";
+	$where =  "WHERE 1 AND post_type = 'attachment'";
 
-	if( $basename )
-		$where .= " AND guid NOT LIKE '%". $basename ."'";
-
-		foreach( $query_args as $key => $value )
-			$where .= " AND $key = '$value'";
-
-			$number = '';
-			while ( $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts $where AND post_title = %s", $title ) ) ) :
-			if ( ! preg_match( "/#".$number."$/", $title ) ) :
-			$title .= " #".++$number;
-			else :
-			$title = preg_replace( "/#".$number."$/", "#".++$number, $title );
-			endif;
-			endwhile;
-
-			return $title;
+	if( $basename ) :
+		$where .= " AND guid NOT LIKE '%{$basename}'";
+	endif;
+	
+	foreach( $query_args as $key => $value ) :
+		$where .= " AND {$key} = '{$value}'";
+	endforeach;
+	
+	$number = 0;
+	while( $wpdb->get_var( "SELECT ID FROM {$wpdb->posts} {$where} AND post_title = '{$title}'" ) ) :
+		if ( ! preg_match( "/#". $number ."$/", $title ) ) :
+			$title .= "#". ++$number;
+		else :
+			$title = preg_replace( "/#". $number ."$/", "#". ++$number, $title ) .'tutu';
+		endif;
+	endwhile;
+	
+	return $title;
 }
 endif;
 

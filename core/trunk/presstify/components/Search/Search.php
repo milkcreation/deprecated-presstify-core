@@ -144,10 +144,10 @@ class Search extends Component
 		endif;
 		
 		if( self::$Section ) :
-			$subquery_where = array(); $section_num = 1;	
+			$subquery_where = array(); $section_num = 1; $section_join = '';	
 			foreach( (array) self::$Section as $name => $args ) :				
 				$args['s'] = $q['s'];
-				
+	
 				// Traitement des arguments de requête
 				/// Traitement des sections
 				if( ! $this->SectionPostTypeRequest[$name] 	= $this->ParseSectionPostTypeRequest( $args ) )
@@ -157,26 +157,26 @@ class Search extends Component
 				if( isset( $args['fields']['postmeta'] ) ) :
 					$metakeys = array();
 					foreach( $args['fields']['postmeta'] as $mk ) :
-						$metakeys[] = " tyspm.meta_key = '{$mk}'";
+						$metakeys[] = " tyspm{$name}.meta_key = '{$mk}'";
 					endforeach;
 					
 					$_metakeys 	= ( ! empty( $metakeys ) ) ? " AND (". join( ' OR ', $metakeys ) .")" : '';
 					
-					$join .= " LEFT OUTER JOIN {$wpdb->postmeta} AS tyspm ON ({$wpdb->posts}.ID = tyspm.post_id{$_metakeys})";
+					$section_join .= " LEFT OUTER JOIN {$wpdb->postmeta} AS tyspm{$name} ON ({$wpdb->posts}.ID = tyspm{$name}.post_id{$_metakeys})";
 					$groupby = "{$wpdb->posts}.ID";
 				endif;
-
+				
 				/// Traitement des mots clefs de recherche
 				foreach( (array) $args['post_type'] as $pt ) :
 					if( ! in_array( $pt, self::$PostTypeTags ) ) 
 						continue;
-					$join .= " LEFT OUTER JOIN {$wpdb->term_relationships} AS tystr{$name} ON ({$wpdb->posts}.ID = tystr{$name}.object_id)";
-					$join .= " LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tystt{$name} ON (tystr{$name}.term_taxonomy_id = tystt{$name}.term_taxonomy_id  AND tystt{$name}.taxonomy = 'tify_search_tag')";
-					$join .= " LEFT OUTER JOIN {$wpdb->terms} AS tyst{$name} ON (tystt{$name}.term_id = tyst{$name}.term_id)";
+					$section_join .= " LEFT OUTER JOIN {$wpdb->term_relationships} AS tystr{$name} ON ({$wpdb->posts}.ID = tystr{$name}.object_id)";
+					$section_join .= " LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tystt{$name} ON (tystr{$name}.term_taxonomy_id = tystt{$name}.term_taxonomy_id  AND tystt{$name}.taxonomy = 'tify_search_tag')";
+					$section_join .= " LEFT OUTER JOIN {$wpdb->terms} AS tyst{$name} ON (tystt{$name}.term_id = tyst{$name}.term_id)";
 					$groupby = "{$wpdb->posts}.ID";
 					break;
-				endforeach;					
-													
+				endforeach;			
+												
 				/// Traitement de la requête de recherche
 				if( ! $this->SectionSearchRequest[$name] 	= $this->ParseSectionSearchRequest( $name, $args ) )
 					continue;
@@ -185,7 +185,7 @@ class Search extends Component
 				/// Limite du nombre de résultat
 				$this->SectionLimitRequest[$name] 			= $this->ParseSectionLimitRequest( $args, $query );
 												
-				$countquery = "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts} {$join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]}";
+				$countquery = "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts} {$section_join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]}";
 
 				// Création de la requête s'il existe des posts
 				if( self::$SectionFoundPosts[$name] = (int) $wpdb->get_var( $countquery ) ) :
@@ -194,7 +194,7 @@ class Search extends Component
 					self::$FoundPosts 	+= self::$SectionFoundPosts[$name];
 
 					// Requête de récupération des posts
-					$subquery			= "SELECT * FROM ( SELECT DISTINCT ID FROM {$wpdb->posts} {$join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]} ". /*LIMIT 0,{$this->SectionLimitRequest[$name]}*/ ") as tyssub{$name}";
+					$subquery			= "SELECT * FROM ( SELECT DISTINCT ID FROM {$wpdb->posts} {$section_join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]} LIMIT 0,{$this->SectionLimitRequest[$name]} ) as tyssub{$name}";
 					$subquery_where[] 	= "( ( {$wpdb->posts}.ID IN ({$subquery})". ( $sresults ? " AND @section:=if( {$wpdb->posts}.ID, {$section_num}, 0 )" : "" ). " ) )";
 					
 					self::$SectionHasResults[$section_num] = $name;
@@ -202,7 +202,7 @@ class Search extends Component
 					$section_num++;
 				endif;				
 			endforeach;			
-			//var_dump(  compact( array_keys( $pieces ) ) );
+			
 			// Personnalisation des éléments de requête 
 			/// Définition des variables de requête 
 			if( $sresults ) :
@@ -320,7 +320,7 @@ class Search extends Component
 
 			if( isset( $q['fields']['postmeta'] ) ) :
 				foreach( $q['fields']['postmeta'] as $meta_key ) :
-					$searchquery[] = '( tyspm.meta_key = "'. $meta_key .'" AND tyspm.meta_value '. $like_op .' "%1$s" )';
+					$searchquery[] = '( tyspm'. $name .'.meta_key = "'. $meta_key .'" AND tyspm'. $name .'.meta_value '. $like_op .' "%1$s" )';
 				endforeach;			
 			endif;
 			
