@@ -2,6 +2,7 @@
 namespace tiFy\Core\Control\DropdownGlyphs;
 
 use tiFy\Core\Control\Factory;
+use tiFy\Lib\File;
 
 class DropdownGlyphs extends Factory
 {
@@ -46,7 +47,7 @@ class DropdownGlyphs extends Factory
 		extract( $args );
 		
 		$glyphs = array();
-		$css_content = tify_file_get_contents_curl( $css );
+		$css_content = File::getContents( $css );
 		preg_match_all( '/.'. $prefix .'-(.*):before\s*\{\s*content\:\s*"(.*)";\s*\}\s*/', $css_content, $matches );
 		foreach( $matches[1] as $i => $class )
 			$glyphs[$class] = $matches[2][$i];

@@ -1,0 +1,36 @@
+[data-role="tiFyModal"][data-type="video"]{
+	display:none;
+}
+[data-role="tiFyModal"][data-type="video"] .modal-content{
+	background-color:transparent;
+	box-shadow:none;
+	border:none;
+}
+[data-role="tiFyModal"][data-type="video"] .modal-body{
+	padding:0;
+}
+[data-role="tiFyModal"][data-type="video"] .backdrop-close{    
+    position: fixed;
+    right: 2vw;
+    top: 2vw;
+    width: 1.5vw; height: 1.5vw;
+    background-color:transparent;
+    border:none;
+    z-index: 10002;
+    text-indent:-99999em;
+}
+[data-role="tiFyModal"][data-type="video"] .backdrop-close::before, 
+[data-role="tiFyModal"][data-type="video"] .backdrop-close::after {
+	position:absolute;
+	content:"";
+	top:0; bottom:0;
+	display:block;
+	width:2px;
+	background-color:#FFF;
+}
+[data-role="tiFyModal"][data-type="video"] .backdrop-close::before {
+    transform: rotate(45deg);
+}
+[data-role="tiFyModal"][data-type="video"] .backdrop-close::after {
+    transform: rotate(-45deg);
+}

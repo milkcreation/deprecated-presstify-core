@@ -6,19 +6,20 @@ use tiFy\Environment\App;
 class AjaxActions extends App
 {
 	/* = CONSTRUCTEUR = */
-	public function __construct( )
+	public function __construct()
 	{
 		// Actions et Filtres Wordpress
-		add_action( 'wp_ajax_tify_get_post_permalink', array( $this, 'ajax_get_post_permalink' ) );
+		/// Récupération d'un permalien de post selon son ID 
+		add_action( 'wp_ajax_tify_get_post_permalink', array( $this, 'getPostPermalink' ) );
+		
+		/// Récupération du code d'intégration d'une vidéo
+		add_action( 'wp_ajax_tiFyVideoGetEmbed', array( $this, 'videoGetEmbed' ) );
+		add_action( 'wp_ajax_nopriv_tiFyVideoGetEmbed', array( $this, 'videoGetEmbed' ) );	
 	}
 	
-	/* = TRAITEMENT AJAX = */
-	/** == Récupération d'un permalien de post selon son ID ==
-	 * @param (int)		post_id		// (requis) id du post
-	 * @param (bool)	relative	// Récupération du lien en relatif 
-	 * @param (string)	default		// Url par defaut si le permalien n'est pas trouvé 
-	 **/
-	public function ajax_get_post_permalink()
+	/* = CONTRÔLEURS = */
+	/** == Récupération d'un permalien de post selon son ID == **/
+	final public function getPostPermalink()
 	{
 		// Arguments par defaut à passer en $_POST
 		$args = array(
@@ -42,5 +43,15 @@ class AjaxActions extends App
 			$permalink = preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $permalink );
 		
 		wp_die( $permalink );
-	}	
+	}
+	
+	/** == Récupération du code d'intégration d'une vidéo == **/
+	final public function videoGetEmbed()
+	{
+		if( empty( $_REQUEST['attr']['src'] ) )
+			die(0);
+		
+		wp_die( \tiFy\Components\Video\Video::getEmbed( $_REQUEST['attr'] ) );
+		exit;
+	} 
 }

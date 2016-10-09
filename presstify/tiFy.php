@@ -5,7 +5,7 @@ final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
-	public static $Version	= '0.9.9.160913';
+	public static $Version	= '0.9.9.161008';
 
 	// Chemins absolue vers la racine de l'environnement
 	public static $AbsPath;
@@ -54,7 +54,7 @@ final class tiFy
 		// Instanciation des librairies tiers partie
 		new Vendor\Autoload;
 	
-		// Définition des chemins vers la racine de PresstiFy
+		// Définition des chemins
 		self::$AbsPath = ( $AbsPath ) ? $AbsPath : ABSPATH;
 		self::$AbsDir = dirname( __FILE__ );
 		self::$AbsUrl = \tiFy\Lib\Utils::get_filename_url( self::$AbsDir, self::$AbsPath );

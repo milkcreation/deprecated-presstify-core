@@ -1,6 +1,19 @@
 <?php
 namespace
 {
+	/** == 0.9.9.161008 == **/
+	function tify_video_toggle( $target = null, $args = array() )
+	{
+		_deprecated_function( __FUNCTION__, '0.9.9.161008', 'tify_modal_video_toggle' );	
+		
+		if( ! isset( $args['target'] ) )
+			$args['target'] = $target;
+		
+		$args['video'] = $args['attr'];
+		
+		return tify_modal_video_toggle( $args, ( isset( $args['echo'] ) ? $args['echo'] : true ) );
+	}	
+	
 	/** == 0.2.151228 == **/
 	function tify_require(){
 		$replacement = 'tify_require_lib';

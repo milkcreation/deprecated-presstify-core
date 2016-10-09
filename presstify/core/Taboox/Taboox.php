@@ -195,7 +195,7 @@ class Taboox extends Core
 
 		// Chargement des scripts
 		wp_enqueue_style( 'tify_taboox_admin', $this->Url .'/assets/Admin.css', array(), '150216' );
-		wp_enqueue_script( 'tify_taboox_admin', $this->Url .'/assets/Admin.js', array( 'bootstrap-togglable-tabs' ), '151019', true );
+		wp_enqueue_script( 'tify_taboox_admin', $this->Url .'/assets/Admin.js', array(), '151019', true );
 
 		// Déclenchement de l'action "Mise en file des scripts de l'interface d'administration" dans les classes de rappel de formulaire
 		if( ! empty( $this->AdminFormClass[self::$Screen->Hookname] ) ) :

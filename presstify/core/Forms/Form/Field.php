@@ -414,7 +414,7 @@ class Field
 			$class[] = 'tiFyForm-FieldContainer--'. $this->getType();
 			$class[] = 'tiFyForm-FieldContainer--'. $this->getSlug();
 			if( $this->getAttr( 'required' ) )
-				$class[] = 'tiFyForm-FieldWrapper--required';
+				$class[] = 'tiFyForm-FieldContainer--required';
 							
 			$output .= "<div". ( ( $container_id = $this->getAttr( 'container_id' ) ) ? ' id="'. $container_id .'"': '' ) ." class=\"". join( ' ', $class ) ."\">\n"; 
 		endif;

@@ -176,27 +176,7 @@ namespace
 	{
 		return tiFy\Components\Login\Login::display( $id, 'logout_link', $args );
 	}
-	
-	// --------------------------------------------------------------------------------------------------------------------------
-	/* = MODAL = */
-	/** == Création d'un contrôleur d'affichage d'une modale ==
-	 * prerequis : wp_enqueue_script( 'tify-modals' );
-	 **/
-	function tify_modal_toggle( $args = array() )
-	{
-		$modal = new tiFy\Components\Modal\Modal( 'toggle', $args );
-		return $modal->ToggleDisplay();
-	}
-	
-	/** == Création d'une modale ==
-	 * prerequis : wp_enqueue_script( 'tify-modals' );
-	 **/
-	function tify_modal( $args = array() )
-	{
-		$modal = new tiFy\Components\Modal\Modal( 'modal', $args );
-		return $modal->ModalDisplay();
-	}
-	
+		
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = PAGINATION * =/
 	/** == Affichage de la pagination == **/
@@ -255,110 +235,5 @@ namespace
 	function tify_sidebar_display()	
 	{	
 		\tiFy\Components\Sidebar\Sidebar::Display();
-	}	
-	
-	// --------------------------------------------------------------------------------------------------------------------------
-	/* = VIDEO = */
-	/** == == **/
-	function tify_video_embed( $attr, $echo = true )
-	{
-		global $tify_video;
-	
-		$output = $tify_video->embed( $attr );
-	
-		if( $echo )
-			echo $output;
-		else
-			return $output;
-	}
-	
-	/** == Création d'un contrôleur d'affichage d'une modale
-	 * prerequis : wp_enqueue_style( 'tify-video' ); wp_enqueue_script( 'tify-video' );
-	 == **/
-	function tify_video_toggle( $target, $args = array() )
-	{
-		$_target = 'tify_video-'. $target;
-	
-		// Traitement des arguments
-		$defaults = array(
-				// Arguments du lien
-				'id' 			=> 'tify_video_toggle-'. $target,
-				'class'			=> '',
-				'href'			=> '',
-				'text'			=> '',
-				'link_title'	=> '',
-				'link_attrs'	=> array(),
-				'echo'			=> true,
-	
-				// Arguments de la modale
-				'autoload'		=> true,		// Instanciation automatique de la modal
-				'options'		=> array(
-						'backdrop' 		=> true, 	// false | 'static'
-						'keybord'		=> true,
-						'show'			=> false
-				),
-				'animations'		=> 'fade',
-				'attrs'				=> array(),
-				'before' 			=> '',
-				'after' 			=> '',
-				'title'				=> '',
-				'body'				=> '',
-				'footer'			=> '',
-				'header_button'		=> true,
-				'backdrop_button' 	=> false,
-	
-				// Arguments de la video
-				'attr'				=> array()
-		);
-		$args = wp_parse_args( $args, $defaults );
-		extract( $args );
-	
-		$output  = "";
-		$output .= "<a href=\"{$href}\"";
-		$output .= " title=\"{$link_title}\"";
-		$output .= " id=\"{$id}\" class=\"tify_video-toggle".( $class ? ' '.$class :'') ."\"";
-		foreach( $link_attrs as $i => $j )
-			$output .= " {$i}=\"{$j}\"";
-		$output .= " data-toggle=\"tify_modal\" data-target=\"{$_target}\"";
-		$output .= ">";
-		$output .= $text;
-		$output .= "</a>";
-	
-		if( $autoload )
-			tify_video_modal( $target, compact( 'options', 'animations', 'attrs', 'before', 'after', 'title', 'body', 'footer', 'header_button', 'backdrop_button', 'attr' ) );
-	
-		if( $echo )
-			echo $output;
-		else
-			return $output;
-	}
-	
-	/** == == **/
-	function tify_video_modal( $target, $args = array() )
-	{
-		$defaults = array(
-				// Arguments de la modale
-				'options'		=> array(
-						'backdrop' 		=> true, // false | 'static'
-						'keybord'		=> true,
-						'show'			=> true
-				),
-				'animations'		=> 'fade',
-				'attrs'				=> array(),
-				'before' 			=> '',
-				'after' 			=> '',
-				'title'				=> '',
-				'body'				=> '',
-				'footer'			=> '',
-				'header_button'		=> true,
-				'backdrop_button' 	=> false,
-	
-				// Arguments de la video
-				'attr'				=> array()
-		);
-		$args = wp_parse_args( $args, $defaults );
-	
-		$tify_video_modal = new tiFy\Components\Video\Modal( $target, $args );
-		add_action( 'wp_footer', array( $tify_video_modal, 'wp_footer' ) );
 	}
 }

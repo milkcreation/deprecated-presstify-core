@@ -31,7 +31,8 @@
 	border-bottom-width: 0;
 	border-left-width: 4px; 
     display: inline-block;
-    height: 0; width: 0;    
+    height: 0; width: 0;
+    z-index:1;   
 }
 [data-tify_control='dropdown_menu'].active::after{
 	border-top-width: 0;

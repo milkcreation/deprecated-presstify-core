@@ -17,6 +17,6 @@ class Html extends Factory
 	/** == Affichage == **/
 	public function display()
 	{
-		return $this->field()->getValue(); 
+		return $this->field()->getValue( true ); 
 	}
 }

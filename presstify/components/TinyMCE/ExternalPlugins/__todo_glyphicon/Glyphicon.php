@@ -1,4 +1,6 @@
 <?php
+use tiFy\Lib\File;
+
 class tinymceGlyphicon{	
 	private $dir, $path, $uri, $options, $glyphs;
 	
@@ -16,7 +18,7 @@ class tinymceGlyphicon{
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );  
 		add_action( 'admin_head', array( $this, 'admin_head' ) );
 		add_action( 'admin_print_styles', array( $this, 'admin_print_styles' ) );
-		add_action( 'wp_ajax_tinymce-glyphicon-class', array( $this, 'ajax_action' ) );		
+		add_action( 'wp_ajax_tinymce-glyphicon-class', array( $this, 'ajax_action' ) );
 	}
 	
 	public function init(){
@@ -46,7 +48,7 @@ class tinymceGlyphicon{
 		wp_register_style( 'tinymce-glyphicon', $this->uri .'/plugin.css', array(), '20150210' );
 		
 		// Récupération des glyphs
-		$css = tify_file_get_contents_curl( $this->options['css'] );
+		$css = File::getContents( $this->options['css'] );
 		preg_match_all( '/.glyphicon-(.*):before\s*\{\s*content\:\s*"(.*)"(;?|)\s*\}\s*/', $css, $matches );
 		foreach( $matches[1] as $i => $class )
 			$this->glyphs[$class] = $matches[2][$i];

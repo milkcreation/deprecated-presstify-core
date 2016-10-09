@@ -2,6 +2,7 @@
 namespace tiFy\Components\TinyMCE\ExternalPlugins\Genericons;
 
 use tiFy\Environment\App;
+use tiFy\Lib\File;
 
 class Genericons extends App
 {
@@ -62,7 +63,7 @@ class Genericons extends App
 		wp_register_style( 'tinymce-genericons', $this->Url .'/plugin.css', array(), '20141219' );
 		
 		// Récupération des glyphs
-		$css = tify_file_get_contents_curl( $this->options['css'] );
+		$css = File::getContents( $this->options['css'] );
 		preg_match_all( '/.genericon-(.*):before\s*\{\s*content\:\s*"(.*)"(;?|)\s*\}\s*/', $css, $matches );
 		foreach( $matches[1] as $i => $class )
 			$this->glyphs[$class] = $matches[2][$i];
