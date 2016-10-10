@@ -11,38 +11,40 @@ class Factory
 	/// Attributs de configuration
 	public $Attrs		= array();
 	
-	/* = CONSTRUCTEUR = */				
-	public function __construct() 
-	{			
-		// Définition de l'ID
-		$this->_setID();		
-    }
-	
-	/* = CONFIGURATION = */
-	/** == Définition de l'ID == **/
-	private function _setID()
+	// Paramètres
+	/// Formulaire de référence
+	private $Form			= null;
+		
+	/* = PARAMETRAGE = */
+	/** == Initialisation de l'addon pour un formulaire == **/
+	final public function init( $form, $attrs )
 	{
-		if( $this->ID )
-			return;
-		$classname = get_class( $this );
-
-		if( ! $this->ID = array_search( $classname, Buttons::get() ) )
-			$this->ID = $classname;
-	}
+		// Définition du formulaire de référence
+		$this->Form = $form;
+		
+		// Définition des attributs
+		$this->Attrs = wp_parse_args( $attrs, $this->Attrs );
+	}	
 	
-	/* = CONTROLEURS = */
 	/** == Récupération de l'identifiant == **/
 	final public function getID()
 	{
 		return $this->ID;
 	}
 	
-	/** == Traitement des attributs de configuration == **/
-	public function parseAttrs( $attrs = array() )
+	/** == Attributs tabindex de navigation au clavier == **/
+	final public function getTabIndex()
 	{
-		return wp_parse_args( $attrs, $this->Attrs );
+		return "tabindex=\"{$this->form()->increasedTabIndex()}\"";
 	}
 	
+	/** == Récupération de l'objet formulaire de référence == **/
+	final public function form()
+	{
+		return $this->Form;
+	}
+	
+	/* = CONTROLEURS = */		
 	/** == Affichage == **/
-	public function display( $form, $args ){}
+	public function display(){}
 }

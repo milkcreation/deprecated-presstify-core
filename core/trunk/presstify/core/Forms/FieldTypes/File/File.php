@@ -235,6 +235,9 @@ class File extends Factory
 		$output .= " class=\"". join( ' ', $this->getInputClasses() ) ."\"";
 		/// Name		
 		$output .= " name=\"". esc_attr( $this->field()->getDisplayName() ) ."\"";
+		/// TabIndex
+		$output .= " ". $this->getTabIndex();
+		/// Fermeture
 		$output .= "/>";
 		
 		return $output;

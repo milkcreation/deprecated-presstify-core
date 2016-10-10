@@ -8,7 +8,7 @@ class Field
 	/* = ARGUMENTS = */
 	// Configuration
 	/// Instance
-	private static $Index;
+	private static $Instance;
 	
 	/// Attributs par défaut
 	private	$DefaultAttrs		= array(			
@@ -93,6 +93,9 @@ class Field
 	
 	/// Valeur du champ
 	private $Value				= null;
+	
+	/// Indice du champ
+	private $Index				= 0;
 		
 	/* = CONSTRUCTEUR = */
 	public function __construct( \tiFy\Core\Forms\Form\Form $Form, $attrs = array() )
@@ -101,14 +104,14 @@ class Field
 		$this->Form = $Form;
 		
 		// Définition de l'index
-		self::$Index++;
+		$this->Index = self::$Instance++;
 		
 		// Défintion des attributs
 		$this->Attrs = Helpers::parseArgs( $attrs, $this->DefaultAttrs );
 		
 		// Définition des attributs		
 		if( empty( $this->Attrs['slug'] ) ) :
-			$this->Attrs['slug'] = "field-slug_". $this->Form->getUID() ."-". self::getIndex();
+			$this->Attrs['slug'] = "field-slug_". $this->Form->getUID() ."-". $this->getIndex();
 		endif;
 		
 		// Définition du type de champ
@@ -182,18 +185,18 @@ class Field
 		$this->Value = $value;
 	}
 	
-	/* = PARAMETRES = */
-	/** == Récupération de l'index courant == **/
-	public static function getIndex()
+	/* = PARAMETRES = */	
+	/** == Réinitialisation de l'instance == **/
+	public static function resetInstance()
 	{
-		return self::$Index;
+		self::$Instance = 0;
 	}
 	
-	/** == Réinitialisation de l'index courant == **/
-	public static function resetIndex()
+	/** == Récupération de l'indice du champ == **/
+	public function getIndex()
 	{
-		self::$Index = 0;
-	}
+		return $this->Index;	
+	}	
 	
 	/** == Récupération d'un attribut de champ == **/
 	public function getAttr( $attr = 'ID' )
@@ -299,6 +302,16 @@ class Field
 	public function isRequired()
 	{
 		return $this->getRequired( 'check' );
+	}
+	
+	/** == == **/
+	public function getTabIndex()
+	{
+		if( $tabindex = $this->getAttr( 'tabindex' ) ) :
+			return (int) $tabindex;
+		else :
+			return $this->form()->increasedTabIndex();
+		endif;
 	}
 	
 	/** == Récupération des tests d'intégrités == **/
@@ -413,6 +426,7 @@ class Field
 			$class[] = 'tiFyForm-FieldContainer';
 			$class[] = 'tiFyForm-FieldContainer--'. $this->getType();
 			$class[] = 'tiFyForm-FieldContainer--'. $this->getSlug();
+			$class[] = $this->getAttr( 'container_class' );			
 			if( $this->getAttr( 'required' ) )
 				$class[] = 'tiFyForm-FieldContainer--required';
 							

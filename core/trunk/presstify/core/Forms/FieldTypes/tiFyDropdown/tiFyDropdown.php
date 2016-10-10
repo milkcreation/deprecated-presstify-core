@@ -43,6 +43,8 @@ class tiFyDropdown extends Factory
 		$args['name']				= $this->field()->getDisplayName();
 		$args['selected']			= $this->field()->getValue();
 		$args['choices'] 			= $this->field()->getAttr( 'choices' );
+		if( ! isset( $args['attrs'] ) ) $args['attrs'] = array();
+		$args['attrs']['tabindex']	= $this->field()->getTabIndex();
 		if( ! isset( $args['picker']['class'] ) )
 			$args['picker']['class'] = 'tiFyForm-FieldInputPicker tiFyForm-FieldPickerInput--'. $this->getID() .' tiFyForm-FieldPickerInput--'. $this->field()->getSlug();
 		$args['echo'] 				= false;

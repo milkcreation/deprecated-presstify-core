@@ -51,6 +51,8 @@ class Password extends Factory
 		endforeach;
 		/// Value
 		$output .= " value=\"". esc_attr( $this->field()->getValue() ) ."\"";
+		/// TabIndex
+		$output .= " ". $this->getTabIndex();
 		/// Fermeture
 		$output .= "/>";
 			

@@ -136,6 +136,12 @@ abstract class Factory extends App
 		return $attrs;
 	}
 	
+	/** == Attributs tabindex de navigation au clavier == **/
+	public function getTabIndex()
+	{
+		return "tabindex=\"{$this->field()->getTabIndex()}\"";
+	}
+	
 	/* = CONTROLEURS = */
 	/** == Récupération de l'objet champ de référence == **/
 	final public function field()

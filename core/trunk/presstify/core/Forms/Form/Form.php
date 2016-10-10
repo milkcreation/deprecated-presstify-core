@@ -53,6 +53,9 @@ class Form
 	/// Options
 	private $Options		= array();
 	
+	/// TabIndex
+	private $TabIndex		= 0;
+	
 	// Contrôleurs
 	/// Addons
 	private $Addons			= array();
@@ -139,12 +142,12 @@ class Form
 			else :
 				$id = $k; $attrs = $v;
 			endif;
-					
-			$this->Buttons[$id] = $attrs;	
+			
+			$this->Buttons[$id] = Buttons::set( $id, $this, $attrs );	
 		endforeach;
 		
 		if( ! isset( $this->Buttons['submit'] ) )
-			$this->Buttons['submit'] = true;
+			$this->Buttons['submit'] = Buttons::set( 'submit', $this, array() );
 				
 		//Callbacks::call( 'form_set_buttons', array( &$this->Buttons ) );
 	}
@@ -152,8 +155,8 @@ class Form
 	/** == Définition des champs == **/
 	private function _setFields()
 	{
-		// Réinitialisation de l'index
-		Field::resetIndex();
+		// Réinitialisation de l'instance
+		Field::resetInstance();
 		
 		$fields 	= array();
 		$groups 	= array();
@@ -285,13 +288,7 @@ class Form
 		if( isset( $this->Addons[$id] ) )
 			return $this->Addons[$id];
 	}
-		
-	/** == Récupération des options == **/
-	public function getButtons()
-	{
-		return $this->Buttons;
-	}
-	
+			
 	/** == Récupération des options == **/
 	public function getOptions()
 	{
@@ -313,6 +310,12 @@ class Form
 				return $field;
 			endif;
 		endforeach;
+	}
+		
+	/** == == **/
+	public function increasedTabIndex()
+	{
+		return ++$this->TabIndex;
 	}
 	
 	/** == Récupération de la session == **/
@@ -338,6 +341,12 @@ class Form
 	public function addons()
 	{
 		return $this->Addons;	
+	}
+	
+	/** == Récupération des boutons == **/
+	public function buttons()
+	{
+		return $this->Buttons;
 	}
 	
 	/** == Traitement du formulaire == **/ 
@@ -469,7 +478,9 @@ class Form
 				
 		// Affichage des boutons
 		$output .= "\t\t<div class=\"tiFyForm-Buttons\">\n";
-		$output .= Buttons::display();
+		foreach( (array) $this->buttons() as $id => $button ) :		
+			$output .= $button->display();
+		endforeach;		
 		$output .= "\t\t</div>";
 				
 		// Balise de fermeture du formulaire	
