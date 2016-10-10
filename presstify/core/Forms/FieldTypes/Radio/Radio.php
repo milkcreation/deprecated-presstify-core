@@ -38,6 +38,8 @@ class Radio extends Factory
 			foreach( (array) $this->getInputHtmlAttrs() as $attr ) :
 				$output .= " {$k}=\"{$v}\"";
 			endforeach;
+			/// TabIndex
+			$output .= " ". $this->getTabIndex();
 			$output .= "/>";
 			$output .= "\t\t<label for=\"". $this->getInputID() ."-". $i ."\" class=\"tiFyForm-FieldChoiceLabel\">$label</label>";
 			$output .= "\t</li>";

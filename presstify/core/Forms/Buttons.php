@@ -10,7 +10,7 @@ class Buttons
 		'submit'	=> 'Submit'	
 	);
 	
-	// Paramétrage
+	// Paramétres
 	/// Liste des addons déclarés
 	private static $Registered					= array();
 	
@@ -23,8 +23,6 @@ class Buttons
 		endforeach;
 	}
 	
-	/* = CONFIGURATION = */			
-	/* = PARAMETRAGE = */
 	/** == Déclaration de bouton == **/
 	public static function register( $id, $callback, $args = array() )
 	{
@@ -33,41 +31,18 @@ class Buttons
 		if ( ! class_exists( $callback ) )
 			return;
 		
-		self::$Registered[$id] = new $callback( $args );
+		self::$Registered[$id] = array( 'callback' => $callback, 'args' => $args ); 
 	}
 	
-	/* = CONTROLEUR = */
-	/** == Récupération d'un addon == **/
-	public static function get( $id )
+	/** == Instanciation d'un élément == **/
+	public static function set( $id, $form, $attrs = array() )
 	{
-		if( isset( self::$Registered[$id] ) )
-			return self::$Registered[$id];
-	}
+		if( ! isset( self::$Registered[$id] ) )
+			return;
 		
-	/** == Récupération de la liste des addons == **/
-	public static function getIds()
-	{
-		return array_keys( self::$Registered );
-	}
-	
-	/* = CONTROLEURS = */
-	/** == Affichage des boutons du fomulaire == **/
-	public static function display()
-	{		
-		////Callbacks::call( 'form_buttons_before_display', array( &$_form['buttons'], $this->master ) );
+		$item = new self::$Registered[$id]['callback']( self::$Registered[$id]['args'] );
+		$item->init( $form, $attrs );
 		
-		$form 		= Forms::getCurrent();
-		$buttons	= $form->getButtons();
-		
-		$output = "";
-		foreach( (array) $buttons as $id => $attrs ) :
-			if( ( ! $button = self::get( $id ) ) || ( $attrs === false ) )
-				continue;
-				
-			$attrs = $button->parseAttrs( $attrs );
-			$output .= self::get( $id )->display( $form, $attrs );
-		endforeach;
-		
-		return $output;
+		return $item;			
 	}
 }

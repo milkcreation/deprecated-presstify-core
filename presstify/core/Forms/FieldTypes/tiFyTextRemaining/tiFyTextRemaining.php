@@ -36,8 +36,10 @@ class tiFyTextRemaining extends Factory
 		$args['class']				= join( ' ', $this->getInputClasses() );
 		$args['name']				= $this->field()->getDisplayName();
 		$args['value']				= $this->field()->getValue();
+		if( ! isset( $args['attrs'] ) ) $args['attrs'] = array();
+		$args['attrs']['tabindex']	= $this->field()->getTabIndex();
 		$args['echo'] 				= false;
-
+		
 		return tify_control_text_remaining( $args );		
 	}
 }

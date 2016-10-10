@@ -26,8 +26,6 @@ class Submit extends Factory
 			'class'				=> '',
 			'order'				=> 2			
 		);
-
-		parent::__construct();
     }
     
     /* = CONTROLEURS = */
@@ -38,19 +36,18 @@ class Submit extends Factory
 			$attrs = array( 'label' => $attrs );
 
 		return wp_parse_args( $attrs, $this->Attrs );
-	}
-    
+	}    
     
     /** == Affichage == **/
-	public function display( $form, $attrs )
+	public function display()
 	{						
-		$class = ! empty( $attrs['class'] ) ? "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit". $attrs['class'] : "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit";
+		$class = ! empty( $this->Attrs['class'] ) ? "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit ". $this->Attrs['class'] : "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit";
 		
 		$output  = "";
 		$output .= "<div class=\"tiFyForm-Button tiFyForm-Button--". $this->getID() ."\">\n";
-		$output .= "\t<input type=\"hidden\" name=\"submit-". $form->getUID() ."\" value=\"submit\"/>\n";
-		$output .= "\t<button type=\"submit\" id=\"submit-". $form->getUID() ."\" class=\"$class\" >\n";
-		$output .= $attrs['label'];
+		$output .= "\t<input type=\"hidden\" name=\"submit-". $this->form()->getUID() ."\" value=\"submit\"/>\n";
+		$output .= "\t<button type=\"submit\" id=\"submit-". $this->form()->getUID() ."\" class=\"$class\" ". $this->getTabIndex() ." >\n";
+		$output .= $this->Attrs['label'];
 		$output .= "\t</button>\n";
 		$output .= "</div>\n";
 

@@ -15,7 +15,7 @@ class Addons
 		'user' 				=> 'User'	
 	);
 	
-	// Paramétrage
+	// Paramétres
 	/// Liste des addons déclarés
 	private static $Registered			= array();
 	
@@ -60,7 +60,7 @@ class Addons
 		return $item;		
 	}
 			
-	/* = CONTROLEUR = */
+	/* = CONTROLEURS = */
 	/** == Récupére les formulaires actif pour un addon ==**/
 	public static function activeForms( $addon_id )
 	{

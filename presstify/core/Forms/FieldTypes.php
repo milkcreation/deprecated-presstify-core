@@ -23,7 +23,7 @@ class FieldTypes
 		'touchtime'				=> 'TouchTime'
 	);
 	
-	// Parametrage
+	// Parametres
 	/// Liste des type de champs déclarés
 	private static $Registered			= array();
 			
@@ -48,7 +48,7 @@ class FieldTypes
 		self::$Registered[$id] = array( 'callback' => $callback, 'args' => $args );    			
 	}
 	
-	/* = CONTROLEUR = */	
+	/* = CONTROLEURS = */	
 	/** == Instanciation d'un élément == **/
 	public static function set( $id, $field )
 	{

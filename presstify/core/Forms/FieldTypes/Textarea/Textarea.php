@@ -38,6 +38,8 @@ class Textarea extends Factory
 		foreach( (array) $this->getInputHtmlAttrs() as $k => $v ) :
 			$output .= " {$k}=\"{$v}\"";
 		endforeach;
+		/// TabIndex
+		$output .= " ". $this->getTabIndex();
 		$output .= ">";
 		/// Value
 		$output .= esc_attr( $this->field()->getValue() );
