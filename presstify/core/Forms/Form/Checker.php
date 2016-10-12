@@ -64,7 +64,7 @@ class Checker extends tiFyLibChecker
 		$fn 	= $callback['function'];
 		$args 	= (array) $callback['args'];		
 		array_unshift( $args, $value );
-				
+	
 		if( is_string( $fn ) && method_exists( __CLASS__, $fn ) ) :
 			$check = call_user_func_array( array( __CLASS__, $fn ), $args );
 		elseif( is_string( $fn ) && isset( $this->Map[ $fn ] ) && method_exists( __CLASS__,  $this->Map[ $fn ] ) ) :
@@ -86,7 +86,7 @@ class Checker extends tiFyLibChecker
 	public static function compare( $value, $compare = '' )
 	{
 		if( preg_match( '#%%(.*)%%#', $compare, $matches ) && ( $field = self::$Form->getField( $matches[1] ) ) ) :
-			$compare = $field->getValue();
+			$compare = $field->getValue( true );
 		endif;
 
 		if( $value !== $compare ) 

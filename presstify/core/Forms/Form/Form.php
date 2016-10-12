@@ -56,6 +56,9 @@ class Form
 	/// TabIndex
 	private $TabIndex		= 0;
 	
+	/// Groupe
+	public $FieldsGroup		= null;
+	
 	// Contrôleurs
 	/// Addons
 	private $Addons			= array();
@@ -471,8 +474,23 @@ class Form
 			
 		// Affichage des champs de formulaire
 		$output .= "\t\t<div class=\"tiFyForm-Fields\">\n";
-		foreach( (array) $this->fields() as $field ) :
+		foreach( (array) $this->fields() as $n => $field ) :
+			// Ouverture du groupe de champs
+			if( is_null( $this->FieldsGroup ) ) :
+				$this->FieldsGroup = $field->getAttr( 'group' );
+				$output .= "\t\t\t<div class=\"tiFyForm-FieldsGroup tiFyForm-FieldsGroup--{$this->FieldsGroup}\">";
+			elseif( $this->FieldsGroup < $field->getAttr( 'group' ) ) :
+				$this->FieldsGroup = $field->getAttr( 'group' );
+				$output .= "\t\t\t</div>";
+				$output .= "\t\t\t<div class=\"tiFyForm-FieldsGroup tiFyForm-FieldsGroup--{$this->FieldsGroup}\">";
+			endif;
+				
 			$output .= $field->display();
+			
+			// Fermeture du groupe de champs
+			if( count( $this->fields() )-1 === $n ) :
+				$output .= "\t\t\t</div>";
+			endif;			
 		endforeach;
 		$output .= "\t\t</div>";
 				

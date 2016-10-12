@@ -216,7 +216,7 @@ class User extends Factory
 		/// Création	
 		else :
 			if( is_multisite() ) :
-				$user_details = wpmu_validate_user_signup( $userdata['user_login'], $userdata['user_email'] );
+				$user_details = wpmu_validate_user_signup( $request_data['user_login'], $request_data['user_email'] );
 				if ( is_wp_error( $user_details[ 'errors' ] ) && ! empty( $user_details[ 'errors' ]->errors ) ) :
 					return $handle->addError( $user_details[ 'errors' ]->get_error_message() );	
 				endif;

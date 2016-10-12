@@ -67,7 +67,7 @@ class Forms extends Core
 		foreach( (array) self::getConfig() as $id => $attrs ) :
 			$this->register( $id, $attrs );
 		endforeach;
-		
+			
 		/// Depuis la déclaration dynamique	
 		do_action( 'tify_form_register' );
 	}
@@ -118,7 +118,7 @@ class Forms extends Core
 	{
 		if( ! is_object( $form ) )
 			$form = self::get( $form );
-		
+				
 		if( ! $form instanceof \tiFy\Core\Forms\Form\Form )
 			return;
 			
@@ -146,6 +146,7 @@ class Forms extends Core
 	/** == Affichage du formulaire == **/
 	public static function display( $form_id = null, $echo = false )
 	{
+
 		// Bypass
 		if( ! $form = self::setCurrent( $form_id ) )
 			return;
