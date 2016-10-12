@@ -420,7 +420,7 @@ class Field
 		
 		// Affichage du champs
 		$output  = "";
-				
+		
 		if( $this->typeSupport( 'wrapper' ) ) :
 			$class = array();
 			$class[] = 'tiFyForm-FieldContainer';

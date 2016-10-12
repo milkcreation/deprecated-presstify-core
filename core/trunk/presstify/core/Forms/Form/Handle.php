@@ -183,7 +183,7 @@ class Handle
 				$Checker = new Checker( $field );
 			
 				foreach( $callbacks as $callback ) :
-					if( $Checker->call( $field->getValue(), $callback ) )
+					if( $Checker->call( $field->getValue( true ), $callback ) )
 							continue;
 					$errors[] = sprintf( $callback['error'], $field->getLabel(), $field->getValue() );		
 				endforeach;				

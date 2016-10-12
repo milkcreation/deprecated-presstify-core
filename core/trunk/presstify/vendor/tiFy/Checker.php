@@ -130,6 +130,11 @@ class Checker
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 
+		if( $min && ( strlen( $value ) < (int) $min ) )
+			return false;
+		if( $max && ( strlen( $value ) > (int) $max ) )
+			return false;
+		
 		$regex  = "";
 		if( $digit )
 			$regex .= "(?=(?:.*\d){". (int) $digit .",})";		
@@ -139,10 +144,6 @@ class Checker
 			$regex .= "(?=(?:.*[A-Z]){". (int) $maj .",})";
 		if( $special_char )
 			$regex .= "(?=(?:.*[!@#$%^&*()\[\]\-_=+{};:,<.>]){". (int) $special_char .",})";	
-		if( $min && ( strlen( $value ) < (int) $min ) )
-			return false;
-		if( $max && ( strlen( $value ) > (int) $max ) )
-			return false;
 		
 		if( preg_match( '/'. $regex .'/', $value ) )
 			return true;

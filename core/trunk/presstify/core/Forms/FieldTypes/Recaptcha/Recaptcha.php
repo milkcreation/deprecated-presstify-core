@@ -111,7 +111,7 @@ class Recaptcha extends Factory
 		// Affichage du champ ReCaptcha
 		$output  = "";
 		$output .= "<input type=\"hidden\" name=\"". esc_attr( $this->field()->getDisplayName() ) ."\" value=\"-1\">";
-		$output .= "<div id=\"g-recaptcha-{$ID}\" class=\"g-recaptcha\" data-sitekey=\"{$options['sitekey']}\" data-theme=\"{$options['theme']}\"></div>";
+		$output .= "<div id=\"g-recaptcha-{$ID}\" class=\"g-recaptcha\" data-sitekey=\"{$options['sitekey']}\" data-theme=\"{$options['theme']}\" data-tabindex=\"". $this->field()->getTabIndex() ."\"></div>";
 		
 		return $output;
 	}
