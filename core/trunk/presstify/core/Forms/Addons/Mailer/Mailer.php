@@ -98,7 +98,7 @@ class Mailer extends Factory
 								'<td width="400" valign="top">' 
 										
 						: 		'<td colspan="2" width="600" valign="top">';		
-			$output .= 				$field->getValue();		
+			$output .= 				$field->getDisplayValue();		
 			$output .= 			'</td>';
 			$output .= 		'</tr>';
 		endforeach;

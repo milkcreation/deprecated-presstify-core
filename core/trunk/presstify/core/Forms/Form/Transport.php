@@ -118,7 +118,7 @@ class Transport
 				unset( $data[$attr] );
 		endforeach;
 			
-		$data = wp_parse_args( $data, array( 'session' => $this->getSession() ) );
+		$data = wp_parse_args( $data, array( 'ID' => $this->Form->getID(), 'session' => $this->getSession() ) );
 		
 		return set_transient( $this->getTransientPrefix() . $this->getSession(), $data, $this->TransientExpiration );
 	}
