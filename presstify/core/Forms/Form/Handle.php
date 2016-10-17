@@ -105,7 +105,10 @@ class Handle
 	{
 		if( ! $transient = get_transient( $this->Form->transport()->getTransientPrefix() . $this->getQueryVar( 'success' ) ) )
 			return false;
-		
+			
+		if( $transient['ID'] != $this->Form->getID() )
+			return false;
+			
 		return ( ! empty( $transient['success'] ) && $transient['success'] );
 	}	
 	

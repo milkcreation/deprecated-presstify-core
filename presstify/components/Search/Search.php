@@ -486,7 +486,7 @@ class Search extends Component
 		if( empty( self::$Section[$section]['showall_link'] ) )
 			return;
 		
-		$type = current( self::$Section[$section]['post_type'] );		
+		$type = current( (array) self::$Section[$section]['post_type'] );		
 
 		$defaults = array(
 			'url'	=> esc_attr( add_query_arg( '_s', get_search_query(), get_post_type_archive_link( $type ) ) ),

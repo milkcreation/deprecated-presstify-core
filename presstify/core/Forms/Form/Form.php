@@ -54,7 +54,7 @@ class Form
 	private $Options		= array();
 	
 	/// TabIndex
-	private $TabIndex		= 0;
+	private static $TabIndex		= 1000;
 	
 	/// Groupe
 	public $FieldsGroup		= null;
@@ -318,7 +318,7 @@ class Form
 	/** == == **/
 	public function increasedTabIndex()
 	{
-		return ++$this->TabIndex;
+		return ++self::$TabIndex;
 	}
 	
 	/** == Récupération de la session == **/

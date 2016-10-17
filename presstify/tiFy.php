@@ -111,9 +111,10 @@ final class tiFy
 		self::$ClassLoader->addNamespace( $namespace, $base_dir, false );
 		self::$ClassLoader->register();
 			
-		if( $bootstrap ) :		
-			$className = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
-			new $className;
+		if( $bootstrap ) :
+			$class_name = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
+			if( class_exists( $class_name ) )
+				new $class_name;
 		endif;
 	}
 	

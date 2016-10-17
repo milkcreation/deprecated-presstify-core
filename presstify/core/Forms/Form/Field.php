@@ -208,7 +208,7 @@ class Field
 	/** == Définition d'un attribut de champ == **/
 	public function setAttr( $attr, $value )
 	{		
-		$this->Attrs[$attr] = $value;
+		return $this->Attrs[$attr] = $value;
 	}
 	
 	/** == Récupération de l'identifiant unique == **/
@@ -242,6 +242,27 @@ class Field
 	public function setValue( $value )
 	{
 		$this->Value = $value;
+	}
+	
+	/** == Récupération de la valeur du champ == **/
+	public function getDisplayValue( $raw = false, $glue = ', ' )
+	{				
+		$value = (array) $this->getValue();
+		
+		if( $choices = $this->getAttr( 'choices' ) ) :
+			foreach( $value as &$v ) :
+				if( isset( $choices[$v] ) ) :
+					$v = $choices[$v];
+				endif;
+			endforeach;
+		endif;
+		
+		if( $raw )
+			$value = is_array( $value ) ? array_map( 'esc_attr', $value ) : esc_attr( $value );
+		
+		$value = join( ', ', $value );			
+			
+		return $value;
 	}
 	
 	/** == Récupération de l'indice d'enregistrement du champ de saisie == **/
@@ -310,7 +331,7 @@ class Field
 		if( $tabindex = $this->getAttr( 'tabindex' ) ) :
 			return (int) $tabindex;
 		else :
-			return $this->form()->increasedTabIndex();
+			return $this->setAttr( 'tabindex', $this->form()->increasedTabIndex() );
 		endif;
 	}
 	
