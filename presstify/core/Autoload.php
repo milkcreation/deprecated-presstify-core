@@ -8,15 +8,15 @@ class Autoload extends Core
 	/* = CONSTRUCTEUR = */
 	public function __construct()
 	{
-		add_action( 'after_setup_tify', array( $this, 'after_setup_tify' ), 0 );
-				
 		// Chargement des contrôleurs sans configuration
 		new AjaxActions;
 		new Control\Control;
 		new Capabilities;		
 		new Meta\Meta;		
 		new Params;
-		new ScriptLoader\ScriptLoader;		
+		new ScriptLoader\ScriptLoader;
+		
+		add_action( 'after_setup_tify', array( $this, 'after_setup_tify' ), 0 );
 	}
 	
 	final public function after_setup_tify()

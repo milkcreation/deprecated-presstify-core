@@ -1,1 +1,6 @@
-allowed_users       : []
+namespace:          'Theme'
+base_dir:           '<?php echo get_template_directory() ."/tiFy";?>'
+bootstrap:          'Autoload'
+
+
+allowed_users:      []
