@@ -5,7 +5,7 @@ final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
-	public static $Version	= '0.9.9.161008';
+	public static $Version			= '0.9.9.161008';
 
 	// Chemins absolue vers la racine de l'environnement
 	public static $AbsPath;
@@ -18,6 +18,9 @@ final class tiFy
 	
 	// Paramètres de configuration des éléments de presstiFy
 	public static $Params;
+	
+	// Classe de chargement automatique
+	private static $ClassLoader		= null;
 
 	/* = CONSTRUCTEUR = */
 	public function __construct( $AbsPath = null )
@@ -28,53 +31,47 @@ final class tiFy
 		global $tiFy;
 		$tiFy = $this;
 		
-		// Définition des constantes
-		/// Attribut de configuration
+		// Définition des constantes d'environnement
+		/// Attributs de configuration
 		if( ! defined( 'TIFY_CONFIG_DIR' ) )
 			define( 'TIFY_CONFIG_DIR', get_template_directory() .'/config' );
 		if( ! defined( 'TIFY_CONFIG_EXT' ) )
 			define( 'TIFY_CONFIG_EXT', 'yml' );		
-		
 		/// Répertoire des plugins
 		if( ! defined( 'TIFY_PLUGINS_DIR' ) )
 			define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );
 		
-		// Déclaration de l'espace de nom dédié
-		require_once __DIR__ .'/vendor/ClassLoader/Psr4ClassLoader.php';
-		$loader = new \Psr4ClassLoader;
-
-		$loader->addNamespace( 'tiFy\Components', __DIR__ .'/components' );
-		$loader->addNamespace( 'tiFy\Core', __DIR__ .'/core' );
-		$loader->addNamespace( 'tiFy\Environment', __DIR__ .'/env' );
-		$loader->addNamespace( 'tiFy\Helpers', __DIR__ .'/helpers' );
-		$loader->addNamespace( 'tiFy\Vendor', __DIR__ .'/vendor' );
-		$loader->addNamespace( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
-		$loader->register();
-				
-		// Instanciation des librairies tiers partie
-		new Vendor\Autoload;
-	
+		// Instanciation de l'environnement
+		self::classLoad( 'tiFy\Environment', __DIR__ .'/env' );		
+			
+		// Instanciation des librairies tierce
+		self::classLoad( 'tiFy\Vendor', __DIR__ .'/vendor', 'Autoload' );
+		
 		// Définition des chemins
 		self::$AbsPath = ( $AbsPath ) ? $AbsPath : ABSPATH;
 		self::$AbsDir = dirname( __FILE__ );
 		self::$AbsUrl = \tiFy\Lib\Utils::get_filename_url( self::$AbsDir, self::$AbsPath );
 
 		// Instanciation du coeur
-		new Core\Autoload;
-
+		self::classLoad( 'tiFy\Core', __DIR__ .'/core', 'Autoload' );
+		
 		// Instanciation des composants
-		new Components\Autoload;
+		self::classLoad( 'tiFy\Components', __DIR__ .'/components', 'Autoload' );
 
 		// Instanciation des fonctions d'aides au développement
-		new Helpers\Autoload;
-				
+		self::classLoad( 'tiFy\Helpers', __DIR__ .'/helpers', 'Autoload' );
+		
+		// Instanciation des plugins
+		self::classLoad( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
 		add_action( 'after_setup_tify', array( $this, 'load_plugins' ) );
+		
+		// Chargement des traductions
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 	}
 
 	/* = DECLENCHEURS = */
 	/** == Chargement des plugins == **/
-	final public function load_plugins()
+	public function load_plugins()
 	{
 		if( empty( tiFy::$Params['plugins'] ) )
 			return;
@@ -94,8 +91,37 @@ final class tiFy
 	}
 	
 	/** == Initialisation globale == **/
-	final public function load_textdomain()
+	public function load_textdomain()
 	{
 		return load_textdomain( 'tify', self::$AbsDir .'/languages/tify-' . get_locale() . '.mo' );
+	}
+	
+	/* = CONTROLEUR = */
+	/** == Chargement automatique des classes == **/
+	public static function classLoad( $namespace, $base_dir, $bootstrap = null )
+	{
+		if( is_null( self::$ClassLoader ) ) :
+			require_once __DIR__ .'/vendor/ClassLoader/Psr4ClassLoader.php';
+			self::$ClassLoader = new \Psr4ClassLoader;
+		endif;
+		
+		if( ! $base_dir )
+			$base_dir = dirname( __FILE__ );
+		
+		self::$ClassLoader->addNamespace( $namespace, $base_dir, false );
+		self::$ClassLoader->register();
+			
+		if( $bootstrap ) :		
+			$className = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
+			new $className;
+		endif;
+	}
+	
+	/** == == **/
+	public static function getConfig( $index, $default = '' )
+	{
+		if( isset( self::$Params['config'][$index] ) )
+			return self::$Params['config'][$index];
+		return $default;
 	}
 }

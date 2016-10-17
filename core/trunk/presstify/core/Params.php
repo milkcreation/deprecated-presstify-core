@@ -62,18 +62,27 @@ class Params extends App
 				if ( substr( $file, 0, 1 ) == '.' )
 						continue;
 				$basename = basename( $file, ".". TIFY_CONFIG_EXT );
+		
 				if( ! isset( $attrs[$basename] ) )
 				 	continue;
 				$attr = $attrs[$basename];
 				if( ! isset( ${$basename} ) )
-					${$basename} = array();
-
-				${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
+					${$basename} = array();	
+					
+				${$basename} /*+*/= self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
+				
 			endwhile;
 			closedir( $_dir );
+			
 		endif;
 		
 		tiFy::$Params = compact( array_keys( $attrs ) );
+
+		// Chargement du thème
+		if( ( $namespace = tiFy::getConfig( 'namespace' ) ) && ( $base_dir = tiFy::getConfig( 'base_dir' ) ) ) :
+			tiFy::classLoad( $namespace, $base_dir, tiFy::getConfig( 'bootstrap', false ) );
+		endif;
+		
 		do_action( 'after_setup_tify' );		
 	}
 	
@@ -81,7 +90,7 @@ class Params extends App
 	public static function _parseFilename( $filename, $current,  $ext = 'yml', $attr = array() )
 	{
 		if( ! is_dir( $filename ) ) :
-			if ( substr( $filename, -4 ) == ".{$ext}" ) :					
+			if ( substr( $filename, -4 ) == ".{$ext}" ) :	
 				return self::_parseConfig( $filename, $current, $attr['eval'] );
 			endif;
 		elseif( $subdir = @ opendir( $filename ) ) :
