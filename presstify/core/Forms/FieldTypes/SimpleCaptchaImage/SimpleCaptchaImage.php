@@ -61,13 +61,24 @@ class SimpleCaptchaImage extends Factory
 		// Affichage du champ de saisie
 		$output .= "<img src=\"". self::getUrl() ."/image.php\" alt=\"".__( 'captcha introuvable', 'tify' )."\" style=\"vertical-align: middle;\" />";
 		$output .= "<input type=\"text\"";
+		/// ID HTML
+		$output .= " id=\"". $this->getInputID() ."\"";
+		/// Classe HTML
+		$output .= " class=\"". join( ' ', $this->getInputClasses() ) ."\"";
+		/// Name		
 		$output .= " name=\"". esc_attr( $this->field()->getDisplayName() ) ."\"";
-		$output .= " value=\"\" size=\"8\"";
+		/// Placeholder
+		$output .= " placeholder=\"". esc_attr( $this->getInputPlaceholder() ) ."\"";
+		/// Attributs
+		foreach( (array) $this->getInputHtmlAttrs() as $k => $v ) :
+			$output .= " {$k}=\"{$v}\"";
+		endforeach;
 		$output .= " autocomplete=\"off\"";
-		$output .= " placeholder=\"". $this->getInputPlaceholder() ."\"";
 		$output .= " style=\"height:50px;vertical-align: middle;\"";
+		/// Value
+		$output .= " value=\"\"";
 		/// TabIndex
-		$output .= " ". $this->getTabIndex();
+		$output .= " ". $this->getTabIndex();	
 		$output .= " />";
 		
 		return $output;

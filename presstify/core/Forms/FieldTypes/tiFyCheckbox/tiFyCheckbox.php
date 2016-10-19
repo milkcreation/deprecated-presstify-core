@@ -24,16 +24,20 @@ class tiFyCheckbox extends Factory
 	/** == Affichage du champ == **/
 	public function display()
 	{		
-		if( ! self::$Instance )
+		if( ! self::$Instance ) :
 			tify_control_enqueue( 'checkbox' );
-		$Instance++;
+		endif;
 		
+		self::$Instance++;
+			
 		$selected = $this->field()->getValue();		
+		$output = "";
 		foreach( (array) $this->field()->getAttr( 'choices' ) as $value => $label ) :
 			$checked = ( is_array( $selected ) ) ? in_array( $value, $selected ) : $selected;
-			$output = tify_control_checkbox( array(
+			$output .= tify_control_checkbox( 
+				array(
 					'id'				=> $this->getInputID(),
-					'class'				=> $this->getInputClasses(),
+					'class'				=> join( ' ', $this->getInputClasses() ),
 					'name'				=> $this->field()->getDisplayName(),
 					'checked'			=> $checked,
 					'value'				=> $value,
