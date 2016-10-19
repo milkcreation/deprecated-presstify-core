@@ -9,11 +9,14 @@ class Checkbox extends Factory
 	// Identifiant de la classe		
 	protected $ID = 'checkbox';
 	
+	// Instance
+	private static $Instance;
+	
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-checkbox', $this->Url .'/checkbox.css', array( 'dashicons' ), '150420' );
-		wp_register_script( 'tify_control-checkbox', $this->Url .'/checkbox.js', array( 'jquery' ), '150420', true );
+		wp_register_style( 'tify_control-checkbox', self::getUrl() .'/Checkbox.css', array( 'dashicons' ), '150420' );
+		wp_register_script( 'tify_control-checkbox', self::getUrl() .'/Checkbox.js', array( 'jquery' ), '150420', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
@@ -26,13 +29,12 @@ class Checkbox extends Factory
 	/* = AFFICHAGE = */
 	public static function display( $args = array() )
 	{
-		static $instance = 0;
-		$instance++;
+		self::$Instance++;
 		
 		$defaults = array(
-			'id'				=> 'tify_control_checkbox-'. $instance,
+			'id'				=> 'tify_control_checkbox-'. self::$Instance,
 			'class'				=> 'tify_control_checkbox',
-			'name'				=> 'tify_control_checkbox-'. $instance,		
+			'name'				=> 'tify_control_checkbox-'. self::$Instance,		
 			'value'				=> 0,
 			'label'				=> __( 'Aucun', 'tify' ),
 			'label_class'		=> 'tify_control_checkbox-label',
@@ -40,7 +42,6 @@ class Checkbox extends Factory
 			'checked' 			=> 0,			
 			'echo'				=> 1
 		);
-		
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 		
@@ -55,7 +56,7 @@ class Checkbox extends Factory
 		$output .= "\t</div>\n";
 		$output .= "</noscript>\n";
 		
-		$class  .= ( (bool)$checked === true ) ? ' checked' : '';
+		$class  .= ( (bool) $checked === true ) ? ' checked' : '';
 		
 		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"checkbox\" data-label_position=\"". ( $label_position === 'R' ? 'right' : 'left' ) ."\">\n";
 		$output .= "\t<label class=\"{$label_class}\">";

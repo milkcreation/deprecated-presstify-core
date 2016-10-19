@@ -137,20 +137,25 @@ class Form
 	/** == Définition des boutons == **/
 	private function _setButtons()
 	{
+		$unset = array();
 		foreach( (array) $this->getAttr( 'buttons' ) as $k => $v ) :
-			if( is_string( $k ) ):
+			if( is_bool( $v ) && ! $v ) :
+				array_push( $unset, 'submit' );
+				continue;
+			elseif( is_string( $k ) ):
 				$id = $k; $attrs = $v;
 			elseif( is_string( $v ) ) :
 				$id = $v; $attrs = array();
 			else :
 				$id = $k; $attrs = $v;
 			endif;
-			
+						
 			$this->Buttons[$id] = Buttons::set( $id, $this, $attrs );	
 		endforeach;
-		
-		if( ! isset( $this->Buttons['submit'] ) )
+			
+		if( ! isset( $this->Buttons['submit'] ) && ! in_array( 'submit', $unset ) ) :
 			$this->Buttons['submit'] = Buttons::set( 'submit', $this, array() );
+		endif;
 				
 		//Callbacks::call( 'form_set_buttons', array( &$this->Buttons ) );
 	}

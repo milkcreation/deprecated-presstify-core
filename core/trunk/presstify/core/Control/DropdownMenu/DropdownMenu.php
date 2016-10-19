@@ -38,6 +38,7 @@ class DropdownMenu extends Factory
 				
 			// Liste de selection
 			'picker'			=> array(
+				'class'		=> '',
 				'append' 	=> 'body',
 				'position'	=> 'default', // default: vers le bas | top |  clever: positionnement intelligent
 				'width'		=> 'auto'
@@ -66,7 +67,7 @@ class DropdownMenu extends Factory
 		$output .= "</div>\n";
 					
 		// Picker HTML
-		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown_menu-picker\" class=\"tify_control_dropdown_menu-picker\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
+		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown_menu-picker\" class=\"tify_control_dropdown_menu-picker". ( $picker['class'] ? ' '. $picker['class'] : '' ) ."\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
 		$output .= "\t<ul>\n";	
 		foreach( (array) $links as $value => $link ) : if( $value === $selected ) continue;
 			$output .= "\t\t<li>{$link}</li>\n";

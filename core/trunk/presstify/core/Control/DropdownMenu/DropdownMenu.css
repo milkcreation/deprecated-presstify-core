@@ -22,7 +22,7 @@
 [data-tify_control='dropdown_menu']::after{
 	position:absolute;
 	content:"";
-	right:4px;top:50%;
+	right:4px;top:50%;	
 	margin-top:-2px;
 	border-color:#333 transparent;
 	border-style:solid;
@@ -52,7 +52,6 @@
 	overflow:hidden;
 	text-overflow: ellipsis;
 	z-index:1;
-	color:#333;
 }
 
 /* = LISTE DEROULANTE = */
