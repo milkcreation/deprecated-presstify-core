@@ -29,9 +29,7 @@ class Select
 		$parse = $this->Db->parse();
 		$args = $parse->query_vars( $args, $defaults );
 		
-		// Traitement de la requête		
-		global $wpdb;
-					
+		// Traitement de la requête					
 		/// Selection de la table de base de données
 		$query  = "SELECT COUNT( {$name}.{$primary_key} ) FROM {$name}";	
 		
@@ -55,7 +53,7 @@ class Select
 			$query .= " LIMIT {$args['limit']}";
 
 		// Résultat		
-		return (int) $wpdb->get_var( $query );
+		return (int) $this->Db->sql()->get_var( $query );
 	}
 
 	/* = VERIFICATION D'EXISTANCE = */
@@ -107,9 +105,7 @@ class Select
 		$parse = $this->Db->parse();
 		$args = $parse->query_vars( $args, $defaults );
 			
-		// Traitement de la requête		
-		global $wpdb;
-					
+		// Traitement de la requête	
 		/// Selection de la table de base de données
 		$query  = "SELECT {$name}.{$col_name} FROM {$name}";			
 	
@@ -139,7 +135,7 @@ class Select
 		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;
 			
-		if( $var = $wpdb->get_var( $query ) )
+		if( $var = $this->Db->sql()->get_var( $query ) )
 			return maybe_unserialize( $var );
 	}
 
@@ -173,14 +169,12 @@ class Select
 		$args = $parse->query_vars( $args );
 		
 		// Traitement de la requête		
-		global $wpdb;
-					
 		/// Selection de la table de base de données
 		$query  = "SELECT {$name}.{$col_name} FROM {$name}";
 		
 		// Condition de jointure
 		$query .= $parse->clause_join( $args );
-				
+
 		/// Conditions des arguments de requête
 		if( $clause_where = $parse->clause_where( $args ) )
 			$query .= " ". $clause_where;
@@ -214,7 +208,7 @@ class Select
 		endif;
 
 		// Resultats				
-		if( $res = $wpdb->get_col( $query ) )
+		if( $res = $this->Db->sql()->get_col( $query ) )
 			return array_map( 'maybe_unserialize', $res );
 	}
 
@@ -226,8 +220,8 @@ class Select
 	
 	/* = LIGNE = */
 	/** == Récupération des arguments d'un élément selon des critères == **/
-	public function row( $args = array(), $output = OBJECT ){
-		global $wpdb;
+	public function row( $args = array(), $output = OBJECT )
+	{
 		// Traitement des arguments
 		$args['per_page'] 	= 1;
 		
@@ -251,8 +245,6 @@ class Select
 		elseif( ! $col_name = $this->Db->isCol( $col_name ) )
 			return null;
 		
-		global $wpdb;	
-		
 		$type = $this->Db->getColAttr( $col_name, 'type' );
 
 		if( in_array( $type, array( 'INT', 'BIGINT' ) ) )
@@ -260,7 +252,7 @@ class Select
 		else
 			$query = "SELECT * FROM {$name} WHERE {$name}.{$col_name} = %s";
 		
-		if( ! $item =  $wpdb->get_row( $wpdb->prepare( $query, $value ) ) )
+		if( ! $item =  $this->Db->sql()->get_row( $this->Db->sql()->prepare( $query, $value ) ) )
 			return;
 		
 		// Délinéarisation des tableaux
@@ -323,9 +315,7 @@ class Select
 		$args['order'] 		= $previous ? 'DESC' : 'ASC';
 		$args['$orderby'] 	= $this->Db->primary_key;			
 		
-		// Traitement de la requête		
-		global $wpdb;
-					
+		// Traitement de la requête					
 		/// Selection de la table de base de données
 		$query = "SELECT * FROM {$name}";
 		
@@ -355,7 +345,7 @@ class Select
 		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;
 
-		if( ! $item =  $wpdb->get_row( $wpdb->prepare( $query, $id ) ) )
+		if( ! $item =  $this->Db->sql()->get_row( $this->Db->sql()->prepare( $query, $id ) ) )
 			return;
 		
 		// Délinéarisation des tableaux

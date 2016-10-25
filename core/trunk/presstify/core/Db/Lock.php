@@ -50,13 +50,12 @@ class Lock
 			return;
 		if ( ! $item = $this->get_item_by_id( $item_id ) )
 			return false;
-		
-		global $wpdb;
+
 		$callback = function($lock){ return "\"_". $lock ."_lock\""; };
 		$locks = implode(',', array_map( $callback, $this->get_lock_types() ) );
 		$query = "SELECT meta_id FROM {$this->wpdb_metatable} WHERE {$this->table}_id = %d AND meta_key IN ({$locks})";
 		
-		return $wpdb->query( $wpdb->prepare( $query, $item->{$this->primary_key} ) );	
+		return $this->Db->sql()->query( $this->Db->sql()->prepare( $query, $item->{$this->primary_key} ) );	
 	}
 		
 	/** == Définition du verrouillage d'un élément pour un utilisateur == **/

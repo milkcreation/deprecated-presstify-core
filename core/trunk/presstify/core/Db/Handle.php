@@ -25,8 +25,6 @@ class Handle{
 	/** == Création d'un nouvel élément == **/
 	final public function create( $data = array() )
 	{
-		global $wpdb;
-		
 		// Extraction des metadonnées	
 		if( isset( $data['item_meta'] ) ) :
 			$metas = $data['item_meta'];
@@ -40,8 +38,8 @@ class Handle{
 		$data = array_map( 'maybe_serialize', $data );
 		
 		// Enregistrement de l'élément en base de données
-		$wpdb->insert( $this->Db->Name, $data );		
-		$id = $wpdb->insert_id;
+		$this->Db->sql()->insert( $this->Db->Name, $data );		
+		$id = $this->Db->sql()->insert_id;
 		
 		// Enregistrement des metadonnées de l'élément en base
 		if( is_array( $metas ) && $this->Db->hasMeta() )
@@ -54,8 +52,6 @@ class Handle{
 	/** == Mise à jour d'un élément == **/
 	final public function update( $id, $data = array() )
 	{
-		global $wpdb;
-		
 		// Extraction des metadonnées	
 		if( isset( $data['item_meta'] ) ) :
 			$metas = $data['item_meta'];
@@ -68,7 +64,7 @@ class Handle{
 		$data = $this->Db->parse()->validate( $data );			
 		$data = array_map( 'maybe_serialize', $data );
 		
-		$wpdb->update( $this->Db->Name, $data, array( $this->Db->Primary => $id ) );
+		$this->Db->sql()->update( $this->Db->Name, $data, array( $this->Db->Primary => $id ) );
 		
 		// Enregistrement des metadonnées de l'élément en base
 		if( is_array( $metas ) && $this->Db->hasMeta() )
@@ -81,17 +77,13 @@ class Handle{
 	/** == Suppression d'un élément son id == **/
 	public function delete_by_id( $id )
 	{
-		global $wpdb;
-		
-		return $wpdb->delete( $this->Db->Name, array( $this->Db->Primary => $id ), '%d' );
+		return $this->Db->sql()->delete( $this->Db->Name, array( $this->Db->Primary => $id ), '%d' );
 	}
 	
 	/** == Valeur de la prochaine clé primaire == **/
 	public function next()
-	{
-		global $wpdb;
-		
-		if( $last_insert_id = $wpdb->query( "SELECT LAST_INSERT_ID() FROM {$this->wpdb_table}" ) )
+	{		
+		if( $last_insert_id = $this->Db->sql()->query( "SELECT LAST_INSERT_ID() FROM {$this->wpdb_table}" ) )
 			return ++$last_insert_id;
 	}
 }

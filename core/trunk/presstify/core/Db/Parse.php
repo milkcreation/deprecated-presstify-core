@@ -37,8 +37,9 @@ final class Parse
 		$vars =  wp_parse_args( $vars, $defaults );	
 		
 		// Gestion des requêtes de métadonnées
-		if( ! empty( $vars['meta_query'] ) && $this->Db->hasMeta() ) :			
+		if( ! empty( $vars['meta_query'] ) && $this->Db->hasMeta() ) :	
 			$this->MetaQuery = new \WP_Meta_Query( $vars['meta_query'] );			
+
 			$this->MetaClauses = $this->MetaQuery->get_sql(
 				$this->Db->MetaType,
 				$this->Db->Name,
@@ -46,7 +47,7 @@ final class Parse
 				null
 			); 
 		endif;
-		
+			
 		// Retro-Compatibilité
 		if( ! empty( $vars['include'] ) ) :
 			$vars['item__in'] = $vars['include'];
@@ -102,7 +103,7 @@ final class Parse
 				endif;			
 			endforeach;
 		endif;
-
+		
 		// Traitement des conditions relatives au metadonnées
 		if( ! empty( $this->MetaClauses['where'] ) ) :
 			$where[] = trim( $this->MetaClauses['where'] );	
@@ -117,9 +118,7 @@ final class Parse
 		if( empty( $terms ) || ! $this->Db->hasSearch() )
 			return;
 		
-		global $wpdb;
-		
-		$like = '%' . $wpdb->esc_like( $terms ) . '%';
+		$like = '%' . $this->Db->sql()->esc_like( $terms ) . '%';
 		$search_query = array();
 		foreach( (array) $this->Db->SearchColNames as $col_name )
 			$search_query[] = $this->Db->Name .".{$col_name} LIKE '{$like}'";

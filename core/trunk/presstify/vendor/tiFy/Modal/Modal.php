@@ -1,7 +1,9 @@
 <?php
 namespace tiFy\Lib\Modal;
 
-class Modal
+use tiFy\Environment\App;
+
+class Modal extends App
 {
 	/* = ARGUMENTS = */
 	/** == CONFIGURATION == **/
@@ -111,6 +113,8 @@ class Modal
 			function() use( $args ){
 				$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
 				$modal_attrs['target'] = $args['target'];				
+				if( ! isset( $modal_attrs['options']['show'] ) )
+					$modal_attrs['options']['show'] = false;
 				
 				return static::display( $modal_attrs );	
 			},
@@ -205,7 +209,7 @@ class Modal
 					
 		// Script
 		if( ! self::$Instance ++ ) :
-			$url = plugin_dir_url( __FILE__ ). 'Modal.min.js';
+			$url = self::getUrl(). '/Modal.min.js';
 			add_action( 
 				'wp_footer', 
 				function() use( $url){
