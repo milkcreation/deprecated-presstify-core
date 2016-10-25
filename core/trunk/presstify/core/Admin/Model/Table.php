@@ -495,30 +495,35 @@ abstract class Table extends \WP_List_Table
 	
 	/** == Traitement des arguments des actions sur un élément == **/
 	public function item_row_actions_parse_args( $item, $action, $args = array() )
-	{
+	{		
 		$defaults = array(
 			'edit'		=> $this->get_item_edit_args( $item, array(), __( 'Modifier' ) ),
-			'delete'	=> array(
-				'label'		=> __( 'Supprimer définitivement', 'tify' ),
-				'title'		=>  __( 'Suppression définitive de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'delete', $item->{$this->View->getDb()->Primary} )
-			),
-			'trash'		=> array(
-				'label'		=> __( 'Corbeille', 'tify' ),
-				'title'		=> __( 'Mise à la corbeille de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'trash', $item->{$this->View->getDb()->Primary} )
-			),
-			'untrash'	=> array(
-				'label'		=> __( 'Restaurer', 'tify' ),
-				'title'		=> __( 'Rétablissement de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'untrash', $item->{$this->View->getDb()->Primary} )
-			),
-			'duplicate'	=> array(
-				'label'		=> __( 'Dupliquer', 'tify' ),
-				'title'		=> __( 'Dupliquer l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'duplicate', $item->{$this->View->getDb()->Primary} )
-			)
 		);
+		
+		if( $this->View->getDb() ) :
+			$defaults += array(
+				'delete'	=> array(
+					'label'		=> __( 'Supprimer définitivement', 'tify' ),
+					'title'		=>  __( 'Suppression définitive de l\'élément', 'tify' ),
+					'nonce'		=> $this->get_item_nonce_action( 'delete', $item->{$this->View->getDb()->Primary} )
+				),
+				'trash'		=> array(
+					'label'		=> __( 'Corbeille', 'tify' ),
+					'title'		=> __( 'Mise à la corbeille de l\'élément', 'tify' ),
+					'nonce'		=> $this->get_item_nonce_action( 'trash', $item->{$this->View->getDb()->Primary} )
+				),
+				'untrash'	=> array(
+					'label'		=> __( 'Restaurer', 'tify' ),
+					'title'		=> __( 'Rétablissement de l\'élément', 'tify' ),
+					'nonce'		=> $this->get_item_nonce_action( 'untrash', $item->{$this->View->getDb()->Primary} )
+				),
+				'duplicate'	=> array(
+					'label'		=> __( 'Dupliquer', 'tify' ),
+					'title'		=> __( 'Dupliquer l\'élément', 'tify' ),
+					'nonce'		=> $this->get_item_nonce_action( 'duplicate', $item->{$this->View->getDb()->Primary} )
+				)
+			);
+		endif;
 		
 		if( isset( $defaults[$action] ) )
 			$args = wp_parse_args( $args, $defaults[$action] );
@@ -526,7 +531,7 @@ abstract class Table extends \WP_List_Table
 		if( ! isset( $args['base_uri'] ) )
 			$args['base_uri'] = $this->BaseUri;
 		
-		if( ! isset( $args['query_args'][$this->View->getDb()->Primary] ) )
+		if( $this->View->getDb() && ! isset( $args['query_args'][$this->View->getDb()->Primary] ) )
 			$args['query_args'][$this->View->getDb()->Primary] = $item->{$this->View->getDb()->Primary};
 		
 		return $args;
