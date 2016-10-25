@@ -24,7 +24,7 @@ class Db extends Core
 	public function __construct()
 	{
 		parent::__construct();		
-		
+				
 		foreach( (array) self::getConfig() as $id => $args ) :
 			self::Register( $id, $args );
 		endforeach;		
@@ -44,7 +44,10 @@ class Db extends Core
 			self::$Factories[$id] = new $args['cb']( $id, $args );
 		else :
 			self::$Factories[$id] = new Factory( $id, $args );
-		endif;		
+		endif;
+		
+		if( self::$Factories[$id] instanceof Factory )
+			return self::$Factories[$id];
 	}
 	
 	/** == Récupération == **/

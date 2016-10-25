@@ -3,7 +3,6 @@ namespace tiFy\Components\Pagination;
 
 use tiFy\Environment\Component;
 
-/** @Autoload */
 class Pagination extends Component
 {
 	/* = ARGUMENTS = */
@@ -109,7 +108,7 @@ class Pagination extends Component
 			return $output;
 	}
 	
-	/* = CONTROLEUR */
+	/** == == **/
 	static private function loop( $start, $max, $paged = 0 )
 	{
 		$output = "";

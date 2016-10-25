@@ -286,7 +286,7 @@ final class Factory extends App
 	/** == Page de l'interface d'administration == **/
 	final public function Render( $name = null )
 	{
-		if( method_exists( $this->CurrentModelClass, 'Render' ) )
-			return call_user_func( array( $this->CurrentModelClass, 'Render' ) ); 		
+		if( method_exists( $this->CurrentModelClass, 'render' ) )
+			return call_user_func( array( $this->CurrentModelClass, 'render' ) ); 		
 	}
 }

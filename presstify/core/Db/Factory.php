@@ -38,6 +38,9 @@ class Factory
 	// Nom des colonnes ouvertes à la recherche de termes
 	public $SearchColNames		= array();
 	
+	// Moteur de requête SQL
+	public $SQLEngine			= null;
+	
 	// Nom de la table de metadonnée
 	public $MetaType			= null;
 	
@@ -79,13 +82,18 @@ class Factory
 			'columns'		=> array(),
 			'keys'			=> array(),
 			'search'		=> array(),
-			'meta'			=> null
+			'meta'			=> null,
+			// moteur de requete SQL global $wpdb par défaut | new \wpdb( DB_USER, DB_PASSWORD, DB_NAME, DB_HOST );	
+			'sql_engine'		=> null
 		);	
 		$attrs = wp_parse_args( $attrs, $defaults );			
 		extract( $attrs, EXTR_SKIP );	
 		
 		// Définition de la version
 		$this->Version = $version;
+	
+		// Définition du moteur de requête SQL
+		$this->setSQLEngine( $sql_engine );
 		
 		/// Définition du préfixe par défaut des noms de colonnes 
 		$this->setColPrefix( $col_prefix );
@@ -109,12 +117,23 @@ class Factory
 		
 		/// Définition de nom de la table de metadonnées en base
 		$this->setMeta( $meta );
-		
+	
 		if( $install )
 			new Make( $this );	
 	}
 		
 	/* = DÉFINITION DE DONNÉES = */
+	/** == Définition du prefixe des colonnes == **/
+	private function setSQLEngine( $sql_engine = null )
+	{
+		if( is_null( $sql_engine ) || ! ( $sql_engine instanceof \wpdb ) ) :
+			global $wpdb;
+			return $this->SQLEngine = $wpdb;
+		endif;
+
+		return $this->SQLEngine = $sql_engine;
+	}
+		
 	/** == Définition du prefixe des colonnes == **/
 	private function setColPrefix( $col_prefix = '' )
 	{
@@ -165,14 +184,12 @@ class Factory
 	/** == Définition du nom de la table en base de données == **/
 	private function setName()
 	{
-		global $wpdb;
-
-		if( ! in_array( $this->ID, $wpdb->tables ) ) :	
-			array_push( $wpdb->tables, $this->ID );				
-			$wpdb->set_prefix( $wpdb->base_prefix );
+		if( ! in_array( $this->ID, $this->sql()->tables ) ) :	
+			array_push( $this->sql()->tables, $this->ID );				
+			$this->sql()->set_prefix( $this->sql()->base_prefix );
 		endif;
 		
-		return $this->Name = $wpdb->{$this->ID};
+		return $this->Name = $this->sql()->{$this->ID};
 	}
 	
 	/** == Définition du nom de la table en base de données == **/
@@ -180,17 +197,15 @@ class Factory
 	{
 		if( ! $meta_type )
 			return;
-			
-		global $wpdb;
-		
+				
 		if( is_bool( $meta_type ) )
 			$meta_type = $this->ID;
 		
 		$table = $meta_type .'meta';
 		
-		if( ! in_array( $table, $wpdb->tables ) ) :	
-			array_push( $wpdb->tables, $table );				
-			$wpdb->set_prefix( $wpdb->base_prefix );
+		if( ! in_array( $table, $this->sql()->tables ) ) :	
+			array_push( $this->sql()->tables, $table );				
+			$this->sql()->set_prefix( $this->sql()->base_prefix );
 		endif;
 		
 		return $this->MetaType = $meta_type;
@@ -246,7 +261,12 @@ class Factory
 		return ! empty( $this->SearchColNames );
 	}	
 	
-	/* = FONCTIONS DE RAPPELS = */	
+	/* = FONCTIONS DE RAPPELS = */
+	public function sql()
+	{
+		return $this->SQLEngine;
+	}
+	
 	/** == Traitement des éléments en base == **/
 	public function handle()
 	{

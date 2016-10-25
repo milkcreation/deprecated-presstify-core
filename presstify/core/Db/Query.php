@@ -76,8 +76,6 @@ class Query
 	/** == Récupération des éléments à partir de conditions de requêtes == **/
 	public function query_items( $clauses = array() )
 	{
-		global $wpdb;
-		
 		extract( $clauses );
 		
 		$where 		= isset( $clauses[ 'where' ] ) ? $clauses[ 'where' ] : '';
@@ -99,7 +97,7 @@ class Query
 		
 		$this->request 	= "SELECT $found_rows $distinct $fields FROM {$this->Db->Name} $join WHERE 1=1 $where $groupby $orderby $limits";
 		
-		if( $this->items = $wpdb->get_results( $this->request ) ) :
+		if( $this->items = $this->Db->sql()->get_results( $this->request ) ) :
 			$this->item_count = count( $this->items );
 			$this->item = reset( $this->items );
 		else :
@@ -117,10 +115,8 @@ class Query
 		if ( is_array( $this->items ) && ! $this->items )
 			return;
 
-		if ( ! empty( $limits ) ) :
-			global $wpdb;
-		
-			$this->found_items = $wpdb->get_var( 'SELECT FOUND_ROWS()' );
+		if ( ! empty( $limits ) ) :	
+			$this->found_items = $this->Db->sql()->get_var( 'SELECT FOUND_ROWS()' );
 		else :
 			$this->found_items = count( $this->items );
 		endif;
