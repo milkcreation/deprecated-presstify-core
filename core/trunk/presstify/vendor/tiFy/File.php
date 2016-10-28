@@ -122,7 +122,7 @@ class File
 			'ID'			=> $attachment_id,
 			'title'			=> get_the_title( $attachment_id ),
 			'content'		=> $post->post_content,
-			'excerpt'		=> get_the_excerpt( $attachment_id ),	
+			'excerpt'		=> $post->post_excerpt,	
 			'url'			=> wp_get_attachment_url( $attachment_id ),
 			'upload'		=> tify_upload_url( $attachment_id ),
 			'icon'			=> wp_get_attachment_image( $attachment_id, array( 80, 60 ), true )

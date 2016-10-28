@@ -17,4 +17,9 @@ table.dataTable td.dataTables_empty{
 table.dataTable thead th, 
 table.dataTable thead td{
 	padding: 8px 10px;
+}
+table.dataTable th.hidden,
+table.dataTable td.hidden
+{
+	display:block;
 }	

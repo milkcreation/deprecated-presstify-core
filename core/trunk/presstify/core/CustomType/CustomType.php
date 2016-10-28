@@ -53,7 +53,8 @@ class CustomType extends Core
 			
 			$allowed_args = array(
 				'label', 'labels', 'public', 'show_ui', 'show_in_menu', 'show_in_nav_menus', 'show_tagcloud' , 'show_in_quick_edit', 
-				'meta_box_cb', 'show_admin_column', 'description', 'hierarchical', 'query_var', 'rewrite', 'sort'
+				'meta_box_cb', 'show_admin_column', 'description', 'hierarchical', 'query_var', 'rewrite', 'sort',
+				'show_in_rest', 'rest_base', 'rest_controller_class'
 			);
 			foreach( $allowed_args as $allowed_arg )
 				if( isset( $args[$allowed_arg] ) )
