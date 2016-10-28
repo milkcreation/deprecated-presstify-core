@@ -139,6 +139,12 @@ abstract class Table extends \WP_List_Table
 		return array();
 	}
 	
+	/** == Définition des colonnes masquées == **/
+	public function set_hidden_columns()
+	{
+		return array();
+	}
+	
 	/** == Définition des arguments de requête == **/
 	public function set_query_args()
 	{
@@ -251,7 +257,7 @@ abstract class Table extends \WP_List_Table
 	
 	/** == Initialisation des colonnes de la table == **/
 	public function init_param_Columns()
-	{	
+	{			
 		if( $columns = $this->set_columns() ) :
 		elseif( $columns = $this->View->getModelAttrs( 'columns', $this->Name ) ) :
 		else :
@@ -267,7 +273,7 @@ abstract class Table extends \WP_List_Table
 	public function init_param_PrimaryColumn()
 	{
 		if( $primary = $this->set_primary_column() ) :
-		elseif( $primary = $this->View->getModelAttrs( 'primary', $this->Name ) ) :
+		elseif( $primary = $this->View->getModelAttrs( 'primary_column', $this->Name ) ) :
 		else :
 			$primary = null;
 		endif;
@@ -275,6 +281,21 @@ abstract class Table extends \WP_List_Table
 		if( $primary ) :
 			$this->PrimaryColumn = $primary;
 			add_filter( 'list_table_primary_column', function( $default, $screen_id ) use ( $primary ){ return $primary; }, 10, 2 );
+		endif;
+	}
+	
+		/** == Initialisation des colonnes masquée == **/
+	public function init_param_HiddenColumns()
+	{
+		if( $hidden_cols = $this->set_hidden_columns() ) :
+		elseif( $hidden_cols = $this->View->getModelAttrs( 'hidden_columns', $this->Name ) ) :
+		else :
+			$hidden_cols = array();
+		endif;
+
+		if( $hidden_cols ) :
+			$this->HiddenColumns = $hidden_cols;
+			add_filter( 'hidden_columns', function( $hidden, $screen, $use_defaults ) use ( $hidden_cols ){ return $hidden_cols; }, 10, 3 );
 		endif;
 	}
 	
