@@ -38,16 +38,16 @@ final class Parse
 		
 		// Gestion des requêtes de métadonnées
 		if( ! empty( $vars['meta_query'] ) && $this->Db->hasMeta() ) :	
-			$this->MetaQuery = new \WP_Meta_Query( $vars['meta_query'] );			
+			$this->MetaQuery = new Meta_Query( $this->Db, $vars['meta_query'] );			
 
 			$this->MetaClauses = $this->MetaQuery->get_sql(
 				$this->Db->MetaType,
 				$this->Db->Name,
 				$this->Db->Primary,
 				null
-			); 
+			);
 		endif;
-			
+
 		// Retro-Compatibilité
 		if( ! empty( $vars['include'] ) ) :
 			$vars['item__in'] = $vars['include'];
@@ -172,6 +172,14 @@ final class Parse
 		
 		return " ORDER BY ". $clause;
 	}
+	
+	/** == Traitement de la clause GROUPBY == **/
+	public function clause_group_by()
+	{
+		if( $this->MetaClauses )
+			return "GROUP BY {$this->Db->Name}.{$this->Db->Primary}";
+	}
+	
 	
 	/** == Vérification des arguments de requête == **/
 	final public function validate( $vars ){

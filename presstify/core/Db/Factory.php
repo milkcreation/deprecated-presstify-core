@@ -122,7 +122,7 @@ class Factory
 			new Make( $this );	
 	}
 		
-	/* = DÉFINITION DE DONNÉES = */
+	/* = PARAMETRAGE = */
 	/** == Définition du prefixe des colonnes == **/
 	private function setSQLEngine( $sql_engine = null )
 	{
@@ -211,7 +211,13 @@ class Factory
 		return $this->MetaType = $meta_type;
 	}
 	
-	/* = RECUPERATION DE DONNÉES = */
+	/* = PARAMETRES = */
+	/** == Récupération de la primaire == **/
+	final public function getPrimary()
+	{
+		return $this->Primary;
+	}
+	
 	/** == Récupération d'un attribut de colonne selon son nom == **/
 	final public function getColAttrs( $col_name )
 	{

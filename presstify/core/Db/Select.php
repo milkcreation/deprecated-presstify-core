@@ -47,11 +47,15 @@ class Select
 		/// Exclusions
 		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
-	
+		
+		/// Groupe
+		/*if( $clause_group_by = $parse->clause_group_by() )
+			$query .= " ". $clause_group_by;*/
+						
 		//// Limite
 		if( $args['limit'] > -1 )
 			$query .= " LIMIT {$args['limit']}";
-
+			
 		// Résultat		
 		return (int) $this->Db->sql()->get_var( $query );
 	}
@@ -128,6 +132,10 @@ class Select
 		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 		
+		/// Groupe
+		if( $clause_group_by = $parse->clause_group_by() )
+			$query .= " ". $clause_group_by;	
+			
 		/*
 		if( $item__in && ( $orderby === 'item__in' ) )
 			$query .= " ORDER BY FIELD( {$this->wpdb_table}.{$this->primary_key}, $item__in )";
@@ -190,6 +198,10 @@ class Select
 		/// Exclusions
 		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
+		
+		/// Groupe
+		if( $clause_group_by = $parse->clause_group_by() )
+			$query .= " ". $clause_group_by;
 		
 		/* 	
 		/// Ordre
@@ -341,6 +353,10 @@ class Select
 		if( $clause__not_in = $parse->clause__not_in( $args['item__not_in'] ) )
 			$query .= " ". $clause__not_in;
 		
+		/// Groupe
+		if( $clause_group_by = $parse->clause_group_by() )
+			$query .= " ". $clause_group_by;	
+			
 		/// Ordre
 		if( $clause_order = $parse->clause_order( $args['orderby'], $args['order'] ) )
 			$query .= $clause_order;

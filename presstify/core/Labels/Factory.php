@@ -94,14 +94,16 @@ class Factory
 	}
 	
 	/** == == **/
-	public function Get( $label = '' )
+	public function Get( $label = null, $default = '' )
 	{
-		if( ! $label )
+		if( ! $label ) :
 			return $this->Labels;
-		elseif( ! isset( $this->Labels[$label] ) )
-			return $this->Labels['name'];
-		else
+		elseif( isset( $this->Labels[$label] ) ) :
+			
 			return $this->Labels[$label];
+		endif;
+		
+		return $default;
 	}
 	
 	/** == Mettre en majuscule la première lettre même s'il elle contient un accent == **/
