@@ -303,9 +303,11 @@ final class Factory extends App
 	/** == Récupération de la base de données == **/
 	public function getDb()
 	{
+		
 		if( ! is_null( $this->DbClass ) )
 			return $this->DbClass;
 		
+					
 		if( ! $this->DbClass = \tiFy\Core\Db\Db::Get( $this->FactoryID ) ) :
 			if( ( in_array( 'ListUser', $this->ModelNames ) || in_array( 'EditUser', $this->ModelNames ) ) ) :
 				$this->DbClass = \tiFy\Core\Db\Db::Get( 'users' );
@@ -313,7 +315,7 @@ final class Factory extends App
 				$this->DbClass = \tiFy\Core\Db\Db::Get( 'posts' );
 			endif;
 		endif;
-
+		
 		return 	$this->DbClass;
 	}
 	

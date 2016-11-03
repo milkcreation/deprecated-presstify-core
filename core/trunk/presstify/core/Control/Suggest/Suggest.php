@@ -48,7 +48,7 @@ class Suggest extends Factory
 				'minLength'	=> 2
 			),
 			// Classe de la liste de selection	
-			'picker'		=> ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : '#tify_control_suggest-'. $instance .'_picker',				
+			'picker'		=> ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : 'tify_control_suggest-'. $instance .'_picker',				
 				
 			// Arguments passés par la requête
 			'ajax_action'	=> 'tify_control_suggest_ajax',

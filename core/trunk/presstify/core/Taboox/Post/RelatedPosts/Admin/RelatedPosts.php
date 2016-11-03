@@ -67,7 +67,7 @@ class RelatedPosts extends Admin
 		$items = get_post_meta( $post->ID, $this->args['name'], true );
 		$this->Items = ! empty( $items ) ? array_map( 'intval', (array) $items  ) : array();
 		
-		$query_args 	= wp_parse_args( array( 'post_type'	=> 	$this->args['post_type'], 'post_status'	=> $this->args['post_status'] ), $this->args['query_args'] );
+		$query_args 	= wp_parse_args( array( 'post_type'	=> 	$this->args['post_type'], 'post_status'	=> $this->args['post_status'], 'posts_per_page' => -1 ), $this->args['query_args'] );
 	?>	
 		<div id="tiFyTabooxRelatedPosts--<?php echo self::$Instance;?>" class="tiFyTabooxRelatedPosts tiFyTabooxRelatedPosts--<?php echo $this->args['name'];?>">
 			<input type="hidden" class="tiFyTabooxRelatedPosts-action" value="<?php echo $this->AjaxAction;?>">
