@@ -51,10 +51,11 @@ class Params extends App
 					${$basename} = array();				
 				
 				${$basename} = self::_parseFilename( tiFy::$AbsDir ."/config/{$file}", ${$basename}, 'yml', $attr );
+				
 			endwhile;
 			closedir( $_dir );
 		endif;
-
+		
 		// Récupération du paramétrage personnalisé		
 		$_dir = @ opendir( TIFY_CONFIG_DIR );
 		if( $_dir ) :
@@ -68,14 +69,17 @@ class Params extends App
 				$attr = $attrs[$basename];
 				if( ! isset( ${$basename} ) )
 					${$basename} = array();	
-					
-				${$basename} /*+*/= self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
 				
+				if( $basename === 'config' ) :
+					${$basename} = self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
+				else :
+					${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
+				endif;
 			endwhile;
 			closedir( $_dir );
 			
 		endif;
-		
+
 		tiFy::$Params = compact( array_keys( $attrs ) );
 
 		// Chargement du thème

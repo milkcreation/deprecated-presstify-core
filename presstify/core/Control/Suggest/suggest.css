@@ -73,6 +73,8 @@
 .ui-autocomplete.tify_control_suggest-picker{
 	margin:0; padding:0;
 	background-color:#FFF;
+	overflow-y:auto;
+	max-height:20em;
 }
 .ui-autocomplete.tify_control_suggest-picker,
 .ui-autocomplete.tify_control_suggest-picker > *{
