@@ -36,9 +36,12 @@ class Video extends Modal
 				$args['modal']['attrs'] = array();
 			endif;
 		endif;
-		$args['modal']['attrs']['data-type']	= 'video';
-		$args['modal']['attrs']['data-video'] 	= htmlentities( json_encode( wp_parse_args( $args['video'], self::$defaultVideoAttrs ) ) );
-				
+		
+		if( $args['modal'] !== false ) :
+			$args['modal']['attrs']['data-type']	= 'video';
+			$args['modal']['attrs']['data-video'] 	= htmlentities( json_encode( wp_parse_args( $args['video'], self::$defaultVideoAttrs ) ) );
+		endif;
+			
 		return parent::toggle( $args, $echo );
 	}
 	
