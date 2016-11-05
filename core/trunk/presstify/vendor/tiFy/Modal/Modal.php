@@ -110,8 +110,11 @@ class Modal extends App
 		
 		add_action( 
 			'wp_footer', 
-			function() use( $args ){
+			function() use( $args )
+			{	
 				$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
+				if( $modal_attrs === false )
+					return;
 				$modal_attrs['target'] = $args['target'];				
 				if( ! isset( $modal_attrs['options']['show'] ) )
 					$modal_attrs['options']['show'] = false;
@@ -213,7 +216,7 @@ class Modal extends App
 			add_action( 
 				'wp_footer', 
 				function() use( $url){
-				?><script type="text/javascript">/* <![CDATA[ */jQuery(document).ready(function($){$.getScript('<?php echo $url;?>',function(){$('[data-role="tiFyModal"]').each(function(){$(this).modal();});$('[data-toggle="tiFyModal"]').click(function(e){e.preventDefault();$('[data-id="'+$(this).data('target')+'"]').modal('show');});});});/* ]]> */</script><?php
+				?><script type="text/javascript">/* <![CDATA[ */jQuery(document).ready(function($){$.getScript('<?php echo $url;?>',function(){$('[data-role="tiFyModal"]').each(function(){$(this).modal();});$(document).on( 'click','[data-toggle="tiFyModal"]',function(e){e.preventDefault();$('[data-id="'+$(this).data('target')+'"]').modal('show');});});});/* ]]> */</script><?php
 				},
 				99999
 			);

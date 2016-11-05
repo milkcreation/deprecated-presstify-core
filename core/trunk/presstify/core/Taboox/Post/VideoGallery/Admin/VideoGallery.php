@@ -34,9 +34,9 @@ class VideoGallery extends Admin
 	public function admin_enqueue_scripts()
 	{
 		wp_enqueue_media();
-		wp_enqueue_style( 'tify_taboox_video_gallery', $this->Url .'/admin.css', array( ), '150325' );	
-		wp_enqueue_script( 'tify_taboox_video_gallery', $this->Url .'/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
-		wp_localize_script( 'tify_taboox_video_gallery', 'tify_taboox_video_gallery', array(
+		wp_enqueue_style( 'tiFyTabooxVideoGallery', self::getUrl() .'/VideoGallery.css', array( ), '150325' );	
+		wp_enqueue_script( 'tiFyTabooxVideoGallery',self::getUrl() .'/VideoGallery.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
+		wp_localize_script( 'tiFyTabooxVideoGallery', 'tify_taboox_video_gallery', array(
 				'maxAttempt' => __( 'Nombre maximum de vidéos dans la galerie atteint', 'tify' ),
 			)
 		);
@@ -50,7 +50,7 @@ class VideoGallery extends Admin
 	?>	
 		<div id="taboox_video_gallery" class="taboox_video_gallery">
 			<ul id="taboox_video_gallery-list" class="taboox_video_gallery-list">
-			<?php foreach( (array) $metadatas as $meta_id => $meta_value ) $this->item_render( $meta_id, $meta_value, $name );?>
+			<?php foreach( (array) $metadatas as $meta_id => $meta_value ) : $this->item_render( $meta_id, $meta_value, $name ); endforeach;?>
 			</ul>
 			<a 	href="#" 
 				class="taboox_video_gallery-add button-secondary" 
@@ -67,8 +67,12 @@ class VideoGallery extends Admin
 	}
 
 	/** == RENDU D'UN ELEMENT DU FORMULAIRE == **/
-	private function item_render( $meta_id = null, $meta_value = array(), $name ){		
-		if( ! $meta_id ) $meta_id = uniqid();		
+	private function item_render( $meta_id = null, $meta_value = array(), $name )
+	{		
+		if( ! $meta_id ) :
+			$meta_id = uniqid();
+		endif;
+		
 		$attr = wp_parse_args( $meta_value, array( 'src' => '', 'poster' => '' ) );			
 	?>
 	<li>			

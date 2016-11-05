@@ -7,12 +7,10 @@
  * @package    	Wordpress
  * @copyright 	Milkcreation 2016
  * @link 		http://www.milkcreation.fr
- * @author 		Jordy Manner
- * @version 	1.160602
+ * @version 	1.161005
  *
  * Ressources
  * @see http://tympanus.net/Tutorials/CSS3SlidingImagePanels/index3.html
- * 
 **/
 !( function( $, doc, win, undefined ){
 	"use strict";
@@ -131,7 +129,7 @@
 			// Ecoute des actions sur la galerie
 			self._listen();			
 			// Défilement automatique
-			if( self.o.interval )
+			if( self.o.interval > 0 )
 				self._auto( );
 				
 			self.o.afterInit();
@@ -144,7 +142,7 @@
 			switch( self.o.transition ){
 				case 'slideLeft' :
 					$( '> li', self.$roller ).each( function(){
-						$(this).css({ width:(self.$el.width()/self.o.bypage)+'px' });
+						$(this).css({ width:( $( '.viewer', self.$el ).width()/self.o.bypage)+'px' });
 					});					
 					break;
 			}		
@@ -205,7 +203,7 @@
 			var self = this;
 			
 			// Survol du diaporama
-			if( self.o.interval ){
+			if( self.o.interval > 0 ){
 				if( self.o.pause === 'hover' ){
 					self.$el.hover( function(e){
 						self.autoscroll = false;

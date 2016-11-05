@@ -15,8 +15,10 @@ jQuery( document ).ready( function($){
 		}
 			
 		$spinner.css( 'visibility', 'visible' );
-		$.post( tify_ajaxurl, { action: 'taboox_video_gallery_add_item', name: name }, function( resp ){			
-			$( $list ).append( resp );
+		$.post( tify_ajaxurl, { action: 'taboox_video_gallery_add_item', name: name }, function( resp ){
+			console.log( resp );
+			
+			$list.append( resp );
 			$spinner.css( 'visibility', 'hidden');
 		}, 'html');
 	});
