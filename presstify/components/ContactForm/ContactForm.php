@@ -26,7 +26,7 @@ class ContactForm extends Component
 		self::$Defaults = \tiFy\Core\Params::parseAndEval( $this->Dirname .'/config/defaults.yml' );
 		
 		do_action( 'tify_contact_form_register' );
-		
+				
 		// Déclaration des formulaires passés en arguments
 		foreach( (array) self::getConfig() as $i => $args ) :
 			$id = ( is_numeric( $i ) ) ? 'tify_contact_form-'. $i : $i;
@@ -64,13 +64,12 @@ class ContactForm extends Component
 	final public function tify_options_register_node()
 	{	
 		foreach( (array) self::$Forms as $id => $args ) :
-			if( $args['admin'] ) :
-				
+			if( $args['admin'] ) :			
 				\tify_options_register_node(
 					array(
 						'id' 		=> $id,
 						'title' 	=> $args['title'],
-						'cb'		=> "\\tiFy\\Components\\ContactForm\\Taboox\\Option\MailOptions\\Admin\\MailOptions",
+						'cb'		=> "\\tiFy\\Components\\ContactForm\\Taboox\\Option\\MailOptions\\Admin\\MailOptions",
 						'args'		=> array( 'id' => $id, 'admin' => $args['admin']  )
 					)
 				);

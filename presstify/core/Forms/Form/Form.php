@@ -138,21 +138,23 @@ class Form
 	private function _setButtons()
 	{
 		$unset = array();
-		foreach( (array) $this->getAttr( 'buttons' ) as $k => $v ) :
-			if( is_bool( $v ) && ! $v ) :
-				array_push( $unset, 'submit' );
-				continue;
-			elseif( is_string( $k ) ):
-				$id = $k; $attrs = $v;
-			elseif( is_string( $v ) ) :
-				$id = $v; $attrs = array();
-			else :
-				$id = $k; $attrs = $v;
-			endif;
-						
-			$this->Buttons[$id] = Buttons::set( $id, $this, $attrs );	
-		endforeach;
-			
+		
+		if( ! empty( $this->getAttr( 'buttons' ) ) ) : 
+			foreach( (array) $this->getAttr( 'buttons' ) as $k => $v ) :
+				if( is_bool( $v ) && ! $v ) :
+					array_push( $unset, 'submit' );
+					continue;
+				elseif( is_string( $k ) ):
+					$id = $k; $attrs = $v;
+				elseif( is_string( $v ) ) :
+					$id = $v; $attrs = array();
+				else :
+					$id = $k; $attrs = $v;
+				endif;
+							
+				$this->Buttons[$id] = Buttons::set( $id, $this, $attrs );	
+			endforeach;
+		endif;	
 		if( ! isset( $this->Buttons['submit'] ) && ! in_array( 'submit', $unset ) ) :
 			$this->Buttons['submit'] = Buttons::set( 'submit', $this, array() );
 		endif;
@@ -501,6 +503,7 @@ class Form
 				
 		// Affichage des boutons
 		$output .= "\t\t<div class=\"tiFyForm-Buttons\">\n";
+			
 		foreach( (array) $this->buttons() as $id => $button ) :		
 			$output .= $button->display();
 		endforeach;		
