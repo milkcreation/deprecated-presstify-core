@@ -14,7 +14,7 @@ class ContentHook extends Helpers
 	protected $Helpers 			= array( 'Is', 'Get' );
 		
 	/* = VÉRIFICATION (après init 25) = */
-	public static function Is( $post = 0, $hook_id )
+	public static function Is( $hook_id, $post = 0 )
 	{
 		if( ! $post = get_post( $post ) )
 			return;

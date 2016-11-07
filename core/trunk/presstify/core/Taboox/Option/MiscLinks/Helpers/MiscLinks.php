@@ -45,10 +45,13 @@ class MiscLinks extends Helpers
 		
 		foreach( (array) $links as $link ) :				
 			$url 	= ( ! empty( $link['url'] ) ) 	? $link['url'] : '#';				
-			$title 	= ( ! empty( $link['title'] ) )	? sprintf( __( 'Lien vers %s', 'tify' ), $link['title'] ) : sprintf( __( 'Lien vers %s','tify' ), $link['url'] );
+			$title 	= ( ! empty( $link['title'] ) )	? sprintf( __( 'Lien vers %s', 'tify' ), $link['title'] ) : ( ! empty( $link['url'] ) ? sprintf( __( 'Lien vers %s','tify' ), $link['url'] ) : '' );
 			
 			$output .= "\t<li>\n";
-			$output .= "\t\t<a href=\"{$url}\" title=\"$title\">\n";
+			$output .= "\t\t<a href=\"{$url}\"";
+			if( $title )		
+				$output .= " title=\"$title\"";
+			$output .= ">\n";
 			
 			if( ! empty( $link['image'] ) )
 				$output .= wp_get_attachment_image( $link['image'], 'thumbnail' );

@@ -1,30 +1,20 @@
 <?php
 namespace
-{
-	// --------------------------------------------------------------------------------------------------------------------------
-	/* = CHEMINS (Deprecated) = */
-	/** == Récupération du répertoire de PressTiFy == **/
-	function tify_get_directory()
-	{
-		global $tiFy;
-
-		return $tiFy->get_directory();
-	}
-
-	/** == Récupération du répertoire de PressTiFy == **/
-	function tify_get_directory_uri()
-	{
-		global $tiFy;
-
-		return $tiFy->get_directory_uri();
-	}
-	
+{	
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = ADMIN = */
 	/** == Déclaration == **/
 	function tify_admin_register( $id, $args = array() )
 	{
 		return tiFy\Core\Admin\Admin::Register( $id, $args );
+	}
+	
+	// --------------------------------------------------------------------------------------------------------------------------
+	/* = CLASS AUTOLOADER = */
+	/** == Chargement automatique des classe PHP == **/
+	function tify_class_loader( $namespace, $base_dir, $bootstrap = null )
+	{
+		return tiFy\tiFy::classLoad( $namespace, $base_dir, $bootstrap );
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------
@@ -41,7 +31,7 @@ namespace
 			endif;
 		endforeach;
 	}
-	
+		
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = CUSTOM TYPE = */
 	/** == Déclaration d'une taxonomie personnalisée == **/
@@ -288,6 +278,5 @@ namespace
 	{
 		if( $screen = tiFy\Core\Taboox\Taboox::$Screen )
 			return call_user_func_array( array( $screen, 'box_render' ), func_get_args() );
-		var_dump( tiFy\Core\Taboox\Taboox::$Screen );
 	}
 }
