@@ -228,7 +228,7 @@ final class Taxonomy extends Factory
 		endif;
 			
 		// Empêche l'execution multiple du filtre
-		remove_filter( 'tify_breadcrumb_is_single', array( $this, 'tify_breadcrumb_is_single' ) );
+		remove_filter( 'tify_breadcrumb_is_single', __METHOD__ );
 		
 		return  $output;
 	}
@@ -253,7 +253,7 @@ final class Taxonomy extends Factory
 		endif;
 		
 		// Empêche l'execution multiple du filtre
-		remove_filter( 'tify_breadcrumb_is_tax', array( $this, 'tify_breadcrumb_is_archive' ) );
+		remove_filter( 'tify_breadcrumb_is_tax', __METHOD__ );
 		
 		return $output;
 	}

@@ -104,7 +104,7 @@ class Factory extends App
 	}
 		
 	/** == Chemin vers les archives == **/
-	protected function GetArchiveSlug( $hook_id )
+	final public function GetArchiveSlug( $hook_id )
 	{
 		if( ! empty( $this->ArchiveSlugs[$hook_id] ) )
 			return $this->ArchiveSlugs[$hook_id];

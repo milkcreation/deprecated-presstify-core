@@ -15,7 +15,8 @@ class Forms extends Core
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
 		'after_setup_tify' 	=> 11,
-		'init'				=> 1
+		//'init'			=> 10,
+		'wp'				=> 0		
 	);
 	
 	// Liste des Formulaires déclarés
@@ -62,19 +63,18 @@ class Forms extends Core
 	// !!! Déclencher au moment de l'init pour intéragir avec les balises de conditionnement wp et récupération des type de post et taxonomy
 	final public function init()
 	{
-		// Déclaration des formulaires
-		/// Depuis la configuration statique
-		foreach( (array) self::getConfig() as $id => $attrs ) :
-			$this->register( $id, $attrs );
-		endforeach;
-			
-		/// Depuis la déclaration dynamique	
-		do_action( 'tify_form_register' );
+		if( is_admin() ) :
+			$this->registration();
+		endif;	
 	}
 	
 	/** == Chargement de Wordpress complet == **/
 	final public function wp()
 	{
+		if( ! is_admin() ) :
+			$this->registration();
+		endif;		
+		
 		foreach( self::getList() as $form ) :
 			self::setCurrent( $form );
 			$form->handle()->proceed();
@@ -83,6 +83,19 @@ class Forms extends Core
 	}
 		
 	/* = PARAMETRAGE = */	
+	/** == Déclaration des formulaires == **/
+	private function registration()
+	{
+		// Déclaration des formulaires
+		/// Depuis la configuration statique
+		foreach( (array) self::getConfig() as $id => $attrs ) :
+			$this->register( $id, $attrs );
+		endforeach;
+			
+		/// Depuis la déclaration dynamique	
+		do_action( 'tify_form_register' );
+	}	
+	
 	/** == Déclaration d'un formulaire == **/
 	public static function register( $id, $attrs = array() )
 	{

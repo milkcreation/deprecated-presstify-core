@@ -78,7 +78,6 @@ class ImageGallery extends Helpers
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output; 
+		return $output; 
 	}
 }
