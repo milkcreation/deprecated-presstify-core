@@ -1,6 +1,9 @@
 <?php
 namespace tiFy\Components\HookArchive;
 
+use tiFy\Components\Breadcrumb\Breadcrumb;
+
+
 final class PostType extends Factory
 {
 	/* = CONTRUCTEUR = */
@@ -13,7 +16,7 @@ final class PostType extends Factory
 		add_filter( 'display_post_states', array( $this, 'display_post_states' ), 10, 2 );
 		add_filter( 'post_type_archive_link', array( $this, 'post_type_archive_link' ), 99, 2 );
 		
-		add_filter( 'tify_breadcrumb_is_single', array( $this, 'tify_breadcrumb_is_single' ) );
+		add_filter( 'tify_breadcrumb_is_single', array( $this, 'tify_breadcrumb_is_single' ), 10, 2 );
 		add_filter( 'tify_breadcrumb_is_archive', array( $this, 'tify_breadcrumb_is_archive' ) );
 		add_filter( 'tify_seo_title_is_post_type_archive', array( $this, 'tify_seo_title_is_post_type_archive' ) );
 		add_filter( 'tify_seo_desc_is_post_type_archive', array( $this, 'tify_seo_desc_is_post_type_archive' ) );
@@ -25,7 +28,7 @@ final class PostType extends Factory
 	{
 		if( $this->Archive !== $post_type )
 			return;
-				
+
 		// Modification des régles de réécriture
 		global $wp_rewrite;						
 		
@@ -145,22 +148,34 @@ final class PostType extends Factory
 			endforeach;
 
 			if( ! empty( $hook_id ) && ( $post = get_post( $hook_id ) ) ) :
-				$ancestors = "";
+				Breadcrumb::resetParts();
+			
+				$ancestors = array();
 				if( $post->post_parent && $post->ancestors ) :
 					$parents = ( count( $post->ancestors ) > 1 ) ? array_reverse( $post->ancestors ) : $post->ancestors;
-					foreach( $parents as $parent )
-						$ancestors .= sprintf('<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
+					foreach( $parents as $parent ) :
+						$ancestors[] = array( 'url' => get_permalink( $parent ), 'name' => Breadcrumb::titleRender( $parent ), 'title' => Breadcrumb::titleRender( $parent ) );
+					endforeach;
 				endif;	
+				$ancestors[] = array( 'url' => get_post_type_archive_link( get_post_type() ), 'name' => Breadcrumb::titleRender( $hook_id ), 'title' => Breadcrumb::titleRender( $hook_id ) );
+								
+				$_ancestors = "";
+				foreach( $ancestors as $a ) :				
+					$_ancestors .= Breadcrumb::partRender( $a );
+					Breadcrumb::addPart( $a );
+				endforeach;
 				
-				$post_type_archive_link = sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_post_type_archive_link( get_post_type() ), get_the_title( $hook_id ) );
-				$output = $ancestors . $post_type_archive_link . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title() ) ) .'</li>';
+				$part = array( 'url' => get_permalink(), 'name' => Breadcrumb::titleRender( get_the_ID() ), 'title' => Breadcrumb::titleRender( get_the_ID() ) );
+				Breadcrumb::addPart( $part );
+								
+				$output = $_ancestors . Breadcrumb::partRender( $part, true );
 			endif;
 		endif;
 		
 		// Empêche l'execution multiple du filtre
-		remove_filter( 'tify_breadcrumb_is_single', array( $this, 'tify_breadcrumb_is_single' ) );
+		remove_filter( 'tify_breadcrumb_is_single', __METHOD__ );
 		
-		return  $output;
+		return $output;
 	}
 	
 	/** == Page de flux == **/	
@@ -183,7 +198,7 @@ final class PostType extends Factory
 		endif;
 		
 		// Empêche l'execution multiple du filtre
-		remove_filter( 'tify_breadcrumb_is_archive', array( $this, 'tify_breadcrumb_is_archive' ) );
+		remove_filter( 'tify_breadcrumb_is_archive', __METHOD__ );
 		
 		return $output;
 	}

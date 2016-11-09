@@ -145,6 +145,11 @@ namespace
 		return tiFy\Components\HookArchive\HookArchive::GetPostTypeHooks( $post_type, $permalink, $object );
 	}
 	
+	function tify_hookarchive_get_permalink_structure( $type )
+	{
+		return tiFy\Components\HookArchive\HookArchive::getPermalinkStructure( $type );
+	}
+	
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = LOGIN = */
 	/** == Affichage d'un élément de template == **/

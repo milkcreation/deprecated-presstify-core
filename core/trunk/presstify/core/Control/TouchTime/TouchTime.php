@@ -133,10 +133,12 @@ class TouchTime extends Factory
 		/// Réglage de l'heure
 		switch( $type ) :
 			case 'datetime' :
-			case 'time' :				
+			case 'time' :
 				$output .= "\t<span id=\"{$id}-time\">\n";
 				$output .= sprintf( __( '%1$s %2$s %3$s', 'tify' ), $output_hour, $output_minute, $output_second );
-				$output .= "\t\t<i class=\"timepicker-handler dashicons dashicons-clock\"></i>";
+				if( ! empty( $hour) || ! empty( $minute ) || ! empty( $second ) ) :
+					$output .= "\t\t<i class=\"timepicker-handler dashicons dashicons-clock\"></i>";
+				endif;
 				$output .= "\t</span>\n";
 				break;
 		endswitch;

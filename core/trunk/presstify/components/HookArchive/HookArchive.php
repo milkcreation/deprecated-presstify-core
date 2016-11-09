@@ -374,4 +374,27 @@ final class HookArchive extends Component
 		
 		return $hooks;
 	}
+	
+	/** == == **/
+	public static function getPermalinkStructure( $type, $object_type = 'post' /* post | taxonomy */ )
+	{
+		$object_type = ( $object_type === 'post' ) ? 'post_type' : 'taxonomy';
+		
+		if( ! isset( self::$Hooks[$object_type][$type] ) )
+				return;
+		
+		$hook_id = 0;
+		$factory = self::$Hooks[$object_type][$type];	
+		foreach( (array) $factory->getHooks() as $attrs ) :
+			if( ! $attrs['permalink'] )	
+				continue;
+			$hook_id = (int) $attrs['id'];
+			break;
+		endforeach;
+		
+		if( ! $hook_id )
+			return;
+		
+		return self::$Hooks[$object_type][$type]->getArchiveSlug( $hook_id );
+	}
 }
