@@ -404,8 +404,13 @@ abstract class Table
 			'per_page' => 0,
 		) );
 
-		if ( !$args['total_pages'] && $args['per_page'] > 0 )
+		if ( ! $args['total_pages'] && $args['per_page'] > 0 )
 			$args['total_pages'] = ceil( $args['total_items'] / $args['per_page'] );
+		
+		if ( ! headers_sent() && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) && $args['total_pages'] > 0 && $this->get_pagenum() > $args['total_pages'] ) {
+			wp_redirect( add_query_arg( 'paged', $args['total_pages'] ) );
+			exit;
+		}			
 
 		$this->_pagination_args = $args;
 	}
@@ -724,16 +729,12 @@ abstract class Table
 			echo '<input type="hidden" name="orderby" value="' . esc_attr( $_REQUEST['orderby'] ) . '" />';
 		if ( ! empty( $_REQUEST['order'] ) )
 			echo '<input type="hidden" name="order" value="' . esc_attr( $_REQUEST['order'] ) . '" />';
-		if ( ! empty( $_REQUEST['post_mime_type'] ) )
-			echo '<input type="hidden" name="post_mime_type" value="' . esc_attr( $_REQUEST['post_mime_type'] ) . '" />';
-		if ( ! empty( $_REQUEST['detached'] ) )
-			echo '<input type="hidden" name="detached" value="' . esc_attr( $_REQUEST['detached'] ) . '" />';
 ?>
-<p class="search-box">
+<div class="search-box">
 	<label class="screen-reader-text" for="<?php echo esc_attr( $input_id ); ?>"><?php echo $text; ?>:</label>
 	<input type="search" id="<?php echo esc_attr( $input_id ); ?>" name="s" value="<?php echo isset($_REQUEST['s']) ? esc_attr( wp_unslash( $_REQUEST['s'] ) ) : '';?>" />
-	<input type="submit" name="" id="search-submit" value="<?php echo esc_attr( $text );?>"/>
-</p>
+	<input type="submit" name="" id="search-submit" class="btn btn-default" value="<?php echo esc_attr( $text );?>"/>
+</div>
 <?php
 	}
 	
@@ -1068,24 +1069,26 @@ abstract class Table
 
 		//$this->screen->render_screen_reader_content( 'heading_list' );
 ?>
-<table class="wp-list-table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
-	<thead>
-	<tr>
-		<?php $this->print_column_headers(); ?>
-	</tr>
-	</thead>
-
-	<tbody id="the-list">
-		<?php $this->display_rows_or_placeholder(); ?>
-	</tbody>
-
-	<tfoot>
-	<tr>
-		<?php $this->print_column_headers( false ); ?>
-	</tr>
-	</tfoot>
-
-</table>
+<div class="table-responsive">
+	<table class="table <?php echo implode( ' ', $this->get_table_classes() ); ?>">
+		<thead>
+		<tr>
+			<?php $this->print_column_headers(); ?>
+		</tr>
+		</thead>
+	
+		<tbody id="the-list">
+			<?php $this->display_rows_or_placeholder(); ?>
+		</tbody>
+	
+		<tfoot>
+		<tr>
+			<?php $this->print_column_headers( false ); ?>
+		</tr>
+		</tfoot>
+	
+	</table>
+</div>
 <?php
 		$this->display_tablenav( 'bottom' );
 	}

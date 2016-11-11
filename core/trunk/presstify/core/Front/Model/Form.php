@@ -491,9 +491,9 @@ abstract class Form
 	public function major_actions()
 	{
 	?>
-		<div class="updating">
-			<input type="submit" value="<?php _e( 'Enregistrer', 'tify' );?>" />
-		</div>
+<div class="updating">
+	<input type="submit" class="btn btn-primary" value="<?php _e( 'Enregistrer', 'tify' );?>" />
+</div>
 	<?php
 	}
 	
