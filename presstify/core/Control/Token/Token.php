@@ -46,7 +46,8 @@ class Token extends Factory
 			'value'				=> '',
 			'length'			=> 32,
 			'maskable'			=> true,	
-			'editable'			=> false,	
+			'editable'			=> false,
+			'disabled'			=> false,
 			'public_key'		=> null,
 			'private_key'		=> null,	
 			'keygen'			=> false,	
@@ -79,7 +80,10 @@ class Token extends Factory
 		if( ! $editable )
 			$output .= " readonly=\"readonly\"";
 		$output .= "/>\n";
-		$output .= "\t\t<input class=\"tify_control_token-hash\" type=\"hidden\" name=\"{$name}\" value=\"{$hash}\" autocomplete=\"off\"/>\n";
+		$output .= "\t\t<input class=\"tify_control_token-hash\" type=\"hidden\" name=\"{$name}\" value=\"{$hash}\" autocomplete=\"off\"";
+		if( $disabled )
+			$output .= " disabled=\"disabled\"";
+		$output .= "/>\n";
 		
 		$output .= "\t</div>";
 		if( $keygen )
