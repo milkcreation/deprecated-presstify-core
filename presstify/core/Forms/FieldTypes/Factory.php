@@ -189,6 +189,7 @@ abstract class Factory extends App
 			$class[] =  $this->field()->getAttr( 'label_class' );
 		$class[] = "tiFyForm-FieldLabel";
 		$class[] = "tiFyForm-FieldLabel--". $this->getID();
+		$class[] = "tiFyForm-FieldLabel--". $this->field()->getSlug();
 	
 		$output .= "<label for=\"". $this->getInputID() ."\" class=\"". join( ' ', $class ) ."\">\n";
 		$output .= $this->field()->getLabel();					

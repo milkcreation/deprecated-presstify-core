@@ -98,8 +98,15 @@ class ListTable extends tiFYCoreAdminModelListTable
 	/** == Contenu des colonnes par défaut == **/
 	public function column_default( $item, $column_name )
 	{
-		//var_dump( $this->View->getDb()->Primary );
-		return $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		if( ! $field = $this->Form->getField( $column_name ) )
+			return;
+		$value = $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		
+		if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
+			$value = $choices[$value];
+		endif;
+		
+		return $value;		
 	}
 	
 	/** == Colonne des informations d'enregistrement == **/

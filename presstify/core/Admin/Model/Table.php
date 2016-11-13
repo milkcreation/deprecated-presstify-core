@@ -425,18 +425,7 @@ abstract class Table extends \WP_List_Table
 		
 		return 0;
 	}
-	
-	/** == Récupération de l'action courante == **/
-	public function current_action() 
-	{		
-		if ( isset( $_REQUEST['action'] ) && -1 != $_REQUEST['action'] )
-			return $_REQUEST['action'];
-		if ( isset( $_REQUEST['action2'] ) && -1 != $_REQUEST['action2'] )
-			return $_REQUEST['action2'];
-
-		return false;
-	}
-	
+		
 	/** == Récupération des éléments == **/
 	public function prepare_items() 
 	{				
@@ -561,13 +550,17 @@ abstract class Table extends \WP_List_Table
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions()
 	{
-		// Traitement des actions
-		if( ! $this->current_item() ) :
-			return;
-		elseif( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
-			call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
+		if( $this->current_action() ) :
+			if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
+				call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
+			endif;
+			
+			$sendback = remove_query_arg( array( 'action', 'action2', 'bulk_edit' ), $sendback );
+
+			wp_redirect($sendback);
+			exit;
 		elseif( ! empty( $_REQUEST['_wp_http_referer'] ) ) :
-			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), $_REQUEST['_wp_http_referer'] ) );
+			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
 			exit;
 		endif; 		
 	}
@@ -826,8 +819,12 @@ abstract class Table extends \WP_List_Table
     		</h2>
     		
     		<?php $this->views(); ?>
+    		<form method="get" action="">
+    			<?php parse_str( parse_url( $this->View->getModelAttrs( 'base_url', $this->Name ), PHP_URL_QUERY ), $query_vars ); ?>
+    			<?php foreach( (array) $query_vars as $name => $value ) : ?>
+    			<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
+    			<?php endforeach;?>
     		
-    		<form method="post" action="<?php echo $this->View->getModelAttrs( 'base_url', $this->Name );?>">
     			<?php $this->search_box( $this->View->getLabel( 'search_items' ), $this->View->getID() );?>
     			<?php $this->display();?>
 			</form>

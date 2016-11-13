@@ -36,9 +36,7 @@ class MiscLinks extends Admin
 	public function form()
 	{
 		$values = \get_option( $this->args['name'], array() );
-	?>
-		<h3><?php _e( 'Partenaires', 'tify' );?></h3>		
-		<?php 
+
 		tify_control_dynamic_inputs( 
 			array( 
 				'default' 			=> array( 'url' => '', 'title' => '', 'caption' => '', 'image' => '' ),
@@ -50,8 +48,6 @@ class MiscLinks extends Admin
 				'sample_html'		=> $this->new_item()
 			) 
 		);
-		?>
-	<?php
 	}
 	
 	/* = AFFICHAGE D'UN NOUVEL ÉLÉMENT = */

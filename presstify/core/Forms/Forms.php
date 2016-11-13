@@ -15,7 +15,7 @@ class Forms extends Core
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
 		'after_setup_tify' 	=> 11,
-		//'init'			=> 10,
+		'init'				=> 1,
 		'wp'				=> 0		
 	);
 	
@@ -60,20 +60,17 @@ class Forms extends Core
 	}
 	
 	/** == Déclaration des formulaires == **/
-	// !!! Déclencher au moment de l'init pour intéragir avec les balises de conditionnement wp et récupération des type de post et taxonomy
 	final public function init()
 	{
-		if( is_admin() ) :
+		if( is_admin() )
 			$this->registration();
-		endif;	
 	}
 	
 	/** == Chargement de Wordpress complet == **/
 	final public function wp()
 	{
-		if( ! is_admin() ) :
+		if( ! is_admin() )
 			$this->registration();
-		endif;		
 		
 		foreach( self::getList() as $form ) :
 			self::setCurrent( $form );

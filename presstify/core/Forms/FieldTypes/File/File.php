@@ -130,7 +130,7 @@ class File extends Factory
 	
 	/* = COURT-CIRCUITAGE = */
 	/** == Définition des paramètres du formulaire == **/
-	public function cb_form_set_params( &$form )
+	public function cb_form_set_attrs( &$form )
 	{
 		$form->setAttr( 'enctype', 'multipart/form-data' );
 	}	
