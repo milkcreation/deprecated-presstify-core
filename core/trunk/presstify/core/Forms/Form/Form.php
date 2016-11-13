@@ -97,6 +97,7 @@ class Form
 			
 		// Définition des attributs
 		$this->Attrs = Helpers::parseArgs( $attrs, $this->DefaultAttrs );
+		$this->call( 'form_set_attrs', array( &$this ) );
 		
 		// Définition des boutons
 		$this->_setButtons();
@@ -108,12 +109,10 @@ class Form
 		$this->_setNotices();
 		
 		// Définition des options
-		$this->_setOptions();
+		$this->_setOptions();	
 		
 		// Définition des champs
 		$this->_setFields();
-		
-		$this->call( 'form_set_params', array( &$this ) );
 	}
 				
 	/* = PARAMETRAGE = */
@@ -161,33 +160,7 @@ class Form
 				
 		//Callbacks::call( 'form_set_buttons', array( &$this->Buttons ) );
 	}
-	
-	/** == Définition des champs == **/
-	private function _setFields()
-	{
-		// Réinitialisation de l'instance
-		Field::resetInstance();
 		
-		$fields 	= array();
-		$groups 	= array();
-		$orders 	= array();
-		$positions 	= array(); 
-		$i 			= 0;
-	
-		foreach( (array) $this->getAttr( 'fields' ) as $attrs ) :
-			$fields[] = $field = new Field( $this, $attrs );
-			$groups[] = $field->getAttr( 'group', 0 );
-			$orders[] = $field->getAttr( 'order', 0 );
-			$positions[] = $i++; 
-		endforeach;
-					
-		array_multisort( $groups, $orders, $positions );
-		
-		foreach( $positions as $pos ) :
-			$this->Fields[] = $fields[$pos];
-		endforeach;
-	}
-	
 	/** == Définition des notifications == **/
 	private function _setNotices()
 	{
@@ -240,6 +213,32 @@ class Form
 		
 		// Post traitement de la définition des options de formulaire
 		//Callbacks::call( 'form_set_options', array( &$this->Options ) );	
+	}
+	
+	/** == Définition des champs == **/
+	private function _setFields()
+	{
+		// Réinitialisation de l'instance
+		Field::resetInstance();
+		
+		$fields 	= array();
+		$groups 	= array();
+		$orders 	= array();
+		$positions 	= array(); 
+		$i 			= 0;
+		
+		foreach( (array) $this->getAttr( 'fields' ) as $attrs ) :
+			$fields[] = $field = new Field( $this, $attrs );
+			$groups[] = $field->getAttr( 'group', 0 );
+			$orders[] = $field->getAttr( 'order', 0 );
+			$positions[] = $i++; 
+		endforeach;
+					
+		array_multisort( $groups, $orders, $positions );
+		
+		foreach( $positions as $pos ) :
+			$this->Fields[] = $fields[$pos];
+		endforeach;
 	}
 	
 	/* = PARAMETRES = */

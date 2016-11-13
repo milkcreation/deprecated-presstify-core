@@ -41,22 +41,21 @@ class ContactForm extends Component
 	}
 		
 	/* = = */
-	final public function the_content( $content )
-	{
-		
+	final public static function the_content( $content )
+	{		
 		// Bypass
 		if( ! in_the_loop() )
 			return $content;		
 		if( ! $id = $this->getHookPageID() )
 			return $content;
-				
+			
 		// Masque le contenu et le formulaire sur la page d'accroche	
 		if( ! self::$Forms[$id]['content'] )
 			return '';
 		// Affiche seulement le contenu du formulaire sur la page d'accroche, le formulaire pourra être appelé manuellement
 		elseif( self::$Forms[$id]['content'] === 'only' )
 			return $content;
-		
+				
 		return self::Display( $id, $content, false );
 	}
 		

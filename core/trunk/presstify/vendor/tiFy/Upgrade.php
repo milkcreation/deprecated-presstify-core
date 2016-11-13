@@ -50,7 +50,7 @@ abstract class Upgrade extends App
 			$this->MajorVersion = $major_version;
 		
 		if( $this->StorageVar ) :
-			add_action( 'admin_init', array( $this, 'admin_init' ) );
+			add_action( 'admin_init', array( $this, 'admin_init' ), 25 );
 			add_action( 'current_screen', array( $this, 'current_screen' ) );
 		endif;
 	}
@@ -75,7 +75,7 @@ abstract class Upgrade extends App
 		else
 			$this->SubVersion = get_option( $this->StorageVar, 0 );	
 	
-		$this->FormatedSubVersion = $this->FormatVersion( $this->SubVersion );
+		$this->FormatedSubVersion = $this->formatVersion( $this->SubVersion );
 		
 		// Vérifie si un appel de mise à jour est lancé
 		if( ! isset( $_REQUEST['tify_upgrade'] ) || ( $_REQUEST['tify_upgrade'] !== $this->StorageVar ) )
@@ -119,7 +119,7 @@ abstract class Upgrade extends App
 	
 	/* = CONTRÔLEUR = */
 	/** == Formatage du numéro de version == **/
-	private function FormatVersion( $str )
+	private function formatVersion( $str )
 	{
 		return implode( '.', str_split(  $str, 2 ) );
 	}
@@ -139,7 +139,7 @@ abstract class Upgrade extends App
 		foreach( (array) $this->getClassMethods() as $method ) :	
 			if( ! preg_match( '/^update_([\d]*)/', $method, $version ) )
 				continue;
-			$_version = $this->FormatVersion( $version[1] );
+			$_version = $this->formatVersion( $version[1] );
 			if( version_compare( $this->FormatedSubVersion, $_version, '>=' ) )
 				continue;
 				
@@ -155,7 +155,7 @@ abstract class Upgrade extends App
 			// Test de correspondance de la méthode
 			if( ! preg_match( '/^update_([\d]*)/', $method, $version ) )
 				continue;
-			$_version = $this->FormatVersion( $version[1] );
+			$_version = $this->formatVersion( $version[1] );
 			if( version_compare( $this->FormatedSubVersion, $_version, '>=' ) )
 				continue;
 			

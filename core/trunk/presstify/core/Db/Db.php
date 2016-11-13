@@ -15,7 +15,7 @@ class Db extends Core
 	protected $CallActionsPriorityMap	= array(
 		'init'				=> 9
 	);
-	
+		
 	private static $Factories	= array();
 	
 	public static $Query 		= null;
@@ -26,11 +26,12 @@ class Db extends Core
 		parent::__construct();		
 				
 		foreach( (array) self::getConfig() as $id => $args ) :
-			self::Register( $id, $args );
+			self::register( $id, $args );
 		endforeach;		
 	}
 	
 	/* = DECLENCHEUR = */
+	/** == == **/
 	function init()
 	{
 		do_action( 'tify_db_register' );
@@ -38,7 +39,7 @@ class Db extends Core
 	
 	/* = CONTRÔLEURS = */
 	/** == Déclaration == **/
-	public static function Register( $id, $args = array() )
+	public static function register( $id, $args = array() )
 	{
 		if( isset( $args['cb'] ) ) :
 			self::$Factories[$id] = new $args['cb']( $id, $args );
@@ -50,8 +51,14 @@ class Db extends Core
 			return self::$Factories[$id];
 	}
 	
+	/** == Vérification == **/
+	public static function has( $id )
+	{
+		return isset( self::$Factories[$id] );
+	}
+	
 	/** == Récupération == **/
-	public static function Get( $id )
+	public static function get( $id )
 	{
 		if( isset( self::$Factories[$id] ) )
 			return self::$Factories[$id];

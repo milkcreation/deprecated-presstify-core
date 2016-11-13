@@ -52,27 +52,27 @@ namespace
 	/** == Déclaration == **/
 	function tify_db_register( $id, $args = array() )
 	{
-		return tiFy\Core\Db\Db::Register( $id, $args );
+		return tiFy\Core\Db\Db::register( $id, $args );
 	}
 	
 	/** == Déclaration == **/
 	function tify_db_get( $id )
 	{
-		return tiFy\Core\Db\Db::Get( $id );
+		return tiFy\Core\Db\Db::get( $id );
 	}
 	
 	/** == Boucle == **/
 	/*** === Initialisation === ***/
 	function tify_query( $id, $query = null )
 	{
-		if( $db =  tiFy\Core\Db\Db::Get( $id ) )
+		if( $db = tiFy\Core\Db\Db::get( $id ) )
 			return $db->query( $query );
 	}
 	
 	/*** === Récupération d'un champs == **/
 	function  tify_query_field( $name )
 	{
-		if( $query =  tiFy\Core\Db\Db::$Query )
+		if( $query = tiFy\Core\Db\Db::$Query )
 			return $query->get_field( $name );
 	}
 	
