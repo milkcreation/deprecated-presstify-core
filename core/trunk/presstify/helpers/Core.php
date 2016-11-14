@@ -164,7 +164,7 @@ namespace
 	/* = META = */
 	/** == POST == **/
 	/** == Déclaration d'une metadonnée de post == **/
-	function tify_meta_post_register( $post_type, $meta_key, $single = false, $sanitize_callback = '' )
+	function tify_meta_post_register( $post_type, $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		return tiFy\Core\Meta\Post::Register( $post_type, $meta_key, $single, $sanitize_callback );	
 	}
@@ -177,7 +177,7 @@ namespace
 	
 	/** == TERM == **/
 	/** == Déclaration d'une metadonnée de post == **/
-	function tify_meta_term_register( $taxonomy, $meta_key, $single = false, $sanitize_callback = '' )
+	function tify_meta_term_register( $taxonomy, $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		return tiFy\Core\Meta\Term::Register( $taxonomy, $meta_key, $single, $sanitize_callback );	
 	}
@@ -190,7 +190,7 @@ namespace
 	
 	/** == USER == **/
 	/** == Déclaration d'une metadonnée de post == **/
-	function tify_meta_user_register( $meta_key, $single = false, $sanitize_callback = '' )
+	function tify_meta_user_register( $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		return tiFy\Core\Meta\User::Register( $meta_key, $single, $sanitize_callback );	
 	}
@@ -202,7 +202,7 @@ namespace
 	}
 	
 	/** == Déclaration d'une metadonnée de post == **/
-	function tify_option_user_register( $meta_key, $single = false, $sanitize_callback = '' )
+	function tify_option_user_register( $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		return tiFy\Core\Meta\UserOption::Register( $meta_key, $single, $sanitize_callback );	
 	}

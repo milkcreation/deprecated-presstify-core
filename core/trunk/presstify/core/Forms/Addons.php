@@ -50,7 +50,7 @@ class Addons
 		
 		// Instanciation de l'addon	
 		$item = new self::$Registered[$id]['callback']( self::$Registered[$id]['args'] );
-		$item->initForm( $form, $attrs );
+		$item->_initForm( $form, $attrs );
 		
 		// Mise à jour de la liste des formulaires actifs par addon
 		if( ! isset( self::$ActiveForms[$id] ) )

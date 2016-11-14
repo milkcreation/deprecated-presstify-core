@@ -1,11 +1,10 @@
 <?php
 namespace tiFy\Core\Forms\Addons\Mailer;
 
-use tiFy\Core\Forms\Addons\Factory;
 use tiFy\Lib\Mailer\Mailer as tiFyMailer;
 use tiFy\Core\Forms\Form\Helpers;
 
-class Mailer extends Factory
+class Mailer extends \tiFy\Core\Forms\Addons\Factory
 {
 	/* = ARGUMENTS = */
 	/// Identifiant
@@ -20,6 +19,8 @@ class Mailer extends Factory
 	/* = CONSTRUCTEUR = */
 	public function __construct() 
 	{	
+		parent::__construct();
+		
 		// Définition des options de formulaire par défaut
 		$this->default_form_options = array(
 			/// Envoi d'un message de notification à l'administrateur du site		
@@ -29,15 +30,47 @@ class Mailer extends Factory
 			),
 			/// Envoi d'un message de confirmation de reception à l'emetteur de la demande	
 			/// @see tiFy\Lib\Mailer\Mailer
-			'confirmation' 		=> false		
+			'confirmation' 		=> false,
+			'admin'				=> true
 		);
 		
 		// Définition des fonctions de court-circuitage
 		$this->callbacks = array(
 			'handle_successfully'	=> array( $this, 'cb_handle_successfully' )
 		);
-		
-        parent::__construct();			
+    }
+    
+    /* = DECLENCHEURS = */
+    /** == == **/
+    public function afterInit()
+    {
+    	if( $this->getFormAttr( 'admin' ) ) :
+    		$id = @ base64_encode( $this->form()->getUID() );
+    		\tify_options_register_node(
+				array(
+					'id' 		=> 'tiFyFormMailer_'. $id,
+					'title' 	=> $this->form()->getTitle(),
+					'cb'		=> 'tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin\MailOptions',
+					'args'		=> array( 'id' => 'tiFyFormMailer_'. $id )
+				)
+			);
+    		$notification = $this->getFormAttr( 'notification' );
+    		$confirmation = $this->getFormAttr( 'confirmation' );
+    		
+    		if( get_option( 'tiFyFormMailer_'. $id .'-notification' ) === 'off' ) :
+    			$this->setFormAttr( 'notification', false );
+    		elseif( $to = get_option( 'tiFyFormMailer_'. $id .'-recipients' ) ) :
+    			$notification['to'] = $to;
+    			$this->setFormAttr( 'notification', $notification );
+    		endif;
+
+    		if( get_option( 'tiFyFormMailer_'. $id .'-confirmation' ) === 'off' ) :
+    			$this->setFormAttr( 'confirmation', false );
+    		elseif( $from = get_option( 'tiFyFormMailer_'. $id .'-sender' ) ) :
+    			$confirmation['from'] = $from;
+    			$this->setFormAttr( 'confirmation', $confirmation );
+    		endif;     		
+    	endif;
     }
 	
 	/* = COURT-CIRCUITAGE = */
@@ -46,13 +79,13 @@ class Mailer extends Factory
 	{
 		// Envoi du message de notification
 		if( $options = $this->getFormAttr( 'notification' ) ) :
-			$options = $this->parseOptions( $options );		
+			$options = $this->parseOptions( $options );	
 			new tiFyMailer( $options );	
 		endif;
 
 		// Envoi du message de confirmation
 		if( $options = $this->getFormAttr( 'confirmation' ) ) :
-			$options = $this->parseOptions( $options );		
+			$options = $this->parseOptions( $options );	
 			new tiFyMailer( $options );	
 		endif;
 	}
