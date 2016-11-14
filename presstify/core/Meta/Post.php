@@ -17,7 +17,7 @@ final class Post
 	}
 	
 	/* = DECLARATION = */
-	final public static function Register( $post_type, $meta_key, $single = false, $sanitize_callback = '' )
+	final public static function Register( $post_type, $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		// Bypass
 		if( ! empty( self::$MetaKeys[$post_type] ) && in_array( $meta_key, self::$MetaKeys[$post_type] ) )

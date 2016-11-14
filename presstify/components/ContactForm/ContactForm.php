@@ -46,7 +46,7 @@ class ContactForm extends Component
 		// Bypass
 		if( ! in_the_loop() )
 			return $content;		
-		if( ! $id = $this->getHookPageID() )
+		if( ! $id = self::getHookPageID() )
 			return $content;
 			
 		// Masque le contenu et le formulaire sur la page d'accroche	
@@ -124,7 +124,6 @@ class ContactForm extends Component
 		
 		// Traitement de l'addon Mailer
 		$mailer_defaults = array(
-			'debug' => false,
 			'confirmation' => array(
 				'send' 		=> ( get_option( $id .'-confirmation', 'on' ) === 'on' ) ? true : false,
 				'from' 		=> get_option( $id .'-sender' ),
@@ -136,7 +135,8 @@ class ContactForm extends Component
 				'from' 		=> array( 'name' => get_bloginfo( 'blogname' ), 'email' => get_option( 'admin_email' ) ),
 				'to' 		=> get_option( $id .'-recipients' ),
 				'subject' 	=> __( get_bloginfo( 'blogname' ).' | Vous avez reçu une nouvelle demande de contact', 'tify' )
-			)
+			),
+			'admin'			=> false
 		);		
 		
 		if( isset( $args['form']['add-ons']['mailer'] ) && $args['form']['add-ons']['mailer'] === false ) :
@@ -153,7 +153,7 @@ class ContactForm extends Component
 	}
 	
 	/** == Récupération de l'ID de la page d'accroche == **/
-	protected function getHookPageID( $post_id = null )
+	protected static function getHookPageID( $post_id = null )
 	{
 		if( is_null( $post_id ) && \is_singular() ) :
 			$post_id = get_the_ID();

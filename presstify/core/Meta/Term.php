@@ -17,7 +17,7 @@ final class Term
 	}
 	
 	/* = DECLARATION = */
-	final public static function Register( $taxonomy, $meta_key, $single = false, $sanitize_callback = '' )
+	final public static function Register( $taxonomy, $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		// Bypass
 		if( ! empty( self::$MetaKeys[$taxonomy] ) && in_array( $meta_key, self::$MetaKeys[$taxonomy] ) )

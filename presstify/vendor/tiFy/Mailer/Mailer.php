@@ -585,9 +585,9 @@ class Mailer extends App
 
 	/** == Formatage de contact == **/
 	private function format_contact( $contact, $single = true ){
-		if( ! $single )
+		if( ! $single ) :
 			return implode( ',', array_map( array( $this, 'format_contact' ), $contact ) );
-			
+		endif;	
         if( empty( $contact[1] ) )
             return $contact[0];
 		else

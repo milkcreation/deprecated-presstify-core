@@ -33,7 +33,7 @@ class Factory extends App
 	
 	/* = PARAMETRAGE = */
 	/** == Initialisation de l'addon pour un formulaire == **/
-	final public function initForm( $form, $attrs )
+	final public function _initForm( $form, $attrs )
 	{
 		// Définition du formulaire de référence
 		$this->Form = $form;
@@ -50,6 +50,10 @@ class Factory extends App
 				$this->Form->callbacks()->setAddons( $hookname, $this->ID, $args['function'], $args['order'] );
 			endif;
 		endforeach;
+		
+		if( method_exists( $this, 'afterInit' ) ) :
+			call_user_func( array( $this, 'afterInit' ) );
+		endif;
 	}
 		
 	/** == Initialisation du formulaire courant == **/
@@ -69,13 +73,19 @@ class Factory extends App
 		return $this->ID;
 	}
 	
-	/** == Récupération des attributs de formulaire == **/
+	/** == Récupération d'un attribut de formulaire == **/
 	final public function getFormAttr( $attr, $default = '' )
 	{
 		if( isset( $this->FormAttrs[$attr] ) )
 			return $this->FormAttrs[$attr];
 			
 		return $default;
+	}
+	
+	/** == Définition d'un attribut de formulaire == **/
+	final public function setFormAttr( $attr, $value )
+	{
+		return $this->FormAttrs[$attr] = $value;
 	}
 	
 	/** == Récupération des attributs de formulaire == **/
@@ -90,7 +100,7 @@ class Factory extends App
 		return $default;
 	}
 	
-	/* = CONTRÔLEUR = */
+	/* = CONTRÔLEURS = */
 	/** == Récupération de l'objet formulaire == **/
 	final public function form()
 	{

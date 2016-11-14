@@ -18,7 +18,7 @@ final class UserOption
 	}
 	
 	/* = DECLARATION = */
-	final public static function Register( $meta_key, $single = false, $sanitize_callback = '' )
+	final public static function Register( $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
 	{
 		// Bypass
 		if( ! empty( self::$MetaKeys ) && in_array( $meta_key, self::$MetaKeys ) )
