@@ -26,7 +26,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 			/// Envoi d'un message de notification à l'administrateur du site		
 			/// @see tiFy\Lib\Mailer\Mailer
 			'notification' 		=> array(
-				'subject'			=> sprintf( __( 'Vous avez une nouvelle demande de contact sur le site %s', 'tify' ), get_bloginfo('name') )	
+				'subject'			=> sprintf( __( 'Vous avez une nouvelle demande de contact sur le site %s', 'tify' ), get_bloginfo('name') )
 			),
 			/// Envoi d'un message de confirmation de reception à l'emetteur de la demande	
 			/// @see tiFy\Lib\Mailer\Mailer
@@ -69,7 +69,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
     		elseif( $from = get_option( 'tiFyFormMailer_'. $id .'-sender' ) ) :
     			$confirmation['from'] = $from;
     			$this->setFormAttr( 'confirmation', $confirmation );
-    		endif;     		
+    		endif; 
     	endif;
     }
 	
@@ -95,7 +95,12 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 	final protected function parseOptions( $options )
 	{
 		$options = Helpers::parseMergeVars( $options, $this->form() );
-				
+		
+		if( ! isset( $options['subject'] ) )
+			$options['subject'] = sprintf( __( 'Nouvelle demande sur le site %1$s', 'tify' ), get_bloginfo('name') );
+		if( ! isset( $options['to'] ) )
+			$options['to'] = get_option( 'admin_email' );
+		
 		// @todo Fichiers attachés
 		
 		if( empty( $options['html'] ) )
@@ -112,7 +117,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		$output .= 	'<table cellpadding="0" cellspacing="10" border="0" align="center">';
 		$output .=		'<tbody>';
 		$output .= 			'<tr>';
-		$output .= 				'<td width="600" valign="top" colspan="2">' .sprintf( __( 'Nouvelle demande sur le site %1$s, <a href="%2$s">%2$s<a>'), get_bloginfo('name'), esc_url( get_bloginfo('url') ) ). '</td>';
+		$output .= 				'<td width="600" valign="top" colspan="2">'. sprintf( __( 'Nouvelle demande sur le site %1$s, <a href="%2$s">%2$s<a>', 'tify' ), get_bloginfo('name'), esc_url( get_bloginfo('url') ) ). '</td>';
 		$output .= 			'</tr>';	
 		$output .= 			'<tr>';
 		$output .= 				'<td width="600" valign="top" colspan="2"><h3>'. $options['subject'] .'</h3></td>';

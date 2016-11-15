@@ -89,6 +89,12 @@ abstract class Factory extends App
 		return $default;
 	}
 	
+	/** == Récupération d'une option == **/
+	final public function setOption( $option, $value )
+	{		
+		return $this->Options[$option] = $value;
+	}
+	
 	/** == Identifiant HTML de l'interface de saisie == **/
 	public function getInputID()
 	{

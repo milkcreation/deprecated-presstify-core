@@ -152,6 +152,12 @@ namespace
 		return tiFy\Core\Forms\Forms::getCurrent();
 	}
 	
+	/** == Récupération d'un formulaire == **/
+	function tify_form_get( $id )
+	{
+		return tiFy\Core\Forms\Forms::get( $id );
+	}
+	
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = FRONT = */
 	/** == Déclaration == **/

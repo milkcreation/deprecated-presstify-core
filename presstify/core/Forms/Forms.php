@@ -10,6 +10,7 @@ class Forms extends Core
 	protected $CallActions				= array(
 		'after_setup_tify',
 		'init',
+		'admin_init',
 		'wp'
 	);		
 	// Ordres de priorité d'exécution des actions
@@ -63,6 +64,13 @@ class Forms extends Core
 	final public function init()
 	{
 		if( is_admin() )
+			$this->registration();
+	}
+	
+	/** == Déclaration des formulaires pour les requêtes ajax== **/
+	final public function admin_init()
+	{
+		if( defined( 'DOING_AJAX' ) )
 			$this->registration();
 	}
 	

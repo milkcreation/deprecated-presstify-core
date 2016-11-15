@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Core\Forms\Addons\Record;
 
-use tiFy\Core\Forms\Addons\Factory;
 use tiFy\Core\Db\Db;
 
-class Record extends Factory
+class Record extends \tiFy\Core\Forms\Addons\Factory
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
@@ -18,8 +17,9 @@ class Record extends Factory
 	public $ID = 'record';
 	
 	// Options de formulaire par défaut
-	public $default_form_options 	= array( 
-		'export' => true 
+	public $default_form_options 	= array(
+		'cb'		=> 'tiFy\Core\Forms\Addons\Record\ListTable',
+		'export' 	=> true 
 	);
 	
 	// Options de champs par défaut
@@ -95,7 +95,7 @@ class Record extends Factory
 				'ListTable'	=> array(
 				    'parent_slug'	=> 'tify_forms_record',
 				    'menu_slug'		=> 'tify_forms_record',
-					'cb'			=> 'tiFy\Core\Forms\Addons\Record\ListTable'
+					'cb'			=> $this->getFormAttr( 'cb', 'tiFy\Core\Forms\Addons\Record\ListTable' )
 				)
 			)
 		);

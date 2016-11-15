@@ -430,7 +430,7 @@ class ScriptLoader extends App
 				'version'	=> '1.6.0',
 				'media'		=> 'all'
 			),
-			'slick-carousel-theme'			=> array(
+			'slick-carousel-theme'		=> array(
 				'src'		=> array(
 					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css'
 				),
