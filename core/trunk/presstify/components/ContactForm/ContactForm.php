@@ -8,6 +8,7 @@ class ContactForm extends Component
 	/* = ARGUMENTS = */
 	// Actions à déclencher	
 	protected $CallActions			= array(
+		'init',
 		'the_content',
 		'tify_options_register_node',
 		'tify_form_register'
@@ -19,7 +20,7 @@ class ContactForm extends Component
 	private static $Forms = array();	
 	
 	/* = CONSTRUCTEUR = */
-	public function __construct()
+	final public function init()
 	{
 		parent::__construct();
 		// Récupération de la configuration par défaut

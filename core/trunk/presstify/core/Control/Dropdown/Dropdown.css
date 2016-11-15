@@ -63,7 +63,7 @@
 [data-tify_control='dropdown-picker']{
 	position:absolute;
 	display:none;
-	overflow:auto;
+	overflow:hidden;
 	z-index:99;
 	background-color:#FFF;
 	margin:0;
@@ -74,10 +74,14 @@
 [data-tify_control='dropdown-picker'].active{
 	display:inherit;	
 }
-[data-tify_control='dropdown-picker'] ul{
+[data-tify_control='dropdown-picker'] > ul{
+	position:relative;
+	height:100%;
 	margin:0; padding:0;
+	overflow: auto;
+    width: calc( 100% + 15px );
 }
-[data-tify_control='dropdown-picker'] li{
+[data-tify_control='dropdown-picker'] > ul > li{
 	margin:0; padding:0.1em 0.4em;
 	display:block;
 	cursor:pointer;

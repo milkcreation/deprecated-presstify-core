@@ -196,8 +196,8 @@ class Field
 	public function getIndex()
 	{
 		return $this->Index;	
-	}	
-	
+	}
+		
 	/** == Récupération d'un attribut de champ == **/
 	public function getAttr( $attr = 'ID' )
 	{		
@@ -430,6 +430,12 @@ class Field
 	public function getOption( $option, $default = '' )
 	{
 		return $this->type()->getOption( $option, $default );
+	}
+	
+	/** == Définition d'une option == **/
+	public function setOption( $option, $value )
+	{		
+		return $this->type()->setOption( $option, $value );
 	}
 	
 	/* = AFFICHAGE = */	

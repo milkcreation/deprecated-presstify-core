@@ -18,7 +18,7 @@ class ContentHook extends Helpers
 	{
 		if( ! $post = get_post( $post ) )
 			return;
-		
+			
 		return( isset( Admin::$Registered[$hook_id]['selected'] ) && ( Admin::$Registered[$hook_id]['selected'] === $post->ID ) );
 	}
 	

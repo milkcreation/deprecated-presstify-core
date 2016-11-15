@@ -40,7 +40,7 @@ class CustomType extends Core
 	final public function register_taxonomy()
 	{		
 		do_action( 'tify_custom_taxonomy_register' );
-		
+
 		foreach( (array) self::$Taxonomies as $taxonomy => $args ) :
 			$args = $this->ParseTaxonomyAttrs( $taxonomy, $args );
 			extract( $args );	 		
