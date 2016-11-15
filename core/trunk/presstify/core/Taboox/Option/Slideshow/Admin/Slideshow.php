@@ -302,7 +302,7 @@ class Slideshow extends Admin
 	{				
 		$args = array( 
 			'post_id' 		=> $_POST['post_id'], 
-			'title'			=> get_the_title( $_POST['post_id'] ), 
+			'title'			=> get_the_title( $_POST['post_id'] ),
 			'caption' 		=> apply_filters( 'the_excerpt', get_post_field( 'post_excerpt', $_POST['post_id'] ) ),
 			'clickable' 	=> $_POST['post_id'] ? 1 : 0,
 			'order' 		=> $_POST['order'] 
