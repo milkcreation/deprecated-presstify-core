@@ -41,6 +41,10 @@
     -moz-transform: translateY(-50%);
     -o-transform: translateY(-50%);
     transform: translateY(-50%);
+    max-height: 100%;
+    max-width: 100%;
+    width: auto !important;
+    height: auto;
 }
 [data-tify_control='dropdown_images'] > .selected > .selection > input{
 	display:none;
@@ -94,17 +98,31 @@
 	float:left;
 }
 .dropdown_images-picker > ul > li > ul > li > label{
-	display: table;
-	width:100%;
-	height:100%;
-	table-layout: fixed;
+	position: relative;
+	display: block;
+	width: 100%;
+	height: 100%;
 	background-color:#FFF;
-	margin:0;
-	text-align:center;
 }
 .dropdown_images-picker > ul > li > ul > li > label > .selection{
-	display: table-cell;
-	vertical-align: middle;
+	position: relative;
+	display: block;
+	height: 100%;
+}
+.dropdown_images-picker > ul > li > ul > li > label > .selection > img{
+	position: absolute;
+	display: block;
+	top: 50%;
+	left: 50%;
+	-ms-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    transform: translate(-50%,-50%);
+	max-height: 100%;
+    max-width: 100%;
+    width: auto !important;
+    height: auto;
 }
 .dropdown_images-picker > ul > li > ul > li > label:hover{
 	background-color:#F4F4F4;
