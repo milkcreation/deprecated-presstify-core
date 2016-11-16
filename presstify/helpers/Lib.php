@@ -10,9 +10,9 @@ namespace
 	}
 	
 	/** == Création d'une modale == **/
-	function tify_modal( $args = array() )
+	function tify_modal( $args = array(), $echo = true  )
 	{
-		return tiFy\Lib\Modal\Modal::display( $args );
+		return tiFy\Lib\Modal\Modal::display( $args, $echo );
 	}
 	
 	/** == Création d'un contrôleur d'affichage d'une modale video == **/
@@ -22,7 +22,7 @@ namespace
 	}
 	
 	/** == Création d'une modale vidéo == **/
-	function tify_modal_video( $args = array() )
+	function tify_modal_video( $args = array(), $echo = true  )
 	{
 		return tiFy\Lib\Modal\Video::display( $args, $echo );
 	}

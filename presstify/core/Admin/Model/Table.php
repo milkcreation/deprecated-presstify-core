@@ -388,7 +388,8 @@ abstract class Table extends \WP_List_Table
 						'option' => $this->PerPageOptionName
 				)
 			);
-				
+		//var_dump( $_REQUEST );
+			//exit;	
 		// Traitement
 		/// Exécution des actions
 		$this->process_bulk_actions();
@@ -499,7 +500,7 @@ abstract class Table extends \WP_List_Table
 				$row_actions[$action] = \tiFy\Core\Admin\Helpers::RowActionLink( $action, $args );
 			endif;
 		endforeach;		
-				
+			
 		return $row_actions;		
 	}
 	

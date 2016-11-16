@@ -194,6 +194,7 @@ class Helpers
 			'referer'				=> true
 		);
 		$args = wp_parse_args( $args, $defaults );
+		
 		extract( $args );
 	
 		// Traitement des arguments

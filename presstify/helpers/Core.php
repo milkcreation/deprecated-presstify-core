@@ -227,6 +227,14 @@ namespace
 		return tiFy\Core\Options\Options::registerNode( $node );
 	}
 	
+	// --------------------------------------------------------------------------------------------------------------------------	
+	/* = PARAMS = */
+	/** == Définition dynamique de paramètre == **/
+	function tify_params_set( $type, $param, $value  )
+	{
+		return tiFy\Core\Params::set( $type, $param, $value );
+	}
+	
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = SCRIPT LOADER = */		
 	/** == Déclaration / Modification d'un script JavaScript == **/

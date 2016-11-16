@@ -19,6 +19,7 @@ jQuery( document ).ready( function($){
 	);
 
 	var $table = $( '.wp-list-table' );
+	var filters = {}
 	AjaxListTable = $table
 		.DataTable({
 			// Activation de l'indicateur de chargement 
@@ -32,7 +33,7 @@ jQuery( document ).ready( function($){
 	        {
 	    	   url: 		tify_ajaxurl,
 	    	   data: 		function ( d ) {
-	    	    	d = $.extend( d, tiFyCoreAdminAjaxListTable.data );
+	    	    	d = $.extend( d, filters, tiFyCoreAdminAjaxListTable.data );
 
 	    	        return d;
 	    	    },
@@ -86,6 +87,23 @@ jQuery( document ).ready( function($){
 	    				
 	    			return false;
 	    		});
+	    		
+	    		// Filtrage
+	    		$( '#table-filter' ).submit( function(e){
+	    			e.preventDefault();
+	    			
+	    			filters = {};
+	    	
+	    			$.each( $( this ).serializeArray(), function(u,v){
+	    				if( ( v.name === '_wpnonce' ) || ( v.name === '_wp_http_referer' ) || ( v.name === 's' )  || ( v.name === 'paged' )  )
+	    					return true;
+    					filters[v.name] = v.value;
+    				});
+	    			
+	    			AjaxListTable.draw(true);
+	    			
+	    			return false;
+	    	    });
 	    		
 	    		// Pagination
 	    		$( document ).on( 'click', '.tablenav-pages a', function(e){

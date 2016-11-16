@@ -81,11 +81,13 @@ class Params extends App
 		endif;
 
 		tiFy::$Params = compact( array_keys( $attrs ) );
-
+				
 		// Chargement du thème
 		if( ( $namespace = tiFy::getConfig( 'namespace' ) ) && ( $base_dir = tiFy::getConfig( 'base_dir' ) ) ) :
 			tiFy::classLoad( $namespace, $base_dir, tiFy::getConfig( 'bootstrap', false ) );
 		endif;
+		
+		do_action( 'tify_params_set' );
 		
 		do_action( 'after_setup_tify' );		
 	}
@@ -145,6 +147,13 @@ class Params extends App
 		array_walk_recursive( $input, array( __CLASS__, '_pregReplacePHP' ) );
 
 		return $input;
+	}
+	
+	/* = = */
+	public static function set( $type, $params, $value )
+	{
+		if( isset( tiFy::$Params[$type] ) )
+			tiFy::$Params[$type][$params] = $value;
 	}
 	
 	/** == Remplacement du code PHP par sa valeur == **/
