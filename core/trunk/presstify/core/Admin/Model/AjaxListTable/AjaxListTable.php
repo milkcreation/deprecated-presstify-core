@@ -1,9 +1,7 @@
 <?php 
 namespace tiFy\Core\Admin\Model\AjaxListTable;
 
-use tiFy\Core\Admin\Model\Table;
-
-class AjaxListTable extends Table
+class AjaxListTable extends \tiFy\Core\Admin\Model\Table
 {	
 	/* = INITIALISATION DES PARAMETRES = */
 	/** == Initialisation de l'url de la page d'administration == **/

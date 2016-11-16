@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Environment;
 
-use \tiFy\Environment\App;
 use \tiFy\tiFy;
 
-abstract class Config extends App
+abstract class Config extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Nom d'appel
@@ -51,13 +50,13 @@ abstract class Config extends App
 	/** == Définition de la configuration == **/
 	protected function initConfig()
 	{
-		$filename = $this->Dirname .'/config/config.yml';
+		$filename = self::getDirname() .'/config/config.yml';
 		$class = get_called_class();
 		
 		self::$DefaultConfig[$class] = ( file_exists( $filename ) ) ? \tiFy\Core\Params::parseAndEval( $filename ) : array();
-
+		
 		// Configuration personnalisée
-		if( ! empty( tiFy::$Params[$this->SubDir][$this->ClassName] ) ) :		
+		if( ! empty( tiFy::$Params[$this->SubDir][$this->ClassName] ) ) :			
 			return self::$Config[$class] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->ClassName], self::$DefaultConfig[$class] );			
 		elseif( preg_match( '/'. preg_quote( $this->Namespace, '\\' ) .'/', $this->ClassName )	&& ! empty( tiFy::$Params[$this->SubDir][$this->ClassShortName] ) ) :
 			return self::$Config[$class] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->ClassShortName], self::$DefaultConfig[$class] );				

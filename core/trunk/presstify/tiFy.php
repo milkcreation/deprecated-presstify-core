@@ -75,9 +75,8 @@ final class tiFy
 	{
 		if( empty( tiFy::$Params['plugins'] ) )
 			return;
-
+						
 		foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
-			
 			if( class_exists( $plugin ) ) :
 				$ClassName	= $plugin;
 			elseif( class_exists( "tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
@@ -85,7 +84,15 @@ final class tiFy
 			else :
 				continue;
 			endif;
-
+			
+			/** 
+			 * @todo
+			$Override = tiFy::$Params['config']['namespace'] ."\\". $ClassName;
+			if( class_exists( $Override ) && is_subclass_of( $Override, $ClassName ) ) :
+				$ClassName = $Override;
+			endif;
+			 */
+			
 			new $ClassName;			
 		endforeach;
 	}
