@@ -124,8 +124,8 @@ class CustomType extends Core
 			foreach( (array) $terms as $slug => $name ) :
 				if( ! $term = get_term_by( 'slug', $slug, $taxonomy ) ) :
 					wp_insert_term( $name, $taxonomy, array( 'slug' => $slug ) );
-				elseif( $term->name !== $name ) :
-					wp_update_term( $term->term_id, $taxonomy, array( 'name' => $name ) );
+				/*elseif( $term->name !== $name ) :
+					wp_update_term( $term->term_id, $taxonomy, array( 'name' => $name ) );*/
 				endif;
 			endforeach;
 		endforeach;
