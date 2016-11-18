@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Lib\Modal;
 
-use tiFy\Environment\App;
-
-class Modal extends App
+class Modal extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	/** == CONFIGURATION == **/
@@ -108,9 +106,11 @@ class Modal extends App
 		$output .= $args['text'];
 		$output .= "</a>";		
 		
+		$classname = get_called_class();
+		
 		add_action( 
 			'wp_footer', 
-			function() use( $args )
+			function() use( $args, $classname )
 			{	
 				$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
 				if( $modal_attrs === false )
@@ -118,8 +118,8 @@ class Modal extends App
 				$modal_attrs['target'] = $args['target'];				
 				if( ! isset( $modal_attrs['options']['show'] ) )
 					$modal_attrs['options']['show'] = false;
-				
-				return static::display( $modal_attrs );	
+
+				return $classname::display( $modal_attrs );
 			},
 			0
 		);

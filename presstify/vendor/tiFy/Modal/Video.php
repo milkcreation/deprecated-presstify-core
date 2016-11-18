@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Lib\Modal;
 
-use tiFy\Lib\Modal\Modal;
-
-class Video extends Modal
+class Video extends \tiFy\Lib\Modal\Modal
 {	
 	/* = ARGUMENT = */
 	private static $defaultVideoAttrs = array(
@@ -41,14 +39,14 @@ class Video extends Modal
 			$args['modal']['attrs']['data-type']	= 'video';
 			$args['modal']['attrs']['data-video'] 	= htmlentities( json_encode( wp_parse_args( $args['video'], self::$defaultVideoAttrs ) ) );
 		endif;
-			
+					
 		return parent::toggle( $args, $echo );
 	}
 	
 	/* = Affichage de la fenêtre de dialogue = */
 	public static function display( $args = array(), $echo = true )
 	{
-		$url = plugin_dir_url( __FILE__ ). 'Video.min.js';
+		$url = self::getUrl( get_class() ). '/Video.min.js';
 		add_action( 
 			'wp_footer', 
 			function() use ($url){
