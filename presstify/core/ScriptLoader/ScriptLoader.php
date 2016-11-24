@@ -131,9 +131,9 @@ class ScriptLoader extends App
 			),
 			
 			// Image Lightbox
-			'imagelightbox'				=> array(
+			'imageLightbox'				=> array(
 				'src'           => array(
-					'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imagelightbox.min.js',
+					'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/imageLightbox.min.js',
 				),
 				'deps'          => array( 'jquery' ),
 				'version'       => '160902',
