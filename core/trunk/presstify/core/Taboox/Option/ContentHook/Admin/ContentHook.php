@@ -29,7 +29,6 @@ class ContentHook extends Admin
 	/* = FORMULAIRE DE SAISIE = */
 	public function form()
 	{
-		
 	?>
 	<table class="form-table">
 		<tbody>
@@ -44,13 +43,13 @@ class ContentHook extends Admin
 							'post_type' 		=> $args['post_type'],
 							'selected' 			=> $args['selected'],
 							'sort_column' 		=> $args['listorder'],
-							'show_option_none' 	=> __( 'Aucune page choisie', 'tify' )								
+							'show_option_none' 	=> $args['show_option_none']							
 						)
 					);				
 				?>	
 				</td>
 			</tr>
-		<?php endforeach;?>			
+		<?php endforeach;?>
 		</tbody>
 	</table>
 	<?php		
@@ -61,11 +60,12 @@ class ContentHook extends Admin
 	private function Register( $id, $args )
 	{
 		$defaults = array(
-			'title'			=> $id,
-			'post_type'		=> 'page',
-			'name'			=> 'tify_content_hook_'. $id,
-			'selected'		=> 0,
-			'listorder'		=> 'menu_order, title' 
+			'title'				=> $id,
+			'post_type'			=> 'page',
+			'name'				=> 'tify_content_hook_'. $id,
+			'selected'			=> 0,
+			'listorder'			=> 'menu_order, title',
+			'show_option_none'	=> __( 'Aucune page choisie', 'tify' )
 		);
 		$args = wp_parse_args( $args, $defaults );
 		
