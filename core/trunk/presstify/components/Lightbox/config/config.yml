@@ -18,3 +18,5 @@ keyboard:         true
 overlay_close:    false
 # Vitesse d'animation des images
 animation_speed:  250
+# Liste des contextes d'execution
+context:          ['gallery','article']

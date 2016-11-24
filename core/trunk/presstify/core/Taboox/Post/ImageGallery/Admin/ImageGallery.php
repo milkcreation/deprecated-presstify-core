@@ -41,7 +41,7 @@ class ImageGallery extends Admin
 	?>
 	<div class="taboox_image_gallery">
 		<ul id="taboox_image_gallery-list" class="taboox_image_gallery-list thumb-list">			
-		<?php foreach( (array) get_post_meta( $post->ID, $name, true ) as $attachment_id ) $this->item_render( $attachment_id, $name, $taboox_image_gallery_order++ ); ?>	
+		<?php foreach( (array) get_post_meta( $post->ID, $name, true ) as $attachment_id ) $this->item_render( $attachment_id, $name, ++$taboox_image_gallery_order ); ?>	
 		</ul>
 		<a href="#" class="taboox_image_gallery-add button-secondary" 
 			data-name="<?php echo $name;?>" 

@@ -10,9 +10,10 @@ class Video
 	{
 		// Actions et Filtres Wordpress
 		add_action( 'wp_head', array( $this, 'wp_head' ) );
-		add_filter( 'embed_oembed_html', array( $this, 'wp_embed_oembed_html' ), 10, 4 );		
-		add_filter( 'wp_video_extensions', array( $this, 'wp_video_extensions' ) );		
-		add_filter( 'oembed_result', array( $this, 'wp_oembed_result' ), 10, 3 );
+		add_filter( 'embed_oembed_html', array( $this, 'embed_oembed_html' ), 10, 4 );		
+		add_filter( 'wp_video_extensions', array( $this, 'wp_video_extensions' ) );
+		add_filter( 'oembed_fetch_url', array( $this, 'oembed_fetch_url' ), 10, 3 );
+		add_filter( 'oembed_result', array( $this, 'oembed_result' ), 10, 3 );
 	}	
 		
 	/* = DECLENCHEURS = */
@@ -23,7 +24,7 @@ class Video
 	}
 		
 	/** == Encapsulation des vidéo intégrées == **/
-	final public function wp_embed_oembed_html( $html, $url, $attr, $post_ID )
+	final public function embed_oembed_html( $html, $url, $attr, $post_ID )
 	{
 	    $return = '<div class="tify_video-embedded">'. $html .'</div>';
 	    return $return;
@@ -37,22 +38,59 @@ class Video
 	}
 	
 	/** == == **/
-	final public function wp_oembed_result( $html, $url, $args )
-	{		
-		if ( preg_match( '/^\<iframe.*src\=\"https\:\/\/www.youtube.com\/embed\/(.*)\?feature\=oembed.*\>\<\/iframe>$/', $html, $video_id ) === FALSE )
-			return $html;
-		if( empty( $video_id[1] ) )
-			return $html;
-			
+	final public function oembed_fetch_url( $provider, $url, $args )
+	{
+		if( ! preg_match( '/^https\:\/\/vimeo.com/', $url ) )
+			return $provider;
+		
+		/** 
+		 * @see https://developer.vimeo.com/apis/oembed 
+		 **/
+		// Lecture automatique	
 		if( ! empty( $args['autoplay'] ) )
-			$html = preg_replace( '/\?feature\=oembed/', '?feature=oembed&autoplay=1', $html );
-		
+			$provider = add_query_arg( 'autoplay', 1, $provider );
+		// Boucle	
 		if( ! empty( $args['loop'] ) )
-			$html = preg_replace( '/\?feature\=oembed/', '?feature=oembed&loop=1&playlist='. $video_id[1], $html );
+			$provider = add_query_arg( 'loop', true, $provider );
 		
+		return $provider;
+	}
+		
+	/** == == **/
+	final public function oembed_result( $html, $url, $args )
+	{		
+		/**
+		 * PARAMETRES DES VIDEOS YOUTUBE
+		 * @see https://developers.google.com/youtube/player_parameters#Parameters
+		 */
+		if ( preg_match( '/^\<iframe.*src\=\"https\:\/\/www.youtube.com\/embed\/(.*)\?feature\=oembed.*\>\<\/iframe>$/', $html, $matches ) === FALSE )
+			return $html;
+		if( empty( $matches[1] ) )
+			return $html;
+		$video = $matches[1];
+			
+		if ( preg_match( '/^\<iframe.*src\=\"([^"\']*)\".*\>\<\/iframe>$/', $html, $matches ) === FALSE )
+			return $html;
+		if( empty( $matches[1] ) )
+			return $html;
+		
+		$ori = $src	= $matches[1];
+		
+		// Lecture automatique
+		if( ! empty( $args['autoplay'] ) )
+			$src = add_query_arg( 'autoplay', 1, $src ); 
+		// Boucle	
+		if( ! empty( $args['loop'] ) )
+			$src = add_query_arg( array( 'loop' => 1, 'playlist' => $video ), $src );
+		// Vidéo en relation à la fin
 		if( isset( $args['rel'] ) )
-			$html = preg_replace( '/\?feature\=oembed/', '?feature=oembed&rel='. $args['rel'], $html );
-
+			$src = add_query_arg( 'rel', (int) $args['rel'], $src );
+		
+		// Modification de l'iFrame de sortie	
+		if( $src !== $ori )	:	
+			$html = preg_replace( '/'. preg_quote( $ori, '/' ) .'/', $src, $html );	
+		endif;
+			
     	return $html;
 	}
 		

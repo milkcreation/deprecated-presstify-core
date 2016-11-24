@@ -10,7 +10,7 @@ class Video extends \tiFy\Lib\Modal\Modal
 		// Couverture de la vidéo	
 		'poster'   	=> '',
 		'loop'     	=> '',
-		'autoplay' 	=> '',
+		'autoplay' 	=> 0,
 		'preload'  	=> 'metadata',
 		'width'    	=> '100%',
 		'height'   	=> '100%',
@@ -46,14 +46,16 @@ class Video extends \tiFy\Lib\Modal\Modal
 	/* = Affichage de la fenêtre de dialogue = */
 	public static function display( $args = array(), $echo = true )
 	{
-		$url = self::getUrl( get_class() ). '/Video.min.js';
-		add_action( 
-			'wp_footer', 
-			function() use ($url){
-			?><script type="text/javascript" src="<?php echo $url;?>"></script><?php
-			},
-			100000
-		);
+		if( ! self::$Instance ) :
+			$url = self::getUrl( get_class() ). '/Video.js';
+			add_action( 
+				'wp_footer', 
+				function() use ($url){
+				?><script type="text/javascript" src="<?php echo $url;?>"></script><?php
+				},
+				1
+			);
+		endif;
 		
 		$output = parent::display( $args, false );		
 		

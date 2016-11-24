@@ -47,7 +47,7 @@ class Modal extends \tiFy\Environment\App
 	);
 	
 	// Instance
-	private static $Instance; 
+	protected static $Instance; 
 	
 	/* = Traitement des attributs du lien de déclenchement = */
 	private static function parseToggleAttrs( $args = array() )
@@ -211,14 +211,14 @@ class Modal extends \tiFy\Environment\App
 		$output .= "</div>\n";
 					
 		// Script
-		if( ! self::$Instance ++ ) :
+		if( ! self::$Instance++ ) :
 			$url = self::getUrl(). '/Modal.min.js';
 			add_action( 
 				'wp_footer', 
 				function() use( $url){
-				?><script type="text/javascript">/* <![CDATA[ */jQuery(document).ready(function($){$.getScript('<?php echo $url;?>',function(){$('[data-role="tiFyModal"]').each(function(){$(this).modal();});$(document).on( 'click','[data-toggle="tiFyModal"]',function(e){e.preventDefault();$('[data-id="'+$(this).data('target')+'"]').modal('show');});});});/* ]]> */</script><?php
+				?><script type="text/javascript" src="<?php echo $url;?>"></script><script type="text/javascript">/* <![CDATA[ */jQuery(document).ready(function($){$('[data-role="tiFyModal"]').each(function(){$(this).modal();});$(document).on( 'click','[data-toggle="tiFyModal"]',function(e){e.preventDefault();$('[data-id="'+$(this).data('target')+'"]').modal('show');});});/* ]]> */</script><?php
 				},
-				99999
+				1
 			);
 		endif;
 		

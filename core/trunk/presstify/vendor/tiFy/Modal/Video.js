@@ -5,7 +5,7 @@ jQuery(document).ready(function($){
 		
 		if( attr.poster )
 			$( '.modal-body', $modal ).html( '<img src="'+ attr.poster +'" class="img-responsive"/>' );		
-		
+
 		$.post( 
 			tify_ajaxurl, 
 			{ action : 'tiFyVideoGetEmbed', 'attr' : attr }, 
