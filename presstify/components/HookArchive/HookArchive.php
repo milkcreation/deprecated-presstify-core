@@ -262,6 +262,37 @@ final class HookArchive extends Component
 		return $sorted_menu_items;
 	}
 	
+	/** == == **/
+	public static function getRegistered( $object_type = null, $type = null )
+	{
+		if( ! empty( $object_type ) ) :
+			if( ! isset( self::$Hooks[$object_type] ) ) :
+				return false;
+			elseif(  ! empty( $type ) ) :
+				if( ! isset( self::$Hooks[$object_type][$type] ) ) :
+					return false;
+				else :
+					return self::$Hooks[$object_type][$type];
+				endif;
+			else :
+				return self::$Hooks[$object_type];
+			endif;		
+		else:
+			return self::$Hooks;
+		endif;
+				
+		return false;
+	}
+
+	/** == == **/
+	public static function getHooks( $object_type, $type )
+	{
+		if( ! $registered = self::getRegistered( $object_type, $type ) )
+			return false;
+			
+		return $registered->GetHooks();	
+	}
+	
 	// Récupére le contenu d'accroche d'un post
 	public static function GetPostHook( $post = null, $permalink = true )
 	{
@@ -351,9 +382,10 @@ final class HookArchive extends Component
 							if( $hook_obj = get_post( $_hook['id'] ) )
 								array_push( $hooks, $hook_obj );
 						break;
-					case 'taxonomy' :							
+					case 'taxonomy' :	
 							if( ! is_object_in_taxonomy( $post_type, $archive ) )
 								continue 2;
+								
 							$_hooks = $Class->GetHooks();
 							foreach( $_hooks as $_hook ) :								
 								if( $permalink && ! $_hook['permalink'] )
@@ -374,7 +406,7 @@ final class HookArchive extends Component
 		
 		return $hooks;
 	}
-	
+		
 	/** == == **/
 	public static function getPermalinkStructure( $type, $object_type = 'post' /* post | taxonomy */ )
 	{

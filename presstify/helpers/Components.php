@@ -133,6 +133,18 @@ namespace
 		return tiFy\Components\HookArchive\HookArchive::Register( $hook );
 	}
 	
+	/** ==  == **/
+	function tify_hookarchive_get_registered( $objet_type = null, $type = null )
+	{
+		return tiFy\Components\HookArchive\HookArchive::getRegistered( $objet_type, $type );
+	}
+	
+	/** ==  == **/
+	function tify_hookarchive_get_hooks( $objet_type, $type )
+	{
+		return tiFy\Components\HookArchive\HookArchive::getHooks( $objet_type, $type );
+	}
+	
 	/** == Récupére le contenu d'accroche d'un post == **/
 	function tify_hookarchive_get_post_hook( $post = null )
 	{
