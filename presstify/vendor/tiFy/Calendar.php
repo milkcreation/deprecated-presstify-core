@@ -129,7 +129,7 @@ class Calendar
 		if( ! $text )
 			$text = $this->get_label( 'nav', 'prev' );
 			
-		return "<a href=\"#\" data-toggle=\"". $this->prev->format( 'Y-m-d' ) ."\">{$text}</a>";
+		return "<a href=\"#\" data-toggle=\"". $this->prev->format( 'Y-m' ) ."\">{$text}</a>";
 	}
 	
 	/** == Bouton d'affichage du mois suivant == **/
@@ -138,7 +138,7 @@ class Calendar
 		if( ! $text )
 			$text = $this->get_label( 'nav', 'next' );		
 		
-		return "<a href=\"#\" data-toggle=\"". $this->next->format( 'Y-m-d' ) ."\">{$text}</a>";
+		return "<a href=\"#\" data-toggle=\"". $this->next->format( 'Y-m' ) ."\">{$text}</a>";
 	}
 	
 	/** == Affichage du mois courant == **/
