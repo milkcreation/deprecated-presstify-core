@@ -44,7 +44,8 @@ class Suggest extends Factory
 			// Options Autocomplete
 			/** @see http://api.jqueryui.com/autocomplete/ **/
 			'options'		=> array(
-				'appendTo'	=> ( isset( $args['id'] ) ) ? '#'.$args['id'] .'_response' : '#tify_control_suggest-'. $instance .'_response',
+				//( isset( $args['id'] ) ) ? '#'.$args['id'] .'_response' : '#tify_control_suggest-'. $instance .'_response',
+				'appendTo'	=> 'body',
 				'minLength'	=> 2
 			),
 			// Classe de la liste de selection	
@@ -129,7 +130,7 @@ class Suggest extends Factory
 			$query_args['post_type'] = 'any';
 		$query_args['s'] = $term;
 
-			// Récupération des posts
+		// Récupération des posts
 		$query_post = new \WP_Query( $query_args );
 
 		while( $query_post->have_posts() ) : $query_post->the_post();
