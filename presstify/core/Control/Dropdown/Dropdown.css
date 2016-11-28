@@ -63,7 +63,7 @@
 [data-tify_control='dropdown-picker']{
 	position:absolute;
 	display:none;
-	overflow:hidden;
+	overflow-y:auto;
 	z-index:99;
 	background-color:#FFF;
 	margin:0;
@@ -78,8 +78,7 @@
 	position:relative;
 	height:100%;
 	margin:0; padding:0;
-	overflow: auto;
-    width: calc( 100% + 15px );
+    width: 100%;
 }
 [data-tify_control='dropdown-picker'] > ul > li{
 	margin:0; padding:0.1em 0.4em;
