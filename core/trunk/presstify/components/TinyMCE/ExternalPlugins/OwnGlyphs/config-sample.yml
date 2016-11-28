@@ -5,5 +5,5 @@ dependencies  : []
 prefix        : ''
 'font-family' : 'fontAwesome'
 button        : 'wordpress'
-title         : <?php __( '', 'tify' );?>,
+title         :	''
 cols          : 32

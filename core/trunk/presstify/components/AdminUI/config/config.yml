@@ -3,6 +3,7 @@ admin_bar_menu_logo :
 
 # Nettoyage des entrées de menu de la barre d'administration
 remove_admin_bar_menu:
+
 # ex : [ 'wp_logo', 'about', 'wporg', 'documentation', 'support-forums', 'feedback', 'site-name', 'view-site', 'updates', 'comments', 'new-content', 'my-account', 'disable_post', 'disable_post_category', 'disable_post_tag', 'disable_comment' ]
 
 #-------------------------------------------------------------------------------------------------------
@@ -24,10 +25,12 @@ unregister_widget:
 # Suppression de support  
 ## Suppression de support des propriétés d'articles
 remove_support_post:
+
 # ex: [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'post-formats' ]
 
 ## Suppression de support des propriétés de page
 remove_support_page:
+
 # ex: [ 'title', 'editor', 'author', 'thumbnail', 'page-attributes', 'custom-fields', 'comments', 'revisions' ]
 
 ## Suppression de support des propriétés d'un type de post personnalisé (%%custom_post_type%%)
@@ -37,15 +40,18 @@ remove_support_page:
 # Suppression des boîtes de saisie
 ## Suppression des boîtes de saisie du tableau de bord
 remove_dashboard_meta_box:
+
 # ex: [ 'recent_comments', 'incoming_links', 'plugins', 'recent_drafts', 'activity', 'primary', 'secondary' ]
 
 ## Suppression des boîtes de saisie des articles
 remove_meta_box_post:
+
 # ex: [ 'authordiv', 'categorydiv', 'commentstatusdiv', 'commentsdiv', 'formatdiv', 'postcustom', 'postexcerpt', 'postimagediv', 'revisionsdiv', 'slugdiv', 'submitdiv', 'tagsdiv-post_tag', 'trackbacksdiv' ]
 # alt: { authordiv: 'normal', categorydiv: 'side', commentstatusdiv: 'normal', commentsdiv: 'normal', formatdiv: 'normal', postcustom: 'normal', postexcerpt: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side', tagsdiv-post_tag: 'side', trackbacksdiv: 'normal' }
 
 ## Suppression des boîtes de saisie des pages
 remove_meta_box_page:
+
 # ex: [ 'authordiv', 'commentstatusdiv', 'commentsdiv', 'pageparentdiv', 'postcustom', 'postimagediv', 'revisionsdiv', 'slugdiv', 'submitdiv' ]
 # alt: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
 
