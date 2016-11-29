@@ -73,5 +73,9 @@ disable_post_category:    false
 disable_post_tag:         false
 
 #-------------------------------------------------------------------------------------------------------
+# Désactivation de taxonomy pour un type de post personnalisé
+#unregister_taxonomy_for_%%custom_post_type%% : [ 'taxonomy1', 'taxonomy2' ]
+
+#-------------------------------------------------------------------------------------------------------
 # Désactivation des articles
 disable_post:             false

@@ -13,7 +13,7 @@ final class Taxonomy extends Factory
 		
 		add_action( 'registered_taxonomy', array( $this, 'registered_taxonomy' ), 10, 3 );
 		add_action( 'init', array( $this, 'init' ), 9999 );
-		add_action( 'admin_menu', array( $this, 'remove_meta_box' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 99 );		
 		add_action( 'edit_form_top', array( $this, 'edit_form_top' ), 10 );
 		add_filter( 'term_link', array( $this, 'term_link' ), 10, 3 );
 		add_filter( 'post_type_link', array( $this, 'post_type_link' ), 10, 4 );
@@ -95,11 +95,12 @@ final class Taxonomy extends Factory
 	}
 	
 	/** == Nettoyage des metaboxe == **/
-	final public function remove_meta_box()
+	final public function add_meta_boxes()
 	{
 		foreach( (array) $this->GetHooks() as $hook ) :	
 			foreach( (array) $hook['permalink'] as $post_type ) :
-				remove_meta_box( 'tagsdiv-'. $this->Archive, $post_type, true );
+				remove_meta_box( 'tagsdiv-'. $this->Archive, $post_type, 'side' );
+				remove_meta_box(  $this->Archive .'div', $post_type, 'side' );
 			endforeach;
 		endforeach;
 	}

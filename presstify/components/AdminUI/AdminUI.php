@@ -12,6 +12,7 @@ class AdminUI extends Component
 		'init',
 		'widgets_init',
 		'admin_menu',
+		'add_meta_boxes',
 		'admin_bar_menu',
 		'admin_footer_text',
 		'wp_before_admin_bar_render'
@@ -20,6 +21,8 @@ class AdminUI extends Component
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
 		'init' 				=> 99,
+		'admin_menu'		=> 99,
+		'add_meta_boxes'	=> 99,
 		'admin_bar_menu'	=> 11
 	);
 		
@@ -64,6 +67,7 @@ class AdminUI extends Component
 	final public function init()
 	{
 		$this->remove_support_post_type();
+		$this->unregister_taxonomy_for_object_type();
 	}
 
 	/** == Initialisation des widgets == **/
@@ -76,8 +80,13 @@ class AdminUI extends Component
 	final public function admin_menu()
 	{
 		 $this->remove_menu();
-		 $this->remove_dashboard_meta_box();
-		 $this->remove_meta_box_post_type();
+		 $this->remove_dashboard_meta_box();		 
+	}
+	
+	/** == == **/
+	final public function add_meta_boxes()
+	{
+		$this->remove_meta_box_post_type();
 	}
 	
 	/** == Personnalisation du logo Wordpress de la barre d'administration == **/
@@ -224,6 +233,7 @@ class AdminUI extends Component
 				continue;
 			if( ! post_type_exists( $post_type[1] ) )
 				return;
+				
 			$post_type = $post_type[1];	
 			
 			foreach( (array) self::getConfig( $config ) as $metabox => $context ) :
@@ -347,5 +357,22 @@ class AdminUI extends Component
 		endif;
 		
 		unregister_taxonomy_for_object_type( 'post_tag', 'post' );
-	}	
+	}
+	
+	/** == == **/
+	final public function unregister_taxonomy_for_object_type()
+	{
+		global $wp_taxonomies;
+		foreach( array_keys( self::getConfig() ) as $config ) :
+			if( ! preg_match( '/^unregister_taxonomy_for_(.*)/', $config, $post_type ) )
+				continue;
+			if( ! post_type_exists( $post_type[1] ) )
+				continue;
+			if( ! $taxonomies = self::getConfig( 'unregister_taxonomy_for_'. $post_type[1] ) )
+				continue;
+			foreach( $taxonomies as $taxonomy )
+				unregister_taxonomy_for_object_type( $taxonomy, $post_type[1] );			
+				
+		endforeach;
+	}
 }
