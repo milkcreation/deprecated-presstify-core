@@ -697,27 +697,6 @@ if ( !function_exists( 'has_taxonomy_for_object_type' ) ) {
 }
 
 /**
- * Suppression d'une taxonomie pour un type de post
- */
-if ( !function_exists('unregister_taxonomy_for_object_type') ) :
-function unregister_taxonomy_for_object_type( $taxonomy, $object_type) {
-	global $wp_taxonomies;
-	if( $key = has_taxonomy_for_object_type( $taxonomy, $object_type) ) :
-	if( isset( $wp_taxonomies[$taxonomy]->object_type[ $key ] ) ) :
-	unset( $wp_taxonomies[$taxonomy]->object_type[ $key ] );
-	elseif( ( isset( $wp_taxonomies[$taxonomy]->object_type[0] ) ) && ( $wp_taxonomies[$taxonomy]->object_type[0] === $object_type ) ) :
-	unset( $wp_taxonomies[$taxonomy]->object_type[ 0 ] );
-	else :
-	return false;
-	endif;
-	return true;
-	endif;
-
-	return false;
-}
-endif;
-
-/**
  * Load a template part into a template
  *
  */
