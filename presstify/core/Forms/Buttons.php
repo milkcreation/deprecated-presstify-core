@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
-class Buttons
+final class Buttons
 {
 	/* = ARGUMENTS = */
 	// Configuration
@@ -19,7 +19,7 @@ class Buttons
 	public static function init()
 	{
 		foreach( (array) self::$Predefined as $id => $name ) :
-			self::register( $id, "\\tiFy\\Core\\Forms\\Buttons\\{$name}\\{$name}" );
+			self::register( $id, self::getClass( $id ) );
 		endforeach;
 	}
 	
@@ -44,5 +44,13 @@ class Buttons
 		$item->init( $form, $attrs );
 		
 		return $item;			
+	}
+	
+	/* = CONTRÔLEUR = */
+	/** == Récupération de la classe de rappel == **/
+	public static function getClass( $id )
+	{
+		if( isset( self::$Predefined[$id] ) )
+			return "\\tiFy\\Core\\Forms\\Buttons\\". self::$Predefined[$id] ."\\". self::$Predefined[$id];
 	}
 }

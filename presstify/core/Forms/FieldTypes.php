@@ -6,6 +6,7 @@ class FieldTypes
 	/* = ARGUMENTS = */
 	// Liste des addons prédéfinis
 	private static $Predefined					= array(
+		'button'				=> 'Button',
 		'checkbox'				=> 'Checkbox',
 		'dropdown'				=> 'Dropdown',
 		'file'					=> 'File',

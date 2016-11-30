@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Forms\Buttons\Submit;
 
-use tiFy\Core\Forms\Buttons\Factory;
-
-class Submit extends Factory
+class Submit extends \tiFy\Core\Forms\Buttons\Factory
 {
 	/* = ARGUMENTS = */
 	// Configuration

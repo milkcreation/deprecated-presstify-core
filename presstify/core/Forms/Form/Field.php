@@ -173,7 +173,7 @@ class Field
 	private function _setValue()
 	{
 		$value = $this->getAttr( 'value' );
-		
+
 		if( $this->getAttr( 'html' ) ) :
 			// @todo DEPRECATED à signifier
 			$value = $this->getAttr( 'html' );
@@ -196,6 +196,12 @@ class Field
 	public function getIndex()
 	{
 		return $this->Index;	
+	}
+	
+	/** == Récupération de la liste des attributs de champ == **/
+	public function getAttrs()
+	{		
+		return $this->Attrs;
 	}
 		
 	/** == Récupération d'un attribut de champ == **/
