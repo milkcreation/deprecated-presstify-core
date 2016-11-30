@@ -1,12 +1,11 @@
 <?php
 namespace tiFy\Core\Forms\Addons\Record;
 
-use \tiFy\Core\Admin\Model\ListTable\ListTable as tiFYCoreAdminModelListTable;
 use \tiFy\Core\Forms\Forms;
 use \tiFy\Core\Forms\Addons;
+use \tiFy\Core\Db\Db;
 
-
-class ListTable extends tiFYCoreAdminModelListTable
+class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 {
 	/* = ARGUMENTS = */
 	// 
@@ -28,6 +27,8 @@ class ListTable extends tiFYCoreAdminModelListTable
 		elseif( count( $this->activeForms ) === 1 ) :
 			$this->Form = current( $this->activeForms );
 		endif;	
+		
+		add_action( 'wp_ajax_tiFyCoreFormsAddonsRecordListTableInlinePreview', array( $this, 'wp_ajax' ) );
 	}
 	
 	/* = DECLARATION DES PARAMETRES = */
@@ -41,9 +42,9 @@ class ListTable extends tiFYCoreAdminModelListTable
 		
 		if( $this->Form ) :
 			foreach( $this->Form->fields() as $field ) :
-				if( ! $field->getAddonAttr( 'record', 'show_column', false ) )
+				if( ! $col = $field->getAddonAttr( 'record', 'column', false ) )
 					continue;
-				$cols[$field->getSlug()] = $field->getLabel();					
+				$cols[$field->getSlug()] = ( is_bool( $col ) || ! isset( $col['title'] ) ) ? $field->getLabel() : $col['title'];
 			endforeach;		
 		endif;
 			
@@ -53,13 +54,73 @@ class ListTable extends tiFYCoreAdminModelListTable
 	/** == Définition des actions sur un élément == **/
 	public function set_row_actions()
 	{
-		return array( 'delete' );
+		return array( 
+			'inline-preview' => array(
+				'title'	=> 	__( 'Aperçu de l\'élément', 'tify' ),
+				'label'	=> __( 'Afficher' ),
+				'class'	=> 'inline-preview'
+			),
+			'delete'
+		);
 	}
 	
 	/** == Définition des actions groupées == **/
 	public function set_bulk_actions()
 	{
 		return array( 'delete' => __( 'Supprimer' ) );
+	}
+	
+	/* = DECLENCHEURS = */
+	/** == Mise en file des scripts de l'interface d'administration == **/
+	public function admin_enqueue_scripts()
+	{
+		wp_enqueue_script( 'tiFyCoreFormsAddonsRecordListTable', self::getUrl( get_class() ) .'/ListTable.js', array( 'jquery'), '161130', true );
+	}
+	
+	/** == == **/
+	public function wp_ajax()
+	{
+		if( ! $item = $this->View->getDb()->select()->row_by_id( $_REQUEST['record_id'] ) )
+			wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
+				
+		if( ! $this->Form = Forms::get( $item->form_id ) )
+			wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) );	
+			
+		$output  = "";	
+		$output .= "\n<table class=\"form-table\">";
+		$output .= "\n\t<tbody>";					
+								
+		foreach( $this->Form->fields() as $field ) :
+			if( ! $preview = $field->getAddonAttr( 'record', 'preview', false ) )
+				continue;
+				
+			$label = ( is_bool( $preview ) || ! isset( $preview['label'] ) ) ? $field->getLabel() : $preview['title'];	
+				
+			$output .= "\n\t\t<tr valign=\"top\">";
+			if( $label ) :
+				$output .= "\n\t\t\t<th scope=\"row\">";
+				$output .= "\n\t\t\t\t<label><strong>{$label}</strong></label>";
+				$output .= "\n\t\t\t</th>";			
+				$output .= "\n\t\t\t<td>";
+			else :
+				$output .= "\n\t\t\t<td colspan=\"2\">";
+			endif;
+			
+			if( ! empty( $preview['cb'] ) && is_callable( $preview['cb'] ) ) :
+				$output .= call_user_func( $preview['cb'], $item );
+			elseif( method_exists( $this, 'preview_' . $field->getSlug() ) ) :
+				$output .= call_user_func( array( $this, 'preview_' . $field->getSlug() ), $item );
+			else :
+				$output .= $this->preview_default( $item, $field->getSlug() );
+			endif;
+			$output .= "\n\t\t\t</td>";
+		endforeach;
+		$output .= "\n\t</tbody>";
+		$output .= "\n</table>";
+		$output .= "\n<div class=\"clear\"></div>";
+				
+		echo $output;
+		exit;
 	}
 	
 	/* = TRAITEMENT = */
@@ -122,4 +183,68 @@ class ListTable extends tiFYCoreAdminModelListTable
 		
 		return $output;
 	}
+	
+	/** == Contenu de l'aperçu par défaut == **/
+	public function preview_default( $item, $column_name )
+	{
+		if( ! $field = $this->Form->getField( $column_name ) )
+			return;
+		$value = $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		
+		if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
+			$value = $choices[$value];
+		endif;
+		
+		return $value;		
+	}
+		
+	/** == == **/
+	public function inline_preview()
+	{
+		list( $columns, $hidden ) = $this->get_column_info();
+		$colspan = count($columns);
+	?>
+		<table style="display: none">
+			<tbody id="inlinepreview">
+				<tr style="display: none" class="inline-preview" id="inline-preview">
+					<td class="colspanchange" colspan="<?php echo $colspan;?>">
+						<h3><?php _e( 'Chargement en cours ...', 'tify' );?></h3>
+					</td>
+				</tr>	
+			</tbody>
+		</table>
+	<?php	
+	}
+	
+    /** == Rendu de la page  == **/
+    public function Render()
+    {
+    ?>
+		<div class="wrap">
+    		<h2>
+    			<?php echo $this->View->getLabel( 'all_items' );?>
+    			
+    			<?php if( $this->EditBaseUri ) : ?>
+    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->View->getLabel( 'add_new' );?></a>
+    			<?php endif;?>
+    			
+    			<?php if( $this->View->getModelAttrs( 'base_url', 'Import' ) ) : ?>
+    				<a class="add-new-h2" href="<?php echo $this->View->getModelAttrs( 'base_url', 'Import' );?>"><?php echo $this->View->getLabel( 'import_items' );?></a>
+    			<?php endif;?>
+    		</h2>
+    		
+    		<?php $this->views(); ?>
+    		<form method="get" action="">
+    			<?php parse_str( parse_url( $this->View->getModelAttrs( 'base_url', $this->Name ), PHP_URL_QUERY ), $query_vars ); ?>
+    			<?php foreach( (array) $query_vars as $name => $value ) : ?>
+    			<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
+    			<?php endforeach;?>
+    		
+    			<?php $this->search_box( $this->View->getLabel( 'search_items' ), $this->View->getID() );?>
+    			<?php $this->display();?>
+    			<?php $this->inline_preview();?>
+			</form>
+    	</div>
+    <?php
+    }
 }

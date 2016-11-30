@@ -1,4 +1,34 @@
 <?php
+/**
+ * Exemple d'options de champs :
+ * #1
+ 	'add-ons'		=> array(
+		'record'		=> array(
+			// Active l'affichage de la colonne pour ce champ
+			'column' 		=> true,
+			// Active l'affichage de l'aperçu en ligne pour ce champ	
+			'preview'		=> true
+		)
+	)
+ * #2
+ 	'add-ons'		=> array(
+		'record'		=> array(
+			// Active l'affichage de la colonne pour ce champ
+			'column' 		=> array(
+				// Personnalisation du titre de la colonne
+				'title'			=> 'titre personnalisé'
+			),
+			// Active l'affichage de l'aperçu en ligne pour ce champ	
+			'preview'		=> array(
+				// Personnalisation de l'intitulé de prévisualisation
+				'label'			=> 'label personnalisé',
+				// Personnalisation de la valeur ($item passe en argument)
+				'cb'			=> array( $this, 'ma_methode' )
+			)
+		)
+	)
+ */
+
 namespace tiFy\Core\Forms\Addons\Record;
 
 use tiFy\Core\Db\Db;
@@ -26,7 +56,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	public $default_field_options 	= array(			
 		'record'		=> true,
 		'export'		=> true,
-		'show_column'	=> false,
+		'column'		=> false,
+		'preview'		=> false,
 		'editable'		=> false
 	);
 	
@@ -109,7 +140,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 			self::$DbAttrs
 		);
 	}
-	
+		
 	/* = COURT-CIRCUITAGE = */
 	/** == Enregistrement des données de formulaire en base == **/
 	public function cb_handle_successfully( $handle )
