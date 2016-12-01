@@ -161,13 +161,15 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	{
 		if( ! $field = $this->Form->getField( $column_name ) )
 			return;
-		$value = $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		$values = (array) $this->View->getDb()->meta()->get( $item->ID, $column_name );
 		
-		if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
-			$value = $choices[$value];
-		endif;
+		foreach( $values as &$value ) :		
+			if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
+				$value = $choices[$value];
+			endif;
+		endforeach;
 		
-		return $value;		
+		return join( ', ', $values );		
 	}
 	
 	/** == Colonne des informations d'enregistrement == **/
@@ -189,13 +191,15 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	{
 		if( ! $field = $this->Form->getField( $column_name ) )
 			return;
-		$value = $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		$values = (array) $this->View->getDb()->meta()->get( $item->ID, $column_name );
 		
-		if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
-			$value = $choices[$value];
-		endif;
+		foreach( $values as &$value ) :		
+			if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
+				$value = $choices[$value];
+			endif;
+		endforeach;
 		
-		return $value;		
+		return join( ', ', $values );		
 	}
 		
 	/** == == **/
