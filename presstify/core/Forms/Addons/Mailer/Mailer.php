@@ -45,7 +45,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
     public function afterInit()
     {
     	if( $this->getFormAttr( 'admin' ) ) :
-    		$id = @ base64_encode( $this->form()->getUID() );
+    		$id = @ sanitize_html_class( base64_encode( $this->form()->getUID() ) );
     		\tify_options_register_node(
 				array(
 					'id' 		=> 'tiFyFormMailer_'. $id,
