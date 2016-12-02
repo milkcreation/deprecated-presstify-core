@@ -27,7 +27,10 @@
 
 namespace tiFy\Components\Sidebar;
 
-class Sidebar extends \tiFy\Environment\Component
+use tiFy\Environment\Component;
+
+/** @Autoload */
+class Sidebar extends Component
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
@@ -44,6 +47,7 @@ class Sidebar extends \tiFy\Environment\Component
 	);
 	
 	private static $Nodes;
+	private static $Dirname;
 	
 	/* = CONSTRUCTEUR = */
 	public function __construct()
@@ -60,10 +64,12 @@ class Sidebar extends \tiFy\Environment\Component
 	/* = ACTIONS = */
 	/** ==  = */
 	final public function init()
-	{				
+	{
+		static::$Dirname = $this->Dirname;
+				
 		// Déclaration des scripts	
-		wp_register_style( 'tiFySidebar', self::getUrl() .'/Sidebar.css', array(), '150206' );
-		wp_register_script( 'tiFySidebar', self::getUrl() .'/Sidebar.js', array( 'jquery' ), '150206', true );
+		wp_register_style( 'tify_sidebar', $this->Url. '/Sidebar.css', array(), '150206' );
+		wp_register_script( 'tify_sidebar', $this->Url .'/Sidebar.js', array( 'jquery' ), '150206', true );
 	}
 	
 	/** ==  == **/
@@ -86,21 +92,30 @@ class Sidebar extends \tiFy\Environment\Component
 		if( ! self::getConfig( 'enqueue' ) )
 			return;
 		
-		wp_enqueue_style( 'tiFySidebar' );
-		wp_enqueue_script( 'tiFySidebar' );
+		wp_enqueue_style( 'tify_sidebar' );
+		wp_enqueue_script( 'tify_sidebar' );
 	}
 	
 	/** == == **/
 	final public function wp_head(){
 		?>
 		<style type="text/css">
-			.tiFySidebar{
-				z-index: <?php echo self::getConfig( 'z-index' );?>;
+			.tify_sidebar-container,
+			.tify_sidebar-toggle,
+			.tify_sidebar-panel{
+				z-index:99990;
+			}			
+			.tify_sidebar-panel,
+			.tify_sidebar-container
+			{
 				width: <?php echo self::getConfig( 'width' );?>px;
 			}
+			body.tify_sidebar-body #tify_sidebar-toggle_left{
+				left: <?php echo self::getConfig( 'width' );?>px;
+			}
 			/* = ANIMATION = */	
-			body.tify_sidebar-body.tify_sidebar-animated .tiFySidebar,
-			body.tify_sidebar-body.tify_sidebar-animated .tiFySidebarPushed{
+			body.tify_sidebar-body.tify_sidebar-animated .tify_sidebar-element,
+			body.tify_sidebar-body.tify_sidebar-animated .tify_sidebar-pushed{
 				-webkit-transition: 	-webkit-transform 	300ms cubic-bezier(0.7,0,0.3,1);
 			    -moz-transition: 		-moz-transform 		300ms cubic-bezier(0.7,0,0.3,1);
 			    -ms-transition: 		-ms-transform 		300ms cubic-bezier(0.7,0,0.3,1);
@@ -109,7 +124,7 @@ class Sidebar extends \tiFy\Environment\Component
 			}	
 			/** == GAUCHE == **/
 			/*** === === ***/
-			body.tify_sidebar-body.tify_sidebar-animated .tiFySidebar--left{ 
+			body.tify_sidebar-body.tify_sidebar-animated .tify_sidebar-element_left{ 
 			    -webkit-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
 				-moz-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
 				-ms-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>px);
@@ -117,14 +132,14 @@ class Sidebar extends \tiFy\Environment\Component
 				transform: 			translateX(-<?php echo self::getConfig( 'width' );?>px);	 
 			}	
 			/*** === === ***/				
-			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tiFySidebar--left{
+			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tify_sidebar-element_left{
 				-webkit-transform: 	translateX(0);
 				-moz-transform: 	translateX(0);
 				-ms-transform: 		translateX(0);
 				-o-transform: 		translateX(0);
 				transform: 			translateX(0);
 			}
-			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tiFySidebarPushed{
+			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tify_sidebar-pushed{
 			    -webkit-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
 				-moz-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
 				-ms-transform: 		translateX(<?php echo self::getConfig( 'width' );?>px);
@@ -132,65 +147,17 @@ class Sidebar extends \tiFy\Environment\Component
 				transform: 			translateX(<?php echo self::getConfig( 'width' );?>px);	
 			}
 			@media (min-width: <?php echo ( self::getConfig( 'min-width' )+1 );?>px) {
-				body.tify_sidebar-body.tify_sidebar-animated .tiFySidebar{
+				body.tify_sidebar-body.tify_sidebar-animated #tify_sidebar_left{
 					display:none;
 				}
-				body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tiFySidebar{
+				body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tify_sidebar-element_left{
 					-webkit-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
 					-moz-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
 					-ms-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>px);
 					-o-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>px);
             		transform: 			translateX(-<?php echo self::getConfig( 'width' );?>px);
             	}
-            	body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tiFySidebarPushed{
-            		-webkit-transition: none;
-			    	-moz-transition: 	none;
-			   		-ms-transition: 	none;
-			    	-o-transition: 		none;
-			    	transition: 		none;
-            		-webkit-transform: 	translateX(0);
-					-moz-transform: 	translateX(0);
-					-ms-transform: 		translateX(0);
-					-o-transform: 		translateX(0);
-					transform: 			translateX(0);
-            	}
-           	}
-        	/** == DROITE == **/
-			/*** === === ***/
-			body.tify_sidebar-body.tify_sidebar-animated .tiFySidebar--right{ 
-			    -webkit-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
-				-moz-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
-				-ms-transform: 		translateX(<?php echo self::getConfig( 'width' );?>px);
-				-o-transform: 		translateX(<?php echo self::getConfig( 'width' );?>px);
-				transform: 			translateX(<?php echo self::getConfig( 'width' );?>px);	 
-			}	
-			/*** === === ***/				
-			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-right_active .tiFySidebar--right{
-				-webkit-transform: 	translateX(0);
-				-moz-transform: 	translateX(0);
-				-ms-transform: 		translateX(0);
-				-o-transform: 		translateX(0);
-				transform: 			translateX(0);
-			}
-			body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-right_active .tiFySidebarPushed{
-			    -webkit-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
-				-moz-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>px);
-				-ms-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>px);
-				-o-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>px);
-				transform: 			translateX(-<?php echo self::getConfig( 'width' );?>px);	
-			}
-			@media (min-width: <?php echo ( self::getConfig( 'min-width' )+1 );?>px) {
-				body.tify_sidebar-body.tify_sidebar-animated .tiFySidebar{
-					display:none;
-				}
-				body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-right_active .tiFySidebar{
-					-webkit-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
-					-moz-transform: 	translateX(<?php echo self::getConfig( 'width' );?>px);
-					-ms-transform: 		translateX(<?php echo self::getConfig( 'width' );?>px);
-					-o-transform: 		translateX(<?php echo self::getConfig( 'width' );?>px);
-            		transform: 			translateX(<?php echo self::getConfig( 'width' );?>px);
-            	}
-            	body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-right_active .tiFySidebarPushed{
+            	body.tify_sidebar-body.tify_sidebar-animated.tify_sidebar-left_active .tify_sidebar-pushed{
             		-webkit-transition: none;
 			    	-moz-transition: 	none;
 			   		-ms-transition: 	none;
@@ -237,14 +204,19 @@ class Sidebar extends \tiFy\Environment\Component
 	public static function Display()
 	{
 		$output  = "";
-		$output .= "<div class=\"tiFySidebar tiFySidebar--". self::getConfig( 'pos' ) ."\">";
-				
-		// BOUTON DE BASCULE
+		
+		// CONTENEUR PRINCiPAL
+		$output .= "<div id=\"tify_sidebar_". self::getConfig( 'pos' ) ."\" class=\"tify_sidebar\">";
+		
+		// BACKGROUND
+		$output .= "\t<div id=\"tify_sidebar-container_". self::getConfig( 'pos' ) ."\" class=\"tify_sidebar-element tify_sidebar-element_". self::getConfig( 'pos' ) ." tify_sidebar-container\"></div>\n";
+		
+		// TOGGLE
 		if( self::getConfig( 'toggle' ) ) :
-			$output .= "\t<a class=\"tiFySidebar-toggleButton tiFySidebar-toggleButton--". self::getConfig( 'pos' ) ."\" tify_sidebar-toggle\" href=\"#tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" data-toggle=\"tify_sidebar\" data-dir=\"". self::getConfig( 'pos' ) ."\">";
+			$output .= "\t<a id=\"tify_sidebar-toggle_". self::getConfig( 'pos' ) ."\" class=\"tify_sidebar-element tify_sidebar-element_". self::getConfig( 'pos' ) ." tify_sidebar-toggle\" href=\"#tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" data-toggle=\"tify_sidebar\" data-dir=\"". self::getConfig( 'pos' ) ."\">";
 			if( is_bool( self::getConfig( 'toggle' ) ) ) :
 				$output .= "\t\t<div>";
-				ob_start(); include self::getDirname() .'/Sidebar.svg';
+				ob_start(); include static::$Dirname .'/Sidebar.svg';
 				$output .= ob_get_clean();
 				$output .= "\t\t</div>";
 			elseif( is_string( self::getConfig( 'toggle' ) ) ) :
@@ -254,12 +226,12 @@ class Sidebar extends \tiFy\Environment\Component
 		endif;
 		
 		// PANNEAU DES GREFFONS
-		$output .= "\t<div class=\"tiFySidebar-panel\">\n";
-		$output .= "\t\t<div class=\"tiFySidebar-nodesWrapper\">\n";
+		$output .= "\t<div id=\"tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" class=\"tify_sidebar-element tify_sidebar-element_". self::getConfig( 'pos' ) ." tify_sidebar-panel\">\n";
+		$output .= "\t\t<div class=\"wrapper\">\n";
 		if( self::$Nodes ) :		
-			$output .= "\t\t\t<ul class=\"tiFySidebar-nodes\">";
+			$output .= "\t\t\t<ul class=\"nodes\">";
 			foreach( (array) self::$Nodes as $id => $attrs ) :
-				$output .= "\t\t\t\t<li id=\"tify_sidebar-node-{$id}\" class=\"{$attrs['class']} tiFySidebar-node tiFySidebar-node--{$id}\">";
+				$output .= "\t\t\t\t<li id=\"tify_sidebar-node-{$id}\" class=\"{$attrs['class']} node-{$id} tify_sidebar-node\">";
 				ob_start(); call_user_func( $attrs['cb'] );
 				$output .= ob_get_clean();				
 				$output .= "\t\t\t\t</li>";

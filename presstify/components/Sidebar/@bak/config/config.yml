@@ -1,18 +1,11 @@
 # Position de la sidebar
 pos:        'left'
-
 # Taille de la sidebar
 width:      300
-
-# Profondeur de champs 
-z-index:    99990
-
 # Responsive
 min-width:  991
-
 # Bouton de bascule
 toggle:     true
-
 # Mise en file des scripts
 enqueue:    true  
 
