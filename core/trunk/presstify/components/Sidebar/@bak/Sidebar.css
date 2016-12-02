@@ -3,61 +3,43 @@ body.tify_sidebar-body{
 	overflow-x:hidden;
 }
 
-/* = SIDEBAR = */
-.tiFySidebar{
+/* = CONTENEUR = */
+.tify_sidebar-container{
 	position:fixed;
-	top:0; bottom:0; 
-	height:100%;
-	content:"";
-}
-.tiFySidebar--left{
-	left:0;
-}
-.tiFySidebar--right{
-	right:0;
+	content: "";
+	top:0; bottom:0;
+	min-height:100%;
 }
 
 /* = BOUTON DE BASCULE = */
-.tiFySidebar-toggleButton{
+.tify_sidebar-toggle{
 	position:fixed;
 	top:0;
 	width:30px; height:30px;
 	display:block;
 	padding:7px 4px;
+	margin-right:-30px;
 }
-.tiFySidebar-toggleButton--left{
-	right:0;
-	transform:translateX(100%);
-}
-.tiFySidebar-toggleButton--right{
-	left:0;
-	transform:translateX(-100%);
-}
-.tiFySidebar-toggleButton > div{
+.tify_sidebar-toggle > div{
 	position: relative;
 	width: 100%; height: 0;
     padding-top: 100%;    
 }
-.tiFySidebar-toggleButton > div > svg{
+.tify_sidebar-toggle > div > svg{
 	position:absolute;
 	top:0; left:0;
 }
 
-/* = PANNEAU = */
-.tiFySidebar-panel{
+/* = PANNEAU = */	
+.tify_sidebar-panel{
 	position:absolute;
-	top:0; right:0; bottom:0; left:0; 
-	overflow:hidden;
-}	
-.tiFySidebar-nodesWrapper{
-	position:absolute;
-	top:0; right:0; bottom:0; left:0;
-	width:calc( 100% + 17px );
-	height:100%;
-	overflow-y:auto;
 }
+#tify_sidebar-panel_left{
+	float:left;
+}
+
 /** == GREFFONS == **/
-.tiFySidebar-node{
+.tify_sidebar .tify_sidebar-node{
 	margin:0; padding:0;
 	list-style-type:none;
 }
