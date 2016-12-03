@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Admin\Model;
+namespace tiFy\Core\Templates\Admin\Model;
 
 use \tiFy\Environment\App;
 
@@ -84,9 +84,9 @@ class Import extends App
 		$this->upload_dir = $upload_dir['basedir'];
 
 		// Actions et Filtres Wordpress
-		add_action( 'wp_ajax_tiFyCoreAdminModelImport_download_sample_'. $this->View->getID(), array( $this, 'wp_ajax_download_sample' ) );
-		add_action( 'wp_ajax_tiFyCoreAdminModelImport_upload_'. $this->View->getID(), array( $this, 'wp_ajax_upload' ) );
-		add_action( 'wp_ajax_tiFyCoreAdminModelImport_handle_'. $this->View->getID(), array( $this, 'wp_ajax_import' ) );		
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_download_sample_'. $this->template()->getID(), array( $this, 'wp_ajax_download_sample' ) );
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_upload_'. $this->template()->getID(), array( $this, 'wp_ajax_upload' ) );
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_handle_'. $this->template()->getID(), array( $this, 'wp_ajax_import' ) );		
 	}
 	
 	/** == Initialisation de l'interface d'administration == **/
@@ -107,7 +107,7 @@ class Import extends App
 				$this->column_map[$col_name] = wp_parse_args( $args, array( 'update' => false, 'meta' => false ) );
 			endforeach;
 		else :
-			foreach( (array) $this->View->getDb()->ColNames as $col_name )
+			foreach( (array) $this->db()->ColNames as $col_name )
 				$this->column_map[$col_name] = wp_parse_args(
 					array( 
 						'title' 		=> $col_name,
@@ -133,10 +133,10 @@ class Import extends App
 			$rows = $this->sample['rows'];	
 		else :
 			global $wpdb;
-			foreach( $wpdb->get_col( "DESC {$this->View->getDb()->Name}", 0 ) as $column )
+			foreach( $wpdb->get_col( "DESC {$this->db()->Name}", 0 ) as $column )
 				$rows[0][] = $column;
 			foreach( range( 0, 4, 1 ) as $i )
-				$rows[$i+1] = $wpdb->get_row( "SELECT * FROM {$this->View->getDb()->Name}", ARRAY_A, $i );
+				$rows[$i+1] = $wpdb->get_row( "SELECT * FROM {$this->db()->Name}", ARRAY_A, $i );
 		endif;
 		reset( $rows );
 
@@ -210,7 +210,7 @@ class Import extends App
 	/** == Initialisation de la table == **/
 	public function table_init()
 	{
-		$this->list_table = new \tiFy\Core\Admin\Model\Import\ListTable( $this );
+		$this->list_table = new \tiFy\Core\Templates\Admin\Model\Import\ListTable( $this );
 	}
 	
 	/* = Préparation = */
@@ -242,7 +242,7 @@ class Import extends App
 			// Test d'existance
 			$this->row_exist[$row] = ( $this->check_item_exists( $row, $this->items[$row] ) ) ? true : false;					
 			
-			$tify_adminview_import_result = $this->View->getID() .'_tify_adminview_import_result';
+			$tify_adminview_import_result = $this->template()->getID() .'_tify_adminview_import_result';
 			$this->items[$row]->$tify_adminview_import_result = $this->_get_row_results( $row );
 
 			$row++;
@@ -309,12 +309,12 @@ class Import extends App
 		endforeach;
 		
 		if( $item_id = $this->check_item_exists( $row, $item ) )
-			$item->{$this->View->getDb()->Primary} = $item_id;
+			$item->{$this->db()->Primary} = $item_id;
 		
 		$item = $this->parse_importdata( $item );
 		
-		$item_id = $this->View->getDb()->handle()->record( (array) $item );
-		if( $item = $this->View->getDb()->select()->row_by_id( $item_id )  )
+		$item_id = $this->db()->handle()->record( (array) $item );
+		if( $item = $this->db()->select()->row_by_id( $item_id )  )
 			$this->postprocess_importdata( $item );	
 	}
 
@@ -399,7 +399,7 @@ class Import extends App
 			if( $args['single'] )
 				$query_args[$col_name] = $item->$col_name;
 		
-		return $this->View->getDb()->select()->id( $query_args );
+		return $this->db()->select()->id( $query_args );
 	}
 	
 	/* = AFFICHAGE = */	
@@ -411,7 +411,7 @@ class Import extends App
 			<label><?php _e( 'Type de fichier autorisés : ', 'tify' );?></label>
 			<p style="line-height:1;"><?php echo implode( ', ', $this->mime_types );?></p>
 			<form id="tify_adminview_import-uploadfile" method="post" action="" enctype="multipart/form-data">				
-				<input id="tify_adminview_import-id" type="hidden" name="tify_adminview_import-id" value="<?php echo $this->View->getID();?>">
+				<input id="tify_adminview_import-id" type="hidden" name="tify_adminview_import-id" value="<?php echo $this->template()->getID();?>">
 				<p><label><input id="tify_adminview_import-header" name="tify_adminview_import-header" type="checkbox" value="1" <?php checked( $this->header == 1 );?> /><?php _e( 'Le fichier comporte un en-tête' , 'tify' );?></p>
 				<input style="font-size:0.9em;" id="tify_adminview_import-uploadfile_button" type="file" name="" autocomplete="off"/>
 				<span class="spinner" style="position:absolute; top:0px;right:-10px;"></span>
@@ -476,7 +476,7 @@ class Import extends App
 			<h2>
 				<?php _e( 'Import d\'éléments', 'tify' );?>
 				<?php if( ! empty( $this->sample ) ) :?>
-				<a id="tify_adminview_import-download_sample" class="add-new-h2" href="<?php echo esc_url( add_query_arg( array( 'action' => 'tify_adminview_import_download_sample_'. $this->View->getID() ), admin_url( 'admin-ajax.php') ) );?>">
+				<a id="tify_adminview_import-download_sample" class="add-new-h2" href="<?php echo esc_url( add_query_arg( array( 'action' => 'tify_adminview_import_download_sample_'. $this->template()->getID() ), admin_url( 'admin-ajax.php') ) );?>">
 					<?php _e( 'Fichier d\'exemple', 'tify' );?>
 				</a>
 				<?php endif;?>

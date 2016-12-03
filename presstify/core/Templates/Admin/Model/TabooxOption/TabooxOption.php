@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Admin\Model\TabooxOption;
+namespace tiFy\Core\Templates\Admin\Model\TabooxOption;
 
-use tiFy\Core\Admin\Model\Form;
+use tiFy\Core\Templates\Admin\Model\Form;
 
 class TabooxOption extends Form
 {			
@@ -33,10 +33,10 @@ class TabooxOption extends Form
 	/** == Déclaration de la boîte à onglets == **/
 	final public function _tify_taboox_register_box()
 	{
-		$this->MenuSlug = $this->View->getModelAttrs( 'menu_slug', $this->Name );
-		$parent_slug 	= $this->View->getModelAttrs( 'parent_slug', $this->Name );
+		$this->MenuSlug = $this->template()->getAttr( '_menu_slug' );
+		$parent_slug 	= $this->template()->getAttr( '_parent_slug' );
 		$this->Hookname = $this->MenuSlug .'::'. $parent_slug;
-
+		
 		tify_taboox_register_box( 
 			$this->Hookname,
 			'option',

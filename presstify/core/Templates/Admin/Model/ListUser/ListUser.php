@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Admin\Model\ListUser;
+namespace tiFy\Core\Templates\Admin\Model\ListUser;
 
-use tiFy\Core\Admin\Model\Table;
+use tiFy\Core\Templates\Admin\Model\Table;
 
 class ListUser extends Table 
 {	
@@ -52,13 +52,7 @@ class ListUser extends Table
 		return array();
 	}
 	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function init_param_EditBaseUri()
-	{
-		$this->EditBaseUri = $this->View->getModelAttrs( 'base_url', 'EditUser' );
-	}
-	
+	/* = INITIALISATION DES PARAMETRES = */	
 	/** == Initialisation des rôles des utilisateurs de la table == **/
 	public function init_param_Roles()
 	{		
@@ -107,12 +101,12 @@ class ListUser extends Table
 
 		// Pagination
 		$total_items 	= $query->get_total();
-		$per_page 		= $this->get_items_per_page( $this->View->getDb()->Name, $this->PerPage );
+		$per_page 		= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
 		
 		$this->set_pagination_args( 
 			array(
 				'total_items' => $total_items,
-				'per_page'    => $this->get_items_per_page( $this->View->getDb()->Name, $this->PerPage ),
+				'per_page'    => $this->get_items_per_page( $this->db()->Name, $this->PerPage ),
 				'total_pages' => ceil( $total_items / $per_page )
 			)
 		);
@@ -122,7 +116,7 @@ class ListUser extends Table
 	public function parse_query_args()
 	{
 		// Récupération des arguments
-		$per_page 	= $this->get_items_per_page( $this->View->getDb()->Name, $this->PerPage );
+		$per_page 	= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
 		$paged 		= $this->get_pagenum();
 				
 		// Arguments par défaut
@@ -140,7 +134,7 @@ class ListUser extends Table
 		foreach( (array) $_REQUEST as $key => $value ) :
 			if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
 				 call_user_func_array( array( $this, 'parse_query_arg_' . $key ), array( &$query_args, $value ) );
-			elseif( $this->View->getDb()->isCol( $key ) ) :
+			elseif( $this->db()->isCol( $key ) ) :
 				$query_args[$key] = $value;
 			endif;
 		endforeach;
@@ -214,7 +208,7 @@ class ListUser extends Table
 				'label'			=> $label,
 				'class'			=> $class,
 				'base_uri'		=> $base_uri,
-				'query_args'	=> array_merge( $args, array( $this->View->getDb()->Primary => $item->{$this->View->getDb()->Primary} ) ),
+				'query_args'	=> array_merge( $args, array( $this->db()->Primary => $item->{$this->db()->Primary} ) ),
 				'nonce'			=> false,
 				'referer'		=> false
 			);
@@ -249,31 +243,4 @@ class ListUser extends Table
 				 
 		return isset( $wp_roles->role_names[$user_role] ) ? "<a href=\"{$role_link}\">". translate_user_role( $wp_roles->role_names[$user_role] ) ."</a>" : __( 'Aucun', 'tify' );
 	}
-	
-  	/** == Rendu de la page  == **/
-    public function Render()
-    {
-    ?>
-		<div class="wrap">
-    		<h2>
-    			<?php echo $this->View->getLabel( 'all_items' );?>
-    			
-    			<?php if( $this->EditBaseUri ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->View->getLabel( 'add_new' );?></a>
-    			<?php endif;?>
-    			
-    			<?php if( $this->View->getModelAttrs( 'base_url', 'Import' ) ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->View->getModelAttrs( 'base_url', 'Import' );?>"><?php echo $this->View->getLabel( 'import_items' );?></a>
-    			<?php endif;?>
-    		</h2>
-    		
-    		<?php $this->views(); ?>
-    		
-    		<form method="post" action="<?php echo $this->View->getModelAttrs( 'base_url', $this->Name );?>">
-    			<?php $this->search_box( $this->View->getLabel( 'search_items' ), $this->View->getID() );?>
-    			<?php $this->display();?>
-			</form>
-    	</div>
-    <?php
-    }
 }

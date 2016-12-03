@@ -97,16 +97,37 @@ abstract class Config extends \tiFy\Environment\App
 	
 		// Traitement du parametrage
 		foreach( (array) $schema as $id => $entity ) :
+			/// Classe de rappel des données en base
 			if( isset( $entity['Db'] ) ) :
 				\tiFy\Core\Db\Db::Register( $id, $entity['Db'] );
 			endif;
-			if( isset( $entity['Admin'] ) ) :
-				\tiFy\Core\Admin\Admin::Register( $id, $entity['Admin'] );
-			endif;
-			if( isset( $entity['Template'] ) ) :
-				\tiFy\Core\Template\Template::Register( $id, $entity['Template'] );
-			endif;
+			
+			/// Classe de rappel des intitulés
 			\tiFy\Core\Labels\Labels::Register( $id, ( isset( $entity['Labels'] ) ? $entity['Labels'] : array() ) );
+			
+			/// Gabarits de l'interface d'administration
+			if( isset( $entity['Admin'] ) ) :
+				foreach( (array) $entity['Admin'] as $i => $tpl ) :
+					if( ! isset( $tpl['db'] ) )
+						$tpl['db'] = $id;
+					if( ! isset( $tpl['labels'] ) )
+						$tpl['labels'] = $id;
+						
+					\tiFy\Core\Templates\Templates::Register( $i, $tpl, 'admin' );
+				endforeach;
+			endif;
+			
+			/// Gabarits de l'interface utilisateur
+			if( isset( $entity['Front'] ) ) :
+				foreach( (array) $entity['Front'] as $i => $tpl ) :
+					if( ! isset( $tpl['db'] ) )
+						$tpl['db'] = $id;
+					if( ! isset( $tpl['labels'] ) )
+						$tpl['labels'] = $id;
+					
+					\tiFy\Core\Templates\Templates::Register( $i, $tpl, 'front' );
+				endforeach;
+			endif;			
 		endforeach;
 	}	
 	

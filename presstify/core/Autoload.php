@@ -24,8 +24,7 @@ class Autoload extends Core
 		// Chargement des contrôleurs configurable
 		new	CustomType\CustomType;
 		new Db\Db;
-		new Admin\Admin;
-		new Front\Front;
+		new Templates\Templates;
 		new Options\Options;		
 		new Taboox\Taboox;
 		new Upload\Upload;

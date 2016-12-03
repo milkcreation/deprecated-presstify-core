@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Admin\Model;
+namespace tiFy\Core\Templates\Admin\Model;
 
 /** 
  * @see https://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -11,13 +11,7 @@ abstract class Table extends \WP_List_Table
 {
 	use \tiFy\Environment\Traits\Path;
 	
-	/* = ARGUMENTS = */
-	// Classe de la vue
-	public $View					= null;
-	
-	// Nom du modèle
-	public $Name					= null;
-	
+	/* = ARGUMENTS = */	
 	// Écran courant
 	protected $Screen				= null;
 	
@@ -80,10 +74,26 @@ abstract class Table extends \WP_List_Table
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions'	
 	);
 	
+	public $template;
+	public $db;
+	public $label;
+	
 	/* = CONSTRUCTEUR = */
 	/** == ! IMPORTANT : court-circuitage du constructeur natif de WP_List_Table == **/
 	public function __construct(){}
-						
+	
+	/* = METHODES MAGIQUES = */
+	/** == Court-circuitage == **/
+	public function template(){
+		return call_user_func( $this->template );
+	}
+	public function db(){
+		return call_user_func( $this->db );
+	}
+	public function label(){
+		return call_user_func( $this->label, func_get_arg(0) );
+	}
+	
 	/* = DECLARATION DES PARAMETRES = */
 	/** == Définition l'url de la page d'édition d'un élément == **/
 	public function set_edit_link()
@@ -192,56 +202,60 @@ abstract class Table extends \WP_List_Table
 	protected function init_params()
 	{
 		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init_param_' . $param ) ) 
+			if( ! method_exists( $this, 'init' . $param ) ) 
 				continue;
-			call_user_func( array( $this, 'init_param_' . $param ) );
+			call_user_func( array( $this, 'init' . $param ) );
 		endforeach;
 	}
 	
 	/** == Initialisation de l'url de la page d'administration == **/
-	public function init_param_BaseUri()
+	public function initBaseUri()
 	{
-		$this->BaseUri = $this->View->getModelAttrs( 'base_url', $this->Name );
+		$this->BaseUri = $this->template()->getAttr( 'base_url', '' );
 	}
 	
 	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function init_param_EditBaseUri()
+	public function initEditBaseUri()
 	{
-		$this->EditBaseUri = $this->View->getModelAttrs( 'base_url', 'EditForm' );
+		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
+		elseif( $edit_template = $this->template()->getAttr( 'edit_template' ) ) :
+			$this->EditBaseUri = \tiFy\Core\Templates\Templates::getAdmin( $edit_template )->getAttr( 'base_url' );
+		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
+		endif;
 	}
 	
 	/** == Initialisation de l'intitulé des objets traités == **/
-	public function init_param_Plural()
+	public function initPlural()
 	{
 		if( ! $plural = $this->set_plural() )
-			$plural = $this->View->getID();
+			$plural = $this->template()->getID();
 		
 		$this->Plural = sanitize_key( $plural );
 	}
 	
 	/** == Initialisation de l'intitulé d'un objet traité == **/
-	public function init_param_Singular()
+	public function initSingular()
 	{
 		if( ! $singular = $this->set_singular() )
-			$singular = $this->View->getID();
+			$singular = $this->template()->getID();
 		
 		$this->Singular = sanitize_key( $singular );
 	}
 	
 	/** == Initialisation des notifications == **/
-	public function init_param_Notices()
+	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
 	}
 	
 	/** == Initialisation des statuts == **/
-	public function init_param_Statuses()
+	public function initStatuses()
 	{
 		$this->Statuses = $this->set_statuses();
 	}
 	
 	/** == Initialisation des vues filtrées == **/
-	public function init_param_FilteredViewLinks()
+	public function initFilteredViewLinks()
 	{
 		$views = $this->set_views();
 		
@@ -252,17 +266,17 @@ abstract class Table extends \WP_List_Table
 				$attrs['base_uri'] = $this->BaseUri;
 		endforeach;
 			
-		$this->FilteredViewLinks = \tiFy\Core\Admin\Helpers::ListTableFilteredViewsMap( $views );
+		$this->FilteredViewLinks = \tiFy\Core\Templates\Admin\Helpers::ListTableFilteredViewsMap( $views );
 	}
 	
 	/** == Initialisation des colonnes de la table == **/
-	public function init_param_Columns()
+	public function initColumns()
 	{			
 		if( $columns = $this->set_columns() ) :
-		elseif( $columns = $this->View->getModelAttrs( 'columns', $this->Name ) ) :
+		elseif( $columns = $this->getConfig( 'columns' ) ) :
 		else :
 			$columns['cb'] = "<input id=\"cb-select-all-1\" type=\"checkbox\" />";
-			foreach( (array)  $this->View->getDb()->ColNames as $name ) :
+			foreach( (array)  $this->db()->ColNames as $name ) :
 				$columns[$name] = $name;
 			endforeach;
 		endif;
@@ -270,10 +284,10 @@ abstract class Table extends \WP_List_Table
 	}
 	
 	/** == Initialisation de la colonne principale == **/
-	public function init_param_PrimaryColumn()
+	public function initPrimaryColumn()
 	{
 		if( $primary = $this->set_primary_column() ) :
-		elseif( $primary = $this->View->getModelAttrs( 'primary_column', $this->Name ) ) :
+		elseif( $primary = $this->getConfig( 'primary_column' ) ) :
 		else :
 			$primary = null;
 		endif;
@@ -285,10 +299,10 @@ abstract class Table extends \WP_List_Table
 	}
 	
 		/** == Initialisation des colonnes masquée == **/
-	public function init_param_HiddenColumns()
+	public function initHiddenColumns()
 	{
 		if( $hidden_cols = $this->set_hidden_columns() ) :
-		elseif( $hidden_cols = $this->View->getModelAttrs( 'hidden_columns', $this->Name ) ) :
+		elseif( $hidden_cols = $this->getConfig( 'hidden_columns' ) ) :
 		else :
 			$hidden_cols = array();
 		endif;
@@ -300,43 +314,43 @@ abstract class Table extends \WP_List_Table
 	}
 	
 	/** == Initialisation des arguments de requête == **/
-	public function init_param_QueryArgs()
+	public function initQueryArgs()
 	{
 		$this->QueryArgs = (array) $this->set_query_args();
 	}
 	
 	/** == Initialisation du nombre d'éléments affichés par page == **/
-	public function init_param_PerPage()
+	public function initPerPage()
 	{
 		$this->PerPage = ( $per_page = (int) $this->set_per_page() ) ? $per_page : 20;	
 	}
 	
 	/** == == **/
-	public function init_param_PerPageOptionName()
+	public function initPerPageOptionName()
 	{
 		if( ! $per_page_option = $this->set_per_page_option_name() )
 			return;
 			
-		$per_page_option = is_bool( $per_page_option ) ? $this->View->getID() .'_per_page' : (string) $per_page_option;
+		$per_page_option = is_bool( $per_page_option ) ? $this->template()->getID() .'_per_page' : (string) $per_page_option;
 		add_filter( 'set-screen-option', function( $none, $option, $value ) use ( $per_page_option ){ return ( $per_page_option  ===  $option ) ? $value : $none; }, 10, 3 );
 		$per_page = $this->PerPage;
 		add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 );
 	}
 	
 	/** == Initialisation de l'intitulé lorsque la table est vide == **/
-	public function init_param_NoItems()
+	public function initNoItems()
 	{
-		$this->NoItems = ( $no_items = $this->set_no_items() ) ? $no_items :  ( ( $no_items = $this->View->getLabel( 'not_found' ) ) ? $no_items : __( 'No items found.' ) );	
+		$this->NoItems = ( $no_items = $this->set_no_items() ) ? $no_items :  ( ( $no_items = $this->label( 'not_found' ) ) ? $no_items : __( 'No items found.' ) );	
 	}
 	
 	/** == Initialisation des actions groupées == **/
-	public function init_param_BulkActions()
+	public function initBulkActions()
 	{
 		$this->BulkActions = $this->set_bulk_actions();	
 	}
 	
 	/** == Initialisation des actions sur un élément de la liste == **/
-	public function init_param_RowActions()
+	public function initRowActions()
 	{
 		foreach( (array) $this->set_row_actions() as $action => $attr ) :
 			if( is_int( $action ) ) :
@@ -417,11 +431,11 @@ abstract class Table extends \WP_List_Table
 	/** == Récupération de l'élément à traité == **/
 	public function current_item() 
 	{
-		if ( ! empty( $_REQUEST[$this->View->getDb()->Primary] ) ) :
-			if( is_array( $_REQUEST[$this->View->getDb()->Primary] ) )
-				return array_map('intval', $_REQUEST[$this->View->getDb()->Primary] );
+		if ( ! empty( $_REQUEST[$this->db()->Primary] ) ) :
+			if( is_array( $_REQUEST[$this->db()->Primary] ) )
+				return array_map('intval', $_REQUEST[$this->db()->Primary] );
 			else 
-				return array( (int) $_REQUEST[$this->View->getDb()->Primary] );
+				return array( (int) $_REQUEST[$this->db()->Primary] );
 		endif;
 		
 		return 0;
@@ -431,12 +445,12 @@ abstract class Table extends \WP_List_Table
 	public function prepare_items() 
 	{				
 		// Récupération des items
-		$query = $this->View->getDb()->query( $this->parse_query_args() );
+		$query = $this->db()->query( $this->parse_query_args() );
 		$this->items = $query->items;
 		
 		// Pagination
 		$total_items 	= $query->found_items;
-		$per_page 		= $this->get_items_per_page( $this->View->getDb()->Name, $this->PerPage );
+		$per_page 		= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
 		$this->set_pagination_args( 
 			array(
             	'total_items' 		=> $total_items,                  
@@ -450,7 +464,7 @@ abstract class Table extends \WP_List_Table
 	public function parse_query_args()
 	{
 		// Récupération des arguments		
-		$per_page 	= $this->get_items_per_page( $this->View->getDb()->Name, $this->PerPage );
+		$per_page 	= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
 		$paged 		= $this->get_pagenum();
 
 		// Arguments par défaut
@@ -458,14 +472,14 @@ abstract class Table extends \WP_List_Table
 			'per_page' 	=> $per_page,
 			'paged'		=> $paged,
 			'order'		=> 'DESC',
-			'orderby'	=> $this->View->getDb()->Primary
+			'orderby'	=> $this->db()->Primary
 		);
 			
 		// Traitement des arguments
 		foreach( (array) $_REQUEST as $key => $value ) :
 			if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
 				 call_user_func_array( array( $this, 'parse_query_arg_' . $key ), array( &$query_args, $value ) );
-			elseif( $this->View->getDb()->isCol( $key ) ) :
+			elseif( $this->db()->isCol( $key ) ) :
 				$query_args[$key] = $value;
 			endif;
 		endforeach;
@@ -483,7 +497,7 @@ abstract class Table extends \WP_List_Table
 	/** == Compte le nombre d'éléments == **/
 	public function count_items( $args = array() )
 	{
-		return $this->View->getDb()->select()->count( $args );
+		return $this->db()->select()->count( $args );
 	}
 	
 	/** == Récupération des actions sur un élément == **/
@@ -497,7 +511,7 @@ abstract class Table extends \WP_List_Table
 				$row_actions[$action] = $this->RowActions[$action];
 			else :
 				$args = $this->item_row_actions_parse_args( $item, $action, $this->RowActions[$action] );
-				$row_actions[$action] = \tiFy\Core\Admin\Helpers::RowActionLink( $action, $args );
+				$row_actions[$action] = \tiFy\Core\Templates\Admin\Helpers::RowActionLink( $action, $args );
 			endif;
 		endforeach;		
 			
@@ -511,27 +525,27 @@ abstract class Table extends \WP_List_Table
 			'edit'		=> $this->get_item_edit_args( $item, array(), __( 'Modifier' ) ),
 		);
 		
-		if( $this->View->getDb() ) :
+		if( $this->db() ) :
 			$defaults += array(
 				'delete'	=> array(
 					'label'		=> __( 'Supprimer définitivement', 'tify' ),
 					'title'		=>  __( 'Suppression définitive de l\'élément', 'tify' ),
-					'nonce'		=> $this->get_item_nonce_action( 'delete', $item->{$this->View->getDb()->Primary} )
+					'nonce'		=> $this->get_item_nonce_action( 'delete', $item->{$this->db()->Primary} )
 				),
 				'trash'		=> array(
 					'label'		=> __( 'Corbeille', 'tify' ),
 					'title'		=> __( 'Mise à la corbeille de l\'élément', 'tify' ),
-					'nonce'		=> $this->get_item_nonce_action( 'trash', $item->{$this->View->getDb()->Primary} )
+					'nonce'		=> $this->get_item_nonce_action( 'trash', $item->{$this->db()->Primary} )
 				),
 				'untrash'	=> array(
 					'label'		=> __( 'Restaurer', 'tify' ),
 					'title'		=> __( 'Rétablissement de l\'élément', 'tify' ),
-					'nonce'		=> $this->get_item_nonce_action( 'untrash', $item->{$this->View->getDb()->Primary} )
+					'nonce'		=> $this->get_item_nonce_action( 'untrash', $item->{$this->db()->Primary} )
 				),
 				'duplicate'	=> array(
 					'label'		=> __( 'Dupliquer', 'tify' ),
 					'title'		=> __( 'Dupliquer l\'élément', 'tify' ),
-					'nonce'		=> $this->get_item_nonce_action( 'duplicate', $item->{$this->View->getDb()->Primary} )
+					'nonce'		=> $this->get_item_nonce_action( 'duplicate', $item->{$this->db()->Primary} )
 				)
 			);
 		endif;
@@ -542,8 +556,8 @@ abstract class Table extends \WP_List_Table
 		if( ! isset( $args['base_uri'] ) )
 			$args['base_uri'] = $this->BaseUri;
 		
-		if( $this->View->getDb() && ! isset( $args['query_args'][$this->View->getDb()->Primary] ) )
-			$args['query_args'][$this->View->getDb()->Primary] = $item->{$this->View->getDb()->Primary};
+		if( $this->db() && ! isset( $args['query_args'][$this->db()->Primary] ) )
+			$args['query_args'][$this->db()->Primary] = $item->{$this->db()->Primary};
 		
 		return $args;
 	}
@@ -578,9 +592,9 @@ abstract class Table extends \WP_List_Table
 		
 		// Traitement de l'élément
 		foreach( (array) $item_ids as $item_id ) :
-			$this->View->getDb()->handle()->delete_by_id( $item_id );
-			if( $this->View->getDb()->meta() )
-				$this->View->getDb()->meta()->delete_all( $item_id );
+			$this->db()->handle()->delete_by_id( $item_id );
+			if( $this->db()->meta() )
+				$this->db()->meta()->delete_all( $item_id );
 		endforeach;
 		
 		// Traitement de la redirection
@@ -602,16 +616,16 @@ abstract class Table extends \WP_List_Table
 		endif;
 		
 		// Bypass
-		if( ! $this->View->getDb()->isCol( 'status' ) )
+		if( ! $this->db()->isCol( 'status' ) )
 			return;
 		
 		// Traitement de l'élément
 		foreach( (array) $item_ids as $item_id ) :
 			/// Conservation du statut original
-			if( $this->View->getDb()->meta() && ( $original_status = $this->View->getDb()->select()->cell_by_id( $item_id, 'status' ) ) )
-				$this->View->getDb()->meta()->update( $item_id, '_trash_meta_status', $original_status );					
+			if( $this->db()->meta() && ( $original_status = $this->db()->select()->cell_by_id( $item_id, 'status' ) ) )
+				$this->db()->meta()->update( $item_id, '_trash_meta_status', $original_status );					
 			/// Modification du statut
-			$this->View->getDb()->handle()->update( $item_id, array( 'status' => 'trash' ) );
+			$this->db()->handle()->update( $item_id, array( 'status' => 'trash' ) );
 		endforeach;
 			
 		// Traitement de la redirection
@@ -633,16 +647,16 @@ abstract class Table extends \WP_List_Table
 		endif;
 		
 		// Bypass
-		if( ! $this->View->getDb()->isCol( 'status' ) )
+		if( ! $this->db()->isCol( 'status' ) )
 			return;
 		
 		// Traitement de l'élément
 		foreach( (array) $item_ids as $item_id ) :
 			/// Récupération du statut original
-			$original_status = ( $this->View->getDb()->meta() && ( $_original_status = $this->View->getDb()->meta()->get( $item_id, '_trash_meta_status', true ) ) ) ? $_original_status : $this->View->getDb()->getColAttr( 'status', 'default' );				
-			if( $this->View->getDb()->meta() ) $this->View->getDb()->meta()->delete( $item_id, '_trash_meta_status' );
+			$original_status = ( $this->db()->meta() && ( $_original_status = $this->db()->meta()->get( $item_id, '_trash_meta_status', true ) ) ) ? $_original_status : $this->db()->getColAttr( 'status', 'default' );				
+			if( $this->db()->meta() ) $this->db()->meta()->delete( $item_id, '_trash_meta_status' );
 			/// Mise à jour du statut
-			$this->View->getDb()->handle()->update( $item_id, array( 'status' => $original_status ) );
+			$this->db()->handle()->update( $item_id, array( 'status' => $original_status ) );
 		endforeach;
 			
 		// Traitement de la redirection
@@ -657,7 +671,7 @@ abstract class Table extends \WP_List_Table
 	/** == Récupération de l'intitulé d'un statut == **/
 	public function get_status( $status, $singular = true )
 	{
-		return \tiFy\Core\Admin\Helpers::getStatus( $status, $singular, $this->Statuses );
+		return \tiFy\Core\Templates\Admin\Helpers::getStatus( $status, $singular, $this->Statuses );
 	}
 	
 	/** == Récupération du titre la colonne de selection multiple == **/
@@ -687,7 +701,7 @@ abstract class Table extends \WP_List_Table
 	public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
 	{
 		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) )
-			return \tiFy\Core\Admin\Helpers::RowActionLink( 'edit', $args );
+			return \tiFy\Core\Templates\Admin\Helpers::RowActionLink( 'edit', $args );
 	}
 	
 	/** == Arguments d'édition d'un élément == **/
@@ -698,7 +712,7 @@ abstract class Table extends \WP_List_Table
 				'label'			=> $label,
 				'class'			=> $class,
 				'base_uri'		=> $base_uri,
-				'query_args'	=> array_merge( $args, array( $this->View->getDb()->Primary => $item->{$this->View->getDb()->Primary} ) ),
+				'query_args'	=> array_merge( $args, array( $this->db()->Primary => $item->{$this->db()->Primary} ) ),
 				'nonce'			=> false,
 				'referer'		=> false
 			);
@@ -780,7 +794,7 @@ abstract class Table extends \WP_List_Table
 		if( ! isset( $item->{$column_name} ) )
 			return;
 		
-		$col_type = strtoupper( $this->View->getDb()->getColAttr( $column_name, 'type' ) );
+		$col_type = strtoupper( $this->db()->getColAttr( $column_name, 'type' ) );
 
         switch( $col_type ) :
             default:
@@ -799,34 +813,31 @@ abstract class Table extends \WP_List_Table
 	/** == Contenu de la colonne Case à cocher == **/
 	public function column_cb( $item )
 	{
-        return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->View->getDb()->Primary, $item->{$this->View->getDb()->Primary} );
+        return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->db()->Primary, $item->{$this->db()->Primary} );
     }
     
     /** == Rendu de la page  == **/
-    public function Render()
+    public function render()
     {
     ?>
 		<div class="wrap">
     		<h2>
-    			<?php echo $this->View->getLabel( 'all_items' );?>
+    			<?php echo $this->label( 'all_items' );?>
     			
     			<?php if( $this->EditBaseUri ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->View->getLabel( 'add_new' );?></a>
-    			<?php endif;?>
-    			
-    			<?php if( $this->View->getModelAttrs( 'base_url', 'Import' ) ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->View->getModelAttrs( 'base_url', 'Import' );?>"><?php echo $this->View->getLabel( 'import_items' );?></a>
+    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
     			<?php endif;?>
     		</h2>
     		
     		<?php $this->views(); ?>
+    		
     		<form method="get" action="">
-    			<?php parse_str( parse_url( $this->View->getModelAttrs( 'base_url', $this->Name ), PHP_URL_QUERY ), $query_vars ); ?>
+    			<?php parse_str( parse_url( $this->BaseUri, PHP_URL_QUERY ), $query_vars ); ?>
     			<?php foreach( (array) $query_vars as $name => $value ) : ?>
-    			<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
+    				<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
     			<?php endforeach;?>
     		
-    			<?php $this->search_box( $this->View->getLabel( 'search_items' ), $this->View->getID() );?>
+    			<?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
     			<?php $this->display();?>
 			</form>
     	</div>

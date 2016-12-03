@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Admin\Model\TabooxEditUser;
+namespace tiFy\Core\Templates\Admin\Model\TabooxEditUser;
 
-use tiFy\Core\Admin\Model\EditUser\EditUser;
+use tiFy\Core\Templates\Admin\Model\EditUser\EditUser;
 
 class TabooxEditUser extends EditUser
 {					
@@ -20,7 +20,7 @@ class TabooxEditUser extends EditUser
 	/** == Définition des sections d'édition == **/
 	public function set_sections()
 	{
-		if( $sections = $this->View->getModelAttrs( 'sections', $this->Name ) ) :			
+		if( $sections = $this->getConfig( 'sections' ) ) :			
 		else :
 			$sections['general'] = __( 'Informations générales', 'tify' );
 		endif;
@@ -161,11 +161,11 @@ class TabooxEditUser extends EditUser
 	}
 				
 	/** == Rendu == **/
-	public function Render()
+	public function render()
 	{
 	?>
 		<div class="wrap">
-			<h2><?php echo $this->View->getLabel( 'edit_item' );?></h2>
+			<h2><?php echo $this->label( 'edit_item' );?></h2>
 		
 			<form method="post" action="">
 				<div style="margin-right:300px; margin-top:20px;">

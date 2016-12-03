@@ -113,7 +113,7 @@ class Factory
 		$this->setSearchColNames( $search );
 
 		/// Définition du nom de la table en base de données
-		$this->setName();
+		$this->setName( $name );
 		
 		/// Définition de nom de la table de metadonnées en base
 		$this->setMeta( $meta );
@@ -182,14 +182,17 @@ class Factory
 	} 
 	
 	/** == Définition du nom de la table en base de données == **/
-	private function setName()
+	private function setName( $name = '' )
 	{
-		if( ! in_array( $this->ID, $this->sql()->tables ) ) :	
-			array_push( $this->sql()->tables, $this->ID );				
+		if( ! $name )
+			$name = $this->ID;
+		
+		if( ! in_array( $name, $this->sql()->tables ) ) :	
+			array_push( $this->sql()->tables, $name );				
 			$this->sql()->set_prefix( $this->sql()->base_prefix );
 		endif;
 		
-		return $this->Name = $this->sql()->{$this->ID};
+		return $this->Name = $this->sql()->{$name};
 	}
 	
 	/** == Définition du nom de la table en base de données == **/

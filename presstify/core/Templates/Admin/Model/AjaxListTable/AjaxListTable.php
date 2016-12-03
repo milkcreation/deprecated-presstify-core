@@ -1,7 +1,7 @@
 <?php 
-namespace tiFy\Core\Admin\Model\AjaxListTable;
+namespace tiFy\Core\Templates\Admin\Model\AjaxListTable;
 
-class AjaxListTable extends \tiFy\Core\Admin\Model\Table
+class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
 {	
 	/* = INITIALISATION DES PARAMETRES = */
 	/** == Initialisation de l'url de la page d'administration == **/
@@ -24,7 +24,7 @@ class AjaxListTable extends \tiFy\Core\Admin\Model\Table
 				'language'		=> array( 
 					'url' 		=> $this->getDatatablesLanguageUrl(),
 				),
-				'viewID'		=> $this->View->getID(),
+				'viewID'		=> $this->template()->getID(),
 				'total_items'	=> $this->get_pagination_arg( 'total_items' ),
 				'total_pages'	=> $this->get_pagination_arg( 'total_pages' ),
 				'per_page'		=> $this->get_pagination_arg( 'per_page' )
@@ -37,7 +37,7 @@ class AjaxListTable extends \tiFy\Core\Admin\Model\Table
 	public function getDatatablesData()
 	{
 		return array(
-			'action'		=> $this->View->getID() .'_get_items'
+			'action'		=> $this->template()->getID() .'_get_items'
 		);
 	}
 
