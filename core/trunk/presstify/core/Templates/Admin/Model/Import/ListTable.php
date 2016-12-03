@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Admin\Model\Import;
+namespace tiFy\Core\Templates\Admin\Model\Import;
 
-use tiFy\Core\Admin\Model\Table as tiFyCoreAdminModelTable;
+use tiFy\Core\Templates\Admin\Model\Table as tiFyCoreAdminModelTable;
 
 class ListTable extends tiFyCoreAdminModelTable
 {

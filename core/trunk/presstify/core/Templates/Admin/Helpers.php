@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Admin;
+namespace tiFy\Core\Templates\Admin;
 
 class Helpers
 {

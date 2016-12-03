@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Admin\Model\EditUser;
+namespace tiFy\Core\Templates\Admin\Model\EditUser;
 
-use tiFy\Core\Admin\Model\Form;
+use tiFy\Core\Templates\Admin\Model\Form;
 
 class EditUser extends Form
 {					
@@ -119,7 +119,7 @@ class EditUser extends Form
 					printf( '<div class="%1$s"><p>%2$s</p></div>', 'notice notice-error', $message );
 			});	
 		else :
-			$sendback = add_query_arg( array( $this->View->getDb()->Primary => $data ), $sendback );
+			$sendback = add_query_arg( array( $this->db()->Primary => $data ), $sendback );
 			$sendback = add_query_arg( array( 'message' => 'created' ), $sendback );
 			wp_redirect( $sendback );
 			exit;
@@ -140,7 +140,7 @@ class EditUser extends Form
 					printf( '<div class="%1$s"><p>%2$s</p></div>', 'notice notice-error', $message );
 			});		
 		else :
-			$sendback = add_query_arg( array( $this->View->getDb()->Primary => $data ), $sendback );
+			$sendback = add_query_arg( array( $this->db()->Primary => $data ), $sendback );
 			$sendback = add_query_arg( array( 'message' => 'updated' ), $sendback );
 			wp_redirect( $sendback );
 			exit;
@@ -247,11 +247,11 @@ class EditUser extends Form
 		<div id="submitdiv" class="tify_submitdiv">
 			<?php if( ! $this->item ) :?>
 				<?php wp_nonce_field( $this->get_item_nonce_action( 'create' ) ); ?>
-				<input type="hidden" id="<?php echo $this->View->getDb()->Primary;?>" name="<?php echo $this->View->getDb()->Primary;?>" value="0" />
+				<input type="hidden" id="<?php echo $this->db()->Primary;?>" name="<?php echo $this->db()->Primary;?>" value="0" />
 				<input type="hidden" id="hiddenaction" name="action" value="create" />				
 			<?php else :?>
-				<?php wp_nonce_field( $this->get_item_nonce_action( 'update', $this->item->{$this->View->getDb()->Primary} ) ); ?>
-				<input type="hidden" id="<?php echo $this->View->getDb()->Primary;?>" name="<?php echo $this->View->getDb()->Primary;?>" value="<?php echo $this->item->{$this->View->getDb()->Primary};?>" />
+				<?php wp_nonce_field( $this->get_item_nonce_action( 'update', $this->item->{$this->db()->Primary} ) ); ?>
+				<input type="hidden" id="<?php echo $this->db()->Primary;?>" name="<?php echo $this->db()->Primary;?>" value="<?php echo $this->item->{$this->db()->Primary};?>" />
 				<input type="hidden" id="hiddenaction" name="action" value="update" />
 			<?php endif;?>
 			<input type="hidden" id="user-id" name="user_ID" value="<?php echo get_current_user_id();?>" />

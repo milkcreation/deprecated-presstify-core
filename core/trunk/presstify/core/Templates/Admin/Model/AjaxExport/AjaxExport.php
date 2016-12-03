@@ -1,5 +1,5 @@
 <?php 
-namespace tiFy\Core\Admin\Model\AjaxExport;
+namespace tiFy\Core\Templates\Admin\Model\AjaxExport;
 
 use tiFy\Environment\App;
 
@@ -70,7 +70,7 @@ class AjaxExport extends App
 	?>
 	<div class="wrap">
 		<h2>
-			<?php echo $this->View->getLabel( 'export_items' );?>
+			<?php echo $this->label( 'export_items' );?>
 		</h3>
      	<?php $this->display();?>	
 	</div>

@@ -1,10 +1,10 @@
 <?php
-namespace tiFy\Core\Admin\Model;
+namespace tiFy\Core\Templates\Admin\Model;
 
-use \tiFy\Environment\App;
-
-abstract class Form extends App
+abstract class Form
 {
+	use \tiFy\Environment\Traits\Path;
+	
 	/* = ARGUMENTS = */
 	// Classe de la vue
 	public $View					= null;
@@ -47,7 +47,19 @@ abstract class Form extends App
 	
 	// Élément à éditer
 	protected $item					= null;
-		
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct(){}
+	
+	/* = METHODES MAGIQUES = */
+	/** == Appel des méthodes dynamiques == **/
+    final public function __call( $name, $arguments )
+    {
+        if( in_array( $name, array( 'template', 'db', 'label' ) ) ) :
+    		return call_user_func_array( $this->{$name}, $arguments );
+        endif;
+    }	
+	
 	/* = PARAMETRAGE = */
 	/** == Définition des messages de notification == **/
 	public function set_notices()
@@ -81,51 +93,53 @@ abstract class Form extends App
 	
 	/* = INITIALISATION DES PARAMETRES = */
 	/** == Initialisation des paramètres de configuration de la table == **/
-	private function init_params()
+	protected function init_params()
 	{
 		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init_param_' . $param ) ) 
+			if( ! method_exists( $this, 'init' . $param ) ) 
 				continue;
-			call_user_func( array( $this, 'init_param_' . $param ) );
+			call_user_func( array( $this, 'init' . $param ) );
 		endforeach;
 	}
 	
-	/** == Initialisation de l'url de la page d'administration == **/
-	public function init_param_BaseUri()
-	{
-		$this->BaseUri = $this->View->getModelAttrs( 'base_url', $this->Name );
-	}
-	
 	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function init_param_ListBaseUri()
+	public function initBaseUri()
 	{
-		$this->ListBaseUri = $this->View->getModelAttrs( 'base_url', 'ListTable' );
+		$this->BaseUri = $this->template()->getAttr( 'base_url', '' );
+	}
+		
+	/** == Initialisation de l'url d'édition d'un élément == **/
+	public function initListBaseUri()
+	{
+		if( $this->ListBaseUri = $this->set_list_base_url() ) :
+		elseif( $this->ListBaseUri = $this->getConfig( 'list_base_url' ) ) :
+		endif;
 	}
 	
 	/** == Initialisation de l'intitulé d'un objet traité == **/
-	public function init_param_Singular()
+	public function initSingular()
 	{
 		if( ! $singular = $this->set_singular() )
-			$singular = $this->View->getID();
+			$singular = $this->template()->getID();
 		
 		$this->Singular = sanitize_key( $singular );
 	}
 	
 	/** == Initialisation des notifications == **/
-	public function init_param_Notices()
+	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
 	}
 	
 	/** == Initialisation des champs de saisie == **/
-	public function init_param_Fields()
+	public function initFields()
 	{
 		/// Déclaration des colonnes de la table		
 		if( $fields = $this->set_fields() ) :
-		elseif( $fields = $this->View->getModelAttrs( 'fields', $this->Name ) ) :
+		elseif( $fields = $this->getConfig( 'fields' ) ) :
 		else :
 			
-			foreach( (array)  $this->View->getDb()->ColNames as $name ) :
+			foreach( (array)  $this->db()->ColNames as $name ) :
 				$fields[$name] = $name;
 			endforeach;
 		endif;
@@ -133,13 +147,13 @@ abstract class Form extends App
 	}
 	
 	/** == Initialisation des arguments de requête == **/
-	public function init_param_QueryArgs()
+	public function initQueryArgs()
 	{
 		$this->QueryArgs = (array) $this->set_query_args();
 	}
 	
 	/** == Initialisation du paramétre de permission d'ajout d'un nouvel élément == **/
-	public function init_param_NewItem()
+	public function initNewItem()
 	{
 		$this->NewItem = (bool) $this->set_add_new_item();
 	}	
@@ -181,8 +195,8 @@ abstract class Form extends App
 	/** == Récupération de l'élément à traité == **/
 	public function current_item() 
 	{
-		if ( ! empty( $_REQUEST[$this->View->getDb()->Primary] ) )
-			return (int) $_REQUEST[$this->View->getDb()->Primary];
+		if ( ! empty( $_REQUEST[$this->db()->Primary] ) )
+			return (int) $_REQUEST[$this->db()->Primary];
 
 		return 0;
 	}
@@ -202,7 +216,7 @@ abstract class Form extends App
 	/** == Préparation de l'object à éditer == **/
 	public function prepare_item()
 	{
-		$query = $this->View->getDb()->query( $this->parse_query_args() );
+		$query = $this->db()->query( $this->parse_query_args() );
 		$this->item = reset( $query->items );
 	}
 	
@@ -211,14 +225,14 @@ abstract class Form extends App
 	{
 		// Arguments par défaut
 		$query_args = array(						
-			$this->View->getDb()->Primary => $this->current_item(),
+			$this->db()->Primary => $this->current_item(),
 		);
 			
 		// Traitement des arguments
 		foreach( (array) $_REQUEST as $key => $value ) :
 			if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
 				 call_user_func_array( array( $this, 'parse_query_arg_' . $key ), array( &$query_args, $value ) );
-			elseif( $this->View->getDb()->isCol( $key ) ) :
+			elseif( $this->db()->isCol( $key ) ) :
 				$query_args[$key] = $value;
 			endif;
 		endforeach;
@@ -240,12 +254,12 @@ abstract class Form extends App
 		// Vérification
 		if( ! $item_id )
 			wp_die( __( 'ERREUR SYSTEME : Impossible de créer un nouvel élément', 'tify' ) );
-		elseif( ! $this->View->getDb()->select()->row_by_id( $item_id ) )
+		elseif( ! $this->db()->select()->row_by_id( $item_id ) )
 			wp_die( __( 'Vous tentez de modifier un contenu qui n’existe pas. Peut-être a-t-il été supprimé ?!', 'tify' ) );
 
 		// Traitement des actions
 		if( ! $this->current_item() ) :
-			wp_safe_redirect( add_query_arg( $this->View->getDb()->Primary, $item_id ) );
+			wp_safe_redirect( add_query_arg( $this->db()->Primary, $item_id ) );
 			exit;
 		elseif( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
 			call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
@@ -263,11 +277,11 @@ abstract class Form extends App
 		$data = $this->parse_postdata( $_POST );
 		
 		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-		$sendback = add_query_arg( array( $this->View->getDb()->Primary => $this->current_item() ), $sendback );
+		$sendback = add_query_arg( array( $this->db()->Primary => $this->current_item() ), $sendback );
 		if( is_wp_error( $data ) ) :
 			$sendback = add_query_arg( array( 'message' => $data->get_error_code() ), $sendback );	
 		else :		 
-			$this->View->getDb()->handle()->record( $data );			
+			$this->db()->handle()->record( $data );			
 			$sendback = add_query_arg( array( 'message' => 'updated' ), $sendback );			
 		endif;
 	
@@ -282,10 +296,10 @@ abstract class Form extends App
 			
 		// Traitement de l'élément				
 		/// Conservation du statut original
-		if( $this->View->getDb()->hasMeta() && ( $original_status = $this->View->getDb()->select()->cell_by_id( $this->item_id, 'status' ) ) )
-			$this->View->getDb()->meta()->update( $this->item_id, '_trash_meta_status', $original_status );					
+		if( $this->db()->hasMeta() && ( $original_status = $this->db()->select()->cell_by_id( $this->item_id, 'status' ) ) )
+			$this->db()->meta()->update( $this->item_id, '_trash_meta_status', $original_status );					
 		/// Modification du statut
-		$this->View->getDb()->handle()->update( $this->item_id, array( 'status' => 'trash' ) );
+		$this->db()->handle()->update( $this->item_id, array( 'status' => 'trash' ) );
 		
 		// Traitement de la redirection
 		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
@@ -306,7 +320,7 @@ abstract class Form extends App
 	protected function get_default_item_to_edit()
 	{
 		if( $this->NewItem )
-			return $this->View->getDb()->handle()->create( wp_parse_args( $this->item_defaults, array( $this->View->getDb()->Primary => 0 ) ) );
+			return $this->db()->handle()->create( wp_parse_args( $this->item_defaults, array( $this->db()->Primary => 0 ) ) );
 	}
 	
 	/** == Récupération de l'attribut de sécurisation d'une action == **/
@@ -378,7 +392,7 @@ abstract class Form extends App
 	?>
 		<div class="stuffbox">
 			<h3 class="hndle ui-sortable-handle">
-				<span><?php echo $this->View->getLabel( 'datas_item' );?></span>
+				<span><?php echo $this->label( 'datas_item' );?></span>
 			</h3>
 			<div class="inside">
 				<table class="form-table">
@@ -425,10 +439,10 @@ abstract class Form extends App
 	{
 		$value = isset( $item->{$field_name} ) ? $item->{$field_name} : '';		
 		
-		if( $field_name === $this->View->getDb()->Primary )
+		if( $field_name === $this->db()->Primary )
 			return "#{$value}";		
 			
-		$col_type = strtoupper( $this->View->getDb()->getColAttr( $field_name, 'type' ) );
+		$col_type = strtoupper( $this->db()->getColAttr( $field_name, 'type' ) );
 
         switch( $col_type ) :
             default:				
@@ -461,11 +475,11 @@ abstract class Form extends App
 	{
 	?>
 		<div id="submitdiv" class="tify_submitdiv">
-			<?php wp_nonce_field( $this->get_item_nonce_action( 'update',  $this->item->{$this->View->getDb()->Primary} ) ); ?>
+			<?php wp_nonce_field( $this->get_item_nonce_action( 'update',  $this->item->{$this->db()->Primary} ) ); ?>
 			<input type="hidden" id="hiddenaction" name="action" value="update" />
 			<input type="hidden" id="user-id" name="user_ID" value="<?php echo get_current_user_id();?>" />
 			<input type="hidden" id="referredby" name="referredby" value="<?php echo esc_url( wp_get_referer() ); ?>" />		
-			<input type="hidden" id="<?php echo $this->View->getDb()->Primary;?>" name="<?php echo $this->View->getDb()->Primary;?>" value="<?php echo $this->item->{$this->View->getDb()->Primary};?>" />
+			<input type="hidden" id="<?php echo $this->db()->Primary;?>" name="<?php echo $this->db()->Primary;?>" value="<?php echo $this->item->{$this->db()->Primary};?>" />
 			<h3 class="hndle">
 				<span><?php _e( 'Enregistrer', 'tify' );?></span>
 			</h3>
@@ -499,9 +513,9 @@ abstract class Form extends App
 	?>
 		<div class="wrap">
 			<h2>
-				<?php echo $this->View->getLabel( 'edit_item' );?>
+				<?php echo $this->label( 'edit_item' );?>
 				<?php if( $this->NewItem ) : ?>
-				<a class="add-new-h2" href="<?php echo $this->BaseUri;?>"><?php echo $this->View->getLabel( 'new_item' );?></a>
+				<a class="add-new-h2" href="<?php echo $this->BaseUri;?>"><?php echo $this->label( 'new_item' );?></a>
 				<?php endif;?>
 			</h2>
 						
