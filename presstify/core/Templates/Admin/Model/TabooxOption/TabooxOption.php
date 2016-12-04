@@ -72,7 +72,7 @@ class TabooxOption extends Form
 	
 	/* = VUES = */	
 	/** == Rendu == **/
-	public function Render()
+	public function render()
 	{
 	?>	
 		<div class="wrap">

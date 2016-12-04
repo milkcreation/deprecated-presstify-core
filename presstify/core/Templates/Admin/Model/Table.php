@@ -575,15 +575,8 @@ abstract class Table extends \WP_List_Table
 		if( defined( 'DOING_AJAX' ) && ( DOING_AJAX === true ) )
 			return;
 		
-		if( $this->current_action() ) :
-			if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
-				call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
-			endif;
-			
-			$sendback = remove_query_arg( array( 'action', 'action2', 'bulk_edit' ), $sendback );
-
-			wp_redirect($sendback);
-			exit;
+		if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
+			call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
 		elseif( ! empty( $_REQUEST['_wp_http_referer'] ) ) :
 			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
 			exit;
