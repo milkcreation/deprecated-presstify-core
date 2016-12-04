@@ -74,6 +74,12 @@ class Factory extends \tiFy\Environment\App
 		endif;
 	}
 	
+	/** == == **/
+	final public function getTemplate()
+	{
+		return $this->TemplateCb;
+	}
+	
 	/** == Récupération de la liste des  attributs == **/
 	final public function getAttrs()
 	{

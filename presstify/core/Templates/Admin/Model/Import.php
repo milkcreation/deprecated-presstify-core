@@ -6,13 +6,6 @@ use \tiFy\Environment\App;
 class Import extends App
 {
 	/* = ARGUMENTS = */
-	// Classe de la vue
-	public $View					= null;
-	
-	// Nom du modèle
-	public $Name					= null;
-	
-
 	public	$table,
 			$table_id,
 			$table_name,
@@ -74,15 +67,55 @@ class Import extends App
 			
 			// Contrôleur
 			$list_table;
+	
+	public $template, $db, $label, $getConfig;		
+	
+	protected $NestedListTable;
+	
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct(){}
+	
+	/* = METHODES MAGIQUES = */
+	/** == Appel des méthodes dynamiques == **/
+    final public function __call( $name, $arguments )
+    {
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
+    		return call_user_func_array( $this->{$name}, $arguments );
+        endif;
+    }			
 			
 	/* = DECLENCHEURS = */
+    /** == == **/
+	public function _init()
+	{
+		$c = array();
+		$c['row'] = '#';	
+		foreach( $this->column_map as $col => $args ) :
+			$c[$col] = "<b>{$args['title']}</b><em style=\"display:block;font-size:0.8em;line-height:0.9;color:#999;\">". ( empty(  $args['meta'] ) ? __( 'Données de la table principale', 'tify' ) : __( 'Metadonnée', 'tify' ) ) ."</em>";
+		endforeach;
+		$c[ $this->template()->getID() .'_tify_adminview_import_result' ] = "<b>". __( 'Action d\'import', 'tify' ) ."</b>";
+		
+		
+		$this->NestedListTable = \tiFy\Core\Templates\Templates::register( 
+			$this->template()->getID() .'ListTable', 
+			array(
+				'model'		=> 'ListTable',
+				'columns'	=> $c,
+			), 
+			'admin' 
+		);
+		$this->NestedListTable->init();	
+		$this->list_table = $this->NestedListTable->getTemplate();
+	}
+    
 	/** == Initialisation de l'interface d'administration == **/
 	final public function _admin_init()
 	{
 		/// Repertoire d'import des fichiers
 		$upload_dir = wp_upload_dir();
 		$this->upload_dir = $upload_dir['basedir'];
-
+		
 		// Actions et Filtres Wordpress
 		add_action( 'wp_ajax_tiFyCoreAdminModelImport_download_sample_'. $this->template()->getID(), array( $this, 'wp_ajax_download_sample' ) );
 		add_action( 'wp_ajax_tiFyCoreAdminModelImport_upload_'. $this->template()->getID(), array( $this, 'wp_ajax_upload' ) );
@@ -93,7 +126,7 @@ class Import extends App
 	final public function _current_screen( $current_screen )
 	{
 		if( $this->filename )
-			$this->get_table_preview();			
+			$this->get_table_preview();
 	}
 			
 	/* = PARAMETRAGE = */
@@ -153,13 +186,11 @@ class Import extends App
 	
 	/** == Traitement Ajax de téléchargement du fichier == **/
 	public function wp_ajax_upload()
-	{
+	{				
 		// Récupération des variables de requête		
 		$file 		= current( $_FILES );	
 		$filename 	= sanitize_file_name( basename( $file['name'] ) );
-		
-		
-		
+	
 		$response = array();
 		if( ! @move_uploaded_file( $file['tmp_name'],  $this->upload_dir . "/" . $filename  ) ) :
 			$response = array( 
@@ -167,19 +198,18 @@ class Import extends App
 				'data' 		=> sprintf( __( 'Impossible de déplacer le fichier "%s" dans le dossier d\'import', 'tify' ), basename( $file['name'] ) )
 			);
 		else :
-			$this->filename = $this->upload_dir . "/" . $filename;
+			$this->filename = $this->upload_dir . "/" . $filename;			
 			$this->header	= $_POST['header']; 		
 			$data = array();
 			$data['table'] = $this->get_table_preview();
-						
+		
 			ob_start();
 			$this->display_form_import_options();
 			$data['options'] = ob_get_clean();
 			
 			$response = array( 'success' => true, 'data' => $data );
 		endif;
-		
-							
+									
 		wp_send_json( $response );
 	}
 	
@@ -206,13 +236,7 @@ class Import extends App
 		exit;
 	}
 	
-	/* = TABLE D'APERCU DES DONNEES = */
-	/** == Initialisation de la table == **/
-	public function table_init()
-	{
-		$this->list_table = new \tiFy\Core\Templates\Admin\Model\Import\ListTable( $this );
-	}
-	
+	/* = TABLE D'APERCU DES DONNEES = */	
 	/* = Préparation = */
 	private function table_prepare()
 	{		
@@ -252,12 +276,12 @@ class Import extends App
 	/** == Affichage de la table == **/
 	private function get_table_preview()
 	{
-		$this->table_init();
-		$this->_parse_column_map();		
-		$this->table_prepare();
+		$this->list_table->init();
+		$this->list_table->_current_screen( null );
 		
-		list( $columns, $hidden ) 	= $this->list_table->get_column_info();
-		$this->list_table->items 	= $this->items;
+		$this->_parse_column_map();		
+		$this->table_prepare();		
+		$this->list_table->items = $this->items;	
 		
 		$output  = "";
 		ob_start();
@@ -469,7 +493,7 @@ class Import extends App
 	public function display_import_options(){}
 	
 	/** == Rendu == **/
-	public function Render()
+	public function render()
 	{
 	?>
 		<div class="wrap">

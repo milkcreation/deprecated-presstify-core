@@ -36,27 +36,27 @@ class Factory extends \tiFy\Core\Templates\Factory
 	final public function init()
 	{
 		// Bypass
-		if( ! $this->getAttr( 'cb' ) || $this->getAttr( 'model' ) )
+		if( ! $this->getAttr( 'cb' ) && ! $this->getAttr( 'model' ) )
 			return;
 			
 		// Instanciation de la classe
 		if(  ! $this->getAttr( 'cb' ) ) : 
-			$model = ucfirst( strtolower( $this->getAttr( 'model' ) ) );		
+			$model = $this->getAttr( 'model' );		
 			$className = "\\tiFy\\Core\\Templates\\". ucfirst( self::$Context ) ."\\Model\\{$model}\\{$model}";
 		else :
 			$className = $this->getAttr( 'cb' );
 		endif;
-			
+
 		if( ! class_exists( $className ) )
 			return;
-
-		$this->TemplateCb = new $className;
+		$this->TemplateCb = new $className( $this->getAttr( 'args', null ) );
 
 		// Création des methodes dynamiques
 		$factory = $this;
 		$this->TemplateCb->template = function() use( $factory ){ return $factory; };
 		$this->TemplateCb->db = function() use( $factory ){ return $factory->db(); };
-		$this->TemplateCb->label 	= function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };		
+		$this->TemplateCb->label = function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };		
+		$this->TemplateCb->getConfig = function( $attr, $default = '' ) use( $factory ){ if( func_num_args() ) return call_user_func_array( array( $factory, 'getAttr' ), func_get_args() ); };	
 		
 		// Identifiants de menu
 		$menu_slug = $this->getID(); $parent_slug = null;
@@ -90,7 +90,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 		$this->setAttr( '_menu_page_url', \menu_page_url( $this->getAttr( '_menu_slug' ), false ) );
 		
 		if( ! $this->getAttr( 'base_url' ) )
-			$this->setAttr( 'base_url', \esc_attr( $this->getAttr( 'menu_page_url' ) ) );
+			$this->setAttr( 'base_url', \esc_attr( $this->getAttr( '_menu_page_url' ) ) );
 			
 		// Déclenchement de l'action dans les classes de rappel d'environnement
 		if( method_exists( $this->TemplateCb, '_admin_init' ) ) :
@@ -107,7 +107,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 		// Bypass
 		if( ! $this->TemplateCb )
 			return;
-		if( $current_screen->id !== $this->getAttr( 'hookname', '' ) )
+		if( $current_screen->id !== $this->getAttr( '_hookname', '' ) )
 			return;
 			
 		// Mise en file des scripts de l'ecran courant
@@ -143,8 +143,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 		/// ListUser
 		wp_register_style( 'tiFyCoreAdminListUser', self::getUrl() .'/Model/ListUser/ListUser.css', array( 'tiFyCoreAdminListTable' ), 160609 );
 		
-		/*
-		switch( $this->CurrentModelName ) :
+		switch( $this->ModelName ) :
 			case 'AjaxListTable' :	
 				wp_enqueue_style( 'tiFyCoreAdminAjaxListTable' );						
 				wp_enqueue_script( 'tiFyCoreAdminAjaxListTable' );
@@ -163,7 +162,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 				wp_enqueue_style( 'tiFyCoreAdminListUser' );
 				break;
 		endswitch;
-		*/	
+		
 		// Déclenchement de l'action dans la classe de rappel d'environnement	
 		if( method_exists( $this->TemplateCb, '_admin_enqueue_scripts' ) ) :
 			call_user_func( array( $this->TemplateCb, '_admin_enqueue_scripts' ) );

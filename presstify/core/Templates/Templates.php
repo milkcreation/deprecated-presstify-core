@@ -53,10 +53,10 @@ final class Templates extends \tiFy\Environment\Core
 	
 		switch( $context ) :
 			case 'admin' :						
-				self::$Factory['admin'][$id] = new \tiFy\Core\Templates\Admin\Factory( $id, $attrs );
+				return self::$Factory['admin'][$id] = new \tiFy\Core\Templates\Admin\Factory( $id, $attrs );
 				break;
 			case 'front' :
-				self::$Factory['front'][$id] = new \tiFy\Core\Templates\Front\Factory( $id, $attrs );
+				return self::$Factory['front'][$id] = new \tiFy\Core\Templates\Front\Factory( $id, $attrs );
 				break;
 		endswitch;
 	}
