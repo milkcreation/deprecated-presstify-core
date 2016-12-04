@@ -267,7 +267,7 @@ class Meta
 	}
 	
 	/** == Récupération de la metadonné d'un élément == **/
-	final function delete( $object_id, $key, $value = '' )
+	final function delete( $object_id, $meta_key, $meta_value = '', $delete_all = false )
 	{
 		if ( ! $this->Db->MetaType || ! $meta_key || ! is_numeric( $object_id ) && ! $delete_all ) {
 			return false;

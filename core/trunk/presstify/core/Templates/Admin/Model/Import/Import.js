@@ -88,7 +88,6 @@ jQuery( document ).ready( function( $ ){
 		        data		: { action : 'tiFyCoreAdminModelImport_handle_'+ id, filename : filename, header : header, offset : offset, per_pass : per_pass, options : options },
 		        dataType	: 'json', 
 		        success		: function( resp, textStatus, jqXHR ){
-		        	console.log( resp );
 		        	$.each( resp, function( u, v ){
 	        			$( "#the-list > tr" ).eq( u ).addClass( 'imported' ).find( 'td.'+ id +'_tify_adminview_import_result' ).html( v );
 		        	});		        		

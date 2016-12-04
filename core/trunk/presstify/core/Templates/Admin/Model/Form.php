@@ -55,7 +55,7 @@ abstract class Form
 	/** == Appel des méthodes dynamiques == **/
     final public function __call( $name, $arguments )
     {
-        if( in_array( $name, array( 'template', 'db', 'label' ) ) ) :
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
     		return call_user_func_array( $this->{$name}, $arguments );
         endif;
     }	
@@ -105,7 +105,7 @@ abstract class Form
 	/** == Initialisation de l'url d'édition d'un élément == **/
 	public function initBaseUri()
 	{
-		$this->BaseUri = $this->template()->getAttr( 'base_url', '' );
+		$this->BaseUri = $this->getConfig( 'base_url', '' );
 	}
 		
 	/** == Initialisation de l'url d'édition d'un élément == **/

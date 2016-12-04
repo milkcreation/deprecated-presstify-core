@@ -97,13 +97,13 @@ class Helpers
 	public static function ListTableFilteredViewLink( $args = array() )
 	{
 		static $index;
-
+		
 		$defaults = array(
+			'base_uri'				=> false,
 			'label'					=> sprintf( __( 'Filtre #%d', 'tify' ), $index++ ),	
 			'title'					=> '',
 			'class'					=> '',
 			'link_attrs'			=> array(),
-			'base_uri'				=> set_url_scheme( '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ),
 			'current'				=> false,
 			'hide_empty'			=> false,
 			'count'					=> 0,	
@@ -113,6 +113,9 @@ class Helpers
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
+		
+		if( ! $base_uri )
+			$base_uri = set_url_scheme( '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		
 		if( $hide_empty && ! $count )
 			return;

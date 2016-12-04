@@ -33,8 +33,8 @@ class TabooxOption extends Form
 	/** == Déclaration de la boîte à onglets == **/
 	final public function _tify_taboox_register_box()
 	{
-		$this->MenuSlug = $this->template()->getAttr( '_menu_slug' );
-		$parent_slug 	= $this->template()->getAttr( '_parent_slug' );
+		$this->MenuSlug = $this->getConfig( '_menu_slug' );
+		$parent_slug 	= $this->getConfig( '_parent_slug' );
 		$this->Hookname = $this->MenuSlug .'::'. $parent_slug;
 		
 		tify_taboox_register_box( 

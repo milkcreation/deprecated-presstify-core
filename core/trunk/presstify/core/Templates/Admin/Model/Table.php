@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model;
 
+use \tiFy\Core\Templates\Admin\Helpers;
+
 /** 
  * @see https://codex.wordpress.org/Class_Reference/WP_List_Table
  */
@@ -59,7 +61,7 @@ abstract class Table extends \WP_List_Table
 	protected $QueryArgs			= array();
 	
 	/// Intitulé affiché lorsque la table est vide
-	protected $NoItems				= array();
+	protected $NoItems				= '';
 	
 	/// Actions groupées
 	protected $BulkActions			= array();
@@ -74,26 +76,27 @@ abstract class Table extends \WP_List_Table
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions'	
 	);
 	
-	public $template;
-	public $db;
-	public $label;
+	protected $compat_fields = array( 
+		'_args', '_pagination_args', 'screen', '_actions', '_pagination',  
+		'template', 'db', 'label', 'getConfig' 
+	);
+
 	
 	/* = CONSTRUCTEUR = */
 	/** == ! IMPORTANT : court-circuitage du constructeur natif de WP_List_Table == **/
 	public function __construct(){}
 	
 	/* = METHODES MAGIQUES = */
-	/** == Court-circuitage == **/
-	public function template(){
-		return call_user_func( $this->template );
-	}
-	public function db(){
-		return call_user_func( $this->db );
-	}
-	public function label(){
-		return call_user_func( $this->label, func_get_arg(0) );
-	}
-	
+	/** == Appel des méthodes dynamiques == **/
+    final public function __call( $name, $arguments )
+    {
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
+    		return call_user_func_array( $this->{$name}, $arguments );
+        else :
+        	parent::__call( $name, $arguments );
+        endif;
+    }	
+
 	/* = DECLARATION DES PARAMETRES = */
 	/** == Définition l'url de la page d'édition d'un élément == **/
 	public function set_edit_link()
@@ -166,13 +169,7 @@ abstract class Table extends \WP_List_Table
 	{
 		return 0;
 	}
-	
-	/** == Définition du nombre d'élément à afficher par page == **/
-	public function set_per_page_option_name()
-	{
-		return true;
-	}
-		
+			
 	/** == Définition de l'intitulé lorque la table est vide == **/
 	public function set_no_items()
 	{
@@ -211,14 +208,14 @@ abstract class Table extends \WP_List_Table
 	/** == Initialisation de l'url de la page d'administration == **/
 	public function initBaseUri()
 	{
-		$this->BaseUri = $this->template()->getAttr( 'base_url', '' );
+		$this->BaseUri = $this->getConfig( 'base_url', '' );
 	}
 	
 	/** == Initialisation de l'url d'édition d'un élément == **/
 	public function initEditBaseUri()
 	{
 		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
-		elseif( $edit_template = $this->template()->getAttr( 'edit_template' ) ) :
+		elseif( $edit_template = $this->getConfig( 'edit_template' ) ) :
 			$this->EditBaseUri = \tiFy\Core\Templates\Templates::getAdmin( $edit_template )->getAttr( 'base_url' );
 		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
 		endif;
@@ -245,7 +242,7 @@ abstract class Table extends \WP_List_Table
 	/** == Initialisation des notifications == **/
 	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = Helpers::ListTableNoticesMap( $this->set_notices() );
 	}
 	
 	/** == Initialisation des statuts == **/
@@ -266,7 +263,7 @@ abstract class Table extends \WP_List_Table
 				$attrs['base_uri'] = $this->BaseUri;
 		endforeach;
 			
-		$this->FilteredViewLinks = \tiFy\Core\Templates\Admin\Helpers::ListTableFilteredViewsMap( $views );
+		$this->FilteredViewLinks = Helpers::ListTableFilteredViewsMap( $views );
 	}
 	
 	/** == Initialisation des colonnes de la table == **/
@@ -318,25 +315,7 @@ abstract class Table extends \WP_List_Table
 	{
 		$this->QueryArgs = (array) $this->set_query_args();
 	}
-	
-	/** == Initialisation du nombre d'éléments affichés par page == **/
-	public function initPerPage()
-	{
-		$this->PerPage = ( $per_page = (int) $this->set_per_page() ) ? $per_page : 20;	
-	}
-	
-	/** == == **/
-	public function initPerPageOptionName()
-	{
-		if( ! $per_page_option = $this->set_per_page_option_name() )
-			return;
-			
-		$per_page_option = is_bool( $per_page_option ) ? $this->template()->getID() .'_per_page' : (string) $per_page_option;
-		add_filter( 'set-screen-option', function( $none, $option, $value ) use ( $per_page_option ){ return ( $per_page_option  ===  $option ) ? $value : $none; }, 10, 3 );
-		$per_page = $this->PerPage;
-		add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 );
-	}
-	
+		
 	/** == Initialisation de l'intitulé lorsque la table est vide == **/
 	public function initNoItems()
 	{
@@ -378,6 +357,34 @@ abstract class Table extends \WP_List_Table
 	}
 	
 	/* = DECLENCHEURS = */
+	/** == initialisation globale == **/
+	final public function _init()
+	{
+		// Pré-initialisation des paramètres
+		/// Option de personnalisation du nombre d'élément par page			
+		$this->PerPageOptionName = $per_page_option_name = sanitize_key( $this->template()->getID() .'_per_page' );
+		//// Permettre l'enregistrement : @see set_screen_options -> wp-admin/includes/misc.php
+		add_filter( 
+			'set-screen-option', 
+			function( $none, $option, $value ) use ( $per_page_option_name ){ 
+				return ( $per_page_option_name  ===  $option ) ? $value : $none; 
+			}, 
+			10, 
+			3 
+		);
+		
+		/// Nombre d'éléments par page
+		if( $per_page = (int) get_user_option( $this->PerPageOptionName ) ) :
+		elseif( $per_page = (int) $this->getConfig( 'per_page' ) ) :
+		elseif( $per_page = (int) $this->set_per_page() ) :
+		else :
+			$per_page = 20; 
+		endif;
+		$this->PerPage = $per_page;	
+		//// Définition de la valeur du nombre d'éléments par page
+		add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 );
+	}
+	
 	/** == Affichage de l'écran courant == **/
 	final public function _current_screen( $current_screen = null )
 	{	
@@ -386,7 +393,7 @@ abstract class Table extends \WP_List_Table
 			$this->Screen = $current_screen;
 				
 		// Initialisation des paramètres de configuration de la table
-		$this->init_params();
+		$this->init_params();	
 		
 		// Initialisation de la classe de table native de Wordpress
 		$args = array();
@@ -395,15 +402,15 @@ abstract class Table extends \WP_List_Table
 		$this->_wp_list_table_init( $args );
 		
 		// Activation de l'interface de gestion du nombre d'éléments par page
-		if( $this->Screen )
+		if( $this->Screen ) :
 			$this->Screen->add_option(
 				'per_page',
 				array(
-						'option' => $this->PerPageOptionName
+					'option' => $this->PerPageOptionName
 				)
-			);
-		//var_dump( $_REQUEST );
-			//exit;	
+			);			
+		endif;
+	
 		// Traitement
 		/// Exécution des actions
 		$this->process_bulk_actions();
@@ -511,7 +518,7 @@ abstract class Table extends \WP_List_Table
 				$row_actions[$action] = $this->RowActions[$action];
 			else :
 				$args = $this->item_row_actions_parse_args( $item, $action, $this->RowActions[$action] );
-				$row_actions[$action] = \tiFy\Core\Templates\Admin\Helpers::RowActionLink( $action, $args );
+				$row_actions[$action] = Helpers::RowActionLink( $action, $args );
 			endif;
 		endforeach;		
 			
@@ -565,6 +572,9 @@ abstract class Table extends \WP_List_Table
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions()
 	{
+		if( defined( 'DOING_AJAX' ) && ( DOING_AJAX === true ) )
+			return;
+		
 		if( $this->current_action() ) :
 			if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
 				call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
@@ -671,7 +681,7 @@ abstract class Table extends \WP_List_Table
 	/** == Récupération de l'intitulé d'un statut == **/
 	public function get_status( $status, $singular = true )
 	{
-		return \tiFy\Core\Templates\Admin\Helpers::getStatus( $status, $singular, $this->Statuses );
+		return Helpers::getStatus( $status, $singular, $this->Statuses );
 	}
 	
 	/** == Récupération du titre la colonne de selection multiple == **/
@@ -701,7 +711,7 @@ abstract class Table extends \WP_List_Table
 	public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
 	{
 		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) )
-			return \tiFy\Core\Templates\Admin\Helpers::RowActionLink( 'edit', $args );
+			return Helpers::RowActionLink( 'edit', $args );
 	}
 	
 	/** == Arguments d'édition d'un élément == **/
@@ -763,7 +773,7 @@ abstract class Table extends \WP_List_Table
 	public function views() 
 	{
 		$views = $this->get_views();
-		$views = apply_filters( "views_{$this->screen->id}", $views );
+		$views = apply_filters( "views_{$this->Screen->id}", $views );
 
 		if ( empty( $views ) )
 			return;
