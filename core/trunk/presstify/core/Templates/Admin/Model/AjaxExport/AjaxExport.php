@@ -65,7 +65,7 @@ class AjaxExport extends App
 	
 	/* = AFFICHAGE = */
 	/** == Rendu de la page  == **/
-	public function Render()
+	public function render()
 	{
 	?>
 	<div class="wrap">

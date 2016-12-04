@@ -100,8 +100,9 @@ class Import extends App
 		$this->NestedListTable = \tiFy\Core\Templates\Templates::register( 
 			$this->template()->getID() .'ListTable', 
 			array(
-				'model'		=> 'ListTable',
-				'columns'	=> $c,
+				'admin_menu'	=> false,	
+				'model'			=> 'ListTable',
+				'columns'		=> $c,
 			), 
 			'admin' 
 		);

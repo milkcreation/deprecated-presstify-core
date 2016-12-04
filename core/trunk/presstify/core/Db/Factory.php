@@ -14,7 +14,10 @@ class Factory
 	// Identifiant unique de la table
 	public $ID 					= '';
 	
-	// Nom de la table en base
+	// Nom de la table non prefixé
+	public $ShortName				= '';
+	
+	// Nom prefixé de la table en base
 	public $Name				= '';
 	
 	// Numéro de version
@@ -187,6 +190,8 @@ class Factory
 		if( ! $name )
 			$name = $this->ID;
 		
+		$this->Shortname = $name;	
+			
 		if( ! in_array( $name, $this->sql()->tables ) ) :	
 			array_push( $this->sql()->tables, $name );				
 			$this->sql()->set_prefix( $this->sql()->base_prefix );
@@ -202,7 +207,7 @@ class Factory
 			return;
 				
 		if( is_bool( $meta_type ) )
-			$meta_type = $this->ID;
+			$meta_type = $this->Shortname;
 		
 		$table = $meta_type .'meta';
 		

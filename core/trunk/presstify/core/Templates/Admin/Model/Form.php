@@ -5,13 +5,7 @@ abstract class Form
 {
 	use \tiFy\Environment\Traits\Path;
 	
-	/* = ARGUMENTS = */
-	// Classe de la vue
-	public $View					= null;
-	
-	// Nom du modèle
-	public $Name					= null;
-	
+	/* = ARGUMENTS = */	
 	// Écran courant
 	protected $Screen				= null;
 	
@@ -137,8 +131,7 @@ abstract class Form
 		/// Déclaration des colonnes de la table		
 		if( $fields = $this->set_fields() ) :
 		elseif( $fields = $this->getConfig( 'fields' ) ) :
-		else :
-			
+		else :			
 			foreach( (array)  $this->db()->ColNames as $name ) :
 				$fields[$name] = $name;
 			endforeach;
@@ -167,7 +160,7 @@ abstract class Form
 		
 		// Initialisation des paramètres de configuration de la table
 		$this->init_params();
-		
+					
 		// Traitement
 		/// Exécution des actions
 		$this->process_bulk_actions();
@@ -216,6 +209,28 @@ abstract class Form
 	/** == Préparation de l'object à éditer == **/
 	public function prepare_item()
 	{
+		// Initialisation de l'élément à éditer
+		/// Vérification des habilitations
+		if( ! current_user_can( $this->Cap ) )
+			wp_die( __( 'Vous n\'êtes pas autorisé à modifier ce contenu.', 'tify' ) );
+	
+		// Traitement de l'élément courant
+		if( ! $item_id = $this->current_item() ) :
+			$item_id = $this->get_default_item_to_edit();
+
+			// Vérification
+			if( ! $item_id ) :
+				wp_die( __( 'ERREUR SYSTEME : Impossible de créer un nouvel élément', 'tify' ) );
+			elseif( ! $this->db()->select()->row_by_id( $item_id ) ) :
+				wp_die( __( 'Vous tentez de modifier un contenu qui n’existe pas. Peut-être a-t-il été supprimé ?!', 'tify' ) );
+			endif;
+					// Traitement des actions
+			if( ! $this->current_item() ) :
+				wp_safe_redirect( add_query_arg( $this->db()->Primary, $item_id ) );
+				exit;
+			endif;
+		endif;
+		
 		$query = $this->db()->query( $this->parse_query_args() );
 		$this->item = reset( $query->items );
 	}
@@ -243,30 +258,15 @@ abstract class Form
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions()
 	{		
-		// Vérification des habilitations
-		if( ! current_user_can( $this->Cap ) )
-			wp_die( __( 'Vous n\'êtes pas autorisé à modifier ce contenu.', 'tify' ) );
-
-		// Traitement de l'élément courant
-		if( ! $item_id = $this->current_item() )
-			$item_id = $this->get_default_item_to_edit();
-
-		// Vérification
-		if( ! $item_id )
-			wp_die( __( 'ERREUR SYSTEME : Impossible de créer un nouvel élément', 'tify' ) );
-		elseif( ! $this->db()->select()->row_by_id( $item_id ) )
-			wp_die( __( 'Vous tentez de modifier un contenu qui n’existe pas. Peut-être a-t-il été supprimé ?!', 'tify' ) );
-
-		// Traitement des actions
-		if( ! $this->current_item() ) :
-			wp_safe_redirect( add_query_arg( $this->db()->Primary, $item_id ) );
-			exit;
-		elseif( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
+		if( defined( 'DOING_AJAX' ) && ( DOING_AJAX === true ) )
+			return;
+			
+		if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
 			call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
 		elseif( ! empty( $_REQUEST['_wp_http_referer'] ) ) :
-			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), $_REQUEST['_wp_http_referer'] ) );
+			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), wp_unslash( $_SERVER['REQUEST_URI'] ) ) );
 			exit;
-		endif;	
+		endif; 	
 	}
 		
 	/** == Éxecution de l'action - mise à jour == **/
@@ -508,7 +508,7 @@ abstract class Form
 	}
 	
 	/** == Rendu == **/
-	public function Render()
+	public function render()
 	{
 	?>
 		<div class="wrap">
