@@ -48,8 +48,11 @@ class Fileshare extends Helpers
 		$upload_path 	= $upload_dir['path'];
 		$upload_url 	= $upload_dir['url']; 
 		
-		$output  = ""; 
-		$output .= "<ul>";
+		$ID = sanitize_key( $args['name'] );	
+		
+		$output  = "";
+		$output .= "<div class=\"tiFyTabooxFileshare tiFyTabooxFileshare--{$ID}\">\n"; 
+		$output .= "\t<ul class=\"tiFyTabooxFileshare-items\">\n";
 		foreach( (array) $files as $file_id ) :
 			$fileurl 	= wp_get_attachment_url( $file_id );
 			$filename 	= $upload_path.'/'.wp_basename( $fileurl );
@@ -63,39 +66,37 @@ class Fileshare extends Helpers
 			if ( ( $attachment_id = intval( $file_id ) ) && $thumb_url = wp_get_attachment_image_src( $attachment_id, 'thumbnail', false ) )
 				$thumb_url = $thumb_url[0];
 			
-			$output_item = "\n<li class=\"tify_taboox_fileshare tify_taboox_fileshare-{$args['name']}\">";
-			$output_item .= "\n\t<a href=\"" . tify_upload_url( $file_id ) . "\" class=\"fileshare_link clearfix\"  title=\"" . __( 'Télécharger le fichier', 'tify' ) ."\">";
+			$output .= "\t\t<li class=\"tiFyTabooxFileshare-item\">";
+			$output .= "\t\t\t<a href=\"" . tify_upload_url( $file_id ) . "\" class=\"tiFyTabooxFileshare-itemUploadLink\"  title=\"" . __( 'Télécharger le fichier', 'tify' ) ."\">\n";
 			
 			// Icone
-			if( $thumb_url )
-				$output_item .= "\n\t\t<img src=\"{$thumb_url}\" class=\"mimetype_ico\" />"; 
-			else
-				$output_item .= "\n\t\t<i class=\"fileshare_ico fileshare_ico-{$ext}\"></i>"; 
+			if( $thumb_url ) :
+				$output .= "\t\t\t\t<img src=\"{$thumb_url}\" class=\"tiFyTabooxFileshare-itemThumbnail\" />\n"; 
+			else :
+				$output .= "\t\t\t\t<i class=\"tiFyTabooxFileshare-itemIcon tiFyTabooxFileshare-itemIcon--{$ext}\"></i>\n"; 
+			endif;
 			
 			// Titre du fichier		
-			$output_item .= "\n\t\t<span class=\"fileshare_title\">". get_the_title( $file_id ) ."</span>";
+			$output .= "\t\t\t\t<span class=\"tiFyTabooxFileshare-itemTitle\">". get_the_title( $file_id ) ."</span>\n";
 			
 			// Nom du fichier
-			$output_item .= "\n\t\t<span class=\"fileshare_basename\">" . wp_basename( $fileurl ) . "</span>";
+			$output .= "\t\t\t\t<span class=\"tiFyTabooxFileshare-itemFilename\">" . wp_basename( $fileurl ) . "</span>\n";
 			
 			// Poids du fichiers				
 			if(  $filesize )
-				$output_item .= "\n\t\t<span class=\"fileshare_size\">". self::FormatBytes( $filesize ) . "\n\t\t</span>";
+				$output .= "\t\t\t\t<span class=\"tiFyTabooxFileshare-itemFilesize\">". self::FormatBytes( $filesize ) . "</span>\n";
 			
-			$output_item .= "\n\t\t<span class=\"fileshare_upload_label\">".__( 'Télécharger', 'tify' )."</span>";
-			
-			$output_item .= "\n\t</a>";
-			$output_item .= "\n</li>";
-			
-			$output .= apply_filters( 'tify_taboox_fileshare_item', $output_item, $file_id, $args );
-			
+			$output .= "\t\t\t\t<span class=\"tiFyTabooxFileshare-itemUploadLabel\">".__( 'Télécharger', 'tify' )."</span>\n";
+			$output .= "\t\t\t</a>\n";
+			$output .= "\t\t</li>\n";			
 		 endforeach;
-		$output .= "</ul>"; 
+		$output .= "\t</ul>\n"; 
+		$output .= "</div>\n";
 		
 		if( $echo)
 			echo $output;
-		else
-			return $output; 
+	
+		return $output; 
 	}
 
 	/* = CONTROLEUR = */	
