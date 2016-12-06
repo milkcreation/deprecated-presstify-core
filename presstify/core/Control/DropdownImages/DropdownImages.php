@@ -16,15 +16,15 @@ class DropdownImages extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{		
-		wp_register_style( 'tify_control-dropdown_images', $this->Url .'/dropdown_images.css', array( ), '150122' );
-		wp_register_script( 'tify_control-dropdown_images', $this->Url .'/dropdown_images.js', array( 'jquery' ), '150122', true );
+		wp_register_style( 'tiFyCoreControlDropdownImages', $this->Url .'/DropdownImages.css', array( ), '150122' );
+		wp_register_script( 'tiFyCoreControlDropdownImages', $this->Url .'/DropdownImages.js', array( 'jquery' ), '150122', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function enqueue_scripts()
 	{
-		wp_enqueue_style( 'tify_control-dropdown_images' );
-		wp_enqueue_script( 'tify_control-dropdown_images' );	
+		wp_enqueue_style( 'tiFyCoreControlDropdownImages' );
+		wp_enqueue_script( 'tiFyCoreControlDropdownImages' );	
 	}
 		
 	/* = AFFICHAGE = */
@@ -39,6 +39,14 @@ class DropdownImages extends Factory
 			'name'				=> 'tify_control_dropdown_images-'. $instance,			
 			'echo'				=> 1,
 			
+			// Liste de selection
+			'picker'			=> array(
+				'class'		=> '',
+				'append' 	=> 'body',
+				'position'	=> 'default', // default: vers le bas | top |  clever: positionnement intelligent
+				'width'		=> 'auto'
+			),					
+				
 			'choices'			=> array(),
 			'selected' 			=> 0,
 			'show_option_none'	=> self::getRelPath() .'/none.jpg',			// Chemin relatif vers
@@ -48,7 +56,17 @@ class DropdownImages extends Factory
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
 		
-		$pickerID = 'tify_control_dropdown_images-picker'. $instance;
+		// Traitement des arguments de la liste de selection
+		$picker = wp_parse_args(
+			$picker,
+			array(
+				'id'		=> $id .'-picker',
+				'class'		=> '',
+				'append' 	=> 'body',
+				'position'	=> 'default', // default: vers le bas | top | clever: positionnement intelligent
+				'width'		=> 'auto'
+			)
+		);	
 
 		if( ! $choices ) :
 			$client = Emojione::getClient();			
@@ -75,7 +93,7 @@ class DropdownImages extends Factory
 		$output  = "";
 		
 		// Selecteur HTML
-		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_images\" data-picker=\"{$pickerID}\">\n";
+		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_images\" data-picker=\"{$picker['id']}\">\n";
 		$output .= "\t<span class=\"selected\">\n";		
 		$output .= "\t\t<b class=\"selection\">";
 		$output .= "\t\t\t<input type=\"radio\" name=\"{$name}\" value=\"{$selected}\" autocomplete=\"off\" checked=\"checked\">\n";
@@ -86,7 +104,7 @@ class DropdownImages extends Factory
 		$output .= "</div>\n";
 		
 		// Picker HTML
-		$output  .= "<div id=\"{$pickerID}\" class=\"dropdown_images-picker\" data-selector=\"#{$id}\">\n";
+		$output  .= "<div id=\"{$picker['id']}\" class=\"dropdown_images-picker". ( $picker['class'] ? ' '. $picker['class'] : '' ) ."\" data-selector=\"#{$id}\">\n";
 		$output .= "\t<ul>\n";
 		$col = 0;	
 		foreach( $choices as $value => $path ) :
@@ -118,7 +136,6 @@ class DropdownImages extends Factory
 		$output .= "\t</ul>\n";
 		$output .= "</div>\n";
 			
-		
 		if( $echo )
 			echo $output;
 		else
