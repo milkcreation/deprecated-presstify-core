@@ -31,7 +31,7 @@ class CustomType extends Core
 			
 		add_action( 'init', array( $this, 'register_taxonomy' ), 0 );
 		add_action( 'init', array( $this, 'register_post_type' ), 0 );
-		add_action( 'init', array( $this, 'register_taxonomy_for_object_type' ), 0 );
+		add_action( 'init', array( $this, 'register_taxonomy_for_object_type' ), 25 );
 		add_action( 'admin_init', array( $this, 'create_initial_terms' ) );
 	}
 	

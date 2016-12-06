@@ -32,6 +32,15 @@ class File
 		return $contents;
 	}
 	
+	/**
+	 * Récupération de l'identifiant d'un médias depuis son URL
+	 */
+	public static function attachmentIDFromUrl( $url )
+	{
+		global $wpdb;
+		
+		return (int) $wpdb->get_var( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid='%s';", $url ) );
+	}
 	
 	/**
 	 * Import de fichier local ou distant dans le repertoire d'upload
