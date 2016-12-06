@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Control\MediaFile;
 
-use tiFy\Core\Control\Factory;
-
-class MediaFile extends Factory
+class MediaFile extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
@@ -12,8 +10,8 @@ class MediaFile extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-media_file', $this->Url ."/media_file.css", array( 'dashicons' ), '160621' );
-		wp_register_script( 'tify_control-media_file', $this->Url ."/media_file.js", array( 'jquery' ), '160621', true );
+		wp_register_style( 'tify_control-media_file', self::getUrl() ."/MediaFile.css", array( 'dashicons' ), '160621' );
+		wp_register_script( 'tify_control-media_file', self::getUrl() ."/MediaFile.js", array( 'jquery' ), '160621', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
@@ -52,6 +50,10 @@ class MediaFile extends Factory
 			$original_media_title 	= __( 'Aucun fichier choisi', 'tify' );
 		endif;
 		
+		// Récupération de l'ID du média depuis son url
+		if( ! is_numeric( $value ) )
+			$value = \tiFy\Lib\File::attachmentIDFromUrl( $value );
+				
 		// Définition des attribut de l'élément existant
 		if( $value && ( $filename = get_attached_file( $value ) ) ) :
 			$media_id 		= (int) $value;
@@ -79,7 +81,7 @@ class MediaFile extends Factory
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output;
+		
+		return $output;
 	}
 }

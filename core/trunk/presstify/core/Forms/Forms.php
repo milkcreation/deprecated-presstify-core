@@ -99,13 +99,14 @@ class Forms extends Core
 			
 		/// Depuis la déclaration dynamique	
 		do_action( 'tify_form_register' );
+		
+		
 	}	
 	
 	/** == Déclaration d'un formulaire == **/
 	public static function register( $id, $attrs = array() )
 	{
 		$attrs['ID'] = $id;
-		
 		$form = self::$Registered[$id] = new Form\Form( $id, $attrs );
 	
 		return $form->getID();
