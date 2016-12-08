@@ -1,6 +1,21 @@
 <?php
 namespace
 {
+	/** == == **/
+	/** == Déclaration == **/
+	function tify_admin_register( $id, $args = array() )
+	{
+		_deprecated_function( __FUNCTION__, '0.9.9.161008', 'tify_template_register' );
+		exit;
+	}
+
+	/** == Déclaration == **/
+	function tify_front_register( $id, $args = array() )
+	{
+		_deprecated_function( __FUNCTION__, '0.9.9.161008', 'tify_template_register' );
+		exit;
+	}
+	
 	/** == 0.9.9.161008 == **/
 	function tify_video_toggle( $target = null, $args = array() )
 	{

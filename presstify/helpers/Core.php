@@ -1,14 +1,6 @@
 <?php
 namespace
-{	
-	// --------------------------------------------------------------------------------------------------------------------------
-	/* = ADMIN = */
-	/** == Déclaration == **/
-	function tify_admin_register( $id, $args = array() )
-	{
-		return tiFy\Core\Admin\Admin::Register( $id, $args );
-	}
-	
+{		
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = CLASS AUTOLOADER = */
 	/** == Chargement automatique des classe PHP == **/
@@ -157,15 +149,7 @@ namespace
 	{
 		return tiFy\Core\Forms\Forms::get( $id );
 	}
-	
-	// --------------------------------------------------------------------------------------------------------------------------
-	/* = FRONT = */
-	/** == Déclaration == **/
-	function tify_front_register( $id, $args = array() )
-	{
-		return tiFy\Core\Front\Front::Register( $id, $args );
-	}
-	
+		
 	// --------------------------------------------------------------------------------------------------------------------------	
 	/* = META = */
 	/** == POST == **/
@@ -292,5 +276,12 @@ namespace
 	{
 		if( $screen = tiFy\Core\Taboox\Taboox::$Screen )
 			return call_user_func_array( array( $screen, 'box_render' ), func_get_args() );
+	}
+	
+	// --------------------------------------------------------------------------------------------------------------------------
+	/* = TEMPLATES = */	
+	function tify_templates_register( $id, $attrs, $context )
+	{
+		return tiFy\Core\Templates\Templates::register( $id, $attrs, $context );
 	}
 }

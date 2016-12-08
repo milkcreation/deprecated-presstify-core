@@ -8,10 +8,9 @@ class ContactForm extends Component
 	/* = ARGUMENTS = */
 	// Actions à déclencher	
 	protected $CallActions			= array(
-		'init',
+		'tify_form_register',
 		'the_content',
-		'tify_options_register_node',
-		'tify_form_register'
+		'tify_options_register_node'
 	);
 	// Configuration
 	/// Options par défaut
@@ -19,10 +18,10 @@ class ContactForm extends Component
 	/// Liste des formulaires enregistrés
 	private static $Forms = array();	
 	
-	/* = CONSTRUCTEUR = */
-	final public function init()
+	/* = DECLENCHEURS = */
+	/** == == **/
+	final public function tify_form_register()
 	{
-		parent::__construct();
 		// Récupération de la configuration par défaut
 		self::$Defaults = \tiFy\Core\Params::parseAndEval( $this->Dirname .'/config/defaults.yml' );
 		
@@ -39,6 +38,8 @@ class ContactForm extends Component
 			$id = 'tify_contact_form-0';
 			self::Register( $id );
 		endif;
+		
+		$this->setForms();
 	}
 		
 	/* = = */
@@ -76,23 +77,23 @@ class ContactForm extends Component
 			endif;
 		endforeach;
 	}
-		
-	/* = Déclaration des formulaires  = */
-	final public function tify_form_register()
-	{	
-		foreach( (array) self::$Forms as $id => $args ) :
-			if( ! isset( $args['form']['ID'] ) )
-				$args['form']['ID'] = $id;
-			\tify_form_register( $id, $args['form'] );
-		endforeach;
-	}	
-	
+			
 	/* = CONTROLEUR = */
 	/* = Déclaration d'un formulaire de contact  = */
 	public static function Register( $id, $args = array() )
 	{
 		if( ! isset( self::$Forms[$id] ) )
 			self::$Forms[$id] = self::parseArgs( $id, $args );
+	}
+	
+	/* = Déclaration des formulaires  = */
+	private function setForms()
+	{	
+		foreach( (array) self::$Forms as $id => $args ) :
+			if( ! isset( $args['form']['ID'] ) )
+				$args['form']['ID'] = $id;
+			\tify_form_register( $id, $args['form'] );
+		endforeach;
 	}
 	
 	/* = Traitement des arguments de configuration = */
