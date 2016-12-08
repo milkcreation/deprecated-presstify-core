@@ -3,9 +3,8 @@ namespace tiFy\Core\Forms\Addons\Record;
 
 use \tiFy\Core\Forms\Forms;
 use \tiFy\Core\Forms\Addons;
-use \tiFy\Core\Db\Db;
 
-class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
+class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 {
 	/* = ARGUMENTS = */
 	// 
@@ -80,7 +79,7 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	/** == == **/
 	public function wp_ajax()
 	{
-		if( ! $item = $this->View->getDb()->select()->row_by_id( $_REQUEST['record_id'] ) )
+		if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
 			wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
 				
 		if( ! $this->Form = Forms::get( $item->form_id ) )
@@ -161,7 +160,7 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	{
 		if( ! $field = $this->Form->getField( $column_name ) )
 			return;
-		$values = (array) $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		$values = (array) $this->db()->meta()->get( $item->ID, $column_name );
 		
 		foreach( $values as &$value ) :		
 			if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
@@ -176,7 +175,7 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	public function column_form_infos( $item )
 	{
 		$form = Forms::get( $item->form_id );
-		
+
 		$output  = $form->getTitle();
 		$output .= "<ul style=\"margin:0;font-size:0.8em;font-style:italic;color:#666;\">";
 		$output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Identifiant : %s', 'tify' ), $item->record_session ) ."</li>";
@@ -191,7 +190,7 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	{
 		if( ! $field = $this->Form->getField( $column_name ) )
 			return;
-		$values = (array) $this->View->getDb()->meta()->get( $item->ID, $column_name );
+		$values = (array) $this->db()->meta()->get( $item->ID, $column_name );
 		
 		foreach( $values as &$value ) :		
 			if( ( $choices = $field->getAttr( 'choices' ) ) && isset( $choices[$value] ) ) :
@@ -220,31 +219,28 @@ class ListTable extends \tiFy\Core\Admin\Model\ListTable\ListTable
 	<?php	
 	}
 	
-    /** == Rendu de la page  == **/
-    public function Render()
+	/** == Rendu de la page  == **/
+    public function render()
     {
     ?>
 		<div class="wrap">
     		<h2>
-    			<?php echo $this->View->getLabel( 'all_items' );?>
+    			<?php echo $this->label( 'all_items' );?>
     			
     			<?php if( $this->EditBaseUri ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->View->getLabel( 'add_new' );?></a>
-    			<?php endif;?>
-    			
-    			<?php if( $this->View->getModelAttrs( 'base_url', 'Import' ) ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->View->getModelAttrs( 'base_url', 'Import' );?>"><?php echo $this->View->getLabel( 'import_items' );?></a>
+    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
     			<?php endif;?>
     		</h2>
     		
     		<?php $this->views(); ?>
+    		
     		<form method="get" action="">
-    			<?php parse_str( parse_url( $this->View->getModelAttrs( 'base_url', $this->Name ), PHP_URL_QUERY ), $query_vars ); ?>
+    			<?php parse_str( parse_url( $this->BaseUri, PHP_URL_QUERY ), $query_vars ); ?>
     			<?php foreach( (array) $query_vars as $name => $value ) : ?>
-    			<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
+    				<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
     			<?php endforeach;?>
     		
-    			<?php $this->search_box( $this->View->getLabel( 'search_items' ), $this->View->getID() );?>
+    			<?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
     			<?php $this->display();?>
     			<?php $this->inline_preview();?>
 			</form>

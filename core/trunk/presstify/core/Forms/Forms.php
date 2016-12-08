@@ -98,9 +98,7 @@ class Forms extends Core
 		endforeach;
 			
 		/// Depuis la déclaration dynamique	
-		do_action( 'tify_form_register' );
-		
-		
+		do_action( 'tify_form_register' );		
 	}	
 	
 	/** == Déclaration d'un formulaire == **/

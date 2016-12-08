@@ -39,7 +39,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	// Liste des actions à déclencher
 	protected $CallActions				= array(
 		'admin_init',
-		'tify_admin_register',
+		'tify_templates_register',
 		'tify_db_register'	
 	); 
 	
@@ -98,7 +98,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	public function __construct() 
 	{	
 		parent::__construct();
-		
+
 		// Définition des fonctions de callback
 		$this->callbacks = array(
 			'handle_successfully'	=> array( $this, 'cb_handle_successfully' )
@@ -113,22 +113,31 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	}
 	
 	/** == Définition de l'interface d'administration == **/
-	public function tify_admin_register()
+	public function tify_templates_register()
 	{
-		tify_admin_register(
-			'tify_forms_record',
+		tify_templates_register(
+			'tiFyCoreFormsAddonsRecordMenu',
 			array(
-				'Menu' 		=> array(
+				'admin_menu' => array(
 					'menu_title'	=> __( 'Formulaires', 'tify' ),
 				  	'menu_slug'		=> 'tify_forms_record',
 				  	'icon_url'		=> 'dashicons-clipboard'
-				),
-				'ListTable'	=> array(
-				    'parent_slug'	=> 'tify_forms_record',
-				    'menu_slug'		=> 'tify_forms_record',
-					'cb'			=> $this->getFormAttr( 'cb', 'tiFy\Core\Forms\Addons\Record\ListTable' )
 				)
-			)
+			),
+			'admin'
+		);
+		
+		tify_templates_register(
+			'tiFyCoreFormsAddonsRecordListTable',
+			array(
+				'admin_menu' => array(
+					'parent_slug'	=> 'tify_forms_record',
+					'menu_slug'		=> 'tify_forms_record'
+				),
+				'cb'			=> $this->getFormAttr( 'cb', 'tiFy\Core\Forms\Addons\Record\ListTable' ),
+				'db'			=> 'tify_forms_record'
+			),
+			'admin'
 		);
 	}
 	
