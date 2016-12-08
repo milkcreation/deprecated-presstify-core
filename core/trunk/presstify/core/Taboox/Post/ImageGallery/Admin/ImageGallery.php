@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\ImageGallery\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class ImageGallery extends Admin
+class ImageGallery extends \tiFy\Core\Taboox\Admin
 {	
 	/* = CHARGEMENT DE LA PAGE = */	
 	public function current_screen( $current_screen )

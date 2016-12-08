@@ -1,6 +1,3 @@
-/**
-Dependencies: google-map, jquery, gmap3
-*/
 jQuery(document).ready( function($){
 	$( 'a[data-toggle="tab"]', '.taboox-container' ).on( 'shown.bs.tab', function(e){
 		$( '#map-reload' ).trigger( 'click' );	
@@ -12,8 +9,9 @@ jQuery(document).ready( function($){
 	var $map 		= $( "#googleMap", container );
 	/** == Traitement des types de marqueurs == **/
 	var ico			= {};
-	var mainMarker 	= MkpbxGoogleMap.main_marker;
-	var markerTypes = MkpbxGoogleMap.marker_types;
+	var mainMarker 	= TabooxPostAdminGMap.main_marker;
+	var markerTypes = TabooxPostAdminGMap.marker_types;
+	
 	// Définition du marqueur par défaut
 	if(  mainMarker ){
 		var defaultType = "main_marker";
@@ -47,15 +45,16 @@ jQuery(document).ready( function($){
     /**** ==== Recherche de position de marqueur par autocomplétion ==== ****/
 	var input = document.getElementById('search-input'), place;
 	// Options d'autocompletion
-	if( MkpbxGoogleMap.autocomplete ){
+	if( TabooxPostAdminGMap.autocomplete ){
 		var autocmp_opts = {};
-		var br = MkpbxGoogleMap.autocomplete.bounds;
+		var br = TabooxPostAdminGMap.autocomplete.bounds;
 		if( br.north && br.east && br.south && br.west )
 			autocmp_opts.bounds = new google.maps.LatLngBounds( new google.maps.LatLng(br.south,br.west), new google.maps.LatLng(br.north,br.east) );
-		if( MkpbxGoogleMap.autocomplete.country )
-			autocmp_opts.componentRestrictions = { country : MkpbxGoogleMap.autocomplete.country };
+		if( TabooxPostAdminGMap.autocomplete.country )
+			autocmp_opts.componentRestrictions = { country : TabooxPostAdminGMap.autocomplete.country };
 	}
     var autocomplete = new google.maps.places.Autocomplete( input, autocmp_opts );
+    
     google.maps.event.addListener( autocomplete, 'place_changed', function () {
         if( place = autocomplete.getPlace() ){       
         	$( '#marker-edit .lat', container ).val( place.geometry.location.lat() );
@@ -106,11 +105,11 @@ jQuery(document).ready( function($){
 				$( '#marker-edit .lng', container ).val( attrs.latLng[1] );
 				$( '#marker-edit .tooltip', container ).val( attrs.tooltip );
 				// Intitulés et boutons
-				$( '#marker-edit .save' ).html( MkpbxGoogleMap.buttonUpdate );
+				$( '#marker-edit .save' ).html( TabooxPostAdminGMap.buttonUpdate );
 				$( '#marker-edit .delete' ).show();
 			} else {
 				// Intitulés et boutons
-				$( '#marker-edit .save' ).html( MkpbxGoogleMap.buttonAdd );
+				$( '#marker-edit .save' ).html( TabooxPostAdminGMap.buttonAdd );
 				$( '#marker-edit .delete' ).hide();
 			}
 		});			
@@ -188,15 +187,15 @@ jQuery(document).ready( function($){
     	attrs.map = getMapOptions();
     	attrs.marker = getMarkersOptions();
     	// Panneau d'aide à la saisie
-    	if( MkpbxGoogleMap.showPanelHelper ){
+    	if( TabooxPostAdminGMap.showPanelHelper ){
 			attrs.panel = {
 				options : {
 					content : 	'<table id="map-infos" class="table" style="background-color:rgba(255,255,255,0.7);font-size:11px;">' +
-									'<thead><tr><th colspan="2">'+MkpbxGoogleMap.mapInfos+'</tr></thead><tbody>' +
-									'<tr id="lat-north"><td class="name">'+MkpbxGoogleMap.north+'</td><td class="value"></td></tr>' +
-                    				'<tr id="lng-east"><td class="name">'+MkpbxGoogleMap.east+'</td><td class="value"></td></tr>' +
-                    				'<tr id="lat-south"><td class="name">'+MkpbxGoogleMap.south+'</td><td class="value"></td></tr>' +
-                    				'<tr id="lng-west"><td class="name">'+MkpbxGoogleMap.west+'</td><td class="value"></td></tr>' +
+									'<thead><tr><th colspan="2">'+TabooxPostAdminGMap.mapInfos+'</tr></thead><tbody>' +
+									'<tr id="lat-north"><td class="name">'+TabooxPostAdminGMap.north+'</td><td class="value"></td></tr>' +
+                    				'<tr id="lng-east"><td class="name">'+TabooxPostAdminGMap.east+'</td><td class="value"></td></tr>' +
+                    				'<tr id="lat-south"><td class="name">'+TabooxPostAdminGMap.south+'</td><td class="value"></td></tr>' +
+                    				'<tr id="lng-west"><td class="name">'+TabooxPostAdminGMap.west+'</td><td class="value"></td></tr>' +
                   				'</tbody></table>',
 	        		bottom: true	        		
 	      		}
@@ -214,8 +213,8 @@ jQuery(document).ready( function($){
 		if( ( cx = $( '#map_center_x', container ).val() ) && ( cy = $( '#map_center_y', container ).val() ) )
 			attrs.options.center = [ cx, cy ];
 		else
-			attrs.address = MkpbxGoogleMap.gmap3.map.address;			
-		attrs.options = $.extend( true, MkpbxGoogleMap.gmap3.map.options, attrs.options );		
+			attrs.address = TabooxPostAdminGMap.gmap3.map.address;			
+		attrs.options = $.extend( true, TabooxPostAdminGMap.gmap3.map.options, attrs.options );		
 		// Evénements
 		attrs.events = {
 	    	tilesloaded 	: function(){
@@ -242,7 +241,7 @@ jQuery(document).ready( function($){
 				menu.close();
 			},
 			bounds_changed	: function( map ){
-				if( MkpbxGoogleMap.showPanelHelper ){
+				if( TabooxPostAdminGMap.showPanelHelper ){
 					var bounds = map.getBounds(), ne = bounds.getNorthEast(), sw = bounds.getSouthWest();
 					$( "#lat-north .value", '#map-infos' ).html( ne.lat() );
 					$( "#lng-east .value", '#map-infos' ).html( ne.lng() );
@@ -310,12 +309,12 @@ jQuery(document).ready( function($){
 			},
 			rightclick : function( marker, event, context ){				
 				var menu = new Gmap3MarkerMenu( $map );	
-				menu.add( MkpbxGoogleMap.buttonEdit, 'edit', 
+				menu.add( TabooxPostAdminGMap.buttonEdit, 'edit', 
 					function(){
 			            showMarkerEdit( context.id );
 					}
 				);
-				menu.add( MkpbxGoogleMap.buttonDelete, 'delete', 
+				menu.add( TabooxPostAdminGMap.buttonDelete, 'delete', 
 					function(){
 			            removeMarker( context.id );
 					}
@@ -352,19 +351,21 @@ jQuery(document).ready( function($){
 		if( ! attrs.latLng ) attrs.latLng = [ $( '#map_center_x', container ).val(), $( '#map_center_y', container ).val() ];
 		if( ! attrs.tooltip ) attrs.tooltip = '';
 		// Nombre maximum de géocode par type
-		var max = ( attrs.type == 'main_marker' ) ? 1 : MkpbxGoogleMap.marker_types[attrs.type].max;
+		var max = ( attrs.type == 'main_marker' ) ? 1 : TabooxPostAdminGMap.marker_types[attrs.type].max;
 		// Vérifie si le nombre maximum de géocode pour ce type de marqueur est atteint
 		if( ! attrs.id && max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).size() >= parseInt( max ) ) ){
-			alertDisplay( MkpbxGoogleMap.maxTypeAttempt, { duration : 0 } );
+			alertDisplay( TabooxPostAdminGMap.maxTypeAttempt, { duration : 0 } );
 			hideMarkerEdit( );
 			return;
 		} else if(  max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).size() >= parseInt( max ) ) && ( $( '#'+ attrs.id ).find('.type').val() != attrs.type ) ){
-			alertDisplay( MkpbxGoogleMap.maxTypeAttempt, { duration : 0 } );
+			alertDisplay( TabooxPostAdminGMap.maxTypeAttempt, { duration : 0 } );
 			hideMarkerEdit( );
 			return;
 		}
+
 		// Mise à jour du marqueur
-		$.post( tify_ajaxurl, { action : 'mkpbx_google_map_save_marker', post_id : $( '#post_ID' ).val(), data : attrs }, function( resp ){
+		$.post( tify_ajaxurl, { action : 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap_saveMarker', post_id : $( '#post_ID' ).val(), data : attrs }, function( resp ){
+			console.log( resp );
 			if( resp.error ){
 			
 			} else {				
@@ -403,14 +404,14 @@ jQuery(document).ready( function($){
 						get : { 
 							id 			: resp.geocode_id,
 							full 		: true,
-							callback	: function( marker ){						
+							callback	: function( marker ){
 								marker.object.setIcon( ico[resp.geocode_type] );
 								marker.object.setPosition( new google.maps.LatLng( resp.geocode_lat, resp.geocode_lng ) );
 							}
 						} 
 					});					
 					// Affichage du message d'alerte de mise à jour
-					alertDisplay( MkpbxGoogleMap.markerUpdated );
+					alertDisplay( TabooxPostAdminGMap.markerUpdated );
 				// Création du marqueur
 				} else {
 					// Ajout à la liste des géocodes
@@ -433,7 +434,7 @@ jQuery(document).ready( function($){
 					};		
 					$map.gmap3( { marker : marker } );
 					// Affichage du message d'alerte
-					alertDisplay( MkpbxGoogleMap.markerSaved );
+					alertDisplay( TabooxPostAdminGMap.markerSaved );
 				}
 			}
 			hideMarkerEdit( );
@@ -441,20 +442,20 @@ jQuery(document).ready( function($){
 	}
 	/*** === Suppression d'un géocode === ***/
 	function removeMarker( target ){
-		$.post( tify_ajaxurl, { action : 'mkpbx_google_map_delete_marker', geocode_id : target }, function( resp ){
+		$.post( tify_ajaxurl, { action : 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap_deleteMarker', geocode_id : target }, function( resp ){
 			// Suppression du géocode sur la carte
 			$map.gmap3({ clear : { name	: "marker", id : target	} });
 			// Suppression du géocode dans la liste
 			$( '#geocodes #geocode-'+target, container ).remove();
 			hideMarkerEdit( );		
-			alertDisplay( MkpbxGoogleMap.markerDeleted );
+			alertDisplay( TabooxPostAdminGMap.markerDeleted );
 		});
 	}	
 	// Affichage des alertes
 	var overlayTime;
 	function alertDisplay( message, attrs ){
 		// Déclaration des variables
-		var def_attrs = { duration : MkpbxGoogleMap.errorDuration, cl : '' }, attrs = $.extend( def_attrs, attrs ), $overlay = $( '.overlay', container );
+		var def_attrs = { duration : TabooxPostAdminGMap.errorDuration, cl : '' }, attrs = $.extend( def_attrs, attrs ), $overlay = $( '.overlay', container );
 		
 		clearTimeout( overlayTime );	
 		$overlay.empty().removeClass( 'full' );
