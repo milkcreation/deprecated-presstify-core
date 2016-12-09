@@ -37,6 +37,7 @@
 	margin:0 auto 10px;
 	background-color:#CCC; 	
 	border:solid 1px #DDD;
+	object-fit:cover;
 }
 .tiFyTaboox-TotemListItemWrapperTitle{
 	text-transform:uppercase;
