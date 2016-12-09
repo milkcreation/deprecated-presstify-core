@@ -1,20 +1,26 @@
-# Position de la sidebar
-pos:        'left'
+# Position
+pos:                'left'
 
-# Taille de la sidebar
-width:      300
+# Etat initial : closed (default) | opened 
+initial:            'closed'
+
+# Largeur
+width:              300px
 
 # Profondeur de champs 
-z-index:    99990
+z-index:            99990
 
 # Responsive
-min-width:  991
+min-width:          991px
 
-# Bouton de bascule
-toggle:     true
+# Animation à l'ouverture et la fermeture
+animated:           true
 
-# Mise en file des scripts
-enqueue:    true  
+# Bouton de bascule : bool or string true | false | ex : <span>X</span>
+toggle:             true
 
-# Greffons
+# Mise en file automatique des scripts (dans tous les contextes)
+enqueue_scripts:    true  
+
+# Elements de menu
 nodes:
