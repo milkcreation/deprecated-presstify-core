@@ -174,11 +174,12 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 	/** == Colonne des informations d'enregistrement == **/
 	public function column_form_infos( $item )
 	{
-		$form = Forms::get( $item->form_id );
-
-		$output  = $form->getTitle();
+		$form_title = ( $form = Forms::get( $item->form_id ) ) ? $form->getTitle() : __( '(Formulaire introuvable)', 'tify' );
+				
+		$output  = $form_title;
 		$output .= "<ul style=\"margin:0;font-size:0.8em;font-style:italic;color:#666;\">";
-		$output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Identifiant : %s', 'tify' ), $item->record_session ) ."</li>";
+		$output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Identifiant: %s', 'tify' ), $item->form_id ) ."</li>";
+		$output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Session : %s', 'tify' ), $item->record_session ) ."</li>";
 		$output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'posté le : %s', 'tify' ), $item->record_date ) ."</li>";
 		$output .= "</ul>";
 		

@@ -23,8 +23,7 @@ jQuery(document).ready( function($){
 			$parent.after( $previewRow );
 			// Récupération des éléments de formulaire
 			$.post( tify_ajaxurl, { action: 'tiFyCoreFormsAddonsRecordListTableInlinePreview', record_id: record_id }, function( data ){
-				console.log( data );
-				$('> td', $previewRow ).html(data);			
+				$( '> td', $previewRow ).html(data);			
 			});					
 		} else {
 			$previewRow = $parent.next();

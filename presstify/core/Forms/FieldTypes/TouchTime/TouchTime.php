@@ -22,9 +22,7 @@ class TouchTime extends Factory
 		$this->callbacks = array(
 			'field_type_output_display' 		=> array( $this, 'cb_field_type_output_display' ),
 			'handle_parse_request_field' 				=> array( $this, 'cb_handle_parse_request_field' )
-		);
-		
-		parent::__construct();				
+		);		
 	}
 	
 	/* = CALLBACKS = */

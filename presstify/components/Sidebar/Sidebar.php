@@ -252,7 +252,8 @@ class Sidebar extends \tiFy\Environment\Component
 			
 			$buttonAttrs = array(
 				'pos'	=> self::getConfig( 'pos' ),
-				'text'	=> $buttonText
+				'text'	=> $buttonText,
+				'class'	=> 'tiFySidebar-toggleButton tiFySidebar-toggleButton--'. self::getConfig( 'pos' )
 			);			
 			
 			$output .= self::displayToggleButton( $buttonAttrs, false );
@@ -281,20 +282,21 @@ class Sidebar extends \tiFy\Environment\Component
 	/** == == **/
 	public static function displayToggleButton( $args = array(), $echo = true )
 	{
-		$defaultText = "\t\t<div class=\"tiFySidebar-toggleButtonText\">";
-		ob_start(); include self::getDirname() .'/Sidebar.svg';
-		$defaultText .= ob_get_clean();
-		$defaultText .= "\t\t</div>";
+		ob_start(); 
+		include self::getDirname() .'/Sidebar.svg';
+		$default_text = ob_get_clean();
 		
 		$defaults = array(
 			'pos'	=> self::getConfig( 'pos' ),
-			'text'	=> $defaultText	
+			'text'	=> $default_text,
+			'class'	=> ''
 		);		
 		$args = wp_parse_args( $args, $defaults );
+		extract( $args );
 		
 		$output  = "";
-		$output .= "\t<a class=\"tiFySidebar-toggleButton tiFySidebar-toggleButton--". $args['pos'] ."\" tify_sidebar-toggle\" href=\"#tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" data-toggle=\"tiFySidebar\" data-target=\"". $args['pos'] ."\">";
-		$output .= $args['text'];
+		$output .= "\t<a href=\"#tify_sidebar-panel_{$pos}\"". ( $class ? " class=\"". $class ."\"" : "" ) ." data-toggle=\"tiFySidebar\" data-target=\"{$pos}\">";
+		$output .= $text;
 		$output .= "\t</a>\n";
 		
 		if( $echo )
