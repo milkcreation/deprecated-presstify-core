@@ -35,8 +35,6 @@ class Recaptcha extends Factory
 			'field_set_params' 				=> array( $this, 'cb_field_set_params' ),
 			'handle_check_field'			=> array( $this, 'cb_handle_check_field' )
 		);
-		
-		parent::__construct();
 	}
 	
 	/* = COURT-CIRCUITAGE = */

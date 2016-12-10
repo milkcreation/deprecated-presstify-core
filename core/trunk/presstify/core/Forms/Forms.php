@@ -85,6 +85,8 @@ class Forms extends Core
 			$form->handle()->proceed();
 			self::resetCurrent();
 		endforeach;
+		
+		do_action( 'tify_form_loaded' );
 	}
 		
 	/* = PARAMETRAGE = */	
@@ -104,7 +106,13 @@ class Forms extends Core
 	/** == Déclaration d'un formulaire == **/
 	public static function register( $id, $attrs = array() )
 	{
-		$attrs['ID'] = $id;
+		// Compatibilité
+		if( ! empty( $attrs['ID'] ) ) :
+			$id = $attrs['ID'];
+		else :
+			$attrs['ID'] = $id;
+		endif;
+		
 		$form = self::$Registered[$id] = new Form\Form( $id, $attrs );
 	
 		return $form->getID();
