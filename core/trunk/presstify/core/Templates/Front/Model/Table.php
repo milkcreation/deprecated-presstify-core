@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Front\Model;
+namespace tiFy\Core\Templates\Front\Model;
 	
 abstract class Table 
 {
@@ -79,7 +79,7 @@ abstract class Table
 	/** == Appel des méthodes dynamiques == **/
     final public function __call( $name, $arguments )
     {
-        if( in_array( $name, array( 'template', 'db', 'label' ) ) ) :
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
     		return call_user_func_array( $this->{$name}, $arguments );
         endif;
     }
@@ -123,7 +123,7 @@ abstract class Table
 	
 	public function set_table_classes()
 	{
-		return array( 'widefat', 'fixed', 'striped' );
+		return array( 'table-striped', 'table-bordered', 'table-hover', 'table-condensed' );
 	}	
 	
 	/** == Définition des colonnes de la table == **/
@@ -207,6 +207,8 @@ abstract class Table
 	public function initEditBaseUri()
 	{
 		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
+		elseif( $edit_template = $this->getConfig( 'edit_template' ) ) :
+			$this->EditBaseUri = \tiFy\Core\Templates\Templates::getFront( $edit_template )->getAttr( 'base_url' );
 		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
 		endif;
 	}
@@ -214,7 +216,7 @@ abstract class Table
 	/** == Initialisation des notifications == **/
 	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
 	}
 	
 	/** == Initialisation des statuts == **/
@@ -235,7 +237,7 @@ abstract class Table
 				$attrs['base_uri'] = $this->BaseUri;
 		endforeach;
 			
-		$this->FilteredViewLinks = \tiFy\Core\Admin\Helpers::ListTableFilteredViewsMap( $views );
+		$this->FilteredViewLinks = \tiFy\Core\Templates\Admin\Helpers::ListTableFilteredViewsMap( $views );
 	}
 	
 	/** == Initialisation des colonnes de la table == **/
@@ -486,7 +488,7 @@ abstract class Table
 				$row_actions[$action] = $this->RowActions[$action];
 			else :
 				$args = $this->item_row_actions_parse_args( $item, $action, $this->RowActions[$action] );
-				$row_actions[$action] = \tiFy\Core\Admin\Helpers::RowActionLink( $action, $args );
+				$row_actions[$action] = \tiFy\Core\Templates\Admin\Helpers::RowActionLink( $action, $args );
 			endif;
 		endforeach;		
 				
@@ -559,7 +561,7 @@ abstract class Table
 		// Traitement de l'élément
 		foreach( (array) $item_ids as $item_id ) :
 			$this->db()->handle()->delete_by_id( $item_id );
-			if( $this->db()->meta() )
+			if( $this->db()->hasMeta() )
 				$this->db()->meta()->delete_all( $item_id );
 		endforeach;
 		
@@ -637,7 +639,7 @@ abstract class Table
 	/** == Récupération de l'intitulé d'un statut == **/
 	public function get_status( $status, $singular = true )
 	{
-		return \tiFy\Core\Admin\Helpers::getStatus( $status, $singular, $this->Statuses );
+		return \tiFy\Core\Templates\Admin\Helpers::getStatus( $status, $singular, $this->Statuses );
 	}
 	
 	/** == Récupération du titre la colonne de selection multiple == **/
@@ -667,7 +669,7 @@ abstract class Table
 	public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
 	{
 		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) )
-			return \tiFy\Core\Admin\Helpers::RowActionLink( 'edit', $args );
+			return \tiFy\Core\Templates\Admin\Helpers::RowActionLink( 'edit', $args );
 	}
 	
 	/** == Arguments d'édition d'un élément == **/

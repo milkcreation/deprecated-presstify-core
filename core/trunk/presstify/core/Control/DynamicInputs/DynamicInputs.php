@@ -54,14 +54,14 @@ class DynamicInputs extends Factory
 		if( ! empty( $args['values'] ) ) :
 			if( ! empty( $args['values_cb'] ) &&  is_callable( $args['values_cb'] ) ) :
 				foreach( (array) $args['values'] as $i => $v ) :
-					$output .= "<li>";
+					$output .= "<li data-index=\"{$i}\">";
 					$output .= "\t". call_user_func( $args['values_cb'], $i, $v );
 					$output .= "\t<a href=\"#tify_control_dynamic_inputs-remove_button\" class=\"tify_button_remove\"></a>\n";
 					$output .= "</li>";
 				endforeach;
 			else :				
 				foreach( (array) $args['values'] as $i => $v ) :					
-					$output .= "\t\t<li>\n";
+					$output .= "\t\t<li data-index=\"{$i}\">\n";
 					$value = ( is_string( $v ) ) ? $v : wp_parse_args( $v, $args['default'] );
 					$sample_html = $args['sample_html'];
 					

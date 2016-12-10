@@ -245,12 +245,18 @@ namespace
 	/* = Ajout d'élément au panneau latéral = */
 	function tify_sidebar_register( $id = null, $args = array() )
 	{
-		\tiFy\Components\Sidebar\Sidebar::Register( $id, $args );
+		\tiFy\Components\Sidebar\Sidebar::register( $id, $args );
 	}
 	
 	/* = Affichage du panneau latéral = */
 	function tify_sidebar_display()	
 	{	
-		\tiFy\Components\Sidebar\Sidebar::Display();
+		\tiFy\Components\Sidebar\Sidebar::display();
+	}
+	
+	/* = Affichage du panneau latéral = */
+	function tify_sidebar_toggle( $args = array(), $echo = true )	
+	{	
+		\tiFy\Components\Sidebar\Sidebar::displayToggleButton( $args, $echo );
 	}
 }

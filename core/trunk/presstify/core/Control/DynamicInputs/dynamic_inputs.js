@@ -15,9 +15,9 @@ jQuery( document ).ready( function($){
 		}
 		
 		$new 	= $( $(this).prev() ).clone();
-		
-		var new_html = $new.html().replace( /%%index%%/g, $( '> li', $list ).length ).replace( /%%name%%/g, $(this).data( 'name' ) );
-		var $el = $( '<li>'+ new_html +'<a href="#tify_control_dynamic_inputs-remove_button" class="tify_button_remove"></a></li>' );
+		index = getUniqIndex( $list );
+		var new_html = $new.html().replace( /%%index%%/g, index ).replace( /%%name%%/g, $(this).data( 'name' ) );
+		var $el = $( '<li data-index="'+index+'">'+ new_html +'<a href="#tify_control_dynamic_inputs-remove_button" class="tify_button_remove"></a></li>' );
 		$list.append( $el );
 		
 		$el.trigger( 'tify_dynamic_inputs_added' );					
@@ -28,4 +28,13 @@ jQuery( document ).ready( function($){
 			$( this ).remove();
 		});
 	});
+	// Obtention d'un index unique
+	function getUniqIndex( $list ) {
+		index = $( '> li', $list ).length;
+		$( '> li', $list ).each( function() {
+			if( $( this ).data( 'index' ) === index )
+				index++;
+		});
+		return index;
+	}
 });

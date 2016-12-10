@@ -1,9 +1,7 @@
 <?php 
-namespace tiFy\Core\Front\Model\AjaxListTable;
+namespace tiFy\Core\Templates\Front\Model\AjaxListTable;
 
-use tiFy\Core\Front\Model\Table;
-
-class AjaxListTable extends Table
+class AjaxListTable extends \tiFy\Core\Templates\Front\Model\Table
 {				
 	/* = ARGUMENTS = */
 	// Paramètres
@@ -44,7 +42,7 @@ class AjaxListTable extends Table
 		if( $this->set_columns_map() )
 			$this->MapColumns = (array) $this->set_columns_map();
 		else 
-			$this->MapColumns = $this->View->getModelAttrs( 'columns_map', $this->Name );
+			$this->MapColumns = $this->getConfig( 'columns_map', $this->Name );
 	}
 	
 	
