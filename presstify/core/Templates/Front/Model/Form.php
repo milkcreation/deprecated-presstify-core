@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Front\Model;
+namespace tiFy\Core\Templates\Front\Model;
 
 abstract class Form
 {
@@ -49,7 +49,7 @@ abstract class Form
 	/** == Appel des méthodes dynamiques == **/
     final public function __call( $name, $arguments )
     {
-        if( in_array( $name, array( 'template', 'db', 'label' ) ) ) :
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
     		return call_user_func_array( $this->{$name}, $arguments );
         endif;
     }	
@@ -105,7 +105,7 @@ abstract class Form
 	/** == Initialisation de l'url de la page d'administration == **/
 	public function initBaseUri()
 	{
-		$this->BaseUri = $this->getConfig( 'base_url', $this->Name );
+		$this->BaseUri = $this->getConfig( 'base_url' );
 	}
 	
 	/** == Initialisation de l'url d'édition d'un élément == **/
@@ -126,7 +126,7 @@ abstract class Form
 	/** == Initialisation des notifications == **/
 	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
 	}
 	
 	/** == Initialisation des champs de saisie == **/
@@ -379,12 +379,12 @@ abstract class Form
 	public function display_rows()
 	{
 	?>
-		<div class="stuffbox">
-			<h3 class="hndle ui-sortable-handle">
-				<span><?php echo $this->label( 'datas_item' );?></span>
-			</h3>
-			<div class="inside">
-				<table class="form-table">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title"><?php echo $this->label( 'datas_item' );?></h3>
+			</div>
+			<div class="panel-body">
+				<table class="form-table" width="100%">
 					<tbody>
 					<?php 
 					foreach( (array) $this->get_fields() as $field_name => $title ) :
@@ -463,16 +463,18 @@ abstract class Form
 	public function submitdiv()
 	{
 	?>
-		<div id="submitdiv" class="tify_submitdiv">
+		<div id="submitdiv"  class="panel panel-default">
 			<?php wp_nonce_field( $this->get_item_nonce_action( 'update',  $this->item->{$this->db()->getPrimary()} ) ); ?>
 			<input type="hidden" id="hiddenaction" name="action" value="update" />
 			<input type="hidden" id="user-id" name="user_ID" value="<?php echo get_current_user_id();?>" />
 			<input type="hidden" id="referredby" name="referredby" value="<?php echo esc_url( wp_get_referer() ); ?>" />		
 			<input type="hidden" id="<?php echo $this->db()->getPrimary();?>" name="<?php echo $this->db()->getPrimary();?>" value="<?php echo $this->item->{$this->db()->getPrimary()};?>" />
-			<h3 class="hndle">
-				<span><?php _e( 'Enregistrer', 'tify' );?></span>
-			</h3>
-			<div class="inside">
+			
+			<div class="panel-heading">
+				<h3 class="panel-title"><?php _e( 'Enregistrement', 'tify' );?></h3>
+			</div>
+			
+			<div class="panel-body">
 				<div class="minor_actions">
 					<?php $this->minor_actions();?>
 				</div>	
@@ -501,19 +503,32 @@ abstract class Form
 	public function render()
 	{
 	?>
-		<div class="wrap">
-			<h2>
-				<?php echo $this->label( 'edit_item' );?>
-				<?php if( $this->NewItem ) : ?>
-				<a class="add-new-h2" href="<?php echo $this->BaseUri;?>"><?php echo $this->label( 'new_item' );?></a>
-				<?php endif;?>
-			</h2>
-						
+	<div class="wrap">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-12">
+					<h2 class="page-header">
+						<?php echo $this->label( 'edit_item' );?>
+						<?php if( $this->NewItem ) : ?>
+						&nbsp;<a class="btn btn-default" href="<?php echo $this->BaseUri;?>"><?php echo $this->label( 'new_item' );?></a>
+						<?php endif;?>
+					</h2>
+				</div>
+			</div>			
 			<form method="post">
 				<?php $this->hidden_fields();?>
-				<?php $this->display();?>
+				<div class="row">
+					<div class="col-lg-9">			
+						<?php $this->form();?>							
+					</div>
+			
+					<div class="col-lg-3">
+						<?php $this->submitdiv();?>
+					</div>
+				</div>
 			</form>
 		</div>
+	</div>
 	<?php
 	}
 }

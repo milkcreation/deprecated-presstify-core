@@ -1,6 +1,4 @@
 <?php
-namespace tiFy\Core\Front\Model\EditForm;
+namespace tiFy\Core\Templates\Front\Model\EditForm;
 
-use tiFy\Core\Front\Model\Form;
-
-class EditForm extends Form{}
+class EditForm extends \tiFy\Core\Templates\Front\Model\Form{}

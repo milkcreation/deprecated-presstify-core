@@ -6,35 +6,13 @@ class Meta
 	/* = ARGUMENTS =*/
 	protected	$Db;
 	
-	public	// PARAMETRES
-			/// Nom de la table en base de données
-			$name	= null,
-			/// Nom de la colonne de relation
-			$rel	= null;
-	
 	/* = CONSTRUCTEUR = */	
 	public function __construct( Factory $Db )
 	{
 		$this->Db = $Db;
 	}
 	
-	/* = CONTROLEUR = */
-	/** == Nom de la table en base de données == **/
-	final public function table()
-	{
-		if( $this->name )
-			return $this->name;
-		return $this->name = $this->_get_meta_table( $this->Db->MetaType );
-	}
-		
-	/** == Nom de la colonne de relation == **/
-	final public function rel()
-	{
-		if( $this->rel )
-			return $this->rel;
-		return $this->rel = $this->Db->MetaType .'_id';
-	}
-	
+	/* = CONTROLEUR = */	
 	/** == Récupération de la valeur de la metadonnée d'un élément == 
  	 * @param int    $id  		 	ID de l'item
  	 * @param string $meta_key 		Optionel. Index de la métadonnée. Retournera, s'il n'est pas spécifié
@@ -352,7 +330,12 @@ class Meta
 	/** == Suppression de toutes les métadonnées d'un élément == **/
 	final function delete_all( $id )
 	{
-		return $this->Db->sql()->delete( $this->name, array( $this->rel => $id ), '%d' );
+		$table = $this->_get_meta_table( $this->Db->MetaType );
+		if ( ! $table )
+			return false;
+		$column = sanitize_key( $this->Db->MetaType . '_id' );		
+		
+		$this->Db->sql()->delete( $table, array( $column => $id ), '%d' );
 	}
 	
 	/* = HELPERS = */

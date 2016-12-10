@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Front;
 
-use \tiFy\Core\Templates\Front\Front;
-
-class Factory extends\tiFy\Core\Templates\Factory
+class Factory extends \tiFy\Core\Templates\Factory
 {
 	/* = ARGUMENTS = */
 	// DECLENCHEURS
@@ -19,7 +17,9 @@ class Factory extends\tiFy\Core\Templates\Factory
 	
 	// Liste des modèles prédéfinis
 	protected static $Models				= array(
-		'AjaxListTable'	
+		'AjaxListTable',
+		'EditForm',
+		'ListTable'
 	);	
 	
 	/* = DECLENCHEURS = */
@@ -27,27 +27,32 @@ class Factory extends\tiFy\Core\Templates\Factory
 	final public function init()
 	{			
 		// Bypass
-		if( ! $this->getAttr( 'cb' ) || $this->getAttr( 'model' ) )
+		if( ! $this->getAttr( 'cb' ) && ! $this->getAttr( 'model' ) )
 			return;
 			
 		// Instanciation de la classe
 		if(  ! $this->getAttr( 'cb' ) ) : 
-			$model = ucfirst( strtolower( $this->getAttr( 'model' ) ) );		
+			$model = $this->getAttr( 'model' );		
 			$className = "\\tiFy\\Core\\Templates\\". ucfirst( self::$Context ) ."\\Model\\{$model}\\{$model}";
 		else :
 			$className = $this->getAttr( 'cb' );
 		endif;
-			
+
 		if( ! class_exists( $className ) )
 			return;
-
-		$this->TemplateCb = new $className;
+		$this->TemplateCb = new $className( $this->getAttr( 'args', null ) );
 
 		// Création des methodes dynamiques
 		$factory = $this;
 		$this->TemplateCb->template = function() use( $factory ){ return $factory; };
 		$this->TemplateCb->db = function() use( $factory ){ return $factory->db(); };
-		$this->TemplateCb->label 	= function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };		
+		$this->TemplateCb->label = function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };		
+		$this->TemplateCb->getConfig = function( $attr, $default = '' ) use( $factory ){ if( func_num_args() ) return call_user_func_array( array( $factory, 'getAttr' ), func_get_args() ); };	
+			
+		//
+		if( ! $this->getAttr( 'base_url' ) )
+			$this->setAttr( 'base_url', \site_url( $this->getAttr( 'route' ) ) );
+		
 		
 		// Déclenchement de l'action dans la classes du template
 		if( method_exists( $this->TemplateCb, '_init' ) ) :

@@ -49,7 +49,7 @@ class Sidebar extends \tiFy\Environment\Component
 	public function __construct()
 	{
 		parent::__construct();
-
+		
 		// Traitement des éléments
 		foreach( (array) self::getConfig( 'nodes' ) as $id => $args ) :
 			self::Register( $id, $args );
@@ -57,8 +57,8 @@ class Sidebar extends \tiFy\Environment\Component
 	}
 	
 	
-	/* = ACTIONS = */
-	/** ==  = */
+	/* = DECLENCHEURS = */
+	/** == Inititalisation globale == **/
 	final public function init()
 	{				
 		// Déclaration des scripts	
@@ -66,7 +66,7 @@ class Sidebar extends \tiFy\Environment\Component
 		wp_register_script( 'tiFySidebar', self::getUrl() .'/Sidebar.js', array( 'jquery' ), '150206', true );
 	}
 	
-	/** ==  == **/
+	/** == Au chargement complet de Wordpress == **/
 	final public function wp_loaded()
 	{
 		do_action( 'tify_sidebar_register' );
@@ -90,16 +90,20 @@ class Sidebar extends \tiFy\Environment\Component
 		wp_enqueue_script( 'tiFySidebar' );
 	}
 	
-	/** == == **/
+	/** == Entête de l'interface utilisateur == **/
 	final public function wp_head(){
 		?>
 		<style type="text/css">
 			.tiFySidebar{
-				z-index: <?php echo self::getConfig( 'z-index' );?>;
-				width: <?php echo self::getConfig( 'width' );?>;
+			<?php if( $width = self::getConfig( 'width' ) ) :?>
+				width:<?php echo $width ?>;
+			<?php endif;?>
+			<?php if( $zindex = self::getConfig( 'z-index' ) ) :?>
+				z-index:<?php echo $zindex;?>;
+			<?php endif;?>	
 			}
 					
-			/* = PANNEAU GAUCHE = */
+			/* = SIDEBAR A GAUCHE = */
 			body.tiFySidebar-body--leftClosed .tiFySidebar--left{ 
 			    -webkit-transform: 	translateX(-100%);
 				-moz-transform: 	translateX(-100%);
@@ -114,14 +118,8 @@ class Sidebar extends \tiFy\Environment\Component
 				-o-transform: 		translateX(0);
 				transform: 			translateX(0);
 			}
-			body.tiFySidebar-body--leftClosed .tiFySidebar-pushed{
-			    -webkit-transform: 	translateX(0);
-				-moz-transform: 	translateX(0);
-				-ms-transform: 		translateX(0);
-				-o-transform: 		translateX(0);
-				transform: 			translateX(0);	
-			}
-        	/* = DROITE = */
+			
+        	/* = SIDEBAR A DROITE = */
 			body.tiFySidebar-body--rightClosed .tiFySidebar--right{ 
 			    -webkit-transform: 	translateX(100%);
 				-moz-transform: 	translateX(100%);
@@ -136,16 +134,9 @@ class Sidebar extends \tiFy\Environment\Component
 				-o-transform: 		translateX(0);
 				transform: 			translateX(0);
 			}
-			body.tiFySidebar-body--rightOpened .tiFySidebar-pushed{
-			    -webkit-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>);
-				-moz-transform: 	translateX(-<?php echo self::getConfig( 'width' );?>);
-				-ms-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>);
-				-o-transform: 		translateX(-<?php echo self::getConfig( 'width' );?>);
-				transform: 			translateX(-<?php echo self::getConfig( 'width' );?>);	
-			}
 			
 			/* = RESPONSIVE = */
-			@media (min-width: <?php echo ( self::getConfig( 'min-width' )+1 );?>px) {
+			@media (min-width: <?php echo ( self::getConfig( 'min-width' ) );?>) {
 				body.tiFySidebar-body .tiFySidebar{
 					display:none;
 				}
@@ -204,7 +195,7 @@ class Sidebar extends \tiFy\Environment\Component
 		<?php
 	}
 	
-	/** ==  == **/
+	/** == Classe du body de l'interface utilisateur == **/
 	final public function body_class( $classes, $class )
 	{
 		$classes[] = 'tiFySidebar-body';
@@ -242,25 +233,29 @@ class Sidebar extends \tiFy\Environment\Component
 			
 		self::$Nodes[$id] = $args;	
 	}
-		
-	/** == Affichage du panneau latéral == **/
-	public static function Display()
+	
+	/* = AFFICHAGE = */
+	/** == Affichage de la sidebar == **/
+	public static function display()
 	{
 		$output  = "";
 		$output .= "<div class=\"tiFySidebar tiFySidebar--". self::getConfig( 'pos' ) ."\" data-pos=\"". self::getConfig( 'pos' ) ."\">";
 				
 		// BOUTON DE BASCULE
 		if( self::getConfig( 'toggle' ) ) :
-			$output .= "\t<a class=\"tiFySidebar-toggleButton tiFySidebar-toggleButton--". self::getConfig( 'pos' ) ."\" tify_sidebar-toggle\" href=\"#tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" data-toggle=\"tiFySidebar\" data-target=\"". self::getConfig( 'pos' ) ."\">";
+			/// Texte du bouton
+			$buttonText = '';
 			if( is_bool( self::getConfig( 'toggle' ) ) ) :
-				$output .= "\t\t<div>";
-				ob_start(); include self::getDirname() .'/Sidebar.svg';
-				$output .= ob_get_clean();
-				$output .= "\t\t</div>";
 			elseif( is_string( self::getConfig( 'toggle' ) ) ) :
-				$output .= self::getConfig( 'toggle' );
+				$buttonText .= self::getConfig( 'toggle' );
 			endif;
-			$output .= "\t</a>\n";
+			
+			$buttonAttrs = array(
+				'pos'	=> self::getConfig( 'pos' ),
+				'text'	=> $buttonText
+			);			
+			
+			$output .= self::displayToggleButton( $buttonAttrs, false );
 		endif;
 		
 		// PANNEAU DES GREFFONS
@@ -281,5 +276,30 @@ class Sidebar extends \tiFy\Environment\Component
 		$output .= "</div>";
 		
 		echo $output;
+	}
+	
+	/** == == **/
+	public static function displayToggleButton( $args = array(), $echo = true )
+	{
+		$defaultText = "\t\t<div class=\"tiFySidebar-toggleButtonText\">";
+		ob_start(); include self::getDirname() .'/Sidebar.svg';
+		$defaultText .= ob_get_clean();
+		$defaultText .= "\t\t</div>";
+		
+		$defaults = array(
+			'pos'	=> self::getConfig( 'pos' ),
+			'text'	=> $defaultText	
+		);		
+		$args = wp_parse_args( $args, $defaults );
+		
+		$output  = "";
+		$output .= "\t<a class=\"tiFySidebar-toggleButton tiFySidebar-toggleButton--". $args['pos'] ."\" tify_sidebar-toggle\" href=\"#tify_sidebar-panel_". self::getConfig( 'pos' ) ."\" data-toggle=\"tiFySidebar\" data-target=\"". $args['pos'] ."\">";
+		$output .= $args['text'];
+		$output .= "\t</a>\n";
+		
+		if( $echo )
+			echo $output;
+		
+		return $output;
 	}
 }
