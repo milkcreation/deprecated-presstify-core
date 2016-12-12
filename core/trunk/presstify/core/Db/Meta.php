@@ -12,7 +12,19 @@ class Meta
 		$this->Db = $Db;
 	}
 	
-	/* = CONTROLEUR = */	
+	/* = CONTROLEUR = */
+	/** == Nom de la table préfixé == **/
+	public function getTableName()
+	{
+		return $this->_get_meta_table( $this->Db->MetaType );
+	}
+	
+	/** == Nom de la colonne de clé primaire == **/
+	public function getPrimary()
+	{
+		return 'user' == $this->Db->MetaType ? 'umeta_id' : 'meta_id';
+	}
+	
 	/** == Récupération de la valeur de la metadonnée d'un élément == 
  	 * @param int    $id  		 	ID de l'item
  	 * @param string $meta_key 		Optionel. Index de la métadonnée. Retournera, s'il n'est pas spécifié

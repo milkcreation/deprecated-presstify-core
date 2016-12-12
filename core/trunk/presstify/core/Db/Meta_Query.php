@@ -31,7 +31,7 @@ class Meta_Query extends \WP_Meta_Query
 	 * }
 	 */
 	public function get_sql( $type, $primary_table, $primary_id_column, $context = null ) {
-		if ( ! $meta_table = $this->Db->meta()->table() ) {
+		if ( ! $meta_table = $this->Db->meta()->getTableName() ) {
 			return false;
 		}
 
