@@ -67,7 +67,7 @@ class SimpleCaptchaImage extends Factory
 	{		
 		if( $field->getType() !==  'simple-captcha-image' )
 			return;	
-			
+
 		if( ! isset( $_SESSION ) )
 			@ session_start();
 		if( ! isset( $_SESSION['security_number'] ) ) :

@@ -27,20 +27,39 @@ class ContactForm extends Component
 		
 		do_action( 'tify_contact_form_register' );
 				
-		// Déclaration des formulaires passés en arguments
-		foreach( (array) self::getConfig() as $i => $args ) :
-			$id = ( is_numeric( $i ) ) ? 'tify_contact_form-'. $i : $i;
-			self::Register( $id, $args );
+		// Enregistrement des formulaires passés en arguments
+		foreach( (array) self::getConfig() as $args ) :
+			self::register( $id, $args );
 		endforeach;
 
-		// Déclaration du formulaire par défaut (si aucun autre formulaire n'a été déclaré
+		// Enregistrement du formulaire par défaut (si aucun autre formulaire n'a été déclaré)
 		if( empty( self::$Forms ) ) :
 			$id = 'tify_contact_form-0';
-			self::Register( $id );
+			self::register( $id );
 		endif;
 		
-		$this->setForms();
+		// Déclaration des formulaire
+		foreach( (array) self::$Forms as $id => $args ) :		
+			\tify_form_register( $id, $args['form'] );
+		endforeach;
 	}
+	
+	/* = = */
+	final public function tify_options_register_node()
+	{	
+		foreach( (array) self::$Forms as $id => $args ) :
+			if( $args['admin'] ) :			
+				\tify_options_register_node(
+					array(
+						'id' 		=> $id,
+						'title' 	=> $args['title'],
+						'cb'		=> "\\tiFy\\Components\\ContactForm\\Taboox\\Option\\MailOptions\\Admin\\MailOptions",
+						'args'		=> array( 'id' => $id, 'admin' => $args['admin']  )
+					)
+				);
+			endif;
+		endforeach;
+	}	
 		
 	/* = = */
 	final public static function the_content( $content )
@@ -60,42 +79,19 @@ class ContactForm extends Component
 				
 		return self::Display( $id, $content, false );
 	}
-		
-	/* = = */
-	final public function tify_options_register_node()
-	{	
-		foreach( (array) self::$Forms as $id => $args ) :
-			if( $args['admin'] ) :			
-				\tify_options_register_node(
-					array(
-						'id' 		=> $id,
-						'title' 	=> $args['title'],
-						'cb'		=> "\\tiFy\\Components\\ContactForm\\Taboox\\Option\\MailOptions\\Admin\\MailOptions",
-						'args'		=> array( 'id' => $id, 'admin' => $args['admin']  )
-					)
-				);
-			endif;
-		endforeach;
-	}
-			
+				
 	/* = CONTROLEUR = */
 	/* = Déclaration d'un formulaire de contact  = */
-	public static function Register( $id, $args = array() )
+	public static function register( $id, $args = array() )
 	{
-		if( ! isset( self::$Forms[$id] ) )
-			self::$Forms[$id] = self::parseArgs( $id, $args );
+		if( isset( self::$Forms[$id] ) )
+			return;
+		
+		$id = ( is_numeric( $id ) ) ? 'tify_contact_form-'. $id : $id;
+			
+		self::$Forms[$id] = self::parseArgs( $id, $args );
 	}
-	
-	/* = Déclaration des formulaires  = */
-	private function setForms()
-	{	
-		foreach( (array) self::$Forms as $id => $args ) :
-			if( ! isset( $args['form']['ID'] ) )
-				$args['form']['ID'] = $id;
-			\tify_form_register( $id, $args['form'] );
-		endforeach;
-	}
-	
+		
 	/* = Traitement des arguments de configuration = */
 	private static function parseArgs( $id, $args = array() )
 	{					
@@ -109,7 +105,7 @@ class ContactForm extends Component
 			$args['hookpage'] = $hookpage;
 		
 		// Traitement des arguments de formulaire
-		// ID du formulaire
+		// ID du formulaire	
 		if( ! isset( $args['form']['ID'] ) )
 			$args['form']['ID'] = $id;
 		// Titre du formulaire
@@ -174,9 +170,32 @@ class ContactForm extends Component
 		return false;
 	}
 	
+	/** == Récupération de la page d'accroche == **/
+	public static function hookPage( $id = null )
+	{
+		if( ! $id )
+			$id = key( self::$Forms );
+		
+		return self::$Forms[$id]['hookpage'];
+	}
+	
+	/** == == **/
+	public static function isPage( $id = null ){
+		// Bypass
+		if( ! is_singular() )
+			return false;		
+		if( ! $post_id = (int) get_the_ID() )
+			return false;
+			
+		if( ! $id )
+			$id = key( self::$Forms );
+
+		return $post_id === (int) self::$Forms[$id]['hookpage'];
+	}
+	
 	/* = AFFICHAGE = */
 	/** == Dans le contenu de la page == **/
-	public static function Display( $id = null, $content, $echo = true )
+	public static function display( $id = null, $content, $echo = true )
 	{
 		if( ! $id )
 			$id = key( self::$Forms );
@@ -195,14 +214,5 @@ class ContactForm extends Component
 			echo $output;
 		else
 			return $output;
-	}
-	
-	/** == Récupération de la page d'accroche == **/
-	public static function HookPage( $id = null )
-	{
-		if( ! $id )
-			$id = key( self::$Forms );
-		
-		return self::$Forms[$id]['hookpage'];
 	}
 }

@@ -86,7 +86,7 @@ class Notices
 		if( $this->has( $code ) ) :
 			$output .= "<ol class=\"tiFyForm-NoticesMessages tiFyForm-NoticesMessages--{$code}\">\n";
 			foreach( (array) $this->get( $code ) as $message ) :
-				$output .= "\t<li class=\"tiFyForm-NoticesMessage tiFyForm-NoticesMessages--{$code}\">". $message ."</li>\n";
+				$output .= "\t<li class=\"tiFyForm-NoticesMessage tiFyForm-NoticesMessage--{$code}\">". $message ."</li>\n";
 			endforeach;
 			$output .= "</ol>\n";
 		endif;
