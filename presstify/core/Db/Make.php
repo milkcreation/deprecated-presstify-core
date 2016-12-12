@@ -44,8 +44,8 @@ class Make
 		
 		/// Création de la table des metadonnées
 		if( $this->Db->MetaType ) :
-			$table_name = $this->Db->meta()->table();
-			$meta_id	= $this->Db->meta()->rel();
+			$table_name = $this->Db->meta()->getTableName();
+			$meta_id	= $this->Db->meta()->getPrimary();
 
 			$create_ddl  = "CREATE TABLE {$table_name} ( ";
 			$create_ddl .= "meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, ";
