@@ -106,7 +106,7 @@ namespace
 		if( is_array( $id ) ) :
 			$attrs = $id;
 			$id = $attrs['ID'];
-			_deprecated_argument( __FUNCTION__, '1.1.160923', sprintf( __( 'La déclaration du formulaire %s n\'est conforme, elle doit désormais contenir un identifiant et des attributs.', 'tify' ), $id ) );
+			_deprecated_argument( __FUNCTION__, '1.1.160923', sprintf( __( 'La déclaration du formulaire %s n\'est conforme, elle doit désormais contenir un identifiant et des attributs.', 'tify' ), $id ) );	
 		endif;
 		
 		return tiFy\Core\Forms\Forms::register( $id, $attrs );

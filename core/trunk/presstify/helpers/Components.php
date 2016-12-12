@@ -44,19 +44,25 @@ namespace
 	/** == Déclaration d'un formulaire de contact == **/
 	function tify_contact_form_register( $id, $args = array() )
 	{
-		return tiFy\Components\ContactForm\ContactForm::Register( $id, $args );
+		return tiFy\Components\ContactForm\ContactForm::register( $id, $args );
 	}
 	
 	/** == Affichage du formulaire de contact == **/
 	function tify_contact_form_display( $id = null, $content = '', $echo = true )
 	{
-		return tiFy\Components\ContactForm\ContactForm::Display( $id, $content, $echo );
+		return tiFy\Components\ContactForm\ContactForm::display( $id, $content, $echo );
 	}
 	
-	/** == Affichage du formulaire de contact == **/
+	/** == Récupération de l'ID de la page d'accroche du formulaire de contact == **/
 	function tify_contact_form_hookpage( $id  = null )
 	{
-		return tiFy\Components\ContactForm\ContactForm::HookPage( $id );
+		return tiFy\Components\ContactForm\ContactForm::hookPage( $id );
+	}
+	
+	/** == Vérifie si la page courante affiche le formulaire de contact == **/
+	function tify_contact_form_is( $id  = null )
+	{
+		return tiFy\Components\ContactForm\ContactForm::isPage( $id );
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------
