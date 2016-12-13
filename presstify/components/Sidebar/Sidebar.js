@@ -5,23 +5,26 @@ jQuery( document ).ready( function( $ ) {
 		$( '.tiFySidebar' ).each( function(){
 			var width = $(this).outerWidth();	
 			var pos = $(this).data( 'pos' );
+			var sign;
 			
 			tiFySidebar[pos] = { width: width };
 			switch( pos ){
 				case 'left' :
 					tiFySidebar[pos]['sign'] = '+';
+					sign = '+';
 					break;
 				case 'right' :
 					tiFySidebar[pos]['sign'] = '-';
+					sign = '-';
 					break;
 			}			
 			
-			/*$( '.tiFySidebar-body--'+ pos +'Opened .tiFySidebar-pushed' ).css({
-				'-webkit-transform' : 'translateX('+ width +'px)',
-				'-moz-transform'    : 'translateX('+ width +'px)',
-				'-ms-transform'     : 'translateX('+ width +'px)',
-				'-o-transform'      : 'translateX('+ width +'px)',
-				'transform' 		: 'translateX('+ width +'px)' 
+			$( '.tiFySidebar-body--'+ pos +'Opened .tiFySidebar-pushed' ).css({
+				'-webkit-transform' : 'translateX('+ sign + width +'px)',
+				'-moz-transform'    : 'translateX('+ sign + width +'px)',
+				'-ms-transform'     : 'translateX('+ sign + width +'px)',
+				'-o-transform'      : 'translateX('+ sign + width +'px)',
+				'transform' 		: 'translateX('+ sign + width +'px)' 
 			});		
 			
 			$( '.tiFySidebar-body--'+ pos +'Closed .tiFySidebar-pushed' ).css({
@@ -30,7 +33,7 @@ jQuery( document ).ready( function( $ ) {
 				'-ms-transform'     : 'translateX(0px)',
 				'-o-transform'      : 'translateX(0px)',
 				'transform' 		: 'translateX(0px)' 
-			});*/
+			});
 		});
 	}).trigger( 'resize' );
 	
@@ -44,23 +47,23 @@ jQuery( document ).ready( function( $ ) {
 		if( $( document.body ).hasClass( 'tiFySidebar-body--'+ pos +'Opened' ) ) {		
 			$( document.body ).removeClass( 'tiFySidebar-body--'+ pos +'Opened' ).addClass( 'tiFySidebar-body--'+ pos +'Closed' );
 			
-			/*$( '.tiFySidebar-body--'+ pos +'Closed .tiFySidebar-pushed' ).css({
+			$( '.tiFySidebar-body--'+ pos +'Closed .tiFySidebar-pushed' ).css({
 				'-webkit-transform' : 'translateX(0px)',
 				'-moz-transform'    : 'translateX(0px)',
 				'-ms-transform'     : 'translateX(0px)',
 				'-o-transform'      : 'translateX(0px)',
 				'transform' 		: 'translateX(0px)' 
-			});*/
+			});
 		} else {
 			$( document.body ).removeClass( 'tiFySidebar-body--'+ pos +'Closed' ).addClass( 'tiFySidebar-body--'+ pos +'Opened' );
 		
-			/*$( '.tiFySidebar-body--'+ pos +'Opened .tiFySidebar-pushed' ).css({
-				'-webkit-transform' : 'translateX('+ sign +''+ width +'px)',
-				'-moz-transform'    : 'translateX('+ sign +''+ width +'px)',
-				'-ms-transform'     : 'translateX('+ sign +''+ width +'px)',
-				'-o-transform'      : 'translateX('+ sign +''+ width +'px)',
-				'transform' 		: 'translateX('+ sign +''+ width +'px)' 
-			});*/
+			$( '.tiFySidebar-body--'+ pos +'Opened .tiFySidebar-pushed' ).css({
+				'-webkit-transform' : 'translateX('+ sign + width +'px)',
+				'-moz-transform'    : 'translateX('+ sign + width +'px)',
+				'-ms-transform'     : 'translateX('+ sign + width +'px)',
+				'-o-transform'      : 'translateX('+ sign + width +'px)',
+				'transform' 		: 'translateX('+ sign + width +'px)' 
+			});
 		}
 	});
 });
