@@ -11,7 +11,7 @@ class Select
 	{
 		$this->Db = $Db;
 	}	
-	
+		
 	/* = COMPTE = */
 	/** == Compte le nombre d'éléments selon une liste de critère == **/
 	public function count( $args = array() )

@@ -226,6 +226,12 @@ class Factory
 		return $this->Primary;
 	}
 	
+	/** == Récupération du nom de la table préfixée == **/
+	final public function getName()
+	{
+		return $this->Name;
+	}
+	
 	/** == Récupération d'un attribut de colonne selon son nom == **/
 	final public function getColAttrs( $col_name )
 	{
@@ -300,13 +306,13 @@ class Factory
 	}	
 	
 	/** == == **/
-	public function query( $query = '' )
+	public function query( $query = null )
 	{
 		return new Query( $this, $query );
 	}
 	
 	/** == Récupération d'élément de la base de données == **/
-	public function select()
+	public function select( $query = null )
 	{
 		return new Select( $this );
 	}
