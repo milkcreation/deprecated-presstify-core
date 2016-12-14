@@ -6,6 +6,7 @@ use tiFy\Core\Templates\Admin\Model\EditUser\EditUser;
 class TabooxEditUser extends EditUser
 {					
 	/* = ARGUMENTS = */
+	private $MenuSlug;
 	private $Hookname;
 	
 	/* = CONSTRUCTEUR = */
@@ -32,9 +33,9 @@ class TabooxEditUser extends EditUser
 	/** == Déclaration de la boîte à onglets == **/
 	final public function _tify_taboox_register_box()
 	{
-		$menu_slug 		= $this->View->getModelAttrs( 'menu_slug', $this->Name );
-		$parent_slug 	= $this->View->getModelAttrs( 'parent_slug', $this->Name );
-		$this->Hookname = $menu_slug .'::'. $parent_slug;
+		$this->MenuSlug = $this->getConfig( '_menu_slug' );
+		$parent_slug 	= $this->getConfig( '_parent_slug' );
+		$this->Hookname = $this->MenuSlug .'::'. $parent_slug;
 
 		tify_taboox_register_box( 
 			$this->Hookname,

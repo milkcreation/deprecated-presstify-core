@@ -51,27 +51,41 @@ class Factory extends \tiFy\Environment\App
 		return $this->TemplateID;
 	}
 	
-	/** == Récupération de la classe modèle == **/
+	/** == Récupération de la nom de la classe modèle == **/
 	final public function getModelName()
 	{
 		if( $this->ModelName )
 			return $this->ModelName; 
-		
-		if( ! $parent = get_parent_class ( $this->TemplateCb ) )
+					
+		if( ! $model = $this->getTemplateModel( $this->TemplateCb ) )
 			return;
-		$context = static::$Context;
+
+		$parts = explode( '\\', $model );
+		return $this->ModelName = end( $parts );
+	}
+	
+	/** == Récupération du modèle de template == **/
+	private function getTemplateModel( $class ) 
+	{
+	    if ( is_object( $class ) )
+	        $class = get_class( $class );
+	    
+	   	$context = static::$Context;
 		
 		$models = array_map( 
 			function( $model ) use ( $context ) {
 				return "tiFy\\Core\\Templates\\". ucfirst( $context ) ."\\Model\\{$model}\\{$model}";
 			},
 			static::$Models
-		);	
-			
-		if( in_array( $parent, $models ) ) :
-			$parts = explode( '\\', $parent );
-			return $this->ModelName = end( $parts );
-		endif;
+		);     
+	     
+		if( in_array( $class, $models ) ) :
+	        return $class;	        
+	   elseif( $parent = get_parent_class( $class ) ) :
+	    	return $this->getTemplateModel( $parent );
+	    else :
+	    	return false;
+	    endif;
 	}
 	
 	/** == == **/
