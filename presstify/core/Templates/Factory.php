@@ -51,6 +51,12 @@ class Factory extends \tiFy\Environment\App
 		return $this->TemplateID;
 	}
 	
+	/** == Récupération de l'identifiant == **/
+	final public function getContext()
+	{
+		return self::$Context;
+	}
+	
 	/** == Récupération de la nom de la classe modèle == **/
 	final public function getModelName()
 	{
@@ -70,7 +76,7 @@ class Factory extends \tiFy\Environment\App
 	    if ( is_object( $class ) )
 	        $class = get_class( $class );
 	    
-	   	$context = static::$Context;
+	   	$context = $this->getContext();
 		
 		$models = array_map( 
 			function( $model ) use ( $context ) {

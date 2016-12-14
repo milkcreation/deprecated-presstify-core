@@ -4,6 +4,10 @@ namespace tiFy\Core\Templates\Front\Model;
 abstract class Table 
 {
 	use \tiFy\Environment\Traits\Path;
+	use \tiFy\Core\Templates\Traits\Table\Actions;
+	use \tiFy\Core\Templates\Traits\Table\Notices;
+	use \tiFy\Core\Templates\Traits\Table\Params;
+	use \tiFy\Core\Templates\Traits\Table\Views;
 	
 	/* = ARGUMENTS = */
 	// Paramètres
@@ -61,17 +65,13 @@ abstract class Table
 	/// Actions sur un élément
 	protected $RowActions			= array();
 	
-	/// Cartographie des paramètres
+	/// Cartographie des paramètres permis
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
 		'TableClasses', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions'	
 	);
-	
-	// 
-	///
-	private $_pagination;
-	
+		
 	/* = CONSTRUCTEUR = */
 	public function __construct(){}
 	
@@ -121,6 +121,7 @@ abstract class Table
 		return array();
 	}
 	
+	/** == Définition des classes de la table == **/
 	public function set_table_classes()
 	{
 		return array( 'table-striped', 'table-bordered', 'table-hover', 'table-condensed' );
@@ -185,150 +186,13 @@ abstract class Table
 	{
 		return true;
 	}
-	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation des paramètres de configuration de la table == **/
-	protected function init_params()
-	{
-		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init' . $param ) ) 
-				continue;
-			call_user_func( array( $this, 'init' . $param ) );
-		endforeach;
-	}
-	
-	/** == Initialisation de l'url de la page d'administration == **/
-	public function initBaseUri()
-	{
-		$this->BaseUri = $this->getConfig( 'base_url' );
-	}
-	
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function initEditBaseUri()
-	{
-		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
-		elseif( $edit_template = $this->getConfig( 'edit_template' ) ) :
-			$this->EditBaseUri = \tiFy\Core\Templates\Templates::getFront( $edit_template )->getAttr( 'base_url' );
-		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
-		endif;
-	}
-	
-	/** == Initialisation des notifications == **/
-	public function initNotices()
-	{
-		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
-	}
-	
-	/** == Initialisation des statuts == **/
-	public function initStatuses()
-	{
-		$this->Statuses = $this->set_statuses();
-	}
-	
-	/** == Initialisation des vues filtrées == **/
-	public function initFilteredViewLinks()
-	{
-		$views = $this->set_views();
-		
-		foreach( $views as &$attrs ) :
-			if( is_string( $attrs ) )
-				continue;
-			if( ! isset( $attrs['base_uri' ] ) )
-				$attrs['base_uri'] = $this->BaseUri;
-		endforeach;
 			
-		$this->FilteredViewLinks = \tiFy\Core\Templates\Admin\Helpers::ListTableFilteredViewsMap( $views );
-	}
-	
-	/** == Initialisation des colonnes de la table == **/
-	public function initTableClasses()
-	{
-		$this->TableClasses = $this->set_table_classes();	
-	}
-	
-	/** == Initialisation des colonnes de la table == **/
-	public function initColumns()
-	{	
-		if( $columns = $this->set_columns() ) :
-		elseif( $columns = $this->getConfig( 'columns' ) ) :
-		else :
-			$columns['cb'] = "<input id=\"cb-select-all-1\" type=\"checkbox\" />";
-			foreach( (array)  $this->db()->ColNames as $name ) :
-				$columns[$name] = $name;
-			endforeach;
-		endif;
-		$this->Columns = $columns;
-	}
-	
-	/** == Initialisation de la colonne principale == **/
-	public function initPrimaryColumn()
-	{
-		if( $primary = $this->set_primary_column() ) :
-		elseif( $primary = $this->getConfig( 'primary_column' ) ) :
-		else :
-			$primary = null;
-		endif;
-
-		if( $primary ) :
-			$this->PrimaryColumn = $primary;
-			add_filter( 'list_table_primary_column', function( $default ) use ( $primary ){ return $primary; }, 10, 1 );
-		endif;
-	}
-	
-	/** == Initialisation des arguments de requête == **/
-	public function initQueryArgs()
-	{
-		$this->QueryArgs = (array) $this->set_query_args();
-	}
-	
-	/** == Initialisation du nombre d'éléments affichés par page == **/
-	public function initPerPage()
-	{
-		$this->PerPage = ( $per_page = (int) $this->set_per_page() ) ? $per_page : 20;	
-	}
-	
-	/** == == **/
-	public function initPerPageOptionName()
-	{
-		if( ! $per_page_option = $this->set_per_page_option_name() )
-			return;
-			
-		$per_page_option = is_bool( $per_page_option ) ? $this->template()->getID() .'_per_page' : (string) $per_page_option;
-		add_filter( 'set-screen-option', function( $none, $option, $value ) use ( $per_page_option ){ return ( $per_page_option  ===  $option ) ? $value : $none; }, 10, 3 );
-		$per_page = $this->PerPage;
-		add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 );
-	}
-	
-	/** == Initialisation de l'intitulé lorsque la table est vide == **/
-	public function initNoItems()
-	{
-		$this->NoItems = ( $no_items = $this->set_no_items() ) ? $no_items :  ( ( $no_items = $this->label( 'not_found' ) ) ? $no_items : __( 'No items found.' ) );	
-	}
-	
-	/** == Initialisation des actions groupées == **/
-	public function initBulkActions()
-	{
-		$this->BulkActions = $this->set_bulk_actions();	
-	}
-	
-	/** == Initialisation des actions sur un élément de la liste == **/
-	public function initRowActions()
-	{
-		foreach( (array) $this->set_row_actions() as $action => $attr ) :
-			if( is_int( $action ) ) :
-				$this->RowActions[$attr] = array();
-			else :
-				$this->RowActions[$action] = $attr;
-			endif;
-		endforeach;	
-	}
-		
 	/* = DECLENCHEURS = */
 	/** == Affichage de l'écran courant == **/
 	final public function _current_screen()
 	{				
 		// Initialisation des paramètres de configuration de la table
-		$this->init_params();
+		$this->initParams();
 						
 		// Traitement
 		/// Exécution des actions
@@ -339,9 +203,9 @@ abstract class Table
 			if( ! isset( $_REQUEST[ $nattr['query_arg'] ] ) || ( $_REQUEST[ $nattr['query_arg'] ] !== $nid ) )
 				continue;
 
-			add_action( 'admin_notices', function() use( $nattr ){
+			add_action( 'alert_notices', function() use( $nattr ){
 			?>
-				<div class="notice notice-<?php echo $nattr['notice'];?><?php echo $nattr['dismissible'] ? ' is-dismissible':'';?>">
+				<div class="alert alert-<?php echo $nattr['notice'];?><?php echo $nattr['dismissible'] ? ' is-dismissible':'';?>">
 		        	<p><?php echo $nattr['message'] ?></p>
 		    	</div>
 		    <?php
@@ -448,8 +312,8 @@ abstract class Table
 		$query_args = array(						
 			'per_page' 	=> $per_page,
 			'paged'		=> $paged,
-			'order'		=> 'DESC',
-			'orderby'	=> $this->db()->getPrimary()
+			'order'		=> ! empty( $_REQUEST['order'] ) ? strtoupper( $_REQUEST['order'] ) : 'DESC',
+			'orderby'	=> ! empty( $_REQUEST['orderby'] ) ? $_REQUEST['orderby'] : $this->db()->getPrimary()
 		);
 			
 		// Traitement des arguments
@@ -498,29 +362,7 @@ abstract class Table
 	/** == Traitement des arguments des actions sur un élément == **/
 	public function item_row_actions_parse_args( $item, $action, $args = array() )
 	{
-		$defaults = array(
-			'edit'		=> $this->get_item_edit_args( $item, array(), __( 'Modifier' ) ),
-			'delete'	=> array(
-				'label'		=> __( 'Supprimer définitivement', 'tify' ),
-				'title'		=>  __( 'Suppression définitive de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'delete', $item->{$this->db()->getPrimary()} )
-			),
-			'trash'		=> array(
-				'label'		=> __( 'Corbeille', 'tify' ),
-				'title'		=> __( 'Mise à la corbeille de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'trash', $item->{$this->db()->getPrimary()} )
-			),
-			'untrash'	=> array(
-				'label'		=> __( 'Restaurer', 'tify' ),
-				'title'		=> __( 'Rétablissement de l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'untrash', $item->{$this->db()->getPrimary()} )
-			),
-			'duplicate'	=> array(
-				'label'		=> __( 'Dupliquer', 'tify' ),
-				'title'		=> __( 'Dupliquer l\'élément', 'tify' ),
-				'nonce'		=> $this->get_item_nonce_action( 'duplicate', $item->{$this->db()->getPrimary()} )
-			)
-		);
+		$defaults = $this->defaults_row_actions( $item );
 		
 		if( isset( $defaults[$action] ) )
 			$args = wp_parse_args( $args, $defaults[$action] );
@@ -546,93 +388,6 @@ abstract class Table
 			wp_redirect( remove_query_arg( array( '_wp_http_referer', '_wpnonce' ), $_REQUEST['_wp_http_referer'] ) );
 			exit;
 		endif; 		
-	}
-	
-	/** == Éxecution de l'action - suppression == **/
-	protected function process_bulk_action_delete()
-	{
-		$item_ids = $this->current_item();
-		
-		// Vérification des permissions d'accès
-		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-			check_admin_referer( $this->get_item_nonce_action( 'delete', reset( $item_ids ) ) );
-		endif;
-		
-		// Traitement de l'élément
-		foreach( (array) $item_ids as $item_id ) :
-			$this->db()->handle()->delete_by_id( $item_id );
-			if( $this->db()->hasMeta() )
-				$this->db()->meta()->delete_all( $item_id );
-		endforeach;
-		
-		// Traitement de la redirection
-		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-		$sendback = add_query_arg( 'message', 'deleted', $sendback );	
-		
-		wp_redirect( $sendback );
-		exit;
-	}
-	
-	/** == Éxecution de l'action - mise à la corbeille == **/
-	protected function process_bulk_action_trash()
-	{
-		$item_ids = $this->current_item();
-		
-		// Vérification des permissions d'accès
-		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-			check_admin_referer( $this->get_item_nonce_action( 'trash', reset( $item_ids ) ) );
-		endif;
-		
-		// Bypass
-		if( ! $this->db()->isCol( 'status' ) )
-			return;
-		
-		// Traitement de l'élément
-		foreach( (array) $item_ids as $item_id ) :
-			/// Conservation du statut original
-			if( $this->db()->meta() && ( $original_status = $this->db()->select()->cell_by_id( $item_id, 'status' ) ) )
-				$this->db()->meta()->update( $item_id, '_trash_meta_status', $original_status );					
-			/// Modification du statut
-			$this->db()->handle()->update( $item_id, array( 'status' => 'trash' ) );
-		endforeach;
-			
-		// Traitement de la redirection
-		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-		$sendback = add_query_arg( 'message', 'trashed', $sendback );
-											
-		wp_redirect( $sendback );
-		exit;
-	}
-	
-	/** == Éxecution de l'action - restauration d'élément à la corbeille == **/
-	protected function process_bulk_action_untrash()
-	{
-		$item_ids = $this->current_item();	
-		
-		// Vérification des permissions d'accès
-		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-			check_admin_referer( $this->get_item_nonce_action( 'untrash', reset( $item_ids ) ) );
-		endif;
-		
-		// Bypass
-		if( ! $this->db()->isCol( 'status' ) )
-			return;
-		
-		// Traitement de l'élément
-		foreach( (array) $item_ids as $item_id ) :
-			/// Récupération du statut original
-			$original_status = ( $this->db()->meta() && ( $_original_status = $this->db()->meta()->get( $item_id, '_trash_meta_status', true ) ) ) ? $_original_status : $this->db()->getColAttr( 'status', 'default' );				
-			if( $this->db()->meta() ) $this->db()->meta()->delete( $item_id, '_trash_meta_status' );
-			/// Mise à jour du statut
-			$this->db()->handle()->update( $item_id, array( 'status' => $original_status ) );
-		endforeach;
-			
-		// Traitement de la redirection
-		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-		$sendback = add_query_arg( 'message', 'untrashed', $sendback );
-			
-		wp_redirect( $sendback );
-		exit;
 	}
 	
 	/* = HELPERS = */
@@ -836,9 +591,9 @@ abstract class Table
 		}
 
 		$columns = $this->get_column_headers();
-		$hidden = array();//get_hidden_columns( $this->screen );
+		$hidden = //$this->get_hidden_columns( $this->screen );
 
-		$sortable_columns = array();//$this->get_sortable_columns();
+		$sortable_columns = $this->get_sortable_columns();
 
 		$sortable = array();
 		foreach ( $sortable_columns as $id => $data ) {
@@ -999,7 +754,7 @@ abstract class Table
 	public function print_column_headers( $with_id = true ) 
 	{
 		list( $columns, $hidden, $sortable, $primary ) = $this->get_column_info();
-
+		
 		$current_url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		$current_url = remove_query_arg( 'paged', $current_url );
 
@@ -1069,7 +824,7 @@ abstract class Table
 	/** == == **/
 	public function display() {
 		//$singular = $this->_args['singular'];
-
+				
 		$this->display_tablenav( 'top' );
 
 		//$this->screen->render_screen_reader_content( 'heading_list' );
@@ -1195,13 +950,10 @@ abstract class Table
 	/** == Vues filtrées == **/
 	public function views() 
 	{
-		/*$views = $this->get_views();
-		$views = apply_filters( "views_{$this->screen->id}", $views );
+		$views = $this->get_views();
 
-		if ( empty( $views ) )
+		if( empty( $views ) )
 			return;
-
-		$this->screen->render_screen_reader_content( 'heading_views' );
 		
 		$_views = array();
 		$output  = "";
@@ -1217,7 +969,13 @@ abstract class Table
 		$output .= "</ul>";
 		
 		if( ! empty( $_views ) )
-			echo $output;*/	
+			echo $output;
+	}
+	
+	/** == Notification == **/
+	public function notices()
+	{
+		do_action( 'alert_notices' );
 	}
 				
 	/** == Contenu des colonnes par défaut == **/
@@ -1247,8 +1005,9 @@ abstract class Table
     				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
     			<?php endif;?>
     		</h2>
+    		<?php $this->notices();?>
     		
-    		<?php $this->views(); ?>
+    		<?php $this->views();?>
     		
     		<form method="post" action="">
     			<?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>

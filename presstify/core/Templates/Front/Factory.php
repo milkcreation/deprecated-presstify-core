@@ -33,7 +33,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 		// Instanciation de la classe
 		if(  ! $this->getAttr( 'cb' ) ) : 
 			$model = $this->getAttr( 'model' );		
-			$className = "\\tiFy\\Core\\Templates\\". ucfirst( self::$Context ) ."\\Model\\{$model}\\{$model}";
+			$className = "\\tiFy\\Core\\Templates\\". ucfirst( $this->getContext() ) ."\\Model\\{$model}\\{$model}";
 		else :
 			$className = $this->getAttr( 'cb' );
 		endif;

@@ -12,6 +12,10 @@ if( ! class_exists( 'WP_List_Table' ) )
 abstract class Table extends \WP_List_Table
 {
 	use \tiFy\Environment\Traits\Path;
+	use \tiFy\Core\Templates\Traits\Table\Actions;
+	use \tiFy\Core\Templates\Traits\Table\Notices;
+	use \tiFy\Core\Templates\Traits\Table\Params;
+	use \tiFy\Core\Templates\Traits\Table\Views;
 	
 	/* = ARGUMENTS = */	
 	// Écran courant
@@ -193,153 +197,7 @@ abstract class Table extends \WP_List_Table
 	{
 		return true;
 	}
-	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation des paramètres de configuration de la table == **/
-	protected function init_params()
-	{
-		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init' . $param ) ) 
-				continue;
-			call_user_func( array( $this, 'init' . $param ) );
-		endforeach;
-	}
-	
-	/** == Initialisation de l'url de la page d'administration == **/
-	public function initBaseUri()
-	{
-		$this->BaseUri = $this->getConfig( 'base_url', '' );
-	}
-	
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function initEditBaseUri()
-	{
-		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
-		elseif( $edit_template = $this->getConfig( 'edit_template' ) ) :
-			$this->EditBaseUri = \tiFy\Core\Templates\Templates::getAdmin( $edit_template )->getAttr( 'base_url' );
-		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
-		endif;
-	}
-	
-	/** == Initialisation de l'intitulé des objets traités == **/
-	public function initPlural()
-	{
-		if( ! $plural = $this->set_plural() )
-			$plural = $this->template()->getID();
-		
-		$this->Plural = sanitize_key( $plural );
-	}
-	
-	/** == Initialisation de l'intitulé d'un objet traité == **/
-	public function initSingular()
-	{
-		if( ! $singular = $this->set_singular() )
-			$singular = $this->template()->getID();
-		
-		$this->Singular = sanitize_key( $singular );
-	}
-	
-	/** == Initialisation des notifications == **/
-	public function initNotices()
-	{
-		$this->Notices = Helpers::ListTableNoticesMap( $this->set_notices() );
-	}
-	
-	/** == Initialisation des statuts == **/
-	public function initStatuses()
-	{
-		$this->Statuses = $this->set_statuses();
-	}
-	
-	/** == Initialisation des vues filtrées == **/
-	public function initFilteredViewLinks()
-	{
-		$views = $this->set_views();
-		
-		foreach( $views as &$attrs ) :
-			if( is_string( $attrs ) )
-				continue;
-			if( ! isset( $attrs['base_uri' ] ) )
-				$attrs['base_uri'] = $this->BaseUri;
-		endforeach;
-			
-		$this->FilteredViewLinks = Helpers::ListTableFilteredViewsMap( $views );
-	}
-	
-	/** == Initialisation des colonnes de la table == **/
-	public function initColumns()
-	{			
-		if( $columns = $this->set_columns() ) :
-		elseif( $columns = $this->getConfig( 'columns' ) ) :
-		else :
-			$columns['cb'] = "<input id=\"cb-select-all-1\" type=\"checkbox\" />";
-			foreach( (array)  $this->db()->ColNames as $name ) :
-				$columns[$name] = $name;
-			endforeach;
-		endif;
-		$this->Columns = $columns;
-	}
-	
-	/** == Initialisation de la colonne principale == **/
-	public function initPrimaryColumn()
-	{
-		if( $primary = $this->set_primary_column() ) :
-		elseif( $primary = $this->getConfig( 'primary_column' ) ) :
-		else :
-			$primary = null;
-		endif;
-
-		if( $primary ) :
-			$this->PrimaryColumn = $primary;
-			add_filter( 'list_table_primary_column', function( $default, $screen_id ) use ( $primary ){ return $primary; }, 10, 2 );
-		endif;
-	}
-	
-		/** == Initialisation des colonnes masquée == **/
-	public function initHiddenColumns()
-	{
-		if( $hidden_cols = $this->set_hidden_columns() ) :
-		elseif( $hidden_cols = $this->getConfig( 'hidden_columns' ) ) :
-		else :
-			$hidden_cols = array();
-		endif;
-
-		if( $hidden_cols ) :
-			$this->HiddenColumns = $hidden_cols;
-			add_filter( 'hidden_columns', function( $hidden, $screen, $use_defaults ) use ( $hidden_cols ){ return $hidden_cols; }, 10, 3 );
-		endif;
-	}
-	
-	/** == Initialisation des arguments de requête == **/
-	public function initQueryArgs()
-	{
-		$this->QueryArgs = (array) $this->set_query_args();
-	}
-		
-	/** == Initialisation de l'intitulé lorsque la table est vide == **/
-	public function initNoItems()
-	{
-		$this->NoItems = ( $no_items = $this->set_no_items() ) ? $no_items :  ( ( $no_items = $this->label( 'not_found' ) ) ? $no_items : __( 'No items found.' ) );	
-	}
-	
-	/** == Initialisation des actions groupées == **/
-	public function initBulkActions()
-	{
-		$this->BulkActions = $this->set_bulk_actions();	
-	}
-	
-	/** == Initialisation des actions sur un élément de la liste == **/
-	public function initRowActions()
-	{
-		foreach( (array) $this->set_row_actions() as $action => $attr ) :
-			if( is_int( $action ) ) :
-				$this->RowActions[$attr] = array();
-			else :
-				$this->RowActions[$action] = $attr;
-			endif;
-		endforeach;	
-	}
-	
+							
 	/** == Initialisation de la classe table native de Wordpress == **/
 	final public function _wp_list_table_init( $args = array() )
 	{

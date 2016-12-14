@@ -21,7 +21,7 @@ class Query
 			$found_items;				// The amount of found posts for the current query
 	
 	/* = CONSTRUCTEUR = */
-	public function __construct( Factory $Db, $query = '' )
+	public function __construct( Factory $Db, $query = null )
 	{
 		$this->Db = $Db;
 		

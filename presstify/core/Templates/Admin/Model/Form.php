@@ -122,7 +122,7 @@ abstract class Form
 	/** == Initialisation des notifications == **/
 	public function initNotices()
 	{
-		$this->Notices = \tiFy\Core\Templates\Admin\Helpers::ListTableNoticesMap( $this->set_notices() );
+		$this->Notices = $this->parseNotices( $this->set_notices() );
 	}
 	
 	/** == Initialisation des champs de saisie == **/
