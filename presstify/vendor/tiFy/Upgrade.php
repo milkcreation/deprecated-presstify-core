@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Lib;
 
-use \tiFy\Environment\App;
-
-abstract class Upgrade extends App
+abstract class Upgrade extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Variable de stockage du numéro de version
