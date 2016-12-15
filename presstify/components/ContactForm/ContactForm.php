@@ -28,7 +28,7 @@ class ContactForm extends Component
 		do_action( 'tify_contact_form_register' );
 				
 		// Enregistrement des formulaires passés en arguments
-		foreach( (array) self::getConfig() as $args ) :
+		foreach( (array) self::getConfig() as $id => $args ) :
 			self::register( $id, $args );
 		endforeach;
 
