@@ -54,7 +54,7 @@ class ListUser extends Table
 	
 	/* = INITIALISATION DES PARAMETRES = */	
 	/** == Initialisation des rôles des utilisateurs de la table == **/
-	public function init_param_Roles()
+	public function initParamRoles()
 	{		
 		if( $editable_roles = array_reverse( get_editable_roles() ) )
 			$editable_roles = array_keys( $editable_roles );
@@ -74,7 +74,7 @@ class ListUser extends Table
 	}
 	
 	/** == Initialisation des actions sur un élément de la liste == **/
-	public function init_param_RowActions()
+	public function initParamRowActions()
 	{
 		$row_actions = array();
 		foreach( (array) $this->set_row_actions() as $action => $attr ) :
@@ -174,6 +174,52 @@ class ListUser extends Table
 			return $query->get_total();
 		else
 			return 0;
+	}
+	
+	/** == Éxecution de l'action - activation == **/
+	protected function process_bulk_action_activate()
+	{
+		$item_ids = $this->current_item();
+
+		// Vérification des permissions d'accès
+		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
+			check_admin_referer( $this->get_item_nonce_action( 'activate' ) );
+		endif;
+		
+		// Traitement de l'élément
+		foreach( (array) $item_ids as $item_id ) :		
+			update_user_option( $item_id, 'tify_membership_status', 'activated' );
+		endforeach;
+		
+		// Traitement de la redirection
+		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
+		$sendback = add_query_arg( 'message', 'activated', $sendback );	
+		
+		wp_redirect( $sendback );
+		exit;
+	}
+	
+	/** == Éxecution de l'action - desactivation == **/
+	protected function process_bulk_action_deactivate()
+	{
+		$item_ids = $this->current_item();
+
+		// Vérification des permissions d'accès
+		if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
+			check_admin_referer( $this->get_item_nonce_action( 'deactivate' ) );
+		endif;
+		
+		// Traitement de l'élément
+		foreach( (array) $item_ids as $item_id ) :		
+			update_user_option( $item_id, 'tify_membership_status', 'disabled' );
+		endforeach;
+		
+		// Traitement de la redirection
+		$sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
+		$sendback = add_query_arg( 'message', 'deactivated', $sendback );	
+		
+		wp_redirect( $sendback );
+		exit;
 	}
 	
 	/** == Éxecution de l'action - suppression == **/

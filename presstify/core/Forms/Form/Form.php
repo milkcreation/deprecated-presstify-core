@@ -97,8 +97,7 @@ class Form
 			
 		// Définition des attributs
 		$this->Attrs = Helpers::parseArgs( $attrs, $this->DefaultAttrs );
-		$this->call( 'form_set_attrs', array( &$this ) );
-		
+
 		// Définition des boutons
 		$this->_setButtons();
 		
@@ -113,6 +112,9 @@ class Form
 		
 		// Définition des champs
 		$this->_setFields();
+		
+		// Court circuitage des attributs formulaire
+		$this->call( 'form_set_attrs', array( &$this ) );
 	}
 				
 	/* = PARAMETRAGE = */

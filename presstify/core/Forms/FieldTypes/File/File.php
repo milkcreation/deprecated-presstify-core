@@ -42,10 +42,10 @@ class File extends Factory
 			// Téléchargement via ajax
 			'ajax_upload'			=> false
 		);
-		
+
 		// Définition des fonctions de callback
 		$this->Callbacks = array(
-			'form_set_params' 					=> array( $this, 'cb_form_set_params' ),
+			'form_set_attrs' 					=> array( $this, 'cb_form_set_attrs' ),
 			'handle_parse_query_field_value' 	=> array( $this, 'cb_handle_parse_query_field_value' ),
 			'handle_check_field' 				=> array( $this, 'cb_handle_check_field' ),			
 			'handle_submit_request' 			=> array( 'function' => array( $this, 'cb_handle_submit_request' ), 'order' => 0 )
@@ -124,8 +124,7 @@ class File extends Factory
 	final public function getDestinationFilename()
 	{
 		if( ! $file = unserialize( @base64_decode( $this->field()->getValue() ) ) )
-			return;
-			
+			return;			
 	}
 	
 	/* = COURT-CIRCUITAGE = */
@@ -141,8 +140,12 @@ class File extends Factory
 		// Bypass
 		if( $field !== $this->field() )
 			return;
-		$file = $this->parseFileRequest();	
-		$value = @ base64_encode( serialize( $file ) );
+			
+		if( $file = $this->parseFileRequest() )	:
+			$value = @ base64_encode( serialize( $file ) );
+		else :
+			$value = null;
+		endif;
 	}
 	
 	/** == Vérification des requêtes == **/

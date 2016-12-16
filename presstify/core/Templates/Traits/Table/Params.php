@@ -26,7 +26,7 @@ trait Params
 		if( $this->EditBaseUri = $this->set_edit_base_url() ) :
 		elseif( $edit_template = $this->getConfig( 'edit_template' ) ) :
 			$Method = ( $this->template()->getContext() === 'admin' ) ? 'getAdmin' : 'getFront';
-		
+
 			$this->EditBaseUri = \tiFy\Core\Templates\Templates::$Method( $edit_template )->getAttr( 'base_url' );
 		elseif( $this->EditBaseUri = $this->getConfig( 'edit_base_url' ) ) :
 		endif;

@@ -146,7 +146,7 @@ class Handle
 			if( ! $field->typeSupport( 'request' ) )			
 				continue;
 					
-			$value = ( isset( $values[ $field->getName() ] ) ) ? $values[ $field->getName() ] : $field->getValue();
+			$value = ( isset( $values[ $field->getName() ] ) ) ? $values[ $field->getName() ] : null;//$field->getValue();
 					
 			$this->Form->call( 'handle_parse_query_field_value', array( &$value, $field, $this ) );
 			
@@ -173,7 +173,7 @@ class Handle
 		// Vérification des variables de saisie du formulaire.
 		foreach( $this->Form->fields() as $field ) :
 			$errors = array();
-		
+
 			/// Champs requis	
 			if( $field->isRequired() && empty( $field->getValue() ) ) :
 				$errors[] = sprintf( $field->getRequired( 'error' ) , $field->getLabel() );
@@ -199,7 +199,7 @@ class Handle
 				$this->addError( $error );
 			endforeach;			
 		endforeach;
-			
+	
 		if( $this->hasError() ) :
 			return false;
 		else :
