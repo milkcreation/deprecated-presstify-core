@@ -43,9 +43,9 @@ trait Actions
 			)			
 		);
 	}
-	
+		
 	/** == Éxecution de l'action - activation == **/
-	public function process_bulk_action_activate()
+	protected function process_bulk_action_activate()
 	{
 		$item_ids = $this->current_item();
 		
@@ -73,7 +73,7 @@ trait Actions
 	}
 		
 	/** == Éxecution de l'action - désactivation == **/
-	public function process_bulk_action_deactivate()
+	protected function process_bulk_action_deactivate()
 	{
 		$item_ids = $this->current_item();
 		
@@ -101,7 +101,7 @@ trait Actions
 	}
 	
 	/** == Éxecution de l'action - suppression == **/
-	public function process_bulk_action_delete()
+	protected function process_bulk_action_delete()
 	{
 		$item_ids = $this->current_item();
 		
@@ -126,7 +126,7 @@ trait Actions
 	}
 	
 	/** == Éxecution de l'action - mise à la corbeille == **/
-	public function process_bulk_action_trash()
+	protected function process_bulk_action_trash()
 	{
 		$item_ids = $this->current_item();
 		
@@ -157,7 +157,7 @@ trait Actions
 	}
 	
 	/** == Éxecution de l'action - restauration d'élément à la corbeille == **/
-	public function process_bulk_action_untrash()
+	protected function process_bulk_action_untrash()
 	{
 		$item_ids = $this->current_item();	
 		

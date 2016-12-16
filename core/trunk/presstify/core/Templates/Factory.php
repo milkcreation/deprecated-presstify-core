@@ -53,8 +53,8 @@ class Factory extends \tiFy\Environment\App
 	
 	/** == Récupération de l'identifiant == **/
 	final public function getContext()
-	{
-		return self::$Context;
+	{		
+		return static::$Context;
 	}
 	
 	/** == Récupération de la nom de la classe modèle == **/
