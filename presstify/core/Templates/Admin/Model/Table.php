@@ -251,7 +251,7 @@ abstract class Table extends \WP_List_Table
 			$this->Screen = $current_screen;
 				
 		// Initialisation des paramètres de configuration de la table
-		$this->init_params();	
+		$this->initParams();	
 		
 		// Initialisation de la classe de table native de Wordpress
 		$args = array();

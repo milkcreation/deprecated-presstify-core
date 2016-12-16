@@ -45,15 +45,15 @@ class Make
 		/// Création de la table des metadonnées
 		if( $this->Db->MetaType ) :
 			$table_name = $this->Db->meta()->getTableName();
-			$meta_id	= $this->Db->meta()->getPrimary();
+			$join_col	= $this->Db->meta()->getJoinCol();
 
 			$create_ddl  = "CREATE TABLE {$table_name} ( ";
 			$create_ddl .= "meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, ";
-  			$create_ddl .= "{$meta_id} bigint(20) unsigned NOT NULL DEFAULT '0', ";
+  			$create_ddl .= "{$join_col} bigint(20) unsigned NOT NULL DEFAULT '0', ";
   			$create_ddl .= "meta_key varchar(255) DEFAULT NULL, ";
 			$create_ddl .= "meta_value longtext";
 			$create_ddl .= ", PRIMARY KEY ( meta_id )";
-			$create_ddl .= ", KEY {$meta_id} ( {$meta_id} )";
+			$create_ddl .= ", KEY {$join_col} ( {$join_col} )";
 			$create_ddl .= ", KEY meta_key ( meta_key )";
 			$create_ddl .= " ) $charset_collate;";
 

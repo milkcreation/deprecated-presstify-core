@@ -18,7 +18,9 @@ class File
 		if( Checker::isUrl( $filename ) ) :
 			if( preg_match( '/^'. preg_quote( site_url( '/' ), '/' ) .'/', $filename ) ) :
 				$filename = preg_replace( '/^'. preg_quote( site_url( '/' ), '/' ) .'/', tiFy::$AbsPath, $filename );
-				$contents = file_get_contents( $filename );
+				if( file_exists( $filename ) ) :
+					$contents = file_get_contents( $filename );
+				endif;
 			else :
 				$response = wp_remote_get( $filename );			
 				$contents = wp_remote_retrieve_body( $response );
