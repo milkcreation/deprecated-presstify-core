@@ -14,13 +14,13 @@ class Upgrade extends \tiFy\Lib\Upgrade
 		$newmeta 	= $wpdb->prefix .'tify_forms_recordmeta';
 		
 		if( $wpdb->get_var("SHOW TABLES LIKE '$old'") !== $old )
-			exit;
+			return;
 		if( $wpdb->get_var("SHOW TABLES LIKE '$new'") !== $new )
-			exit;	
+			return;	
 		if( $wpdb->get_var("SHOW TABLES LIKE '$oldmeta'") !== $oldmeta )
-			exit;
+			return;
 		if( $wpdb->get_var("SHOW TABLES LIKE '$newmeta'") !== $newmeta )
-			exit;	
+			return;	
 					
 		$wpdb->query( "INSERT INTO {$new} SELECT * from {$old}" );
 		$wpdb->query( "INSERT INTO {$newmeta} SELECT * from {$oldmeta}" );		

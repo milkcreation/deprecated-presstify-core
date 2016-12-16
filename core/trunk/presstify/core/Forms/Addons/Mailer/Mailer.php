@@ -124,7 +124,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		$output .= 			'</tr>';
 			
 		foreach( (array) $this->form()->fields() as $field ) :
-			if( $this->getFieldAttr( $field, 'ignore', false ) || 
+			if( ! $this->getFieldAttr( $field, 'show', false ) || 
 				! $field->typeSupport( 'request' ) || 
 				in_array( $field->getType(), array( 'password', 'file' ) ) 
 			)
@@ -142,7 +142,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		endforeach;
 		$output .= 		'</tbody>';
 		$output .= 	'</table>';
-	
+		
 		return $output;
 	 }
 }

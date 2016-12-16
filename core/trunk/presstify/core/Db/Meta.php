@@ -25,6 +25,12 @@ class Meta
 		return 'user' == $this->Db->MetaType ? 'umeta_id' : 'meta_id';
 	}
 	
+	/** == Nom de la colonne de colonne de jointure == **/
+	public function getJoinCol()
+	{
+		return sanitize_key($this->Db->MetaType . '_id');
+	}
+	
 	/** == Récupération de la valeur de la metadonnée d'un élément == 
  	 * @param int    $id  		 	ID de l'item
  	 * @param string $meta_key 		Optionel. Index de la métadonnée. Retournera, s'il n'est pas spécifié
