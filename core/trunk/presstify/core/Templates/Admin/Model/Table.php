@@ -73,11 +73,16 @@ abstract class Table extends \WP_List_Table
 	/// Actions sur un élément
 	protected $RowActions			= array();
 	
+	/// Titre de la page
+	protected $PageTitle			= null;
+		
+	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
 		'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
-		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions'	
+		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
+		'PageTitle'
 	);
 	
 	protected $compat_fields = array( 
@@ -196,6 +201,12 @@ abstract class Table extends \WP_List_Table
 	public function set_handle_row_actions()
 	{
 		return true;
+	}
+	
+	/** == Définition du titre de la page == **/
+	public function set_page_title()
+	{
+		return '';
 	}
 							
 	/** == Initialisation de la classe table native de Wordpress == **/
@@ -683,7 +694,7 @@ abstract class Table extends \WP_List_Table
     ?>
 		<div class="wrap">
     		<h2>
-    			<?php echo $this->label( 'all_items' );?>
+    			<?php echo $this->PageTitle;?>
     			
     			<?php if( $this->EditBaseUri ) : ?>
     				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>

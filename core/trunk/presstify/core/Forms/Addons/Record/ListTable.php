@@ -131,14 +131,13 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 			$this->QueryArgs['form_id'] =  $this->Form->getID();
 	}
 	
-	/* = INTERFACE D'AFFICHAGE = */
+	/* = AFFICHAGE = */
 	/** == Liste de filtrage du formulaire courant == **/
 	public function extra_tablenav( $which ) 
 	{
 		if( count( $this->activeForms ) < 2 )
 			return;
-	
-			
+				
 		$output = "<div class=\"alignleft actions\">";
 		if ( 'top' == $which ) :
 			$output  .= "\t<select name=\"form_id\" autocomplete=\"off\">\n";
