@@ -25,7 +25,7 @@ class Admin extends \tiFy\Environment\App
 				'menu_slug'		=> $Factory->getID(),
 				'parent_slug'	=> null,	
 				'page_title' 	=> $Factory->getID(), 
-				'menu_title' 	=> $Factory->getLabel( 'menu_name' ), 
+				'menu_title' 	=> '', 
 				'capability'	=> 'manage_options', 
 				'icon_url' 		=> null, 
 				'position' 		=> 99, 
@@ -33,7 +33,7 @@ class Admin extends \tiFy\Environment\App
 			);			
 			$admin_menu = wp_parse_args( $admin_menu, $defaults );
 						
-			if( ! $menu_title = $Factory->getAttr( 'menu_title' ) ) :
+			if( ! $menu_title = $admin_menu['menu_title'] ) :
 				if( $model = $Factory->getModelName() ) :
 					switch( $model ) :
 						case 'EditForm' :

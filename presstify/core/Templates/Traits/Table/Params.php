@@ -172,4 +172,10 @@ trait Params
 			endif;
 		endforeach;	
 	}
+	
+	/** == Initialisation des actions sur un élément de la liste == **/
+	public function initParamPageTitle()
+	{
+		$this->PageTitle = ( $page_title = $this->set_page_title() ) ? $page_title : $this->label( 'all_items' );
+	}
 }

@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\ListUser;
 
-use tiFy\Core\Templates\Admin\Model\Table;
-
-class ListUser extends Table 
+class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
 {	
 	/* = ARGUMENTS = */
 	/// Roles des utilisateurs de la table
@@ -12,7 +10,8 @@ class ListUser extends Table
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 'Columns', 'SortableColumns', 'PerPage',  
-		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'Roles'
+		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'PageTitle',
+		'Roles'
 	);
 	
 	/* = DECLARATION DES PARAMETRES = */
@@ -129,7 +128,7 @@ class ListUser extends Table
 			'order'			=> 'DESC',
 			'role__in' 		=> $this->Roles
 		);
-			
+		
 		// Traitement des arguments
 		foreach( (array) $_REQUEST as $key => $value ) :
 			if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
@@ -162,18 +161,20 @@ class ListUser extends Table
 					continue;
 				array_push( $roles, $v );
 			endforeach;
-			if( $roles )
-				$query_args['role__in'] = $roles;		
+			if( $roles ) :
+				$query_args['role__in'] = $roles;
+			endif;
 		endif;
 	}
 			
 	/** == Compte le nombre d'éléments == **/
 	public function count_items( $args = array() )
 	{
-		if( $query = new \WP_User_Query( $args ) )
+		if( $query = new \WP_User_Query( $args ) ) :
 			return $query->get_total();
-		else
+		else :
 			return 0;
+		endif;
 	}
 	
 	/** == Éxecution de l'action - activation == **/
