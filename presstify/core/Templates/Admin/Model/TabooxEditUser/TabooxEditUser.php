@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\TabooxEditUser;
 
-use tiFy\Core\Templates\Admin\Model\EditUser\EditUser;
-
-class TabooxEditUser extends EditUser
+class TabooxEditUser extends \tiFy\Core\Templates\Admin\Model\EditUser\EditUser
 {					
 	/* = ARGUMENTS = */
 	private $MenuSlug;
@@ -17,7 +15,7 @@ class TabooxEditUser extends EditUser
 		add_action( 'tify_taboox_register_node', array( $this, '_tify_taboox_register_node' ) );
 	}
 	
-	/* = DECLARATION DES PARAMETRES = */
+	/* = PARAMETRES = */
 	/** == Définition des sections d'édition == **/
 	public function set_sections()
 	{
@@ -29,7 +27,7 @@ class TabooxEditUser extends EditUser
 		return $sections;		
 	}
 				
-	/* = DECLENCHEURS = */
+	/* = DECLENCHEURS = */	
 	/** == Déclaration de la boîte à onglets == **/
 	final public function _tify_taboox_register_box()
 	{
@@ -140,12 +138,13 @@ class TabooxEditUser extends EditUser
 		<h3><?php _e( 'Informations de connexion', 'tify' );?></h3>
 		<table class="form-table">
 			<tbody>
+				<?php $password = ( ! $this->item ) ? wp_generate_password( 24, false, false ) : '';?>
 				<tr scope="row">
 					<th>
 						<label><?php _e( 'Nouveau mot de passe', 'tify' );?></label>
 					</th>
 					<td>
-						<input type="password" name="pass1" id="pass1" value="" class="regular-text" autocomplete="off">					
+						<input type="password" name="pass1" id="pass1" value="<?php echo $password;?>" class="regular-text" autocomplete="off">					
 					</td>
 				</tr>
 				<tr scope="row">
@@ -153,7 +152,7 @@ class TabooxEditUser extends EditUser
 						<label><?php _e( 'Répétez le mot de passe', 'tify' );?></label>
 					</th>
 					<td>
-						<input type="password" name="pass2" id="pass2" value="" class="regular-text" autocomplete="off">					
+						<input type="password" name="pass2" id="pass2" value="<?php echo $password;?>" class="regular-text" autocomplete="off">					
 					</td>
 				</tr>
 			</tbody>

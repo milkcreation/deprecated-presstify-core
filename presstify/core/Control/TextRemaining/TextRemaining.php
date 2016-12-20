@@ -8,9 +8,7 @@
 
 namespace tiFy\Core\Control\TextRemaining;
 
-use tiFy\Core\Control\Factory;
-
-class TextRemaining extends Factory
+class TextRemaining extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
@@ -38,7 +36,7 @@ class TextRemaining extends Factory
 	}
 		
 	/* = AFFICHAGE = */
-	public static function display( $args = array() )
+	public static function display( $args = array(), $echo = true )
 	{
 		static $instance = 0;
 		$instance++;
@@ -52,8 +50,7 @@ class TextRemaining extends Factory
 			'value' 			=> '',		
 			'attrs'				=> array(),
 			'length'			=> 150,	
-			'maxlength'			=> true, 	// Stop la saisie en cas de dépassement
-			'echo'				=> 1
+			'maxlength'			=> true 	// Stop la saisie en cas de dépassement
 		);	
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
@@ -91,7 +88,7 @@ class TextRemaining extends Factory
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output;
+	
+		return $output;
 	}
 }

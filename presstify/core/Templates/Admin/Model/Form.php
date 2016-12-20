@@ -4,6 +4,9 @@ namespace tiFy\Core\Templates\Admin\Model;
 abstract class Form
 {
 	use \tiFy\Environment\Traits\Path;
+	use \tiFy\Core\Templates\Traits\Form\Actions;
+	use \tiFy\Core\Templates\Traits\Form\Notices;
+	use \tiFy\Core\Templates\Traits\Form\Params;
 	
 	/* = ARGUMENTS = */	
 	// Écran courant
@@ -34,9 +37,12 @@ abstract class Form
 	/// Permettre la création d'un nouvel élément
 	protected $NewItem				= true;
 	
+	/// Titre de la page
+	protected $PageTitle			= null;
+	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'ListBaseUri', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'NewItem'
+		'BaseUri', 'ListBaseUri', 'Plural', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'NewItem', 'PageTitle'
 	);
 	
 	// Élément à éditer
@@ -55,18 +61,30 @@ abstract class Form
     }	
 	
 	/* = PARAMETRAGE = */
+    /** == Définition de l'url d'affichage de la liste des éléments == **/
+    public function set_list_base_url()
+    {
+    	return '';
+    }  
+    
+	/** == Définition l'intitulé des objets traités == **/
+	public function set_plural()
+	{
+		return null;	
+	}
+	
+	/** == Définition l'intitulé d'un objet traité == **/
+	public function set_singular()
+	{
+		return null;	
+	}
+    
 	/** == Définition des messages de notification == **/
 	public function set_notices()
 	{
 		return array();	
 	}
-	
-	/** == Définition l'intitulé de l'objet traité == **/
-	public function set_singular()
-	{
-		return null;	
-	}
-		
+			
 	/** == Définition des champs de formulaire == **/
 	public function set_fields()
 	{
@@ -85,72 +103,12 @@ abstract class Form
 		return true;
 	}
 	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation des paramètres de configuration de la table == **/
-	protected function init_params()
+	/** == Définition du titre de la page == **/
+	public function set_page_title()
 	{
-		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init' . $param ) ) 
-				continue;
-			call_user_func( array( $this, 'init' . $param ) );
-		endforeach;
-	}
-	
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function initBaseUri()
-	{
-		$this->BaseUri = $this->getConfig( 'base_url', '' );
+		return '';
 	}
 		
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function initListBaseUri()
-	{
-		if( $this->ListBaseUri = $this->set_list_base_url() ) :
-		elseif( $this->ListBaseUri = $this->getConfig( 'list_base_url' ) ) :
-		endif;
-	}
-	
-	/** == Initialisation de l'intitulé d'un objet traité == **/
-	public function initSingular()
-	{
-		if( ! $singular = $this->set_singular() )
-			$singular = $this->template()->getID();
-		
-		$this->Singular = sanitize_key( $singular );
-	}
-	
-	/** == Initialisation des notifications == **/
-	public function initNotices()
-	{
-		$this->Notices = $this->parseNotices( $this->set_notices() );
-	}
-	
-	/** == Initialisation des champs de saisie == **/
-	public function initFields()
-	{
-		/// Déclaration des colonnes de la table		
-		if( $fields = $this->set_fields() ) :
-		elseif( $fields = $this->getConfig( 'fields' ) ) :
-		else :			
-			foreach( (array)  $this->db()->ColNames as $name ) :
-				$fields[$name] = $name;
-			endforeach;
-		endif;
-		$this->Fields = $fields;
-	}
-	
-	/** == Initialisation des arguments de requête == **/
-	public function initQueryArgs()
-	{
-		$this->QueryArgs = (array) $this->set_query_args();
-	}
-	
-	/** == Initialisation du paramétre de permission d'ajout d'un nouvel élément == **/
-	public function initNewItem()
-	{
-		$this->NewItem = (bool) $this->set_add_new_item();
-	}	
-	
 	/* = DECLENCHEURS = */
 	/** == Affichage de l'écran courant == **/
 	final public function _current_screen( $current_screen )
@@ -159,7 +117,7 @@ abstract class Form
 		$this->Screen = $current_screen;
 		
 		// Initialisation des paramètres de configuration de la table
-		$this->init_params();
+		$this->initParams();
 					
 		// Traitement
 		/// Exécution des actions

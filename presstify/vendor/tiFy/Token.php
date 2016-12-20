@@ -50,7 +50,7 @@ class Token
 	{
 		if( $key === null ) 
 			$key = self::$PublicKey;
-		
+
 		self::_checkKey( $key, 'decrypt()' );
 		
 		if( empty( $cipher ) )

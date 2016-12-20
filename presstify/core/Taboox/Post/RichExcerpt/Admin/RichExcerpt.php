@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\RichExcerpt\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class RichExcerpt extends Admin
+class RichExcerpt extends \tiFy\Core\Taboox\Admin
 {
 	/* = FORMULAIRE DE SAISIE = */	
 	public function form( $post )

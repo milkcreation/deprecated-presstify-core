@@ -75,8 +75,7 @@ abstract class Table extends \WP_List_Table
 	
 	/// Titre de la page
 	protected $PageTitle			= null;
-		
-	
+			
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 

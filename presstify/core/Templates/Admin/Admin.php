@@ -56,6 +56,8 @@ class Admin extends \tiFy\Environment\App
 							exit;
 							break;
 					endswitch;
+				else : 
+					$admin_menu['menu_title'] =$Factory->getLabel( 'menu_name' );
 				endif;
 			endif;
 			
