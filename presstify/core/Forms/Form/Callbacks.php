@@ -67,8 +67,7 @@ class Callbacks
 			endforeach;
 		endforeach;
 	}
-	
-	
+		
 	/** == Définition des fonctions de callback == **/
 	private function _set( $hookname, $id, $callback, $priority, $type = 'core' )
 	{	

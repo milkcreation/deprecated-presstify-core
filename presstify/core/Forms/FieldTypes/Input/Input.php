@@ -28,7 +28,24 @@ class Input extends Factory
 		/* @todo */	
 		/* 'size', 'maxlength', 'autofocus', 'height', 'width', 'list', 'min', 'max', 'multiple', 'pattern', 'placeholder', 'required', 'step' */			
 	);
-		
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct()
+	{
+		// Définition des fonctions de callback
+		$this->Callbacks = array(
+			'handle_parse_query_field_value' => array( $this, 'cb_handle_parse_query_field_value' )
+		);
+	}
+	
+	/* = COURT-CIRCUITAGE = */
+	/** == Modification de la valeur de soumission == **/
+	public function cb_handle_parse_query_field_value( &$value )
+	{
+		// Nettoyage des antislash d'echappemment des guillemets
+		$value = wp_unslash( $value );
+	}	
+	
 	/* = CONTROLEURS = */
 	/** == Affichage == **/
 	public function display()

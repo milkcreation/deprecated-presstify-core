@@ -170,13 +170,16 @@ class Handle
 	/** == Vérification des variables de requêtes == **/ 
 	private function _checkQueryVars()
 	{	
-		// Vérification des variables de saisie du formulaire.
-		foreach( $this->Form->fields() as $field ) :
-			$errors = array();
-
+		$errors = array();
+		$fields = $this->Form->fields();
+		
+		// Vérification des variables de saisie du formulaire.		
+		foreach( (array) $fields as $field ) :
+			$field_errors = array();
+		
 			/// Champs requis	
 			if( $field->isRequired() && empty( $field->getValue() ) ) :
-				$errors[] = sprintf( $field->getRequired( 'error' ) , $field->getLabel() );
+				$field_errors[] = sprintf( $field->getRequired( 'error' ) , $field->getLabel() );
 		
 				//// Court-circuitage de la vérification de champ requis
 				//Callbacks::call( 'handle_check_required', array( &$errors, $request['fields'][ $field['slug'] ], $this->master ) );
@@ -186,19 +189,30 @@ class Handle
 				$Checker = new Checker( $field );
 			
 				foreach( $callbacks as $callback ) :
-					if( $Checker->call( $field->getValue( true ), $callback ) )
-							continue;
-					$errors[] = sprintf( $callback['error'], $field->getLabel(), $field->getValue() );		
+					if( $Checker->call( $field->getValue( true ), $callback ) ) :
+						continue;
+					endif;
+				
+					$field_errors[] = sprintf( $callback['error'], $field->getLabel(), $field->getValue() );		
 				endforeach;				
 			endif;
 
 			//// Court-circuitage de la vérification d'intégrité d'un champ
-			$this->Form->call( 'handle_check_field', array( &$errors, $field ) );
+			$this->Form->call( 'handle_check_field', array( &$field_errors, $field ) );
 			
-			foreach( (array) $errors as $error ) :
-				$this->addError( $error );
-			endforeach;			
+			if( ! empty( $field_errors ) ) :
+				foreach( $field_errors as $field_error ) :
+					$errors[] = $field_error;
+				endforeach;
+			endif;
 		endforeach;
+		
+		//// Court-circuitage de la vérification d'intégrité des champs
+		$this->Form->call( 'handle_check_fields', array( &$errors, $fields ) );
+		
+		foreach( (array) $errors as $error ) :
+			$this->addError( $error );
+		endforeach;	
 	
 		if( $this->hasError() ) :
 			return false;
