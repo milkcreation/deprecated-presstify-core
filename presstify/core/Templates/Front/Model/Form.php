@@ -4,6 +4,9 @@ namespace tiFy\Core\Templates\Front\Model;
 abstract class Form
 {
 	use \tiFy\Environment\Traits\Path;
+	use \tiFy\Core\Templates\Traits\Form\Actions;
+	use \tiFy\Core\Templates\Traits\Form\Notices;
+	use \tiFy\Core\Templates\Traits\Form\Params;
 	
 	/* = ARGUMENTS = */
 	// Configuration
@@ -85,93 +88,38 @@ abstract class Form
 		return true;
 	}
 	
-	/** == Permettre l'ajout d'un nouvel élément == **/
+	/** ==Définition des attributs par défaut de l'élément == **/
 	public function set_default_item_args()
 	{
 		return array();
 	}
-	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation des paramètres de configuration de la table == **/
-	private function init_params()
-	{
-		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'init' . $param ) ) 
-				continue;
-			call_user_func( array( $this, 'init' . $param ) );
-		endforeach;
-	}
-	
-	/** == Initialisation de l'url de la page d'administration == **/
-	public function initBaseUri()
-	{
-		$this->BaseUri = $this->getConfig( 'base_url' );
-	}
-	
-	/** == Initialisation de l'url d'édition d'un élément == **/
-	public function initListBaseUri()
-	{
-		$this->ListBaseUri = $this->getConfig( 'list_base_url' );
-	}
-	
-	/** == Initialisation de l'intitulé d'un objet traité == **/
-	public function initSingular()
-	{
-		if( ! $singular = $this->set_singular() )
-			$singular = $this->template()->getID();
 		
-		$this->Singular = sanitize_key( $singular );
-	}
-	
-	/** == Initialisation des notifications == **/
-	public function initNotices()
-	{
-		$this->Notices = $this->parseNotices( $this->set_notices() );
-	}
-	
-	/** == Initialisation des champs de saisie == **/
-	public function initFields()
-	{
-		/// Déclaration des colonnes de la table		
-		if( $fields = $this->set_fields() ) :
-		elseif( $fields = $this->getConfig( 'fields', $this->Name ) ) :
-		else :
-			foreach( (array)  $this->db()->ColNames as $name ) :
-				$fields[$name] = $name;
-			endforeach;
-		endif;
-		$this->Fields = $fields;
-	}
-	
-	/** == Initialisation des arguments de requête == **/
-	public function initQueryArgs()
-	{
-		$this->QueryArgs = (array) $this->set_query_args();
-	}
-	
-	/** == Initialisation du paramétre de permission d'ajout d'un nouvel élément == **/
-	public function initNewItem()
-	{
-		$this->NewItem = (bool) $this->set_add_new_item();
-	}
-	
-	public function initDefaultItemArgs()
-	{
-		$defaults = array( $this->db()->getPrimary() => 0 );
-		
-		$this->DefaultItemArgs = wp_parse_args( (array) $this->set_default_item_args(), $defaults );
-	}
-	
 	/* = DECLENCHEURS = */	
 	/** == Affichage de l'écran courant == **/
 	final public function _current_screen()
 	{					
 		// Initialisation des paramètres de configuration de la table
-		$this->init_params();
+		$this->initParams();
 		
 		// Traitement
 		/// Exécution des actions
 		$this->process_bulk_actions();
+		
+		
+		/// Affichage des messages de notification
+		foreach( (array) $this->Notices as $nid => $nattr ) :
+			if( ! isset( $_REQUEST[ $nattr['query_arg'] ] ) || ( $_REQUEST[ $nattr['query_arg'] ] !== $nid ) )
+				continue;
+			
+			add_action( 'alert_notices', function() use( $nattr ){
+			?>
+				<div class="alert alert-<?php echo $nattr['notice'];?><?php echo $nattr['dismissible'] ? ' is-dismissible':'';?>">
+		        	<p><?php echo $nattr['message'] ?></p>
+		    	</div>
+		    <?php
+		    			
+			});
+		endforeach;
 		
 		/// Récupération des éléments à afficher
 		$this->prepare_item();
@@ -354,6 +302,12 @@ abstract class Form
 		
 	}
 	
+	/** == Notification == **/
+	public function notices()
+	{
+		do_action( 'alert_notices' );
+	}
+	
 	/** == Affichage de l'interface de saisie == **/
 	public function display()
 	{
@@ -514,7 +468,10 @@ abstract class Form
 						<?php endif;?>
 					</h2>
 				</div>
-			</div>			
+			</div>	
+			
+			<?php $this->notices();?>
+					
 			<form method="post">
 				<?php $this->hidden_fields();?>
 				<div class="row">
