@@ -84,10 +84,18 @@ trait Params
 	}
 	
 	/** == Initialisation du paramétre de permission d'ajout d'un nouvel élément == **/
-	public function initNewItem()
+	public function initParamNewItem()
 	{
 		$this->NewItem = (bool) $this->set_add_new_item();
 	}	
+	
+	/** == Attributs par défaut de l'élément == **/
+	public function initParamDefaultItemArgs()
+	{
+		$defaults = array( $this->db()->getPrimary() => 0 );
+		
+		$this->DefaultItemArgs = wp_parse_args( (array) $this->set_default_item_args(), $defaults );
+	}
 	
 	/** == Initialisation des actions sur un élément de la liste == **/
 	public function initParamPageTitle()

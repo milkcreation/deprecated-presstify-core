@@ -44,6 +44,22 @@ trait Actions
 		);
 	}
 		
+	/** == == **/
+	public function get_edit_uri( $item )
+	{
+		if( ! $this->EditBaseUri )
+			return;
+		if( is_object( $item ) ) :
+			$item_id = $item->{$this->db()->getPrimary()};
+		elseif( is_numeric( $item ) ) :
+			$item_id = $item;
+		else :
+			return;
+		endif;
+		
+		return esc_attr( add_query_arg( $this->db()->getPrimary(), $item_id, $this->EditBaseUri ) );			
+	}
+	
 	/** == Éxecution de l'action - activation == **/
 	protected function process_bulk_action_activate()
 	{
