@@ -14,10 +14,11 @@ class EditUser extends Form
 	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'Roles'
+		'BaseUri', 'ListBaseUri', 'Plural', 'Singular', 'Notices', 'Fields', 'QueryArgs', 'NewItem', 'PageTitle',
+		'Roles'
 	);
 			
-	/* = DECLARATION DES PARAMETRES = */
+	/* = PARAMETRES = */
 	/** == Définition des rôles des utilisateurs de la table == **/
 	public function set_roles()
 	{
@@ -39,9 +40,9 @@ class EditUser extends Form
 		);
 	}
 	
-	/* = INITIALISATION DES PARAMETRES = */
+	/* = PARAMETRAGE = */
 	/** == Initialisation des rôles des utilisateurs de la table == **/
-	public function init_param_Roles()
+	public function initParamRoles()
 	{		
 		if( $editable_roles = array_reverse( get_editable_roles() ) )
 			$editable_roles = array_keys( $editable_roles );

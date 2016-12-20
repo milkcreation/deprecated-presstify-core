@@ -102,8 +102,14 @@ class Token extends Factory
 		$plain			= \tiFy\Lib\Token::KeyGen( (int) $_POST['length'] );
 		$public_key 	= \tiFy\Lib\Token::Decrypt( $_POST['public_key'] );
 		$private_key 	= \tiFy\Lib\Token::Decrypt( $_POST['private_key'] );
-		$hash			= \tiFy\Lib\Token::Encrypt( $plain, $public_key, $private_key );
 		
+		if( empty( $public_key ) )
+			$public_key = null;
+		if( empty( $private_key ) )
+			$private_key = null;
+		
+		$hash			= \tiFy\Lib\Token::Encrypt( $plain, $public_key, $private_key );
+					
 		wp_send_json_success( compact( 'plain', 'hash' ) );
 	}
 	
@@ -112,6 +118,12 @@ class Token extends Factory
 	{
 		$public_key 	= \tiFy\Lib\Token::Decrypt( $_POST['public_key'] );
 		$private_key 	= \tiFy\Lib\Token::Decrypt( $_POST['private_key'] );
+		
+		if( empty( $public_key ) )
+			$public_key = null;
+		if( empty( $private_key ) )
+			$private_key = null;
+			
 		$plain			= \tiFy\Lib\Token::Decrypt( $_POST['hash'], $public_key, $private_key );
 		
 		wp_send_json_success( compact( 'plain' ) );
@@ -122,6 +134,12 @@ class Token extends Factory
 	{
 		$public_key 	= \tiFy\Lib\Token::Decrypt( $_POST['public_key'] );
 		$private_key 	= \tiFy\Lib\Token::Decrypt( $_POST['private_key'] );
+		
+		if( empty( $public_key ) )
+			$public_key = null;
+		if( empty( $private_key ) )
+			$private_key = null;
+		
 		$hash			= \tiFy\Lib\Token::Encrypt( $_POST['plain'], $public_key, $private_key );
 		
 		wp_send_json_success( compact( 'hash' ) );
