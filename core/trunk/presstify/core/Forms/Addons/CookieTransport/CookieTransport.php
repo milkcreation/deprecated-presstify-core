@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Forms\Addons\CookieTransport;
 
-use tiFy\Core\Forms\Addons\Factory;
-
-class CookieTransport extends Factory
+class CookieTransport extends \tiFy\Core\Forms\Addons\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

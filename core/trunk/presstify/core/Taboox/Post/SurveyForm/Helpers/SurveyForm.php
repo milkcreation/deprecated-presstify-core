@@ -1,9 +1,7 @@
 <?php
 namespace Theme\tiFy\Core\Taboox\Post\SurveyForm\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class SurveyForm extends Helpers
+class SurveyForm extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	/** @see https://codex.wordpress.org/Plugin_API/Action_Reference **/

@@ -1,12 +1,13 @@
 <?php
 namespace tiFy\Core\Taboox\Post\TaxonomySelect\Admin;
 
-use tiFy\Core\Taboox\Admin;
 use tiFy\Lib\Walkers\Taxonomy_RadioList;
 use tiFy\Lib\Walkers\Taxonomy_CheckboxList;
 
-class TaxonomySelect extends Admin
+class TaxonomySelect extends \tiFy\Core\Taboox\Admin
 {
+	/* = ARGUMENTS = */
+	// Instance
 	private static $Instance;
 	
 	/* = CHARGEMENT DE LA PAGE = */

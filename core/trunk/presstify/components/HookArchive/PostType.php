@@ -191,7 +191,7 @@ final class PostType extends Factory
 			if( $post->post_parent && $post->ancestors ) :
 				$parents = ( count( $post->ancestors ) > 1 ) ? array_reverse( $post->ancestors ) : $post->ancestors;
 				foreach( $parents as $parent )
-					$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
+					$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 			endif;	
 			
 			$output = $ancestors . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) .'</li>';

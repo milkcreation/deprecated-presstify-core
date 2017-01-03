@@ -124,7 +124,7 @@ class Breadcrumb extends Component
 		);
 		
 		if( ! $current ) :
-			return sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" title="%3$s">%2$s</a></li>', $attr['url'], $attr['name'], $attr['title'] );
+			return sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" title="%3$s" class="tiFyBreadcrumb-ItemLink" >%2$s</a></li>', $attr['url'], $attr['name'], $attr['title'] );
 		else :
 			return sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $attr['name'] );
 		endif;

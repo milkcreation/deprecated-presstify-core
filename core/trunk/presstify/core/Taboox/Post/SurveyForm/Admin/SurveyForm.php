@@ -1,9 +1,7 @@
 <?php
 namespace Theme\tiFy\Core\Taboox\Post\SurveyForm\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class SurveyForm extends Admin
+class SurveyForm extends \tiFy\Core\Taboox\Admin
 {
 	/* = ARGUMENTS = */
 	/** == Types de champs == **/

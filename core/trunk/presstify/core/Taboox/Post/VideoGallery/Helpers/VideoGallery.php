@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\VideoGallery\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class VideoGallery extends Helpers
+class VideoGallery extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Identifiant des fonctions

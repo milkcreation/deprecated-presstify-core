@@ -12,23 +12,12 @@
 	display:inline-block;
 	text-indent:0;
 }
-.tiFyPagination-Item > *{
-	display:block;
-	background-color:#CCC;
-    border-color:#CCC;
+.tiFyPagination-ItemPage{
+	display:block;	
     position: relative;
     padding: 6px 12px;
-    text-decoration: none;
     text-align:center;
-    color:#FFF;
 }
-.tiFyPagination-Item > a{	
-	color:#333;
-}
-.tiFyPagination-Item--active > *,
-.tiFyPagination-Item > a:hover,
-.tiFyPagination-Item > a:focus{
-    background-color:#999;
-    border-color:#999;
-    color:#FFF;
+.tiFyPagination-ItemPage--link{	
+	text-decoration: none;
 }
