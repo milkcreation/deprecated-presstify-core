@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\RichExcerpt\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class RichExcerpt extends Helpers
+class RichExcerpt extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Intitulés des prefixes des fonctions		

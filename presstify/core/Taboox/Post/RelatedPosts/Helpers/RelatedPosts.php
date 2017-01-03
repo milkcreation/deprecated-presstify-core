@@ -39,6 +39,7 @@ class RelatedPosts extends Helpers
 	}
 	
 	/* = AFFICHAGE = */
+	/** == Liste des éléments == **/
 	public static function Display( $post = 0, $args = array(), $echo = true )
 	{		
 		// Bypass
@@ -52,16 +53,14 @@ class RelatedPosts extends Helpers
 		$output  = "";	
 		$related_query = new \WP_Query( array( 'post_type' => 'any', 'post__in' => $related_posts, 'posts_per_page' => $args['max'], 'orderby' => 'post__in' ) );
 		if( $related_query->have_posts() ) :
-			$output .= "\n<div class=\"tify_taboox_related_posts\">";	
-			$output .= "\n\t<ul class=\"roller\">";
+			$output .= "\n<div class=\"tiFyTabooxRelatedPosts tiFyTabooxRelatedPosts--". sanitize_key( $args['name'] ) ."\">";	
+			$output .= "\n\t<ul class=\"tiFyTabooxRelatedPosts-Items\">";
 			while( $related_query->have_posts() ): $related_query->the_post();
-				$item  = "\n\t\t<li>";
-				$item .= "\n\t\t\t<a href=\"".get_permalink()."\">";
-				$item .= \get_the_post_thumbnail( get_the_ID(), 'thumbnail' );
-				$item .= "\n\t\t\t\t<h3>".get_the_title( get_the_ID() )."</h3>";
-				$item .= "\n\t\t\t</a>";
-				$item .= "\n\t\t</li>";
-				$output .= \apply_filters( 'tify_taboox_related_posts_item', $item, get_the_ID() );
+				$output .= "\n\t\t<li class=\"tiFyTabooxRelatedPosts-Item\">";
+				ob_start();
+				static::displayItem();
+				$output .= ob_get_clean();
+				$output .= "\n\t\t</li>";
 			endwhile; ;
 			$output .= "\n\t</ul>";
 			$output .= "\n</div>";
@@ -71,5 +70,16 @@ class RelatedPosts extends Helpers
 			echo $output;
 		
 		return $output;	
+	}
+	
+	/** == Elément == **/
+	public static function displayItem()
+	{
+	?>
+		<a href="<?php the_permalink();?>" title="<?php printf( __( 'En savoir plus sur %s' ), get_the_title() );?>" class="tiFyTabooxRelatedPosts-ItemLink">
+			<figure class="tiFyTabooxRelatedPosts-ItemThumbnail"><?php the_post_thumbnail( 'thumbnail' );?></figure>
+			<h3 class="tiFyTabooxRelatedPosts-ItemTitle"> <?php the_title( );?></h3>
+		</a>
+	<?php
 	}
 }

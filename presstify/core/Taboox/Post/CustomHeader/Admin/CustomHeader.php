@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\CustomHeader\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class CustomHeader extends Admin
+class CustomHeader extends \tiFy\Core\Taboox\Admin
 {
 	/* = CHARGEMENT DE LA PAGE = */
 	public function current_screen( $current_screen )
@@ -15,8 +13,8 @@ class CustomHeader extends Admin
 	/* = MISE EN FILE DES SCRIPTS = */
 	public function admin_enqueue_scripts()
 	{
-		wp_enqueue_style( 'Taboox_Post_CustomHeader_Admin', $this->Url .'/CustomHeader.css', array( 'tify_control-media_image' ), '150325' );
-		wp_enqueue_script( 'Taboox_Post_CustomHeader_Admin', $this->Url .'/CustomHeader.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );	
+		wp_enqueue_style( 'Taboox_Post_CustomHeader_Admin', self::getUrl() .'/CustomHeader.css', array( 'tify_control-media_image' ), '150325' );
+		wp_enqueue_script( 'Taboox_Post_CustomHeader_Admin', self::getUrl() .'/CustomHeader.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );	
 	}
 	
 	/* = FORMULAIRE DE SAISIE = */	

@@ -4,7 +4,7 @@ id:           ''
 ## Classe HTML du conteneur   
 class:        ''
 ## Thème
-theme:        'base'
+theme:        'light'
 ## Texte du lien précédent
 previous:     '&laquo;'
 ## Texte du lien suivant

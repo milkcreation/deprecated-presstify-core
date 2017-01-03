@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\CustomHeader\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class CustomHeader extends Helpers
+class CustomHeader extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Identifiant des fonctions
@@ -19,7 +17,7 @@ class CustomHeader extends Helpers
 	public function __construct()
 	{
 		parent::__construct();	
-	
+
 		add_filter( 'theme_mod_header_image', array( $this, 'theme_mod_header_image' ) );
 	}
 	
@@ -34,22 +32,15 @@ class CustomHeader extends Helpers
 			endif;
 		endif;
 				
-		if( is_singular() ) :
-			$header = get_post_meta( get_the_ID(), '_custom_header', true );
-			if( $header && is_numeric( $header ) && ( $image = wp_get_attachment_image_src( $header, 'full' ) ) ) :
-				$url = $image[0];	
-			elseif( $header && is_string( $header ) ) :
-				$url = $header;
-			endif;
-		elseif( is_home() && get_option( 'page_for_posts' ) ) :
+		if( is_home() && get_option( 'page_for_posts' ) ) :
 			$header = get_post_meta( get_option( 'page_for_posts' ), '_custom_header', true );
 			if( $header && is_numeric( $header ) && ( $image = wp_get_attachment_image_src( $header, 'full' ) ) ) :
 				$url = $image[0];	
 			elseif( $header && is_string( $header ) ) :
 				$url = $header;
 			endif;
-		elseif( is_archive() && ( $hook_id = get_query_var( 'tify_hook_id', 0 )  ) ) :
-			$header = get_post_meta( $hook_id, '_custom_header', true );
+		else :
+			$header = get_post_meta( get_the_ID(), '_custom_header', true );
 			if( $header && is_numeric( $header ) && ( $image = wp_get_attachment_image_src( $header, 'full' ) ) ) :
 				$url = $image[0];	
 			elseif( $header && is_string( $header ) ) :

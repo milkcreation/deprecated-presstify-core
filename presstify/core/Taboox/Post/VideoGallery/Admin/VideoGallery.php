@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\VideoGallery\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class VideoGallery extends Admin
+class VideoGallery extends \tiFy\Core\Taboox\Admin
 {	
 	/* = CONSTRUCTEUR = */
 	public function __construct()

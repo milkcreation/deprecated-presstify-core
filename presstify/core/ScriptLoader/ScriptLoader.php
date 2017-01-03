@@ -150,6 +150,20 @@ class ScriptLoader extends App
 				'version'	=> '2.9.1',
 				'in_footer'	=> true
 			),
+				
+			/** 
+			 * IsMobile
+			 * Plugin jQuery de détection de terminal mobile
+			 * @source https://github.com/kaimallea/isMobile 
+			 **/
+			'isMobile'		=> array(
+				'src'		=> array(
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/isMobile.min.js'
+				),
+				'deps'		=> array( 'jquery' ),
+				'version'	=> '0.4.1',
+				'in_footer'	=> true
+			),	
 			
 			// Moment
 			'moment'					=> array(
@@ -266,6 +280,7 @@ class ScriptLoader extends App
 				'version'	=> '160126',
 				'in_footer'	=> true
 			),
+			 				
 			/// TiFy - Lightbox
 			'tify-lightbox'				=> array(
 				'src'		=> array(

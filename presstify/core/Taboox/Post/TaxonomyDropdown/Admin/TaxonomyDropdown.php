@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\TaxonomyDropdown\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class TaxonomyDropdown extends Admin
+class TaxonomyDropdown extends \tiFy\Core\Taboox\Admin
 {
 	/* = CHARGEMENT DE LA PAGE = */
 	public function current_screen( $current_screen )

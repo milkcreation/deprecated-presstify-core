@@ -43,7 +43,8 @@ class Modal extends \tiFy\Environment\App
 			'title'				=> '',
 			'body'				=> '',
 			'footer'			=> ''			
-		)				
+		),
+		'in_footer'			=> true
 	);
 	
 	// Instance
@@ -106,23 +107,16 @@ class Modal extends \tiFy\Environment\App
 		$output .= $args['text'];
 		$output .= "</a>";		
 		
-		$classname = get_called_class();
-		
-		add_action( 
-			'wp_footer', 
-			function() use( $args, $classname )
-			{	
-				$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
-				if( $modal_attrs === false )
-					return;
-				$modal_attrs['target'] = $args['target'];				
-				if( ! isset( $modal_attrs['options']['show'] ) )
-					$modal_attrs['options']['show'] = false;
-
-				return $classname::display( $modal_attrs );
-			},
-			0
-		);
+		// Chargement de la modal 
+		$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
+		if( $modal_attrs !== false ) :
+			$modal_attrs['target'] = $args['target'];				
+			if( ! isset( $modal_attrs['options']['show'] ) ) :
+				$modal_attrs['options']['show'] = false;
+			endif;
+			
+			static::display( $modal_attrs );
+		endif;
 	
 		if( $echo )
 			echo $output;
@@ -175,18 +169,19 @@ class Modal extends \tiFy\Environment\App
 		$output .= "\t\t<div class=\"modal-content\">";
 
 		/// Entête
-		$header  = "";		
+		$header  = "";				
 		//// Bouton de fermeture
 		if( $args['dialog']['header_button'] ) :
 			$header .= "\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">".
 						( is_bool( $args['dialog']['header_button'] ) ? "<span aria-hidden=\"true\">&times;</span>" : (array) $args['dialog']['header_button'] ) .
-						"</button>\n";
-		endif;						
+						"</button>\n";			
+		endif;	
+				
 		//// Titre de la modale
 		if( $args['dialog']['title'] ) :
 			$header .= "\t\t\t\t<h4 class=\"modal-title\">{$args['dialog']['title']}</h4>\n";
 		endif;
-		
+				
 		if( $header ) :
 			$output .= "\t\t\t<div class=\"modal-header\">{$header}</div>";
 		endif;	
@@ -209,21 +204,30 @@ class Modal extends \tiFy\Environment\App
 		// Post-affichage
 		$output .= $args['after'];
 		$output .= "</div>\n";
+		
+		if( $echo && $args['in_footer'] ) :
+			add_action( 
+				'wp_footer', 
+				function() use( $output ){
+					echo $output;
+				},
+				0
+			);
+		elseif( $echo ) :
+			echo $output;
+		endif;
 					
-		// Script
+		// Chargement des scripts
 		if( ! self::$Instance++ ) :
 			$url = self::getUrl(). '/Modal.min.js';
 			add_action( 
 				'wp_footer', 
-				function() use( $url){
+				function() use( $url ){
 				?><script type="text/javascript" src="<?php echo $url;?>"></script><script type="text/javascript">/* <![CDATA[ */jQuery(document).ready(function($){$('[data-role="tiFyModal"]').each(function(){$(this).modal();});$(document).on( 'click','[data-toggle="tiFyModal"]',function(e){e.preventDefault();$('[data-id="'+$(this).data('target')+'"]').modal('show');});});/* ]]> */</script><?php
 				},
 				1
 			);
 		endif;
-		
-		if( $echo )
-			echo $output;
 		
 		return $output;
 	}

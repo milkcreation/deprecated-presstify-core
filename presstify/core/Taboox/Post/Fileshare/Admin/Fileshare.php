@@ -1,10 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\Fileshare\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-/* = Formulaire de saisie = */
-class Fileshare extends Admin
+class Fileshare extends \tiFy\Core\Taboox\Admin
 {
 	/* = CHARGEMENT DE LA PAGE = */	
 	public function current_screen( $current_screen )

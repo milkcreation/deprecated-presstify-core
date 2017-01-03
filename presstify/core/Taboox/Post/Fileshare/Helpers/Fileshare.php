@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\Fileshare\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class Fileshare extends Helpers
+class Fileshare extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Identifiant des fonctions
