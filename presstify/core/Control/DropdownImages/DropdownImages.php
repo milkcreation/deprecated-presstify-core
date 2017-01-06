@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Core\Control\DropdownImages;
 
-use tiFy\Core\Control\Factory;
 use Emojione\Emojione;
 
-class DropdownImages extends Factory
+class DropdownImages extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant de la classe		
@@ -16,15 +15,15 @@ class DropdownImages extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{		
-		wp_register_style( 'tiFyCoreControlDropdownImages', $this->Url .'/DropdownImages.css', array( ), '150122' );
-		wp_register_script( 'tiFyCoreControlDropdownImages', $this->Url .'/DropdownImages.js', array( 'jquery' ), '150122', true );
+		wp_register_style( 'tify_control-dropdown_images', self::getUrl() .'/DropdownImages.css', array( ), '150122' );
+		wp_register_script( 'tify_control-dropdown_images', self::getUrl() .'/DropdownImages.js', array( 'jquery' ), '150122', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function enqueue_scripts()
 	{
-		wp_enqueue_style( 'tiFyCoreControlDropdownImages' );
-		wp_enqueue_script( 'tiFyCoreControlDropdownImages' );	
+		wp_enqueue_style( 'tify_control-dropdown_images' );
+		wp_enqueue_script( 'tify_control-dropdown_images' );	
 	}
 		
 	/* = AFFICHAGE = */

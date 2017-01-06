@@ -52,7 +52,7 @@ class Sidebar extends \tiFy\Environment\Component
 		
 		// Traitement des éléments
 		foreach( (array) self::getConfig( 'nodes' ) as $id => $args ) :
-			self::Register( $id, $args );
+			self::register( $id, $args );
 		endforeach;
 	}
 	
@@ -219,7 +219,7 @@ class Sidebar extends \tiFy\Environment\Component
 	
 	/* = CONTRÔLEURS = */
 	/** == Ajout d'un greffons == **/
-	public static function Register( $id = null, $args = array() )
+	public static function register( $id = null, $args = array() )
 	{
 		if( ! $id )
 			$id = uniqid();
@@ -243,19 +243,14 @@ class Sidebar extends \tiFy\Environment\Component
 				
 		// BOUTON DE BASCULE
 		if( self::getConfig( 'toggle' ) ) :
-			/// Texte du bouton
-			$buttonText = '';
-			if( is_bool( self::getConfig( 'toggle' ) ) ) :
-			elseif( is_string( self::getConfig( 'toggle' ) ) ) :
-				$buttonText .= self::getConfig( 'toggle' );
-			endif;
-			
 			$buttonAttrs = array(
 				'pos'	=> self::getConfig( 'pos' ),
-				'text'	=> $buttonText,
 				'class'	=> 'tiFySidebar-toggleButton tiFySidebar-toggleButton--'. self::getConfig( 'pos' )
-			);			
-			
+			);
+			if( is_string( self::getConfig( 'toggle' ) ) ) :
+				$buttonAttrs['text'] = self::getConfig( 'toggle' );
+			endif;
+						
 			$output .= self::displayToggleButton( $buttonAttrs, false );
 		endif;
 		

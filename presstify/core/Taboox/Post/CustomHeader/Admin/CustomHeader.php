@@ -13,8 +13,7 @@ class CustomHeader extends \tiFy\Core\Taboox\Admin
 	/* = MISE EN FILE DES SCRIPTS = */
 	public function admin_enqueue_scripts()
 	{
-		wp_enqueue_style( 'Taboox_Post_CustomHeader_Admin', self::getUrl() .'/CustomHeader.css', array( 'tify_control-media_image' ), '150325' );
-		wp_enqueue_script( 'Taboox_Post_CustomHeader_Admin', self::getUrl() .'/CustomHeader.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );	
+		tify_control_enqueue( 'media_image' );
 	}
 	
 	/* = FORMULAIRE DE SAISIE = */	
