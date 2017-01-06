@@ -12,6 +12,12 @@
 	margin:0;
 	box-shadow:none;
 }
+[data-tify_control="touch_time"].invalid input[type="number"],
+[data-tify_control="touch_time"].invalid select,
+[data-tify_control="touch_time"].invalid [data-tify_control="dropdown"]{
+	border-color:red;
+}
+
 [data-tify_control="touch_time"] input[type="number"]{
 	width:3.6em;
 }

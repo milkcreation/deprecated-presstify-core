@@ -34,7 +34,7 @@ jQuery( document ).ready( function($){
 	    	   url: 		tify_ajaxurl,
 	    	   data: 		function ( d ) {
 	    	    	d = $.extend( d, filters, tiFyCoreAdminAjaxListTable.data );
-
+	    	    	console.log( d );
 	    	        return d;
 	    	    },
 	    	    dataType: 	'json', 
@@ -93,7 +93,7 @@ jQuery( document ).ready( function($){
 	    			e.preventDefault();
 	    			
 	    			filters = {};
-	    	
+	    			    			
 	    			$.each( $( this ).serializeArray(), function(u,v){
 	    				if( ( v.name === '_wpnonce' ) || ( v.name === '_wp_http_referer' ) || ( v.name === 's' )  || ( v.name === 'paged' )  )
 	    					return true;

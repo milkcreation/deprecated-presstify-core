@@ -16,10 +16,12 @@ class Admin extends \tiFy\Environment\App
 	final public function admin_menu()
 	{
 		$menus = array(); $submenus = array();		
-		
+				
 		foreach( (array) Templates::listAdmin() as $id => $Factory ) :
-			$admin_menu = $Factory->getAttr( 'admin_menu', array() );
-		
+			// L'entrée de menu de doit pas apparaître
+			if( $Factory->getAttr( 'admin_menu' ) === false )
+				continue;
+			
 			// Définition des attributs de menu	
 			$defaults = array(	
 				'menu_slug'		=> $Factory->getID(),
@@ -31,7 +33,7 @@ class Admin extends \tiFy\Environment\App
 				'position' 		=> 99, 
 				'function' 		=> array( $Factory, 'render' )
 			);			
-			$admin_menu = wp_parse_args( $admin_menu, $defaults );
+			$admin_menu = wp_parse_args( $Factory->getAttr( 'admin_menu', array() ), $defaults );
 						
 			if( ! $menu_title = $admin_menu['menu_title'] ) :
 				if( $model = $Factory->getModelName() ) :
@@ -52,8 +54,7 @@ class Admin extends \tiFy\Environment\App
 							$admin_menu['menu_title'] = $Factory->getLabel( 'all_items' );
 							break;
 						default :
-							var_dump( 'tiFy\Core\Templates\Admin\Admin' );
-							exit;
+							$admin_menu['menu_title'] =	$Factory->getLabel( 'menu_name' );
 							break;
 					endswitch;
 				else : 

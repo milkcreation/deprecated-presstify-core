@@ -2,17 +2,13 @@
 namespace tiFy\Core\Templates\Admin\Model\AjaxListTable;
 
 class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
-{	
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation de l'url de la page d'administration == **/
-	public function init_param_Config(){}
-		
+{			
 	/* = DECLENCHEURS = */
-	/** == == **/
-	final public function _init(){}
+	/** == initialisation globale == **/
+	public function _init(){}
 			
 	/** == Mise en file des scripts de l'interface d'administration == **/
-	final public function _admin_enqueue_scripts()
+	public function _admin_enqueue_scripts()
 	{		
 		// Configuration	
 		wp_localize_script( 

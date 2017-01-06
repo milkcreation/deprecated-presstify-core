@@ -226,7 +226,7 @@ abstract class Table extends \WP_List_Table
 	
 	/* = DECLENCHEURS = */
 	/** == initialisation globale == **/
-	final public function _init()
+	public function _init()
 	{
 		// Pré-initialisation des paramètres
 		/// Option de personnalisation du nombre d'élément par page			
@@ -254,7 +254,7 @@ abstract class Table extends \WP_List_Table
 	}
 	
 	/** == Affichage de l'écran courant == **/
-	final public function _current_screen( $current_screen = null )
+	public function _current_screen( $current_screen = null )
 	{	
 		// Définition de l'écran courant
 		if( $current_screen )
@@ -301,6 +301,9 @@ abstract class Table extends \WP_List_Table
 		/// Récupération des éléments à afficher
 		$this->prepare_items();
 	}
+	
+	/** == Mise en file des scripts de l'interface d'administration == **/
+	public function _admin_enqueue_scripts(){}	
 				
 	/* = TRAITEMENT = */
 	/** == Récupération de l'élément à traité == **/

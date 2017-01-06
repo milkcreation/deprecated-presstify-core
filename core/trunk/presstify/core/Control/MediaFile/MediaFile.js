@@ -41,6 +41,6 @@ jQuery(document).ready( function($){
 		
 		$closest.removeClass( 'active' );
 		$( '.tify_control_media_file-title', $closest ).val( $closest.data( 'original_title' ) );
-		$( '.tify_control_media_file-id', $closest ).val( 'original_id' );
+		$( '.tify_control_media_file-id', $closest ).val( $closest.data( 'original_id' ) );
 	});
 });
