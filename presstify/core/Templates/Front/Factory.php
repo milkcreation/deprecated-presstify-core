@@ -29,7 +29,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 		// Bypass
 		if( ! $this->getAttr( 'cb' ) && ! $this->getAttr( 'model' ) )
 			return;
-			
+	
 		// Instanciation de la classe
 		if(  ! $this->getAttr( 'cb' ) ) : 
 			$model = $this->getAttr( 'model' );		

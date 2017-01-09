@@ -69,7 +69,8 @@ abstract class Table
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
 		'TableClasses', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
-		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions'	
+		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
+		'PageTitle'
 	);
 		
 	/* = CONSTRUCTEUR = */
@@ -997,23 +998,42 @@ abstract class Table
     {
     	get_header();
     ?>
-		<div class="wrap">
-    		<h2>
-    			<?php echo $this->label( 'all_items' );?>
-    			
-    			<?php if( $this->EditBaseUri ) : ?>
-    				<a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
-    			<?php endif;?>
-    		</h2>
-    		<?php $this->notices();?>
+		<div class="container-fluid">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="page-header">
+							<h1>
+								<?php echo $this->PageTitle;?>
+								
+								<?php if( $this->EditBaseUri ) : ?>
+	    						<a class="btn btn-default" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
+	    						<?php endif;?>
+							</h1>
+						</div>	
+					</div>						
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<?php $this->notices();?>
+					
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3 class="panel-title"><?php _e( 'Liste des dépenses', 'tify' );?></h3>
+							</div>
+							<div class="panel-body">
+								<?php $this->views(); ?>
     		
-    		<?php $this->views();?>
-    		
-    		<form method="post" action="">
-    			<?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
-    			<?php $this->display();?>
-			</form>
-    	</div>
+					    		<form method="get" action="<?php echo $this->getConfig( 'base_url' );?>">
+					    			<div class="pull-right">
+					    				<?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
+					    			</div>
+					    			<?php $this->display();?>
+								</form>				
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
     <?php
     	get_footer();
     }
