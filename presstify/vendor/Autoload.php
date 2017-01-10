@@ -24,6 +24,9 @@ class Autoload
 		/// Html2Text
 		$loader->addNamespace( 'Html2Text', __DIR__ .'/Html2Text/src' );
 		
+		/// Html2Text
+		$loader->addNamespace( 'Detection', __DIR__ .'/Mobile-Detect/namespaced/Detection' );
+		
 		// PHPColors
 		$loader->addNamespace( 'OAuth2', __DIR__ .'/OAuth2' );
 		

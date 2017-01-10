@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Core\ScriptLoader;
 
-use tiFy\Environment\App;
 use tiFy\tiFy;
 
-class ScriptLoader extends App
+class ScriptLoader extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/

@@ -108,15 +108,7 @@ class InfiniteScroll extends App
 		
 		$config = self::$Config[self::$Instance];
 		$wp_footer = function() use ( $config ){
-			?><script type="text/javascript">/* <![CDATA[ */
-			var tify_infinite_scroll_xhr;
-			jQuery( document ).ready( function($){
-				var handler = '#<?php echo $config['id'];?>',
-					target	= '<?php echo $config['target'];?>';
-	
-				tify_infinite_scroll( handler, target );
-			});
-			/* ]]> */</script><?php	
+		?><script type="text/javascript">/* <![CDATA[ */var tify_infinite_scroll_xhr;jQuery(document).ready(function($){var handler='#<?php echo $config['id'];?>',target='<?php echo $config['target'];?>';tify_infinite_scroll(handler,target);});/* ]]> */</script><?php	
 		};
 				
 		// Mise en file des scripts
@@ -136,7 +128,7 @@ class InfiniteScroll extends App
 					   		
 		if( $echo )
 			echo $output;
-		else	
-			return $output;	
+
+		return $output;	
 	}
 }
