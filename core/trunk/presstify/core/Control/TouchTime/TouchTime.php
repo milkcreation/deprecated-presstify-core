@@ -12,8 +12,8 @@ class TouchTime extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-touch_time', self::getUrl() ."/touch_time.css", array( 'tify_control-dropdown' ), '150418' );
-		wp_register_script( 'tify_control-touch_time', self::getUrl() ."/touch_time.js", array( 'jquery', 'tify_control-dropdown', 'moment' ), '150418', true );
+		wp_register_style( 'tify_control-touch_time', self::getUrl() ."/TouchTime.css", array( 'tify_control-dropdown' ), '150418' );
+		wp_register_script( 'tify_control-touch_time', self::getUrl() ."/TouchTime.js", array( 'jquery', 'tify_control-dropdown', 'moment' ), '150418', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
@@ -53,7 +53,7 @@ class TouchTime extends Factory
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
-		
+
 		switch( $type ) :
 			case 'datetime' :				
 				if( ! $value )

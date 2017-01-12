@@ -189,9 +189,9 @@ class Factory
 	{
 		if( ! $name )
 			$name = $this->ID;
-		
-		$this->Shortname = $name;	
 			
+		$this->ShortName = $name;	
+
 		if( ! in_array( $name, $this->sql()->tables ) ) :	
 			array_push( $this->sql()->tables, $name );				
 			$this->sql()->set_prefix( $this->sql()->base_prefix );
@@ -207,7 +207,7 @@ class Factory
 			return;
 				
 		if( is_bool( $meta_type ) )
-			$meta_type = $this->Shortname;
+			$meta_type = $this->ShortName;
 		
 		$table = $meta_type .'meta';
 		

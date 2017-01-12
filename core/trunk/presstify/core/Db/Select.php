@@ -272,7 +272,7 @@ class Select
 
 		// Mise en cache
 		wp_cache_add( $item->{$primary_key}, $item, $name );
-		
+
 		if ( $output == OBJECT ) :
 			return ! empty( $item ) ? $item : null;
 		elseif ( $output == ARRAY_A ) :
