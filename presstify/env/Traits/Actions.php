@@ -8,7 +8,7 @@ trait Actions
 	// Liste des actions à déclencher
 	protected $CallActions				= array(); 
 	
-	// Fonctions de rappel des actions
+	// Cartographie des méthodes de rappel des actions
 	protected $CallActionsFunctionsMap	= array();
 		
 	// Ordres de priorité d'exécution des actions

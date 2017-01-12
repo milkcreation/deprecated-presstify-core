@@ -1018,7 +1018,7 @@ abstract class Table
 					
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								<h3 class="panel-title"><?php _e( 'Liste des dépenses', 'tify' );?></h3>
+								<h3 class="panel-title"><?php _e( 'Liste des éléments', 'tify' );?></h3>
 							</div>
 							<div class="panel-body">
 								<?php $this->views(); ?>
