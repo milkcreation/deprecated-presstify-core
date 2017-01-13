@@ -242,6 +242,7 @@ final class Taxonomy extends Factory
 			( ! $hook_id = get_query_var( 'tify_hook_id' ) ) ||
 			( ! $post = get_post( $hook_id ) )
 		) :
+
 		else:		
 			$ancestors = "";
 			if( $post->post_parent && $post->ancestors ) :
@@ -267,8 +268,12 @@ final class Taxonomy extends Factory
 			( ! $hook_id = get_query_var( 'tify_hook_id' ) ) ||
 			( ! $post = get_post( $hook_id ) )
 		) :
-		elseif( ( $seo_meta = get_post_meta( $post->ID, '_tify_seo_meta', true ) ) && ! empty( $seo_meta['title'] ) ) :
-			$title = $seo_meta['title'];
+		else :
+			if( ( $seo_meta = get_post_meta( $post->ID, '_tify_seo_meta', true ) ) && ! empty( $seo_meta['title'] ) ) :
+				$title = $seo_meta['title'];
+			else :
+				$title = $post->post_title;
+			endif;
 		endif;
 		
 		return $title;

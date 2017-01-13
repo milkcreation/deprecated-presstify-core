@@ -95,7 +95,8 @@ class RelatedPosts extends \tiFy\Core\Taboox\Admin
 	?>
 		<ul id="tiFyTabooxRelatedPosts-list--<?php echo self::$Instance;?>" class="tiFyTabooxRelatedPosts-list tiFyTaboox-TotemList tiFyTaboox-TotemList--sortable">
 		<?php foreach( (array) $this->Items as $post_id ) : ?>
-			<?php $this->ItemWrap( $post_id, $this->args['name'], ++$this->Order );?>			
+			<?php if( ! $post_id || ( ! $post = get_post( $post_id ) ) ) continue;?>
+			<?php $this->ItemWrap( $post->ID, $this->args['name'], ++$this->Order );?>			
 		<?php endforeach;?>
 		</ul>
 	<?php	
