@@ -53,14 +53,28 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 	/** == Définition des actions sur un élément == **/
 	public function set_row_actions()
 	{
-		return array( 
-			'inline-preview' => array(
+		$inline = false;
+		
+		if( $this->Form ) :
+			foreach( $this->Form->fields() as $field ) :
+				if( ! $col = $field->getAddonAttr( 'record', 'preview', false ) )
+					continue;
+				$inline = true;
+			endforeach;		
+		endif;
+		
+		$actions = array();
+		if( $inline ) :
+			$actions['inline-preview'] = array(
 				'title'	=> 	__( 'Aperçu de l\'élément', 'tify' ),
 				'label'	=> __( 'Afficher' ),
 				'class'	=> 'inline-preview'
-			),
-			'delete'
-		);
+			);
+		endif;
+				
+		array_push( $actions, 'delete' );
+		
+		return $actions;
 	}
 	
 	/** == Définition des actions groupées == **/

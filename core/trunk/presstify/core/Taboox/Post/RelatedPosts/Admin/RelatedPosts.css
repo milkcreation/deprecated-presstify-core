@@ -42,8 +42,8 @@
 .tiFyTabooxRelatedPosts-listItemMeta label{
 	font-weight:bold;
 	vertical-align:middle;
-	width:33.3333%;
-	display:inline-block;
+	display:block;
+	margin-bottom:0.2em;
 }
 .tiFyTabooxRelatedPosts-listItemMetaToggle{
 	position:absolute;

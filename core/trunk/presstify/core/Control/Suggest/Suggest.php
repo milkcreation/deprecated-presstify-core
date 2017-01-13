@@ -15,8 +15,8 @@ class Suggest extends Factory
 		wp_register_style( 'tify_control-suggest', $this->Url .'/suggest.css', array( ), '160222' );
 		wp_register_script( 'tify_control-suggest', $this->Url .'/suggest.js', array( 'jquery-ui-autocomplete' ), '160222', true );
 		
-		add_action( 'wp_ajax_tify_control_suggest_ajax', array( $this, 'wp_ajax' ) );
-		add_action( 'wp_ajax_nopriv_tify_control_suggest_ajax', array( $this, 'wp_ajax' ) );
+		add_action( 'wp_ajax_tify_control_suggest_ajax', array( $this, 'ajax' ) );
+		add_action( 'wp_ajax_nopriv_tify_control_suggest_ajax', array( $this, 'ajax' ) );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
@@ -33,31 +33,31 @@ class Suggest extends Factory
 		$instance++;
 		
 		$defaults = array(
-			'id' 			=> 'tify_control_suggest-'. $instance,
-			'class'			=> '',
-			'name'			=> 'tify_control_suggest_term-'. $instance,
-			'value'			=> '',
-			'attrs'			=> array(),
-			'placeholder'	=> __( 'Votre recherche', 'tify' ),
-			'button_text'	=> '',
+			'id' 				=> 'tify_control_suggest-'. $instance,
+			'class'				=> '',
+			'name'				=> 'tify_control_suggest_term-'. $instance,
+			'value'				=> '',
+			'attrs'				=> array(),
+			'placeholder'		=> __( 'Votre recherche', 'tify' ),
+			'button_text'		=> '',
 			
 			// Options Autocomplete
 			/** @see http://api.jqueryui.com/autocomplete/ **/
-			'options'		=> array(
+			'options'			=> array(
 				//( isset( $args['id'] ) ) ? '#'.$args['id'] .'_response' : '#tify_control_suggest-'. $instance .'_response',
-				'appendTo'	=> 'body',
-				'minLength'	=> 2
+				'appendTo'		=> 'body',
+				'minLength'		=> 2
 			),
 			// Classe de la liste de selection	
-			'picker'		=> ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : 'tify_control_suggest-'. $instance .'_picker',				
+			'picker'			=> ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : 'tify_control_suggest-'. $instance .'_picker',				
 				
 			// Arguments passés par la requête
-			'ajax_action'	=> 'tify_control_suggest_ajax',
-			'elements'		=> array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
-			'query_args'	=> array(),
-			'extras'		=> array(),
+			'ajax_action'		=> 'tify_control_suggest_ajax',
+			'elements'			=> array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
+			'query_args'		=> array(),
+			'extras'			=> array(),
 	
-			'echo'			=> true
+			'echo'				=> true
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
@@ -66,7 +66,7 @@ class Suggest extends Factory
 		$query_args	= htmlentities( json_encode( $query_args ) );
 		$extras		= htmlentities( json_encode( $extras ) );
 		$options	= htmlentities( json_encode( $options ) );
-		
+			
 		$output  = "";
 		$output .= "<div id=\"{$id}\" class=\"tify_control_suggest". ( $class ? ' '. $class : '' ) ."\"";
 		$output .= "data-tify_control_suggest=\"{$ajax_action}\" data-elements=\"{$elements}\" data-query_args=\"{$query_args}\" data-extras=\"{$extras}\" data-options=\"{$options}\" data-picker=\"{$picker}\"";
@@ -81,12 +81,13 @@ class Suggest extends Factory
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output;		
+	
+		return $output;		
 	}
 	
+	/* = CONTROLEUR = */
 	/** == Rendu de l'autocomplete == **/
-	private function item_render( $args = array() )
+	private static function itemRender( $args = array() )
 	{
 		$output  = "";
 		$output .= "<a href=\"". ( ! empty( $args['permalink'] ) ? $args['permalink'] : '#' )."\" class=\"". ( isset( $args['ico'] ) ? 'has_ico' : '' )."\">\n";
@@ -99,7 +100,7 @@ class Suggest extends Factory
 	}
 	
 	/** == Récupération de la reponse via Ajax == **/
-	final public function wp_ajax()
+	final public function ajax()
 	{
 		// Arguments par defaut à passer en $_POST
 		$args = array(
@@ -155,7 +156,7 @@ class Suggest extends Factory
 				$status 	= get_post_status_object( get_post_status() )->label;
 				
 			// Génération du rendu
-			$render = $this->item_render( compact( $elements ) );
+			$render = call_user_func( array( '\tiFy\Core\Control\Suggest\Suggest', 'itemRender' ), compact( $elements ) );
 				
 			// Valeur de retour
 			$response[] = compact( 'label', 'value', 'render', $elements );
