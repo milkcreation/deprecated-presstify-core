@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Components;
 
-use tiFy\Environment\App;
 use tiFy\tiFy;
 
-class Autoload extends App
+class Autoload extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
@@ -14,14 +13,15 @@ class Autoload extends App
 	
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
-		'after_setup_tify' => 11	
+		'after_setup_tify' => 0	
 	);
 	
 	// Liste des composants déclarés
 	private static $Registered = array();
 	
 	
-	/* = CONSTRUCTEUR = */
+	/* = DECLENCHEURS = */
+	/** == Initialisation == **/
 	final public function after_setup_tify()
 	{		
 		// Déclaration

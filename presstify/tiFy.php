@@ -61,10 +61,13 @@ final class tiFy
 		// Instanciation des fonctions d'aides au développement
 		self::classLoad( 'tiFy\Helpers', __DIR__ .'/helpers', 'Autoload' );
 		
+		// Instanciation des fonctions d'aides au développement
+		self::classLoad( 'tiFy\Set', __DIR__ .'/set', 'Autoload' );
+		
 		// Instanciation des plugins
 		self::classLoad( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
-		add_action( 'after_setup_tify', array( $this, 'load_plugins' ) );
-		
+		add_action( 'after_setup_tify', array( $this, 'load_plugins' ), 0 );
+				
 		// Chargement des traductions
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 	}
@@ -73,10 +76,10 @@ final class tiFy
 	/** == Chargement des plugins == **/
 	public function load_plugins()
 	{
-		if( empty( tiFy::$Params['plugins'] ) )
+		if( empty( static::$Params['plugins'] ) )
 			return;
 						
-		foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
+		foreach( (array) array_keys( static::$Params['plugins'] ) as $plugin ) :
 			if( class_exists( $plugin ) ) :
 				$ClassName	= $plugin;
 			elseif( class_exists( "tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
@@ -120,16 +123,29 @@ final class tiFy
 			
 		if( $bootstrap ) :
 			$class_name = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
-			if( class_exists( $class_name ) )
+			if( class_exists( $class_name ) ) :
 				new $class_name;
+			endif;
 		endif;
 	}
 	
+	/* = CONTROLEUR = */
 	/** == == **/
 	public static function getConfig( $index, $default = '' )
 	{
 		if( isset( self::$Params['config'][$index] ) )
 			return self::$Params['config'][$index];
 		return $default;
+	}
+	
+	/** == == **/
+	public static function getOverride( $ClassName )
+	{
+		$Override = "\\". tiFy::getConfig( 'namespace' ) . '\\'. preg_replace( "#^\\\#", "", $ClassName );
+		if( class_exists( $Override ) && is_subclass_of( $Override, $ClassName ) ) :
+			$ClassName = $Override;
+		endif;
+		
+		return $ClassName;
 	}
 }

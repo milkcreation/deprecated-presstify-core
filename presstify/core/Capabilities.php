@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core;
 
-use tiFy\Environment\App;
-
-class Capabilities extends App
+class Capabilities extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Habilitations
@@ -18,7 +16,8 @@ class Capabilities extends App
 	
 	/* = ACTIONS ET FILTRES WORDPRESS = */
 	/** == Initialisation globale == **/
-	public function wp_init(){
+	public function wp_init()
+	{
 		if( empty( $this->master->params['config']['allowed_users'] ) )
 			return;
 
@@ -29,7 +28,8 @@ class Capabilities extends App
 	}
 	
 	/** == Modification des habilitations == **/
-	public function wp_map_meta_cap( $caps, $cap, $user_id, $args ){
+	public function wp_map_meta_cap( $caps, $cap, $user_id, $args )
+	{
 		$user = get_userdata( $user_id );
 		switch ( $cap ) :
 			default :
@@ -61,7 +61,8 @@ class Capabilities extends App
 	}
 	
 	/** == Menu d'administration == **/
-	final public function wp_admin_menu(){ 		
+	final public function wp_admin_menu()
+	{ 		
 		if( $this->user_can() )
 			return;
 		
@@ -84,7 +85,8 @@ class Capabilities extends App
 	
 	/* == CONTRÔLEUR == */
 	/** == Vérifie si un utilisateur est habilité pour PressTiFY == **/
-	final public function user_can( $user_id = 0 ){
+	final public function user_can( $user_id = 0 )
+	{
 		if( ! $user_id )
 			$user_id =  get_current_user_id();
 
