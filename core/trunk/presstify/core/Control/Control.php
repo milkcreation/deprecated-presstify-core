@@ -12,12 +12,22 @@ class Control
 	{
 		foreach( glob( __DIR__.'/*', GLOB_ONLYDIR ) as $filename ) :
 			$basename 	= basename( $filename );
-			$ClassName	= "tiFy\\Core\\Control\\$basename\\$basename";
+			$ClassName	= "\\tiFy\\Core\\Control\\$basename\\$basename";
 			
-			if( class_exists( $ClassName ) ) :
-				$Class = new $ClassName;
-				self::$Factories[$Class->ID] = $Class;
-			endif;
+			self::register( $ClassName );
 		endforeach;
+	}
+	
+	/* = CONTROLEUR = */
+	/** == Déclaration == **/
+	final public static function register( $ClassName )
+	{
+		// Bypass
+		if( ! class_exists( $ClassName ) )
+			return;
+		$Class = new $ClassName;
+		
+		if( ! empty( $Class->ID ) && ! isset( self::$Factories[$Class->ID] ) )
+			self::$Factories[$Class->ID] = $Class;
 	}
 }

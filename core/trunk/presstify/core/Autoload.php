@@ -1,24 +1,36 @@
 <?php
 namespace tiFy\Core;
 
-use tiFy\Environment\Core;
-
-class Autoload extends Core
+class Autoload extends \tiFy\Environment\Core
 {
+	/* = ARGUMENTS = */
+	// Liste des actions à déclencher
+	protected $CallActions				= array(
+		'after_setup_tify'
+	);
+	
+	// Ordres de priorité d'exécution des actions
+	protected $CallActionsPriorityMap	= array(
+		'after_setup_tify' => 0	
+	);
+		
 	/* = CONSTRUCTEUR = */
 	public function __construct()
 	{
-		// Chargement des contrôleurs sans configuration
+		parent::__construct();
+		
+		// Chargement des contrôleurs non configurable
 		new AjaxActions;
 		new Control\Control;
 		new Capabilities;		
 		new Meta\Meta;		
 		new Params;
 		new ScriptLoader\ScriptLoader;
-		
-		add_action( 'after_setup_tify', array( $this, 'after_setup_tify' ), 0 );
 	}
 	
+	
+	/* = DECLENCHEUR = */
+	/** == Au chargement de tiFy == **/
 	final public function after_setup_tify()
 	{
 		// Chargement des contrôleurs configurable

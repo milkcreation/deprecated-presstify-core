@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Core;
 
-use tiFy\Environment\App;
 use tiFy\tiFy;
 
-class Params extends App
+class Params extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */	
 	// Liste des actions à déclencher
@@ -34,7 +33,10 @@ class Params extends App
 			),
 			'schema'		=> array(
 				'eval'			=> true		
-			)
+			),
+			'set'			=> array(
+				'eval'			=> true		
+			)			
 		);
 		
 		// Récupération du paramétrage natif

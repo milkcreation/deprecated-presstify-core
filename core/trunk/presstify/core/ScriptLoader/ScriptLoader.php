@@ -338,6 +338,17 @@ class ScriptLoader extends \tiFy\Environment\App
 		);
 		self::$CssLib	= array(
 			// Bootstrap
+			'animate-css'				=> array(
+				'src'		=> array(
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/animate.min.css',
+					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'
+				),
+				'deps'		=> array(),
+				'version'	=> '3.5.2',
+				'media'		=> 'all' 
+			),
+				
+			// Bootstrap
 			'bootstrap'					=> array(
 				'src'		=> array(
 					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/bootstrap.min.css',
