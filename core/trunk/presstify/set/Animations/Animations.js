@@ -1,5 +1,5 @@
 jQuery( document ).ready( function($) {
-	/ * Détection de l'élément dans la zone visible */
+	/* Détection de l'élément dans la zone visible */
 	function inViewport($ele) {	
 	    var lBound = $(window).scrollTop(),
 	        uBound = lBound + $(window).height(),
@@ -11,7 +11,8 @@ jQuery( document ).ready( function($) {
 	        || (lBound >= top && lBound <= bottom)
 	        || (uBound >= top && uBound <= bottom);
 	}
-	/ * Récupération de la cible */
+	
+	/* Récupération de la cible */
 	function getScrollTarget($ele) {
 		if ( typeof $ele.data('animate-scroll-target') === 'string' &&  $( $ele.data('animate-scroll-target') ) ) {
 			return $( $ele.data('animate-scroll-target') );
@@ -21,6 +22,7 @@ jQuery( document ).ready( function($) {
 			return $ele;
 		}
 	}
+	
 	/* Vérifie si la cible est atteinte au scroll */
 	function isScrollTargetReached($ele) {
 		var value;
@@ -37,11 +39,13 @@ jQuery( document ).ready( function($) {
 		}
 		return value;
 	}
+	
+	/* Lancement des animations au scroll */
 	$( window ).scroll(function() {
 		// Animations tiFy
-		$('.tiFy-animate--scroll').each(function(index) {
+		$('.tiFy-animate--scroll:not(.tiFy-isAnimated)').each(function(index) {
 			var $target = getScrollTarget($(this));
-			if ( isScrollTargetReached($target) && ! $(this).hasClass('tiFy-isAnimated') ) {
+			if ( isScrollTargetReached($target) ) {
 				$( this ).addClass('tiFy-isAnimated');
 			}
 		});
@@ -54,5 +58,10 @@ jQuery( document ).ready( function($) {
 				$(this).addClass('animated'+' '+ animation);
 			}
 		});
+	});
+	
+	/* Initialisation du lancement des animations au scroll */
+	$( window ).load( function(){
+		$(this).trigger( 'scroll');
 	});
 });
