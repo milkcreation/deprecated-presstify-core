@@ -47,6 +47,9 @@ class Modal extends \tiFy\Environment\App
 		'in_footer'			=> true
 	);
 	
+	// Liste des modales instanciée dans le dom
+	private static $Modals		= array();
+	
 	// Instance
 	protected static $Instance; 
 	
@@ -129,7 +132,11 @@ class Modal extends \tiFy\Environment\App
 	{
 		// Traitement des arguments
 		$args = self::parseModalAttrs( $args );
-					
+		
+		// Bypass
+		if( in_array( $args['id'], self::$Modals ) )
+			return;
+			
 		$output  = "";
 		$output .= "<div id=\"{$args['id']}\"";
 		
@@ -216,7 +223,9 @@ class Modal extends \tiFy\Environment\App
 		elseif( $echo ) :
 			echo $output;
 		endif;
-					
+		
+		array_push( self::$Modals, $args['id'] );
+		
 		// Chargement des scripts
 		if( ! self::$Instance++ ) :
 			$url = self::getUrl(). '/Modal.min.js';
