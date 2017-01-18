@@ -1,172 +1,124 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\ExportUser;
  
-class ExportUser extends \tiFy\Core\Templates\Admin\Model\ListUser\ListUser
-{
+class ExportUser extends \tiFy\Core\Templates\Admin\Model\Export\Export
+{	
 	/* = ARGUMENTS = */
+	/// Roles des utilisateurs de la table
+	protected $Roles 				= array();
 	
-	/* = PARAMETRAGE = */
-	/** == Définition du titre de la page == **/
-	public function set_page_title()
-	{
-		return $this->label( 'export_items' );
-	}	
+	/// Cartographie des paramètres
+	protected $ParamsMap			= array( 
+		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 'Columns', 'SortableColumns', 'PerPage',  
+		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'PageTitle',
+		'Roles'
+	);
 	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		// Actions et Filtre Wordpress		
-		add_action( 'wp_ajax_tiFyTemplatesExport_exportItems', array( $this, 'ajaxExportItems' ) );
-		add_filter( 'upload_mimes', array( $this, 'upload_mimes' ), 10, 2 );
-		add_action( 'tify_upload_register', array( $this, 'tify_upload_register' ) );	
-	}
-	
-	/* = DECLENCHEURS = */
-	/** == Déclaration des scripts == **/
-	public function admin_enqueue_scripts()
+	/* = INITIALISATION DES PARAMETRES = */	
+	/** == Initialisation des rôles des utilisateurs de la table == **/
+	public function initParamRoles()
 	{		
-		parent::admin_enqueue_scripts();
-		tify_control_enqueue( 'progress' );
-		wp_enqueue_script( 'tiFyCoreTemplatesAdminModelExportUser', self::getUrl( get_class() ) .'/Export.js', array( 'jquery' ), 161217, true );
+		if( $editable_roles = array_reverse( get_editable_roles() ) )
+			$editable_roles = array_keys( $editable_roles );
+		
+		$roles = array();
+		if( $this->set_roles() ) :			
+			foreach( (array) $this->set_roles() as $role ) :
+				if( ! in_array( $role, $editable_roles ) ) 
+					continue;
+				array_push(  $roles, $role );
+			endforeach;
+		else :
+			$roles = $editable_roles;
+		endif;
+		
+		$this->Roles = $roles;
 	}
 	
 	/* = TRAITEMENT = */
-	/** == Export via Ajax == **/
-	public function ajaxExportItems()
+	/** == Récupération des éléments == **/
+	public function prepare_items()
 	{		
-		// Définition des paramètres d'export
-		if( empty( $_REQUEST['_transient'] ) ) :			
-			$transient = 'tiFyTemplatesExport_'. uniqid();
-			
-			// Pagination
-			$_REQUEST['paged'] = 1;
-			
-			// Données
-			$basedir = WP_CONTENT_DIR .'/uploads';		
-			$url = WP_CONTENT_URL .'/uploads';
-			$file = $transient .'.csv';
-			
-			// Fichier d'export	
-			$fp = fopen( $basedir. '/'. $file, 'w' );			
-		else :
-			$transient = $_REQUEST['_transient'];
-			$datas = get_transient( $transient );
-			
-			// Pagination
-			$_REQUEST['paged'] = ++$datas['paged'];
-			
-			// Données
-			extract( $datas );
-			
-			// Fichier d'export	
-			$fp = fopen( $basedir. '/'. $file, 'a' );	
-		endif;
+		// Récupération des items
+		$query = new \WP_User_Query( $this->parse_query_args() );
+		$this->items = $query->get_results();
+
+		// Pagination
+		$total_items 	= $query->get_total();
+		$per_page 		= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
 		
-		$query_args = wp_parse_args( array( '_transient' => $transient ), $_REQUEST );
-		
-		// Récupération des éléments
-		$this->initParams();
-		$this->prepare_items();
-		
-		// Création des lignes de données
-		$rows = array(); $i = 0;
-		foreach( $this->items as $item ) :
-			foreach( $this->get_columns() as $column_name => $column_label ) :
-				if ( method_exists( $this, '_column_' . $column_name ) ) :
-					$rows[$i][] = call_user_func( array( $this, '_column_' . $column_name ), $item );
-				elseif ( method_exists( $this, 'column_' . $column_name ) ) :
-					$rows[$i][] = call_user_func( array( $this, 'column_' . $column_name ), $item );
-				else :
-					$rows[$i][] = $this->column_default( $item, $column_name );
-				endif;				
-			endforeach;
-			$i++;
-		endforeach;
-					
-		// Ecriture du fichiers csv
-		foreach( $rows as $row ) :    
-			fputcsv( $fp, $row, ';', '"' );
-		endforeach;				
-		fclose($fp);
-		
-		// Sauvegarde des données d'export
-		$datas = array(
-			'basedir'		=> $basedir,
-			'url'			=> $url,
-			'file'			=> $file,				
-			'paged'			=> (int) $_REQUEST['paged'],
-			'total_items'	=> (int) $this->get_pagination_arg( 'total_items' ),
-			'total_pages'	=> (int) $this->get_pagination_arg( 'total_pages' ),
-			'per_page'		=> (int) $this->get_pagination_arg( 'per_page' ),
-			'query_args'	=> $query_args
+		$this->set_pagination_args( 
+			array(
+				'total_items' => $total_items,
+				'per_page'    => $this->get_items_per_page( $this->db()->Name, $this->PerPage ),
+				'total_pages' => ceil( $total_items / $per_page )
+			)
 		);
-		set_transient( $transient, $datas, HOUR_IN_SECONDS );
-		
-		wp_send_json_success( $datas );
-	}
-
-	/** == Autorisation de téléchargement du type de fichier == **/
-	final public function upload_mimes( $mime_types, $user )
+	}	
+	
+	/** == Traitement des arguments de requête == **/
+	public function parse_query_args()
 	{
-		$mime_types['csv'] =  'text/csv';
+		// Récupération des arguments
+		$per_page 	= $this->get_items_per_page( $this->db()->Name, $this->PerPage );
+		$paged 		= $this->get_pagenum();
+				
+		// Arguments par défaut
+		$query_args = array(
+			'number' 		=> $per_page,
+			'paged' 		=> $paged,
+			'count_total'	=> true,
+			'fields' 		=> 'all_with_meta',
+			'orderby'		=> 'user_registered',
+			'order'			=> 'DESC',
+			'role__in' 		=> $this->Roles
+		);
 		
-		return $mime_types;
+		// Traitement des arguments
+		foreach( (array) $_REQUEST as $key => $value ) :
+			if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
+				 call_user_func_array( array( $this, 'parse_query_arg_' . $key ), array( &$query_args, $value ) );
+			elseif( $this->db()->isCol( $key ) ) :
+				$query_args[$key] = $value;
+			endif;
+		endforeach;
+
+		return wp_parse_args( $this->QueryArgs, $query_args );
 	}
 	
-	/** == Autorisation de téléchargement de fichier == **/
-	final public function tify_upload_register()
+	/** == Traitement de l'argument de requête de recherche == **/
+	public function parse_query_arg_s( &$query_args, $value )
 	{
-		if( ! $transient = get_transient( 'tify_forms_record_export_allowed_file_upload' ) )
-			return;
-		if( ! isset( $_REQUEST['_wpnonce'] ) )
-			return;
-		$filename = basename( tify_upload_get( 'url' ) );
-		
-		if( ! wp_verify_nonce( $_REQUEST['_wpnonce'], "tify_forms_record_export-". $filename ) )
-			return;
-
-		if( $filename === $transient )
-			tify_upload_register( $this->main->master->dirs->uri( 'export' ) .'/'. $filename );
+		if( ! empty( $value ) )
+			$query_args['search'] = '*'. wp_unslash( trim( $value ) ) .'*';
 	}
 	
-	/** == Rendu == **/
-	public function render()
+	/** == Traitement de l'argument de requête de recherche == **/
+	public function parse_query_arg_role( &$query_args, $value )
 	{
-	?>
-		<div class="wrap">
-			<h2>
-				<?php echo $this->PageTitle;?>
-			</h2>
-			<div style="margin-right:300px;">
-				<div style="float:left; width: 100%;">
-					<form id="tiFyTemplatesExport-Form" method="get" action="">
-		    			<?php parse_str( parse_url( $this->BaseUri, PHP_URL_QUERY ), $query_vars ); ?>
-		    			<?php foreach( (array) $query_vars as $name => $value ) : ?>
-		    				<input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
-		    			<?php endforeach;?>					
-						<?php $this->display();?>
-					</form>		
-				</div>
-				<div id="side-sortables" style="margin-top:9px; margin-right:-300px; width: 280px; float:right;">
-					<div id="submitdiv" class="tify_submitdiv">
-						<h3 class="hndle">
-							<span><?php _e( 'Exporter', 'tify' );?></span>
-						</h3>
-						<div class="inside">
-							<div class="minor_actions">
-								<div id="tiFyTemplatesExport-Download" style="margin:0;padding:10px;">
-									<span id="tiFyTemplatesExport-DownloadFile"></span>
-									<?php tify_control_progress( array( 'id' => 'tiFyTemplatesExport-Progress' ) );?>
-								</div>
-							</div>	
-							<div class="major_actions">
-								<button type="submit" id="tiFyTemplatesExport-Submit" class="button-primary"><?php _e( 'Lancer l\'export', 'tify' );?></a>
-							</div>	
-						</div>
-					</div>					
-				</div>
-			</div>			
-		</div>
-	<?php
+		if( ! empty( $value ) ) :
+			if( is_string( $value ) ) :
+				$value = array_map( 'trim', explode( ',', $value ) );
+			endif;
+			$roles = array();
+			foreach( $value as $v ) :
+				if( ! in_array( $v, $this->Roles ) )
+					continue;
+				array_push( $roles, $v );
+			endforeach;
+			if( $roles ) :
+				$query_args['role__in'] = $roles;
+			endif;
+		endif;
+	}
+			
+	/** == Compte le nombre d'éléments == **/
+	public function count_items( $args = array() )
+	{
+		if( $query = new \WP_User_Query( $args ) ) :
+			return $query->get_total();
+		else :
+			return 0;
+		endif;
 	}
 }

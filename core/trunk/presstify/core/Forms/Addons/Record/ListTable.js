@@ -1,5 +1,4 @@
 jQuery(document).ready( function($){
-
 	$( document ).on( 'click', '#the-list .row-actions a.inline-preview', function(e){
 		e.preventDefault();
 		

@@ -7,9 +7,10 @@ use \tiFy\Core\Forms\Addons;
 class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 {
 	/* = ARGUMENTS = */
-	// 
-	private $activeForms	= array();
-	// 
+	// Liste des formulaires actifs 
+	private $Forms		= array();
+	
+	// Formulaire courant
 	private $Form		= null;
 	
 	/* = CONSTRUCTEUR = */
@@ -18,13 +19,17 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 		parent::__construct();
 		
 		// Liste des formulaires actifs
-		$this->activeForms = Addons::activeForms( 'record' );		
+		$forms = Addons::activeForms( 'record' );		
+		
+		foreach( $forms as $id => $form ) :
+			$this->Forms[$form->getID()] = $form;	
+		endforeach;	
 		
 		// Définition de la vue filtré
-		if( ! empty( $_REQUEST['form_id'] ) && Forms::has( $_REQUEST['form_id'] ) ) :
-			$this->Form = Forms::get( $_REQUEST['form_id'] );
-		elseif( count( $this->activeForms ) === 1 ) :
-			$this->Form = current( $this->activeForms );
+		if( ! empty( $_REQUEST['form_id'] ) && isset( $this->Forms[$_REQUEST['form_id']] ) ) :
+			$this->Form = $this->Forms[$_REQUEST['form_id']];
+		elseif( count( $this->Forms ) === 1 ) :
+			$this->Form = current( $this->Forms );
 		endif;	
 		
 		add_action( 'wp_ajax_tiFyCoreFormsAddonsRecordListTableInlinePreview', array( $this, 'wp_ajax' ) );
@@ -149,14 +154,14 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 	/** == Liste de filtrage du formulaire courant == **/
 	public function extra_tablenav( $which ) 
 	{
-		if( count( $this->activeForms ) < 2 )
+		if( count( $this->Forms ) <= 1 )
 			return;
 				
 		$output = "<div class=\"alignleft actions\">";
 		if ( 'top' == $which ) :
 			$output  .= "\t<select name=\"form_id\" autocomplete=\"off\">\n";
 			$output  .= "\t\t<option value=\"0\" ". selected( ! $this->Form, true, false ).">". __( 'Tous les formulaires', 'tify' ) ."</option>\n";
-			foreach( (array) $this->activeForms as $form ) :
+			foreach( (array) $this->Forms as $form ) :
 				$output  .= "\t\t<option value=\"". $form->getID() ."\" ". selected( ( $this->Form && ( $this->Form->getID() == $form->getID() ) ), true, false ) .">". $form->getTitle() ."</option>\n";
 			endforeach;
 			$output  .= "\t</select>";

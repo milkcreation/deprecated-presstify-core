@@ -293,11 +293,20 @@ class Form
 		return array_keys( $this->Addons, $id );
 	}
 	
-	/** == Récupération d'un addon est actif == **/
+	/** == Récupération d'un addon actif == **/
 	public function getAddon( $id )
 	{
 		if( isset( $this->Addons[$id] ) )
 			return $this->Addons[$id];
+	}
+	
+	/** == Récupération d'un attribut de formulaire pour un addon actif == **/
+	public function getAddonAttr( $id, $attr, $default = '' )
+	{
+		if( ! isset( $this->Addons[$id] ) )
+			return $default;
+		
+		return $this->Addons[$id]->getFormAttr( $attr, $default );
 	}
 			
 	/** == Récupération des options == **/

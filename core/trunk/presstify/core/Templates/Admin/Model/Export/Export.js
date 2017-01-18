@@ -2,7 +2,7 @@ jQuery( document ).ready( function( $ ){
 	$( '#tiFyTemplatesExport-Submit' ).on( 'click', function(e){
 		e.preventDefault();
 		
-		var data = 'action=tiFyTemplatesExport_exportItems&'+ $( '#tiFyTemplatesExport-Form').serialize();
+		var data = 'action=tiFyTemplatesAdminModelExport&'+ $( '#tiFyTemplatesExport-Form').serialize();
 		$( '#tiFyTemplatesExport-Progress' ).addClass( 'active' );
 		$( '.tify_control-progress-bar', '#tiFyTemplatesExport-Progress' ).css( 'background-position', '0 0' );
 		
@@ -20,7 +20,8 @@ jQuery( document ).ready( function( $ ){
 					$( '.tify_control-progress-bar', '#tiFyTemplatesExport-Progress' ).css( 'background-position', '-'+ Math.ceil( ( resp.data.paged / resp.data.total_pages ) * 100 ) +'% 0' );
 				} else {
 					$( '#tiFyTemplatesExport-Progress' ).removeClass( 'active' );
-					$( '#tiFyTemplatesExport-DownloadFile' ).html( '<a href="'+ resp.data.url +'/'+ resp.data.file +'">'+ resp.data.file +'</a>' );
+					$( '#tiFyTemplatesExport-DownloadFile' ).html( '<a href="'+ resp.data.upload_url +'" title="'+resp.data.title+'">'+ resp.data.file +'</a>' );
+					window.location.href = resp.data.upload_url;
 				}
 				
 			}
