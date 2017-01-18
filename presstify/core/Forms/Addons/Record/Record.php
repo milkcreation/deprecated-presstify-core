@@ -40,7 +40,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	protected $CallActions				= array(
 		'admin_init',
 		'tify_templates_register',
-		'tify_db_register'	
+		'tify_db_register',	
+		'tify_upload_register'			
 	); 
 	
 	// Définition de l'identifiant
@@ -49,13 +50,13 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	// Options de formulaire par défaut
 	public $default_form_options 	= array(
 		'cb'		=> 'tiFy\Core\Forms\Addons\Record\ListTable',
-		'export' 	=> true 
+		'export' 	=> false 
 	);
 	
 	// Options de champs par défaut
 	public $default_field_options 	= array(			
 		'record'		=> true,
-		'export'		=> true,
+		'export'		=> false,
 		'column'		=> false,
 		'preview'		=> false,
 		'editable'		=> false
@@ -132,9 +133,24 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 			array(
 				'admin_menu' => array(
 					'parent_slug'	=> 'tify_forms_record',
-					'menu_slug'		=> 'tify_forms_record'
+					'menu_slug'		=> 'tify_forms_record',
+					'menu_title'	=> __( 'Enregistrements', 'tify' )
 				),
 				'cb'			=> $this->getFormAttr( 'cb', 'tiFy\Core\Forms\Addons\Record\ListTable' ),
+				'db'			=> 'tify_forms_record'
+			),
+			'admin'
+		);
+		
+		tify_templates_register(
+			'tiFyCoreFormsAddonsRecordExport',
+			array(
+				'admin_menu' => array(
+					'parent_slug'	=> 'tify_forms_record',
+					'menu_slug'		=> 'tify_forms_record_export',
+					'menu_title'	=> __( 'Exporter', 'tify' )
+				),
+				'cb'			=> 'tiFy\Core\Forms\Addons\Record\Export',
 				'db'			=> 'tify_forms_record'
 			),
 			'admin'
@@ -149,6 +165,14 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 			self::$DbAttrs
 		);
 	}
+	
+	/** == Autorisation de téléchargement des fichier d'export == **/
+	public function tify_upload_register( $abspath )
+	{
+		if( isset( $_REQUEST['authorize'] ) && get_transient( $_REQUEST['authorize'] ) )
+			tify_upload_register( $abspath );
+	}
+	
 		
 	/* = COURT-CIRCUITAGE = */
 	/** == Enregistrement des données de formulaire en base == **/
