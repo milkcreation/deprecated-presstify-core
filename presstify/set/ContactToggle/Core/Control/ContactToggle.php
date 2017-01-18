@@ -44,30 +44,31 @@ class ContactToggle extends \tiFy\Core\Control\Factory
 		);		
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
+		$modal = wp_parse_args( 
+			$modal,
+			array(
+				'id'				=> 'tiFyModal-tify_control_contact_toggle-'. self::$Instance,
+				'target'			=> 'tify_control_contact_toggle-'. self::$Instance,
+				'options'			=> array(
+					'backdrop' 			=> true, // false | 'static'
+					'keyboard'			=> true,
+					'show'				=> false
+				),
+				'dialog'			=> array(
+					'size'				=> null,
+					'title'				=> __( 'Prendre contact', 'tify' ),
+					'header_button'		=> true
+				)
+			)
+		);
+		
+		
 		
 		$query_args = htmlentities( json_encode( $query_args ) );
 		
 		$output  = "";
-		$output .= "<a href=\"#\" class=\"tiFyControlContactToggle". ( $class? " ". (string) $class : '' ) ."\" data-tify_control=\"contact_toggle\" data-nonce=\"". wp_create_nonce( $nonce ) . "\" data-target=\"#tiFyModal-tify_control_contact_toggle-". self::$Instance ."\" data-query_args=\"{$query_args}\">". $text ."</a>";
-		Modal::display(
-			wp_parse_args( 
-				$modal,
-				array(
-					'id'				=> 'tiFyModal-tify_control_contact_toggle-'. self::$Instance,
-					'target'			=> 'tify_control_contact_toggle-'. self::$Instance,
-					'options'			=> array(
-						'backdrop' 			=> true, // false | 'static'
-						'keyboard'			=> true,
-						'show'				=> false
-					),
-					'dialog'			=> array(
-						'size'				=> null,
-						'title'				=> __( 'Prendre contact', 'tify' ),
-						'header_button'		=> true
-					)
-				)
-			)
-		); 
+		$output .= "<a href=\"#\" class=\"tiFyControlContactToggle". ( $class? " ". (string) $class : '' ) ."\" data-tify_control=\"contact_toggle\" data-nonce=\"". wp_create_nonce( $nonce ) . "\" data-target=\"#". $modal['id'] ."\" data-query_args=\"{$query_args}\">". $text ."</a>";
+		Modal::display( $modal ); 
 		
 		if( $echo )
 			echo $output;
@@ -80,7 +81,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
 	{
 		check_ajax_referer( 'tify_control_contact_toggle' );
 		
-		$query_args = $_POST['query_args'];
+		$data = null; $query_args = $_POST['query_args'];
 		
 		if( $data = get_option( 'admin_email' ) ) :
 			wp_send_json_success( $this->success( $data, $query_args ) );
