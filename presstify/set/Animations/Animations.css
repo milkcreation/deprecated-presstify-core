@@ -2,6 +2,16 @@
 	-webkit-transition: all 1s; 
     transition: all 1s;
 }
+/* = ANIMATION OFF = */
+.tiFy-animate--off {
+	-webkit-transition: opacity 1ms; 
+    transition: opacity 1ms;
+    opacity: 0;
+}
+.tiFy-animate--off.animated,
+.tiFy-animate--off.tiFy-isAnimated {
+	opacity: 1;
+}
 /* = EASINGS = */
 /** == BASIQUES == **/
 .tiFy-animateTiming--linear {

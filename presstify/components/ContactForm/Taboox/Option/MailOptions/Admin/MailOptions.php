@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\ContactForm\Taboox\Option\MailOptions\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class MailOptions extends Admin
+class MailOptions extends \tiFy\Core\Taboox\Admin
 {
 	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
 	public function admin_init()

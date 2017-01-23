@@ -21,7 +21,8 @@ namespace tiFy\Set\Animations;
  * 			  - Si l'animation se passe au scroll, ajouter la classe "animateCSS-scroll" et déclarer sur le tag concerné l'attribut
  * 				data-scroll-animation="ClasseDeLAnimation".
  * @author TB Digital
- *
+ * Hover
+ * @see https://github.com/IanLunn/Hover
  */
 class Animations extends \tiFy\Set\Factory
 {
@@ -39,7 +40,7 @@ class Animations extends \tiFy\Set\Factory
 	/* = DECLENCHEURS = */
 	/** == Mise en file des scripts de l'interface utilisateur == **/
 	public function wp_enqueue_scripts()
-	{		
+	{
 		wp_enqueue_style( 'animate-css' );
 		wp_enqueue_style( 'ThemetiFySetAnimations', static::getUrl( get_class() ) ."/Animations.css", array(), '170112' );
 		wp_enqueue_script( 'ThemetiFySetAnimations', static::getUrl( get_class() ) ."/Animations.js", array( 'jquery' ), '170112', true );

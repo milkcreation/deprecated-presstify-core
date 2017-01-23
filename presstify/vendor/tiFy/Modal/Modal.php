@@ -134,7 +134,7 @@ class Modal extends \tiFy\Environment\App
 		$args = self::parseModalAttrs( $args );
 		
 		// Bypass
-		if( in_array( $args['id'], self::$Modals ) )
+		if( in_array( $args['target'], self::$Modals ) )
 			return;
 			
 		$output  = "";
@@ -224,7 +224,7 @@ class Modal extends \tiFy\Environment\App
 			echo $output;
 		endif;
 		
-		array_push( self::$Modals, $args['id'] );
+		array_push( self::$Modals, $args['target'] );
 		
 		// Chargement des scripts
 		if( ! self::$Instance++ ) :
