@@ -5,7 +5,7 @@ jQuery(document).ready(function($){
 		var	_ajax_nonce = $( this ).data( 'nonce' ),
 			query_args 	= $( this ).data( 'query_args' ),
 			target 		= $( this ).data( 'target' );
-		
+
 		$.ajax({
 			url:		tify_ajaxurl,
 			data:		{ action: 'tify_control_contact_toggle', _ajax_nonce : _ajax_nonce, query_args : query_args },
@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
 			success:	function( resp )
 			{
 				if( resp.success )
-					$( target )
+					$( '[data-role="tiFyModal"][data-id="'+ target +'"' )
 						.find( '.modal-body' ).html( resp.data ).end()
 						.modal( 'show' );
 			}

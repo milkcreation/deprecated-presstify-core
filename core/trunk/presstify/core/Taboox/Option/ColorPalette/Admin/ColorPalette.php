@@ -8,7 +8,7 @@ class ColorPalette extends Admin
 	/* = ARGUMENTS = */
 	private static $Instance = 1;
 	
-	/* = CONSTRUCTEUR = */
+	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
 	public function admin_init()
 	{	
 		add_action( 'wp_ajax_tify_taboox_color_palette', array( $this, 'wp_ajax' ) );

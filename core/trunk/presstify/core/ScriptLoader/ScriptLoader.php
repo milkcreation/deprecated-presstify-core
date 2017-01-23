@@ -289,6 +289,17 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '150325',
 				'in_footer'	=> true 
 			),
+				
+			/// TiFy - Parallax
+			'tify-parallax'				=> array(
+				'src'		=> array(
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-parallax.js'
+				),
+				'deps'		=> array( 'jquery' ),
+				'version'	=> 170120,
+				'in_footer'	=> true
+			),
+				
 			/// TiFy - Lightbox
 			'tify-onepage-scroll'		=> array(
 				'src'		=> array(
@@ -337,7 +348,7 @@ class ScriptLoader extends \tiFy\Environment\App
 			)				
 		);
 		self::$CssLib	= array(
-			// Bootstrap
+			// Animate CSS
 			'animate-css'				=> array(
 				'src'		=> array(
 					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/animate.min.css',
@@ -402,6 +413,16 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '4.4.0',
 				'media'		=> 'all' 
 			),	
+
+			// Hover CSS
+			'hover-css'				=> array(
+				'src'		=> array(
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/hover.min.css',
+				),
+				'deps'		=> array(),
+				'version'	=> '2.1.0',
+				'media'		=> 'all'
+			),
 			
 			// Image Lightbox
 			'imagelightbox'                            => array(

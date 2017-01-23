@@ -44,6 +44,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
 		);		
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
+		
 		$modal = wp_parse_args( 
 			$modal,
 			array(
@@ -60,14 +61,12 @@ class ContactToggle extends \tiFy\Core\Control\Factory
 					'header_button'		=> true
 				)
 			)
-		);
-		
-		
+		);	
 		
 		$query_args = htmlentities( json_encode( $query_args ) );
 		
 		$output  = "";
-		$output .= "<a href=\"#\" class=\"tiFyControlContactToggle". ( $class? " ". (string) $class : '' ) ."\" data-tify_control=\"contact_toggle\" data-nonce=\"". wp_create_nonce( $nonce ) . "\" data-target=\"#". $modal['id'] ."\" data-query_args=\"{$query_args}\">". $text ."</a>";
+		$output .= "<a href=\"#\" class=\"tiFyControlContactToggle". ( $class? " ". (string) $class : '' ) ."\" data-tify_control=\"contact_toggle\" data-nonce=\"". wp_create_nonce( $nonce ) . "\" data-target=\"". $modal['target'] ."\" data-query_args=\"{$query_args}\">". $text ."</a>";
 		Modal::display( $modal ); 
 		
 		if( $echo )

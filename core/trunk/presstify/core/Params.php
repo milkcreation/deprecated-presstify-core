@@ -154,6 +154,8 @@ class Params extends \tiFy\Environment\App
 	/* = = */
 	public static function set( $type, $params, $value )
 	{
+		$type = strtolower($type);
+		
 		if( isset( tiFy::$Params[$type] ) )
 			tiFy::$Params[$type][$params] = $value;
 	}

@@ -62,6 +62,6 @@ jQuery( document ).ready( function($) {
 	
 	/* Initialisation du lancement des animations au scroll */
 	$( window ).load( function(){
-		$(this).trigger( 'scroll');
+		$(this).trigger( 'scroll' );
 	});
 });
