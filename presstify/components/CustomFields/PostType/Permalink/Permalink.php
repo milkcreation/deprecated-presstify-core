@@ -188,20 +188,25 @@ class Permalink extends App
 	
 	/** ==  == **/
 	final public function permalink( $permalink, $post )
-	{
+	{		
 		if( ! $post = get_post( $post ) )
 			return $permalink;
 		if( ! $_permalink = get_post_meta( $post->ID, '_permalink', true ) )
-			return $permalink;
+			return $permalink;		
 		
 		if( preg_match( '/^key:(.*)/', $_permalink, $match ) && isset( self::$Permalinks[$match[1]]['url'] ) ) :
 			$permalink = self::$Permalinks[$match[1]]['url'];
-		elseif( preg_match( '/^post_id:(\d*)/', $_permalink, $match ) && ( $permalink = get_permalink( (int) $match[1] ) ) ) :
+		elseif( preg_match( '/^post_id:(\d*)/', $_permalink, $match ) && ( $permalink_post = get_post( (int) $match[1] ) ) ) :
+			if( $permalink_post->ID !== $post->ID ) :
+				$permalink = get_permalink( $permalink_post );
+			endif;				
 		elseif( ! preg_match( '/^http/', $_permalink ) ) :
 			$permalink = site_url() .'/'. ltrim( $_permalink, '/' ); 
 		else :
 			$permalink = $_permalink;
 		endif;	
+		
+		
 		
 		return $permalink;
 	}
