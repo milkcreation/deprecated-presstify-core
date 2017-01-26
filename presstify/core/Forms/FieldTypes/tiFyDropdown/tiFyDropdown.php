@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Forms\FieldTypes\tiFyDropdown;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class tiFyDropdown extends Factory
+class tiFyDropdown extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

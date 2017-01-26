@@ -47,13 +47,23 @@ class TouchTime extends Factory
 			'minute'			=> true, 	// Permettre le contrôle des minutes
 			'second'			=> true, 	// Permettre le contrôle des secondes			
 			'time_sep'			=> ':',		// Séparateur de temps
-						
+			
+			'handler'			=> true,	
+				
 			'echo' 				=> true,
 			'debug'				=> false
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
-
+		
+		if( is_bool( $handler ) && $handler ) :
+			$handler = array( 'date', 'time' );
+		elseif( empty( $handler ) ) :
+			$handler = array();
+		else :
+			$handler = (array) $handler;
+		endif;
+		
 		switch( $type ) :
 			case 'datetime' :				
 				if( ! $value )
@@ -125,7 +135,8 @@ class TouchTime extends Factory
 			case 'date' :				
 				$output .= "\t<span id=\"{$id}-date\">\n";
 				$output .= sprintf( __( '%2$s %1$s %3$s', 'tify' ), $output_month, $output_day, $output_year );
-				$output .= "\t\t<i class=\"datepicker-handler dashicons dashicons-calendar-alt\"></i>";
+				if( in_array( 'date', $handler ) )
+					$output .= "\t\t<i class=\"datepicker-handler dashicons dashicons-calendar-alt\"></i>";
 				$output .= "\t</span>";
 				break;
 		endswitch;
@@ -136,7 +147,7 @@ class TouchTime extends Factory
 			case 'time' :
 				$output .= "\t<span id=\"{$id}-time\">\n";
 				$output .= sprintf( __( '%1$s %2$s %3$s', 'tify' ), $output_hour, $output_minute, $output_second );
-				if( ! empty( $hour) || ! empty( $minute ) || ! empty( $second ) ) :
+				if( ( ! empty( $hour) || ! empty( $minute ) || ! empty( $second ) ) && in_array( 'time', $handler ) ) :
 					$output .= "\t\t<i class=\"timepicker-handler dashicons dashicons-clock\"></i>";
 				endif;
 				$output .= "\t</span>\n";
