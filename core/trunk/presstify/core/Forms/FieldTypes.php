@@ -21,7 +21,7 @@ class FieldTypes
 		'tify_checkbox'			=> 'tiFyCheckbox',
 		'tify_dropdown'			=> 'tiFyDropdown',
 		'tify_text_remaining'	=> 'tiFyTextRemaining',
-		'touchtime'				=> 'TouchTime'
+		'tify_touchtime'		=> 'tiFyTouchtime'
 	);
 	
 	// Parametres
