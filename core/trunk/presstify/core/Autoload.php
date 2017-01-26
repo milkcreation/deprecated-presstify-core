@@ -11,7 +11,8 @@ class Autoload extends \tiFy\Environment\Core
 	
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
-		'after_setup_tify' => 0	
+		/* = Après l'instanciation des plugins et des sets = */	
+		'after_setup_tify' => 1	
 	);
 		
 	/* = CONSTRUCTEUR = */

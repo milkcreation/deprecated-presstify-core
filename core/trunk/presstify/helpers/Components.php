@@ -6,7 +6,7 @@ namespace
 	function tify_component_register( $component )
 	{
 		add_action( "tify_component_register", function() use ( $component ){
-			return tiFy\Components\Autoload::Register( $component );
+			return tiFy\Components\Autoload::register( $component );
 		});
 	}
 		

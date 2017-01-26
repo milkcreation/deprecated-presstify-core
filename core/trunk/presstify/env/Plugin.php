@@ -1,6 +1,7 @@
 <?php
 namespace tiFy\Environment;
 
+use tiFy\tiFy;
 use \tiFy\Environment\Config;
 
 abstract class Plugin extends Config
@@ -17,6 +18,13 @@ abstract class Plugin extends Config
 	// Données de plugin
 	protected static $PluginData;
 	
+	/* = CONTROLEURS = */
+	/** == Récupération d'une classe de surcharge == **/
+	public function getOverride( $ClassName )
+	{
+		return tiFy::getOverride( $ClassName );
+	}
+		
 	/** == Récupération des données du plugin == **/
 	public static function getData( $data = null )
 	{

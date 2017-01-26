@@ -158,8 +158,8 @@ class Form
 		endif;	
 		if( ! isset( $this->Buttons['submit'] ) && ! in_array( 'submit', $unset ) ) :
 			$this->Buttons['submit'] = Buttons::set( 'submit', $this, array() );
-		endif;
-				
+		endif;	
+		
 		//Callbacks::call( 'form_set_buttons', array( &$this->Buttons ) );
 	}
 		
