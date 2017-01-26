@@ -13,7 +13,8 @@ class Autoload extends \tiFy\Environment\App
 	
 	// Ordres de priorité d'exécution des actions
 	protected $CallActionsPriorityMap	= array(
-		'after_setup_tify' => 0	
+		/* = Après l'instanciation des plugins et des sets = */	
+		'after_setup_tify' => 1	
 	);
 	
 	// Liste des composants déclarés
@@ -27,7 +28,7 @@ class Autoload extends \tiFy\Environment\App
 		// Déclaration
 		if( isset( tiFy::$Params['components'] ) ) :
 			foreach( (array) array_keys( tiFy::$Params['components'] ) as $component ) :
-				self::Register( $component );
+				self::register( $component );
 			endforeach;
 		endif;
 		
@@ -40,7 +41,7 @@ class Autoload extends \tiFy\Environment\App
 	}
 	
 	/* = CONTRÔLEUR = */
-	public static function Register( $component )
+	public static function register( $component )
 	{
 		if( class_exists( "\\tiFy\\Components\\{$component}\\{$component}" ) ) :
 			$ClassName	= "\\tiFy\\Components\\{$component}\\{$component}";

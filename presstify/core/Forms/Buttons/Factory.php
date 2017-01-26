@@ -23,7 +23,7 @@ class Factory
 		$this->Form = $form;
 		
 		// Définition des attributs
-		$this->Attrs = wp_parse_args( $attrs, $this->Attrs );
+		$this->Attrs = $this->parseAttrs( $attrs );
 	}	
 	
 	/** == Récupération de l'identifiant == **/
@@ -44,7 +44,12 @@ class Factory
 		return $this->Form;
 	}
 	
-	/* = CONTROLEURS = */		
+	/* = CONTROLEURS = */
+	public function parseAttrs()
+	{
+		return wp_parse_args( $attrs, $this->Attrs );
+	}
+	
 	/** == Affichage == **/
 	public function display(){}
 }

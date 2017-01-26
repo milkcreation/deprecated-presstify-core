@@ -31,7 +31,7 @@ class Radio extends Factory
 			$output .= "\t<li class=\"tiFyForm-FieldChoice tiFyForm-FieldChoice--". $this->getID() ." tiFyForm-FieldChoice--". $this->field()->getSlug() ." tiFyForm-FieldChoice--". preg_replace( '/[^a-zA-Z0-9_\-]/', '', $value ) ."\">\n";
 			$output .= "\t\t<input type=\"radio\"";
 			$output .= " id=\"". $this->getInputID() ."-". $i ."\"";
-			$output .= "class=\"tiFyForm-FieldChoiceInput\"";
+			$output .= "class=\"tiFyForm-FieldChoiceInput tiFyForm-FieldChoiceInput--radio\"";
 			$output .= " value=\"". esc_attr( $value ) ."\"";
 			$output .= " name=\"". esc_attr( $this->field()->getDisplayName() ) ."\"";
 			$output .= "". checked( ( $this->field()->getValue() == $value ), true, false ) ."";

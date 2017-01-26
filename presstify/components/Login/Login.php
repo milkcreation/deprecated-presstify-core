@@ -1,36 +1,53 @@
 <?php
 namespace tiFy\Components\Login;
 
-use tiFy\Environment\Component;
-
-/** @Autoload */
-final class Login extends Component
+final class Login extends \tiFy\Environment\Component
 {
 	/* = ARGUMENTS = */
-	/** == ACTIONS == **/
 	// Liste des Actions à déclencher
 	protected $CallActions				= array(
 		'init'
 	);
 	
-	/** == CONFIGURATION == **/
-	public static $Factories			= array();
+	// Liste des Filtres à déclencher
+	protected $CallFilters				= array(
+		'authenticate'
+	);
+	
+	// Ordre de priorité d'exécution des filtres
+	protected $CallFiltersPriorityMap	= array(
+		'authenticate' => 50
+	);
+	
+	// Nombre d'arguments autorisés
+	protected $CallFiltersArgsMap		= array(
+		'authenticate' => 3	
+	);
+		
+	/** == PARAMETRES == **/
+	// 
+	private static $Factories			= array();
+	
+	//
+	private static $Current				= null;
+	
 		
 	/* = DECLENCHEURS = */
 	/** == Initialisation globale == **/
 	final public function init()
 	{
-		if( empty( $_REQUEST['tify_login-form-id'] ) )
+		// Bypass
+		if( empty( $_REQUEST['tiFyLogin-formID'] ) )
+			return;		
+		if( ! $this->setCurrent( $_REQUEST['tiFyLogin-formID'] ) )
 			return;
-		if( ! in_array( $_REQUEST['tify_login-form-id'], array_keys( self::$Factories ) )  )
-			return;
-		
+				
 		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'login';
 		
 		switch( $action ) :	
 			default :
 			case 'login' :
-				$this->signon( self::$Factories[ $_REQUEST['tify_login-form-id'] ] );
+				$this->signon();
 				break;
 			case 'logout' :
 				$this->logout();
@@ -38,9 +55,60 @@ final class Login extends Component
 		endswitch;
 	}
 	
+	/** == Authentification de l'utilisateur == **/
+	final public function authenticate( $user = null, $username, $password )
+	{
+		// Bypass
+		if( ! $this->getCurrent() )
+			return $user;
+		if( ! $user || is_wp_error( $user ) )
+			return $user;
+
+		if( ! array_intersect( $user->roles, (array) $this->getCurrent()->getRoles() ) ) :
+			$user = new \WP_Error( 'role_not_allowed' );		
+		endif;
+	  		
+		return $user;			
+	}
+	
 	/* = CONTROLEURS = */
+	/** == Déclaration d'un formulaire d'authentification == **/
+	final public static function register( $id, $class )
+	{
+		if( ! isset( self::$Factories[$id] ) && ( $class instanceof \tiFy\Components\Login\Factory ) ) :
+			self::$Factories[$id] = $class;
+		endif;
+	}
+	
+	/** == Définition du formulaire d'authentification courant == **/
+	private function setCurrent( $id )
+	{
+		// Bypass
+		if( ! isset( self::$Factories[$id] ) )
+			return;
+		
+		return ( static::$Current = self::$Factories[ $id ] );
+	}
+	
+	/** == == **/
+	private function resetCurrent()
+	{
+		static::$Current = null;
+	}
+	
+	/** == Définition du formulaire d'authentification courant == **/
+	private function getCurrent()
+	{
+		// Bypass
+		if( ! static::$Current )
+			return;
+		
+		return static::$Current;
+	}
+	
 	/** == Authentification == **/
-	private function signon( $class ){
+	private function signon()
+	{
 		$secure_cookie = '';
 
 		if ( ! empty( $_POST['log'] ) && ! force_ssl_admin() ) :
@@ -81,7 +149,7 @@ final class Login extends Component
 			wp_safe_redirect( $redirect_to );
 			exit();
 		else :
-			$class->errors = $user;
+			static::$Current->setErrors( $user );
 		endif;
 	}
 	

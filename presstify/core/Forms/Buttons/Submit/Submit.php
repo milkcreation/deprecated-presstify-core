@@ -32,7 +32,7 @@ class Submit extends \tiFy\Core\Forms\Buttons\Factory
 	{
 		if( is_string( $attrs ) )
 			$attrs = array( 'label' => $attrs );
-
+		
 		return wp_parse_args( $attrs, $this->Attrs );
 	}    
     
