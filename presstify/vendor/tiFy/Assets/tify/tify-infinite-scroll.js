@@ -37,7 +37,7 @@ var tify_infinite_scroll_xhr, tify_infinite_scroll;
 						$target.addClass( 'ty_iscroll_complete' );
 						$( handler ).addClass( 'ty_iscroll_complete' );
 					}
-					
+					$target.trigger( 'ty_iscroll_loaded', $( handler ) );
 					tify_infinite_scroll_xhr.abort();
 					tify_infinite_scroll_xhr = undefined;
 				}
