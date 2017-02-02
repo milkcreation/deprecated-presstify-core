@@ -82,14 +82,29 @@ class Notices
 	/** == Affichage des notices == **/ 
 	public function display( $code = 'error' )
 	{
-		$output  = "";
-		if( $this->has( $code ) ) :
-			$output .= "<ol class=\"tiFyForm-NoticesMessages tiFyForm-NoticesMessages--{$code}\">\n";
-			foreach( (array) $this->get( $code ) as $message ) :
-				$output .= "\t<li class=\"tiFyForm-NoticesMessage tiFyForm-NoticesMessage--{$code}\">". $message ."</li>\n";
+		$attrs = array( 'id', 'class', 'dismissible' );
+		
+		if( $_args = $this->Attrs[$code] ) :
+			foreach( $_args as $k => $_arg ) :
+				if( !in_array( $k, $attrs ) )
+					continue;
+				$args[$k] = $_arg;
 			endforeach;
-			$output .= "</ol>\n";
 		endif;
+
+		$text  = "";
+		if( $this->has( $code ) ) :
+			$text .= "<ol class=\"tiFyForm-NoticesMessages tiFyForm-NoticesMessages--{$code}\">\n";
+			foreach( (array) $this->get( $code ) as $message ) :
+				$text .= "\t<li class=\"tiFyForm-NoticesMessage tiFyForm-NoticesMessage--{$code}\">". $message ."</li>\n";
+			endforeach;
+			$text .= "</ol>\n";
+		endif;
+		
+		$args['text'] = $text;
+		$args['type'] = $code;
+		
+		$output = tify_control_notices( $args, false );
 		
 		return $output;		
 	}	

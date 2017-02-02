@@ -574,8 +574,9 @@ abstract class Table extends \WP_List_Table
 	/** == Lien d'édition d'un élément == **/
 	public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
 	{
-		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) )
+		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) ) :
 			return Helpers::RowActionLink( 'edit', $args );
+		endif;
 	}
 	
 	/** == Arguments d'édition d'un élément == **/

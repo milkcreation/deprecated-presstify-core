@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Control\Dropdown;
 
-use tiFy\Core\Control\Factory;
-
-class Dropdown extends Factory
+class Dropdown extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
@@ -122,7 +120,7 @@ class Dropdown extends Factory
 		
 		if( $echo )
 			echo $output;
-		else
-			return $output;
+		
+		return $output;
 	}
 }

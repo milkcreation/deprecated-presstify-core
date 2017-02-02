@@ -18,7 +18,9 @@ class ScriptLoader extends \tiFy\Environment\App
 	);
 	
 	// Ordres de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array();
+	protected $CallActionsPriorityMap	= array(
+		'wp_enqueue_scripts' => 0
+	);
 	
 	/** == CONFIGURATION == **/
 	// Liste des librairies CSS référencées
@@ -62,7 +64,6 @@ class ScriptLoader extends \tiFy\Environment\App
 	public function wp_enqueue_scripts()
 	{
 		do_action( 'tify_register_scripts' );
-		wp_enqueue_style( 'tify-front_styles' );
 	}
 	
 	/** == Entête de l'interface utilisateur == **/
@@ -252,6 +253,16 @@ class ScriptLoader extends \tiFy\Environment\App
 			),
 			
 			// TiFy
+			/// TiFy - Theme
+			'tiFyTheme'				=> array(
+				'src'		=> array(
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tiFyTheme.js'
+				),
+				'deps'		=> array( 'jquery' ),
+				'version'	=> 170130,
+				'in_footer'	=> true  
+			),
+				
 			/// TiFy - Calendar
 			'tify-calendar'				=> array(
 				'src'		=> array(
@@ -605,13 +616,13 @@ class ScriptLoader extends \tiFy\Environment\App
 			),				
 			
 			// TiFY
-			/// TiFy - Front Styles
-			'tify-front_styles'				=> array(
+			/// TiFy - Theme
+			'tiFyTheme'				=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-front_styles.min.css'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tiFyTheme.css'
 				),
 				'deps'		=> array(),
-				'version'	=> '150907',
+				'version'	=> 170130,
 				'media'		=> 'all' 
 			),
 			/// TiFy - Admin Styles

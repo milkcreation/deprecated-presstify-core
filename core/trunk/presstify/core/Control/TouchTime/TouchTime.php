@@ -1,19 +1,20 @@
 <?php
 namespace tiFy\Core\Control\TouchTime;
 
-use tiFy\Core\Control\Factory;
-
-class TouchTime extends Factory
+class TouchTime extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
 	protected $ID = 'touch_time';
 	
+	// Instance
+	private static $Instance;
+	
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-touch_time', self::getUrl() ."/TouchTime.css", array( 'tify_control-dropdown' ), '150418' );
-		wp_register_script( 'tify_control-touch_time', self::getUrl() ."/TouchTime.js", array( 'jquery', 'tify_control-dropdown', 'moment' ), '150418', true );
+		wp_register_style( 'tify_control-touch_time', static::getUrl( get_class() ) ."/TouchTime.css", array(), '150418' );
+		wp_register_script( 'tify_control-touch_time', static::getUrl( get_class() ) ."/TouchTime.js", array( 'jquery', 'moment' ), '150418', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
@@ -24,17 +25,14 @@ class TouchTime extends Factory
 	}
 			
 	/* = AFFICHAGE = */
-	public static function display( $args = array() ){
-		static $instance = 0;
-		$instance++;
-		
+	public static function display( $args = array() ){	
 		global $wp_locale;
 
 		$defaults = array(
-			'container_id'		=> 'tify_control_touch_time-wrapper-'. $instance,
+			'container_id'		=> 'tify_control_touch_time-wrapper-'. self::$Instance,
 			'container_class'	=> '',
-			'id'				=> 'tify_control_touch_time-'. $instance,
-			'name' 				=> 'tify_control_touch_time-'. $instance,
+			'id'				=> 'tify_control_touch_time-'. self::$Instance,
+			'name' 				=> 'tify_control_touch_time-'. self::$Instance,
 			'value' 			=> false,
 			'show_none'			=> false, 		// Permettre les dates de type 0000-00-00 00:00:00 
 			'type' 				=> 'datetime', 	// (default) datetime - ex : 1970-01-01 00:00:00 | date - ex : 1970-00-00 | time - ex 00:00:00
@@ -159,7 +157,7 @@ class TouchTime extends Factory
 		
 		if( $echo )
 			echo $output;
-		else	
-			return $output;
+	
+		return $output;
 	}
 }

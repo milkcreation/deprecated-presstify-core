@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Option\ContentHook\Admin;
 
-use tiFy\Core\Taboox\Admin;
-
-class ContentHook extends Admin
+class ContentHook extends \tiFy\Core\Taboox\Admin
 {	
 	/* = ARGUMENTS = */
 	public static $Registered		= array();

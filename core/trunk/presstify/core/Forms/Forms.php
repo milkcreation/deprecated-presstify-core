@@ -1,6 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
+use tiFy\tiFy;
 use tiFy\Environment\Core;
 
 class Forms extends Core
@@ -21,7 +22,7 @@ class Forms extends Core
 	);
 	
 	// Liste des Formulaires déclarés
-	private static $Registered			= array();
+	private static $Factories			= array();
 	
 	// Formulaire courant 
 	private static $Current				= null;
@@ -31,7 +32,7 @@ class Forms extends Core
 	{		
 		parent::__construct();
 		
-		// Initialisation des classe de contrôle
+		// Initialisation des classes de contrôle
 		new Addons;
 		new Buttons;
 		new FieldTypes;
@@ -82,7 +83,7 @@ class Forms extends Core
 		
 		foreach( self::getList() as $form ) :
 			self::setCurrent( $form );
-			$form->handle()->proceed();
+			$form->getForm()->handle()->proceed();
 			self::resetCurrent();
 		endforeach;
 		
@@ -104,7 +105,7 @@ class Forms extends Core
 	}	
 	
 	/** == Déclaration d'un formulaire == **/
-	public static function register( $id, $attrs = array() )
+	final public static function register( $id, $attrs = array() )
 	{
 		// Compatibilité
 		if( ! empty( $attrs['ID'] ) ) :
@@ -113,29 +114,30 @@ class Forms extends Core
 			$attrs['ID'] = $id;
 		endif;
 		
-		$form = self::$Registered[$id] = new Form\Form( $id, $attrs );
-	
-		return $form->getID();
+		$FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". tiFy::getConfig( 'namespace' ) . "\\tiFy\\Core\\Forms\\{$id}" ) );
+		$form = self::$Factories[$id] = new $FactoryClassName( $id, $attrs );
+		
+		return $form->getForm()->getID();
 	}
 	
 	/* = CONTROLEURS = */
 	/** == Récupération d'un formulaire déclaré == **/
 	public static function has( $id )
 	{
-		return isset( self::$Registered[ $id ] );
+		return isset( self::$Factories[ $id ] );
 	}
 	
 	/** == Récupération d'un formulaire déclaré == **/
 	public static function get( $id )
 	{
 		if( self::has( $id ) )
-			return self::$Registered[ $id ];
+			return self::$Factories[ $id ];
 	}
 	
 	/** == Récupération de la liste des formulaires == **/
 	public static function getList()
 	{
-		return self::$Registered;	
+		return self::$Factories;	
 	}	
 	
 	/** == Définition du formulaire courant == **/
@@ -144,11 +146,11 @@ class Forms extends Core
 		if( ! is_object( $form ) )
 			$form = self::get( $form );
 				
-		if( ! $form instanceof \tiFy\Core\Forms\Form\Form )
+		if( ! $form instanceof \tiFy\Core\Forms\Factory )
 			return;
 			
 		self::$Current = $form;
-		self::$Current->onSetCurrent();
+		self::$Current->getForm()->onSetCurrent();
 		
 		return self::$Current;
 	}
@@ -163,7 +165,7 @@ class Forms extends Core
 	public static function resetCurrent()
 	{
 		if( self::$Current )
-			self::$Current->onResetCurrent();
+			self::$Current->getForm()->onResetCurrent();
 		
 		self::$Current = null;
 	}
@@ -171,7 +173,6 @@ class Forms extends Core
 	/** == Affichage du formulaire == **/
 	public static function display( $form_id = null, $echo = false )
 	{
-
 		// Bypass
 		if( ! $form = self::setCurrent( $form_id ) )
 			return;

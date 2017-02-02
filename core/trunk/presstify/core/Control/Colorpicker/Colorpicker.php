@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Control\Colorpicker;
 
-use tiFy\Core\Control\Factory;
-
-class Colorpicker extends Factory
+class Colorpicker extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
@@ -12,11 +10,11 @@ class Colorpicker extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-colorpicker', $this->Url .'/colorpicker.css', array( 'spectrum' ), '141216' );
+		wp_register_style( 'tify_control-colorpicker', static::getUrl( get_class() ) .'/Colorpicker.css', array( 'spectrum' ), '141216' );
 		$deps = array( 'jquery', 'spectrum' );
 		if( wp_script_is( 'spectrum-i10n', 'registered' ) )
 			$deps[] = 'spectrum-i10n';
-		wp_register_script( 'tify_control-colorpicker', $this->Url .'/colorpicker.js', $deps, '141216', true );
+		wp_register_script( 'tify_control-colorpicker', static::getUrl( get_class() ) .'/Colorpicker.js', $deps, '141216', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

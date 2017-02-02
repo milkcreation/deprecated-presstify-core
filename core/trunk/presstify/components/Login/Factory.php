@@ -64,7 +64,7 @@ class Factory
 	
 	// Cartographie des messages d'erreurs
 	private $ErrorsMap				= array();
-		
+				
 	// Liste des paramètres pouvant être définie
 	protected static $settableParams = array(
 		'FormID',
@@ -123,14 +123,14 @@ class Factory
 		
 		// Définition de la cartographie des message d'erreurs
 		$this->_setErrorsMap();
-
+		
 		// Déclaration Instanciation
 		Login::register( $this->id, $this );
 	}
 
 	/* = PARAMETRAGE = */
 	/** == Définition d'un paramètre == **/
-	public function setParam( $param, $value )
+	final public function setParam( $param, $value )
 	{
 		// Bypass
 		if( ! in_array( $param, static::$settableParams ) )
@@ -182,7 +182,7 @@ class Factory
 	}
 	
 	/** == Récupération d'un paramètre == **/
-	public function getParam( $param, $default = '' )
+	final public function getParam( $param, $default = '' )
 	{
 		// Bypass
 		if( ! in_array( $param, static::$settableParams ) )
@@ -216,7 +216,7 @@ class Factory
 	}
 	
 	/** == Liste des erreurs == **/
-	private function _displayErrors()
+	final protected function displayErrors()
 	{
 		$code = $this->getErrors()->get_error_code();
 
@@ -227,6 +227,13 @@ class Factory
 		else :
 			return __( 'Erreur lors de la tentative d\'authentification', 'tify' );
 		endif;
+	}
+	
+	/* = SURCHARGE = */
+	/** == Vérification des droits d'authentification d'un utilisateur == **/
+	public function checkAuthenticate( $user, $username, $password )
+	{
+		return $user;
 	}
 	
 	/* = AFFICHAGE = */
@@ -385,9 +392,7 @@ class Factory
 	/** == Erreurs de formulaire == **/
 	public function formErrors()
 	{
-		return	"<div class=\"tiFyLogin-Part tiFyLogin-Errors tify_notice tify_notice-error\">".
-					"<p>". $this->_displayErrors() ."</p>".
-				"</div>";
+		return tify_control_notices( array( 'class' => "tiFyLogin-Part tiFyLogin-Errors", 'text' => $this->displayErrors() ), false );
 	}
 
 	/** == Lien de récupération de mot de passe oublié == **/
