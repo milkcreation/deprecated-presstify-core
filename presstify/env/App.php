@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Environment;
 
+use tiFy\tiFy;
+
 abstract class App
 {
 	use Traits\Actions, Traits\Filters, Traits\Getter, Traits\Helpers, Traits\Path, Traits\Setter
@@ -65,5 +67,11 @@ abstract class App
 			return $__set;
 		
 		return null;
+	}
+	
+	/** == Récupération d'une classe de surcharge == **/
+	public static function getOverride( $ClassName, $path = array() )
+	{
+		return tiFy::getOverride( $ClassName, $path );
 	}
 } 

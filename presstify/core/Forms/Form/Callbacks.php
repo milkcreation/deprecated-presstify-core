@@ -91,11 +91,7 @@ class Callbacks
 	{
 	 	$this->_set( $hookname, $field_type_id, $callback, $priority, 'field_type' );
 	}
-	 
-	
-	
-	
-	
+	 	
 	/** == Execution des fonctions de callback 
 	public static function call( $hookname, $args = array() )
 	{		

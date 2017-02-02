@@ -33,7 +33,7 @@ class Handle
 						
 		/// Provenance de la soumission du formulaire	
 		if( ! wp_verify_nonce( $nonce, 'submit_'. $this->Form->getUID() ) ) :
-			wp_die( __( '<h2>Erreur lors de la vérification d\'origine de la soumission de formulaire</h2><p>Impossible de déterminer l\'origine de la soumission de votre formulaire.</p>', 'tify' ), array( 'form_id' => $_form['ID'] ) );
+			wp_die( __( '<h2>Erreur lors de la vérification d\'origine de la soumission de formulaire</h2><p>Impossible de déterminer l\'origine de la soumission de votre formulaire.</p>', 'tify' ), __( 'Erreur de soumission de formulaire', 'tify' ), array( 'form_id' => $this->Form->getID() ) );
 		endif;
 		
 		// Définition de la session

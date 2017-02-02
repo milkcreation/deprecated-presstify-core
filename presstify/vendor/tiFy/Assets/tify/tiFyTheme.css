@@ -1,25 +1,3 @@
-/* = NOTICES = */
-.tify_notice > *{
-	padding:10px;
-	margin-bottom:20px;
-}
-.tify_notice.tify_notice-success{
-	border-left:solid 3px #46B450;
-	background-color:#F6F6F6;	
-}
-.tify_notice.tify_notice-info{
-	border-left:solid 3px #00A0D2;
-	background-color:#FFF;	
-}
-.tify_notice.tify_notice-warning{
-	border-left:solid 3px #FFB900;
-	background-color:#FFF;	
-}
-.tify_notice.tify_notice-error{
-	border-left:solid 3px #DC3232;
-	background-color:#FFF;	
-}
-
 /* = SPINNER = */
 .tify_spinner{	
 	display:inline-block;	

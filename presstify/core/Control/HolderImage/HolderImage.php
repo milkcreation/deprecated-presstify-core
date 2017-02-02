@@ -1,9 +1,7 @@
 <?php 
 namespace tiFy\Core\Control\HolderImage;
 
-use tiFy\Core\Control\Factory;
-
-class HolderImage extends Factory
+class HolderImage extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		

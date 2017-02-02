@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Control\Checkbox;
 
-use tiFy\Core\Control\Factory;
-
-class Checkbox extends Factory
+class Checkbox extends \tiFy\Core\Control\Factory
 {
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		

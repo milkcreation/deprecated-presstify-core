@@ -172,16 +172,22 @@ class Form
 			(array) $this->getAttr( 'notices' ),
 			array(	
 				// Erreurs
-				'errors' 	=> array(
+				'error' 	=> array(
 					// Intitulé de la liste des erreurs.
 					// string
-					'title' 	=> '',
+					'title' 		=> '',
 					// Affichage des erreurs. -1 : Toutes (par defaut) | 0 : Aucune | n : Nombre maximum à afficher	
-					'show'		=> -1, 
+					'show'			=> -1, 
 					// Affiché seulement si toutes les erreurs ne sont pas visible. Mettre à false pour masquer 
-					'teaser' 	=> '...',
+					'teaser' 		=> '...',
 					// Affiche les erreurs relative à chaque champs
-					'field'		=> false 	
+					'field'			=> false,
+					// Classe du conteneur 
+					'id'			=> '',
+					// Classe du conteneur 
+					'class'			=> '',
+					// Permettre la fermeture des messages d'erreurs
+					'dismissible'	=> false
 				),
 				// Succès	
 				'success'	=> array(
@@ -420,7 +426,7 @@ class Form
 	
 	/* = AFFICHAGE = */
 	/** == Affichage d'un formulaire == **/
-	public function display( $echo = false )
+	public function display()
 	{	
 		// Court-circuitage des propriétés du formulaire avant son affichage
 		//Callbacks::call( 'form_before_display', array( &$this ) );
@@ -454,10 +460,7 @@ class Form
 
 		// Court-circuitage des propriétés du formulaire avant son affichage
 		//Callbacks::call( 'form_after_display', array( &$this ) );
-		
-		if( $echo )
-			echo $output;
-		
+			
 		return $output;	
 	}
 	

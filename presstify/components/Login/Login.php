@@ -39,7 +39,7 @@ final class Login extends \tiFy\Environment\Component
 		// Bypass
 		if( empty( $_REQUEST['tiFyLogin-formID'] ) )
 			return;		
-		if( ! $this->setCurrent( $_REQUEST['tiFyLogin-formID'] ) )
+		if( ! $this->_setCurrent( $_REQUEST['tiFyLogin-formID'] ) )
 			return;
 				
 		$action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'login';
@@ -47,10 +47,10 @@ final class Login extends \tiFy\Environment\Component
 		switch( $action ) :	
 			default :
 			case 'login' :
-				$this->signon();
+				$this->_signon();
 				break;
 			case 'logout' :
-				$this->logout();
+				$this->_logout();
 				break;
 		endswitch;
 	}
@@ -59,13 +59,17 @@ final class Login extends \tiFy\Environment\Component
 	final public function authenticate( $user = null, $username, $password )
 	{
 		// Bypass
-		if( ! $this->getCurrent() )
+		if( ! $this->_getCurrent() )
 			return $user;
 		if( ! $user || is_wp_error( $user ) )
 			return $user;
 
-		if( ! array_intersect( $user->roles, (array) $this->getCurrent()->getRoles() ) ) :
+		if( ! array_intersect( $user->roles, (array) $this->_getCurrent()->getRoles() ) ) :
 			$user = new \WP_Error( 'role_not_allowed' );		
+		endif;
+		
+		if( $user ) :
+			$user = call_user_func( array( $this->_getCurrent(), 'checkAuthenticate' ), $user, $username, $password );
 		endif;
 	  		
 		return $user;			
@@ -81,7 +85,7 @@ final class Login extends \tiFy\Environment\Component
 	}
 	
 	/** == Définition du formulaire d'authentification courant == **/
-	private function setCurrent( $id )
+	private function _setCurrent( $id )
 	{
 		// Bypass
 		if( ! isset( self::$Factories[$id] ) )
@@ -91,13 +95,13 @@ final class Login extends \tiFy\Environment\Component
 	}
 	
 	/** == == **/
-	private function resetCurrent()
+	private function _resetCurrent()
 	{
 		static::$Current = null;
 	}
 	
 	/** == Définition du formulaire d'authentification courant == **/
-	private function getCurrent()
+	private function _getCurrent()
 	{
 		// Bypass
 		if( ! static::$Current )
@@ -107,7 +111,7 @@ final class Login extends \tiFy\Environment\Component
 	}
 	
 	/** == Authentification == **/
-	private function signon()
+	private function _signon()
 	{
 		$secure_cookie = '';
 
@@ -154,7 +158,7 @@ final class Login extends \tiFy\Environment\Component
 	}
 	
 	/** == Déconnection == **/
-	private function logout()
+	private function _logout()
 	{
 		check_admin_referer('log-out');
 		
