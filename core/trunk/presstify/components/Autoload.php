@@ -43,8 +43,7 @@ class Autoload extends \tiFy\Environment\App
 	/* = CONTRÔLEUR = */
 	public static function register( $component )
 	{
-		if( class_exists( "\\tiFy\\Components\\{$component}\\{$component}" ) ) :
-			$ClassName	= "\\tiFy\\Components\\{$component}\\{$component}";
+		if( $ClassName = self::getOverride( "\\tiFy\\Components\\{$component}\\{$component}" ) ) :
 		elseif( class_exists( $component ) ) :
 			$ClassName	= $component;
 		else :

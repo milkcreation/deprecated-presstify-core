@@ -43,40 +43,21 @@ var tify_infinite_scroll_xhr, tify_infinite_scroll;
 				}
 			);
 		});
-	}		
+	}	
+	
 	function isScrolledIntoView($ele) {
+		var offset = $ele.offset();
+		if( ! offset )
+			return false;
+		
 	    var lBound = $(window).scrollTop(),
 	        uBound = lBound + $(window).height(),
-	        top = $ele.offset().top,
+	        top = offset.top,
 	        bottom = top + $ele.outerHeight(true);
-	
+	    
 	    return (top > lBound && top < uBound)
 	        || (bottom > lBound && bottom < uBound)
 	        || (lBound >= top && lBound <= bottom)
 	        || (uBound >= top && uBound <= bottom);
 	}
-	/*function isScrolledIntoView( $elem ) {
-		var docViewTop = $(window).scrollTop();
-		var docViewBottom = docViewTop + $(window).height();
-		var elemOffset = 0;
-		  
-		if( $elem.data('offset') != undefined )
-			elemOffset = $(elem).data( 'offset' );
-	
-		var elemTop = $elem.offset().top;
-		var elemBottom = elemTop + $elem.outerHeight(true);
-		
-		if( elemOffset != 0 ){
-			if(docViewTop - elemTop >= 0){
-				elemTop = $elem.offset().top + elemOffset;
-			} else {
-				elemBottom = elemTop + $elem.outerHeight(true) - elemOffset;
-			}
-		}
-
-		if( ( elemBottom <= docViewBottom ) && ( elemTop >= docViewTop ) ){
-			return true;
-		}
-		return false;
-	}*/
 })( jQuery, document, window, undefined );
