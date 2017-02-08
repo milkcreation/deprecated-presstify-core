@@ -160,7 +160,7 @@ class Factory
 			'value_remember' 		=> $this->getParam( 'ValueRemember' )
 		);
 
-		return wp_parse_args( $args, apply_filters( 'tify_login_form_defaults', $defaults ) );
+		return wp_parse_args( $args, apply_filters( 'tify_login_form_defaults', $defaults, $this ) );
 	}
 
 	/** == Définition de la catographie des message d'erreurs == **/
@@ -256,12 +256,12 @@ class Factory
 		// Définition des attributs		
 		$args 					= $this->_loginFormParseArgs( $args );
 		
-		$login_form_top 		= apply_filters( 'tify_login_form_top', 		$this->formTop( $args ), 		$args );
-		$login_form_content 	= apply_filters( 'tify_login_form_content',		$this->formContent( $args ), 	$args );
-		$login_form_remember 	= apply_filters( 'tify_login_form_remember',	$this->formRemember( $args ), 	$args );
-		$login_form_middle 		= apply_filters( 'tify_login_form_middle', 		$this->formMiddle( $args ), 	$args );
-		$login_form_bottom 		= apply_filters( 'tify_login_form_bottom', 		$this->formBottom( $args ), 	$args );
-		$login_form_submit 		= apply_filters( 'tify_login_form_submit', 		$this->formSubmit( $args ), 	$args );
+		$login_form_top 		= apply_filters( 'tify_login_form_top', 		$this->formTop( $args ), 		$args, $this );
+		$login_form_content 	= apply_filters( 'tify_login_form_content',		$this->formContent( $args ), 	$args, $this );
+		$login_form_remember 	= apply_filters( 'tify_login_form_remember',	$this->formRemember( $args ), 	$args, $this );
+		$login_form_middle 		= apply_filters( 'tify_login_form_middle', 		$this->formMiddle( $args ), 	$args, $this );
+		$login_form_bottom 		= apply_filters( 'tify_login_form_bottom', 		$this->formBottom( $args ), 	$args, $this );
+		$login_form_submit 		= apply_filters( 'tify_login_form_submit', 		$this->formSubmit( $args ), 	$args, $this );
 
 		$output  = "";
 		
@@ -293,7 +293,7 @@ class Factory
 		$output .= "</form>";
 		
 		// Sortie filtrée 
-		return apply_filters( 'tify_login_display', $output, $args );
+		return apply_filters( 'tify_login_display', $output, $args, $this );
 	}
 		
 	/** == Pré-affichage == **/
@@ -440,7 +440,7 @@ class Factory
 		);
 		$args = wp_parse_args( $args, $defaults );
 
-		$output = add_query_arg( 'tify_login-form-id', $this->id, wp_logout_url( $args['redirect'] ) );
+		$output = add_query_arg( 'tiFyLogin-formID', $this->id, wp_logout_url( $args['redirect'] ) );
 
 		return apply_filters( 'tify_login_logout_url', $output, $args, $this );
 	}
