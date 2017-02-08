@@ -12,10 +12,11 @@ jQuery(document).ready(function($){
 			type:		'post',
 			success:	function( resp )
 			{
-				if( resp.success )
+				if( resp.success ){
 					$( '[data-role="tiFyModal"][data-id="'+ target +'"' )
 						.find( '.modal-body' ).html( resp.data ).end()
 						.modal( 'show' );
+				}
 			}
 		});
 	});
