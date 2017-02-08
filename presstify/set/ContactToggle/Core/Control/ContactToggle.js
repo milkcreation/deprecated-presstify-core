@@ -1,5 +1,5 @@
 jQuery(document).ready(function($){
-	$( '[data-tify_control="contact_toggle"]' ).click( function(e){
+	$( document ).on( 'click', '[data-tify_control="contact_toggle"]', function(e){
 		e.preventDefault();
 				
 		var	_ajax_nonce = $( this ).data( 'nonce' ),

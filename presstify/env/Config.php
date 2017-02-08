@@ -44,7 +44,7 @@ abstract class Config extends \tiFy\Environment\App
 	private function initNames()
 	{
 		$this->ClassShortName = $this->ReflectionClass->getShortName();
-		$this->ClassName = $this->ReflectionClass->getName();		
+		$this->ClassName = $this->ReflectionClass->getName();
 	}
 	
 	/** == Définition de la configuration == **/
@@ -132,9 +132,10 @@ abstract class Config extends \tiFy\Environment\App
 	}	
 	
 	/** == Récupération de la configuration du composant == **/
-	public static function getConfig( $index = null )
+	public static function getConfig( $index = null, $class = null )
 	{
-		$class = get_called_class();
+		if( ! $class )
+			$class = get_called_class();
 		
 		if( ! $index ) :
 			return isset( static::$Config[$class] ) ? static::$Config[$class] : array();
@@ -147,7 +148,7 @@ abstract class Config extends \tiFy\Environment\App
 	public static function getDefaultConfig( $index = null )
 	{
 		$class = get_called_class();
-	
+		
 		if( ! $index ) :
 			return static::$DefaultConfig[$class];
 		elseif( isset( static::$DefaultConfig[$class][$index] ) ) :

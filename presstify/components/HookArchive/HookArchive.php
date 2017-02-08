@@ -353,7 +353,7 @@ final class HookArchive extends Component
 		// Bypass
 		if( ! self::$Hooks )
 			return;
-		
+	
 		if( ! $object )
 			$object = self::$AllowedObject;
 		if( is_string( $object ) )
@@ -370,9 +370,10 @@ final class HookArchive extends Component
 					continue;
 				
 				switch( $obj ) :
-					case 'post_type' :							
+					case 'post_type' :						
 							if( $archive !== $post_type )
 								continue 2;
+							
 							$_hook = current( $Class->GetHooks() );
 
 							if( $permalink && ! $_hook['permalink'] )

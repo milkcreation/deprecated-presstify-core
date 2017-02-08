@@ -1,6 +1,10 @@
 jQuery( document ).ready( function($) {
 	/* Détection de l'élément dans la zone visible */
-	function inViewport($ele) {	
+	function inViewport($ele) {
+		var offset = $ele.offset();
+		if( ! offset )
+			return false;
+		
 	    var lBound = $(window).scrollTop(),
 	        uBound = lBound + $(window).height(),
 	        top = $ele.offset().top,
