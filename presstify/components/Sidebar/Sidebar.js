@@ -80,5 +80,6 @@ jQuery( document ).ready( function( $ ) {
 				pushedElementCss( $(this), 'closed', 'left', '+', 0 );
 			});	
 		}
+		return true;
 	});
 });
