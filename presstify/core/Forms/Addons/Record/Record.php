@@ -94,6 +94,9 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 		'keys'			=> array( 'form_id' => 'form_id' ),
 		'meta'			=> true
 	);
+	
+	// 
+	private static $ExportMenu = false;
 		
 	/* = CONSTRUCTEUR = */				
 	public function __construct() 
@@ -142,19 +145,23 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 			'admin'
 		);
 		
-		tify_templates_register(
-			'tiFyCoreFormsAddonsRecordExport',
-			array(
-				'admin_menu' => array(
-					'parent_slug'	=> 'tify_forms_record',
-					'menu_slug'		=> 'tify_forms_record_export',
-					'menu_title'	=> __( 'Exporter', 'tify' )
-				),
-				'cb'			=> 'tiFy\Core\Forms\Addons\Record\Export',
-				'db'			=> 'tify_forms_record'
-			),
-			'admin'
-		);
+        if( ! self::$ExportMenu && $this->getFormAttr( 'export', false ) ) :
+            self::$ExportMenu = true;
+        
+    		tify_templates_register(
+    			'tiFyCoreFormsAddonsRecordExport',
+    			array(
+    				'admin_menu' => array(
+    					'parent_slug'	=> 'tify_forms_record',
+    					'menu_slug'		=> 'tify_forms_record_export',
+    					'menu_title'	=> __( 'Exporter', 'tify' )
+    				),
+    				'cb'			=> 'tiFy\Core\Forms\Addons\Record\Export',
+    				'db'			=> 'tify_forms_record'
+    			),
+    			'admin'
+    		);
+        endif;
 	}
 	
 	/** == Définition de la base de données (admin uniquement) == **/

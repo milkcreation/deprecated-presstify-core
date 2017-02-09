@@ -27,11 +27,13 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Export\Export
 		endforeach;
 		
 		// Définition de la vue filtrée
-		if( ! empty( $_REQUEST['form_id'] ) && isset( $this->Forms[$_REQUEST['form_id']] ) ) :
-			$this->Form = $this->Forms[$_REQUEST['form_id']];
-		else :
-			$this->Form = current( $this->Forms );
-		endif;	
+		if( $this->Forms ) :
+    		if( ! empty( $_REQUEST['form_id'] ) && isset( $this->Forms[$_REQUEST['form_id']] ) ) :
+    			$this->Form = $this->Forms[$_REQUEST['form_id']]->getForm();
+    		else :		      
+    			$this->Form = current( $this->Forms );
+    		endif;
+    	endif;
 	}
 	
 	/* = PARAMETRAGE = */
@@ -65,6 +67,17 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Export\Export
 
 		return $query_args;
 	}
+	
+	/* = TRAITEMENT = */
+	/** == Récupération des éléments == **/
+	public function prepare_items() 
+	{				
+		// Récupération des items
+		if( $this->Forms ) :
+		  parent::prepare_items();
+		endif;
+	}
+	
 	
 	/* = AFFICHAGE = */
 	/** == Liste de filtrage du formulaire courant == **/

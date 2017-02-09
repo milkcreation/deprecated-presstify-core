@@ -101,7 +101,7 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 		if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
 			wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
 				
-		if( ! $this->Form = Forms::get( $item->form_id ) )
+		if( ! $this->Form = Forms::get( $item->form_id )->getForm() )
 			wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) );	
 			
 		$output  = "";	
@@ -192,7 +192,7 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 	/** == Colonne des informations d'enregistrement == **/
 	public function column_form_infos( $item )
 	{
-		$form_title = ( $form = Forms::get( $item->form_id ) ) ? $form->getTitle() : __( '(Formulaire introuvable)', 'tify' );
+		$form_title = ( $form = Forms::get( $item->form_id ) ) ? $form->getForm()->getTitle() : __( '(Formulaire introuvable)', 'tify' );
 				
 		$output  = $form_title;
 		$output .= "<ul style=\"margin:0;font-size:0.8em;font-style:italic;color:#666;\">";
