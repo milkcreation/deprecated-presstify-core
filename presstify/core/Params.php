@@ -19,7 +19,7 @@ class Params extends \tiFy\Environment\App
 	final public function after_setup_theme()
 	{		
 		$attrs = array(
-			'config'		=> array(
+	        'config'	    => array(
 				'eval'			=> true		
 			),
 			'components'	=> array(
@@ -38,19 +38,24 @@ class Params extends \tiFy\Environment\App
 				'eval'			=> true		
 			)			
 		);
-		
+
 		// Récupération du paramétrage natif
 		$_dir = @ opendir( tiFy::$AbsDir ."/config" );
 		if( $_dir ) :
 			while ( ( $file = readdir( $_dir ) ) !== false ) :
-				if ( substr( $file, 0, 1 ) == '.' )
+				if ( substr( $file, 0, 1 ) == '.' ) :
 						continue;
-				$basename = basename( $file, ".yml" );
-				if( ! isset( $attrs[$basename] ) )
+	            endif;
+				
+	            $basename = basename( $file, ".yml" );
+				if( ! isset( $attrs[$basename] ) ) :
 				 	continue;
+				endif;
+				
 				$attr = $attrs[$basename];
-				if( ! isset( ${$basename} ) )
-					${$basename} = array();				
+				if( ! isset( ${$basename} ) ) :
+					${$basename} = array();		
+				endif;
 				
 				${$basename} = self::_parseFilename( tiFy::$AbsDir ."/config/{$file}", ${$basename}, 'yml', $attr );
 				
@@ -58,39 +63,64 @@ class Params extends \tiFy\Environment\App
 			closedir( $_dir );
 		endif;
 		
-		// Récupération du paramétrage personnalisé		
+		// Récupération de la configuration	
 		$_dir = @ opendir( TIFY_CONFIG_DIR );
 		if( $_dir ) :
 			while ( ( $file = readdir( $_dir ) ) !== false ) :
 				if ( substr( $file, 0, 1 ) == '.' )
 						continue;
 				$basename = basename( $file, ".". TIFY_CONFIG_EXT );
-		
-				if( ! isset( $attrs[$basename] ) )
+				if( $basename !== 'config' ) :
 				 	continue;
-				$attr = $attrs[$basename];
-				if( ! isset( ${$basename} ) )
-					${$basename} = array();	
-				
-				if( $basename === 'config' ) :
-					${$basename} = self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
-				else :
-					${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
 				endif;
-			endwhile;
-			closedir( $_dir );
-			
-		endif;
-
-		tiFy::$Params = compact( array_keys( $attrs ) );
 				
-		// Chargement du thème
+				if( ! isset( $config ) ) :
+					$config = array();		
+				endif;
+				
+				$config = self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, $config, TIFY_CONFIG_EXT, $attrs['config'] );
+			endwhile;
+			closedir( $_dir );			
+		endif;
+		tiFy::$Params['config'] = $config;	
+		
+		// Chargement des contrôleurs du thème
 		if( ( $namespace = tiFy::getConfig( 'namespace' ) ) && ( $base_dir = tiFy::getConfig( 'base_dir' ) ) ) :
 			tiFy::classLoad( $namespace, $base_dir, tiFy::getConfig( 'bootstrap', false ) );
 		endif;
-
+		
+		// Chargement des traductions
+		do_action( 'tify_load_textdomain' );
+		
+		// Récupération du paramétrage personnalisé
+		$_dir = @ opendir( TIFY_CONFIG_DIR );
+		if( $_dir ) :
+			while ( ( $file = readdir( $_dir ) ) !== false ) :
+                // Bypass
+				if ( substr( $file, 0, 1 ) == '.' ) :
+                    continue;
+		        endif;
+		        
+				$basename = basename( $file, ".". TIFY_CONFIG_EXT );		
+				if( ! isset( $attrs[$basename] ) ) :
+				 	continue;
+				endif;
+				
+				$attr = $attrs[$basename];
+				if( ! isset( ${$basename} ) ) :
+					${$basename} = array();	
+				endif;
+				
+				${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
+			endwhile;
+			closedir( $_dir );			
+		endif;        
+		tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );					
+		
+		// Personnalisation de la définition des paramètres 
 		do_action( 'tify_params_set' );
 		
+		// Déclenchement des actions post-paramétrage
 		do_action( 'after_setup_tify' );		
 	}
 	
