@@ -1,11 +1,9 @@
 <?php
 namespace tiFy\Environment;
 
-use tiFy\tiFy;
-
 abstract class App
 {
-	use Traits\Actions, Traits\Filters, Traits\Getter, Traits\Helpers, Traits\Path, Traits\Setter
+	use Traits\Actions, Traits\Controllers, Traits\Filters, Traits\Getter, Traits\Helpers, Traits\Path, Traits\Setter
 	{
 		Traits\Actions::__construct as private __ActionsConstruct;
 		Traits\Actions::__call as private __ActionsCall;
@@ -18,6 +16,7 @@ abstract class App
 		Traits\Path::__isset as private __PathIsset;		
 		Traits\Setter::__set as private __SetterSet;
 	}
+	
 			
 	/* = CONSTRUCTEUR = */
 	public function __construct()
@@ -67,11 +66,5 @@ abstract class App
 			return $__set;
 		
 		return null;
-	}
-	
-	/** == Récupération d'une classe de surcharge == **/
-	public static function getOverride( $ClassName, $path = array() )
-	{
-		return tiFy::getOverride( $ClassName, $path );
 	}
 } 

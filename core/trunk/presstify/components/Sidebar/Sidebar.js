@@ -73,11 +73,13 @@ jQuery( document ).ready( function( $ ) {
 		});		
 	});
 	
-	$( document ).on( 'click', function(e) {	
-		if( ( ! $( e.target ).closest( '.tiFySidebar' ).length ) && ! $( e.target ).closest( '[data-toggle="tiFySidebar"]' ).length && ( $( e.target ).data( 'toggle' ) != 'tiFySidebar' ) && $( 'body' ).hasClass( 'tiFySidebar-body--leftOpened' ) ){
-			$( 'body' ).removeClass( 'tiFySidebar-body--leftOpened' ).addClass( 'tiFySidebar-body--leftClosed' );
+	$( document ).on( 'click', function(e) {
+		var pos = $( '.tiFySidebar' ).data( 'pos' );
+		
+		if( ( ! $( e.target ).closest( '.tiFySidebar' ).length ) && ! $( e.target ).closest( '[data-toggle="tiFySidebar"]' ).length && ( $( e.target ).data( 'toggle' ) != 'tiFySidebar' ) && $( 'body' ).hasClass( 'tiFySidebar-body--'+ pos +'Opened' ) ){			
+			$( 'body' ).removeClass( 'tiFySidebar-body--'+ pos +'Opened' ).addClass( 'tiFySidebar-body--'+ pos +'Closed' );
 			$( '.tiFySidebar-pushed' ).each( function(){
-				pushedElementCss( $(this), 'closed', 'left', '+', 0 );
+				pushedElementCss( $(this), 'closed', pos, '+', 0 );
 			});	
 		}
 		return true;

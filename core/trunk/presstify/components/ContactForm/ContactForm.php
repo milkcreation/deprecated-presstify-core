@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\ContactForm;
 
-use tiFy\Environment\Component;
-
-class ContactForm extends Component
+final class ContactForm extends \tiFy\Environment\Component
 {
 	/* = ARGUMENTS = */
 	// Actions à déclencher	
@@ -15,15 +13,16 @@ class ContactForm extends Component
 	// Configuration
 	/// Options par défaut
 	private static $Defaults;
+	
 	/// Liste des formulaires enregistrés
 	private static $Forms = array();	
 	
 	/* = DECLENCHEURS = */
-	/** == == **/
+	/** == Déclaration de formulaire == **/
 	final public function tify_form_register()
 	{
 		// Récupération de la configuration par défaut
-		self::$Defaults = \tiFy\Core\Params::parseAndEval( $this->Dirname .'/config/defaults.yml' );
+		self::$Defaults = \tiFy\Core\Params::parseAndEval( self::getDirname() .'/config/defaults.yml' );
 		
 		do_action( 'tify_contact_form_register' );
 				
@@ -34,7 +33,7 @@ class ContactForm extends Component
 
 		// Enregistrement du formulaire par défaut (si aucun autre formulaire n'a été déclaré)
 		if( empty( self::$Forms ) ) :
-			$id = 'tify_contact_form-0';
+			$id = 'tiFyContactForm_Default';
 			self::register( $id );
 		endif;
 		
@@ -44,7 +43,7 @@ class ContactForm extends Component
 		endforeach;
 	}
 	
-	/* = = */
+	/** == Déclaration de la zone d'édition des options == **/
 	final public function tify_options_register_node()
 	{	
 		foreach( (array) self::$Forms as $id => $args ) :
@@ -53,7 +52,7 @@ class ContactForm extends Component
 					array(
 						'id' 		=> $id,
 						'title' 	=> $args['title'],
-						'cb'		=> "\\tiFy\\Components\\ContactForm\\Taboox\\Option\\MailOptions\\Admin\\MailOptions",
+						'cb'		=> '\tiFy\Components\ContactForm\Taboox\Option\MailOptions\Admin\MailOptions',
 						'args'		=> array( 'id' => $id, 'admin' => $args['admin']  )
 					)
 				);
@@ -61,7 +60,7 @@ class ContactForm extends Component
 		endforeach;
 	}	
 		
-	/* = = */
+	/** == == **/
 	final public static function the_content( $content )
 	{		
 		// Bypass
@@ -82,7 +81,7 @@ class ContactForm extends Component
 				
 	/* = CONTROLEUR = */
 	/* = Déclaration d'un formulaire de contact  = */
-	public static function register( $id, $args = array() )
+	final public static function register( $id, $args = array() )
 	{
 		if( isset( self::$Forms[$id] ) )
 			return;
@@ -212,7 +211,7 @@ class ContactForm extends Component
 	
 		if( $echo )
 			echo $output;
-		else
-			return $output;
+
+    	return $output;
 	}
 }

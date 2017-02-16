@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Components\HookArchive;
 
+use tiFy\Components\Breadcrumb\Breadcrumb;
+
 final class Taxonomy extends Factory
 {
 	/* = ARGUMENTS = */
@@ -209,12 +211,12 @@ final class Taxonomy extends Factory
 				if( ! in_array( $hook['term'], $terms ) || ! $hook['permalink'] || ( ! $term = get_term( $hook['term'] ) ) )
 					continue;
 				
-				if( ( $hook_id = $hook['id'] ) && ( $term->term_id === (int) get_post_meta( $hook_id, '_tify_hookarchive_term_permalink', true ) ) )
+				if( ( $hook_id = $hook['id'] ) && ( $term->term_id === (int) get_post_meta( get_the_ID(), '_tify_hookarchive_term_permalink', true ) ) ) 
 					break;
 				
 				continue;				
 			endforeach;
-						
+			
 			if( ! empty( $hook_id ) && ( $post = get_post( $hook_id ) ) ) :			
 				$ancestors = "";
 				if( $post->post_parent && $post->ancestors ) :
@@ -223,8 +225,11 @@ final class Taxonomy extends Factory
 						$ancestors .= sprintf('<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 				endif;	
 				
+				$Template = Breadcrumb::getController( 'template' );
+				$part = array( 'name' => esc_html( wp_strip_all_tags( get_the_title() ) ) );
+				
 				$term_link = sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_term_link( $term ), get_the_title( $hook_id ) );
-				$output = $ancestors . $term_link . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title() ) ) .'</li>';
+				$output = $ancestors . $term_link . $Template::currentRender( $part );
 			endif;
 		endif;
 			
@@ -251,7 +256,10 @@ final class Taxonomy extends Factory
 					$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 			endif;	
 			
-			$output = $ancestors . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) .'</li>';
+			$Template = Breadcrumb::getController( 'template' );
+			$part = array( 'name' => esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) );
+			
+			$output = $ancestors . $Template::currentRender( $part );
 		endif;
 		
 		// Empêche l'execution multiple du filtre

@@ -19,14 +19,14 @@ abstract class Config extends \tiFy\Environment\App
 	protected $SubDir;
 	
 	// Schema
-	protected $Schema		= false;
+    protected $Schema                      = false;
 	
 	// Configuration par défaut
 	protected static $DefaultConfig;
 	
 	// Configuration
 	protected static $Config;
-		
+
 	/* = CONSTRUCTEUR = */
 	public function __construct()
 	{

@@ -9,12 +9,16 @@ class ImageGallery extends \tiFy\Core\Taboox\Helpers
 	
 	// Liste des methodes à translater en Helpers
 	protected $Helpers 			= array( 'Has', 'Get', 'Display' );
-
-	// Attributs par défaut
-	public static $DefaultAttrs	= array(
-		'name' 	=> '_tify_taboox_image_gallery',
-		'max'	=> -1
-	);
+    
+	// Instance
+	private static $Instance;	
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct()
+	{
+	    parent::__construct();	    
+	    static::$Instance++;
+	}
 	
 	/* = VÉRIFICATION = */
 	public static function Has( $post_id = null, $args = array() )
@@ -28,54 +32,72 @@ class ImageGallery extends \tiFy\Core\Taboox\Helpers
 		$post_id = ( null === $post_id ) ? get_the_ID() : $post_id;
 		
 		// Traitement des arguments
-		$args = wp_parse_args( $args, static::$DefaultAttrs );
+		$defaults = array(			
+			'name'				=> '_tify_taboox_image_gallery',
+		    // ID HTML
+		    'id'				=> 'tify_taboox_image_gallery-'. static::$Instance++,
+			// Class HTML
+		    'class'				=> '',		    
+		    // Taille des images
+			'size' 				=> 'full',
+		    // Nombre de vignette maximum
+			'max'				=> -1,
+			// Attribut des vignettes
+			'attrs'				=> array( 'title', 'link', 'caption' ),
+			// Options
+			'options'		=> array(
+				// Résolution du slideshow
+				'ratio'				=> '16:9',			
+				// Navigation suivant/précédent
+				'arrow_nav'			=> true,
+				// Vignette de navigation
+				'tab_nav'			=> true,
+				// Barre de progression
+				'progressbar'		=> false
+			)
+		);		
+		$args = wp_parse_args( $args, $defaults );
 		
-		return get_post_meta( $post_id, $args['name'], true );
+		
+		if( ! $attachment_ids = get_post_meta( $post_id, $args['name'], true ) )
+		    return;
+		
+		$slides = array();    
+		foreach( $attachment_ids as $attachment_id ) :
+		  if( ! $attachment_id )
+		      continue;
+		  if( ! $post = get_post( $attachment_id ) )
+		      continue;
+		      
+		  $slides[] =	array(
+    			'src'		    => wp_get_attachment_image_url( $attachment_id, $args['size'] ),
+    		    'alt'           => trim( strip_tags( get_post_meta( $attachment_id, '_wp_attachment_image_alt', true ) ) ),
+    		    'url' 			=> in_array( 'link', $args['attrs'] ) ? wp_get_attachment_image_url( $attachment_id, 'full' ) : '',
+    			'title'			=> in_array( 'title', $args['attrs'] ) ? get_the_title( $attachment_id ) : '',
+    			'caption'		=> in_array( 'caption', $args['attrs'] ) ? $post->post_content : ''			
+          );    
+		      
+		endforeach;      
+			
+		$id = $args['id'];
+		$class = $args['class'];
+		$options = $args['options'];
+				
+		return compact( 'id', 'class', 'options', 'slides' );		    
 	}
 	
 	/* = AFFICHAGE = */
 	public static function Display( $post_id = null, $args = array(), $echo = true )
-	{
-		$post_id = ( null === $post_id ) ? get_the_ID() : $post_id;
-		
-		$output  = "";
-		if( $output = apply_filters( 'tify_taboox_image_gallery_pre_output', $output, $post_id, $args ) ) :
-			if( $echo )
-				echo $output;
-			else
-				return $output; 
-			return;
-		endif;
-		
+	{			
 		// Bypass
-		if( ! $images = static::Get( $post_id, $args ) )
-			return;
-			
-		static $instances = 0; $instances++;
+		if( ! $slideshow = static::Get( $post_id, $args ) )
+			return;			
+				
+		$output = tify_control_slider( $slideshow, false );
 	
-		$output  = "";
-		$output .= "<div id=\"tify_taboox_image_gallery-{$post_id}-{$instances}\" class=\"tify_taboox_image_gallery\">\n";
-		$output .= "\t<div class=\"viewer\">\n";
-		$output .= "\t\t<ul class=\"roller\">\n";
-		foreach( (array) $images as $img_id )
-			if( ! empty( $img_id ) && ( $src = wp_get_attachment_image_src( $img_id, 'full' ) ) )
-				$output .= "\n\t\t\t<li><div class=\"item-image\" style=\"background-image:url({$src[0]});\"></div></li>\n";
-		$output .= "\t\t</ul>\n";
-		$output .= "\t</div>\n";
-		$output .= "\t<a href=\"#tify_taboox_image_gallery-{$post_id}-{$instances}\" class=\"nav prev\"></a>\n";
-		$output .= "\t<a href=\"#tify_taboox_image_gallery-{$post_id}-{$instances}\" class=\"nav next\"></a>\n";
-		$output .= "\t\t<ul class=\"tabs\">";
-		
-		foreach( (array) $images as $n => $img_id )
-			if( ! empty( $img_id ) && ( $src = wp_get_attachment_image_src( $img_id, 'full' ) ) )
-				$output .= "\n\t\t<li><a href=\"#tify_taboox_image_gallery-{$post_id}-{$instances}\">".( $n+1 )."</a></li>\n";	
-		$output .= "\t\t</ul>\n"; 
-		$output .= "</div>\n";	
-		
-		$output = apply_filters( 'tify_taboox_image_gallery', $output, $images, $instances, $post_id );
-		
 		if( $echo )
 			echo $output;
-		return $output; 
+
+		return $output;
 	}
 }

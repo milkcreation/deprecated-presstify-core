@@ -3,7 +3,6 @@ namespace tiFy\Components\HookArchive;
 
 use tiFy\Components\Breadcrumb\Breadcrumb;
 
-
 final class PostType extends Factory
 {
 	/* = CONTRUCTEUR = */
@@ -148,27 +147,29 @@ final class PostType extends Factory
 			endforeach;
 
 			if( ! empty( $hook_id ) && ( $post = get_post( $hook_id ) ) ) :
-				Breadcrumb::resetParts();
+			    $Template = Breadcrumb::getController( 'template' );
+						
+				$Template::resetParts();
 			
 				$ancestors = array();
 				if( $post->post_parent && $post->ancestors ) :
 					$parents = ( count( $post->ancestors ) > 1 ) ? array_reverse( $post->ancestors ) : $post->ancestors;
 					foreach( $parents as $parent ) :
-						$ancestors[] = array( 'url' => get_permalink( $parent ), 'name' => Breadcrumb::titleRender( $parent ), 'title' => Breadcrumb::titleRender( $parent ) );
+						$ancestors[] = array( 'url' => get_permalink( $parent ), 'name' => $Template::titleRender( $parent ), 'title' => $Template::titleRender( $parent ) );
 					endforeach;
 				endif;	
-				$ancestors[] = array( 'url' => get_post_type_archive_link( get_post_type() ), 'name' => Breadcrumb::titleRender( $hook_id ), 'title' => Breadcrumb::titleRender( $hook_id ) );
+				$ancestors[] = array( 'url' => get_post_type_archive_link( get_post_type() ), 'name' => $Template::titleRender( $hook_id ), 'title' => $Template::titleRender( $hook_id ) );
 								
 				$_ancestors = "";
 				foreach( $ancestors as $a ) :				
-					$_ancestors .= Breadcrumb::partRender( $a );
-					Breadcrumb::addPart( $a );
+					$_ancestors .= $Template::partRender( $a );
+					$Template::addPart( $a );
 				endforeach;
 				
-				$part = array( 'url' => get_permalink(), 'name' => Breadcrumb::titleRender( get_the_ID() ), 'title' => Breadcrumb::titleRender( get_the_ID() ) );
-				Breadcrumb::addPart( $part );
+				$part = array( 'name' => $Template::titleRender( get_the_ID() ) );
+				$Template::addPart( $part );
 								
-				$output = $_ancestors . Breadcrumb::partRender( $part, true );
+				$output = $_ancestors . $Template::currentRender( $part );
 			endif;
 		endif;
 		
@@ -194,7 +195,10 @@ final class PostType extends Factory
 					$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 			endif;	
 			
-			$output = $ancestors . '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">'. esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) .'</li>';
+			$Template = Breadcrumb::getController( 'template' );
+			$part = array( 'name' => esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) );
+			
+			$output = $ancestors . $Template::currentRender( $part );
 		endif;
 		
 		// Empêche l'execution multiple du filtre

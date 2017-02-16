@@ -88,7 +88,7 @@ class Params extends \tiFy\Environment\App
 		if( ( $namespace = tiFy::getConfig( 'namespace' ) ) && ( $base_dir = tiFy::getConfig( 'base_dir' ) ) ) :
 			tiFy::classLoad( $namespace, $base_dir, tiFy::getConfig( 'bootstrap', false ) );
 		endif;
-		
+
 		do_action( 'tify_params_set' );
 		
 		do_action( 'after_setup_tify' );		
