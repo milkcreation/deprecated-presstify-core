@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Set\ContactToggle\Core\Control;
 
 use tiFy\Lib\Modal\Modal;

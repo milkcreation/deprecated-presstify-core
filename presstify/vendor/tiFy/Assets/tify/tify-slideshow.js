@@ -122,7 +122,7 @@
 			
 			// Court-circuitage du diaporama si le nombre de slide est insuffisant
 			if( $( '> li', self.$roller ).length <= self.o.bypage ){
-				$( '.navi', self.$el ).hide();
+				$( '[data-arrownav]', self.$el ).hide();
 				return;
 			}
 			
@@ -176,7 +176,7 @@
 				// Définition de la direction
 				self.dir = ( $(this).hasClass('prev') )? 'prev' : 'next';			
 				// Définition de la vignette cible
-				self.$current =  $( '> li.current', self.$roller );			
+				self.$current =  $( '> li.active', self.$roller );			
 				if( self.dir === 'prev'){
 					if( self.$current.is(':first-child') ){
 						self.$target = $( '> li:last', self.$roller );
@@ -230,29 +230,39 @@
 			var self = this;
 			
 			// Navigation suivant/précédent
-			$( '.navi', self.$el ).click( function(e){
+			$( '[data-arrownav]', self.$el ).click( function(e){
 				e.preventDefault();
+				
 				// Bypass
 				if( self.$viewer.is(':animated') )
-					return false;				
+					return false;
+				
 				// Définition de la direction
-				self.dir = ( $(this).hasClass('prev') )? 'prev' : 'next';									
+				self.dir = ( $(this).data( 'arrownav' ) === 'prev' )? 'prev' : 'next';	
+				
+				// Animation
 				self._slide();
 			});	
 			
 			// Navigation tabulation
-			$( '.tabs > li > a', self.$el ).click( function(e){
+			$( '[data-tabnav]', self.$el ).click( function(e){
 				e.preventDefault();
 				// Bypass
 				if( self.$viewer.is(':animated') )
 					return false;
-				var index = $(this).closest('li').index();
-				if( $( '.tabs > li.current').index() > index )
+				
+				var index = $(this).data( 'tabnav' );
+				
+				if( $( '[data-tabnav]', self.$el ).closest( 'li.active' ).index() > index ){
 					self.dir = 'prev';
-				else
+				} else {
 					self.dir = 'next';
-					
-				self.$target = $( "> li[data-index='"+$(this).closest('li').index()+"']", self.$roller );			
+				}
+				
+				// Définition de la cible
+				self.$target = $( "> li[data-index='"+$(this).closest('li').index()+"']", self.$roller );	
+				
+				// Animation
 				self._slide();
 			});							
 		},
@@ -260,7 +270,7 @@
 		_slide : function(){
 			var self = this;
 			
-			self.$current =  $( '> li.current', self.$roller );
+			self.$current =  $( '> li.active', self.$roller );
 			
 			// Définition de la cible
 			if( ! self.$target ){				
@@ -279,7 +289,7 @@
 				}			
 			}
 			
-			var rollerPos = self.$roller.position().left;				
+			var rollerPos = self.$roller.position().left;
 			var targetPos = self.$target.position().left;			
 			self.targetIndex = self.$target.data('index');
 			self.gap = self.targetIndex - self.currentIndex;
@@ -347,14 +357,14 @@
 			var self = this;
 			
 			self.$current
-				.addClass('current')
-				.siblings().removeClass('current');
+				.addClass('active')
+				.siblings().removeClass('active');
 			
 			self.currentIndex = self.$current.data('index');
 			
-			$( '.tabs > li:eq('+self.currentIndex+')', self.$el )
-				.addClass( 'current' )
-				.siblings().removeClass( 'current' );		
+			$( '[data-tabnav="'+self.currentIndex+'"]', self.$el ).closest( 'li' )
+				.addClass( 'active' )
+				.siblings().removeClass( 'active' );		
 		},
 		
 		_reset : function(){

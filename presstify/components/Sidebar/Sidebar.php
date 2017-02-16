@@ -69,8 +69,7 @@ class Sidebar extends \tiFy\Environment\Component
 	/** == Au chargement complet de Wordpress == **/
 	final public function wp_loaded()
 	{
-		do_action( 'tify_sidebar_register' );
-		
+		do_action( 'tify_sidebar_register' );		
 		
 		foreach( (array) self::$Nodes as $id => $args ) :
 			$order[$id] = $args['position'];

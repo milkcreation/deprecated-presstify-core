@@ -272,6 +272,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '150409',
 				'in_footer'	=> true 
 			),
+		    
 			/// TiFy - Find Posts
 			'tify-findposts'			=> array(
 				'src'		=> array(
@@ -281,6 +282,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '2.2.2',
 				'in_footer'	=> true 
 			),
+		    
 			/// TiFy - Infinite Scroll
 			'tify-infinite-scroll'		=> array(
 				'src'		=> array(
@@ -321,6 +323,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '150325',
 				'in_footer'	=> true
 			),
+		    
 			/// TiFy - Smooth Anchor
 			'tify-smooth-anchor'		=> array(
 				'src'		=> array(
@@ -330,15 +333,17 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '150329',
 				'in_footer'	=> true 
 			),
+		    
 			/// TiFy - Slideshow
 			'tify-slideshow'			=> array(
 				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-slideshow.min.js'
+					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-slideshow.js'
 				),
 				'deps'		=> array( 'jquery', 'easing' ),
 				'version'	=> '160602',
 				'in_footer'	=> true 
 			),
+		    
 			/// TiFy - Fixed SubmitDiv
 			'tify-fixed_submitdiv'		=> array(
 				'src'		=> array(
@@ -347,7 +352,8 @@ class ScriptLoader extends \tiFy\Environment\App
 				'deps'		=> array( 'jquery' ),
 				'version'	=> '151023',
 				'in_footer'	=> true 
-			),				
+			),	
+		    
 			/// TiFy - Threesixty View
 			'tify-threesixty_view'		=> array(
 				'src'		=> array(
@@ -358,18 +364,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'in_footer'	=> true 
 			)				
 		);
-		self::$CssLib	= array(
-			// Animate CSS
-			'animate-css'				=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/animate.min.css',
-					'cdn'		=> '//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'
-				),
-				'deps'		=> array(),
-				'version'	=> '3.5.2',
-				'media'		=> 'all' 
-			),
-				
+		self::$CssLib	= array(			
 			// Bootstrap
 			'bootstrap'					=> array(
 				'src'		=> array(
@@ -424,17 +419,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '4.4.0',
 				'media'		=> 'all' 
 			),	
-
-			// Hover CSS
-			'hover-css'				=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/hover.min.css',
-				),
-				'deps'		=> array(),
-				'version'	=> '2.1.0',
-				'media'		=> 'all'
-			),
-			
+		    
 			// Image Lightbox
 			'imagelightbox'                            => array(
 				'src'           => array(

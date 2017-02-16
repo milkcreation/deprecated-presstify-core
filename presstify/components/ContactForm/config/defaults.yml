@@ -18,7 +18,7 @@ content:            'before'
 
 # Configuration du formulaire
 form:
-  container_class:  'tify_contact_form'
+  container_class:  'tiFySetContactForm'
   before:           ''
   after:            ''
   fields:
@@ -46,12 +46,6 @@ form:
       label:        "<?php _e( 'Sujet du message', 'tify' );?>"
       placeholder:  "<?php _e( 'Sujet de votre message', 'tify' );?>"
       type:         'input'
-      required:     true 
-    -
-      slug:         'message'
-      label:        "<?php _e( 'Message', 'tify' );?>"
-      placeholder:  "<?php _e( 'Votre message', 'tify' );?>"
-      type:         'textarea'
       required:     true 
     -
       slug:         'message'

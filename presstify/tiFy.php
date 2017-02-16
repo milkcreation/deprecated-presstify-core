@@ -5,7 +5,7 @@ final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
-	public static $Version			= '1.0.230';
+	public static $Version			= '1.0.234';
 
 	// Chemins absolue vers la racine de l'environnement
 	public static $AbsPath;
@@ -141,7 +141,7 @@ final class tiFy
 	/** == == **/
 	public static function getOverride( $ClassName, $path = array() )
 	{
-		if( empty( $path ) ) :
+		if( empty( $path ) ) :		     
 			$path[] = "\\". tiFy::getConfig( 'namespace' ) . '\\'. preg_replace( "#^\\\#", "", $ClassName );
 		endif;
 
