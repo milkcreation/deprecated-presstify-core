@@ -38,7 +38,10 @@ class Suggest extends Factory
 			'name'				=> 'tify_control_suggest_term-'. $instance,
 			'value'				=> '',
 			'attrs'				=> array(),
+		    'before'            => '',
+		    'after'             => '',		    
 			'placeholder'		=> __( 'Votre recherche', 'tify' ),
+		    'readonly'          => false, 
 			'button_text'		=> '',
 			
 			// Options Autocomplete
@@ -53,8 +56,8 @@ class Suggest extends Factory
 				
 			// Arguments passés par la requête
 			'ajax_action'		=> 'tify_control_suggest_ajax',
-			'elements'			=> array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
-			'query_args'		=> array(),
+			'query_args'		=> array(), 
+		    'elements'			=> array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
 			'extras'			=> array(),
 	
 			'echo'				=> true
@@ -73,10 +76,12 @@ class Suggest extends Factory
 		foreach( (array) $attrs as $k => $v )
 			$output .= " {$k}=\"{$v}\"";
 		$output .= ">\n";
-		$output .= "\t<input type=\"text\" name=\"{$name}\" placeholder=\"{$placeholder}\" autocomplete=\"off\" value=\"{$value}\">\n";
+		$output .= $before;
+		$output .= "\t<input type=\"text\" name=\"{$name}\" placeholder=\"{$placeholder}\" autocomplete=\"off\"". ( $readonly ? ' readonly' : '' ) ." value=\"{$value}\">\n";
 		$output .= "\t<button type=\"button\">{$button_text}</button>\n";
 		$output .= "\t<div class=\"tify_spinner\"><span></span></div>\n";
 		$output .= "\t<div id=\"{$id}_response\" class=\"tify_control_suggest_response\"></div>\n";
+		$output .= $after;
 		$output .= "</div>\n";
 		
 		if( $echo )
@@ -87,7 +92,7 @@ class Suggest extends Factory
 	
 	/* = CONTROLEUR = */
 	/** == Rendu de l'autocomplete == **/
-	private static function itemRender( $args = array() )
+	public static function itemRender( $args = array() )
 	{
 		$output  = "";
 		$output .= "<a href=\"". ( ! empty( $args['permalink'] ) ? $args['permalink'] : '#' )."\" class=\"". ( isset( $args['ico'] ) ? 'has_ico' : '' )."\">\n";
