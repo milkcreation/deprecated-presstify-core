@@ -19,34 +19,32 @@ abstract class Admin extends App
 				$env,								
 				$args			= array();	
 	
-	/* = INITIALISATION GLOBALE = */
+	/* = DECLENCHEURS = */				
+	/** == Initialisation globale == **/
 	public function init()
 	{
 
 	}			
 		
-	/* = INITIALISATION DE L'INTERFACE D'ADMINISTRATION = */
+	/** == Initialisation de l'interface d'administration == **/
 	public function admin_init()
 	{
 		
 	}
 	
-	/* = CHARGEMENT DE LA PAGE COURANTE = */
+	/** == Chargement de la page courante == **/
 	public function current_screen( $current_screen )
 	{
 
 	}
 	
-	/* = MISE EN FILE DES SCRIPTS DE L'INTERFACE D'ADMINISTRATION = */
+	/** == Mise en file des scripts de l'interface d'administration == **/
 	public function admin_enqueue_scripts()
 	{
 		
 	}
-		
-	/* = FORMULAIRE DE SAISIE = */
-	/*public function form( $arg1 = null, $arg2 = null, $args3 = null )
-	{
-		
-		
-	}*/	
+    
+	/* = CONTROLEURS = */
+	/** == Formulaire de saisie  == **/
+	/*public function form( $arg1 = null, $arg2 = null, $args3 = null ){}*/	
 }

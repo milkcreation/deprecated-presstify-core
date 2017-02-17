@@ -52,6 +52,7 @@ class File
 		if( ! $name )
 			$name = basename( $filename );
 		
+        $filename = dirname( $filename ) . '/' . rawurlencode( basename( $filename ) );        
 		$response = wp_remote_get( $filename );
 		
 		// 
@@ -68,11 +69,12 @@ class File
 		$upload = wp_upload_bits( $name, 0, $body );
 		
 		$filesize = filesize( $upload['file'] );
+		
 		$content_length = wp_remote_retrieve_header( $response, 'content-length' );
-		if ( $content_length  && ( $filesize != $content_length ) ) :
+		/*if ( $content_length  && ( $filesize != $content_length ) ) :
 			@unlink( $upload['file'] );
 			return new \WP_Error( 'tify_file_import_media_error', __('La taille du fichier distant est incorrect', 'tify' ) );
-		endif;
+		endif;*/
 
 		if ( 0 == $filesize ) :
 			@unlink( $upload['file'] );
@@ -114,7 +116,7 @@ class File
 		$attachment_id = wp_insert_attachment( $attachment, $file );
 		
 		if ( ! is_wp_error( $attachment_id ) ) :
-			wp_update_attachment_metadata( $attachment_id, wp_generate_attachment_metadata( $attachment_id, $file ) );
+			\wp_update_attachment_metadata( $attachment_id, \wp_generate_attachment_metadata( $attachment_id, $file ) );
 		endif;
 		
 		return $attachment_id;
