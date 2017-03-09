@@ -33,16 +33,19 @@ class Suggest extends Factory
 		$instance++;
 		
 		$defaults = array(
-			'id' 				=> 'tify_control_suggest-'. $instance,
-			'class'				=> '',
-			'name'				=> 'tify_control_suggest_term-'. $instance,
-			'value'				=> '',
-			'attrs'				=> array(),
-		    'before'            => '',
-		    'after'             => '',		    
-			'placeholder'		=> __( 'Votre recherche', 'tify' ),
-		    'readonly'          => false, 
-			'button_text'		=> '',
+			'id' 				  => 'tify_control_suggest-'. $instance,
+			'class'				  => '',
+			'name'				  => 'tify_control_suggest_term-'. $instance,
+			'value'				  => '',
+		    'field_text'          => '',
+			'attrs'				  => array(),
+		    'before'              => '',
+		    'after'               => '',		    
+			'placeholder'		  => __( 'Votre recherche', 'tify' ),
+		    'readonly'            => false, 
+		    'single'              => false,
+			'button_text'		  => '',
+		    'delete_button_text'  => '',
 			
 			// Options Autocomplete
 			/** @see http://api.jqueryui.com/autocomplete/ **/
@@ -69,18 +72,44 @@ class Suggest extends Factory
 		$query_args	= htmlentities( json_encode( $query_args ) );
 		$extras		= htmlentities( json_encode( $extras ) );
 		$options	= htmlentities( json_encode( $options ) );
-			
+		
+		$search_before = '<button type="button" class="tify_control_suggest_button tify_control_suggest_search">';
+		$search_after = '</button>';
+		if( ! $button_text ) :
+            $button_text = $search_before . '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 40 50" enable-background="new 0 0 40 40" xml:space="preserve" fill="#000000"><g><rect x="20.2" y="28.4" transform="matrix(0.7071 0.7071 -0.7071 0.7071 30.809 -12.7615)" width="21.3" height="4.7"/><path d="M4.6,4.6c-6.1,6.1-6.1,15.9,0,22s15.9,6.1,22,0s6.1-15.9,0-22S10.6-1.5,4.6,4.6z M23.2,23.4   c-4.2,4.2-11.1,4.2-15.3,0s-4.2-11.1,0-15.3s11.1-4.2,15.3,0S27.4,19.2,23.2,23.4z"/></g></svg>' . $search_after;
+		else :
+		    $button_text = $search_before . $button_text .$search_after;
+        endif;
+		if( $single ) :
+		    if( $value ) :
+		        $class .= ' selected';
+		        $readonly = true;
+		    endif;
+	        $delete_button_before = '<button type="button" class="tify_control_suggest_button tify_control_suggest_delete">';
+		    $delete_button_after = '</button>';;
+            if( ! $delete_button_text ) :
+                $delete_button_text = $delete_button_before . '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 357 357"><polygon points="312.13 71.6 285.4 44.88 178.5 151.78 71.6 44.88 44.88 71.6 151.78 178.5 44.88 285.4 71.6 312.13 178.5 205.22 285.4 312.13 312.13 285.4 205.22 178.5 312.13 71.6"/></svg>' . $delete_button_after;
+    		else :
+    		    $delete_button_text = $delete_button_before . $delete_button_text .$delete_button_after;
+            endif;
+            $button_text .= $delete_button_text;
+        endif;
+        
+        $field_name = $single ? '' : "name=\"{$name}\"";
 		$output  = "";
 		$output .= "<div id=\"{$id}\" class=\"tify_control_suggest". ( $class ? ' '. $class : '' ) ."\"";
-		$output .= "data-tify_control_suggest=\"{$ajax_action}\" data-elements=\"{$elements}\" data-query_args=\"{$query_args}\" data-extras=\"{$extras}\" data-options=\"{$options}\" data-picker=\"{$picker}\"";
+		$output .= "data-tify_control_suggest=\"{$ajax_action}\" data-single=\"".(int)$single."\" data-elements=\"{$elements}\" data-query_args=\"{$query_args}\" data-extras=\"{$extras}\" data-options=\"{$options}\" data-picker=\"{$picker}\"";
 		foreach( (array) $attrs as $k => $v )
 			$output .= " {$k}=\"{$v}\"";
 		$output .= ">\n";
 		$output .= $before;
-		$output .= "\t<input type=\"text\" name=\"{$name}\" placeholder=\"{$placeholder}\" autocomplete=\"off\"". ( $readonly ? ' readonly' : '' ) ." value=\"{$value}\">\n";
-		$output .= "\t<button type=\"button\">{$button_text}</button>\n";
+		$output .= "\t<input type=\"text\" {$field_name} placeholder=\"{$placeholder}\" autocomplete=\"off\"". ( $readonly ? ' readonly' : '' ) ." value=\"" . ( $single ? $field_text : $value ) . "\">\n";
+		$output .= $button_text;
 		$output .= "\t<div class=\"tify_spinner\"><span></span></div>\n";
 		$output .= "\t<div id=\"{$id}_response\" class=\"tify_control_suggest_response\"></div>\n";
+		if( $single )
+		    $output .= "\t<input type=\"hidden\" class=\"tify_control_suggest_single_value\" name=\"{$name}\" value=\"{$value}\">";
+		$output .= "";
 		$output .= $after;
 		$output .= "</div>\n";
 		
