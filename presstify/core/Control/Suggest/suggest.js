@@ -1,14 +1,16 @@
 jQuery( document ).ready( function($){
 	$( document ).on( "keydown.autocomplete","[data-tify_control_suggest]",function(e){
 		$( this ).each( function(){
-			var action	 			= $(this).data( 'tify_control_suggest' ),
-				$spinner			= $(this).find( '.tify_spinner' );
+			var $this				= $(this),
+				action	 			= $this.data( 'tify_control_suggest' ),
+				single				= $this.data( 'single' ),
+				$spinner			= $this.find( '.tify_spinner' );
 			
-		var		query_args			= $(this).data( 'query_args' ),	
-				elements			= $(this).data( 'elements' ),
-				extras				= $(this).data( 'extras' ),
-				options				= $(this).data( 'options' ),
-				picker				= $(this).data( 'picker' ),
+		var		query_args			= $this.data( 'query_args' ),	
+				elements			= $this.data( 'elements' ),
+				extras				= $this.data( 'extras' ),
+				options				= $this.data( 'options' ),
+				picker				= $this.data( 'picker' ),
 				defaults = {
 					source		: function( request, response ){
 						$.post(	tify_ajaxurl, { action : action, term : request.term,  query_args : query_args, elements : elements, extras : extras }, function( data ){
@@ -40,6 +42,12 @@ jQuery( document ).ready( function($){
 						// $( 'autocompleteselector' ).on( "autocompletesearch", function( event, ui ) {} );
 					},
 					select		: function( event, ui ){
+						if( single ) {
+							event.preventDefault();
+							$this.addClass('selected');
+							$( '> input[type="text"]', $this ).val( $( "<div/>" ).html( ui.item.label ).text() ).prop( 'readonly', true );
+							$( '.tify_control_suggest_single_value', $this ).val( ui.item.value );
+						}
 						// $( 'autocompleteselector' ).on( "autocompleteselect", function( event, ui ) {} );					
 					}
 				};	
@@ -55,6 +63,14 @@ jQuery( document ).ready( function($){
 						.append( item.render )
 						.appendTo( ul );
 				};
+				
+			if( single ) {
+				$this.on( 'click', '.tify_control_suggest_delete', function(e) {
+					$this.removeClass( 'selected' ).html(); 
+					$( '> input[type="text"]', $this ).val('').prop( 'readonly', false );
+					$( '.tify_control_suggest_single_value', $this ).val('');
+				});
+			}
 		});
 	});
 });
