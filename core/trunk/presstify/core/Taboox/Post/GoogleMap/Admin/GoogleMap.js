@@ -353,11 +353,11 @@ jQuery(document).ready( function($){
 		// Nombre maximum de géocode par type
 		var max = ( attrs.type == 'main_marker' ) ? 1 : TabooxPostAdminGMap.marker_types[attrs.type].max;
 		// Vérifie si le nombre maximum de géocode pour ce type de marqueur est atteint
-		if( ! attrs.id && max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).size() >= parseInt( max ) ) ){
+		if( ! attrs.id && max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).length >= parseInt( max ) ) ){
 			alertDisplay( TabooxPostAdminGMap.maxTypeAttempt, { duration : 0 } );
 			hideMarkerEdit( );
 			return;
-		} else if(  max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).size() >= parseInt( max ) ) && ( $( '#'+ attrs.id ).find('.type').val() != attrs.type ) ){
+		} else if(  max > 0 && ( $( '#geocodes > ul > li .type[value="'+attrs.type+'"]', container ).length >= parseInt( max ) ) && ( $( '#'+ attrs.id ).find('.type').val() != attrs.type ) ){
 			alertDisplay( TabooxPostAdminGMap.maxTypeAttempt, { duration : 0 } );
 			hideMarkerEdit( );
 			return;
@@ -415,7 +415,7 @@ jQuery(document).ready( function($){
 				// Création du marqueur
 				} else {
 					// Ajout à la liste des géocodes
-					if( $( '#geocodes ul.'+resp.geocode_type ).size() )
+					if( $( '#geocodes ul.'+resp.geocode_type ).length )
 						var $closest = $( '#geocodes ul.'+resp.geocode_type, container  );
 					else
 						var $closest = $( '#geocodes > ul', container );

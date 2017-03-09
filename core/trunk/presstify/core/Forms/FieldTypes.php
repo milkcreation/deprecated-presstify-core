@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
-class FieldTypes
+class FieldTypes extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Liste des addons prédéfinis
@@ -56,7 +56,9 @@ class FieldTypes
 		if( ! isset( self::$Registered[$id] ) )
 			return;
 		
-		$item = new self::$Registered[$id]['callback']( self::$Registered[$id]['args'] );
+		$ClassName = self::getOverride( self::$Registered[$id]['callback'] );	
+			
+		$item = new $ClassName( self::$Registered[$id]['args'] );
 		$item->initField( $field );
 		
 		return $item;		

@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\Addons\CookieTransport;
 
 class CookieTransport extends \tiFy\Core\Forms\Addons\Factory

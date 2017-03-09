@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\tiFyCheckbox;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class tiFyCheckbox extends Factory
+class tiFyCheckbox extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

@@ -28,7 +28,7 @@ jQuery(document).ready( function($){
 		tify_taboox_image_gallery_frame.on( 'select', function() {
 			var selection = tify_taboox_image_gallery_frame.state().get( 'selection' );
 			selection.map( function( attachment ) {
-				var order = $( 'li', $list ).size()+1;
+				var order = $( 'li', $list ).length+1;
 			 	attachment = attachment.toJSON();
 			 	html  = '<li>';
 			 	html += 	'<img src="'+ attachment.sizes['thumbnail'].url +'" />';

@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\TabooxOption;
 
-use tiFy\Core\Templates\Admin\Model\Form;
-
-class TabooxOption extends Form
+class TabooxOption extends \tiFy\Core\Templates\Admin\Model\Form
 {			
 	/* = ARGUMENTS = */
 	private $MenuSlug;
@@ -22,7 +20,7 @@ class TabooxOption extends Form
 		add_action( 'tify_taboox_register_node', array( $this, '_tify_taboox_register_node' ) );
 	}
 		
-	/* = PARAMETRAGE = */
+	/* = DECLARATION DES PARAMETRES = */
 	/** == Définition des sections de formulaire d'édition == **/
 	public function set_sections()
 	{
@@ -66,9 +64,30 @@ class TabooxOption extends Form
 		endforeach;
 	}
 	
+	/* = CONTROLEURS = */
+	/** == Récupération du Hookname == **/
+	final public function getHookname()
+	{
+	   return $this->Hookname;   
+	}
+	
+	/** == Récupération du MenuSlug == **/
+	final public function getMenuSlug()
+	{
+	   return $this->MenuSlug;   
+	}
+	
 	/* = TRAITEMENT = */
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions(){}
+	
+    /** == Préparation de l'édition == **/
+	public function prepare_item()
+	{
+		/// Vérification des habilitations
+		if( ! current_user_can( $this->Cap ) )
+			wp_die( __( 'Vous n\'êtes pas autorisé à modifier ce contenu.', 'tify' ) );
+	}
 	
 	/* = VUES = */	
 	/** == Rendu == **/
@@ -81,8 +100,8 @@ class TabooxOption extends Form
 			<form method="post" action="options.php">
 				<div style="margin-right:300px; margin-top:20px;">
 					<div style="float:left; width: 100%;">
-						<?php \settings_fields( $this->MenuSlug );?>	
-						<?php \do_settings_sections( $this->MenuSlug );?>
+						<?php \settings_fields( $this->getMenuSlug() );?>	
+						<?php \do_settings_sections( $this->getMenuSlug() );?>
 					</div>					
 					<div style="margin-right:-300px; width: 280px; float:right;">
 						<div id="submitdiv">

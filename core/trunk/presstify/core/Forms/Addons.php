@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
-class Addons
+class Addons extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Configuration
@@ -48,8 +48,9 @@ class Addons
 		if( ! isset( self::$Registered[$id] ) )
 			return;
 		
-		// Instanciation de l'addon	
-		$item = new self::$Registered[$id]['callback']( self::$Registered[$id]['args'] );
+		// Instanciation de l'addon
+	   	$ClassName = self::getOverride( self::$Registered[$id]['callback'] );			
+		$item = new $ClassName( self::$Registered[$id]['args'] );
 		$item->_initForm( $form, $attrs );
 		
 		// Mise à jour de la liste des formulaires actifs par addon

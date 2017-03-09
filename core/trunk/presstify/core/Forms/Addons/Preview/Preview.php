@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\Addons\Preview;
 
-use tiFy\Core\Forms\Addons\Factory;
-
-class Preview extends Factory
+class Preview extends \tiFy\Core\Forms\Addons\Factory
 {
 	/* = ARGUMENTS = */
 	public	// Configuration

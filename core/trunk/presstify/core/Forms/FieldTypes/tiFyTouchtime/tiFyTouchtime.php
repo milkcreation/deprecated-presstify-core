@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\tiFyTouchtime;
 
 class tiFyTouchtime extends \tiFy\Core\Forms\FieldTypes\Factory

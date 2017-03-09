@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Textarea;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class Textarea extends Factory
+class Textarea extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

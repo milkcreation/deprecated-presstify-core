@@ -1,5 +1,9 @@
 <?php
 /**
+ * @Overridable 
+ */
+
+/**
  * Exemple d'options de champs :
  * #1
  	'add-ons'		=> array(

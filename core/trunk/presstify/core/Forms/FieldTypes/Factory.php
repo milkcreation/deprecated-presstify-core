@@ -3,9 +3,8 @@ namespace tiFy\Core\Forms\FieldTypes;
 
 use tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\Form\Helpers;
-use tiFy\Environment\App;
 
-abstract class Factory extends App
+abstract class Factory extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Configuration
@@ -36,7 +35,7 @@ abstract class Factory extends App
 		
 	/* = PARAMETRAGE = */
 	/** == Initialisation du type de champ pour un champ de formulaire == **/
-	final public function initField( $field )
+	public function initField( $field )
 	{
 		// Définition du champ de référence
 		$this->Field = $field;
@@ -56,7 +55,7 @@ abstract class Factory extends App
 	}
 	
 	/** == Définition des options == **/
-	final public function initOptions( $options )
+	public function initOptions( $options )
 	{
 		$this->Options = Helpers::parseArgs( $options, $this->Defaults );
 	}

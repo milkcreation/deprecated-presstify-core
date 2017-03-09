@@ -80,7 +80,7 @@
 	 	init : function( ){
 			var self = this;
 			
-			if( ! $('section.active', self.$el ).size() )
+			if( ! $('section.active', self.$el ).length )
 				self.$target = $( 'section:first', self.$el ).addClass('active');
 			// Ecoute des actions sur la galerie
 			self._listen( );
@@ -121,7 +121,7 @@
 				if( $(target).hasClass('active') )
 					return false;
 				self.$target = $( target );
-				if( ! self.$target.size() )
+				if( ! self.$target.length )
 					return false;
 									
 				self.o.before( self.$target, self );
@@ -163,7 +163,7 @@
 			if( self.$el.is(':animated') )
 				return false;
 			
-			if( ! $('section.active', self.$el ).size() ){
+			if( ! $('section.active', self.$el ).length ){
 				if( ! self.o.cycle ) return false;
 				self.$target = $('section:last');					
 			} else if( $('section.active', self.$el ).is(':first-child') ){
@@ -182,7 +182,7 @@
 			// Bypass : animation en cours
 			if( self.$el.is(':animated') )
 				return false;
-			if( ! $('section.active', self.$el ).size() ){
+			if( ! $('section.active', self.$el ).length ){
 				if( ! self.o.cycle ) return false;
 				self.$target = $('section:first');
 			} else if( $('section.active', self.$el ).is(':last-child') ){
@@ -207,7 +207,7 @@
 		_resize : function(){
 			var self = this;
 			$(window).resize( function(e){
-				if( $( 'section.active', self.$el ).size() )
+				if( $( 'section.active', self.$el ).length )
 					self.$el.css({ 'margin-top' : - $( 'section.active', self.$el ).position().top+'px' });
 			});
 		}				

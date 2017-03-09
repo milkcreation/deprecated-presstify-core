@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Checkbox;
 
 class Checkbox extends \tiFy\Core\Forms\FieldTypes\Factory

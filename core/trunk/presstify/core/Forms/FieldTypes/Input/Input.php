@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Input;
 
 use tiFy\Core\Forms\FieldTypes\Factory;

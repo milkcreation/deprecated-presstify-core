@@ -2,9 +2,8 @@
 namespace tiFy\Core\Forms;
 
 use tiFy\tiFy;
-use tiFy\Environment\Core;
 
-class Forms extends Core
+class Forms extends \tiFy\Environment\Core
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
@@ -80,13 +79,7 @@ class Forms extends Core
 	{
 		if( ! is_admin() )
 			$this->registration();
-		
-		foreach( self::getList() as $form ) :
-			self::setCurrent( $form );
-			$form->getForm()->handle()->proceed();
-			self::resetCurrent();
-		endforeach;
-		
+				
 		do_action( 'tify_form_loaded' );
 	}
 		

@@ -1,10 +1,9 @@
 <?php
 namespace tiFy\Core\Taboox\Option\ContentHook\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
 use tiFy\Core\Taboox\Option\ContentHook\Admin\ContentHook as Admin;
 
-class ContentHook extends Helpers
+class ContentHook extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Identifiant des fonctions
@@ -23,9 +22,11 @@ class ContentHook extends Helpers
 	}
 	
 	/* = Récupération = */
-	public static function Get( $hook_id )
+	public static function Get( $hook_id, $default = 0 )
 	{
-		if( ! empty( Admin::$Registered[$hook_id]['selected'] ) )
+	    if( ! empty( Admin::$Registered[$hook_id]['selected'] ) )
 			return Admin::$Registered[$hook_id]['selected'];
+		
+		return $default;
 	}
 }

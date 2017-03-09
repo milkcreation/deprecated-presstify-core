@@ -78,12 +78,4 @@ namespace
 		
 		call_user_func_array( $replacement, func_get_args() );
 	}
-	
-	/** == 0.2.151201 == **/
-	function tify_controls_enqueue(){
-		$replacement = 'tify_control_enqueue';
-		_deprecated_function( __FUNCTION__, '0.2.151201', $replacement );	
-		
-		call_user_func_array( $replacement, func_get_args() );	
-	}
 }

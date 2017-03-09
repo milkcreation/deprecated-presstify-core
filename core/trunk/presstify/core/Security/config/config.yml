@@ -1,0 +1,10 @@
+login_redirect:
+  enabled:        false
+  
+  endpoints:
+    login:         'tify_login'  
+    logout:        'tify_logout'
+    resetpass:     'tify_resetpass'
+    lostpassword:  'tify_lostpassword'
+    register:      'tify_register'
+    postpass:      'tify_postpass'

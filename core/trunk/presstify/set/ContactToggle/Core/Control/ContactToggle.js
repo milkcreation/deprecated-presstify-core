@@ -13,7 +13,7 @@ jQuery(document).ready(function($){
 			success:	function( resp )
 			{
 				if( resp.success ){
-					$( '[data-role="tiFyModal"][data-id="'+ target +'"' )
+					$( '[data-role="tiFyModal"][data-id="'+ target +'"]' )
 						.find( '.modal-body' ).html( resp.data ).end()
 						.modal( 'show' );
 				}

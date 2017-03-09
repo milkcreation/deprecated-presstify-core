@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\Addons\Mailer;
 
 use tiFy\Lib\Mailer\Mailer as tiFyMailer;

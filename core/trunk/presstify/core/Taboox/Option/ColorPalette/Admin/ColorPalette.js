@@ -5,7 +5,7 @@ jQuery(document).ready(function($){
 	$(document).on('click', '.tify_taboox-color_palette .tify_theme_color-add', function( e ){
 		e.preventDefault();
 		var $container 	= $(this).closest( '.tify_taboox-color_palette' );
-		var index		= $( '> ul > li', $container ).size();
+		var index		= $( '> ul > li', $container ).length;
 		var name		= $container.data( 'name' );
 		$.post( tify_ajaxurl, { action : 'tify_taboox_color_palette', name : name, index : index }, function(resp){
 			$( '> ul', $container ).append( resp );
