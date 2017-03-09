@@ -17,7 +17,7 @@ jQuery(document).ready( function($){
 		var $target = $(this).prev();
 		
 		
-		if( ( $( '> li',  $gallery ).size() >= tify.max ) && ( tify.max >= 0 ) ){						
+		if( ( $( '> li',  $gallery ).length >= tify.max ) && ( tify.max >= 0 ) ){						
 			alert( tify.l10nMax );
 			return false;
 		}
@@ -35,7 +35,7 @@ jQuery(document).ready( function($){
 		threesixty_view_frame.on( 'select', function() {
 			// Déclarations des variables
 			var selection = threesixty_view_frame.state().get('selection'),
-				order = $( '> li', $target ).size()+1,
+				order = $( '> li', $target ).length+1,
 				count = 0,
 				array = new Array(),
 				current_elem = 0,

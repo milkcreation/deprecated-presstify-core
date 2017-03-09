@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Html;
 
 use tiFy\Core\Forms\FieldTypes\Factory;

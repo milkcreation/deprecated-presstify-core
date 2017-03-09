@@ -60,7 +60,7 @@ abstract class Form
         endif;
     }	
 	
-	/* = PARAMETRAGE = */
+	/* = DECLARATION DES PARAMETRES = */
     /** == Définition de l'url d'affichage de la liste des éléments == **/
     public function set_list_base_url()
     {
@@ -162,8 +162,7 @@ abstract class Form
 
 		return false;
 	}
-	
-	/* = PARAMETRAGE = */	
+		
 	/** == Préparation de l'object à éditer == **/
 	public function prepare_item()
 	{

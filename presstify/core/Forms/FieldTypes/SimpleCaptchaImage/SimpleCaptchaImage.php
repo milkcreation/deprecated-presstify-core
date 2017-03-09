@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\SimpleCaptchaImage;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class SimpleCaptchaImage extends Factory
+class SimpleCaptchaImage extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

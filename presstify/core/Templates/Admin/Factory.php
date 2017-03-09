@@ -1,8 +1,6 @@
 <?php
 namespace tiFy\Core\Templates\Admin;
 
-use \tiFy\Core\Templates\Admin\Admin;
-
 class Factory extends \tiFy\Core\Templates\Factory
 {
 	/* = ARGUMENTS = */
@@ -40,15 +38,16 @@ class Factory extends \tiFy\Core\Templates\Factory
 			return;
 			
 		// Instanciation de la classe
-		if(  ! $this->getAttr( 'cb' ) ) : 
+		if( ! $this->getAttr( 'cb' ) ) : 
 			$model = $this->getAttr( 'model' );		
 			$className = "\\tiFy\\Core\\Templates\\". ucfirst( $this->getContext() ) ."\\Model\\{$model}\\{$model}";
 		else :
-			$className = $this->getAttr( 'cb' );
+			$className = self::getOverride( $this->getAttr( 'cb' ) );
 		endif;
 
 		if( ! class_exists( $className ) )
 			return;
+					
 		$this->TemplateCb = new $className( $this->getAttr( 'args', null ) );
 
 		// Création des methodes dynamiques

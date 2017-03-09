@@ -6,6 +6,30 @@ use tiFy\Lib\Checker;
 
 class File
 {
+	/**
+     * Récupére l'url absolue d'un fichier ou d'un dossier du site
+     * @param $filename chemin relatif ou chemin absolue ou url du fichier
+     * @param $original_path chemin absolue de la racine  
+     **/
+	final public static function getFilenameUrl( $filename, $original_path = ABSPATH )
+	{
+		return site_url() . '/'.  self::getRelativeFilename( $filename, $original_path );
+	}
+	
+	/**
+     * Récupére le chemin relatif vers un fichier (ou un repertoire) depuis son chemin absolu
+     * @param $filename chemin relatif ou chemin absolue ou url du fichier
+     * @param $original_path chemin absolue de la racine
+     **/
+	final public static function getRelativeFilename( $filename, $original_path = ABSPATH ){
+		$filename = wp_normalize_path( $filename );
+		$original_path = wp_normalize_path( $original_path );
+
+		if( ( $path = preg_replace( '/'. preg_quote( $original_path, '/' ) .'/', '', $filename ) ) && file_exists( $original_path .'/'. $path ) ) :	
+			return ltrim( $path, '/' );
+		endif;
+	}
+	
 	/** 
 	 * Récupère le contenu d'un fichier
 	 * @param $filename chemin relatif ou chemin absolue ou url du fichier  

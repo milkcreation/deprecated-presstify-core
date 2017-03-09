@@ -97,6 +97,9 @@ class Field
 	/// Indice du champ
 	private $Index				= 0;
 		
+	/// Ordre d'affichage champ
+	private $Order				= 0;
+	
 	/* = CONSTRUCTEUR = */
 	public function __construct( \tiFy\Core\Forms\Form\Form $Form, $attrs = array() )
 	{
@@ -196,6 +199,18 @@ class Field
 	public function getIndex()
 	{
 		return $this->Index;	
+	}
+	
+	/** == Définition de l'ordre d'affichage du champ == **/
+	public function setOrder( $order = 0 )
+	{
+		$this->Order = $order;	
+	}
+	
+	/** == Récupération de l'ordre d'affichage du champ == **/
+	public function getOrder()
+	{
+		return $this->Order;	
 	}
 	
 	/** == Récupération de la liste des attributs de champ == **/
@@ -417,7 +432,7 @@ class Field
 		return $this->type()->isSupport( $support );
 	}
 	
-	/** == == **/
+	/** == Récupération des attributs d'un addon pour le champ == **/
 	public function getAddonAttr( $id, $attr, $default = '' )
 	{
 		if( isset( $this->Addons[$id] ) )
@@ -426,7 +441,7 @@ class Field
 		return $default;		
 	}
 	
-	/** == == **/
+	/** == Récupération des options == **/
 	public function getOptions()
 	{
 		return $this->type()->getOptions();
@@ -442,6 +457,18 @@ class Field
 	public function setOption( $option, $value )
 	{		
 		return $this->type()->setOption( $option, $value );
+	}
+	
+	/** == == **/
+	public function getNotices( $code )
+	{
+	    return $this->form()->notices()->getByData( $code, array( 'type' => 'field', 'slug' => $this->getSlug() ) );
+	}
+	
+    /** == == **/
+	public function getErrors()
+	{
+	    return $this->form()->notices()->getByData( 'error', array( 'type' => 'field', 'slug' => $this->getSlug() ) );
 	}
 	
 	/* = AFFICHAGE = */	

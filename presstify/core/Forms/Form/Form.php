@@ -1,6 +1,7 @@
 <?php
 namespace tiFy\Core\Forms\Form;
 
+use tiFy\Core\Forms\Forms;
 use tiFy\Core\Forms\Addons;
 use tiFy\Core\Forms\Buttons;
 
@@ -245,11 +246,18 @@ class Form
 		array_multisort( $groups, $orders, $positions );
 		
 		foreach( $positions as $pos ) :
+		    $fields[$pos]->setOrder( $pos+1 );
 			$this->Fields[] = $fields[$pos];
 		endforeach;
 	}
 	
 	/* = PARAMETRES = */
+	/** == Récupération de la classe de construction == **/
+	public function getFactory()
+	{
+		return Forms::get( $this->ID );
+	}
+	
 	/** == Récupération de l'ID du formulaire == **/
 	public function getID()
 	{

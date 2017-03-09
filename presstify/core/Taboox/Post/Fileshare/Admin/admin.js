@@ -28,7 +28,7 @@ jQuery(document).ready(function($){
 			 	attachment = attachment.toJSON();
 				var html = '';
 				var uid = uniqid();
-				var order = $( 'li', target ).size()+1;
+				var order = $( 'li', target ).length+1;
 				html += '<li>';
 				html += '<span class="icon"><img src="'+attachment.icon+'" /></span>';
 				html += '<span class="title">'+attachment.title+'</span>';

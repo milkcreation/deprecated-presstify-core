@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\tiFyTextRemaining;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class tiFyTextRemaining extends Factory
+class tiFyTextRemaining extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

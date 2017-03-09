@@ -1,10 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Taxonomy\Icon\Admin;
 
-use tiFy\Core\Taboox\Admin;
-use tiFy\Lib\Utils;
-
-class Icon extends Admin
+class Icon extends \tiFy\Core\Taboox\Admin
 {
 	/* = CHARGEMENT DE LA PAGE = */
 	public function current_screen( $current_screen )
@@ -35,7 +32,7 @@ class Icon extends Admin
 		$choices = array();
 		foreach( (array) glob( $this->args['dir']. '/*' ) as $filename ) :
 			$name 	= basename( $filename );
-			$url 	= Utils::get_rel_filename( $filename );
+			$url 	= \tiFy\Lib\File::getRelativeFilename( $filename );
 			
 			$choices[$name] = $url;			
 		endforeach;		

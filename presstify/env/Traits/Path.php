@@ -132,7 +132,7 @@ trait Path
 			$CalledClass = get_called_class();
 		
 		if( ! isset( self::$_Url[$CalledClass] ) ) :
-			self::$_Url[$CalledClass] = untrailingslashit( \tiFy\Lib\Utils::get_filename_url( self::getDirname( $CalledClass ), \tiFy\tiFy::$AbsPath ) );
+			self::$_Url[$CalledClass] = untrailingslashit( \tiFy\Lib\File::getFilenameUrl( self::getDirname( $CalledClass ), \tiFy\tiFy::$AbsPath ) );
 		endif;
 		
 		return self::$_Url[$CalledClass];
@@ -145,7 +145,7 @@ trait Path
 			$CalledClass = get_called_class();
 		
 		if( ! isset( self::$_RelPath[$CalledClass] ) ) :
-			self::$_RelPath[$CalledClass] = untrailingslashit( \tiFy\Lib\Utils::get_rel_filename( self::getDirname( $CalledClass ), \tiFy\tiFy::$AbsPath ) );
+			self::$_RelPath[$CalledClass] = untrailingslashit( \tiFy\Lib\File::getRelativeFilename( self::getDirname( $CalledClass ), \tiFy\tiFy::$AbsPath ) );
 		endif;
 		
 		return self::$_RelPath[$CalledClass];

@@ -3,13 +3,7 @@ namespace tiFy\Lib;
 
 class Utils
 {
-	/** == FICHIERS == **/
-	/*** === Récupére l'url absolue d'un fichier ou d'un dossier du site === ***/
-	final public static function get_filename_url( $filename, $original_path = ABSPATH )
-	{
-		return site_url() . '/'.  self::get_rel_filename( $filename, $original_path );
-	}
-	
+	/** == FICHIERS == **/	
 	/*** === Récupére le chemin relatif vers un fichier (ou un repertoire) depuis son chemin absolu === ***/
 	final public static function get_rel_filename( $filename, $original_path = ABSPATH ){
 		$filename = wp_normalize_path( $filename );

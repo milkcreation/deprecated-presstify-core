@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Password;
 
 use tiFy\Core\Forms\FieldTypes\Factory;

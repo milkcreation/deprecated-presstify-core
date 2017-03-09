@@ -50,7 +50,7 @@ final class tiFy
 		// Définition des chemins
 		self::$AbsPath = ( $AbsPath ) ? $AbsPath : ABSPATH;
 		self::$AbsDir = dirname( __FILE__ );
-		self::$AbsUrl = \tiFy\Lib\Utils::get_filename_url( self::$AbsDir, self::$AbsPath );
+		self::$AbsUrl = \tiFy\Lib\File::getFilenameUrl( self::$AbsDir, self::$AbsPath );
 
 		// Instanciation du coeur
 		self::classLoad( 'tiFy\Core', __DIR__ .'/core', 'Autoload' );

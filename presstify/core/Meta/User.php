@@ -13,8 +13,8 @@ final class User
 	/* = CONSTRUCTEUR = */
 	public function __construct()
 	{
-		add_action( 'profile_update', array( $this, 'Save' ), 10 );
-		add_action( 'user_register', array( $this, 'Save' ), 10 );
+		add_action( 'profile_update', array( $this, 'Save' ) );
+		add_action( 'user_register', array( $this, 'Save' ) );
 	}
 	
 	/* = DECLARATION = */

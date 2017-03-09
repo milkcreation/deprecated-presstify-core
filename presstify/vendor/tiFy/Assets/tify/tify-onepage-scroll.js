@@ -87,7 +87,7 @@
 		_current : function(){
 			var self = this;
 			
-			if( $( '[data-tify-onepage-scroll="section"].active', self.$el ).size() ){
+			if( $( '[data-tify-onepage-scroll="section"].active', self.$el ).length ){
 				self.$target = $( '[data-tify-onepage-scroll="section"].active', self.$el );
 			} else {
 				var scrollTop = $(window).scrollTop();
@@ -140,7 +140,7 @@
 				if( $(target).hasClass('active') )
 					return false;
 				self.$target = $( target );
-				if( ! self.$target.size() )
+				if( ! self.$target.length )
 					return false;
 								
 				self.o.before( self.$target, self );
@@ -191,7 +191,7 @@
 			if( self.$el.is(':animated') )
 				return false;
 			
-			if( ! $( '[data-tify-onepage-scroll="section"].active', self.$el ).size() ){
+			if( ! $( '[data-tify-onepage-scroll="section"].active', self.$el ).length ){
 				if( ! self.o.cycle ) return false;
 				self.$target = $('[data-tify-onepage-scroll="section"]:last');					
 			} else if( $('[data-tify-onepage-scroll="section"].active', self.$el ).is(':first-child') ){
@@ -210,7 +210,7 @@
 			// Bypass : animation en cours
 			if( self.$el.is(':animated') )
 				return false;
-			if( ! $( '[data-tify-onepage-scroll="section"].active', self.$el ).size() ){
+			if( ! $( '[data-tify-onepage-scroll="section"].active', self.$el ).length ){
 				if( ! self.o.cycle ) return false;
 				self.$target = $( '[data-tify-onepage-scroll="section"]:first');
 			} else if( $( '[data-tify-onepage-scroll="section"].active', self.$el ).is(':last-child') ){

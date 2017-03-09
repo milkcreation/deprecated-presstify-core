@@ -26,7 +26,7 @@ class Autoload extends \tiFy\Environment\Core
 		new Capabilities;		
 		new Meta\Meta;		
 		new Params;
-		new ScriptLoader\ScriptLoader;
+		new ScriptLoader\ScriptLoader;		
 	}
 	
 	
@@ -43,5 +43,6 @@ class Autoload extends \tiFy\Environment\Core
 		new Upload\Upload;
 		/// Formulaires
 		new Forms\Forms;
+		new Security\Security;
 	}
 }

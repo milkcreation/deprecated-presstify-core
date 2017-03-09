@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\Addons\AjaxSubmit;
 
-use tiFy\Core\Forms\Addons\Factory;
-
-class AjaxSubmit extends Factory
+class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
 {
 	/* = CONSTRUCTEUR = */
 	public function __construct()

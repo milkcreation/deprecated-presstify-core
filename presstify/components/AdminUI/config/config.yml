@@ -40,25 +40,19 @@ remove_support_page:
 # Suppression des boîtes de saisie
 ## Suppression des boîtes de saisie du tableau de bord
 remove_dashboard_meta_box:
-
 # ex: [ 'recent_comments', 'incoming_links', 'plugins', 'recent_drafts', 'activity', 'primary', 'secondary' ]
 
 ## Suppression des boîtes de saisie des articles
 remove_meta_box_post:
-
-# ex: [ 'authordiv', 'categorydiv', 'commentstatusdiv', 'commentsdiv', 'formatdiv', 'postcustom', 'postexcerpt', 'postimagediv', 'revisionsdiv', 'slugdiv', 'submitdiv', 'tagsdiv-post_tag', 'trackbacksdiv' ]
-# alt: { authordiv: 'normal', categorydiv: 'side', commentstatusdiv: 'normal', commentsdiv: 'normal', formatdiv: 'normal', postcustom: 'normal', postexcerpt: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side', tagsdiv-post_tag: 'side', trackbacksdiv: 'normal' }
+# ex: { authordiv: 'normal', categorydiv: 'side', commentstatusdiv: 'normal', commentsdiv: 'normal', formatdiv: 'normal', postcustom: 'normal', postexcerpt: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side', tagsdiv-post_tag: 'side', trackbacksdiv: 'normal' }
 
 ## Suppression des boîtes de saisie des pages
 remove_meta_box_page:
-
-# ex: [ 'authordiv', 'commentstatusdiv', 'commentsdiv', 'pageparentdiv', 'postcustom', 'postimagediv', 'revisionsdiv', 'slugdiv', 'submitdiv' ]
-# alt: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
+# ex: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
 
 ## Suppression des boîtes de saisie d'un type de post personnalisé (%%custom_post_type%%)
 # remove_meta_box_%%custom_post_type%% :
-# ex: [ 'authordiv', 'commentstatusdiv', 'commentsdiv', 'pageparentdiv', 'postcustom', 'postimagediv', 'revisionsdiv', 'slugdiv', 'submitdiv' ]
-# alt: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
+# ex: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
 
 #-------------------------------------------------------------------------------------------------------
 # Désactivation des interfaces commentaire

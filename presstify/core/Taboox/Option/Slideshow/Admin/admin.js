@@ -26,7 +26,7 @@ jQuery(document).ready( function($){
 			$container	= $target.closest( '.tify_taboox_slideshow' ),
 			action		= $container.data( 'action');
 
-		var count = $( '.items > ul > li', $container ).size();
+		var count = $( '.items > ul > li', $container ).length;
 		
 		if( ( tiFyTabooxOptionSlideshowAdmin.max > 0 ) && ( count == tiFyTabooxOptionSlideshowAdmin.max ) ){
 			alert( tiFyTabooxOptionSlideshowAdmin.l10nMax );

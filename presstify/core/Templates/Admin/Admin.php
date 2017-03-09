@@ -76,8 +76,10 @@ class Admin extends \tiFy\Environment\App
 		
 		// Déclaration des sous-menus
 		foreach( (array) $submenus as $parent_slug =>  $_submenus ) :
-			foreach( $_submenus as $k => $v ) 
-				$order[$k] = $v['position'];
+			foreach( $_submenus as $k => $v ) :
+				$order[$k] = (int) $v['position'];
+		    endforeach;
+
 			@array_multisort( $order, $_submenus );
 			
 			foreach( $_submenus as $position => $submenu ) :

@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Radio;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class Radio extends Factory
+class Radio extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

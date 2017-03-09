@@ -22,7 +22,7 @@ var tify_infinite_scroll_xhr, tify_infinite_scroll;
 				after		= $(this).data( 'after' ),
 				per_page 	= $(this).data( 'per_page' ),
 				template 	= $(this).data( 'template' ),
-				from 		= $( '> *', $target ).size();				
+				from 		= $( '> *', $target ).length;				
 				
 			tify_infinite_scroll_xhr = $.post( 
 				tify_ajaxurl,

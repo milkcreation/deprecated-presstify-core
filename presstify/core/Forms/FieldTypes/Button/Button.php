@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Button;
 
 class Button extends \tiFy\Core\Forms\FieldTypes\Factory

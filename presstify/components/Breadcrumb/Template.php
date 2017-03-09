@@ -171,7 +171,7 @@ class Template
 			self::addPart( $a );
 		endforeach;
 		
-		$part = array( 'url' => get_permalink(),'name' => static::titleRender( get_the_ID() ), 'title' => static::titleRender( get_the_ID() ) );
+		$part = array( 'url' => get_permalink(), 'name' => static::titleRender( get_the_ID() ), 'title' => static::titleRender( get_the_ID() ) );
 		self::addPart( $part );
 		
 		return apply_filters( 'tify_breadcrumb_is_attachment', $_ancestors . static::currentRender( $part ) );
@@ -206,7 +206,7 @@ class Template
 			self::addPart( $a );
 		endforeach;
 		
-		$part = array( 'url' => get_permalink(),'name' => static::titleRender( get_the_ID() ), 'title' => static::titleRender( get_the_ID() ) );
+		$part = array( 'url' => get_permalink(), 'name' => static::titleRender( get_the_ID() ), 'title' => static::titleRender( get_the_ID() ) );
 		self::addPart( $part );
 		
 		return apply_filters( 'tify_breadcrumb_is_single', $_ancestors . static::currentRender( $part ) );
@@ -222,8 +222,8 @@ class Template
 			endforeach;
 		endif;
 		
-		$part = array( 'title' => static::titleRender( get_the_ID() ) );
-		
+		$part = array( 'name' => static::titleRender( get_the_ID() ) );
+				
 		return apply_filters( 'tify_breadcrumb_is_page', $ancestors . static::currentRender( $part ) );
 	}
 	
@@ -232,7 +232,9 @@ class Template
 	{
  		$category = get_category( get_query_var( 'cat' ), false );
 		
-		return apply_filters( 'tify_breadcrumb_is_category', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Catégorie : %s</li>', $category->name ) );
+ 		$part = array( 'name' => sprintf( 'Catégorie : %s', $category->name ) );
+ 		
+		return apply_filters( 'tify_breadcrumb_is_category', static::currentRender( $part ) );
 	}
 
 	/** == Page de contenus associés à un mot-clef == **/
@@ -240,39 +242,43 @@ class Template
 	{
  		$tag = get_tag( get_query_var( 'tag' ), false );
 		
-		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Mot-Clef : %s</li>', $tag->name ) );
+ 		$part = array( 'name' => sprintf( 'Mot-Clef : %s', $tag->name ) );
+ 		
+		return apply_filters( 'tify_breadcrumb_is_tag', static::currentRender( $part ) );
 	}
 	
 	/** == Page de contenus associés à un auteur == **/
 	public static function is_author()
 	{
  		$author_name = get_author_name( get_query_var( 'author' ) );
+ 		
+ 		$part = array( 'name' => sprintf( 'Auteur : %s', $author_name ) );
 		
-		return apply_filters( 'tify_breadcrumb_is_tag', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">Auteur : %s</li>', $author_name ) );
+		return apply_filters( 'tify_breadcrumb_is_tag', static::currentRender( $part ) );
 	}
 	
 	/** == Page de contenus relatifs à une date == **/
 	public static function is_date()
 	{
 		if ( is_day() )
-			$name = sprintf( __( 'Archives du jour : %s', 'tify' ), get_the_date() );
+			$part = array( 'name' => sprintf( __( 'Archives du jour : %s', 'tify' ), get_the_date() ) );
 		elseif ( is_month() )  
-			$name = sprintf( __( 'Archives du mois : %s', 'tify' ), get_the_date( 'F Y' ) );
+			$part = array( 'name' => sprintf( __( 'Archives du mois : %s', 'tify' ), get_the_date( 'F Y' ) ) );
 		elseif ( is_year() )
-			$name = sprintf( __( 'Archives de l\'année : %s', 'tify' ), get_the_date( 'Y' ) );
+			$part = array( 'name' => sprintf( __( 'Archives de l\'année : %s', 'tify' ), get_the_date( 'Y' ) ) );
 		
-		return apply_filters( 'tify_breadcrumb_is_date', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_date', static::currentRender( $part ) );
 	}
 	
 	/** == Page de contenus == **/
 	public static function is_archive()
 	{
 		if( is_post_type_archive() ) :
-			$name = post_type_archive_title( '', false );
+			$part = array( 'name' => post_type_archive_title( '', false ) );
 		else :
-			$name = __( 'Actualités', 'tify' ); 
+			$part = array( 'name' => __( 'Actualités', 'tify' ) ); 
 		endif;
 			
-		return apply_filters( 'tify_breadcrumb_is_archive', sprintf( '<li class="tiFyBreadcrumb-Item tiFyBreadcrumb-Item--active">%s</li>', $name ) );
+		return apply_filters( 'tify_breadcrumb_is_archive', static::currentRender( $part ) );
 	}
 }

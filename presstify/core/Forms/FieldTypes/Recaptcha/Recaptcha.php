@@ -1,9 +1,10 @@
 <?php
+/**
+ * @Overridable 
+ */
 namespace tiFy\Core\Forms\FieldTypes\Recaptcha;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class Recaptcha extends Factory
+class Recaptcha extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant
@@ -70,7 +71,12 @@ class Recaptcha extends Factory
 		$resp = $recaptcha->verify( $_POST['g-recaptcha-response'], $_SERVER["REMOTE_ADDR"] );
 			
 		if ( ! $resp->isSuccess() )				   
-			$errors[] = __( "La saisie de la protection antispam est incorrect", 'tify' );
+			$errors[] = array( 
+			    'message'    => __( "La saisie de la protection antispam est incorrect", 'tify' ),
+			    'type'       => 'field',
+			    'slug'       => $field->getSlug(),
+			    'order'      => $field->getOrder()
+			);
 	}
 	
 	/* = CONTROLEURS = */
