@@ -40,13 +40,16 @@ final class CustomColumns extends Component
 		
 		// Récupérations des colonnes personnalisées déclarées en action
 		do_action( 'tify_custom_columns_register' );
+		
 		// Instanciation des colonnes personnalisées déclarées
 		foreach( array( 'post_type', 'taxonomy' ) as $env ) :
 			if( ! isset( self::$CustomColumns[$env] ) )
 				continue;
 			foreach( (array) self::$CustomColumns[$env] as $type => $custom_columns ) :
 				foreach( (array) $custom_columns as $cb => $args ) :
-					self::$Factories[$env][$type][] = new $cb( $args );			
+				    $FactoryClass = new $cb( $args );
+					self::$Factories[$env][$type][] = $FactoryClass;	
+			        call_user_func( array( $FactoryClass, 'admin_init' ) );
 				endforeach;
 			endforeach;
 		endforeach;

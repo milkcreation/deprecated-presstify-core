@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Components\DuplicatePost;
+namespace tiFy\Components\Duplicate\PostType;
 
 use \tiFy\Lib\File;
 
@@ -7,14 +7,23 @@ class Factory
 {
     /* = ARGUMENTS = */
     // Contenu d'origine
-    private $Source;
+    private $Input;
+    
+    // ID du Blog d'origine
+    private $InputBlogID;
     
     // Contenu de sortie 
-    private $Output;   
+    private $Output;
+    
+    // ID du Blog de sortie
+    private $OutputBlogID;
+    
+    /* = CONSTRUCTEUR = */
+    public function __construct(){}    
     
     /* = CONTROLEURS = */
     /** == Définition du contenu original == **/
-    final public function setSource( $post, $meta_keys = array() )
+    final public function setInput( $post, $meta_keys = array() )
     {
         if( is_int( $post ) ) :
             $post = get_post( $post, ARRAY_A );
@@ -26,23 +35,25 @@ class Factory
         
         // Bypass
         if( empty( $post['ID'] ) ) :
-            return new \WP_Error( 'tiFyDuplicatePost-InvalidSource', __( 'Impossible de récupérer le contenu original', 'tify' ) );
+            return new \WP_Error( 'tiFyDuplicatePost-InvalidInput', __( 'Impossible de récupérer le contenu original', 'tify' ) );
         endif;
         
         // Prétraitement des données
-        $this->Source = array();
+        $this->Input = array();
+        $this->InputBlogID = (int) get_current_blog_id();  
+        
         foreach( $post as $field_name => $field_value ) :
             if( method_exists( $this, 'set_field_' . $field_name ) ) :
-                $this->Source[$field_name] = call_user_func( array( $this, 'set_field_' . $field_name ), $field_value );
+                $this->Input[$field_name] = call_user_func( array( $this, 'set_field_' . $field_name ), $field_value );
             else :
-                $this->Source[$field_name] = call_user_func( array( $this, '_set_field_default' ), $field_value, $field_name );
+                $this->Input[$field_name] = call_user_func( array( $this, '_set_field_default' ), $field_value, $field_name );
             endif;
         endforeach;        
         
         // Metadonnées    
-        $this->Source['_meta'] = array();
+        $this->Input['_meta'] = array();
         if( ! empty( $meta_keys ) ) :
-            $metadatas = get_post_meta( $this->Source['ID'] );
+            $metadatas = get_post_meta( $this->Input['ID'] );
             if( ! empty( $meta_keys ) && is_array( $meta_keys ) ) :
                 $metadatas = array_intersect_key( $metadatas, array_flip( $meta_keys ) );
             endif;            
@@ -51,28 +62,34 @@ class Factory
             foreach( $metadatas as $meta_key => $meta_values ) :
                 foreach( $meta_values as $i => $meta_value ) :
                     if( method_exists( $this, 'set_meta_' . $meta_key ) ) :
-                        $this->Source['_meta'][$meta_key][$i] = call_user_func( array( $this, 'set_meta_' . $meta_key ), $meta_value );
+                        $this->Input['_meta'][$meta_key][$i] = call_user_func( array( $this, 'set_meta_' . $meta_key ), $meta_value );
                     else :
-                        $this->Source['_meta'][$meta_key][$i] = call_user_func( array( $this, '_set_meta_default' ), $meta_value, $meta_key );
+                        $this->Input['_meta'][$meta_key][$i] = call_user_func( array( $this, '_set_meta_default' ), $meta_value, $meta_key );
                     endif;
                 endforeach;
             endforeach;
          endif; 
          
-         return $this->Source;
+         return $this->Input;
     }
     
     /** == Récupération du contenu original == **/
-    final public function getSource()
+    final public function getInput()
     {
-        return $this->Source;
+        return $this->Input;
+    }
+    
+    /** == Récupération de l'ID du blog d'origine == **/
+    final public function getInputBlogID()
+    {
+        return (int) $this->InputBlogID;
     }
     
     /** == Récupération des métadonnées du contenu original == **/
-    final public function getSourceMeta()
+    final public function getInputMeta()
     {
-        return $this->Source['_meta'];
-    }
+        return $this->Input['_meta'];
+    }    
         
     /** == Récupération du contenu de sortie == **/
     final public function getOutput( $args = array() )
@@ -80,7 +97,7 @@ class Factory
         $this->Output = array();
         
         // Données principales
-        foreach( $this->getSource() as $field_name => $field_value ) :
+        foreach( $this->getInput() as $field_name => $field_value ) :
             if( method_exists( $this, 'field_' . $field_name ) ) :
                 $this->Output[$field_name] = call_user_func( array( $this, 'field_' . $field_name ), $field_value );
             else :
@@ -91,10 +108,16 @@ class Factory
         // Métadonnées
         $this->Output['_meta'] = array();
         if( ! empty( $args['meta'] ) ) :
-            $this->Output['_meta'] = $this->getSourceMeta();           
+            $this->Output['_meta'] = $this->getInputMeta();           
         endif;        
                 
         return $this->Output;
+    }
+    
+    /** == Récupération de l'ID du blog de sortie == **/
+    final public function getOutputBlogID()
+    {
+        return (int) $this->OutputBlogID;
     }
     
     /** == Duplication == **/
@@ -102,14 +125,23 @@ class Factory
     {                         
         extract( $args );
         
-        $results = array();
-          
-        foreach( $blog as $blog_id ) :
+        if( is_string( $blog ) ) :
+            $blog_ids = array_map( 'absint', explode( ',', $blog ) );
+        elseif( is_int( $blog ) ) :
+            $blog_ids = array( $blog );
+        else :
+            $blog_ids = array( (int) get_current_blog_id() );
+        endif;
+        
+        $results = array();          
+        foreach( $blog_ids as $blog_id ) :
             if( $blog_id !== get_current_blog_id() ) :
                 if( ! switch_to_blog( $blog_id ) ) :
                     continue;
                 endif;
             endif;
+            
+            $this->OutputBlogID = $blog_id;
             
             // Récupération des données d'enregistrement
             $datas = $this->getOutput( $args );
@@ -142,51 +174,36 @@ class Factory
             
             // Traitement après la duplication de l'élément
             $this->afterDuplicateItem( $post_id );
+            
+            $this->OutputBlogID = 0;
         endforeach;
        
         return $results;
     }
     
     /** == Action au moment du traitement de l'élément duplique == **/
-    public function onDuplicateItem()
-    {
-        return;
-    } 
+    public function onDuplicateItem( $post_id ){} 
     
     /** == Action après la duplication de l'élément == **/
-    public function afterDuplicateItem()
-    {
-        return;
-    }
+    public function afterDuplicateItem( $post_id ){}
     
-    /* = DEFINITION DES DONNEES SOURCE = */
-    /** == Définition des données par défaut de la source == **/
+    /* = DEFINITION DES DONNEES ORIGINALES = */
+    /** == Définition des données originales == **/
     final private function _set_field_default( $field_value, $field_name )
     {
         return $field_value;
     }
     
-    /** == Définition des metadonnées de la source == **/
+    /** == Définition des metadonnées originales == **/
     final private function _set_meta_default( $meta_value, $meta_key )
     {
         return $meta_value;
     }
-    
-    /** == Définition de l'image à la une de la source == **/
+            
+    /** == Définition de l'image à la une originale == **/
     public function set_meta__thumbnail_id( $meta_value )
     {
-        if( $meta_value && $post = get_post( $meta_value ) ) :
-            $_meta = array(
-                'url'           => wp_get_attachment_url( $meta_value ),
-                'post_title'    => $post->post_title,
-                'post_content'  => $post->post_content,
-                'post_excerpt'  => $post->post_excerpt
-            );
-            return $_meta;
-        else :
-            return 0;
-        endif;
-        
+        return self::setInputMetaMedia( (int) $meta_value );
     }    
         
     /* = DEFINITION DES DONNEES D'ENREGISTREMENT = */
@@ -229,16 +246,38 @@ class Factory
     /** == Définition de l'image à la une à enregistrer == **/
     public function meta__thumbnail_id( $meta_value, $post_id )
     {
-        if( empty( $meta_value['url'] ) )
-            return $meta_value;
+        return self::setOutputMetaMedia( $meta_value, $post_id );
+    }
+        
+    /* = HELPERS = */
+    /** == Récupération des métadonnées du contenu original == **/
+    final public static function setInputMetaMedia( $attachment_id = 0 )
+    {
+        if( $attachment_id && ( $post = get_post( $attachment_id ) ) ) :
+            return array(
+                'url'           => wp_get_attachment_url( $attachment_id ),
+                'post_title'    => $post->post_title,
+                'post_content'  => $post->post_content,
+                'post_excerpt'  => $post->post_excerpt
+            );
+        else :
+            return 0;
+        endif;
+    }
+    
+    /** == Récupération des métadonnées du contenu original == **/
+    final public static function setOutputMetaMedia( $attrs = array(), $post_id )
+    {
+        if( empty( $attrs['url'] ) )
+            return $attrs;
         
         $attachment_id = File::importAttachment( 
-            $meta_value['url'], 
+            $attrs['url'], 
             array(
                 'post_parent'       => $post_id,
-                'post_title'        => ! empty( $meta_value['post_title'] )   ? $meta_value['post_title'] : '',
-                'post_content'      => ! empty( $meta_value['post_content'] ) ? $meta_value['post_content'] : '',
-                'post_excerpt'      => ! empty( $meta_value['post_excerpt'] ) ? $meta_value['post_excerpt'] : ''
+                'post_title'        => ! empty( $attrs['post_title'] )   ? $attrs['post_title'] : '',
+                'post_content'      => ! empty( $attrs['post_content'] ) ? $attrs['post_content'] : '',
+                'post_excerpt'      => ! empty( $attrs['post_excerpt'] ) ? $attrs['post_excerpt'] : ''
             )
         );
         if( ! is_wp_error( $attachment_id ) )
