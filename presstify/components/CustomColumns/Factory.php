@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns;
 
-use tiFy\Environment\App;
-
-abstract class Factory extends App
+abstract class Factory extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Configuration
@@ -45,7 +43,18 @@ abstract class Factory extends App
 		endswitch;
 	}
 	
-	/* = RÉCUPERATION DE LA CONFIGURATION = */
+	/* = DECLENCHEURS = */
+	/** == Initialisation de l'interface d'administration == **/
+	public function admin_init(){}
+	
+	/** == Chargement de la page courante == **/
+	public function current_screen( $current_screen ){}
+	
+	/** == Mise en file des scripts de l'interface d'administration == **/
+	public function admin_enqueue_scripts(){}
+		
+	/* = CONTROLEURS = */
+	/** == Récupération de la configuration == **/
 	final public function getConfig( $index = null )
 	{
 		if( ! $index ) :
@@ -96,27 +105,13 @@ abstract class Factory extends App
 				
 		call_user_func_array( array( $this, 'content' ), func_get_args() );
 	}
-		
-	/* = MÉTHODES PUBLIQUES = */
-	/* = DEFINITION DES ARGUMENTS PAR DEFAUT = */
+
+	/** == Récupération des arguments par défaut == **/
 	public function getDefaults()
 	{
 		return array();	
 	}
-			
-	/* = AFFICHAGE DU CONTENU DES CELLULES DE LA COLONNE = */
-	/* = CHARGEMENT DE LA PAGE COURANTE = */
-	public function current_screen( $current_screen )
-	{
-		
-	}
-	
-	/* = MISE EN FILE DES SCRIPTS DE L'INTERFACE D'ADMINISTRATION = */
-	public function admin_enqueue_scripts()
-	{
-		
-	}
-	
+
 	/** == Affichage des données de la colonne == **/
 	/*public function content()
 	{		

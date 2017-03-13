@@ -310,7 +310,8 @@ final class Taxonomy extends Factory
 				tify_taboox_register_node( 
 					$post_type, 
 					array(
-						'title'	=> get_taxonomy( $this->Archive )->label,
+					    'id'          => 'tiFyHooknameTaxonomy',  
+						'title'	      => get_taxonomy( $this->Archive )->label,
 	    				'cb'	=> "\\tiFy\\Components\\HookArchive\\Taboox\\Post\\TermSelector\\Admin\\TermSelector",
 	   					'args'	=> array(	
 	   						'taxonomy' 			=> $this->Archive, 
