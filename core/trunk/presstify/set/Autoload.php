@@ -34,7 +34,7 @@ class Autoload extends \tiFy\Environment\App
 		
 		// Instanciation
 		foreach( (array) self::$Registered as $ClassName ) :
-			$ClassName = tiFy::getOverride( $ClassName ); 
+			$ClassName = self::getOverride( $ClassName ); 
 			new $ClassName;
 		endforeach;
 	}

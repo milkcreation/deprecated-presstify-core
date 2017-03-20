@@ -5,7 +5,7 @@ final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
-	public static $Version			= '1.0.244';
+	public static $Version			= '1.0.248';
 
 	// Chemins absolue vers la racine de l'environnement
 	public static $AbsPath;
@@ -136,21 +136,5 @@ final class tiFy
 		if( isset( self::$Params['config'][$index] ) )
 			return self::$Params['config'][$index];
 		return $default;
-	}
-	
-	/** == == **/
-	public static function getOverride( $ClassName, $path = array() )
-	{
-		if( empty( $path ) ) :		     
-			$path[] = "\\". tiFy::getConfig( 'namespace' ) . '\\'. preg_replace( "#^\\\#", "", $ClassName );
-		endif;
-
-		foreach( $path as $override ) :
-			if( class_exists( $override ) && is_subclass_of( $override, $ClassName ) ) :
-				$ClassName = $override;
-			endif;
-		endforeach;
-		
-		return $ClassName;
 	}
 }

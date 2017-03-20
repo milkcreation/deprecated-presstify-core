@@ -3,27 +3,34 @@ namespace tiFy\Environment\Traits;
 
 trait Path
 {
-	/* = ARGUMENTS = */
+    /* = DEPRECATED = */
 	// Informations sur la classe
 	private $ReflectionClass;
 	
+	// Nom court de la classe
+	private $ClassShortName;
+	
 	// Chemin absolu vers le fichier de déclaration de la classe
 	private $Filename;
-	
-	// Url absolue vers  la racine de la classe
-	protected static $_Filename;
-		
+			
 	// Chemin absolu vers le dossier racine de la classe
 	private $Dirname;
-	
-	// Chemin absolu vers le dossier racine de la classe
-	protected static $_Dirname;
 
 	// Nom du dossier racine de la classe
 	private $Basename;	
 	
 	// Url absolue vers la racine de la classe
 	private $Url;
+	
+	/* = ARGUMENTS = */
+	// Url absolue vers  la racine de la classe
+	protected static $_ClassShortName;
+	
+	// Url absolue vers  la racine de la classe
+	protected static $_Filename;
+	
+	// Chemin absolu vers le dossier racine de la classe
+	protected static $_Dirname;
 	
 	// Url absolue vers la racine de la classe
 	protected static $_Url;
@@ -32,7 +39,7 @@ trait Path
 	protected static $_RelPath;
 	
 	// Liste des arguments pouvant être récupérés
-	private $GetPathAttrs		= array( 'ReflectionClass', 'Filename', 'Dirname', 'Basename', 'Url' );
+	private $GetPathAttrs		= array( 'ReflectionClass', 'ClassShortName', 'Filename', 'Dirname', 'Basename', 'Url' );
 	
 	/* = CONTRÔLEURS = */
 	/** == == **/
@@ -96,6 +103,20 @@ trait Path
 		endif;
 		
 		return false;
+	}
+	
+	/** == Récupération du nom court de la classe == **/
+	public static function classShortName( $CalledClass = null )
+	{
+		if( ! $CalledClass )
+			$CalledClass = get_called_class();
+		
+		if( ! isset( self::$_ClassShortName[$CalledClass] ) ) :
+			self::$_ClassShortName[$CalledClass] = ( new \ReflectionClass( $CalledClass ) )->getShortName();
+		      
+		endif;
+		
+		return self::$_ClassShortName[$CalledClass];
 	}
 	
 	/** == Récupération du répertoire de déclaration de la classe == **/

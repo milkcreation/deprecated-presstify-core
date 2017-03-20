@@ -47,28 +47,6 @@ class AjaxListTable extends \tiFy\Core\Templates\Front\Model\Table
 	
 	
 	/* = DECLENCHEURS = */
-	/** == Mise en file des scripts de l'interface d'administration == **/
-	final public function _wp_enqueue_scripts()
-	{		
-		return;
-		// Configuration	
-		wp_localize_script( 
-			'tiFyCoreFrontAjaxListTable',
-			'tiFyCoreFrontAjaxListTable', 
-			array(
-				'data'			=> $this->getDatatablesData(),	
-				'columns'		=> $this->getDatatablesColumns(),
-				'language'		=> array( 
-					'url' 		=> $this->getDatatablesLanguageUrl(),
-				),
-				'viewID'		=> $this->template()->getID(),
-				'total_items'	=> $this->get_pagination_arg( 'total_items' ),
-				'total_pages'	=> $this->get_pagination_arg( 'total_pages' ),
-				'per_page'		=> $this->get_pagination_arg( 'per_page' )
-			) 
-		);
-	}
-	
 	/** == Récupération Ajax des la liste des éléments  == **/
 	final public function wp_ajax_get_items()
 	{
