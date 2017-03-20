@@ -35,7 +35,7 @@ final class Lightbox extends Component
 		$args = wp_parse_args(
 			self::getConfig(),
 			array(
-				'theme'				=> 'base',
+				'theme'				=> 'dark',
 				'overlay'			=> true,	// Couleur de fond
 				'spinner'			=> true,	// Indicateur de chargement
 				'close_button'		=> true,	// Bouton de fermeture

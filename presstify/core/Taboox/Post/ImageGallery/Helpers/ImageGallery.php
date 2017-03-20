@@ -11,7 +11,7 @@ class ImageGallery extends \tiFy\Core\Taboox\Helpers
 	protected $Helpers 			= array( 'Has', 'Get', 'Display' );
     
 	// Instance
-	private static $Instance;	
+	protected static $Instance;	
 	
 	/* = CONSTRUCTEUR = */
 	public function __construct()

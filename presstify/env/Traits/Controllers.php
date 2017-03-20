@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Environment\Traits;
 
-use tiFy\tiFy;
+use tiFy\Lib\StdClass;
 
 trait Controllers
 {
@@ -9,36 +9,42 @@ trait Controllers
     // Controleurs
 	protected static $Controllers           = array();
     
-    /** == Récupération d'une classe de surcharge == **/
-    public static function getOverride( $ClassName, $path = array() )
-    {
-        return tiFy::getOverride( $ClassName, $path );
-    }
-    
-    /** == Chargement d'une classe de surcharge == **/
-    public static function loadOverride( $ClassName, $path = array() )
-    {
-        if( $ClassName =  tiFy::getOverride( $ClassName, $path ) )
-            return new $ClassName;
-    }
-    
-    /** == == **/
-    public static function setController( $id, $Class )
+	/* = CONTROLEURS = */
+    /** == Déclaration d'un contrôleur == **/
+    public static function setController( $id, $StdClass )
     {           
-        if( is_object( $Class) && get_class( $Class ) ) :
-        elseif( class_exists( $Class ) ) :
-            $Class = self::loadOverride( $Class );
+        if( is_object( $StdClass ) && get_class( $StdClass ) ) :
+        elseif( class_exists( $StdClass ) ) :
+            $Class = self::loadOverride( $StdClass );
         else :
             return;
         endif;
         
-        return self::$Controllers[$id] = $Class;
+        return self::$Controllers[$id] = $StdClass;
     }
     
-    /** ==  == **/
+    /** == Récupération d'un contrôleur == **/
     public static function getController( $id )
     {
         if( isset( self::$Controllers[$id] ) )            
             return self::$Controllers[$id];
     }
+    
+    /** == Formatage d'un nom de contrôleur == **/
+    public static function sanitizeControllerName( $classname )
+    {
+        return StdClass::sanitizeName( $classname );
+    }
+		
+    /** == Récupération d'une contrôleur de surcharge == **/
+    public static function getOverride( $classname, $path = array() )
+    {
+        return StdClass::getOverride( $classname, $path );
+    }
+    
+    /** == Chargement d'un contrôleur de surcharge == **/
+    public static function loadOverride( $classname, $path = array() )
+    {
+        return StdClass::loadOverride( $classname, $path );
+    }    
 }

@@ -33,9 +33,8 @@ jQuery( document ).ready( function($){
 	        {
 	    	   url: 		tify_ajaxurl,
 	    	   data: 		function ( d ) {
-	    	    	d = $.extend( d, filters, tiFyCoreAdminAjaxListTable.data );
-	    	    	console.log( d );
-	    	        return d;
+	    	    	d = $.extend( d, filters, { action: tiFyCoreAdminAjaxListTable.action_prefix +'_get_items' }, tiFyCoreAdminAjaxListTable.data );
+	    	    	return d;
 	    	    },
 	    	    dataType: 	'json', 
 	    	    method: 	'GET',
@@ -77,7 +76,7 @@ jQuery( document ).ready( function($){
 	    			
 	    			var value = parseInt( $( '.screen-per-page', $(this) ).val() )
 	    			
-	    			$.post( tify_ajaxurl, { action: tiFyCoreAdminAjaxListTable.viewID +'_per_page', per_page: value }, function(){
+	    			$.post( tify_ajaxurl, { action: tiFyCoreAdminAjaxListTable.action_prefix +'_per_page', per_page: value }, function(){
 	    				$( '#show-settings-link' ).trigger( 'click' );
 	    			});
 	    			

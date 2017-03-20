@@ -21,6 +21,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
 					'url' 		=> $this->getDatatablesLanguageUrl(),
 				),
 				'viewID'		=> $this->template()->getID(),
+			    'action_prefix' => $this->template()->getID() .'_'. self::classShortName(), 
 				'total_items'	=> $this->get_pagination_arg( 'total_items' ),
 				'total_pages'	=> $this->get_pagination_arg( 'total_pages' ),
 				'per_page'		=> $this->get_pagination_arg( 'per_page' )
@@ -32,9 +33,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
 	/** == == **/
 	public function getDatatablesData()
 	{
-		return array(
-			'action'		=> $this->template()->getID() .'_get_items'
-		);
+		return array();
 	}
 
 	/** == Définition du fichier de traduction == **/

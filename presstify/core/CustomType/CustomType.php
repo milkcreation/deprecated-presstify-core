@@ -78,8 +78,7 @@ class CustomType extends Core
 
 		foreach( (array) self::$PostTypes as $post_type => $args ) :
 			$args = $this->ParsePostTypeAttrs( $post_type, $args );
-			extract( $args );
-			
+            			
 			if( ! empty( $taxonomies ) )
 				$this->RegisterPostTypeTaxonomies( $post_type, $taxonomies );	
 			
@@ -89,10 +88,13 @@ class CustomType extends Core
 				'map_meta_cap', 'hierarchical', 'supports', 'register_meta_box_cb', /*'taxonomies',*/ 'has_archive',
 				'permalink_epmask', 'rewrite', 'query_var', 'can_export', 'show_in_rest', 'rest_base', 'rest_controller_class'
 			);
-			foreach( $allowed_args as $allowed_arg )
-				if( isset( $args[$allowed_arg] ) )
-					$post_type_args[$allowed_arg] = $args[$allowed_arg];
 
+			foreach( $allowed_args as $allowed_arg ) :
+				if( isset( $args[$allowed_arg] ) ) :
+					$post_type_args[$allowed_arg] = $args[$allowed_arg];
+			     endif;
+            endforeach;
+            
 			\register_post_type( 
 				$post_type, 
 				$post_type_args 
@@ -207,7 +209,9 @@ class CustomType extends Core
 		
 		if( ! isset( $args['labels'] ) )
 			$args['labels'] = array();	
+		
 		$labels = new \tiFy\Core\Labels\Factory( wp_parse_args( $args['labels'], array( 'singular' => $singular, 'plural' => $plural, 'gender' => $gender ) ) );
+		
 		$args['labels'] = $labels->Get();
 		
 		// Définition des arguments du type de post
@@ -223,7 +227,7 @@ class CustomType extends Core
 		$defaults['show_in_menu'] 			= true;
 		$defaults['show_in_admin_bar']		= true;
 		$defaults['menu_position'] 			= null;
-		$defaults['menu_icon'] 				= null;
+		$defaults['menu_icon'] 				= false;
 		$defaults['capability_type'] 		= 'page';
 		//$args['capabilities']			= array();
 		$defaults['map_meta_cap']			= null;
