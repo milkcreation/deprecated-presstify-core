@@ -12,7 +12,9 @@ abstract class Factory extends \tiFy\Environment\App
 	/* = CONSTRUCTEUR = */
 	public function __construct( $args = array() )
 	{
-		if( empty( $args['env'] ) || empty( $args['type'] ) )
+		parent::__construct();
+		
+	    if( empty( $args['env'] ) || empty( $args['type'] ) )
 			return;
 		
 		self::$Instance++;

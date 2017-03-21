@@ -317,7 +317,7 @@ abstract class Table extends \WP_List_Table
     public function admin_print_footer_scripts()
     {
        // Bypass
-       if( get_current_screen()->id !== $this->Screen->id )
+       if( ! $this->Screen  || ( get_current_screen()->id !== $this->Screen->id ) )
            return;
        
 ?><script type="text/javascript">/* <![CDATA[ */

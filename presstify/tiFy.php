@@ -5,7 +5,7 @@ final class tiFy
 {
 	/* = ARGUMENTS = */
 	// Version de PresstiFy
-	public static $Version			= '1.0.248';
+	public static $Version			= '1.0.249';
 
 	// Chemins absolue vers la racine de l'environnement
 	public static $AbsPath;
@@ -60,53 +60,19 @@ final class tiFy
 
 		// Instanciation des fonctions d'aides au développement
 		self::classLoad( 'tiFy\Helpers', __DIR__ .'/helpers', 'Autoload' );
-		
-		// Instanciation des fonctions d'aides au développement
-		self::classLoad( 'tiFy\Set', __DIR__ .'/set', 'Autoload' );
-		
-		// Instanciation des plugins
-		self::classLoad( 'tiFy\Plugins', TIFY_PLUGINS_DIR );
-		add_action( 'after_setup_tify', array( $this, 'load_plugins' ), 0 );
 				
 		// Chargement des traductions
 		add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 	}
 
-	/* = DECLENCHEURS = */
-	/** == Chargement des plugins == **/
-	public function load_plugins()
-	{
-		if( empty( static::$Params['plugins'] ) )
-			return;
-						
-		foreach( (array) array_keys( static::$Params['plugins'] ) as $plugin ) :
-			if( class_exists( $plugin ) ) :
-				$ClassName	= $plugin;
-			elseif( class_exists( "tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
-				$ClassName	= "tiFy\\Plugins\\{$plugin}\\{$plugin}";
-			else :
-				continue;
-			endif;
-			
-			/** 
-			 * @todo
-			$Override = tiFy::$Params['config']['namespace'] ."\\". $ClassName;
-			if( class_exists( $Override ) && is_subclass_of( $Override, $ClassName ) ) :
-				$ClassName = $Override;
-			endif;
-			 */
-			
-			new $ClassName;			
-		endforeach;
-	}
-	
+	/* = DECLENCHEURS = */	
 	/** == Initialisation globale == **/
 	public function load_textdomain()
 	{
 		return load_textdomain( 'tify', self::$AbsDir .'/languages/tify-' . get_locale() . '.mo' );
 	}
 	
-	/* = CONTROLEUR = */
+	/* = CONTROLEURS = */
 	/** == Chargement automatique des classes == **/
 	public static function classLoad( $namespace, $base_dir, $bootstrap = null )
 	{
