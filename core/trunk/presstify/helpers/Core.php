@@ -214,9 +214,9 @@ namespace
 	// --------------------------------------------------------------------------------------------------------------------------	
 	/* = PARAMS = */
 	/** == Définition dynamique de paramètre == **/
-	function tify_params_set( $type, $param, $value  )
+	function tify_params_set( $type, $param, $value, $merge = true )
 	{
-		return tiFy\Core\Params::set( $type, $param, $value );
+		return tiFy\Core\Params::set( $type, $param, $value, $merge );
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------

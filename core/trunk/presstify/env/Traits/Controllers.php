@@ -35,6 +35,12 @@ trait Controllers
     {
         return StdClass::sanitizeName( $classname );
     }
+    
+    /** == Récupération de l'espace de nom de surcharge == **/
+    public static function getOverrideNamespace()
+    {
+        return StdClass::getOverrideNamespace();
+    }
 		
     /** == Récupération d'une contrôleur de surcharge == **/
     public static function getOverride( $classname, $path = array() )

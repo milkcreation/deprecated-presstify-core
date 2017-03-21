@@ -19,13 +19,23 @@ class StdClass
         return $classname;
     }
     
+    
+    /** 
+     * = Récupération de l'espace de nom de surcharge = 
+     **/
+    public static function getOverrideNamespace()
+    {
+        if( ( $theme = tiFy::getConfig( 'theme' ) ) && ! empty( $theme['namespace'] ) ) 
+            return $theme['namespace'];
+    }
+    
     /** 
      * = Récupération d'une classe de surcharge = 
      **/
     public static function getOverride( $classname, $path = array() )
     {
         if( empty( $path ) ) :
-            $path[] = "\\". tiFy::getConfig( 'namespace' ) . '\\'. preg_replace( "#^\\\#", "", $classname );
+            $path[] = "\\". self::getOverrideNamespace() . '\\'. preg_replace( "#^\\\#", "", $classname );
         endif;
 
         foreach( (array) $path as $override ) :
