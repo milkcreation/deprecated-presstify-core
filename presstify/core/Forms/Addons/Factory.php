@@ -1,11 +1,10 @@
 <?php
 namespace tiFy\Core\Forms\Addons;
 
-use tiFy\Environment\App;
 use tiFy\Core\Forms\Addons;
 use tiFy\Core\Forms\Form\Helpers;
 
-class Factory extends App
+class Factory extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Configuration
