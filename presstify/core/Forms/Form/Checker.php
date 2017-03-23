@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Forms\Form;
 
-use tiFy\Lib\Checker as tiFyLibChecker;
-
-class Checker extends tiFyLibChecker
+class Checker extends \tiFy\Lib\Checker 
 {
 	/* = ARGUMENTS = */
 	// Paramètres

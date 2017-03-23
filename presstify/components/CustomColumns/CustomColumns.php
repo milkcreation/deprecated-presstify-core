@@ -86,7 +86,8 @@ final class CustomColumns extends Component
 	/** == Déclaration d'un colonne personnalisée == **/
 	public static function Register( $cb, $args = array(), $env, $type )
 	{
-		$args['env'] = $env; $args['type'] = $type;
+		$args = (array) $args;
+	    $args['env'] = $env; $args['type'] = $type;
 
 		if( \class_exists( $cb ) ) :
 			self::$CustomColumns[$env][$type][$cb] = $args;

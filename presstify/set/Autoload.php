@@ -5,22 +5,9 @@ use tiFy\tiFy;
 
 class Autoload extends \tiFy\Environment\App
 {
-    /* = ARGUMENTS = */
-    // Liste des actions à déclencher
-    protected $CallActions                = array(
-        'after_setup_tify'
-    );
-    
-    // Ordres de priorité d'exécution des actions
-    protected $CallActionsPriorityMap    = array(
-        'after_setup_tify' => 0    
-    );
-    
+    /* = ARGUMENTS = */   
     // Liste des jeux de fonctionnalités
     private static $Sets       = array();
-    
-    // Liste des jeux de fonctionnalité déclarés
-    private static $Registered = array();
     
     /* = DECLENCHEURS = */
     /** == Initialisation == **/
@@ -34,24 +21,26 @@ class Autoload extends \tiFy\Environment\App
             self::$Sets[$set_id] = $attrs;
         endforeach;
         
-        foreach( tiFy::getConfig( 'set', array() ) as $set_id => $attrs ) :
-            if( isset( self::$Sets[$set_id] ) )
-                continue;
-            
-            // Formatage de l'espace de nom
-            if( isset( $attrs['namespace'] ) )
-                $attrs['namespace'] = "\\". trim( $attrs['namespace'], "\\" ) ."\\";
-            // Formatage du point d'entrée unique
-            if( isset( $attrs['bootstrap'] ) )
-                $attrs['bootstrap'] = trim( $attrs['bootstrap'], "\\" );
-                                
-            if( empty( $attrs['cb'] ) && isset( $attrs['namespace'] ) && isset( $attrs['bootstrap'] ) ) :
-                $attrs['cb'] =  $attrs['namespace'] . $attrs['bootstrap'];
-            endif;
-
-            self::$Sets[$set_id] = $attrs;
-        endforeach;
+        if( $customs = tiFy::getConfig( 'set', array() ) ) :
+            foreach( $customs as $set_id => $attrs ) :
+                if( isset( self::$Sets[$set_id] ) )
+                    continue;
                 
+                // Formatage de l'espace de nom
+                if( isset( $attrs['namespace'] ) )
+                    $attrs['namespace'] = "\\". trim( $attrs['namespace'], "\\" ) ."\\";
+                // Formatage du point d'entrée unique
+                if( isset( $attrs['bootstrap'] ) )
+                    $attrs['bootstrap'] = trim( $attrs['bootstrap'], "\\" );
+                                    
+                if( empty( $attrs['cb'] ) && isset( $attrs['namespace'] ) && isset( $attrs['bootstrap'] ) ) :
+                    $attrs['cb'] =  $attrs['namespace'] . $attrs['bootstrap'];
+                endif;
+                               
+                self::$Sets[$set_id] = $attrs;
+            endforeach;
+        endif;   
+        
         // Instanciation
         $namespaces = array();
         if( isset( tiFy::$Params['set'] ) ) :
@@ -71,8 +60,12 @@ class Autoload extends \tiFy\Environment\App
                     continue;
                 
                 // @todo Personnaliser l'override
-                if( class_exists( $attrs['cb'] ) )
-                    self::loadOverride( $attrs['cb'] );            
+                if( class_exists( $attrs['cb'] ) ) :
+                    $path = ( isset( $attrs['bootstrap'] ) ) ? array( "\\". self::getOverrideNamespace() ."\\tiFy\\Set\\". $set_id ."\\".$attrs['bootstrap'] ) : array();
+                    $class = self::getOverride( $attrs['cb'], $path );    
+
+                    new $class;
+                endif;
             endforeach;
         endif;
     }  

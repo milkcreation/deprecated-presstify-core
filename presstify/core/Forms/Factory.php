@@ -22,10 +22,10 @@ class Factory
 	/** == Chargement complet des  formulaire == **/
 	final public function tify_form_loaded()
 	{
-	    Forms::setCurrent( $this );
+	    tify_control_enqueue( 'notices' );
 	    
-		$this->Form->handle()->proceed();
-		
+	    Forms::setCurrent( $this );	    
+		$this->Form->handle()->proceed();		
 		Forms::resetCurrent();
 	}
 	
@@ -39,7 +39,7 @@ class Factory
 	/** == Récupération d'un champs == **/
 	final public function getField( $field_slug )
 	{
-		return $this->Form->getField( $field_slug );
+		return $this->getForm()->getField( $field_slug );
 	}
 	
     /** == Traitement des variables de requête à la soumission == **/
@@ -71,7 +71,5 @@ class Factory
 			echo $output;
 		
 		return $output;
-	}
-	
-	
+	}	
 }

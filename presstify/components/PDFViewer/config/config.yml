@@ -1,0 +1,4 @@
+# MISE EN FILE AUTOMATIQUE DES SCRIPTS
+enqueue_scripts:        true
+# NAVIGATION
+navigation:             true

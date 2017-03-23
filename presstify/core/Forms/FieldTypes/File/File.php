@@ -80,8 +80,9 @@ class File extends \tiFy\Core\Forms\FieldTypes\Factory
     private function parseFileRequest()
     {
         // Bypass
-        if( empty( $_FILES[ $this->form()->getUID() ] ) )
-            return array();
+        if( empty( $_FILES[ $this->form()->getUID() ] ) ) :
+            return array(); 
+        endif;
         
         $files = $_FILES[ $this->form()->getUID() ];
         $pieces = array( 'name', 'type', 'tmp_name', 'error', 'size' );
@@ -135,7 +136,7 @@ class File extends \tiFy\Core\Forms\FieldTypes\Factory
 
     /* = COURT-CIRCUITAGE = */
     /** == Définition des paramètres du formulaire == **/
-    public function cb_form_set_attrs( &$form )
+    public function cb_form_set_attrs( $form )
     {
         $form->setAttr( 'enctype', 'multipart/form-data' );
     }    
@@ -146,11 +147,12 @@ class File extends \tiFy\Core\Forms\FieldTypes\Factory
         // Bypass
         if( $field !== $this->field() )
             return;
-
+        
         $value = $this->parseFileRequest();
-                
+     
         // Erreurs PHP
         $error = null;
+        
         if( ! empty( $value['error'] ) ) :
             switch ( $value['error'] ) :
                 case 1:

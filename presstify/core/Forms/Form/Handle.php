@@ -26,7 +26,7 @@ class Handle
     
     /** == == **/
     public function proceed()
-    {
+    {        
         // Bypass
         if( ! $nonce = $this->getQueryVar( $this->Form->getNonce() ) )
             return false;    
@@ -42,15 +42,15 @@ class Handle
         /// Vérification de la validité de la session existante
         if( ! $this->Form->transport()->getTransient() )
             wp_die( __( '<h2>Erreur lors de la soumission du formulaire</h2><p>Votre session de soumission de formulaire est invalide ou arrivée à expiration</p>', 'tify' ) );
-            
+             
         // Traitement des variables de requête
         if( ! $this->_parseQueryVars() )
             return;
-            
+           
         // Vérification des champs de formulaire
         if( ! $this->_checkQueryVars() )
             return;
-            
+       
         // Affichage du formulaire pour l'étape suivante
         //if( $this->master->steps->next() )
             //return;
@@ -75,7 +75,7 @@ class Handle
         $redirect = add_query_arg( $this->_redirectQueryArgs(), $this->getQueryVar( '_wp_http_referer', home_url('/') ) ); 
 
         // Court-cicuitage de la redirection    
-        //$this->Form->call( 'handle_redirect', array( &$redirect, $this ) );
+        $this->Form->call( 'handle_redirect', array( &$redirect ) );
 
         if( $redirect ) :
             //$this->reset_request();
@@ -152,18 +152,18 @@ class Handle
             
             $vars[ $field->getSlug() ] = $this->Form->getFactory()->parseQueryVar( $field->getSlug(), $value );
             
-            $field->setValue( $value );
+            $field->setValue( $vars[ $field->getSlug() ] );
         endforeach;
             
         $this->FieldsVars = $vars;
-
+        
         // Court-circuitage de la définition des valeur de champ
         $this->Form->call( 'handle_parse_query_fields_vars', array( &$this->FieldsVars, $fields, $this ) );
                 
         foreach( (array) $fields as $field ) :
             $field->setValue( $this->FieldsVars[ $field->getSlug() ] );
         endforeach;
-        
+   
         return $this->FieldsVars;
     }
         
@@ -253,8 +253,10 @@ class Handle
         //// Court-circuitage de la vérification d'intégrité d'un champ
         //Callbacks::call( 'handle_set_success', array( &success ) );
 
-        if( $success )
-            return $this->Form->transport()->updateTransient( array( 'success' => true ) );        
+        if( $success ) :
+            $this->QueryVars['success'] = $this->Form->transport()->getSession();
+            return $this->Form->transport()->updateTransient( array( 'success' => true ) );   
+        endif;
     }
     
     /** == == **/

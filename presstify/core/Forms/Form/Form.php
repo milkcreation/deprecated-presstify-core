@@ -115,7 +115,7 @@ class Form
 		$this->_setFields();
 		
 		// Court circuitage des attributs formulaire
-		$this->call( 'form_set_attrs', array( &$this ) );
+		$this->call( 'form_set_attrs', array( $this ) );
 	}
 				
 	/* = PARAMETRAGE = */
@@ -466,8 +466,8 @@ class Form
 		/// Court-circuitage du post-affichage du formulaire
 		//Callbacks::call( 'form_after_container_output_display', array( &$output, $this ) );	
 
-		// Court-circuitage des propriétés du formulaire avant son affichage
-		//Callbacks::call( 'form_after_display', array( &$this ) );
+		// Court-circuitage post-affichage
+		$this->call( 'form_after_display', array( $this ) );
 			
 		return $output;	
 	}

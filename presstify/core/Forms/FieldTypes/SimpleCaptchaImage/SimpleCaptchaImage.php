@@ -55,7 +55,7 @@ class SimpleCaptchaImage extends \tiFy\Core\Forms\FieldTypes\Factory
 	
 	/* = CALLBACKS = */		
 	/** == Attribut de champ requis obligatoire == **/
-	public function cb_field_set_params( &$field )
+	public function cb_field_set_params( $field )
 	{			
 		if( $field->getType() !==  'simple-captcha-image' )
 			return;
