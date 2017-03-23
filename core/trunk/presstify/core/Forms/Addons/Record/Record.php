@@ -67,7 +67,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 	);
 	
 	// Argument de base de données
-	private static $DbAttrs = array(
+	protected static $DbAttrs = array(
 		'install'		=> true,
 		'name'			=> 'tify_forms_record',
 		'columns'		=> array(
