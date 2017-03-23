@@ -135,6 +135,8 @@ final class ContactForm extends \tiFy\Environment\Component
 			),
 			'admin'			=> false
 		);		
+		if( ! isset ( $args['form']['add-ons'] ) )
+		  $args['form']['add-ons'] = array();
 		
 		if( isset( $args['form']['add-ons']['mailer'] ) && $args['form']['add-ons']['mailer'] === false ) :
 			unset( $args['form']['add-ons']['mailer'] );
@@ -143,6 +145,7 @@ final class ContactForm extends \tiFy\Environment\Component
 		elseif( isset( $args['form']['add-ons']['mailer'] ) ) :
 			$args['form']['add-ons']['mailer'] = wp_parse_args( $args['form']['add-ons']['mailer'], $mailer_defaults );
 		else :
+		    $args['form']['add-ons'] = (array) $args['form']['add-ons'];
 			$args['form']['add-ons']['mailer'] = $mailer_defaults;
 		endif;
 		

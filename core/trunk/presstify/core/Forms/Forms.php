@@ -63,7 +63,7 @@ class Forms extends \tiFy\Environment\Core
 	/** == Déclaration des formulaires == **/
 	final public function init()
 	{
-		if( is_admin() )
+		if( is_admin() && ! defined( 'DOING_AJAX' ) )
 			$this->registration();
 	}
 	
@@ -106,8 +106,8 @@ class Forms extends \tiFy\Environment\Core
 		else :
 			$attrs['ID'] = $id;
 		endif;
-		
-		$FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". self::getOverrideNamespace() ."\\tiFy\\Core\\Forms\\{$id}" ) );
+
+		$FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". self::getOverrideNamespace() ."\\tiFy\\Core\\Forms\\". self::sanitizeControllerName( $id ) ) );
 		$form = self::$Factories[$id] = new $FactoryClassName( $id, $attrs );
 		
 		return $form->getForm()->getID();

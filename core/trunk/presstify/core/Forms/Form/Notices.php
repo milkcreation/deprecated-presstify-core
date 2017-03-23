@@ -45,9 +45,8 @@ class Notices
         elseif( ! empty( $this->Attrs['success']['message'] ) ) :
             $MessagesMap['successful'] = $this->Attrs['success']['message'];
         endif;
-                
-        if( $this->Form->handle()->isSuccessful() )
-            $this->add( 'success', $MessagesMap['successful'] );
+
+        $this->add( 'success', $MessagesMap['successful'] );
     }
             
     /* = CONTROLEURS = */

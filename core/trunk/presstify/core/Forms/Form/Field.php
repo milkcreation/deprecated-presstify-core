@@ -128,9 +128,9 @@ class Field
 		
 		// Définition de la valeur du champ
 		$this->_setValue();
-				
+
 		// Court-circuitage des
-		$this->Form->call( 'field_set_params', array( &$this ) );
+		$this->Form->call( 'field_set_params', array( $this ) );
 	}
 		
 	/* = PARAMETRAGE = */
@@ -156,6 +156,7 @@ class Field
 		
 		foreach( (array) $this->form()->addons() as $id => $addon ) :
 			$this->Addons[$id] = $addon;
+		    
 			$addon->setField( $this, ( isset( $attrs[$id] ) ? (array) $attrs[$id] : array() ) );			
 		endforeach;
 	}

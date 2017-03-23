@@ -36,8 +36,8 @@ class tiFyTouchtime extends \tiFy\Core\Forms\FieldTypes\Factory
 		);
 		
 		/// Arguments imposés
-		$args['id'] 				= $this->getInputID();
-		$args['class']				= join( ' ', $this->getInputClasses() );
+		$args['container_id'] 				= $this->getInputID();
+		$args['container_class']	= join( ' ', $this->getInputClasses() );
 		$args['name']				= $this->field()->getDisplayName();
 		$args['value']				= $this->field()->getValue();
 		$args['attrs']['tabindex']	= $this->field()->getTabIndex();

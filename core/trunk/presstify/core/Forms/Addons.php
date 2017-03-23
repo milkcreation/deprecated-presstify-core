@@ -7,7 +7,7 @@ class Addons extends \tiFy\Environment\App
 	// Configuration
 	// Liste des addons prédéfinis
 	private static $Predefined					= array(
-		//'ajax_submit' 		=> 'AjaxSubmit', 
+		'ajax_submit' 		=> 'AjaxSubmit', 
 		'cookie_transport' 	=> 'CookieTransport', 
 		'mailer' 			=> 'Mailer', 
 		//'preview' 			=> 'Preview', 
