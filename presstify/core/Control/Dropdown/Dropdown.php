@@ -8,49 +8,53 @@ class Dropdown extends \tiFy\Core\Control\Factory
 	protected $ID = 'dropdown';
 	
 	// Instance Courante
-	static $Instance = 0;
+	protected static $Instance = 0;
 	
-	/* = INITIALISATION DE WORDPRESS = */
+	/* = DECLENCHEURS = */
+	/** == Initialisation de Wordpress == **/
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dropdown', $this->Url .'/Dropdown.css', array( ), '141212' );
-		wp_register_script( 'tify_control-dropdown', $this->Url .'/Dropdown.js', array( 'jquery' ), '141212', true );
+		wp_register_style( 'tify_control-dropdown', self::getUrl( get_class() ) .'/Dropdown.css', array( ), '141212' );
+		wp_register_script( 'tify_control-dropdown', self::getUrl( get_class() ) .'/Dropdown.js', array( 'jquery' ), '141212', true );
 	}
 	
-	/* = MISE EN FILE DES SCRIPTS = */
+	/** == Mise en file des scripts == **/
 	final public function enqueue_scripts()
 	{
 		wp_enqueue_style( 'tify_control-dropdown' );
 		wp_enqueue_script( 'tify_control-dropdown' );
 	}
 		
-	/* = AFFICHAGE = */
-	public static function display( $args = array() )
+	/* = CONTROLEURS = */
+	/** == Affichage == **/
+	public static function display( $args = array(), $echo = true )
 	{
 		self::$Instance++;
 		
 		$defaults = array(
 			// Conteneur
 			'id'				=> 'tify_control_dropdown-'. self::$Instance,
-			'class'				=> '',
-			'name'				=> '',		
-			'type'				=> 'single',	// @TODO single | multi
-			'attrs'				=> array(),
+			'class'				=> 'tify_control_dropdown',
+			'name'				=> 'tify_control_dropdown-'. self::$Instance,
+		    'attrs'				=> array(),
+		    
+		    // Valeur		    
+			'selected' 			=> 0,
+		    'choices'			=> array(),
+		    'show_option_none' 	=> __( 'Aucun', 'tify' ),
+			'option_none_value' => -1,
+			'disabled'			=> false,
+			
+		    // Options
+			'type'				=> 'single',	// @TODO single | multi			
+		    
 			// Liste de selection
 			'picker'			=> array(
 				'class'		=> '',
 				'append' 	=> 'body',
 				'position'	=> 'default', // default: vers le bas | top |  clever: positionnement intelligent
 				'width'		=> 'auto'
-			),				
-			
-			'choices'			=> array(),
-			'selected' 			=> 0,
-			'disabled'			=> false,
-			'show_option_none' 	=> __( 'Aucun', 'tify' ),
-			'option_none_value' => -1,
-				
-			'echo'				=> 1
+			)		
 		);
 		
 		$args = wp_parse_args( $args, $defaults );
@@ -68,18 +72,24 @@ class Dropdown extends \tiFy\Core\Control\Factory
 			)
 		);		
 		
-		if( is_string( $choices ) )
+		// Traitement de la liste des choix
+		if( is_string( $choices ) ) :
 			$choices = array_map( 'trim', explode( ',', $choices ) );
+		endif;
 		
-		// Ajout du choix aucun au début de la liste des choix
+		// Ajout du choix "aucun" en tête de la liste des choix
 		if( $show_option_none ) :
 			$choices = array_reverse( $choices, true );
 			$choices[$option_none_value] = $show_option_none;
 			$choices = array_reverse($choices, true);
 		endif;
 		
-		if( $show_option_none && ! $selected  )
+		// Traitement de la valeur sélectionnée
+		if( $show_option_none && ! $selected  ) :
 			$selected = $option_none_value;
+		elseif( ! $selected ) :
+		  $selected = current( $choices );
+		endif;
 		
 		// Selecteur de traitement
 		$output  = "";
@@ -102,16 +112,11 @@ class Dropdown extends \tiFy\Core\Control\Factory
 		$output .= "\t</span>\n";
 		$output .= "</div>\n";
 		
-		// Picker HTML
+		// Liste de selection HTML
 		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown-picker\" class=\"tify_control_dropdown-picker". ( $picker['class'] ? ' '. $picker['class'] : '' ) ."\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
 		$output .= "\t<ul>\n";	
 		foreach( (array) $choices as $value => $label ) :
-			$output .= "\t\t<li";
-			
-			if( ( ! empty( $selected ) && ! empty( $value ) && ( $selected == $value ) ) || ( $selected === $value ) ) :
-				 $output .= " class=\"checked\"";
-			endif;
-			$output .= ">\n";
+			$output .= "\t\t<li". ( $selected == $value ? " class=\"checked\"" : "" ) .">\n"; 
 			$output .= $label;
 			$output .= "\t\t</li>\n";
 		endforeach;

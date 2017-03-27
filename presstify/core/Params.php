@@ -106,6 +106,12 @@ class Params extends \tiFy\Environment\App
             tiFy::$Params['config']['theme']['bootstrap'] = $theme['bootstrap'];
             
             tiFy::classLoad( $theme['namespace'], $theme['base_dir'], ( ! empty( $theme['bootstrap'] ) ? $theme['bootstrap'] : false ) );
+            
+            foreach( array( 'components', 'core', 'plugins', 'set' ) as $dir ) :
+                if( ! file_exists( $theme['base_dir']. '/' .$dir ) )
+                    continue;
+                tify_class_loader( "\\{$theme['namespace']}\\". ucfirst( $dir ), $theme['base_dir']. '/' .$dir, 'Autoload' );
+            endforeach;
         endif;
         
         // Chargement des traductions
@@ -142,8 +148,8 @@ class Params extends \tiFy\Environment\App
     		foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
     			if( class_exists( $plugin ) ) :
     				$ClassName	= $plugin;
-    			elseif( class_exists( "tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
-    				$ClassName	= "tiFy\\Plugins\\{$plugin}\\{$plugin}";
+    			elseif( class_exists( "\\tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
+    				$ClassName	= "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
     			else :
     				continue;
     			endif;

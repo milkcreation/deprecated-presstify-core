@@ -15,7 +15,7 @@ trait Controllers
     {           
         if( is_object( $StdClass ) && get_class( $StdClass ) ) :
         elseif( class_exists( $StdClass ) ) :
-            $Class = self::loadOverride( $StdClass );
+            $StdClass = self::loadOverride( $StdClass );
         else :
             return;
         endif;

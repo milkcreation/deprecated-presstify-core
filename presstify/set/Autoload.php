@@ -61,7 +61,7 @@ class Autoload extends \tiFy\Environment\App
                 
                 // @todo Personnaliser l'override
                 if( class_exists( $attrs['cb'] ) ) :
-                    $path = ( isset( $attrs['bootstrap'] ) ) ? array( "\\". self::getOverrideNamespace() ."\\tiFy\\Set\\". $set_id ."\\".$attrs['bootstrap'] ) : array();
+                    $path = ( isset( $attrs['bootstrap'] ) ) ? array( "\\". self::getOverrideNamespace() ."\\Set\\". $set_id ."\\".$attrs['bootstrap'] ) : array();
                     $class = self::getOverride( $attrs['cb'], $path );    
 
                     new $class;

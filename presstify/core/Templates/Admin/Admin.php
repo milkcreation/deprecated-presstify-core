@@ -16,7 +16,7 @@ class Admin extends \tiFy\Environment\App
 	final public function admin_menu()
 	{
 		$menus = array(); $submenus = array();		
-				
+	
 		foreach( (array) Templates::listAdmin() as $id => $Factory ) :
 			// L'entrée de menu de doit pas apparaître
 			if( $Factory->getAttr( 'admin_menu' ) === false )
@@ -76,13 +76,14 @@ class Admin extends \tiFy\Environment\App
 		
 		// Déclaration des sous-menus
 		foreach( (array) $submenus as $parent_slug =>  $_submenus ) :
+			// Trie des sous-menus
+		    $submenus_ordered = array();
 			foreach( $_submenus as $k => $v ) :
-				$order[$k] = (int) $v['position'];
+				$submenus_ordered[(int) $v['position']] = $v;
 		    endforeach;
-
-			@array_multisort( $order, $_submenus );
+            ksort( $submenus_ordered );
 			
-			foreach( $_submenus as $position => $submenu ) :
+			foreach( $submenus_ordered as $position => $submenu ) :
 				add_submenu_page( $parent_slug, $submenu['page_title'], $submenu['menu_title'], $submenu['capability'], $submenu['menu_slug'], $submenu['function'] );
 			endforeach;
 		endforeach;
