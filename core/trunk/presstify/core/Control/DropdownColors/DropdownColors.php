@@ -1,109 +1,141 @@
 <?php
 namespace tiFy\Core\Control\DropdownColors;
 
-use tiFy\Core\Control\Factory;
-
-class DropdownColors extends Factory
+class DropdownColors extends \tiFy\Core\Control\Factory
 {
-	/* = ARGUMENTS = */	
-	// Identifiant de la classe		
-	protected $ID = 'dropdown_colors';
-	
-	/* = INITIALISATION DE WORDPRESS = */
-	final public function init()
-	{
-		wp_register_style( 'tify_control-dropdown_colors', $this->Url .'/dropdown_colors.css', array( ), '150512' );
-		wp_register_script( 'tify_control-dropdown_colors', $this->Url .'/dropdown_colors.js', array( 'jquery' ), '150512', true );
-	}
-	
-	/* = MISE EN FILE DES SCRIPTS = */
-	final public function enqueue_scripts()
-	{
-		wp_enqueue_style( 'tify_control-dropdown_colors' );
-		wp_enqueue_script( 'tify_control-dropdown_colors' );
-	}
-		
-	/* = AFFICHAGE = */
-	public static function display( $args = array() )
-	{
-		static $instance = 0;
-		$instance++;
-		
-		$defaults = array(
-			'id'				=> 'tify_control_dropdown_colors-'. $instance,
-			'class'				=> 'tify_control_dropdown_colors',
-			'name'				=> 'tify_control_dropdown_colors-'. $instance,		
-			'selected' 			=> 0,			
-			'echo'				=> 1,			
-			'color'				=> 'hex',
-			'choices'			=> array(),
-			'labels'			=> array(),
-			'show_label'		=> false,
-			'show_option_none' 	=> __( 'Transparent', 'tify' )
+    /* = ARGUMENTS = */    
+    // Identifiant de la classe        
+    protected $ID = 'dropdown_colors';
+    
+    // Instance Courante
+	protected static $Instance = 0;
+    
+    /* = DECLENCHEURS = */
+	/** == Initialisation de Wordpress == **/
+    final public function init()
+    {
+        wp_register_style( 'tify_control-dropdown_colors', self::getUrl( get_class() ) .'/DropdownColors.css', array( ), '150512' );
+        wp_register_script( 'tify_control-dropdown_colors', self::getUrl( get_class() ) .'/DropdownColors.js', array( 'jquery' ), '150512', true );
+    }
+    
+    /** == Mise en file des scripts == **/
+    final public function enqueue_scripts()
+    {
+        wp_enqueue_style( 'tify_control-dropdown_colors' );
+        wp_enqueue_script( 'tify_control-dropdown_colors' );
+    }
+        
+    /* = CONTROLEURS = */
+	/** == Affichage == **/
+    public static function display( $args = array(), $echo = true )
+    {
+		self::$Instance++;
+        
+		// Traitement des arguments
+        $defaults = array(
+            // Conteneur
+            'id'                    => 'tify_control_dropdown_colors-'. self::$Instance,
+            'class'                 => 'tify_control_dropdown_colors',
+            'name'                  => 'tify_control_dropdown_colors-'. self::$Instance,
+            'attrs'                 => array(),
+            
+            // Valeur
+            'selected'              => 0,
+            'choices'               => array(),
+            'show_option_none'      => false,
+            'option_none_value'     => '',
+            'labels'                => array(),  
+            'disabled'              => false,
+            
+            // Liste de selection
+            'picker'                => array(
+                'class'                 => '',
+                'append'                => 'body',
+                'position'              => 'default', // default: vers le bas | top |  clever: positionnement intelligent
+                'width'                 => 'auto'
+            )            
+        );
+        
+        $args = wp_parse_args( $args, $defaults );
+        extract( $args );
+        
+        // Traitement des arguments de la liste de selection
+		$picker = wp_parse_args(
+			$picker,
+			array(
+				'id'		=> $id .'-picker',
+				'append' 	=> 'body',
+				'position'	=> 'default', // default: vers le bas | top | clever: positionnement intelligent
+				'width'		=> 'auto'
+			)
 		);
-		
-		$args = wp_parse_args( $args, $defaults );
-		extract( $args );
-		
-		if( $show_label )
-			$class = ' show_label';		
-		
-		$output  = "";
-		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_colors\">\n";
-		$output .= "\t<span class=\"selected\">\n";
-		$selected_value = ( isset( $choices[ $selected ] ) ) ? $choices[$selected] : ( $show_option_none ? $show_option_none : current( $choices ) );
-		$selected_label = $show_label ? ( isset( $labels[$selected_value] ) ? $labels[$selected_value] : $show_option_none  ) : '';
-		$output .= "\t\t<b>". ( self::display_value( $selected_value, $selected_label ) ) ."</b>\n";
-		$output .= "\t\t<i class=\"caret\"></i>\n";
-		$output .= "\t</span>\n";
-		$output .= "\t<ul>\n";
-		if( $show_option_none ) :
-			$output .= "\t\t<li";
-			if( ! $selected ) 
-				$output .= " class=\"checked\"";
-			$output .= ">\n";
-	    	$output .= "\t\t\t<label>\n";
-			$output .= "\t\t\t\t<input type=\"radio\" name=\"{$name}\" value=\"0\" autocomplete=\"off\" ". checked( ! $selected, true, false ) .">\n";
-			$label = $show_label ? $show_option_none : '';
-			$output .= self::display_value( null, $label );
-			$output .= "\t\t\t</label>\n";
-	    	$output .= "\t\t</li>\n";		
+        
+		// Traitement de la liste des choix
+		if( is_string( $choices ) ) :
+			$choices = array_map( 'trim', explode( ',', $choices ) );
 		endif;
 		
-		foreach( $choices as $value => $color ) :
-			$output .= "\t\t<li";
-			if( $selected === $value )
-				 $output .= " class=\"checked\""; 
-			$output .= ">\n";
-
-			$output .= "\t\t\t<label>\n";
-			$output .= "\t\t\t\t<input type=\"radio\" name=\"{$name}\" value=\"{$value}\" autocomplete=\"off\" ". checked( $selected  === $value, true, false ) .">\n";
-			
-			$label = $show_label ? ( isset( $labels[$value] ) ? $labels[$value] : $value ) : '';
-			$output .= self::display_value( $color, $label );
-			
-			$output .= "\t\t\t</label>\n";
-
-			$output .= "\t\t</li>\n";
-		endforeach;
-		$output .= "\t</ul>\n";
-		$output .= "</div>\n";
+		// Ajout du choix "aucun" en tête de la liste des choix
+		if( $show_option_none ) :
+			$choices = array_reverse( $choices, true );
+			$choices[] = $option_none_value;
+			$choices = array_reverse($choices, true);
+		endif;
+        
+		// Traitement de la valeur sélectionnée
+		if( $show_option_none && ! $selected  ) :
+			$selected = $option_none_value;
+		elseif( ! $selected ) :
+		  $selected = current( $choices );
+		endif;
+        
+		$selected_label = '';
 		
-		if( $echo )
-			echo $output;
-		else
-			return $output;
-	}
-
-	private static function display_value( $color = null, $label = '' )
-	{
+		// Selecteur de traitement
 		$output  = "";
-		$output .= "\t\t\t<div class=\"value\">";
-		$output .= "\t\t\t\t<span class=\"color-square". ( $color ? "" : " none" ). "\" style=\"". ( $color ? "background-color:{$color}" : "" ). "\"></span>\n";
-		if( $label )			
-			$output .= "\t\t\t\t\t<span>{$label}</span>\n";
-		$output .= "\t\t\t</div>";
-		
-		return $output;	
-	}
+		$output .= "\t<select id=\"{$id}-handler\" name=\"{$name}\" data-tify_control=\"dropdown_colors-handler\" data-selector=\"#{$id}\" data-picker=\"#{$picker['id']}\"". ( $disabled ? " disabled=\"disabled\"" : "" ) .">";
+		foreach( (array) $choices as $value ) :
+			$output .= "<option value=\"{$value}\" ". selected(  $value == $selected, true, false ) .">". wp_strip_all_tags( $value, true ) ."</option>";
+		endforeach;
+		$output .= "\t</select>\n";	
+        
+		// Selecteur HTML
+        $output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_colors\" data-handler=\"#{$id}-handler\" data-picker=\"". htmlentities( json_encode( $picker ), ENT_QUOTES, 'UTF-8') ."\"";
+        foreach( (array) $attrs as $k => $v ) :
+			$output .= " {$k}=\"{$v}\"";
+        endforeach;
+        $output .= ">\n";
+        $output .= "\t<span class=\"selected\">\n";
+        $output .= self::displayValue( $selected, $selected_label );
+        $output .= "\t</span>\n";
+        $output .= "</div>\n";
+        
+        // Liste de selection HTML
+		$output  .= "<div id=\"{$picker['id']}\" data-tify_control=\"dropdown_colors-picker\" class=\"tify_control_dropdown_colors-picker". ( $picker['class'] ? ' '. $picker['class'] : '' ) ."\" data-selector=\"#{$id}\" data-handler=\"#{$id}-handler\">\n";
+        $output .= "\t<ul>\n";        
+        foreach( $choices as $value ) :
+            $output .= "\t\t<li". ( $selected == $value ? " class=\"checked\"" : "" ) .">\n";        
+            $label = isset( $labels[$value] ) ? $labels[$value] : '';
+            $output .= self::displayValue( $value, $label ); 
+            $output .= "\t\t</li>\n";
+        endforeach;
+        $output .= "\t</ul>\n";
+        $output .= "</div>\n";
+        
+        if( $echo )
+            echo $output;
+
+        return $output;
+    }
+
+    /** == Affichage de la valeur == **/
+    protected static function displayValue( $value = null, $label = '' )
+    {
+        $output = "<span class=\"color-square". ( $value ? "" : " none" ). "\" style=\"". ( $value ? "background-color:{$value}" : "" ). "\"></span>\n";
+        if( $label ) :           
+            $output .= "<label>{$label}</label>";
+        endif;
+        
+        return $output;    
+    }
 }

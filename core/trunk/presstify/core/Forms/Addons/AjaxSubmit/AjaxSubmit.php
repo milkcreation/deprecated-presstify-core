@@ -50,16 +50,18 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
                 {
 
                 },
+                
                 tify_forms_ajax_submit_before   = function( e, ID )
                 {
                     $( e.target ).append( '<div class="tiFyForm-Overlay tiFyForm-Overlay--'+ ID +'" />' );
                 },
 
-                tify_forms_ajax_submit_success  = function( e, html, ID )
+                tify_forms_ajax_submit_response  = function( e, resp, ID )
                 {
-                    $( e.target ).empty().html( html );
+                    if( resp.data.html !== undefined )
+                        $( e.target ).empty().html( resp.data.html );
                 },
-                
+                                
                 tify_forms_ajax_submit_after    = function( e, ID )
                 {
                     
@@ -75,8 +77,8 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
                 $( document ).on( 'tify_forms.ajax_submit.init', tify_forms_ajax_submit_init );
                 /// Avant le lancement de la requête Ajax
                 $( document ).on( 'tify_forms.ajax_submit.before', tify_forms_ajax_submit_before );
-                /// Au retour de la requête Ajax 
-                $( document ).on( 'tify_forms.ajax_submit.success', tify_forms_ajax_submit_success );
+                /// Au retour de la requête Ajax avec succès 
+                $( document ).on( 'tify_forms.ajax_submit.response', tify_forms_ajax_submit_response );
                 /// Après le retour de la requête Ajax
                 $( document ).on( 'tify_forms.ajax_submit.after', tify_forms_ajax_submit_after );    
 
@@ -110,8 +112,8 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
                         beforeSend      : function(){
                             $wrapper.trigger( 'tify_forms.ajax_submit.before', ID );
                         },
-                        success         : function( resp ){
-                            $wrapper.trigger( 'tify_forms.ajax_submit.success', resp.data.html, ID );
+                        success         : function( resp ){                               
+                            $wrapper.trigger( 'tify_forms.ajax_submit.response', resp, ID );                                 
                         },
                         complete        : function(){
                             $wrapper.trigger( 'tify_forms.ajax_submit.after', ID );  
@@ -129,7 +131,15 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
     /* = Traitement ajax = */
     final public function wp_ajax()
     {
-        do_action( 'tify_form_loaded' );         
-        wp_send_json_success( array( 'html' => $this->form()->display() ) );
+        do_action( 'tify_form_loaded' );
+        
+        $data = array( 'html' => $this->form()->display() );
+        
+        if( $this->form()->handle()->hasError() ) :
+            wp_send_json_error( $data );
+        else :
+            wp_send_json_success( $data );
+        endif;
+        
     }
 }

@@ -37,6 +37,7 @@ class Autoload extends \tiFy\Environment\Core
 		// Chargement des contrôleurs configurable
 		new	CustomType\CustomType;
 		new Db\Db;
+		new Mail\Mail;
 		new Templates\Templates;
 		new Options\Options;		
 		new Taboox\Taboox;

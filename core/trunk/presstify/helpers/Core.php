@@ -149,7 +149,21 @@ namespace
 	{
 		return tiFy\Core\Forms\Forms::get( $id );
 	}
-		
+	
+	// --------------------------------------------------------------------------------------------------------------------------
+	/* = MAIL = */
+	/** == Déclaration d'un email == **/
+	function tify_mail_register( $id, $args = array() )
+	{
+		return \tiFy\Core\Mail\Mail::register( $id, $args );
+	}
+	
+	/** == Récupération d'un email == **/
+	function tify_mail_get( $id )
+	{
+		return \tiFy\Core\Mail\Mail::get( $id );
+	}	
+	
 	// --------------------------------------------------------------------------------------------------------------------------	
 	/* = META = */
 	/** == POST == **/

@@ -199,14 +199,22 @@ namespace
 	{
 		return tiFy\Components\Login\Login::display( $id, 'logout_link', $args );
 	}
-		
+	
 	// --------------------------------------------------------------------------------------------------------------------------
-	/* = PAGINATION * =/
+	/* = PAGINATION = */
 	/** == Affichage de la pagination == **/
 	function tify_pagination( $args = array(), $echo = true )
 	{
 		return tiFy\Components\Pagination\Pagination::display( $args, $echo );
 	}
+			
+    // --------------------------------------------------------------------------------------------------------------------------
+	/* = PDF VIEWER = */
+	/** == Affichage du pdf == **/
+    function tify_pdfviewer_display( $pdf_url, $args = array(), $echo = true )
+    {
+        return \tiFy\Components\PDFViewer\PDFViewer::display( $pdf_url, $args, $echo );
+    }
 	
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = SEARCH = */

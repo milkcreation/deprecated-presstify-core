@@ -107,7 +107,7 @@ class Recaptcha extends \tiFy\Core\Forms\FieldTypes\Factory
 				if( ! $instance ) :
 				?><script type="text/javascript" src="https://www.google.com/recaptcha/api.js?hl=<?php echo $this->getLanguage();?>&onload=onloadCallback_<?php echo $ID;?>&render=explicit" async defer></script><?php
 				endif;
-				?><script type="text/javascript">/* <![CDATA[ */var onloadCallback_<?php echo $ID;?>=function(){grecaptcha.render('g-recaptcha-<?php echo $ID;?>',<?php echo json_encode( $options );?>);};$(document).on('tify_forms.ajax_submit.after',function(e,ID){onloadCallback_<?php echo $ID;?>();});/* ]]> */</script><?php			
+				?><script type="text/javascript">/* <![CDATA[ */var onloadCallback_<?php echo $ID;?>=function(){grecaptcha.render('g-recaptcha-<?php echo $ID;?>',<?php echo json_encode( $options );?>);};if($('tiFyForm-<?php echo $ID;?>').length);$(document).on('tify_forms.ajax_submit.after',function(e,ID){onloadCallback_<?php echo $ID;?>();});/* ]]> */</script><?php			
 			},
 			99
 		);

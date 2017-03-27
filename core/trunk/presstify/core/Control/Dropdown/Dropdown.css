@@ -2,6 +2,7 @@
 [data-tify_control='dropdown-handler']{
 	display:none;
 }
+
 /* = SELECTEUR HTML = */
 [data-tify_control='dropdown']{
 	position:relative;

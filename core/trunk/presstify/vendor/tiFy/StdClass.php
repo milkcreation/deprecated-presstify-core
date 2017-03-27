@@ -35,7 +35,7 @@ class StdClass
     public static function getOverride( $classname, $path = array() )
     {
         if( empty( $path ) ) :
-            $path[] = "\\". self::getOverrideNamespace() . '\\'. preg_replace( "#^\\\#", "", $classname );
+            $path[] = "\\". self::getOverrideNamespace() . "\\". preg_replace( "#^tiFy\\\#", "", ltrim( $classname, '\\' ) );
         endif;
 
         foreach( (array) $path as $override ) :
@@ -53,7 +53,7 @@ class StdClass
      **/
     public static function loadOverride( $classname, $path = array() )
     {
-        if( $ClassName =  self::getOverride( $classname, $path ) )
+        if( $classname = self::getOverride( $classname, $path ) )
             return new $classname;
     }    
 }

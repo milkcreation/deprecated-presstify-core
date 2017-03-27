@@ -46,8 +46,7 @@ class DropdownMenu extends Factory
 		);
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );
-		
-		
+				
 		// Traitement des arguments de la liste de selection
 		$picker = wp_parse_args(
 			$picker,

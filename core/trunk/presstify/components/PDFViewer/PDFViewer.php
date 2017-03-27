@@ -12,16 +12,7 @@ class PDFViewer extends \tiFy\Environment\Component
 	
 	// Instances
 	static $Instance		= 0;
-	
-	/**
-	 * @todo Ecrire les helpers dans Components.php du dossier helpers
-	 */
-	public function __construct()
-	{
-	    parent::__construct();
-	    require_once( 'Helpers.php' );
-	}
-	
+		
     /* = DECLENCHEURS = */
 	/** == Inititalisation globale == **/
 	final public function init()

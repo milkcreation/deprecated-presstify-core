@@ -107,7 +107,7 @@ final class PostType extends \tiFy\Environment\App
                 
         // Instanciation du contrôleur
         $className = '\tiFy\Components\Duplicate\PostType\Factory';
-        $overridePath[] = "\\". self::getOverrideNamespace() ."\\tiFy\\Components\\Duplicate\\PostType\\". ucfirst( $post_type );
+        $overridePath[] = "\\". self::getOverrideNamespace() ."\\Components\\Duplicate\\PostType\\". ucfirst( $post_type );
         
         $Cloner = self::loadOverride( $className, $overridePath );
         $Cloner->setInput( $post_id, $post_type_attrs['meta'] );            
