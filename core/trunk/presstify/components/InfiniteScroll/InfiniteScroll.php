@@ -3,7 +3,6 @@ namespace tiFy\Components\InfiniteScroll;
 
 use tiFy\Environment\App;
 
-/** @Autoload */
 class InfiniteScroll extends App
 {
 	/* = ARGUMENTS = */
@@ -36,7 +35,7 @@ class InfiniteScroll extends App
 	/** == Initialisation globale == **/
 	public function wp_enqueue_scripts()
 	{
-		wp_enqueue_script( 'tify-infinite-scroll' );
+		wp_enqueue_script( 'tiFyInfiniteScroll', self::getUrl( get_class() ) .'/tiFyInfiniteScroll.js', array( 'jquery' ), 170328, true );
 	}
 	
 	/** == Chargement des post == **/
@@ -100,6 +99,12 @@ class InfiniteScroll extends App
 		self::$Config[self::$Instance] = wp_parse_args( $args, $defaults );
 		extract( self::$Config[self::$Instance] );	
 		
+		$posts_per_page = ( ! empty( $query_args['posts_per_page'] ) ) ? $query_args['posts_per_page'] : $per_page;
+		if( ! isset( $query_args['post_status'] ) )
+			$query_args['post_status'] = 'publish';
+		$query_post = new \WP_Query( $query_args );
+		$is_complete = ( (int)$query_post->found_posts <= $posts_per_page ) ? 'ty_iscroll_complete': '';
+		
 		$query_args = isset( $query_args ) ? _http_build_query( $query_args ) : '';
 		
 		// Caractères spéciaux
@@ -116,7 +121,7 @@ class InfiniteScroll extends App
 		
 		$output  = "";
 		$output .= "<a id=\"{$id}\" 
-					   class=\"ty_iscroll\" 
+					   class=\"ty_iscroll $is_complete\" 
 					   href=\"#tify_infinite_scroll-". self::$Instance. "\" 
 					   data-action=\"{$action}\" 
 					   data-query_args=\"{$query_args}\" 

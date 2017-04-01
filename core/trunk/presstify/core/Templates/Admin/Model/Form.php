@@ -279,18 +279,7 @@ abstract class Form
 		if( $this->NewItem )
 			return $this->db()->handle()->create( wp_parse_args( $this->item_defaults, array( $this->db()->Primary => 0 ) ) );
 	}
-	
-	/** == Récupération de l'attribut de sécurisation d'une action == **/
-	public function get_item_nonce_action( $action, $suffix = null )
-	{
-		$nonce_action = $this->Singular . $action;
 		
-		if( $suffix )
-			$nonce_action .= $suffix;
-		
-		return $nonce_action;
-	}
-	
 	/* = CONTROLEUR = */
 	/** == Liste des champs == **/
 	public function get_fields() 

@@ -3,11 +3,48 @@ namespace tiFy\Core\Templates\Traits\Table;
 
 trait Params
 {
-	/* = INITIALISATION DES PARAMETRES = */
+    /* = CONTROLEURS = */
+    /** == Formatage du nom d'un paramètre == **/
+    protected function sanitizeParam( $param )
+    {
+        return implode( array_map( 'ucfirst', explode( '_', $param ) ) );
+    }
+    
+    /** == Récupération de la liste de paramètres permis == **/
+    protected function allowedParams()
+    {
+        return $this->ParamsMap;
+    }
+    
+    /** == Définition d'un paramètre == **/
+    protected function setParam( $param, $value )
+    {
+        $param = self::sanitizeParam( $param );
+        if( in_array( $param, $this->allowedParams() ) ) :            
+            $this->{$param} = $value;  
+        endif;
+    }
+    
+    /** == Récupération d'un paramètre == **/
+    protected function getParam( $param, $default = '' )
+    {
+        $param = self::sanitizeParam( $param );
+        if( ! in_array( $param, $this->allowedParams() ) )
+            return $default;
+        
+        if( method_exists( $this, 'get'. $param ) ) :
+            return call_user_func( array( $this, 'get'. $param ) );
+        elseif( isset( $this->{$param} ) ) :
+            return $this->{$param};
+        endif; 
+        
+        return $default;
+    }
+
 	/** == Initialisation des paramètres de configuration de la table == **/
 	protected function initParams()
 	{
-		foreach( (array) $this->ParamsMap as $param ) :
+		foreach( (array) $this->allowedParams() as $param ) :
 			if( ! method_exists( $this, 'initParam' . $param ) ) 
 				continue;
 			call_user_func( array( $this, 'initParam' . $param ) );
@@ -74,6 +111,21 @@ trait Params
 		$this->TableClasses = $this->set_table_classes();	
 	}
 	
+	/** == Initialisation de l'indice de clé primaire d'un élément == **/
+	public function initParamItemIndex()
+	{
+		if( $index = $this->set_item_index() ) :
+		elseif( $index = $this->getConfig( 'item_index' ) ) :
+		elseif( $this->db() ) :
+            $index = $this->db()->getPrimary();
+		else :
+			$index = null;
+		endif;
+
+		if( $index )
+			$this->ItemIndex = $index;
+	}
+	
 	/** == Initialisation des colonnes de la table == **/
 	public function initParamColumns()
 	{	
@@ -118,7 +170,7 @@ trait Params
 		else :
 			$primary = null;
 		endif;
-
+		
 		if( $primary ) :
 			$this->PrimaryColumn = $primary;
 			add_filter( 'list_table_primary_column', function( $default ) use ( $primary ){ return $primary; }, 10, 1 );

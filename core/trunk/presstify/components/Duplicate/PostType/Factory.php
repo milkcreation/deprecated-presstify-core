@@ -55,8 +55,11 @@ class Factory
         if( ! empty( $meta_keys ) ) :
             $metadatas = get_post_meta( $this->Input['ID'] );
             if( ! empty( $meta_keys ) && is_array( $meta_keys ) ) :
+                if( count( array_filter( array_keys( $meta_keys ), 'is_string' ) ) > 0 ) :
+                    $meta_keys = array_keys( $meta_keys );
+                endif;
                 $metadatas = array_intersect_key( $metadatas, array_flip( $meta_keys ) );
-            endif;            
+            endif;
             
             // Prétraitement des métadonnées            
             foreach( $metadatas as $meta_key => $meta_values ) :
@@ -145,7 +148,7 @@ class Factory
             
             // Récupération des données d'enregistrement
             $datas = $this->getOutput( $args );
-                        
+            
             // Enregistrement des données
             $post_id = 0;
             if( $post_id = wp_insert_post( $datas ) ) :
@@ -159,11 +162,14 @@ class Factory
                         else :
                             $meta_value = call_user_func( array( $this, '_meta_default' ), $meta_value, $meta_key, $post_id );
                         endif;
-                        
-                        update_post_meta( $post_id, $meta_key, $meta_value ); 
+                        if( isset( $meta[$meta_key] ) && $meta[$meta_key] ) :
+                            add_post_meta( $post_id, $meta_key, $meta_value );
+                        else :
+                            update_post_meta( $post_id, $meta_key, $meta_value );
+                        endif;
                     endforeach;
                 endforeach; 
-                            
+                
                 // Traitement au moment de la duplication de l'élément  
                 $this->onDuplicateItem( $post_id );
                 

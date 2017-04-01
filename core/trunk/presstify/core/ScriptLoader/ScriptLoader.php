@@ -282,17 +282,7 @@ class ScriptLoader extends \tiFy\Environment\App
 				'version'	=> '2.2.2',
 				'in_footer'	=> true 
 			),
-		    
-			/// TiFy - Infinite Scroll
-			'tify-infinite-scroll'		=> array(
-				'src'		=> array(
-					'local'		=> tiFy::$AbsUrl .'/vendor/tiFy/Assets/tify/tify-infinite-scroll.js'
-				),
-				'deps'		=> array( 'jquery' ),
-				'version'	=> '160126',
-				'in_footer'	=> true
-			),
-			 				
+		    			 				
 			/// TiFy - Lightbox
 			'tify-lightbox'				=> array(
 				'src'		=> array(

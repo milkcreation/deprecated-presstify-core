@@ -19,72 +19,75 @@ abstract class Table extends \WP_List_Table
     
     /* = ARGUMENTS = */    
     // Écran courant
-    protected $Screen                = null;
+    protected $Screen                   = null;
     
     // Configuration
     /// Url de la page d'administration
-    protected $BaseUri                = null;
+    protected $BaseUri                  = null;
     
     /// Url de la page d'édition d'un élément
-    protected $EditBaseUri            = null;
+    protected $EditBaseUri              = null;
     
     // Intitulé des objets traités
-    protected $Plural                = null;
+    protected $Plural                   = null;
     
     // Intitulé d'un objet traité
-    protected $Singular                = null;
+    protected $Singular                 = null;
     
     /// Message de notification
-    protected $Notices                = array();
+    protected $Notices                  = array();
     
     /// Liste des statuts des objets traités
-    protected $Statuses                = array();
+    protected $Statuses                 = array();
     
     /// Liens de vue filtrées
-    protected $FilteredViewLinks    = array();    
+    protected $FilteredViewLinks        = array();    
         
+    /// Indic de clé primaire d'un élément
+    protected $ItemIndex                = array();
+    
     /// Colonnes de la table
-    protected $Columns                = array();
+    protected $Columns                  = array();
     
     /// Colonne principale de la table
-    protected $PrimaryColumn        = null;
+    protected $PrimaryColumn            = null;
     
     /// Colonnes selon lesquelles les éléments peuvent être triés
-    protected $SortableColumns        = array();
+    protected $SortableColumns          = array();
     
     /// Colonnes Masquées
-    protected $HiddenColumns        = array();
+    protected $HiddenColumns            = array();
     
     /// Nombre d'éléments affichés par page
-    protected $PerPage                = null;
+    protected $PerPage                  = null;
     
     /// 
-    protected $PerPageOptionName    = null;
+    protected $PerPageOptionName        = null;
     
     /// Arguments de requête
-    protected $QueryArgs            = array();
+    protected $QueryArgs                = array();
     
     /// Intitulé affiché lorsque la table est vide
-    protected $NoItems                = '';
+    protected $NoItems                  = '';
     
     /// Actions groupées
-    protected $BulkActions            = array();
+    protected $BulkActions              = array();
     
     /// Actions sur un élément
-    protected $RowActions            = array();
+    protected $RowActions               = array();
     
     /// Titre de la page
-    protected $PageTitle            = null;
+    protected $PageTitle                = null;
             
     /// Cartographie des paramètres
-    protected $ParamsMap            = array( 
+    protected $ParamsMap                = array( 
         'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-        'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
+        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
         'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
         'PageTitle'
     );
     
-    protected $compat_fields = array( 
+    protected $compat_fields            = array( 
         '_args', '_pagination_args', 'screen', '_actions', '_pagination',  
         'template', 'db', 'label', 'getConfig' 
     );
@@ -140,6 +143,12 @@ abstract class Table extends \WP_List_Table
     public function set_views()
     {
         return array();
+    }
+    
+    /** == Définition de la clé primaire d'un élément == **/
+    public function set_primary_index()
+    {
+        return '';
     }
     
     /** == Définition des colonnes de la table == **/
@@ -305,7 +314,7 @@ abstract class Table extends \WP_List_Table
                         
             });
         endforeach;
-        
+
         /// Récupération des éléments à afficher
         $this->prepare_items();
     }
@@ -322,12 +331,13 @@ abstract class Table extends \WP_List_Table
        
 ?><script type="text/javascript">/* <![CDATA[ */
 jQuery(document).ready( function($){
-    $( document ).on( 'click', '#the-list .row-actions a.previewinline', function(e){
+    $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
         e.preventDefault();
+           
+        console.log( 'tutu' );    
                 
         var id = $(this).data( 'id' );
-            $closest = $(this).closest( 'tr' ),
-            var $preview;
+            $closest = $(this).closest( 'tr' );
         
         if( $closest.next().attr('id') != 'preview-'+ id ){
             // Création de la zone de prévisualisation
@@ -341,8 +351,9 @@ jQuery(document).ready( function($){
             $.post( 
                 tify_ajaxurl, 
                 { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', id: id }, 
-                function( data ){
-                    $( '> td', $previewRow ).html(data);            
+                function( resp ){
+                    console.log( resp );
+                    //$( '> td', $previewRow ).html(data);            
                 }
             );                 
         } else {
@@ -486,58 +497,14 @@ jQuery(document).ready( function($){
             if( is_string( $this->RowActions[$action] ) ) :
                 $row_actions[$action] = $this->RowActions[$action];
             else :
-                $args = $this->item_row_actions_parse_args( $item, $action, $this->RowActions[$action] );
-                $row_actions[$action] = Helpers::RowActionLink( $action, $args );
+                $args = $this->row_action_item_parse_args( $item, $action, $this->RowActions[$action] );
+                $row_actions[$action] = $this->row_action_link( $action, $args );
             endif;
         endforeach;        
             
         return $row_actions;        
     }
-    
-    /** == Traitement des arguments des actions sur un élément == **/
-    public function item_row_actions_parse_args( $item, $action, $args = array() )
-    {        
-        $defaults = array(
-            'edit'        => $this->get_item_edit_args( $item, array(), __( 'Modifier' ) ),
-        );
         
-        if( $this->db() ) :
-            $defaults += array(
-                'delete'    => array(
-                    'label'        => __( 'Supprimer définitivement', 'tify' ),
-                    'title'        =>  __( 'Suppression définitive de l\'élément', 'tify' ),
-                    'nonce'        => $this->get_item_nonce_action( 'delete', $item->{$this->db()->Primary} )
-                ),
-                'trash'        => array(
-                    'label'        => __( 'Corbeille', 'tify' ),
-                    'title'        => __( 'Mise à la corbeille de l\'élément', 'tify' ),
-                    'nonce'        => $this->get_item_nonce_action( 'trash', $item->{$this->db()->Primary} )
-                ),
-                'untrash'    => array(
-                    'label'        => __( 'Restaurer', 'tify' ),
-                    'title'        => __( 'Rétablissement de l\'élément', 'tify' ),
-                    'nonce'        => $this->get_item_nonce_action( 'untrash', $item->{$this->db()->Primary} )
-                ),
-                'duplicate'    => array(
-                    'label'        => __( 'Dupliquer', 'tify' ),
-                    'title'        => __( 'Dupliquer l\'élément', 'tify' ),
-                    'nonce'        => $this->get_item_nonce_action( 'duplicate', $item->{$this->db()->Primary} )
-                )
-            );
-        endif;
-        
-        if( isset( $defaults[$action] ) )
-            $args = wp_parse_args( $args, $defaults[$action] );
-        
-        if( ! isset( $args['base_uri'] ) )
-            $args['base_uri'] = $this->BaseUri;
-        
-        if( $this->db() && ! isset( $args['query_args'][$this->db()->Primary] ) )
-            $args['query_args'][$this->db()->Primary] = $item->{$this->db()->Primary};
-        
-        return $args;
-    }
-    
     /** == Éxecution des actions == **/
     protected function process_bulk_actions()
     {
@@ -657,40 +624,7 @@ jQuery(document).ready( function($){
     {
         return $this->row_actions( $this->item_row_actions( $item, $actions ), $always_visible );
     }
-    
-    /** == Récupération de l'attribut de sécurisation d'une action == **/
-    public function get_item_nonce_action( $action, $suffix = null )
-    {
-        $nonce_action = $this->Singular . $action;
-        
-        if( isset( $suffix ) )
-            $nonce_action .= $suffix;
-        
-        return $nonce_action;
-    }
-        
-    /** == Lien d'édition d'un élément == **/
-    public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
-    {
-        if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) ) :
-            return Helpers::RowActionLink( 'edit', $args );
-        endif;
-    }
-    
-    /** == Arguments d'édition d'un élément == **/
-    public function get_item_edit_args( $item, $args = array(), $label, $class = '' ) 
-    {
-        if( $base_uri = $this->EditBaseUri )
-            return array(
-                'label'            => $label,
-                'class'            => $class,
-                'base_uri'        => $base_uri,
-                'query_args'    => array_merge( $args, array( $this->db()->Primary => $item->{$this->db()->Primary} ) ),
-                'nonce'            => false,
-                'referer'        => false
-            );
-    }
-    
+                    
     /* = INTERFACE D'AFFICHAGE = * /
     /** == Récupération des vues filtrées == **/
     public function get_views()

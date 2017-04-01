@@ -34,6 +34,7 @@ jQuery( document ).ready( function($){
 	    	   url: 		tify_ajaxurl,
 	    	   data: 		function ( d ) {
 	    	    	d = $.extend( d, filters, { action: tiFyCoreAdminAjaxListTable.action_prefix +'_get_items' }, tiFyCoreAdminAjaxListTable.data );
+
 	    	    	return d;
 	    	    },
 	    	    dataType: 	'json', 

@@ -258,18 +258,7 @@ abstract class Form
 		if( $this->NewItem )
 			return $this->db()->handle()->create( $this->DefaultItemArgs );
 	}
-	
-	/** == Récupération de l'attribut de sécurisation d'une action == **/
-	public function get_item_nonce_action( $action, $suffix = null )
-	{
-		$nonce_action = $this->Singular . $action;
 		
-		if( $suffix )
-			$nonce_action .= $suffix;
-		
-		return $nonce_action;
-	}
-	
 	/* = CONTROLEUR = */
 	/** == Liste des champs == **/
 	public function get_fields() 

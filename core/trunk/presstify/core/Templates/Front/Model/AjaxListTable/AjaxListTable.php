@@ -11,7 +11,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Front\Model\Table
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array(
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-		'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
+		'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',	
 		'Endpoint', 'MapColumns'
 	);
