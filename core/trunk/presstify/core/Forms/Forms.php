@@ -63,16 +63,12 @@ class Forms extends \tiFy\Environment\Core
 	/** == Déclaration des formulaires == **/
 	final public function init()
 	{
-		if( is_admin() && ! defined( 'DOING_AJAX' ) )
+	    if( is_admin() )
 			$this->registration();
 	}
 	
-	/** == Déclaration des formulaires pour les requêtes ajax== **/
-	final public function admin_init()
-	{
-		if( defined( 'DOING_AJAX' ) )
-			$this->registration();
-	}
+	/** == Déclaration des formulaires pour les requêtes ajax - !!! Modifier pour AddonAjaxSubmit puis rétablie pour AddonRecord 
+	final public function admin_init(){ if( defined( 'DOING_AJAX' ) ) $this->registration();} == **/
 	
 	/** == Chargement de Wordpress complet == **/
 	final public function wp()

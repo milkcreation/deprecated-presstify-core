@@ -1,38 +1,46 @@
 <?php
 /**
- * @Overridable 
+ * Configuration des champs :
+    Standard
+    ----------------------------------------
+    'fields'    => array(
+        [...]
+        array(
+            [...]
+         	'add-ons'		=> array(
+        		'record'		=> array(
+        			// Active l'affichage de la colonne pour ce champ, le label du champ de formulaire est utilisé comme intitulé de colonne
+        			'column' 		=> true,
+        			// Active l'affichage de l'aperçu en ligne pour ce champ, le label du champ de formulaire est utilisé comme intitulé	
+        			'preview'		=> true
+        		)
+        	)
+    	)
+    	[...]
+	)
+    Avancée
+    ----------------------------------------
+    'fields'    => array(
+        [...]
+        array(
+            [...]
+         	'add-ons'		=> array(
+        		'record'		=> array(
+        			// Active l'affichage de la colonne pour ce champ
+        			'column' 		=> 'intitulé personnalisé',
+        			// Active l'affichage de l'aperçu en ligne pour ce champ	
+        			'preview'		=> 'intitulé personnalisé'
+        		)
+        	)
+    	)
+    	[...]
+	)
  */
 
 /**
- * Exemple d'options de champs :
- * #1
- 	'add-ons'		=> array(
-		'record'		=> array(
-			// Active l'affichage de la colonne pour ce champ
-			'column' 		=> true,
-			// Active l'affichage de l'aperçu en ligne pour ce champ	
-			'preview'		=> true
-		)
-	)
- * #2
- 	'add-ons'		=> array(
-		'record'		=> array(
-			// Active l'affichage de la colonne pour ce champ
-			'column' 		=> array(
-				// Personnalisation du titre de la colonne
-				'title'			=> 'titre personnalisé'
-			),
-			// Active l'affichage de l'aperçu en ligne pour ce champ	
-			'preview'		=> array(
-				// Personnalisation de l'intitulé de prévisualisation
-				'label'			=> 'label personnalisé',
-				// Personnalisation de la valeur ($item passe en argument)
-				'cb'			=> array( $this, 'ma_methode' )
-			)
-		)
-	)
+ * @Overridable 
+ * \Theme\Core\Forms\Addons\Record\Record
  */
-
 namespace tiFy\Core\Forms\Addons\Record;
 
 use tiFy\Core\Db\Db;
@@ -141,9 +149,10 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 				'admin_menu' => array(
 					'parent_slug'	=> 'tify_forms_record',
 					'menu_slug'		=> 'tify_forms_record',
-					'menu_title'	=> __( 'Enregistrements', 'tify' )
+					'menu_title'	=> __( 'Enregistrements', 'tify' ),
+				    'position'      => 1
 				),
-				'cb'			=> $this->getFormAttr( 'cb', 'tiFy\Core\Forms\Addons\Record\ListTable' ),
+				'cb'			=> '\tiFy\Core\Forms\Addons\Record\ListTable',
 				'db'			=> 'tify_forms_record'
 			),
 			'admin'
@@ -158,9 +167,10 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     				'admin_menu' => array(
     					'parent_slug'	=> 'tify_forms_record',
     					'menu_slug'		=> 'tify_forms_record_export',
-    					'menu_title'	=> __( 'Exporter', 'tify' )
+    					'menu_title'	=> __( 'Exporter', 'tify' ),
+    				    'position'      => 2
     				),
-    				'cb'			=> 'tiFy\Core\Forms\Addons\Record\Export',
+    				'cb'			=> '\tiFy\Core\Forms\Addons\Record\Export',
     				'db'			=> 'tify_forms_record'
     			),
     			'admin'

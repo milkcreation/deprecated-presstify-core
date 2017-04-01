@@ -132,6 +132,7 @@ trait Params
 		if( $columns = $this->set_columns() ) :
 		elseif( $columns = $this->getConfig( 'columns' ) ) :
 		else :
+            $columns = array();
 			$columns['cb'] = "<input id=\"cb-select-all-1\" type=\"checkbox\" />";
 			foreach( (array)  $this->db()->ColNames as $name ) :
 				$columns[$name] = $name;
@@ -160,6 +161,20 @@ trait Params
 			$this->HiddenColumns = $hidden_cols;
 			add_filter( 'hidden_columns', function( $hidden, $screen, $use_defaults ) use ( $hidden_cols ){ return $hidden_cols; }, 10, 3 );
 		endif;
+	}
+	
+	/** == Initialisation des colonnes de prévisualisation == **/
+	public function initParamPreviewColumns()
+	{
+		if( $preview_cols = $this->set_preview_columns() ) :
+		elseif( $preview_cols = $this->getConfig( 'preview_columns' ) ) :
+		else :
+			$preview_cols = array();
+		endif;
+
+		if( $preview_cols ) :
+			$this->PreviewColumns = $preview_cols;
+		endif;		
 	}
 	
 	/** == Initialisation de la colonne principale == **/

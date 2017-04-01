@@ -3,6 +3,12 @@ namespace tiFy\Core\Templates\Traits\Table;
 
 trait Actions
 {
+    /** == == **/
+    public function hasRowAction( $action )
+    {
+        return isset( $this->RowActions[$action] );            
+    }
+    
     /** == Lien d'édition d'un élément == **/
     public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
     {
@@ -82,7 +88,7 @@ trait Actions
         if( ! isset( $args['base_uri'] ) ) 
             $args['base_uri'] = $this->BaseUri;
         
-        if( ! isset( $args['query_args'][$index] ) && isset( $item->{$index} ) )
+        if( ( $index = $this->getParam( 'ItemIndex' ) ) && ! isset( $args['query_args'][$index] ) && isset( $item->{$index} ) )
             $args['query_args'][$index] = $item->{$index};
         
         return $args;

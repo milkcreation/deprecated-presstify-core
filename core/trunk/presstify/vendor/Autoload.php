@@ -12,6 +12,9 @@ class Autoload
 		// CSV
 		$loader->addNamespace( 'League\Csv', __DIR__ .'/League/Csv' );
 		
+		// Crypto
+		$loader->addNamespace( 'Defuse\Crypto', __DIR__ .'/Defuse/Crypto' );
+		
 		// Emojione
 		$loader->addNamespace( 'Emojione', __DIR__ .'/Emojione' );
 		

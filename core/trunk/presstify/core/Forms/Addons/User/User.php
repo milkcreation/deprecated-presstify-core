@@ -176,7 +176,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
         );
         
         // Récupération des données utilisateurs dans les variables de requête
-        foreach( $this->form()->getFieldsValues() as $slug => $value ) :
+        foreach( $this->form()->getFieldsValues( true ) as $slug => $value ) :
             if(  ! $userdata = $this->getFieldAttr( $slug, 'userdata' ) )
                 continue;
             if( ! isset( $request_data[ $userdata ] ) )
@@ -213,7 +213,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
         if( $this->hasRole( $request_data[ 'role' ] ) ) :
             $show_admin_bar_front =  ! $this->getRoleAttr( $request_data[ 'role' ], 'show_admin_bar_front', false ) ? 'false' : '';
         endif;
-
+        
         // Traitement de l'enregistrement de l'utilisateur
         /// Mise à jour
         if( $current_user = get_userdata( $this->getUserID() ) ) :
@@ -234,7 +234,8 @@ class User extends \tiFy\Core\Forms\Addons\Factory
                 if ( is_wp_error( $user_details[ 'errors' ] ) && ! empty( $user_details[ 'errors' ]->errors ) ) :
                     return $handle->addError( $user_details[ 'errors' ]->get_error_message() );    
                 endif;
-            endif; 
+            endif;
+
             $user_id = wp_insert_user( $request_data );
         endif;
         
@@ -243,7 +244,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
             $this->UserID = $user_id;
 
             // Création ou modification des informations personnelles
-            foreach( $this->form()->getFieldsValues() as $slug => $value ) :
+            foreach( $this->form()->getFieldsValues( true ) as $slug => $value ) :
                 if(  ! $userdata = $this->getFieldAttr( $slug, 'userdata' ) )
                     continue;
                 if(  $userdata === 'meta' ) :

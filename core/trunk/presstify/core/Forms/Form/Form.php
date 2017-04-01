@@ -421,12 +421,12 @@ class Form
 	}
 	
 	/** == Récupération des valeurs de champs == **/
-	public function getFieldsValues()
+	public function getFieldsValues( $raw = false )
 	{
 		$values = array();
 		
 		foreach( $this->fields() as $field ) :
-			$values[ $field->getSlug()] = $field->getValue();
+			$values[ $field->getSlug()] = $field->getValue( $raw );
 		endforeach;
 		
 		return $values;
