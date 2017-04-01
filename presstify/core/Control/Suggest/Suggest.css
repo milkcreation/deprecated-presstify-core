@@ -34,6 +34,7 @@
 }
 [data-tify_control_suggest] .tify_control_suggest_delete {
 	display: none;
+	cursor:pointer;
 }
 [data-tify_control_suggest].selected .tify_control_suggest_delete {
 	display: block;

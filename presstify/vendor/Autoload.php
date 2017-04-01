@@ -8,7 +8,10 @@ class Autoload
 	{
 		// Autoload
 		$loader = new \Psr4ClassLoader;
-				
+		
+		// CSV
+		$loader->addNamespace( 'League\Csv', __DIR__ .'/League/Csv' );
+		
 		// Emojione
 		$loader->addNamespace( 'Emojione', __DIR__ .'/Emojione' );
 		

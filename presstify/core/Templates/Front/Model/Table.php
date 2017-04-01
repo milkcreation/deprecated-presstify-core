@@ -68,7 +68,7 @@ abstract class Table
 	/// Cartographie des paramètres permis
 	protected $ParamsMap			= array( 
 		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-		'TableClasses', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
+		'TableClasses', 'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
 		'PageTitle'
 	);
@@ -352,31 +352,14 @@ abstract class Table
 			if( is_string( $this->RowActions[$action] ) ) :
 				$row_actions[$action] = $this->RowActions[$action];
 			else :
-				$args = $this->item_row_actions_parse_args( $item, $action, $this->RowActions[$action] );
-				$row_actions[$action] = \tiFy\Core\Templates\Admin\Helpers::RowActionLink( $action, $args );
+				$args = $this->row_action_item_parse_args( $item, $action, $this->RowActions[$action] );
+				$row_actions[$action] = $this->row_action_link( $action, $args );
 			endif;
 		endforeach;		
 				
 		return $row_actions;		
 	}
-	
-	/** == Traitement des arguments des actions sur un élément == **/
-	public function item_row_actions_parse_args( $item, $action, $args = array() )
-	{
-		$defaults = $this->defaults_row_actions( $item );
 		
-		if( isset( $defaults[$action] ) )
-			$args = wp_parse_args( $args, $defaults[$action] );
-		
-		if( ! isset( $args['base_uri'] ) )
-			$args['base_uri'] = $this->BaseUri;
-		
-		if( ! isset( $args['query_args'][$this->db()->getPrimary()] ) )
-			$args['query_args'][$this->db()->getPrimary()] = $item->{$this->db()->getPrimary()};
-		
-		return $args;
-	}
-	
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions()
 	{
@@ -409,39 +392,7 @@ abstract class Table
 	{
 		return $this->row_actions( $this->item_row_actions( $item, $actions ), $always_visible );
 	}
-	
-	/** == Récupération de l'attribut de sécurisation d'une action == **/
-	public function get_item_nonce_action( $action, $suffix = null )
-	{
-		$nonce_action = $this->Singular . $action;
-		
-		if( isset( $suffix ) )
-			$nonce_action .= $suffix;
-		
-		return $nonce_action;
-	}
-		
-	/** == Lien d'édition d'un élément == **/
-	public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
-	{
-		if( $args = $this->get_item_edit_args( $item, $args, $label, $class ) )
-			return \tiFy\Core\Templates\Admin\Helpers::RowActionLink( 'edit', $args );
-	}
-	
-	/** == Arguments d'édition d'un élément == **/
-	public function get_item_edit_args( $item, $args = array(), $label, $class = '' ) 
-	{
-		if( $base_uri = $this->EditBaseUri )
-			return array(
-				'label'			=> $label,
-				'class'			=> $class,
-				'base_uri'		=> $base_uri,
-				'query_args'	=> array_merge( $args, array( $this->db()->getPrimary() => $item->{$this->db()->getPrimary()} ) ),
-				'nonce'			=> false,
-				'referer'		=> false
-			);
-	}
-	
+					
 	/* = PARAMETRES D'AFFICHAGE = * /
 	/** == Récupération des vues filtrées == **/
 	public function get_views()

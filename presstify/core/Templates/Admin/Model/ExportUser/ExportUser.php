@@ -9,7 +9,8 @@ class ExportUser extends \tiFy\Core\Templates\Admin\Model\Export\Export
 	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 'Columns', 'SortableColumns', 'PerPage',  
+		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 
+	    'ItemIndex', 'Columns', 'SortableColumns', 'PerPage',  
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'PageTitle',
 		'Roles'
 	);

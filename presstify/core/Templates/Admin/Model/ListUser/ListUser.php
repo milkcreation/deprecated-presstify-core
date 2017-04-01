@@ -9,7 +9,8 @@ class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
 	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 'Columns', 'SortableColumns', 'PerPage',  
+		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 
+	    'ItemIndex', 'Columns', 'SortableColumns', 'PerPage',  
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'PageTitle',
 		'Roles'
 	);
@@ -245,22 +246,7 @@ class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
 		wp_redirect( $sendback );
 		exit;
 	}
-			
-	/* = HELPERS = */
-	/** == Lien d'édition d'un élément == **/
-	public function get_item_edit_args( $item, $args = array(), $label, $class = '' ) 
-	{
-		if( $base_uri = $this->EditBaseUri )
-			return array(
-				'label'			=> $label,
-				'class'			=> $class,
-				'base_uri'		=> $base_uri,
-				'query_args'	=> array_merge( $args, array( $this->db()->Primary => $item->{$this->db()->Primary} ) ),
-				'nonce'			=> false,
-				'referer'		=> false
-			);
-	}
-	
+				
 	/* = AFFICHAGE = */	
 	/** == Contenu personnalisé : Login == **/
 	public function column_user_login( $item )
