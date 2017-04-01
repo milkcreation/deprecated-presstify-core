@@ -26,7 +26,7 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Table
 		parent::admin_enqueue_scripts();
 		
 		tify_control_enqueue( 'progress' );
-		wp_enqueue_script( 'tiFyCoreTemplatesAdminModelExport', static::getUrl( get_class() ) .'/Export.js', array( 'jquery' ), 161217, true );
+		wp_enqueue_script( 'tiFyCoreTemplatesAdminModelExport', self::getUrl( get_class() ) .'/Export.js', array( 'jquery' ), 161217, true );
 	}
 	
 	/** == Autorisation de téléchargement du type de fichier == **/

@@ -37,7 +37,7 @@ class Token
 		$algorithm 	= MCRYPT_RIJNDAEL_128; # encryption algorithm
 		$mode 		= MCRYPT_MODE_CBC; # encryption mode
 
-		$ivSize 	= mcrypt_get_iv_size( $algorithm, $mode ); # Returns the size of the IV belonging to a specific cipher/mode combination
+		$ivSize 	= @ mcrypt_get_iv_size( $algorithm, $mode ); # Returns the size of the IV belonging to a specific cipher/mode combination
 		$iv 		= mcrypt_create_iv( $ivSize, MCRYPT_DEV_URANDOM ); # Creates an initialization vector (IV) from a random source
 		$ciphertext = $iv . mcrypt_encrypt( $algorithm, $key, $plain, $mode, $iv ); # Encrypts plaintext with given parameters
 		$hmac 		= hash_hmac( $algo, $ciphertext, $key ); # Generate a keyed hash value using the HMAC method
@@ -77,11 +77,11 @@ class Token
 
 		$algorithm 	= MCRYPT_RIJNDAEL_128; # encryption algorithm
 		$mode 		= MCRYPT_MODE_CBC; # encryption mode
-		$ivSize 	= mcrypt_get_iv_size( $algorithm, $mode ); # Returns the size of the IV belonging to a specific cipher/mode combination
+		$ivSize 	= @ mcrypt_get_iv_size( $algorithm, $mode ); # Returns the size of the IV belonging to a specific cipher/mode combination
 
 		$iv 		= substr( $cipher, 0, $ivSize );
 		$cipher 	= substr( $cipher, $ivSize );
-		$plain 		= mcrypt_decrypt( $algorithm, $key, $cipher, $mode, $iv );
+		$plain 		= @ mcrypt_decrypt( $algorithm, $key, $cipher, $mode, $iv );
 		
 		return rtrim( $plain, "\0" );
 	}

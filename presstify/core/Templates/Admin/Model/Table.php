@@ -16,73 +16,77 @@ abstract class Table extends \WP_List_Table
     use \tiFy\Core\Templates\Traits\Table\Notices;
     use \tiFy\Core\Templates\Traits\Table\Params;
     use \tiFy\Core\Templates\Traits\Table\Views;
-    
-    /* = ARGUMENTS = */    
+
+    /* = ARGUMENTS = */
     // Écran courant
     protected $Screen                   = null;
-    
+
     // Configuration
     /// Url de la page d'administration
     protected $BaseUri                  = null;
-    
+
     /// Url de la page d'édition d'un élément
     protected $EditBaseUri              = null;
-    
+
     // Intitulé des objets traités
     protected $Plural                   = null;
-    
+
     // Intitulé d'un objet traité
     protected $Singular                 = null;
-    
+
     /// Message de notification
     protected $Notices                  = array();
-    
+
     /// Liste des statuts des objets traités
     protected $Statuses                 = array();
-    
+
     /// Liens de vue filtrées
     protected $FilteredViewLinks        = array();    
-        
+
     /// Indic de clé primaire d'un élément
     protected $ItemIndex                = array();
-    
+
     /// Colonnes de la table
     protected $Columns                  = array();
-    
+
     /// Colonne principale de la table
     protected $PrimaryColumn            = null;
-    
+
     /// Colonnes selon lesquelles les éléments peuvent être triés
     protected $SortableColumns          = array();
-    
+
     /// Colonnes Masquées
     protected $HiddenColumns            = array();
     
+    /// Colonnes de prévisualisation
+    protected $PreviewColumns           = array();
+
     /// Nombre d'éléments affichés par page
     protected $PerPage                  = null;
-    
+
     /// 
     protected $PerPageOptionName        = null;
-    
+
     /// Arguments de requête
     protected $QueryArgs                = array();
-    
+
     /// Intitulé affiché lorsque la table est vide
     protected $NoItems                  = '';
-    
+
     /// Actions groupées
     protected $BulkActions              = array();
-    
+
     /// Actions sur un élément
     protected $RowActions               = array();
-    
+
     /// Titre de la page
     protected $PageTitle                = null;
-            
+
     /// Cartographie des paramètres
     protected $ParamsMap                = array( 
         'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
+        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PreviewColumns', 
+        'PerPage', 'PerPageOptionName',
         'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
         'PageTitle'
     );
@@ -91,7 +95,6 @@ abstract class Table extends \WP_List_Table
         '_args', '_pagination_args', 'screen', '_actions', '_pagination',  
         'template', 'db', 'label', 'getConfig' 
     );
-
     
     /* = CONSTRUCTEUR = */
     /** == ! IMPORTANT : court-circuitage du constructeur natif de WP_List_Table == **/
@@ -171,6 +174,12 @@ abstract class Table extends \WP_List_Table
     
     /** == Définition des colonnes masquées == **/
     public function set_hidden_columns()
+    {
+        return array();
+    }
+    
+    /** == Définition des colonnes de prévisualisation == **/
+    public function set_preview_columns()
     {
         return array();
     }
@@ -260,13 +269,12 @@ abstract class Table extends \WP_List_Table
         $this->PerPage = $per_page;    
         
         //// Définition de la valeur du nombre d'éléments par page
-        add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 );    
+        add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 ); 
+        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName(). '_inline_preview', array( $this, 'wp_ajax_inline_preview' ) );
     }
     
     public function _admin_init()
     {
-        // 
-        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_inline_preview', array( $this, 'wp_ajax_inline_preview' ) );
         add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );    
     }
     
@@ -334,30 +342,27 @@ jQuery(document).ready( function($){
     $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
         e.preventDefault();
            
-        console.log( 'tutu' );    
-                
-        var id = $(this).data( 'id' );
+        var index = $(this).data( 'index' );
             $closest = $(this).closest( 'tr' );
-        
-        if( $closest.next().attr('id') != 'preview-'+ id ){
+
+        if( $closest.next().attr('id') != 'inline-preview-'+ index ){
             // Création de la zone de prévisualisation
             $preview = $( '#inline-previewer' ).clone(true);
             $preview
-                .attr( 'id', 'inline-preview-'+ id )
-                //.hide();
+                .attr( 'id', 'inline-preview-'+ index )
+                .hide();
             $closest.after( $preview );
-            
-            // Récupération des éléments de formulaire
+
+            // Récupération de l'élément à prévisualiser
             $.post( 
                 tify_ajaxurl, 
-                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', id: id }, 
+                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
                 function( resp ){
-                    console.log( resp );
-                    //$( '> td', $previewRow ).html(data);            
+                    $( '> td', $preview ).html(resp);            
                 }
             );                 
         } else {
-            $preview = $parent.next();
+            $preview = $closest.next();
         }   
             
         $preview.toggle();    
@@ -367,50 +372,22 @@ jQuery(document).ready( function($){
 });/* ]]> */</script><?php        
     }    
     
-    /** == == **/
+    /** == Action ajax de récupération de la prévisualisation en ligne == **/
     public function wp_ajax_inline_preview()
     {
-        if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
+        // Initialisation des paramètres de configuration de la table
+        $this->initParams(); 
+        
+        /*if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
             wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
                 
         if( ! $this->Form = Forms::get( $item->form_id )->getForm() )
-            wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) );    
-            
-        $output  = "";    
-        $output .= "\n<table class=\"form-table\">";
-        $output .= "\n\t<tbody>";                    
-                                
-        foreach( $this->Form->fields() as $field ) :
-            if( ! $preview = $field->getAddonAttr( 'record', 'preview', false ) )
-                continue;
-                
-            $label = ( is_bool( $preview ) || ! isset( $preview['label'] ) ) ? $field->getLabel() : $preview['title'];    
-                
-            $output .= "\n\t\t<tr valign=\"top\">";
-            if( $label ) :
-                $output .= "\n\t\t\t<th scope=\"row\">";
-                $output .= "\n\t\t\t\t<label><strong>{$label}</strong></label>";
-                $output .= "\n\t\t\t</th>";            
-                $output .= "\n\t\t\t<td>";
-            else :
-                $output .= "\n\t\t\t<td colspan=\"2\">";
-            endif;
-            
-            if( ! empty( $preview['cb'] ) && is_callable( $preview['cb'] ) ) :
-                $output .= call_user_func( $preview['cb'], $item );
-            elseif( method_exists( $this, 'preview_' . $field->getSlug() ) ) :
-                $output .= call_user_func( array( $this, 'preview_' . $field->getSlug() ), $item );
-            else :
-                $output .= $this->preview_default( $item, $field->getSlug() );
-            endif;
-            $output .= "\n\t\t\t</td>";
-        endforeach;
-        $output .= "\n\t</tbody>";
-        $output .= "\n</table>";
-        $output .= "\n<div class=\"clear\"></div>";
-                
-        echo $output;
-        exit;
+            wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) ); */  
+        
+        $this->prepare_items();
+        $item = current( $this->items );
+        $this->preview($item);
+        die();
     }
     
     
@@ -418,11 +395,11 @@ jQuery(document).ready( function($){
     /** == Récupération de l'élément à traité == **/
     public function current_item() 
     {
-        if ( ! empty( $_REQUEST[$this->db()->Primary] ) ) :
-            if( is_array( $_REQUEST[$this->db()->Primary] ) )
-                return array_map('intval', $_REQUEST[$this->db()->Primary] );
+        if ( ! empty( $_REQUEST[$this->ItemIndex] ) ) :
+            if( is_array( $_REQUEST[$this->ItemIndex] ) )
+                return array_map('intval', $_REQUEST[$this->ItemIndex] );
             else 
-                return array( (int) $_REQUEST[$this->db()->Primary] );
+                return array( (int) $_REQUEST[$this->ItemIndex] );
         endif;
         
         return 0;
@@ -436,8 +413,8 @@ jQuery(document).ready( function($){
         $this->items = $query->items;
         
         // Pagination
-        $total_items     = $query->found_items;
-        $per_page         = $this->get_items_per_page( $this->db()->Name, $this->PerPage );
+        $total_items    = $query->found_items;
+        $per_page       = $this->get_items_per_page( $this->db()->Name, $this->PerPage );
         $this->set_pagination_args( 
             array(
                 'total_items'         => $total_items,                  
@@ -451,15 +428,15 @@ jQuery(document).ready( function($){
     public function parse_query_args()
     {
         // Récupération des arguments        
-        $per_page     = $this->get_items_per_page( $this->db()->Name, $this->PerPage );
-        $paged         = $this->get_pagenum();
+        $per_page   = $this->get_items_per_page( $this->db()->Name, $this->PerPage );
+        $paged      = $this->get_pagenum();
 
         // Arguments par défaut
         $query_args = array(                        
-            'per_page'     => $per_page,
-            'paged'        => $paged,
-            'order'        => 'DESC',
-            'orderby'    => $this->db()->Primary
+            'per_page'      => $per_page,
+            'paged'         => $paged,
+            'order'         => 'DESC',
+            'orderby'       => $this->db()->Primary
         );
             
         // Traitement des arguments
@@ -518,94 +495,7 @@ jQuery(document).ready( function($){
             exit;
         endif;         
     }
-    
-    /** == Éxecution de l'action - suppression == **/
-    protected function process_bulk_action_delete()
-    {
-        $item_ids = $this->current_item();
 
-        // Vérification des permissions d'accès
-        if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-            check_admin_referer( $this->get_item_nonce_action( 'delete', reset( $item_ids ) ) );
-        endif;
-        
-        // Traitement de l'élément
-        foreach( (array) $item_ids as $item_id ) :
-            $this->db()->handle()->delete_by_id( $item_id );
-            if( $this->db()->meta() )
-                $this->db()->meta()->delete_all( $item_id );
-        endforeach;
-        
-        // Traitement de la redirection
-        $sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-        $sendback = add_query_arg( 'message', 'deleted', $sendback );    
-        
-        wp_redirect( $sendback );
-        exit;
-    }
-    
-    /** == Éxecution de l'action - mise à la corbeille == **/
-    protected function process_bulk_action_trash()
-    {
-        $item_ids = $this->current_item();
-        
-        // Vérification des permissions d'accès
-        if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-            check_admin_referer( $this->get_item_nonce_action( 'trash', reset( $item_ids ) ) );
-        endif;
-        
-        // Bypass
-        if( ! $this->db()->isCol( 'status' ) )
-            return;
-        
-        // Traitement de l'élément
-        foreach( (array) $item_ids as $item_id ) :
-            /// Conservation du statut original
-            if( $this->db()->meta() && ( $original_status = $this->db()->select()->cell_by_id( $item_id, 'status' ) ) )
-                $this->db()->meta()->update( $item_id, '_trash_meta_status', $original_status );                    
-            /// Modification du statut
-            $this->db()->handle()->update( $item_id, array( 'status' => 'trash' ) );
-        endforeach;
-            
-        // Traitement de la redirection
-        $sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-        $sendback = add_query_arg( 'message', 'trashed', $sendback );
-                                            
-        wp_redirect( $sendback );
-        exit;
-    }
-    
-    /** == Éxecution de l'action - restauration d'élément à la corbeille == **/
-    protected function process_bulk_action_untrash()
-    {
-        $item_ids = $this->current_item();    
-        
-        // Vérification des permissions d'accès
-        if( ! wp_verify_nonce( @$_REQUEST['_wpnonce'], 'bulk-'. $this->Plural ) ) :
-            check_admin_referer( $this->get_item_nonce_action( 'untrash', reset( $item_ids ) ) );
-        endif;
-        
-        // Bypass
-        if( ! $this->db()->isCol( 'status' ) )
-            return;
-        
-        // Traitement de l'élément
-        foreach( (array) $item_ids as $item_id ) :
-            /// Récupération du statut original
-            $original_status = ( $this->db()->meta() && ( $_original_status = $this->db()->meta()->get( $item_id, '_trash_meta_status', true ) ) ) ? $_original_status : $this->db()->getColAttr( 'status', 'default' );                
-            if( $this->db()->meta() ) $this->db()->meta()->delete( $item_id, '_trash_meta_status' );
-            /// Mise à jour du statut
-            $this->db()->handle()->update( $item_id, array( 'status' => $original_status ) );
-        endforeach;
-            
-        // Traitement de la redirection
-        $sendback = remove_query_arg( array( 'action', 'action2' ), wp_get_referer() );
-        $sendback = add_query_arg( 'message', 'untrashed', $sendback );
-            
-        wp_redirect( $sendback );
-        exit;
-    }
-    
     /* = HELPERS = */
     /** == Récupération de l'intitulé d'un statut == **/
     public function get_status( $status, $singular = true )
@@ -721,6 +611,50 @@ jQuery(document).ready( function($){
     public function column_cb( $item )
     {
         return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->db()->Primary, $item->{$this->db()->Primary} );
+    }
+    
+    /** == == **/
+    public function preview( $item )
+    {        
+        if( ! $columns = $this->PreviewColumns ) :
+            $columns = $this->Columns;
+            unset( $columns['cb'] );
+        endif;
+?>
+<table class="form-table">
+    <tbody>
+    <?php foreach( $columns as $column_name => $column_label ) :?>
+        <tr valign="top">
+            <th scope="row">
+                <label><strong><?php echo $column_label;?></strong></label>
+            </th>
+            <td>
+            <?php 
+            if( method_exists( $this, 'preview_' . $column_name ) ) :
+                echo call_user_func( array( $this, 'preview_' . $column_name ), $item );
+            else :
+                echo $this->preview_default( $item, $column_name );
+            endif;
+            ?>
+            </td>
+        </tr>
+    <?php endforeach;?>
+    </tbody>
+</table>
+<div class="clear"></div>
+<?php
+    }
+    
+    /** == Contenu de l'aperçu par défaut == **/
+    public function preview_default( $item, $column_name )
+    {
+        if ( method_exists( $this, '_column_' . $column_name ) ) :
+            return call_user_func( array( $this, '_column_' . $column_name ), $item );
+        elseif( method_exists( $this, 'column_' . $column_name ) ) :
+            return call_user_func( array( $this, 'column_' . $column_name ), $item );
+        else :
+            return $this->column_default($item, $column_name);
+        endif;        
     }
     
     /** == Rendu de la page  == **/

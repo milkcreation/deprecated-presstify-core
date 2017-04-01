@@ -1,9 +1,9 @@
 <?php
 namespace tiFy\Core\Upload;
 
-use tiFy\Environment\App;
+use \Defuse\Crypto\Crypto;
 
-class Upload extends App
+class Upload extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// ACTIONS
@@ -189,13 +189,13 @@ class Upload extends App
 		
 		if( ! $type ) :
 			if( $file = get_query_var( 'file_upload_url', false ) ) :
-				$file = \tiFy\Lib\Token::Decrypt( $file );
+				$file = Crypto::decryptWithPassword( $file, NONCE_KEY );
 				//$file = preg_replace( '/^'. preg_quote( site_url(), '/') .'|^'. preg_quote( ABSPATH, '/') .'/', '', $file );				
 			elseif( $file = (int) get_query_var( 'file_upload_media', 0 ) ) :
 			endif;
 		elseif( $type === 'url' ) :
 			if( $file = get_query_var( 'file_upload_url', false ) ) :
-				$file = \tiFy\Lib\Token::Decrypt( $file );
+				$file = Crypto::decryptWithPassword( $file, NONCE_KEY );
 				$file = preg_replace( '/^'. preg_quote( site_url(), '/') .'|^'. preg_quote( ABSPATH, '/') .'/', '', $file );
 			endif;
 		elseif( $type === 'media' ) :
@@ -220,7 +220,7 @@ class Upload extends App
 					$vars['token'] = $token;
 			endif;			
 		else :
-			$file = urlencode_deep( \tiFy\Lib\Token::Encrypt( $file ) );
+			$file = urlencode_deep( Crypto::encryptWithPassword( $file, NONCE_KEY ) );
 			$vars = array( 'file_upload_url' => $file );
 		endif;
 		

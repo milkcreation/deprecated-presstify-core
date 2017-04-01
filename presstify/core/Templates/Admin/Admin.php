@@ -78,7 +78,7 @@ class Admin extends \tiFy\Environment\App
 		foreach( (array) $submenus as $parent_slug =>  $_submenus ) :
 			// Trie des sous-menus
 		    $submenus_ordered = array();
-			foreach( $_submenus as $k => $v ) :
+			foreach( $_submenus as $k => $v ) :			    
 				$submenus_ordered[(int) $v['position']] = $v;
 		    endforeach;
             ksort( $submenus_ordered );
