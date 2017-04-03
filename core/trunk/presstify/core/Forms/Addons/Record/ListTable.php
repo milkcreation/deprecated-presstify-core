@@ -37,6 +37,26 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     }
     
     /* = DECLARATION DES PARAMETRES = */
+    /** == Définition des vues filtrées == **/
+	public function set_views()
+	{
+		return array(
+			'any'		=> array(
+				'label'				=> __( 'Tous', 'tify' ),
+				'current'			=> empty( $_REQUEST['record_status'] ) ? true : null,
+				'add_query_args'	=> array( 'record_status' => array( 'publish' ) ),
+				'remove_query_args'	=> array( 'record_status' ),
+				'count'				=> $this->count_items()
+			),
+			'trash' 		=> array( 
+				'label'				=> __( 'Corbeille', 'tify' ),
+				'add_query_args'	=> array( 'record_status' => 'trash' ),
+				'count'				=> $this->count_items( array( 'record_status' => 'trash' ) ),
+				'hide_empty'		=> true
+			)
+	    );
+	}
+    
     /** == Définition des colonnes de la table == **/
     public function set_columns()
     {
@@ -85,7 +105,7 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
             endforeach;        
         endif;
 
-        array_push( $actions, 'delete' );
+        array_push( $actions, 'trash', 'untrash', 'delete' );
 
         return $actions;
     }
@@ -95,6 +115,12 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     {
         return array( 'delete' => __( 'Supprimer' ) );
     }
+    
+	/** == Définition de l'ajout automatique des actions sur l'élément des entrées de la colonne principale == **/
+	public function set_handle_row_actions()
+	{
+		return false;
+	}
 
     /* = DECLENCHEURS = */
     /** == Mise en file des scripts de l'interface d'administration == **/
@@ -167,14 +193,24 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     {
         $form_title = ( $form = Forms::get( $item->form_id ) ) ? $form->getForm()->getTitle() : __( '(Formulaire introuvable)', 'tify' );
                 
-        $output  = $form_title;
+        $output  = "<strong>". $form_title ."</strong>";
         $output .= "<ul style=\"margin:0;font-size:0.8em;font-style:italic;color:#666;\">";
         $output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Identifiant: %s', 'tify' ), $item->form_id ) ."</li>";
         $output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'Session : %s', 'tify' ), $item->record_session ) ."</li>";
         $output .= "\t<li style=\"margin:0;\">" . sprintf( __( 'posté le : %s', 'tify' ), $item->record_date ) ."</li>";
         $output .= "</ul>";
         
-        return $output;
+        $actions = $this->RowActions;
+        
+        if( $item->record_status == 'trash' ) :
+            unset( $actions['trash'] );		    
+			$row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
+		else :
+            unset( $actions['untrash'], $actions['delete'] );
+			$row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
+		endif;
+	
+		return sprintf('%1$s %2$s', $output, $row_actions );
     }
     
     /** == Contenu de l'aperçu par défaut == **/

@@ -65,10 +65,11 @@ trait Params
 	/** == Initialisation des champs de saisie == **/
 	public function initParamFields()
 	{
-		/// Déclaration des colonnes de la table		
+		/// Déclaration des colonnes de la table			
 		if( $fields = $this->set_fields() ) :
 		elseif( $fields = $this->getConfig( 'fields' ) ) :
-		else :			
+		else :	
+		      $fields = array();	
 			foreach( (array)  $this->db()->ColNames as $name ) :
 				$fields[$name] = $name;
 			endforeach;

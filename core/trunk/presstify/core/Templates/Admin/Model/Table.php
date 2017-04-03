@@ -438,7 +438,7 @@ jQuery(document).ready( function($){
             'order'         => 'DESC',
             'orderby'       => $this->db()->Primary
         );
-            
+  
         // Traitement des arguments
         foreach( (array) $_REQUEST as $key => $value ) :
             if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
