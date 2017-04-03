@@ -60,8 +60,9 @@ trait Views
 		endif;
 			
 		/// Traitement des arguments de requête à ajouter
-		if( ! empty( $add_query_args ) )
-			$base_query_args = wp_parse_args( $add_query_args, $base_query_args );	
+		if( ! empty( $add_query_args ) ) :
+			$base_query_args = wp_parse_args( $add_query_args, $base_query_args );
+		endif;
 		
 		/// Traitement des argument de requête à supprimer
 		if( empty( $remove_query_args ) ) :

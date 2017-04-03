@@ -121,7 +121,7 @@ abstract class Form
 					
 		// Traitement
 		/// Exécution des actions
-		$this->process_bulk_actions();
+        $this->process_bulk_actions();
 
 		/// Affichage des messages de notification
 		foreach( (array) $this->Notices as $nid => $nattr ) :
@@ -214,10 +214,10 @@ abstract class Form
 	
 	/** == Éxecution des actions == **/
 	protected function process_bulk_actions()
-	{		
-		if( defined( 'DOING_AJAX' ) && ( DOING_AJAX === true ) )
+	{	
+	    if( defined( 'DOING_AJAX' ) && ( DOING_AJAX === true ) )
 			return;
-			
+        	
 		if( method_exists( $this, 'process_bulk_action_'. $this->current_action() ) ) :
 			call_user_func( array( $this, 'process_bulk_action_'. $this->current_action() ) );
 		elseif( ! empty( $_REQUEST['_wp_http_referer'] ) ) :
