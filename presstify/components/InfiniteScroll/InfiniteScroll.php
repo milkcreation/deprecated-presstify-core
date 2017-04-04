@@ -35,7 +35,7 @@ class InfiniteScroll extends App
 	/** == Initialisation globale == **/
 	public function wp_enqueue_scripts()
 	{
-		wp_enqueue_script( 'tiFyInfiniteScroll', self::getUrl( get_class() ) .'/tiFyInfiniteScroll.js', array( 'jquery' ), 170328, true );
+		wp_enqueue_script( 'tiFyInfiniteScroll', self::getUrl( get_class() ) .'/InfiniteScroll.js', array( 'jquery' ), 170328, true );
 	}
 	
 	/** == Chargement des post == **/
