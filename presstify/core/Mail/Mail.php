@@ -1,65 +1,66 @@
 <?php 
 namespace tiFy\Core\Mail;
 
+use \tiFy\Lib\Mailer\MailerNew;
+
 class Mail extends \tiFy\Environment\Core
 {
-    /* = ARGUMENTS = */	
-	// Classe de rappel des mails déclarés
-	protected static $Registered        = array();
-	
-	// Paramètres par défaut des emails
-    /// Destinataires
-    private static $Recipients          = array();
+    /* = ARGUMENTS = */    
+        // Liste des actions à déclencher
+    protected $CallActions                = array(
+        'password_change_email',
+        'email_change_email',
+        'retrieve_password_title',
+        'wp_mail'
+    ); 
     
-    /// Expediteur
-    private static $Sender              = '';
-    
-    /// Destinataire de réponse
-    private static $ReplyTo             = '';
-    
-    /// Destinataires de copie carbone
-    private static $Cc                  = array();
-    
-    /// Destinataires de copie cachée
-    private static $Bcc                 = array();    
-    
-    // Sujet
-    private static $Subject             = '';
-    
-    // Message
-    private static $Message             = '';
-    
-    // Entête du Message
-    private static $MessageHeader       = '';
-    
-    // Pied de page du message
-    private static $MessageFooter       = '';
-    
-    // Deboggage
-    private static $Debug               = false;  
-    
-    // Liste des paramètres autorisés
-    private static $AllowedParams       = array(
-        'Recipients', 'Sender', 'ReplyTo', 'Cc', 'Bcc', 'Subject',
-        'MessageBody', 'MessageHeader', 'MessageFooter',
-        'Debug'
+    // Cartographie des méthodes de rappel des actions
+    protected $CallActionsFunctionsMap    = array();
+        
+    // Ordres de priorité d'exécution des actions
+    protected $CallActionsPriorityMap    = array(
+        'password_change_email'     => 99,
+        'email_change_email'        => 99,
+        'retrieve_password_title'   => 99
     );
-    	
+    
+    // Nombre d'arguments autorisés
+    protected $CallActionsArgsMap        = array(
+        'password_change_email'     => 3,
+        'email_change_email'        => 3,
+        'retrieve_password_title'   => 3,
+        'retrieve_password_message' => 4
+    );
+    
+    // Paramètre globaux des emails
+    protected static $GlobalParams      = array();
+    
+    // Mails natifs de Wordpress
+    protected static $WpMail            = array();
+    
+    // Classe de rappel des mails personnalisés
+    protected static $Registered        = array();
+    
+    // Classe de rappel des mails personnalisés
+    protected static $Factory           = array();
+            
     /* = CONSTRUCTEUR = */
     public function __construct()
     {
         parent::__construct();
-        
+
          // Définition des paramètres généraux
-        foreach( (array) self::getConfig( 'params' ) as $param => $value ) :
-            $param = self::sanitizeParam( $param );
-            if( ! in_array( $param, self::getAllowedParams() ) )
-                continue;
-            self::${$param} = $value;
+        foreach( (array) self::getConfig( 'global' ) as $param => $value ) :
+            self::$GlobalParams[$param] = $value;
         endforeach;        
         
-        // Déclaration des éléments de configuration
-        foreach( (array) self::getConfig( 'registered' ) as $id => $attrs ) :
+        // Déclaration des emails natif de wordpress
+        foreach( (array) self::getConfig( 'wp' ) as $id => $attrs ) :
+            self::$WpMail[self::sanitizeName( $id )] = $attrs;
+        endforeach;
+        
+        // Déclaration des emails personnalisés
+        foreach( (array) self::getConfig( 'custom' ) as $id => $attrs ) :
             self::register( $id, $attrs );
         endforeach;
      
@@ -75,38 +76,84 @@ class Mail extends \tiFy\Environment\Core
             return;
         
         $className = self::getOverride( "\\tiFy\\Core\\Mail\\Factory", array( "\\". self::getOverrideNamespace() ."\\Core\\Mail\\". self::sanitizeControllerName( $id ) ) );
-        
-        return self::$Registered[$id] = new $className( $attrs );   
+
+        return self::$Registered[$id] = array( $className, $attrs );   
     }
     
-    /** == Récupération d'un email == **/
+    /** == Récupération d'un email presonnalisé == **/
     public static function get( $id )
     {
-        if( isset( self::$Registered[$id] ) )
-            return self::$Registered[$id];           
-    }
-    
-    /** == Récupération de la liste de paramètres permis == **/
-    public static function getAllowedParams()
-    {
-        return self::$AllowedParams;
+        if( isset( self::$Factory[$id] ) )
+            return self::$Factory[$id]; 
+        if( ! isset( self::$Registered[$id] ) )
+            return;
+        
+        $className = self::$Registered[$id][0];    
+        $attrs = self::$Registered[$id][1];
+        $attrs = wp_parse_args( $attrs, self::$GlobalParams );
+
+        return self::$Factory[$id] = new $className( $attrs );           
     }
     
     /** == == **/
-    public static function sanitizeParam( $param )
+    public static function sanitizeName( $name )
     {
-        return implode( array_map( 'ucfirst', explode( '_', $param ) ) );
+        return implode( array_map( 'ucfirst', explode( '_', $name ) ) );
     }
     
-    /** == Récupération d'un paramètre général == **/
-    public static function getParam( $param )
+    /* = DECLENCHEURS = */
+    /** == Attributs de l'email natif de changement de mot de passe d'un utilisateur == **/
+    final public function password_change_email( $pass_change_email, $user, $userdata )
     {
-        // Bypass
-        if( ! in_array( $param, self::getAllowedParams() ) )
-            return;        
-        if( ! isset( self::${$param} ) )
-            return;
+        $pass_change_email['subject'] = '<Wp id="PasswordChange">'. $pass_change_email['subject'] .'</Wp>';
         
-        return self::${$param};
+        return $pass_change_email;
+    }
+    
+    /** == Attributs de l'email natif de changement d'adresse email d'un utilisateur == **/
+    final public function email_change_email( $email_change_email, $user, $userdata )
+    {
+        $email_change_email['subject'] = '<Wp id="EmailChange">'. $email_change_email['subject'] .'</Wp>';
+        
+        return $email_change_email;
+    }
+    
+    /** == Sujet de l'email de récupération mot de passe oublié == **/
+    final public function retrieve_password_title( $title, $user_login, $user_data  )
+    {
+        return '<Wp id="RetrievePassword">'. $title .'</Wp>';
+    }
+    
+    /** ==  == **/
+    final public function wp_mail( $attrs = array() )
+    {
+        extract( $attrs );
+        
+        if( ! preg_match( '/^<Wp\sid=\"(.*)\">(.*)<\/Wp>$/', $subject, $matches ) )
+            return $attrs;
+        // re-formatage du sujet et extraction de l'id du mail natif WP
+        list( $original, $id, $subject ) = $matches;
+        
+        $attrs = compact( 'to', 'subject', 'message', 'headers', 'attachments' );
+        
+        // Bypass
+        if( ! in_array( $id, array( 'PasswordChange', 'EmailChange', 'RetrievePassword' ) ) ) :
+            return $attrs;
+        endif;
+        if( ! isset( self::$WpMail[$id] ) ) :
+            return $attrs;
+        endif;
+        
+        if( empty( $headers ) ) :
+            $headers = array();
+        elseif ( ! is_array( $headers ) ) :
+			$headers = explode( "\n", str_replace( "\r\n", "\n", $headers ) );
+        endif;  
+        
+        $attrs = wp_parse_args( $attrs, self::$WpMail[$id] );
+        $attrs = wp_parse_args( $attrs, self::$GlobalParams );
+        $attrs = MailerNew::wp_mail( $attrs );
+        
+        return $attrs;
     }
 }

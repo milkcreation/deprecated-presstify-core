@@ -1,109 +1,84 @@
 <?php 
 namespace tiFy\Core\Mail;
 
-use \tiFy\Lib\Mailer\Mailer;
+use \tiFy\Lib\Mailer\MailerNew;
 
 class Factory extends \tiFy\Environment\App
 {
     /* = ARGUMENTS = */
-    // Adresses
     /// Destinataires
-    protected $Recipients           = array();
+    public $To                    = array();
     
     /// Expediteur
-    protected $Sender               = '';
+    public $From                  = array();
     
     /// Destinataire de réponse
-    protected $ReplyTo              = '';
+    public $ReplyTo               = array();
     
     /// Destinataires de copie carbone
-    protected $Cc                   = array();
+    public $Cc                    = array();
     
     /// Destinataires de copie cachée
-    protected $Bcc                  = array();    
+    public $Bcc                   = array();    
     
     // Sujet
-    protected $Subject              = '';
+    public $Subject               = '';
     
     // Message
-    protected $Message              = '';
+    public $Message               = '';
     
-    // Entête du Message
-    protected $MessageHeader        = '';
+    // Entête du message
+    public $MessageHeader         = '';
     
-    // Pied de page du message
-    protected $MessageFooter        = '';
+    // Pied de page du message 
+    public $MessageFooter         = '';
     
-    // Deboggage
-    protected $Debug                = false;  
-        
-    // Cartographie des paramètres de configuration
-    protected static $ParamsMap = array(
-        'Recipients'    => 'to',
-        'Sender'        => 'from',
-        'ReplyTo'       => 'reply',
-        'Cc'            => 'cc',
-        'Bcc'           => 'bcc',
-        'Subject'       => 'subject',
-        'MessageBody'   => 'html',
-        'MessageHeader' => 'html_before',
-        'MessageFooter' => 'html_after'        
-    );    
+    // Encapsulation du message au format HTML (true ou chaîne de caractère pour laquelle %s désignera le message)
+    public $HtmlWrap              = true;
     
+    // Ajout de l'entête HTML au message (true ou chaîne de caractère)
+    public $HtmlHead              = true;
+    
+    // Ajout du pied de page HTML au message (true ou chaîne de caractère)
+    public $HtmlFoot              = true;
+    
+    // Format d'expédition du message (html ou plain ou multi)
+    public $ContentType           = 'multi';
+  
+    // Encodage des caractères du message
+    public $Charset               = 'UTF-8';
+            
     /* = CONSTRUCTEUR = */
     public function __construct( $params = array() )
-    {
-        // Définition des paramètres par défaut
-        foreach( self::getAllowedParams() as $Param ) :
-            if( method_exists( $this, 'set'. $Param ) ) :
-                $this->{$Param} = call_user_func( array( $this, 'set'. $Param ) );
-            else :
-                $this->{$Param} = Mail::getParam($Param);
-            endif;
-        endforeach;
-        
+    {        
         // Traitement des paramètres d'envoi de l'email        
         $this->setParams( $params );
     }
     
-    /* = CONTROLEURS = */
-    /** == Récupération de la liste des paramètres permis == **/
-    final public function getAllowedParams()
-    {
-        return \tiFy\Core\Mail\Mail::getAllowedParams();
-    }
-    
+    /* = CONTROLEURS = */    
     /** == Définition des paramètres == **/
     final public function setParams( $params = array() )
-    {        
-       
+    {          
         foreach( (array) $params as $param => $value ) :
-            $param = Mail::sanitizeParam( $param );
-            if( method_exists( $this, 'set'. $param ) )
-                continue;
-
-            $this->{$param} = $value;
+            $this->setParam( $param, $value );
         endforeach;
     }
     
     /** == Définition d'un paramètre == **/
     final public function setParam( $param, $value )
     {
-        $param = Mail::sanitizeParam( $param );
-        if( in_array( $param, self::getAllowedParams() ) )
+        $param = MailerNew::sanitizeName( $param );
+        if( MailerNew::isAllowedParam( $param ) ) :
             $this->{$param} = $value;  
+        endif;
     }
             
     /** == Récupération des paramètres == **/
-    final public function getMappedParams()
+    final public function getParams()
     {
         $params = array();
-        foreach( self::$ParamsMap as $Param => $map ) :
-            if( method_exists( $this, 'get'. $Param ) ) :
-                $params[$map] = call_user_func( array( $this, 'get'. $Param ) );
-            else :
-                $params[$map] = $this->{$Param};
-            endif;
+        foreach( MailerNew::getAllowedParams() as $param ) :
+            $params[$param] = $this->getParam( $param );
         endforeach;
         
         return $params;
@@ -112,8 +87,8 @@ class Factory extends \tiFy\Environment\App
     /** == Récupération d'un paramètre == **/
     final public function getParam( $param )
     {
-        $param = Mail::sanitizeParam( $param );
-        if( ! in_array( $param, self::getAllowedParams() ) )
+        $param = MailerNew::sanitizeName( $param );
+        if( ! MailerNew::isAllowedParam( $param ) )
             return;
         
         if( method_exists( $this, 'get'. $param ) ) :
@@ -125,31 +100,14 @@ class Factory extends \tiFy\Environment\App
     
     /** == Envoi de l'email == **/
     final public function send()
-    {
-        // Récupération des paramètres
-        $params = $this->getMappedParams();
-        
-        // Traitement des paramètres        
-        if( $this->getParam( 'Debug' ) ) :
-            $params['auto'] = 'debug';
-        endif;
-        
-        new Mailer( $params );
+    {        
+        return MailerNew::send( $this->getParams() );
     }
     
-    /** == Définition des destinataires == **/
-    public function setRecipients()
-    {
-        return array( 
-            array(
-                get_option( 'admin_email' ), __( 'Administrateur du site', 'tiFy' )
-            )
-        );
-    }
-    
-    /** == Définition de l'expéditeur == **/
-    public function setSender()
-    {
-        return array( get_option( 'admin_email' ), __( 'Administrateur du site', 'tiFy' ) );
+    /** == Envoi de l'email == **/
+    final public function debug()
+    {        
+        echo MailerNew::debug( $this->getParams() );
+        exit;
     }
 }

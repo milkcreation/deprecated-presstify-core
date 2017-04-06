@@ -5,7 +5,8 @@
 .tiFyPDFViewer-inner {
 	position: relative;
 	display: inline-block;
-	padding-top: 60px;
+	overflow: hidden;
+	padding-top: 90px;
 }
 .tiFyPDFViewer::before,
 .tiFyPDFViewer::after {
@@ -15,7 +16,8 @@
 .tiFyPDFViewer::after {
 	clear: both;
 }
-.tiFyPDFViewer-nav {
+.tiFyPDFViewer-nav,
+.tiFyPDFViewer-download {
 	position: absolute;
 	display: inline-block;
 	vertical-align: middle;
@@ -45,7 +47,14 @@
 	right: 0;
 	padding-right: 2.2em;
 }
-.tiFyPDFViewer-nav::before {
+.tiFyPDFViewer-download {
+	left: 50%;
+	padding-right: 2.4em;
+	-webkit-transform: perspective(1px) translateZ(0) translateX(-50%);
+  	transform: perspective(1px) translateZ(0) translateX(-50%);
+}
+.tiFyPDFViewer-nav::before,
+.tiFyPDFViewer-download::before {
 	position: absolute;
 	padding: 0 1px;
 	font: 16px/1 dashicons;
@@ -66,6 +75,10 @@
 	content: "\f345";
 	right: 1em;
 }
+.tiFyPDFViewer-download::before {
+	content: "\f316";
+	right: 1em;
+}
 .tiFyPDFViewer-nav--prev:hover::before, 
 .tiFyPDFViewer-nav--prev:focus::before, 
 .tiFyPDFViewer-nav--prev:active::before {
@@ -78,10 +91,16 @@
 	-webkit-transform: translateX(4px);
 	transform: translateX(4px);
 }
+.tiFyPDFViewer-download:hover:before, 
+.tiFyPDFViewer-download:focus:before, 
+.tiFyPDFViewer-download:active:before {
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);
+}
 .tiFyPDFViewer-page {
 	position: absolute;
 	display: block;
-	top: 15px;
+	top: 60px;
 	right: 0;
 	left: 0;
 	font: 16px/1 Open Sans, sans-serif;
@@ -96,18 +115,21 @@
 }
 .tiFyPDFViewer-canvas {
 	margin: 0 auto;
+	width: 100%;
 	max-width: 100%;
 	height: auto;
 	border: 2px solid #DADFE1;
 }
-@media (max-width: 400px) {
-	.tiFyPDFViewer-nav {
+@media (max-width: 480px) {
+	.tiFyPDFViewer-nav,
+	.tiFyPDFViewer-download {
 		font-size: 0;
 		width: 40px;
 		height: 40px;
 		padding: 0;
 	}
-	.tiFyPDFViewer-nav::before {
+	.tiFyPDFViewer-nav::before,
+	.tiFyPDFViewer-download::before {
 		top: 50%;
 		margin-top: -8px;
 	}
@@ -115,7 +137,8 @@
 		left: 50%;
 		margin-left: -9px;
 	}
-	.tiFyPDFViewer-nav--next::before{
+	.tiFyPDFViewer-nav--next::before,
+	.tiFyPDFViewer-download::before{
 		right: 50%;
 		margin-right: -9px;
 	}

@@ -42,11 +42,11 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 	{
 		return array(
 			'any'		=> array(
-				'label'				=> __( 'Tous', 'tify' ),
+				'label'				=> __( 'Tous (hors corbeille)', 'tify' ),
 				'current'			=> empty( $_REQUEST['record_status'] ) ? true : null,
 				'add_query_args'	=> array( 'record_status' => array( 'publish' ) ),
 				'remove_query_args'	=> array( 'record_status' ),
-				'count'				=> $this->count_items()
+				'count'				=> $this->count_items( array( 'record_status' => array( 'publish' ) ) )
 			),
 			'trash' 		=> array( 
 				'label'				=> __( 'Corbeille', 'tify' ),
@@ -111,10 +111,17 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     }
     
     /** == Définition des actions groupées == **/
-    public function set_bulk_actions()
-    {
-        return array( 'delete' => __( 'Supprimer' ) );
-    }
+	public function set_bulk_actions()
+	{
+		if( empty( $_REQUEST['record_status'] ) ) :
+			$bulk_actions['trash'] = __( 'Mettre à la corbeille', 'tify' );
+		else :
+			$bulk_actions['untrash'] = __( 'Restaurer', 'tify' );
+			$bulk_actions['delete'] = __( 'Supprimer définitivement', 'tify' );
+		endif;
+		
+		return $bulk_actions;
+	}
     
 	/** == Définition de l'ajout automatique des actions sur l'élément des entrées de la colonne principale == **/
 	public function set_handle_row_actions()
