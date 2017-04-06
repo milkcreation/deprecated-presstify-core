@@ -303,7 +303,7 @@ abstract class Table extends \WP_List_Table
                 )
             );            
         endif;
-    
+
         // Traitement
         /// Exécution des actions
         $this->process_bulk_actions();
@@ -341,7 +341,7 @@ abstract class Table extends \WP_List_Table
 jQuery(document).ready( function($){
     $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
         e.preventDefault();
-           
+
         var index = $(this).data( 'index' );
             $closest = $(this).closest( 'tr' );
 
@@ -374,7 +374,7 @@ jQuery(document).ready( function($){
     
     /** == Action ajax de récupération de la prévisualisation en ligne == **/
     public function wp_ajax_inline_preview()
-    {
+    {        
         // Initialisation des paramètres de configuration de la table
         $this->initParams(); 
         
