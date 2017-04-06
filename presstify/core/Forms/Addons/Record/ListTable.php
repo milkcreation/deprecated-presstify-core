@@ -11,10 +11,10 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 {
     /* = ARGUMENTS = */
     // Liste des formulaires actifs 
-    private $Forms          = array();
+    protected $Forms          = array();
 
     // Formulaire courant
-    private $Form           = null;
+    protected $Form           = null;
 
     /* = CONSTRUCTEUR = */
     public function __construct()
@@ -135,17 +135,48 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     {
         wp_enqueue_script( 'tiFyCoreFormsAddonsRecordListTable', self::getUrl( get_class() ) .'/ListTable.js', array( 'jquery'), '161130', true );
     }
-
+    
     /** == == **/
-    public function wp_ajax()
+    public function admin_print_footer_scripts()
     {
-        if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
-            wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
-                
-        if( ! $this->Form = Forms::get( $item->form_id )->getForm() )
-            wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) );    
+       // Bypass
+       if( ! $this->Screen  || ( get_current_screen()->id !== $this->Screen->id ) )
+           return;
+       
+?><script type="text/javascript">/* <![CDATA[ */
+jQuery(document).ready( function($){
+    $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
+        e.preventDefault();
 
-    }
+        var index = $(this).data( 'index' );
+            $closest = $(this).closest( 'tr' );
+
+        if( $closest.next().attr('id') != 'inline-preview-'+ index ){
+            // Création de la zone de prévisualisation
+            $preview = $( '#inline-previewer' ).clone(true);
+            $preview
+                .attr( 'id', 'inline-preview-'+ index )
+                .hide();
+            $closest.after( $preview );
+
+            // Récupération de l'élément à prévisualiser
+            $.post( 
+                tify_ajaxurl, 
+                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index, form_id : '<?php echo isset( $this->Form ) ? $this->Form->getID() : 0;?>' }, 
+                function( resp ){
+                    $( '> td', $preview ).html(resp);            
+                }
+            );                 
+        } else {
+            $preview = $closest.next();
+        }   
+            
+        $preview.toggle();    
+                
+        return false;
+    });
+});/* ]]> */</script><?php        
+    }   
     
     /* = TRAITEMENT = */
     /** == Récupération des éléments == **/
@@ -222,9 +253,10 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
     
     /** == Contenu de l'aperçu par défaut == **/
     public function preview_default( $item, $column_name )
-    {
+    {     
         if( ! $field = $this->Form->getField( $column_name ) )
             return;
+
         $values = (array) $this->db()->meta()->get( $item->ID, $column_name );
 
         foreach( $values as &$value ) :        
