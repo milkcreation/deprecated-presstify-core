@@ -152,7 +152,7 @@ class Mail extends \tiFy\Environment\Core
         
         $attrs = wp_parse_args( $attrs, self::$WpMail[$id] );
         $attrs = wp_parse_args( $attrs, self::$GlobalParams );
-        $attrs = MailerNew::wp_mail( $attrs );
+        $attrs = MailerNew::wp_mail( $attrs );       
         
         return $attrs;
     }

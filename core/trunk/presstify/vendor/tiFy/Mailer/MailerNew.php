@@ -156,19 +156,16 @@ class MailerNew
         // Traitement des arguments de contact
         foreach( array( 'From', 'To', 'ReplyTo', 'Cc', 'Bcc' ) as $param ) :
             if( empty( self::${$param} ) )
-                continue;
-            if( $param === 'From' ) :
-                self::${$param} = self::parseContact( self::${$param}, true );
-            else :    
-                self::${$param} = self::parseContact( self::${$param} );
-            endif;
+                continue; 
+            self::${$param} = self::parseContact( self::${$param} );
         endforeach;
         
         // Définition de l'éxpéditeur requis
         if( empty( self::$From ) ) :
-             self::$From = self::getAdminContact();    
+             self::$From = array( self::getAdminContact() );    
         endif;
-
+        self::$From = current( self::$From );
+        
         // Définition du destinataire requis
         if( empty( self::$To ) ) :
             self::$To = array( self::getAdminContact() );
@@ -220,50 +217,32 @@ class MailerNew
 
         /// Expéditeur  
         if( isset( self::$From[1] ) ) :
-            $phpmailer->setFrom( self::$From[0], self::$From[1] );
-        else :
-            $phpmailer->setFrom( self::$From[0] );
+            $phpmailer->setFrom( self::$From['email'], self::$From['name'] );
         endif;    
             
         /// Destinataires
         foreach( (array) self::$To as $contact ) :
-            if( ! isset( $contact[1] ) ) :
-                $phpmailer->addAddress( $contact[0] );
-            else :    
-                $phpmailer->addAddress( $contact[0], $contact[1] );
-            endif;
+            $phpmailer->addAddress( $contact['email'], $contact['name'] );
         endforeach;
 
         /// Adresses de réponse
         if( ! empty( self::$ReplyTo ) ) :
             foreach( self::$ReplyTo as $contact ) :
-                if( ! isset( $contact[1] ) ) :
-                    $phpmailer->addReplyTo( $contact[0] );
-                else :    
-                    $phpmailer->addReplyTo( $contact[0], $contact[1] );
-                endif;            
+                $phpmailer->addReplyTo( $contact['email'], $contact['name'] );            
             endforeach;
         endif;
         
         /// Copie carbone
         if( ! empty( self::$Cc ) ) :
             foreach( self::$Cc as $contact ) :
-                if( ! isset( $contact[1] ) ) :
-                    $phpmailer->addCC( $contact[0] );
-                else :    
-                    $phpmailer->addCC( $contact[0], $contact[1] );
-                endif;            
+                $phpmailer->addCC( $contact['email'], $contact['name'] );          
             endforeach;
         endif;
         
         /// Copie cachée
         if( ! empty( self::$Cc ) ) :
             foreach( self::$Bcc as $contact ) :
-                if( ! isset( $contact[1] ) ) :
-                    $phpmailer->addBCC( $contact[0] );
-                else :    
-                    $phpmailer->addBCC( $contact[0], $contact[1] );
-                endif;            
+                $phpmailer->addBCC( $contact['email'], $contact['name'] );          
             endforeach;
         endif;  
         
@@ -298,10 +277,8 @@ class MailerNew
             return self::$AdminContact;
         
         $contact = array();
-        $contact[0] = get_option( 'admin_email' );
-        if( $user = get_user_by( 'email', get_option( 'admin_email' ) ) ) :   
-            $contact[1] = $user->display_name;
-        endif;
+        $contact['email'] = get_option( 'admin_email' );
+        $contact['name'] = ( $user = get_user_by( 'email', get_option( 'admin_email' ) ) ) ? $user->display_name : null;
         
         return self::$AdminContact = $contact;
     }
@@ -343,90 +320,81 @@ class MailerNew
     }
     
     /** == Traitement == **/
-    public static function parseContact( $contact, $single = false )
+    public static function parseContact( $contact, $depth = 0 )
     {
         $output = "";
-        if( is_array( $contact ) ) :
+        
+        if( is_string( $contact ) && preg_match( '/,/', $contact ) ) :
+            $contact  = array_map( 'trim', explode( ',', $contact ) );
+        endif;       
+        
+        if( is_string( $contact )  ) : 
+            $contact = self::parseContactString( $contact );
+        
+            return ! $depth ? array( $contact ) : $contact;
+        elseif( is_array( $contact ) ) :
             // Tableau indexé
             if( array_keys( $contact ) === range(0, count( $contact )-1 ) ) :
                 /// Format array( [email], [(optional) name] )
                 if( is_string( $contact[0] ) && is_email( $contact[0] ) ) :
                     if( count( $contact ) === 1 ) :
-                        return $contact;
-                    elseif( ( count( $contact ) === 2 ) && is_string( $contact[1] ) ) :
-                        return $contact;
-                    endif;
-                endif;
-                $contact = array_map( 'self::parseContact', $contact );
-                
-                foreach( $contact as $key => $value ) :
-                    if( is_null( $value ) ) :
-                        unset( $contact[$key] );
-                    endif;
-                endforeach;
+                        $contact = array( 'email' => $contact[0], 'name' => null );
+        
+                        return ! $depth ? array( $contact ) : $contact;
+                    elseif( ( count( $contact ) === 2 ) && is_string( $contact[1] ) && ! is_email( $contact[1] ) ) :
+                        $contact = array( 'email' => $contact[0], 'name' => $contact[1] );
                     
-                if( ! empty( $contact ) ) :
-                    return $contact;
+                        return ! $depth ? array( $contact ) : $contact;
+                    endif;
                 endif;
-            
+                if( $depth < 1 ) :
+                    return array_map( function( $contact ){ return self::parseContact( $contact, 1 ); }, $contact );
+                endif;    
+                
             // Tableau Associatif
             /// Format array( 'email' => [email], 'name' => [name] );
-            elseif( isset( $contact['email'] ) && is_email( $contact['email'] ) && ! empty( $contact['name'] ) && is_string( $contact['name'] ) ) :
-                return array( $contact['email'], (string) $contact['name'] );
-            
-            /// Format array( 'email' => [email] );
-            elseif( isset( $contact['email'] ) ) :
-                return self::parseContactString( $contact['email'] );
+            elseif( isset( $contact['email'] ) && is_email( $contact['email'] ) ) :
+                if( empty( $contact['name'] ) || ! is_string( $contact['name'] ) ) :
+                    $contact['name'] = null;
+                endif;
+                
+                return ! $depth ? array( $contact ) : $contact;
             endif;
-        elseif( is_string( $contact )  ) : 
-            return self::parseContactString( $contact );
         endif;            
     }
 
     /** == Traitement d'une chaine de contact == **/
     public static function parseContactString( $contact )
     {
-        if( ! is_string( $contact ) )
-            return null;
-        
-        $contact  = array_map( 'trim', explode( ',', $contact ) );
-        
-        $contacts = array();
-        foreach( $contact as $c ) :
-            $email = ''; $name = null;
-            $bracket_pos = strpos( $c, '<' );
-            if ( $bracket_pos !== false ) :
-                if ( $bracket_pos > 0 ) :
-                    $name = substr( $c, 0, $bracket_pos - 1 );
-                    $name = str_replace( '"', '', $name );
-                    $name = trim( $name );
-                endif;
-                $email = substr( $c, $bracket_pos + 1 );
-                $email = str_replace( '>', '', $email );
-                $email = trim( $email );
-            elseif ( !empty( $c ) ) :
-                $email = $c;
+        $email = ''; $name = null;
+        $bracket_pos = strpos( $contact, '<' );
+        if ( $bracket_pos !== false ) :
+            if ( $bracket_pos > 0 ) :
+                $name = substr( $contact, 0, $bracket_pos - 1 );
+                $name = str_replace( '"', '', $name );
+                $name = trim( $name );
             endif;
-            
-            if( ! empty( $email ) && is_email( $email ) ) :
-                $contacts[] = array( $email, $name );
-            endif;
-        endforeach;
-
-        if( empty( $contacts ) ) :
-            return null;
-        else :
-            return $contacts;
-        endif;        
+            $email = substr( $contact, $bracket_pos + 1 );
+            $email = str_replace( '>', '', $email );
+            $email = trim( $email );
+        elseif ( ! empty( $contact ) ) :
+            $email = $contact;
+        endif;
+        
+        if( ! empty( $email ) && is_email( $email ) ) :
+            $contact = array( 'email' => $email, 'name' => $name );
+        endif;
+        
+        return $contact;        
     }
     
     /** == Formatage d'un contact == **/
     public static function formatContactArray( $contact )
     {    
-        if( is_null( $contact[1] ) ) :
-            return $contact[0];
+        if( is_null( $contact['name'] ) ) :
+            return $contact['email'];
         else :
-            return "{$contact[1]} <{$contact[0]}>";
+            return "{$contact['name']} <{$contact['email']}>";
         endif;
     }
         
@@ -586,10 +554,10 @@ class MailerNew
     
     /** == Translation des paramètres au format wp_mail == **/
     public static function wp_mail( $params )
-    {
+    {       
         self::$ContentType = 'plain';
         self::setParams( $params );
-        
+
         $to = array_map( 'self::formatContactArray', self::$To );
         
         $subject = self::$Subject;        
