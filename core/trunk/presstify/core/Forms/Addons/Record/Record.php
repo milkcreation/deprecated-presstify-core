@@ -202,10 +202,10 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     public function cb_handle_successfully( $handle )
     {            
         $datas = array(
-            'form_id'             => $this->form()->getID(),
-            'record_session'     => $this->form()->getSession(),     
-            'record_date'         => current_time( 'mysql' ),
-            'item_meta'            => $this->form()->getFieldsValues()
+            'form_id'               => $this->form()->getID(),
+            'record_session'        => $this->form()->getSession(),     
+            'record_date'           => current_time( 'mysql' ),
+            'item_meta'             => $this->form()->getFieldsValues()
         );
         
         // Définition de la base de données (front)

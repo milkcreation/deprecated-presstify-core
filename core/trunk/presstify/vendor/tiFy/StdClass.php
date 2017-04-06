@@ -13,8 +13,13 @@ class StdClass
      **/
     public static function sanitizeName( $classname )
     {
+        $lcfirst = preg_match( '/^[a-z]/', $classname );
+        
         $classname = implode( '', array_map( 'ucfirst', explode( '-', $classname ) ) );
         $classname = implode( '_', array_map( 'ucfirst', explode( '_', $classname ) ) );
+        
+        if( $lcfirst  )
+            $classname = lcfirst( $classname );
         
         return $classname;
     }

@@ -88,6 +88,31 @@ var tiFyPDFViewer;
 	    }
 	    PDFViewer.pageNum++;
 	    queueRenderPage(PDFViewer.pageNum, PDFViewerContainer, pdfDoc, PDFViewer);
+	},	
+	/**
+	 * Téléchargement
+	 * @param fileUrl URL du fichier
+	 * @param fileName Nom du fichier
+	 */
+	download = function(fileUrl, fileName) {
+		var a = document.createElement('a');
+		if (a.click) {
+			a.href = fileUrl;
+			a.target = '_parent';
+			if ('download' in a) {
+			  a.download = fileName;
+			}
+		    (document.body || document.documentElement).appendChild(a);
+		    a.click();
+		    a.parentNode.removeChild(a);
+		} else {
+		    if (window.top === window &&
+		        fileUrl.split('#')[0] === window.location.href.split('#')[0]) {
+		    	var padCharacter = fileUrl.indexOf('?') === -1 ? '?' : '&';
+		    	fileUrl = fileUrl.replace(/#|$/, padCharacter + '$&');
+		    }
+		    window.open(fileUrl, '_parent');
+		}
 	};
 	/**
 	 * Initialisation de la visionneuse
@@ -97,6 +122,7 @@ var tiFyPDFViewer;
 		var PDFViewerContainer = $target,
 			canvas = $('.tiFyPDFViewer-canvas',$target).get(0),
 			fileUrl = PDFViewerContainer.data('file_url'),
+			fileName = PDFViewerContainer.data('filename');
 			pdfDoc = null,
 			reachedEdge = false,
 			touchStart = null,
@@ -127,6 +153,9 @@ var tiFyPDFViewer;
 		});
 		PDFViewerContainer.on('click', '.tiFyPDFViewer-nav--next', function() {
 			onNextPage(PDFViewerContainer, pdfDoc, PDFViewer);
+		});
+		PDFViewerContainer.on('click', '.tiFyPDFViewer-download', function() {
+			download(fileUrl, fileName);
 		});
 		$(canvas).on('touchstart', function(e) {
 			touchDown = true;

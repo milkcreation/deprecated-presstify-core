@@ -195,7 +195,7 @@ trait Params
 	/** == Initialisation des arguments de requête == **/
 	public function initParamQueryArgs()
 	{
-		$this->QueryArgs = (array) $this->set_query_args();
+		$this->QueryArgs = wp_parse_args( $this->set_query_args(), $this->QueryArgs );
 	}
 	
 	/** == Initialisation du nombre d'éléments affichés par page == **/

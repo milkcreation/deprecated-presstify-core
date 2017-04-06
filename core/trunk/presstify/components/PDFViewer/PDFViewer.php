@@ -50,7 +50,9 @@ class PDFViewer extends \tiFy\Environment\Component
 	        'scale'        => 1, // Echelle personnalisée
 	        'width'        => null, // Se base sur l'échelle du PDF
 	        'full_width'   => false, // Prend toute la largeur du conteneur
-	        'navigation'   => true
+	        'navigation'   => true,
+	        'download'     => true,
+	        'filename'     => __( 'Fichier', 'tify' )
 	    );
 	    $args = wp_parse_args( $args, $defaults );
 	    extract( $args );
@@ -61,12 +63,16 @@ class PDFViewer extends \tiFy\Environment\Component
 	                   data-file_url=\"{$pdf_url}\" 
 	                   data-scale=\"{$scale}\" 
 	                   data-width=\"{$width}\" 
-	                   data-full_width=\"" . (int) $full_width . "\">\n";
+	                   data-full_width=\"" . (int) $full_width . "\"
+                       data-filename=\"{$filename}\">\n";
 	    $output .= "\t<div class=\"tiFyPDFViewer-inner\">\n";
 	    if( $navigation ) :
 	       $output .= "\t\t<button type=\"button\" class=\"tiFyPDFViewer-nav tiFyPDFViewer-nav--prev\">".__( 'Précédent', 'tify' )."</button>\n";
 	       $output .= "\t\t<span class=\"tiFyPDFViewer-page\"><span class=\"tiFyPDFViewer-pageNum\"></span><span class=\"tiFyPDFViewer-pageCount\"></span></span>\n";
 	       $output .= "\t\t<button type=\"button\" class=\"tiFyPDFViewer-nav tiFyPDFViewer-nav--next\">".__( 'Suivant', 'tify' )."</button>\n";
+	    endif;
+	    if( $download ) :
+	       $output .= "\t\t<button type=\"button\" class=\"tiFyPDFViewer-download\">".__( 'Télécharger', 'tify' )."</button>";
 	    endif;
 	    $output .= "\t\t<canvas class=\"tiFyPDFViewer-canvas\"></canvas>\n";
 	    $output .= "\t</div>\n";
