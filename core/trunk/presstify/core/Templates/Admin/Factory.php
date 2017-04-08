@@ -111,7 +111,8 @@ class Factory extends \tiFy\Core\Templates\Factory
 			
 		// Mise en file des scripts de l'ecran courant
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );
-
+        add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );
+		
 		// Déclenchement de l'action dans la classe de rappel d'environnement			
 		if( method_exists( $this->TemplateCb, '_current_screen' ) ) :
 			call_user_func( array( $this->TemplateCb, '_current_screen' ), $current_screen );
@@ -169,5 +170,17 @@ class Factory extends \tiFy\Core\Templates\Factory
 		if( method_exists( $this->TemplateCb, 'admin_enqueue_scripts' ) ) :
 			call_user_func( array( $this->TemplateCb, 'admin_enqueue_scripts' ) );
 		endif;
+	}
+	
+	/** == Ecriture des scripts du pried de page de l'interface d'administration == **/
+	final public function admin_print_footer_scripts()
+	{
+	   // Déclenchement de l'action dans la classe de rappel d'environnement	
+		if( method_exists( $this->TemplateCb, '_admin_print_footer_scripts' ) ) :
+			call_user_func( array( $this->TemplateCb, '_admin_print_footer_scripts' ) );
+		endif;
+		if( method_exists( $this->TemplateCb, 'admin_print_footer_scripts' ) ) :
+			call_user_func( array( $this->TemplateCb, 'admin_print_footer_scripts' ) );
+		endif;  
 	}
 }

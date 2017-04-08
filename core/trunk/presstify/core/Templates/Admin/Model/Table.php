@@ -60,6 +60,9 @@ abstract class Table extends \WP_List_Table
     
     /// Colonnes de prévisualisation
     protected $PreviewColumns           = array();
+    
+    /// Mode de prévisualisation
+    protected $PreviewMode              = 'dialog';
 
     /// Nombre d'éléments affichés par page
     protected $PerPage                  = null;
@@ -85,7 +88,7 @@ abstract class Table extends \WP_List_Table
     /// Cartographie des paramètres
     protected $ParamsMap                = array( 
         'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PreviewColumns', 
+        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PreviewColumns', 'PreviewMode',
         'PerPage', 'PerPageOptionName',
         'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
         'PageTitle'
@@ -110,121 +113,6 @@ abstract class Table extends \WP_List_Table
             parent::__call( $name, $arguments );
         endif;
     }    
-
-    /* = DECLARATION DES PARAMETRES = */
-    /** == Définition l'url de la page d'édition d'un élément == **/
-    public function set_edit_link()
-    {
-        return false;    
-    }
-    
-    /** == Définition l'intitulé des objets traités == **/
-    public function set_plural()
-    {
-        return null;    
-    }
-    
-    /** == Définition l'intitulé d'un objet traité == **/
-    public function set_singular()
-    {
-        return null;    
-    }
-    
-    /** == Définition des messages de notification == **/
-    public function set_notices()
-    {
-        return array();    
-    }
-    
-    /** == Définition des status == **/
-    public function set_statuses()
-    {
-        return array();
-    }
-    
-    /** == Définition des vues filtrées == **/
-    public function set_views()
-    {
-        return array();
-    }
-    
-    /** == Définition de la clé primaire d'un élément == **/
-    public function set_primary_index()
-    {
-        return '';
-    }
-    
-    /** == Définition des colonnes de la table == **/
-    public function set_columns()
-    {
-        return array();
-    }
-    
-    /** == Définition de la colonne principale == **/
-    public function set_primary_column()
-    {
-        return null;
-    }
-    
-    /** == Définition des colonnes pouvant être ordonnées == **/
-    public function set_sortable_columns()
-    {
-        return array();
-    }
-    
-    /** == Définition des colonnes masquées == **/
-    public function set_hidden_columns()
-    {
-        return array();
-    }
-    
-    /** == Définition des colonnes de prévisualisation == **/
-    public function set_preview_columns()
-    {
-        return array();
-    }
-    
-    /** == Définition des arguments de requête == **/
-    public function set_query_args()
-    {
-        return array();
-    }
-        
-    /** == Définition du nombre d'élément à afficher par page == **/
-    public function set_per_page()
-    {
-        return 0;
-    }
-            
-    /** == Définition de l'intitulé lorque la table est vide == **/
-    public function set_no_items()
-    {
-        return '';
-    }
-    
-    /** == Définition des actions groupées == **/
-    public function set_bulk_actions()
-    {
-        return array();
-    }
-    
-    /** == Définition des actions sur un élément == **/
-    public function set_row_actions()
-    {
-        return array();
-    }
-    
-    /** == Définition de l'ajout automatique des actions de l'élément pour la colonne principale == **/
-    public function set_handle_row_actions()
-    {
-        return true;
-    }
-    
-    /** == Définition du titre de la page == **/
-    public function set_page_title()
-    {
-        return '';
-    }
                             
     /** == Initialisation de la classe table native de Wordpress == **/
     final public function _wp_list_table_init( $args = array() )
@@ -243,7 +131,7 @@ abstract class Table extends \WP_List_Table
     }
     
     /* = DECLENCHEURS = */
-    /** == initialisation globale == **/
+    /** == Initialisation globale == **/
     public function _init()
     {
         // Pré-initialisation des paramètres
@@ -273,10 +161,8 @@ abstract class Table extends \WP_List_Table
         add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName(). '_inline_preview', array( $this, 'wp_ajax_inline_preview' ) );
     }
     
-    public function _admin_init()
-    {
-        add_action( 'admin_print_footer_scripts', array( $this, 'admin_print_footer_scripts' ) );    
-    }
+    /** == Initialisation de l'interface d'administration == **/
+    public function _admin_init(){}
     
     /** == Affichage de l'écran courant == **/
     public function _current_screen( $current_screen = null )
@@ -324,19 +210,19 @@ abstract class Table extends \WP_List_Table
         endforeach;
 
         /// Récupération des éléments à afficher
-        $this->prepare_items();
+        $this->prepare_items();       
     }
     
     /** == Mise en file des scripts de l'interface d'administration == **/
-    public function _admin_enqueue_scripts(){}    
+    public function _admin_enqueue_scripts()
+    {
+        wp_enqueue_script( 'jquery-ui-dialog' ); 
+        wp_enqueue_style( 'wp-jquery-ui-dialog' );
+    }    
     
     /** == == **/
-    public function admin_print_footer_scripts()
-    {
-       // Bypass
-       if( ! $this->Screen  || ( get_current_screen()->id !== $this->Screen->id ) )
-           return;
-       
+    public function _admin_print_footer_scripts()
+    {       
 ?><script type="text/javascript">/* <![CDATA[ */
 jQuery(document).ready( function($){
     $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
@@ -348,17 +234,42 @@ jQuery(document).ready( function($){
         if( $closest.next().attr('id') != 'inline-preview-'+ index ){
             // Création de la zone de prévisualisation
             $preview = $( '#inline-previewer' ).clone(true);
+            var id = 'inline-preview-'+ index;
             $preview
-                .attr( 'id', 'inline-preview-'+ index )
+                .attr( 'id', id )
                 .hide();
-            $closest.after( $preview );
-
+            $closest.after( $preview );            
+            
+            $( '#'+ id ).dialog({
+               autoOpen: false,
+               draggable: false,
+               width: 'auto',
+               modal: true,
+               resizable: false,
+               closeOnEscape: true,
+               position: 
+               {
+                   my: "center",
+                   at: "center",
+                   of: window
+               },
+               open: function(){
+                   $('.ui-widget-overlay').bind('click', function(){
+                       $( '#'+ id ).dialog('close');
+                   });
+               },
+               create: function () {
+                   $('.ui-dialog-titlebar-close').addClass('ui-button');
+               },
+            });            
+            
             // Récupération de l'élément à prévisualiser
             $.post( 
                 tify_ajaxurl, 
                 { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
                 function( resp ){
-                    $( '> td', $preview ).html(resp);            
+                    $( '.content', $preview ).html(resp);
+                    $( '#'+ id ).dialog( 'open' );            
                 }
             );                 
         } else {
@@ -377,19 +288,12 @@ jQuery(document).ready( function($){
     {        
         // Initialisation des paramètres de configuration de la table
         $this->initParams(); 
-        
-        /*if( ! $item = $this->db()->select()->row_by_id( $_REQUEST['record_id'] ) )
-            wp_send_json_error( __( 'Impossible de définir le formulaire', 'tify' ) );
                 
-        if( ! $this->Form = Forms::get( $item->form_id )->getForm() )
-            wp_send_json_error( __( 'Le formulaire n\'existe pas', 'tify' ) ); */  
-        
         $this->prepare_items();
         $item = current( $this->items );
         $this->preview($item);
         die();
-    }
-    
+    }    
     
     /* = TRAITEMENT = */
     /** == Récupération de l'élément à traité == **/
@@ -689,17 +593,27 @@ jQuery(document).ready( function($){
     /** == Aperçu en ligne == **/
     public function inline_preview()
     {
-        $colspan = count( $this->get_columns() );
-    ?>
-        <table style="display:none;">
-            <tbody>
-                <tr id="inline-previewer">
-                    <td class="colspanchange" colspan="<?php echo $colspan;?>">
-                        <h3><?php _e( 'Chargement en cours ...', 'tify' );?></h3>
-                    </td>
-                </tr>    
-            </tbody>
-        </table>
-    <?php    
+        switch( $this->PreviewMode ) :
+            case 'dialog' :
+?>
+<div id="inline-previewer" class="hidden" style="max-width:800px; min-width:800px;">
+	<div class="content"></div>
+</div>
+<?php
+                break;
+            case 'row' :
+?>
+<table class="hidden">
+    <tbody>
+        <tr id="inline-previewer">
+            <td class="content" colspan="<?php echo count( $this->get_columns() );?>">
+                <h3><?php _e( 'Chargement en cours ...', 'tify' );?></h3>
+            </td>
+        </tr>    
+    </tbody>
+</table>
+<?php
+                break;
+        endswitch;
     }
 }

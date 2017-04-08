@@ -10,6 +10,8 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
 	/** == Mise en file des scripts de l'interface d'administration == **/
 	public function _admin_enqueue_scripts()
 	{		
+		parent::_admin_enqueue_scripts();
+		
 		// Configuration	
 		wp_localize_script( 
 			'tiFyCoreAdminAjaxListTable',
