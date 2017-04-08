@@ -37,54 +37,57 @@ class Csv
     /* = ARGUMENTS = */
     // CONFIGURATION
     /// Chemin vers le fichier de données à traiter
-    protected $Filename;
+    public $Filename;
     
     // PROPRIETES CSV
-    protected $Properties       = array(
+    public $Properties              = array(
         /// Délimiteur de champs
-        'delimiter'                 => ',',
+        'delimiter'                     => ',',
         /// Caractère d'encadrement 
-        'enclosure'                 => '"',
+        'enclosure'                     => '"',
         /// Caractère de protection
-        'escape'                    => '\\'
+        'escape'                        => '\\'
     );
     
     // ARGUMENTS DE REQUETE
-    protected $QueryArgs        = array(
+    public $QueryArgs               = array(
         /// Page courante
-        'paged'                     => 1,    
+        'paged'                         => 1,    
         /// Nombre d'éléments par page
-        'per_page'                  => -1
+        'per_page'                      => -1
     );
     
     // ARGUMENTS DE TRIE
-    protected $OrderBy          = array();
+    public $OrderBy                 = array();
     
     // ARGUMENTS DE RECHERCHE
-    protected $SearchArgs       = array();
+    public $SearchArgs              = array();
     
     // CARTOGRAPHIE DES COLONNES (OPTIONNEL)
     /// ex array( 'ID', 'title', 'description' );
-    protected $Columns          = array();
+    public $Columns                 = array();
     
     // PARAMETRES
     /// Type de fichier autorisé 
-    private $AllowedMimeType    = array( 'csv', 'txt' );
+    protected $AllowedMimeType      = array( 'csv', 'txt' );
     
-    /// Tries de données
-    private $Sorts              = array(); 
+    /// Tris de données
+    protected $Duplicates           = array(); 
+    
+    /// Tris de données
+    protected $Sorts                = array(); 
     
     /// Filtres de données
-    private $Filters            = array();    
+    protected $Filters              = array();    
     
     /// Nombre total d'éléments de données
-    private $TotalItems         = 0;
+    protected $TotalItems           = 0;
     
     /// Nombre total de page d'éléments de données
-    private $TotalPages         = 0;   
+    protected $TotalPages           = 0;   
     
     /// Liste des éléments
-    private $Items              = array();
+    protected $Items                = array();
     
     /* = CONSTRUCTEUR = */
     public function __construct( $filename = null, $options = array() )
@@ -210,6 +213,8 @@ class Csv
                 continue;
             $this->Sorts[$key] = in_array( strtoupper( $value ), array( 'ASC', 'DESC' ) ) ? strtoupper( $value ) : 'ASC';             
         endforeach;
+        
+        return $this->Sorts;
     }
     
     /** == Définition des filtres de données == **/
@@ -249,6 +254,8 @@ class Csv
                 );
             endforeach;            
         endforeach;
+        
+        return $this->Filters;
     }
     
     /** == Méthode de rappel de trie des données == **/
@@ -276,7 +283,18 @@ class Csv
             endif;
         endforeach;
     }
-        
+    
+    /** == Méthode de rappel de filtrage des doublons == **/
+    public function duplicateFilterCallback( $row )
+    {        
+        if( ! in_array( $row[0], $this->Duplicates ) ) :
+            array_push( $this->Duplicates, $row[0] );
+            $this->TotalItems++;
+           
+            return true;                    
+        endif;
+    }    
+    
     /** == Récupération du nombre total d'éléments de données == **/
     public function getTotalItems()
     {
@@ -286,7 +304,7 @@ class Csv
     /** == Récupération du nombre total de page d'éléments de données == **/
     public function getTotalPages()
     {
-        return $this->TotalPages;
+        return $this->TotalPages;           
     }
          
     /** == Récupération des éléments de donnée du fichier == **/
@@ -302,35 +320,110 @@ class Csv
         // Traitement des arguments de requête           
         $per_page = $this->getQueryArg( 'per_page', -1 );
         $paged = $this->getQueryArg( 'paged', 1 );
-        $offset = ( $per_page > -1 ) ? ( ( $paged - 1 ) * $per_page ) : 0;        
+        $offset = ( $per_page > -1 ) ? ( ( $paged - 1 ) * $per_page ) : 0; 
+        $filtered = false;        
         
         // Recherche
-        $this->setFilters( $csv );
-        if( $this->Filters ) :
+        if( $this->setFilters( $csv ) ) :
+            $filtered = true; $this->setTotalItems( 0 );        
             $csv->addFilter( array( $this, 'searchFilterCallback' ) );
             $total_items = $this->getTotalItems();          
-        else :
+        endif;
+        
+        if( ! $filtered ) :
             // Compte le nombre total d'éléments trouvés
             $total_items = $csv->each( function($row){ return true;});
-            $this->setTotalItems( $total_items );           
+            $this->setTotalItems( $total_items );              
         endif;  
         
-         // Pagination
+        // Pagination
+        $csv
+            ->setOffset( $offset )
+            ->setLimit( $per_page );        
+        
+        // Trie des éléments
+        if( $this->setSorts( $csv ) ) :
+	       $csv->addSortBy( array( $this, 'searchSortCallback' ) ); 
+        endif;
+        
+        // Définition du nombre total de page
+        $total_pages = ( $per_page > -1 ) ? ceil( $total_items / $per_page ) : 1;  
+        $this->setTotalPages( $total_pages );  
+        
+	    // Récupération des résultats
+	    $results = $csv->fetchAssoc( 
+	        $this->getColumns(), 
+	        function($row){ 
+	            return (object) array_map( 'utf8_encode', $row );
+	        } 
+	    );
+            
+	    // Formatage et retour des résultats
+	    $this->Items = iterator_to_array( $results, true );
+	    
+        return $this->Items;
+    } 
+    
+    /** == Récupération des éléments de donnée du fichier == **/
+    public function getCol( $col = 0, $distinct = true )
+    {        
+        
+        $csv = \League\Csv\Reader::createFromFileObject( new \SplFileObject( $this->getFilename() ) );
+        // Traitement des propriétés
+        $csv
+            ->setDelimiter( $this->getProperty( 'delimiter', ',' ) )
+            ->setEnclosure( $this->getProperty( 'enclosure', '"' ) )
+            ->setEscape( $this->getProperty( 'escape', '\\' ) );
+               
+        // Traitement des arguments de requête           
+        $per_page = $this->getQueryArg( 'per_page', -1 );
+        $paged = $this->getQueryArg( 'paged', 1 );
+        $offset = ( $per_page > -1 ) ? ( ( $paged - 1 ) * $per_page ) : 0;    
+        $filtered = false;
+        
+        // Doublons
+        if( ! $distinct ) :
+            $filtered = true; $this->setTotalItems( 0 );
+            $csv->addFilter( array( $this, 'duplicateFilterCallback' ) );
+            $total_items = $this->getTotalItems(); 
+        endif;        
+        
+        // Recherche
+        if( $this->setFilters( $csv ) ) :
+            $filtered = true; $this->setTotalItems( 0 );
+            $csv->addFilter( array( $this, 'searchFilterCallback' ) );
+            $total_items = $this->getTotalItems();                 
+        endif;  
+        
+        if( ! $filtered ) :
+            // Compte le nombre total d'éléments trouvés
+            $total_items = $csv->each( function($row){ return true;});
+            $this->setTotalItems( $total_items );
+        endif;
+                
+        // Pagination
         $csv
             ->setOffset( $offset )
             ->setLimit( $per_page );
         
         // Trie des éléments
-        $this->setSorts( $csv );
-	    $csv->addSortBy( array( $this, 'searchSortCallback' ) ); 
+        if( $this->setSorts( $csv ) ) :
+	       $csv->addSortBy( array( $this, 'searchSortCallback' ) ); 
+        endif;
         
         // Définition du nombre total de page
         $total_pages = ( $per_page > -1 ) ? ceil( $total_items / $per_page ) : 1;  
-        $this->setTotalPages( $total_pages );        
-        
-	    // Récupération des résultats
-	    $results = $csv->fetchAssoc( $this->getColumns(), function($row){ return (object) array_map( 'utf8_encode', $row );} );
-    
+        $this->setTotalPages( $total_pages );  
+  
+        // Récupération des résultats
+        $colname = ( isset( $this->Columns[$col] ) ) ? $this->Columns[$col] : $col;
+	    $results = $csv->fetchAssoc( 
+	        array( $colname ), 
+	        function($row){ 
+	            return (object) array_map( 'utf8_encode', $row );
+	        } 
+	    );
+
 	    // Formatage et retour des résultats
 	    $this->Items = iterator_to_array( $results, true );
 	    
