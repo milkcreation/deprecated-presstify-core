@@ -382,7 +382,7 @@ jQuery(document).ready( function($){
                 $row_actions[$action] = $this->row_action_link( $action, $args );
             endif;
         endforeach;        
-            
+
         return $row_actions;        
     }
         

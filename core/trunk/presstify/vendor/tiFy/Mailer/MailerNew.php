@@ -1,5 +1,6 @@
 <?php
 /** 
+ * @see https://emails.hteumeuleu.fr/
  * @see http://openclassrooms.com/courses/e-mail-envoyer-un-e-mail-en-php 
  * @see http://www.iana.org/assignments/message-headers/message-headers.xhtml
  * COMPATIBILITE CSS
@@ -22,77 +23,82 @@ class MailerNew
     /* = ARGUMENTS = */
     // Adresses
     /// Destinataires
-    public static $To                    = array();
+    public static $To                   = array();
     
     /// Expediteur
-    public static $From                  = array();
+    public static $From                 = array();
     
     /// Destinataire de réponse
-    public static $ReplyTo               = array();
+    public static $ReplyTo              = array();
     
     /// Destinataires de copie carbone
-    public static $Cc                    = array();
+    public static $Cc                   = array();
     
     /// Destinataires de copie cachée
-    public static $Bcc                   = array();    
+    public static $Bcc                  = array();    
     
     // Sujet
-    public static $Subject               = '';
+    public static $Subject              = '';
     
     // Message
-    public static $Message               = '';
+    public static $Message              = '';
     
     // Entête du message
-    public static $MessageHeader         = '';
+    public static $MessageHeader        = '';
     
     // Pied de page du message 
-    public static $MessageFooter         = '';
+    public static $MessageFooter        = '';
     
-    // Encapsulation du message au format HTML (true ou chaîne de caractère pour laquelle %s désignera le message)
-    public static $HtmlWrap              = true;
+    // Variables d'environnement
+    public static $MergeTags            = array();
     
-    // Ajout de l'entête HTML au message (true ou chaîne de caractère)
-    public static $HtmlHead              = true;
+    // Format des variables d'environnements
+    public static $MergeTagsFormat      = '\*\|(.*?)\|\*';
     
-    // Ajout du pied de page HTML au message (true ou chaîne de caractère)
-    public static $HtmlFoot              = true;
+    // Personnalisation des styles CSS
+    public static $CustomCss            = '';
     
     // Format d'expédition du message (html ou plain ou multi)
-    public static $ContentType           = 'multi';
+    public static $ContentType          = 'multi';
   
     // Encodage des caractères du message
-    public static $Charset               = 'UTF-8';
+    public static $Charset              = 'UTF-8';
+    
+    // @todo Priorité null (default), 1 = High, 3 = Normal, 5 = low
+    public static $Priority             = null;
+    
+    // @todo Serveur d'envoi
+    public static $Smtp                 = false;
     
     // Coordonnées de contact de l'administrateur principal du site    
-    protected static $AdminContact       = null;
+    protected static $AdminContact      = null;
+        
+    // Agent d'expédition des emails
+    protected static $Mailer;
+    
+    // Contenu du corps du message HTML
+    protected static $HtmlBodyContent;
     
     // Liste des paramètres autorisés
-    protected static $AllowedParams      = array(
+    protected static $AllowedParams     = array(
         // Paramètres de contact
         'To', 'From', 'ReplyTo', 'Cc', 'Bcc', 
         // Paramètres du mail
         'Subject', 'Message', 'MessageHeader', 'MessageFooter',
+        // Variables d'environnement
+        'MergeTags', 'MergeTagsFormat',
         // Formatage du message
-        'HtmlWrap', 'HtmlHead', 'HtmlFoot', 'ContentType', 'Charset'
+        'CustomCss', 'ContentType', 'Charset',
+        // Paramètres d'expédition
+        'Priority', 'Smtp'
     );
-    
-    // Agent d'expédition des emails
-    protected static $Mailer;
     
     // @deprecated
     private        
             /// Arguments des fichiers joints             
             $attachments,
-                        
-            /// Arguments de configuration additionnels
-            $priority         = 0,                    // Priorité de l'email - Maximale : 1 | Haute : 2 | Normale : 3 | Basse : 4 | Minimale : 5
-            $inline_css        = true,                // Conversion des styles CSS en attribut style des balises HTML            
-            $reset_css        = true,                 // CSS de réinitialisation du message HTML
-            $css            = array(),                // Chemins vers les feuilles de styles CSS
-            $custom_css     = '',                     // Attributs css personnalisés (doivent être encapsulé dans une balise style ex : "<style type=\"text/css\">h1{font-size:18px;}</style>")
-            $vars_format    = '\*\|(.*?)\|\*',        // Format des variables d'environnements
-            $merge_vars        = array(),             // Variables d'environnements
-            $additionnal    = array();                // Attributs de configuration supplémentaires requis par les moteurs
+            $priority           = 0,                    // Priorité de l'email - Maximale : 1 | Haute : 2 | Normale : 3 | Basse : 4 | Minimale : 5
+            $additionnal        = array();              // Attributs de configuration supplémentaires requis par les moteurs
             
     /* = PARAMETRAGE = */    
     /** == Formatage == **/
@@ -141,8 +147,7 @@ class MailerNew
     
     /** == Traitement des arguments == **/
     public static function setParams( $params = array() )
-    {                     
-
+    {
         // Cartographie des paramètres
         $_params = array();
         array_walk( $params, function( $v, $k ) use (&$_params){ $_params[self::sanitizeName($k)] = $v;});
@@ -216,7 +221,7 @@ class MailerNew
     	do_action_ref_array( 'phpmailer_init', array( &$phpmailer ) );
 
         /// Expéditeur  
-        if( isset( self::$From[1] ) ) :
+        if( isset( self::$From ) ) :
             $phpmailer->setFrom( self::$From['email'], self::$From['name'] );
         endif;    
             
@@ -254,7 +259,7 @@ class MailerNew
         if( in_array( self::$ContentType, array( 'html', 'multi' ) ) ) :
             $phpmailer->isHTML(true);
         
-            $phpmailer->Body    = self::messageHtmlPrepare();
+            $phpmailer->Body    = self::prepareMessageHtml();
             
             if( self::$ContentType === 'multi' ) :
                 $html2text = new \Html2Text\Html2Text( self::$Message );
@@ -292,15 +297,26 @@ class MailerNew
     /** == Message HTML de test == **/
     public static function getDefaultMessageHtml()
     {
-        $message  = "<h1>". sprintf( __( 'Ceci est un test d\'envoi de mail depuis le site %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."</h1>";
-        $message .= "<p>". __( 'Si ce mail, vous est parvenu c\'est qu\'il vous a été expédié depuis le site : ' ) ."</p>";
-        $message .= "<p><a href=\"". site_url( '/' ) ."\" title=\"". sprintf( __( 'Lien vers le site internet - %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."\">". get_bloginfo( 'blogname' ) ."</a><p><br>";
-        $message .= "<p>". __( 'Néanmoins, il pourrait s\'agir d\'une erreur, si vous n\'étiez pas concerné par ce mail je vous prie d\'accepter nos excuses.', 'tify' ) ."</p>";
-        $message .= "<p>". __( 'Vous pouvez dès lors en avertir l\'administrateur du site à cette adresse : ', 'tify' ) ."</p>";
-        $message .= "<p><a href=\"mailto:". get_option( 'admin_email' ) ."\" title=\"". sprintf( __( 'Contacter l\'administrateur du site - %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."\">". get_option( 'admin_email' ) ."</a></p><br>";
-        $message .= "<p>". __( 'Celui-ci fera en sorte qu\'une telle erreur ne se renouvelle plus.', 'tify' ) ."</p><br>";
-        $message .= "<p>". __( 'Merci de votre compréhension', 'tify' ) ."</p>";
-                
+        $message  = "";
+        $message .= "<div id=\"body_style\" style=\"padding:15px\">";
+        $message .=     "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#FFFFFF\" width=\"600\" align=\"center\">";
+        $message .=         "<tr>";
+        $message .=             "<td width=\"600\">";
+        $message .=                 "<div>";
+        $message .=                     "<h1>". sprintf( __( 'Test d\'envoi de mail depuis le site %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."</h1>";
+        $message .=                     "<p>". __( 'Si ce mail, vous est parvenu c\'est qu\'un test d\'expédition a été envoyé depuis le site : ' ) ."</p>";
+        $message .=                     "<p><a href=\"". site_url( '/' ) ."\" title=\"". sprintf( __( 'Lien vers le site internet - %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."\">". get_bloginfo( 'blogname' ) ."</a><p><br>";
+        $message .=                     "<p>". __( 'Néanmoins, il pourrait s\'agir d\'une erreur, si vous n\'étiez pas concerné par ce mail je vous prie d\'accepter nos excuses.', 'tify' ) ."</p>";
+        $message .=                     "<p>". __( 'Vous pouvez toutefois avertir l\'administrateur du site à cette adresse : ', 'tify' ) ."</p>";
+        $message .=                     "<p><a href=\"mailto:". get_option( 'admin_email' ) ."\" title=\"". sprintf( __( 'Contacter l\'administrateur du site - %s', 'tify' ), get_bloginfo( 'blogname' ) ) ."\">". get_option( 'admin_email' ) ."</a></p><br>";
+        $message .=                     "<p>". __( 'Celui-ci fera en sorte qu\'une telle erreur ne se renouvelle plus.', 'tify' ) ."</p><br>";
+        $message .=                     "<p>". __( 'Merci de votre compréhension', 'tify' ) ."</p>";
+        $message .=                 "</div>";
+        $message .=             "</td>";
+        $message .=          "</tr>";
+        $message .=      "</table>";
+        $message .=  "</div>";
+        
         return $message;
     }
     
@@ -399,87 +415,150 @@ class MailerNew
     }
         
     /** == Préparation du message HTML == **/
-    public static function messageHtmlPrepare()
-    {
-        $output = "";
-
-        if( self::$HtmlWrap ) :
-            $output .=  "<body style=\"background:#FFF;color:#000;font-family:Arial, Helvetica, sans-serif;font-size:12px\" link=\"#0000FF\" alink=\"#FF0000\" vlink=\"#800080\" bgcolor=\"#FFFFFF\" text=\"#000000\" yahoo=\"fix\">";
-            $output .=      self::messageHtmlWrap();
-            $output .=  "</body>";
+    public static function prepareMessageHtml()
+    { 
+        if ( version_compare( phpversion(), '5.4', '<=' ) )
+            return self::$Message;
+        
+        // Récupération de la structure du DOM original du message
+        $ori = new \DOMDocument;
+        $ori->loadHTML( mb_convert_encoding( self::$Message, 'HTML-ENTITIES', self::$Charset ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+        $ori->encoding = self::$Charset;    
+        
+        // Création de la balise DOCTYPE
+        $implementation = new \DOMImplementation;
+        if( ! $ori->doctype ) :            
+            $doctype = $implementation->createDocumentType( 'html', '', '' );
+        else :
+            $doctype = $implementation->createDocumentType( $ori->doctype->name, $ori->doctype->publicId, $ori->doctype->systemId );     
         endif;
-
-        if( self::$HtmlHead ) :
-            $output = self::messageHtmlHead() . $output;
+        $dom = $implementation->createDocument( '', '', $doctype );
+        $dom->encoding = self::$Charset;
+        $dom->strictErrorChecking = false;
+        
+        // Création de la balise HTML
+        $_html = $ori->getElementsByTagName('html');
+        if( ! $_html->length ) :
+            $html = $dom->createElement( 'html' );            
+        else :
+            $html = $dom->appendChild( $dom->importNode( $_html->item(0), false ) );
         endif;
-
-        if( self::$HtmlFoot ) :
-            $output .= self::messageHtmlFoot();
+        $html = $dom->appendChild( $html );
+        
+        // Création de la balise HEAD
+        $_head = $ori->documentElement->getElementsByTagName( 'head' );
+        if( ! $_head->length  ) :
+            $head = $dom->createElement( 'head' );
+            // Meta Content
+            $node = $head->appendChild( $dom->createElement( 'meta' ) );
+            $node->setAttribute( 'http-equiv', 'Content-Type' );
+            $node->setAttribute( 'content', 'text/html; charset='. self::$Charset );
+            // Meta Title
+            $node = $head->appendChild( $dom->createElement( 'title', self::$Subject ) );
+        else :
+            $head = $dom->appendChild( $dom->importNode( $_head->item(0), true ) );
+        endif; 
+        
+        /// Insertion des styles CSS personnalisés               
+        if( self::$CustomCss ) :
+            $node = $head->appendChild( $dom->createElement( 'style', self::$CustomCss ) );
+            $node->setAttribute( 'type', 'text/css' );
         endif;
+        $head = $html->insertBefore( $head, $html->firstChild );
+        
+        // Création de la balise BODY
+        $_body = $ori->documentElement->getElementsByTagName( 'body' );        
+        if( ! $_body->length ) :
+            $attrs = array(
+                'style'     => 'background:#FFF;color:#000;font-family:Arial,Helvetica,sans-serif;font-size:12px',
+                'link'      => '#0000FF',
+                'alink'     => '#FF0000',
+                'vlink'     => '#800080',
+                'bgcolor'   => '#FFFFFF',
+                'text'      => '#000000',
+                'yahoo'     => 'fix'
+            );
+            $body = $dom->createElement( 'body' );
+            foreach( $attrs as $key => $value ) :
+                $body->setAttribute( $key, $value );
+            endforeach; 
+            
+            $message = new \DOMDocument;            
+            $message->loadHTML( mb_convert_encoding( self::$Message, 'HTML-ENTITIES', self::$Charset ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+            $message->encoding = self::$Charset;
+            
+            $body->appendChild( $dom->importNode( $message->documentElement, true ) );
+        else :                    
+            $body = $dom->importNode( $_body->item(0), true );
+        endif;
+        $body = $html->appendChild( $body );        
 
-        return $output;
+        // Traitement de la sortie        
+        $dom->normalizeDocument();
+        $dom->formatOutput = true;
+        $html = $dom->saveHTML();        
+
+        // Traitement des variables d'environnement
+        $html = self::parseMergeTags( $html, self::$MergeTags, self::$MergeTagsFormat );
+        
+        // Mise en ligne du CSS
+        $e = new \Pelago\Emogrifier( $html );    
+        $html = $e->emogrify();
+        self::$HtmlBodyContent = $e->emogrifyBodyContent();        
+        
+        return $html;     
     }
     
-    /** == Encapsulation du corps du message HTML == **/
-    protected static function messageHtmlWrap()
+    /** == Traitement des variables d'environnement == **/
+    public static function parseMergeTags( $output, $tags, $format = '\*\|(.*?)\|\*' )
     {
-        $output     = "";        
-        if( is_bool( self::$HtmlWrap ) ) :            
-            $output .=      "<div id=\"body_style\" style=\"padding:15px\">";
-            $output .=             "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" bgcolor=\"#FFFFFF\" width=\"600\" align=\"center\">";
-            $output .=                 "<tr>";
-            $output .=                  "<td width=\"600\">". self::$Message ."</td>";
-            $output .=              "</tr>";
-            $output .=          "</table>";
-            $output .=      "</div>";
-        elseif( is_string( self::$HtmlWrap ) ) :
-            $output .= sprintf( self::$HtmlWrap, self::$Message );
-        endif;
-
-        return $output;
-    }
+        $defaults = array(
+            'SITE:URL'              => site_url('/'),
+            'SITE:NAME'             => get_bloginfo( 'name' ),
+            'SITE:DESCRIPTION'      => get_bloginfo( 'description' ),
+        );
+        $tags = wp_parse_args( $tags, $defaults );
+                    
+        $callback = function( $matches ) use( $tags ){
+            if( ! isset( $matches[1] ) )
+                    return $matches[0];
+            
+            if( isset( $tags[$matches[1]] ) )
+                return $tags[$matches[1]];
+            
+            return $matches[0];
+        };
     
-    /** == Entête du message HTML == **/
-    protected static function messageHtmlHead()
-    {
-        $output  = "";
-        if( is_bool( self::$HtmlHead ) ) :                
-            $output .= "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
-            $output .= "<html xmlns=\"http://www.w3.org/1999/xhtml\">";
-            $output .=     "<head>";
-            $output .=         "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=". self::$Charset ."\" />";
-            $output .=         "<title>". self::$Subject ."</title>";
-            //$output .=     $this->append_css();
-            $output .=     "</head>";
-        elseif( is_string( self::$HtmlHead ) ) :
-            $output .= self::$HtmlHead;
-        endif;
+        $output = preg_replace_callback( '/'. $format .'/', $callback, $output );
         
         return $output;
     }
     
-    /** == Pied de page du message HTML == **/
-    protected static function messageHtmlFoot()
-    {
-        $output  = "";
-        if( is_bool( self::$HtmlFoot ) ) :
-            $output .= "</html>";
-        elseif( is_string( self::$HtmlFoot ) ) :
-            $output .= self::$HtmlFoot;
-        endif;
+    /** == Translation des paramètres au format wp_mail == **/
+    public static function wp_mail( $params )
+    {       
+        self::$ContentType = 'plain';
+        self::setParams( $params );
+
+        $to = array_map( 'self::formatContactArray', self::$To );
         
-        return $output;
+        $subject = self::$Subject;        
+        $message = self::$Message;
+        
+        $headers = array();
+        $headers[] = 'From:'. self::formatContactArray( self::$From );
+
+        $attachments = array();
+        
+        return compact( 'to', 'subject', 'message', 'headers', 'attachments' );       
     }
-    
-    /** == Affichage du mail en mode debug == **/
-    public static function debug( $params = array() )
+        
+    /** == Prévisualisation du mail == **/
+    public static function preview( $params = array() )
     {
         self::setParams( $params );
         $mailer = self::setMailer();
-        $mailer->preSend();
-
-        $recipients = array_map( 'self::formatContactArray', $mailer->getToAddresses() );
-        $headers = explode( $mailer->LE, $mailer->createHeader() );
+        $mailer->preSend();        
                 
         $output  =  "";
         $output .=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
@@ -487,7 +566,6 @@ class MailerNew
         $output .=      "<head>";
         $output .=          "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />";
         $output .=          "<title>". $mailer->Subject ."</title>";
-        //$output .=     $this->append_css();
         $output .=      "</head>";
         $output .=          "<body style=\"width:100%;margin:0;padding:0;background:#FFF;color:#000;font-family:Arial, Helvetica, sans-serif;font-size:12px;\" link=\"#0000FF\" alink=\"#FF0000\" vlink=\"#800080\" bgcolor=\"#FFFFFF\" text=\"#000000\" yahoo=\"fix\">";
         $output .=              "<table cellspacing=\"0\" border=\"0\" bgcolor=\"#EEEEEE\" width=\"100%\" align=\"center\" style=\"border-bottom:solid 1px #AAA;\">";        
@@ -495,11 +573,11 @@ class MailerNew
         $output .=                      "<tr>";
         $output .=                          "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
         $output .=                              "<h3 style=\"margin-bottom:10px;\">". self::$Subject ."</h3>";
-        //$output .=                              __( 'à', 'tify' ) ." ". htmlspecialchars( implode( ', ', $recipients ) );
         $output .=                              "<hr style=\"display:block;margin:10px 0 5px;background-color:#CCC; height:1px; border:none;\">";
         $output .=                          "</td>";
         $output .=                      "</tr>";
         
+        $headers = explode( $mailer->LE, $mailer->createHeader() );
         foreach(  $headers as $value ) :
             $output .=                  "<tr>";
             $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
@@ -520,7 +598,7 @@ class MailerNew
             $output .=          "</table>";    
         endif; 
         if( in_array( self::$ContentType, array( 'html', 'multi' ) ) ) :
-            $output .= self::messageHtmlWrap();
+            $output .= self::$HtmlBodyContent;
         endif;
         
         if( self::$ContentType === 'multi' ) :
@@ -550,94 +628,5 @@ class MailerNew
         self::setParams( $params );
         $mailer = self::setMailer();
         $mailer->Send();
-    }
-    
-    /** == Translation des paramètres au format wp_mail == **/
-    public static function wp_mail( $params )
-    {       
-        self::$ContentType = 'plain';
-        self::setParams( $params );
-
-        $to = array_map( 'self::formatContactArray', self::$To );
-        
-        $subject = self::$Subject;        
-        $message = self::$Message;
-        
-        $headers = array();
-        $headers[] = 'From:'. self::formatContactArray( self::$From );
-
-        $attachments = array();
-        
-        return compact( 'to', 'subject', 'message', 'headers', 'attachments' );       
-    }
-    
-    /*** === Ajout des Feuilles de style CSS === ***/
-    private function append_css(){
-        $output = "";
-        if( $this->reset_css )
-            $output .= "<style type=\"text/css\">". $this->line_break . file_get_contents( $this->Dirname .'/css/reset.emailology.org.css' ) . $this->line_break ."</style>";
-        if( ! empty( $this->css ) )
-            foreach( (array) $this->css as $filename )
-                if( file_exists( $filename ) )
-                    $output .= "<style type=\"text/css\">". $this->line_break . file_get_contents( $filename ) . $this->line_break ."</style>";
-        if( ! empty( $this->custom_css ) )
-            $output .= $this->custom_css;
-        
-        return $output;        
-    }
-    
-    /*** === Convertion des styles CSS en attribut style des balises HTML === ***/
-    private function inline_css( ){
-        if ( version_compare( phpversion(), '5.4', '<=' ) )
-            return;
-            
-        $xmldoc = new \DOMDocument( '1.0', self::$Charset );
-        $xmldoc->strictErrorChecking = false;
-        $xmldoc->formatOutput = true;
-        @$xmldoc->loadHTML( $this->output_html );
-        $xmldoc->normalizeDocument();
-    
-        // need to check all objects exist
-        $head = $xmldoc->documentElement->getElementsByTagName( 'head' );
-    
-        if ($head->length > 0) :
-            $style = $head->item(0)->getElementsByTagName('style');
-    
-            if ( $style->length > 0 ) :
-                $style = $head->item(0)->removeChild( $style->item(0) );
-    
-                $css = trim( $style->nodeValue );
-                $html = $xmldoc->saveHTML();
-    
-                $e = new \Pelago\Emogrifier( $html, $css );
-    
-                $this->output_html = $e->emogrify();
-            endif;
-        endif;
-    }
-        
-    /** == Traitement des variables d'environnement == **/
-    private function parse_merge_vars( $output )
-    {
-        $defaults = array(
-            'SITE:URL'              => site_url('/'),
-            'SITE:NAME'             => get_bloginfo( 'name' ),
-            'SITE:DESCRIPTION'      => get_bloginfo( 'description' ),
-        );
-        $merge_vars = wp_parse_args( $this->merge_vars, $defaults );
-                    
-        $callback = function( $matches ) use( $merge_vars ){
-            if( ! isset( $matches[1] ) )
-                    return $matches[0];
-            
-            if( isset( $merge_vars[$matches[1]] ) )
-                return $merge_vars[$matches[1]];
-            
-            return $matches[0];
-        };
-    
-        $output = preg_replace_callback( '/'. $this->vars_format .'/', $callback, $output );
-        
-        return $output;
     }
 }

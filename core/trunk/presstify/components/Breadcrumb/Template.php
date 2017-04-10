@@ -218,7 +218,7 @@ class Template
 		$ancestors = '';
 		if( $parents = get_ancestors( get_the_ID(), get_post_type() ) ) :
 			foreach( array_reverse( $parents ) as $parent ) :
-				$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s">%2$s</a></li>', get_permalink( $parent ), static::titleRender( $parent ) );
+				$ancestors .= static::partRender( array( 'url' => get_permalink( $parent ), 'name' => static::titleRender( $parent ) ) );
 			endforeach;
 		endif;
 		

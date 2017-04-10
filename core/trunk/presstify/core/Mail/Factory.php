@@ -7,46 +7,46 @@ class Factory extends \tiFy\Environment\App
 {
     /* = ARGUMENTS = */
     /// Destinataires
-    public $To                    = array();
+    public $To                      = array();
     
     /// Expediteur
-    public $From                  = array();
+    public $From                    = array();
     
     /// Destinataire de réponse
-    public $ReplyTo               = array();
+    public $ReplyTo                 = array();
     
     /// Destinataires de copie carbone
-    public $Cc                    = array();
+    public $Cc                      = array();
     
     /// Destinataires de copie cachée
-    public $Bcc                   = array();    
+    public $Bcc                     = array();    
     
     // Sujet
-    public $Subject               = '';
+    public $Subject                 = '';
     
     // Message
-    public $Message               = '';
+    public $Message                 = '';
     
     // Entête du message
-    public $MessageHeader         = '';
+    public $MessageHeader           = '';
     
     // Pied de page du message 
-    public $MessageFooter         = '';
+    public $MessageFooter           = '';
     
-    // Encapsulation du message au format HTML (true ou chaîne de caractère pour laquelle %s désignera le message)
-    public $HtmlWrap              = true;
+    // Variables d'environnement
+    public $MergeTags               = array();
     
-    // Ajout de l'entête HTML au message (true ou chaîne de caractère)
-    public $HtmlHead              = true;
+    // Format des variables d'environnements
+    public $MergeTagsFormat         = '\*\|(.*?)\|\*';
     
-    // Ajout du pied de page HTML au message (true ou chaîne de caractère)
-    public $HtmlFoot              = true;
+    // Personnalisation des styles CSS
+    public $CustomCSS               = '';
     
     // Format d'expédition du message (html ou plain ou multi)
-    public $ContentType           = 'multi';
+    public $ContentType             = 'multi';
   
     // Encodage des caractères du message
-    public $Charset               = 'UTF-8';
+    public $Charset                 = 'UTF-8';
             
     /* = CONSTRUCTEUR = */
     public function __construct( $params = array() )
