@@ -1,7 +1,7 @@
 # Surchage du theme
 theme:
   namespace:          'Theme'
-  base_dir:           '<?php echo get_template_directory() ."/tiFy";?>'
+  base_dir:           '<?php echo get_template_directory() ."/app";?>'
   bootstrap:          'Autoload'
 
 # Déclaration des jeux de fonctionnalités personnalisés

@@ -4,8 +4,8 @@ namespace tiFy\Core\Templates\Admin\Model\TabooxOption;
 class TabooxOption extends \tiFy\Core\Templates\Admin\Model\Form
 {			
 	/* = ARGUMENTS = */
-	private $MenuSlug;
-	private $Hookname;
+	protected $MenuSlug;
+	protected $Hookname;
 	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
