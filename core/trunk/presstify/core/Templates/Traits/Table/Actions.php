@@ -3,124 +3,72 @@ namespace tiFy\Core\Templates\Traits\Table;
 
 trait Actions
 {
-    /** == == **/
+    /** == Véfification d'existance d'un action == **/
     public function hasRowAction( $action )
     {
         return isset( $this->RowActions[$action] );            
     }
     
-    /** == Lien d'édition d'un élément == **/
-    public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
+    /** == Récupération des actions sur un élément == **/
+    public function get_row_actions( $item, $actions, $always_visible = false )
     {
-        if( $args = $this->row_action_edit_item_parse_args( $item, $args, $label, $class ) ) :
-            return $this->row_action_link( 'edit', $args );
-        endif;
-    }
-
-    /** == == **/
-    public function defaults_row_actions( $item )
-    {
-        $index = $this->getParam( 'ItemIndex', 0 );
-
-        return array(
-            'activate'      => array(
-                'label'            => __( 'Activer', 'tify' ),
-                'title'            => __( 'Activation de l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'activate', $item->{$index} ) : $this->get_item_nonce_action( 'activate' ),
-                'link_attrs'    => array( 'style' => 'color:#006505;' ),
-            ),
-            'deactivate'    => array(
-                'label'            => __( 'Désactiver', 'tify' ),
-                'title'            => __( 'Désactivation de l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'deactivate', $item->{$index} ) : $this->get_item_nonce_action( 'deactivate' ),
-                'link_attrs'    => array( 'style' => 'color:#D98500;' ),
-            ),
-            'delete'        => array(
-                'label'            => __( 'Supprimer définitivement', 'tify' ),
-                'title'            => __( 'Suppression définitive de l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'delete', $item->{$index} ) : $this->get_item_nonce_action( 'delete' ),
-                'link_attrs'    => array( 'style' => 'color:#a00;' ),
-            ),
-            'duplicate'        => array(
-                'label'            => __( 'Dupliquer', 'tify' ),
-                'title'            => __( 'Dupliquer l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'duplicate', $item->{$index} ) : $this->get_item_nonce_action( 'duplicate' ),
-            ),            
-            'trash'         => array(
-                'label'            => __( 'Corbeille', 'tify' ),
-                'title'            => __( 'Mise à la corbeille de l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'trash', $item->{$index} ) : $this->get_item_nonce_action( 'trash' )
-            ),
-            'untrash'       => array(
-                'label'            => __( 'Restaurer', 'tify' ),
-                'title'            => __( 'Rétablissement de l\'élément', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'untrash', $item->{$index} ) : $this->get_item_nonce_action( 'untrash' )
-            ),
-            'previewinline' => array( 
-                'label'            => __( 'Afficher le détail', 'Theme' ),
-                'title'            => __( 'Voir le détail de la commande', 'tify' ),
-                'nonce'            => $index ? $this->get_item_nonce_action( 'previewinline', $item->{$index} ) : $this->get_item_nonce_action( 'previewinline' ),
-                'link_attrs'    => array( 'data-index' => ( isset( $item->{$index} ) ? $item->{$index} : 0 ) )
-            ),
-            'edit'          => $this->row_action_edit_item_parse_args( $item )
-        );
+        return $this->row_actions( $this->item_row_actions( $item, $actions ), $always_visible );
     }
     
-    /** == Récupération de l'attribut de sécurisation d'une action == **/
-    public function get_item_nonce_action( $action, $suffix = null )
-    {
-        $nonce_action = $this->getParam( 'Singular' ) . $action;
-        
-        if( isset( $suffix ) )
-            $nonce_action .= $suffix;
-        
-        return $nonce_action;
-    }
+    /** == Récupération des actions sur un élément == **/
+    public function item_row_actions( $item, $actions = array() )
+    {        
+        $row_actions = array();
+        foreach( (array) $actions as $action ) :
+            if( ! isset( $this->RowActions[$action] ) )
+                continue;
+            if( is_string( $this->RowActions[$action] ) ) :
+                $row_actions[$action] = $this->RowActions[$action];
+            else :
+                $args = $this->row_action_item_parse_args( $item, $action, $this->RowActions[$action] );
+                $row_actions[$action] = $this->row_action_link( $action, $args );
+            endif;
+        endforeach;        
+
+        return $row_actions;        
+    } 
     
     /** == Traitement des attributs d'un lien d'action sur un élément == **/
     public function row_action_item_parse_args( $item, $action, $args = array() )
     {        
+        // Récupération des attributs des actions par défaut
         $defaults = $this->defaults_row_actions( $item );
-       
-        if( isset( $defaults[$action] ) )
+        if( isset( $defaults[$action] ) ) :
             $args = wp_parse_args( $args, $defaults[$action] );
+        endif;
         
-        if( ! isset( $args['base_uri'] ) ) 
+        if( ! isset( $args['base_uri'] ) ) :
             $args['base_uri'] = $this->BaseUri;
-        
-        if( ( $index = $this->getParam( 'ItemIndex' ) ) && ! isset( $args['query_args'][$index] ) && isset( $item->{$index} ) )
+        endif;
+
+        if( ( $index = $this->getParam( 'ItemIndex' ) ) && ! isset( $args['query_args'][$index] ) && isset( $item->{$index} ) ) :
             $args['query_args'][$index] = $item->{$index};
+        endif;
+        
+        if( isset( $args['nonce'] ) && is_bool( $args['nonce'] ) && ( $args['nonce'] === true ) ) :
+            $args['nonce'] = $this->get_item_nonce_action( $action, true, $item );
+        endif;
         
         return $args;
-    }
-    
-    /** == Traitement des attributs du lien d'édition sur un élément == **/
-    public function row_action_edit_item_parse_args( $item, $query_args = array(), $label = '', $class = '' ) 
-    {
-        if( ( $base_uri = $this->getParam( 'EditBaseUri' ) ) && ( $index = $this->getParam( 'ItemIndex' ) ) && isset( $item->{$index} )  ) :
-            return array(
-                'label'             => $label ? $label : ( is_null( $label )? null : __( 'Modifier' ) ),
-                'class'             => $class,
-                'base_uri'          => $base_uri,
-                'query_args'        => array_merge( $query_args, array( $index => $item->{$index} ) ),
-                'nonce'             => false,
-                'referer'           => false
-            );
-        endif;
     }
     
     /** == Lien de déclenchement d'une action sur un éléments == **/
     public function row_action_link( $action, $args = array() )
     {
         $defaults = array(
-            'label'                    => $action,    
-            'title'                    => '',
-            'class'                    => '',
-            'link_attrs'            => array(),
-            'base_uri'                => set_url_scheme( '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ),
-            'query_args'            => array(),
-            'nonce'                    => true,
-            'referer'                => true
+            'label'                     => $action,    
+            'title'                     => '',
+            'class'                     => '',
+            'link_attrs'                => array(),
+            'base_uri'                  => set_url_scheme( '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ),
+            'query_args'                => array(),
+            'nonce'                     => true,
+            'referer'                   => true
         );
         $args = wp_parse_args( $args, $defaults );
         
@@ -137,7 +85,7 @@ trait Actions
         endif;
         
         if( $nonce )
-            $href = wp_nonce_url( $href, ( is_bool( $nonce ) ? -1 : $nonce ) );
+            $href = wp_nonce_url( $href, $nonce );
         $href = esc_url( $href );
         
         $output  = "";
@@ -155,7 +103,99 @@ trait Actions
         
         return $output;
     }
-            
+    
+    /** == == **/
+    public function defaults_row_actions( $item )
+    {
+        $index = $this->getParam( 'ItemIndex', 0 );
+        
+        return array(
+            'activate'          => array(
+                'label'             => __( 'Activer', 'tify' ),
+                'title'             => __( 'Activation de l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'activate', true, $item ),
+                'link_attrs'        => array( 'style' => 'color:#006505;' ),
+            ),
+            'deactivate'        => array(
+                'label'             => __( 'Désactiver', 'tify' ),
+                'title'             => __( 'Désactivation de l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'deactivate', true, $item ),
+                'link_attrs'        => array( 'style' => 'color:#D98500;' ),
+            ),
+            'delete'            => array(
+                'label'             => __( 'Supprimer définitivement', 'tify' ),
+                'title'             => __( 'Suppression définitive de l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'delete', true, $item ),
+                'link_attrs'        => array( 'style' => 'color:#a00;' ),
+            ),
+            'duplicate'         => array(
+                'label'             => __( 'Dupliquer', 'tify' ),
+                'title'             => __( 'Dupliquer l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'duplicate', true, $item ),
+            ),            
+            'trash'             => array(
+                'label'             => __( 'Corbeille', 'tify' ),
+                'title'             => __( 'Mise à la corbeille de l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'trash', true, $item ),
+            ),
+            'untrash'           => array(
+                'label'             => __( 'Restaurer', 'tify' ),
+                'title'             => __( 'Rétablissement de l\'élément', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'untrash', true, $item ),
+            ),
+            'previewinline'     => array( 
+                'label'             => __( 'Afficher le détail', 'Theme' ),
+                'title'             => __( 'Voir le détail de la commande', 'tify' ),
+                'nonce'             => $this->get_item_nonce_action( 'previewinline', true, $item ),
+                'link_attrs'        => array( 'data-index' => ( isset( $item->{$index} ) ? $item->{$index} : 0 ) )
+            ),
+            'edit'              => $this->row_action_edit_item_parse_args( $item )
+        );
+    }
+    
+    /** == Récupération de l'attribut de sécurisation d'une action == **/
+    public function get_item_nonce_action( $action, $suffix = null, $item = null )
+    {
+        $nonce_action = $this->getParam( 'Singular' ) . $action;
+        
+        if( is_null( $suffix ) )
+            return $nonce_action;
+        
+        if( is_bool( $suffix ) && ( $suffix === true ) ) :
+            $index = $this->getParam( 'ItemIndex', 0 );
+            if( $item && isset( $item->{$index} ) ) :
+                $nonce_action .= $item->{$index};
+            endif;
+        else :
+            $nonce_action .= $suffix;
+        endif;           
+        
+        return $nonce_action;
+    }
+    
+    /** == Lien d'édition d'un élément == **/
+    public function get_item_edit_link( $item, $args = array(), $label, $class = '' ) 
+    {
+        if( $args = $this->row_action_edit_item_parse_args( $item, $args, $label, $class ) ) :
+            return $this->row_action_link( 'edit', $args );
+        endif;
+    }
+    
+    /** == Traitement des attributs du lien d'édition sur un élément == **/
+    public function row_action_edit_item_parse_args( $item, $query_args = array(), $label = '', $class = '' ) 
+    {
+        if( ( $base_uri = $this->getParam( 'EditBaseUri' ) ) && ( $index = $this->getParam( 'ItemIndex' ) ) && isset( $item->{$index} )  ) :
+            return array(
+                'label'             => $label ? $label : ( is_null( $label )? null : __( 'Modifier' ) ),
+                'class'             => $class,
+                'base_uri'          => $base_uri,
+                'query_args'        => array_merge( $query_args, array( $index => $item->{$index} ) ),
+                'nonce'             => false,
+                'referer'           => false
+            );
+        endif;
+    }
+                
     /** == Éxecution de l'action - activation == **/
     protected function process_bulk_action_activate()
     {

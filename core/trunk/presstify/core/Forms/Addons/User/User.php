@@ -297,9 +297,9 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     final protected function parseRole( $name, $attrs = array() )
     {
         $defaults = array(
-            'display_name'             => $name,
-            'capabilities'            => array(),
-            'show_admin_bar_front'     => false
+            'display_name'              => $name,
+            'capabilities'              => array(),
+            'show_admin_bar_front'      => false
         );
         return wp_parse_args( $attrs, $defaults );
     }
