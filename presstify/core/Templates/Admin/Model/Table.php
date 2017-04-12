@@ -81,7 +81,7 @@ abstract class Table extends \WP_List_Table
 
     /// Actions sur un élément
     protected $RowActions               = array();
-
+        
     /// Titre de la page
     protected $PageTitle                = null;
 
@@ -158,7 +158,7 @@ abstract class Table extends \WP_List_Table
         
         //// Définition de la valeur du nombre d'éléments par page
         add_filter( $this->PerPageOptionName, function() use ( $per_page ){ return $per_page; }, 0 ); 
-        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName(). '_inline_preview', array( $this, 'wp_ajax_inline_preview' ) );
+        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() . '_inline_preview', array( $this, 'wp_ajax_inline_preview' ) );
     }
     
     /** == Initialisation de l'interface d'administration == **/
@@ -266,7 +266,7 @@ jQuery(document).ready( function($){
             // Récupération de l'élément à prévisualiser
             $.post( 
                 tify_ajaxurl, 
-                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName(). '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
+                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName() . '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
                 function( resp ){
                     $( '.content', $preview ).html(resp);
                     $( '#'+ id ).dialog( 'open' );            
@@ -299,11 +299,12 @@ jQuery(document).ready( function($){
     /** == Récupération de l'élément à traité == **/
     public function current_item() 
     {
-        if ( ! empty( $_REQUEST[$this->ItemIndex] ) ) :
-            if( is_array( $_REQUEST[$this->ItemIndex] ) )
+        if ( isset( $_REQUEST[$this->ItemIndex] ) ) :
+            if( is_array( $_REQUEST[$this->ItemIndex] ) ) :
                 return array_map('intval', $_REQUEST[$this->ItemIndex] );
-            else 
+            else :
                 return array( (int) $_REQUEST[$this->ItemIndex] );
+            endif;
         endif;
         
         return 0;
@@ -367,25 +368,7 @@ jQuery(document).ready( function($){
     {
         return $this->db()->select()->count( $args );
     }
-    
-    /** == Récupération des actions sur un élément == **/
-    public function item_row_actions( $item, $actions = array() )
-    {        
-        $row_actions = array();
-        foreach( (array) $actions as $action ) :
-            if( ! isset( $this->RowActions[$action] ) )
-                continue;
-            if( is_string( $this->RowActions[$action] ) ) :
-                $row_actions[$action] = $this->RowActions[$action];
-            else :
-                $args = $this->row_action_item_parse_args( $item, $action, $this->RowActions[$action] );
-                $row_actions[$action] = $this->row_action_link( $action, $args );
-            endif;
-        endforeach;        
-
-        return $row_actions;        
-    }
-        
+            
     /** == Éxecution des actions == **/
     protected function process_bulk_actions()
     {
@@ -412,13 +395,7 @@ jQuery(document).ready( function($){
     {
         return "<input id=\"cb-select-all-1\" type=\"checkbox\" />";
     }
-    
-    /** == Récupération des actions sur un élément == **/
-    public function get_row_actions( $item, $actions, $always_visible = false )
-    {
-        return $this->row_actions( $this->item_row_actions( $item, $actions ), $always_visible );
-    }
-                    
+                        
     /* = INTERFACE D'AFFICHAGE = * /
     /** == Récupération des vues filtrées == **/
     public function get_views()

@@ -41,7 +41,26 @@ trait Params
         return $default;
     }
     
-    /* = DECLARATION DES PARAMETRES = */
+    /** == Initialisation des paramètres de configuration de la table == **/
+    protected function initParams()
+    {
+        $this->ParamsMap = $this->set_params_map();
+
+        foreach( (array) $this->allowedParams() as $param ) :
+            if( ! method_exists( $this, 'initParam' . $param ) ) 
+                continue;
+            call_user_func( array( $this, 'initParam' . $param ) );
+        endforeach;
+    }
+    
+    /** 
+     * Définition de la cartographie des paramètres autorisés
+     */
+    public function set_params_map()
+    {
+        return $this->ParamsMap;
+    }
+    
     /** == Définition l'url de la page d'édition d'un élément == **/
     public function set_edit_link()
     {
@@ -156,21 +175,16 @@ trait Params
         return true;
     }
     
+    /** == Définition du préfixe des actions ajax == **/
+    public function set_ajax_action_prefix()
+    {
+        return $this->template()->getID() .'_'. self::classShortName();
+    }
+    
     /** == Définition du titre de la page == **/
     public function set_page_title()
     {
         return '';
-    }
-    
-    /* = INITIALISATION DES PARAMETRE = */
-    /** == Initialisation des paramètres de configuration de la table == **/
-    protected function initParams()
-    {
-        foreach( (array) $this->allowedParams() as $param ) :
-            if( ! method_exists( $this, 'initParam' . $param ) ) 
-                continue;
-            call_user_func( array( $this, 'initParam' . $param ) );
-        endforeach;
     }
     
     /** == Initialisation de l'url de la page d'administration == **/
