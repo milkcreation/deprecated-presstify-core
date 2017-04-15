@@ -1,10 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns;
 
-use \tiFy\Environment\Component;
-
-/** @Autoload */
-final class CustomColumns extends Component
+final class CustomColumns extends \tiFy\Environment\Component
 {
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/

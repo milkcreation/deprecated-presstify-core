@@ -23,8 +23,9 @@ class MailOptions extends \tiFy\Core\Taboox\Admin
 	/* = FORMULAIRE DE SAISIE = */
 	public function form()
 	{
-		if( is_bool( $this->args['admin'] ) )
+		if( ( isset( $this->args['admin'] ) && is_bool( $this->args['admin'] ) && ( $this->args['admin'] === true ) ) || ! isset( $this->args['admin'] ) ) :
 			$this->args['admin'] = array( 'hookpage', 'confirmation', 'notification' );
+		endif;
 		
 		$admin = (array) $this->args['admin'];
 	?>

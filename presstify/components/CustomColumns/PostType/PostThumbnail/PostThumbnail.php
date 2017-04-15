@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns\PostType\PostThumbnail;
 
-use tiFy\Components\CustomColumns\Factory;
-
-class PostThumbnail extends Factory
+class PostThumbnail extends \tiFy\Components\CustomColumns\Factory
 {
 	/* = DEFINITION DES ARGUMENTS PAR DEFAUT = */
 	public function getDefaults()
@@ -24,7 +22,7 @@ class PostThumbnail extends Factory
 	/* = STYLE DYNAMIQUE DE LA COLONNE = */
 	public function admin_print_styles()
 	{		
-		$column = $this->getConfig( 'column' );
+		$column = $this->getAttrs( 'column' );
 		?><style type="text/css">
 		.wp-list-table th#<?php echo $column?>,
 		.wp-list-table td.<?php echo $column?>{

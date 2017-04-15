@@ -140,8 +140,8 @@ class Params extends \tiFy\Environment\App
             endwhile;
             closedir( $_dir );            
         endif;        
-        tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );                    
-                		
+        tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );                          
+                
 		// Chargement des plugins
 		tiFy::classLoad( '\tiFy\Plugins', TIFY_PLUGINS_DIR );
 		if( ! empty( tiFy::$Params['plugins'] ) ) :						

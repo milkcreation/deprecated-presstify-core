@@ -26,8 +26,8 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 	// Liste des methodes à translater en Helpers
 	protected $Helpers 			= array( 'Has', 'Get', 'Display' );
 		
-	// Configuration
-	public static $Config		= array();
+	// Attributs de configuration
+	public static $Attrs		= array();
 	
 	// Vignettes
 	public static $Slides		= array();
@@ -44,12 +44,12 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 	}	
 	
 	/* = DÉFINITION DE LA CONFIGURATION = */
-	public static function setConfig( $args = array() )
+	public static function setAttrs( $args = array() )
 	{
-		if( ! empty( static::$Config ) )
-			return static::$Config;		
+		if( ! empty( static::$Attrs ) )
+			return static::$Attrs;		
 				
-		return static::$Config = static::parseArgs( $args );
+		return static::$Attrs = static::parseArgs( $args );
 	}
 	
 	/* = TRAITEMENT DES ARGUMENTS = */
@@ -104,12 +104,12 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 	}
 	
 	/* = RECUPERATION D'UN ARGUMENTS = */
-	public static function getConfig( $attr = null )
+	public static function getAttrs( $attr = null )
 	{
 		if( is_null( $attr ) )
-			return static::$Config;		
-		elseif( isset( static::$Config[$attr] ) )		
-			return static::$Config[$attr];
+			return static::$Attrs;		
+		elseif( isset( static::$Attrs[$attr] ) )		
+			return static::$Attrs[$attr];
 	}
 		
 	/* = VÉRIFICATION = */
@@ -121,7 +121,7 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 	/* = RÉCUPÉRATION = */
 	public static function Get( $args = array() )
 	{
-		$args = static::setConfig( $args );	
+		$args = static::setAttrs( $args );	
 			
 		if( ! $slideshow = get_option( $args['name'], false ) )
 			return array( 'options' => $args['options'], 'slide' => array() );

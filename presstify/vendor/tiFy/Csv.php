@@ -10,7 +10,7 @@ $Csv = new Csv(
             'per_page'      => $this->PerPage   
         ),            
         'columns'       => array( 'lastname', 'firstname', 'email' ),
-        'orderby        => array(
+        'orderby'       => array(
             'lastname'      => 'ASC'
         ),
         'search'        => array(
@@ -25,7 +25,7 @@ $Csv = new Csv(
         )               
     ); 
 );
-$items = $Csv->get();
+$items = $Csv->getResults();
 $total_items = $Csv->getTotalItems();
 $total_pages = $Csv->getTotalPages(); 
  */

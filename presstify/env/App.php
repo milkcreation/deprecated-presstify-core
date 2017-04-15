@@ -3,10 +3,11 @@ namespace tiFy\Environment;
 
 abstract class App
 {
-    use Traits\Actions, Traits\Controllers, Traits\Filters, Traits\Getter, Traits\Helpers, Traits\HelpersNew, Traits\Path, Traits\Setter
+    use Traits\Actions, Traits\Config, Traits\Controllers, Traits\Filters, Traits\Getter, Traits\Helpers, Traits\HelpersNew, Traits\Path, Traits\Setter
     {
         Traits\Actions::__construct as private __ActionsConstruct;
         Traits\Actions::__call as private __ActionsCall;
+        Traits\Config::__construct as private __ConfigConstruct;
         Traits\Filters::__construct as private __FiltersConstruct;
         Traits\Filters::__call as private __FiltersCall;
         Traits\Getter::__get as private __GetterGet;
@@ -21,7 +22,8 @@ abstract class App
     /* = CONSTRUCTEUR = */
     public function __construct()
     {
-        $this->__ActionsConstruct();    
+        $this->__ActionsConstruct();
+        $this->__ConfigConstruct();
         $this->__FiltersConstruct();
         $this->__HelpersConstruct();
         $this->__HelpersNewConstruct();

@@ -7,6 +7,8 @@
 [data-tify_control='dropdown']{
 	position:relative;
 	display:inline-block;
+	
+	line-height:100%;
 	background-color:#FFF;
 	border-color:#E4E4E4;
 	border-style:solid;
@@ -51,11 +53,12 @@
 }
 [data-tify_control='dropdown'] > .selected{
 	position:relative;
-	padding:0.4em;
+	padding:0;
 	cursor:pointer;	
-	padding-right:16px;
+	margin-right:16px;
 	display:block;
 	overflow:hidden;
+	height:1em;
 	text-overflow: ellipsis;
 	z-index:1;
 }
@@ -64,22 +67,24 @@
 [data-tify_control='dropdown-picker']{
 	position:absolute;
 	display:none;
-	overflow-y:auto;
-	z-index:99;
-	background-color:#FFF;
 	margin:0;
+	overflow-y:auto;
+	max-height:10em;
+	z-index:99;
+	
+	background-color:#FFF;
 	border-width:1px;
 	border-style:solid;
 	border-color:#E4E4E4;
+	border-top:none;
 }
 [data-tify_control='dropdown-picker'].active{
 	display:inherit;	
 }
 [data-tify_control='dropdown-picker'] > ul{
 	position:relative;
-	height:100%;
+	width: 100%; height:100%;
 	margin:0; padding:0;
-    width: 100%;
 }
 [data-tify_control='dropdown-picker'] > ul > li{
 	margin:0; padding:0.1em 0.4em;

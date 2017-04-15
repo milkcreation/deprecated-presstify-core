@@ -40,7 +40,7 @@ class StdClass
     public static function getOverride( $classname, $path = array() )
     {
         if( empty( $path ) ) :
-            $path[] = "\\". self::getOverrideNamespace() . "\\". preg_replace( "#^tiFy\\\#", "", ltrim( $classname, '\\' ) );
+            $path[] = "\\". self::getOverrideNamespace() . "\\". preg_replace( "/^tiFy\\\/", "", ltrim( $classname, '\\' ) );
         endif;
 
         foreach( (array) $path as $override ) :

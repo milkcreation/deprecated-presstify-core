@@ -28,8 +28,8 @@ class AdminUI extends Component
 		
 	public function __construct()
 	{
-		parent::__construct();
-	
+		parent::__construct();		
+		
 		foreach( (array) array_keys( self::getDefaultConfig() ) as $prop ) :
 			if( ! empty( self::getConfig( $prop ) ) ) :
 				$value = is_array( self::getDefaultConfig( $prop ) ) ? wp_parse_args( self::getConfig( $prop ), self::getDefaultConfig( $prop ) ) : self::getConfig( $prop );
@@ -38,7 +38,7 @@ class AdminUI extends Component
 			endif;
 			self::setConfig( $prop, $value );
 		endforeach;
-			
+
 		if( self::getConfig( 'disable_post' ) ) :
 			add_action( 'admin_init', array( $this, 'disable_post_dashboard_meta_box' ) );
 			add_action( 'admin_menu', array( $this, 'disable_post_remove_menu' )  );
