@@ -98,7 +98,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
             ),
             'status'         => array(
                 'type'          => 'VARCHAR',
-                'size'          => 32
+                'size'          => 32,
+                'default'       => 'publish'
             ),
             'date'           => array(
                 'type'          => 'DATETIME',
@@ -203,7 +204,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     {            
         $datas = array(
             'form_id'               => $this->form()->getID(),
-            'record_session'        => $this->form()->getSession(),     
+            'record_session'        => $this->form()->getSession(),
+            'record_status'         => 'publish',
             'record_date'           => current_time( 'mysql' ),
             'item_meta'             => $this->form()->getFieldsValues()
         );

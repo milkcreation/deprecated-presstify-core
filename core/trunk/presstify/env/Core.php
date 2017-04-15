@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Environment;
 
-use \tiFy\Environment\Config;
-
-abstract class Core extends Config
+abstract class Core extends \tiFy\Environment\App
 {
 	// Namespace
 	protected $Namespace 	= 'tiFy\\Core\\';

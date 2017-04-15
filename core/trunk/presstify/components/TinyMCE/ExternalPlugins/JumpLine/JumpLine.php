@@ -34,7 +34,7 @@ class JumpLine extends App
 	/** == Ajout des styles dans l'éditeur == **/
 	final public function mce_css( $mce_css )
 	{
-		return $mce_css .= ', '. $this->Url.'/editor.css';
+	    return $mce_css .= ', '. self::getUrl( get_class() ).'/Jumpline.css';
 	}
 	
 	/** == Personnalisation des scripts de l'entête de l'interface d'administration == **/

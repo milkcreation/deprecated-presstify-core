@@ -240,6 +240,7 @@ jQuery(document).ready( function($){
                 .hide();
             $closest.after( $preview );            
             
+            <?php if( $this->PreviewMode === 'dialog') : ?>
             $( '#'+ id ).dialog({
                autoOpen: false,
                draggable: false,
@@ -262,14 +263,16 @@ jQuery(document).ready( function($){
                    $('.ui-dialog-titlebar-close').addClass('ui-button');
                },
             });            
-            
+            <?php endif;?>
             // Récupération de l'élément à prévisualiser
             $.post( 
                 tify_ajaxurl, 
                 { action: '<?php echo $this->template()->getID() .'_'. self::classShortName() . '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
                 function( resp ){
                     $( '.content', $preview ).html(resp);
+                    <?php if( $this->PreviewMode === 'dialog') : ?>
                     $( '#'+ id ).dialog( 'open' );            
+                    <?php endif;?>
                 }
             );                 
         } else {

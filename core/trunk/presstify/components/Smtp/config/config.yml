@@ -1,4 +1,4 @@
-host        : localhost
+host        : 'localhost'
 port        : 25
 username    : ''
 password    : ''

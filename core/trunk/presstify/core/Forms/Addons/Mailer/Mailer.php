@@ -4,7 +4,7 @@
  */
 namespace tiFy\Core\Forms\Addons\Mailer;
 
-use tiFy\Lib\Mailer\Mailer as tiFyMailer;
+use tiFy\Lib\Mailer\MailerNew;
 use tiFy\Core\Forms\Form\Helpers;
 
 class Mailer extends \tiFy\Core\Forms\Addons\Factory
@@ -26,13 +26,11 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		
 		// Définition des options de formulaire par défaut
 		$this->default_form_options = array(
-			/// Envoi d'un message de notification à l'administrateur du site		
-			/// @see tiFy\Lib\Mailer\Mailer
+			/// Envoi d'un message de notification à l'administrateur du site
 			'notification' 		=> array(
 				'subject'			=> sprintf( __( 'Vous avez une nouvelle demande de contact sur le site %s', 'tify' ), get_bloginfo('name') )
 			),
-			/// Envoi d'un message de confirmation de reception à l'emetteur de la demande	
-			/// @see tiFy\Lib\Mailer\Mailer
+			/// Envoi d'un message de confirmation de reception à l'emetteur de la demande
 			'confirmation' 		=> false,
 			'admin'				=> true
 		);
@@ -83,13 +81,13 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		// Envoi du message de notification
 		if( $options = $this->getFormAttr( 'notification' ) ) :
 			$options = $this->parseOptions( $options );	
-			new tiFyMailer( $options );	
+			MailerNew::send( $options );	
 		endif;
 
 		// Envoi du message de confirmation
 		if( $options = $this->getFormAttr( 'confirmation' ) ) :
 			$options = $this->parseOptions( $options );	
-			new tiFyMailer( $options );	
+			MailerNew::send( $options );
 		endif;
 	}
 	
@@ -104,10 +102,8 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 		if( ! isset( $options['to'] ) )
 			$options['to'] = get_option( 'admin_email' );
 		
-		// @todo Fichiers attachés
-		
-		if( empty( $options['html'] ) )
-			$options['html'] = $this->defaultHTML( $options );			
+		if( empty( $options['message'] ) )
+			$options['message'] = $this->defaultHTML( $options );			
 			
 		return $options;
 	}

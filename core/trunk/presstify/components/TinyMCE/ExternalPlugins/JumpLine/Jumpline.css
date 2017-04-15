@@ -2,7 +2,6 @@ hr.linebreak,
 hr.jumpline {
     background-color: transparent;
     border: 0;
-    border-bottom:1px dashed #bbb;
     height:0.01em;
     margin:0.5em 0;
     clear:both;
