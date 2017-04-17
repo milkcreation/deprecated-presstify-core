@@ -171,9 +171,9 @@ namespace
 	// --------------------------------------------------------------------------------------------------------------------------
 	/* = LOGIN = */
 	/** == Affichage d'un élément de template == **/
-	function tify_login_init( $id, $config = array() )
+	function tify_login_register( $id, $callback, $attrs = array() )
 	{
-		return new tiFy\Components\Login\Factory( $id, $config );
+		return tiFy\Components\Login\Login::register( $id, $callback, $attrs );
 	}
 	
 	/** == Affichage d'un élément de template == **/
@@ -198,6 +198,26 @@ namespace
 	function tify_login_logout_link( $id, $args = array() )
 	{
 		return tiFy\Components\Login\Login::display( $id, 'logout_link', $args );
+	}
+	
+    // --------------------------------------------------------------------------------------------------------------------------
+	/* = NAVMENU = */
+	/** == Déclaration d'un menu == **/
+	function tify_nav_menu_register( $id, $attrs )
+	{
+	    return tiFy\Components\NavMenu\NavMenu::register( $id, $attrs );
+	}
+	
+	/** == Ajout d'une entrée de menu == **/
+	function tify_nav_menu_add_node( $id, $attrs = array() )
+	{
+	    return tiFy\Components\NavMenu\NavMenu::addNode( $id, $attrs );
+	}
+	
+	/** == Affichage du menu == **/
+	function tify_nav_menu( $args = array(), $echo = true )
+	{
+	    return tiFy\Components\NavMenu\NavMenu::display( $args, $echo );
 	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------

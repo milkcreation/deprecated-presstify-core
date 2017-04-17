@@ -38,16 +38,12 @@ class Submit extends \tiFy\Core\Forms\Buttons\Factory
     
     /** == Affichage == **/
 	public function display()
-	{						
-		$class = ! empty( $this->Attrs['class'] ) ? "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit ". $this->Attrs['class'] : "tiFyForm-ButtonHandler tiFyForm-ButtonHandler--submit";
-		
-		$output  = "";
-		$output .= "<div class=\"tiFyForm-Button tiFyForm-Button--". $this->getID() ."\">\n";
+	{								
+		$output  = "";		
 		$output .= "\t<input type=\"hidden\" name=\"submit-". $this->form()->getUID() ."\" value=\"submit\"/>\n";
-		$output .= "\t<button type=\"submit\" id=\"submit-". $this->form()->getUID() ."\" class=\"$class\" ". $this->getTabIndex() ." >\n";
+		$output .= "\t<button type=\"submit\" id=\"submit-". $this->form()->getUID() ."\" class=\"". join( ' ', $this->getHandlerClasses() )  ."\" ". $this->getTabIndex() ." >\n";
 		$output .= $this->Attrs['label'];
 		$output .= "\t</button>\n";
-		$output .= "</div>\n";
 
 		return $output;
 	}    

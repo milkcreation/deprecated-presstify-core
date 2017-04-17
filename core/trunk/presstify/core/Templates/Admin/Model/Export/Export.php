@@ -63,7 +63,7 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Table
 			
 			// Pagination
 			$_REQUEST['paged'] = 1;
-			
+		
 			// Données
 			$basedir = WP_CONTENT_DIR .'/uploads';		
 			$url = WP_CONTENT_URL .'/uploads';

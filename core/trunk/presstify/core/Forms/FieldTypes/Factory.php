@@ -111,7 +111,7 @@ abstract class Factory extends \tiFy\Environment\App
 		$classes[] = "tiFyForm-FieldInput--". $this->getID();
 		$classes[] = "tiFyForm-FieldInput--". $this->field()->getSlug();
 		
-		return $classes;
+		return $this->form()->factory()->fieldClasses( $this->field(), $classes );
 	}
 	
 	/** == Texte d'aide de l'interface de saisie == **/
@@ -171,12 +171,12 @@ abstract class Factory extends \tiFy\Environment\App
 		endif;
 		
 		// Pré-affichage
-		$output .= $this->field()->getAttr( 'before' );
+		$output .= $this->form()->factory()->fieldBefore( $this->field(), $this->field()->getAttr( 'before' ) );
 		
 		$output .= $this->display();
 		
 		// Post-affichage
-		$output .= $this->field()->getAttr( 'after' );
+		$output .= $this->form()->factory()->fieldAfter( $this->field(), $this->field()->getAttr( 'after' ) );
 		
 		return $output;
 	}
@@ -187,21 +187,16 @@ abstract class Factory extends \tiFy\Environment\App
 	/** == Affichage de l'intitulé de champ == **/
 	public function displayLabel()
 	{
-		$output = "";
-		
+        $input_id = $this->getInputID();		
 		$class = array();
 		if( $this->field()->getAttr( 'label_class' ) )
 			$class[] =  $this->field()->getAttr( 'label_class' );
 		$class[] = "tiFyForm-FieldLabel";
 		$class[] = "tiFyForm-FieldLabel--". $this->getID();
 		$class[] = "tiFyForm-FieldLabel--". $this->field()->getSlug();
-	
-		$output .= "<label for=\"". $this->getInputID() ."\" class=\"". join( ' ', $class ) ."\">\n";
-		$output .= $this->field()->getLabel();					
-		if( $this->field()->getRequired( 'tagged' ) ) 
-			$output .= "<span class=\"tiFyForm-FieldRequiredTag\">*</span>";
-		$output .= "</label>\n";
+		$label = $this->field()->getLabel();			
+		$required = ( $this->field()->getRequired( 'tagged' ) ) ? "<span class=\"tiFyForm-FieldRequiredTag\">*</span>" : '';
 		
-		return $output;
+		return $this->form()->factory()->fieldLabel( $this->field(), $input_id, join( ' ', $class ), $label, $required );
 	}
 }
