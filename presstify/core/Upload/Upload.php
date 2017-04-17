@@ -9,7 +9,7 @@ class Upload extends \tiFy\Environment\App
 	// ACTIONS
 	/// Liste des actions à déclencher
 	protected $CallActions				= array(
-		'wp',
+		'template_redirect',
 		'tify_upload_register'
 	);
 	
@@ -42,15 +42,7 @@ class Upload extends \tiFy\Environment\App
 		
 		return $aVars;
 	}
-	
-	/** == == **/
-	final public function wp( &$wp ) 
-	{
-		if ( self::Get() ) :
-			add_action( 'template_redirect', array( $this, 'template_redirect' ) );
-		endif;
-	}
-	
+		
 	/** == == **/
 	final public function media_row_actions( $actions, $post, $detached )
 	{
@@ -62,7 +54,10 @@ class Upload extends \tiFy\Environment\App
 	/** == == **/
 	final public function template_redirect()
 	{
-		$upload_url = false;
+		if( ! self::Get() )
+		    return;
+		
+	    $upload_url = false;
 		if( $upload_url = self::Get( 'url' ) ) :
 			$upload_url		= urldecode( $upload_url );
 		elseif( $attachment_id = self::Get( 'media' ) ) :

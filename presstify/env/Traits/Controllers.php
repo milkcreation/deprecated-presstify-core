@@ -33,7 +33,13 @@ trait Controllers
     /** == Formatage d'un nom de contrôleur == **/
     public static function sanitizeControllerName( $classname )
     {
-        return StdClass::sanitizeName( $classname );
+        $lcfirst = preg_match( '/^tiFy/', $classname );
+        $classname = StdClass::sanitizeName( $classname );
+        
+        if( $lcfirst  )
+            $classname = lcfirst( $classname );
+        
+        return $classname;
     }
     
     /** == Récupération de l'espace de nom de surcharge == **/

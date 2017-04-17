@@ -150,7 +150,7 @@ class Handle
                     
             $this->Form->call( 'handle_parse_query_field_value', array( &$value, $field, $this ) );
             
-            $vars[ $field->getSlug() ] = $this->Form->getFactory()->parseQueryVar( $field->getSlug(), $value );
+            $vars[ $field->getSlug() ] = $this->Form->factory()->parseQueryVar( $field->getSlug(), $value );
             
             $field->setValue( $vars[ $field->getSlug() ] );
         endforeach;
@@ -209,7 +209,7 @@ class Handle
                 endforeach;                
             endif;
             
-            $field_errors = $this->Form->getFactory()->checkQueryVar( $field, $field_errors );
+            $field_errors = $this->Form->factory()->checkQueryVar( $field, $field_errors );
             
             //// Court-circuitage de la vérification d'intégrité d'un champ
             $this->Form->call( 'handle_check_field', array( &$field_errors, $field ) );

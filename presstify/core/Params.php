@@ -95,7 +95,7 @@ class Params extends \tiFy\Environment\App
             
             //// Répertoire
             if( ! isset( $theme['base_dir'] ) ) :
-                $theme['base_dir'] = get_template_directory() ."/tiFy";
+                $theme['base_dir'] = get_template_directory() ."/app";
             endif;
             tiFy::$Params['config']['theme']['base_dir'] = $theme['base_dir'];
             

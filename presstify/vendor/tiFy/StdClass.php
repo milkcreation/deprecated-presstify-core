@@ -6,28 +6,22 @@ use tiFy\tiFy;
 class StdClass
 {
     /** 
-     * = Formatage d'un nom de classe =
+     * Formatage d'un nom de classe
      * 
      * @param string $classname
      * @return string (ex:my-class_name => MyClass_Name)
      **/
     public static function sanitizeName( $classname )
-    {
-        $lcfirst = preg_match( '/^[a-z]/', $classname );
-        
+    {        
         $classname = implode( '', array_map( 'ucfirst', explode( '-', $classname ) ) );
         $classname = implode( '_', array_map( 'ucfirst', explode( '_', $classname ) ) );
-        
-        if( $lcfirst  )
-            $classname = lcfirst( $classname );
-        
+                
         return $classname;
-    }
-    
+    }    
     
     /** 
-     * = Récupération de l'espace de nom de surcharge = 
-     **/
+     * Récupération de l'espace de nom de surcharge
+     */
     public static function getOverrideNamespace()
     {
         if( ( $theme = tiFy::getConfig( 'theme' ) ) && ! empty( $theme['namespace'] ) ) 
@@ -35,14 +29,14 @@ class StdClass
     }
     
     /** 
-     * = Récupération d'une classe de surcharge = 
-     **/
+     * Récupération d'une classe de surcharge
+     */
     public static function getOverride( $classname, $path = array() )
     {
         if( empty( $path ) ) :
             $path[] = "\\". self::getOverrideNamespace() . "\\". preg_replace( "/^tiFy\\\/", "", ltrim( $classname, '\\' ) );
         endif;
-
+ 
         foreach( (array) $path as $override ) :
             if( class_exists( $override ) && is_subclass_of( $override, $classname ) ) :
                 $classname = $override;
@@ -54,8 +48,8 @@ class StdClass
     }
     
     /** 
-     * = Chargement d'une classe de surcharge = 
-     **/
+     * Chargement d'une classe de surcharge 
+     */
     public static function loadOverride( $classname, $path = array() )
     {
         if( $classname = self::getOverride( $classname, $path ) )
