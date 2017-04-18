@@ -65,7 +65,7 @@ class Factory
         if( method_exists( $this, 'parse_query_var_' . $field_slug ) ) :
             return call_user_func( array( $this, 'parse_query_var_' . $field_slug ), $value );
         else :
-            return call_user_func( array( $this, 'parse_query_var_default' ), $field_slug, $value );
+            return call_user_func( array( $this, 'parse_query_vars' ), $field_slug, $value );
         endif;       
     }
     
@@ -77,7 +77,7 @@ class Factory
         if( method_exists( $this, 'check_query_var_' . $field_obj->getSlug() ) ) :
             return call_user_func( array( $this, 'check_query_var_' . $field_obj->getSlug() ), $errors, $field_obj );
         else :
-            return call_user_func( array( $this, 'check_query_var_default' ), $errors, $field_obj );
+            return call_user_func( array( $this, 'check_query_vars' ), $errors, $field_obj );
         endif; 
     }
     
@@ -96,9 +96,9 @@ class Factory
      */
     final public function fieldOpen( $field, $id, $class )
     {
-        return is_callable( array( $this, 'field_open'. $field->getSlug() ) ) ? 
+        return is_callable( array( $this, 'field_open_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_open_'. $field->getSlug() ), $field, $id, $class ) :
-            call_user_func( array( $this, 'field_open_default' ), $field, $id, $class );
+            call_user_func( array( $this, 'fields_open' ), $field, $id, $class );
     }
     
     /**
@@ -108,7 +108,7 @@ class Factory
     {
         return is_callable( array( $this, 'field_close_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_close_'. $field->getSlug() ), $field ) :
-            call_user_func( array( $this, 'field_close_default' ), $field );
+            call_user_func( array( $this, 'fields_close' ), $field );
     }
     
     /**
@@ -118,7 +118,7 @@ class Factory
     {
         return is_callable( array( $this, 'field_label_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_label_'. $field->getSlug() ), $field, $input_id, $class, $label, $required ) :
-            call_user_func( array( $this, 'field_label_default' ), $field, $input_id, $class, $label, $required );
+            call_user_func( array( $this, 'fields_label' ), $field, $input_id, $class, $label, $required );
     }
     
     /**
@@ -128,7 +128,7 @@ class Factory
     {
         return is_callable( array( $this, 'field_before_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_before_'. $field->getSlug() ), $field, $before ) :
-            call_user_func( array( $this, 'field_before_default' ), $field, $before );
+            call_user_func( array( $this, 'fields_before' ), $field, $before );
     }
     
     /**
@@ -138,7 +138,7 @@ class Factory
     {
         return is_callable( array( $this, 'field_after_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_after_'. $field->getSlug() ), $field, $after ) :
-            call_user_func( array( $this, 'field_after_default' ), $field, $after );
+            call_user_func( array( $this, 'fields_after' ), $field, $after );
     }
     
     /**
@@ -148,7 +148,7 @@ class Factory
     {
         return is_callable( array( $this, 'field_classes_'. $field->getSlug() ) ) ? 
             call_user_func( array( $this, 'field_classes_'. $field->getSlug() ), $field, $classes ) :
-            call_user_func( array( $this, 'field_classes_default' ), $field, $classes );
+            call_user_func( array( $this, 'fields_classes' ), $field, $classes );
     }
     
     /**
@@ -156,9 +156,9 @@ class Factory
      */
     final public function buttonOpen( $button, $id, $class )
     {
-        return is_callable( array( $this, 'button_open'. $button->getID() ) ) ? 
+        return is_callable( array( $this, 'button_open_'. $button->getID() ) ) ? 
             call_user_func( array( $this, 'button_open_'. $button->getID() ), $button, $id, $class ) :
-            call_user_func( array( $this, 'button_open_default' ), $button, $id, $class );
+            call_user_func( array( $this, 'buttons_open' ), $button, $id, $class );
     }
     
     /**
@@ -168,7 +168,7 @@ class Factory
     {
         return is_callable( array( $this, 'button_close_'. $button->getID() ) ) ? 
             call_user_func( array( $this, 'button_close_'. $button->getID() ), $button ) :
-            call_user_func( array( $this, 'button_close_default' ), $button );
+            call_user_func( array( $this, 'buttons_close' ), $button );
     }
     
     /**
@@ -178,7 +178,7 @@ class Factory
     {
         return is_callable( array( $this, 'button_classes_'. $button->getID() ) ) ? 
             call_user_func( array( $this, 'button_classes_'. $button->getID() ), $button, $classes ) :
-            call_user_func( array( $this, 'button_classes_default' ), $button, $classes );
+            call_user_func( array( $this, 'buttons_classes' ), $button, $classes );
     }
     
     /**
@@ -187,7 +187,7 @@ class Factory
     /**
      * Traitement par défaut des variables de requête au moment de la soumission
      */
-    public function parse_query_var_default( $field_slug, $value )
+    public function parse_query_vars( $field_slug, $value )
     {
         return $value;
     }
@@ -195,7 +195,7 @@ class Factory
     /**
      * Vérification par défaut de l'intégrité des variables de requêtes
      */
-    public function check_query_var_default( $errors, $field_obj )
+    public function check_query_vars( $errors, $field_obj )
     {
         return $errors;
     }
@@ -227,7 +227,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\Form\Field
      */
-    public function field_open_default( $field, $id, $class )
+    public function fields_open( $field, $id, $class )
     {
         if( ! $field->typeSupport( 'wrapper' ) )
             return;
@@ -240,7 +240,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\Form\Field
      */
-    public function field_close_default( $field )
+    public function fields_close( $field )
     {
         if( ! $field->typeSupport( 'wrapper' ) )
             return;
@@ -253,7 +253,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\FieldTypes\Factory
      */
-    public function field_label_default( $field, $input_id, $class, $label, $required )
+    public function fields_label( $field, $input_id, $class, $label, $required )
     {
         return "<label for=\"{$input_id}\" class=\"{$class}\">{$label}{$required}</label>\n";
     }
@@ -263,7 +263,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\FieldTypes\Factory
      */
-    public function field_before_default( $field, $before )
+    public function fields_before( $field, $before )
     {
         return $before;
     }
@@ -273,7 +273,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\FieldTypes\Factory
      */
-    public function field_after_default( $field, $after )
+    public function fields_after( $field, $after )
     {
         return $after;
     }
@@ -283,7 +283,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\FieldTypes\Factory
      */
-    public function field_classes_default( $field, $classes )
+    public function fields_classes( $field, $classes )
     {
         return $classes;
     }
@@ -293,7 +293,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\Buttons\Factory
      */
-    public function button_open_default( $button, $id, $class )
+    public function buttons_open( $button, $id, $class )
     {
         return "<div". ( $id ? " id=\"{$id}\"" : "" ) ." class=\"{$class}\">\n";
     }
@@ -303,7 +303,7 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\Buttons\Factory
      */
-    public function button_close_default( $button )
+    public function buttons_close( $button )
     {
         return "</div>\n";
     }
@@ -313,9 +313,8 @@ class Factory
      * 
      * @see \tiFy\Core\Forms\Buttons\Factory
      */
-    public function button_classes_default( $button, $classes )
+    public function buttons_classes( $button, $classes )
     {
         return $classes;
-    }
-    
+    }    
 }
