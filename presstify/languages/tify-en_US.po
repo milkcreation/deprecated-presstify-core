@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Presstify\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-15 12:12+0200\n"
-"PO-Revision-Date: 2017-04-15 12:12+0200\n"
+"POT-Creation-Date: 2017-04-18 14:46+0200\n"
+"PO-Revision-Date: 2017-04-18 14:46+0200\n"
 "Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
 "Language-Team: Milkcreation <contact@milkcreation.fr>\n"
 "Language: en_US\n"
@@ -319,12 +319,14 @@ msgid "Archives de l'année : %s"
 msgstr ""
 
 #: presstify/components/ContactForm/ContactForm.php:128
-msgid " | Votre message a bien été réceptionné"
-msgstr ""
+#, php-format
+msgid "%s | Votre message a bien été réceptionné"
+msgstr "%s | Your message was successfully delivered"
 
 #: presstify/components/ContactForm/ContactForm.php:134
-msgid " | Vous avez reçu une nouvelle demande de contact"
-msgstr ""
+#, php-format
+msgid "%s | Vous avez reçu une nouvelle demande de contact"
+msgstr "%s | You have a new message request"
 
 #: presstify/components/ContactForm/Taboox/Option/MailOptions/Admin/MailOptions.php:33
 msgid "Affichage du formulaire"
@@ -645,36 +647,36 @@ msgstr "Remember me"
 msgid "Connexion"
 msgstr "Log in"
 
-#: presstify/components/Login/Factory.php:170
+#: presstify/components/Login/Factory.php:167
 msgid "Veuillez renseigner le mot de passe"
 msgstr ""
 
-#: presstify/components/Login/Factory.php:171
+#: presstify/components/Login/Factory.php:168
 msgid "Les idenfiants de connexion fournis sont invalides."
 msgstr ""
 
-#: presstify/components/Login/Factory.php:172
+#: presstify/components/Login/Factory.php:169
 msgid ""
 "Votre utilisateur n'est pas autorisé à se connecter depuis cette interface."
 msgstr ""
 
-#: presstify/components/Login/Factory.php:228
+#: presstify/components/Login/Factory.php:225
 msgid "Erreur lors de la tentative d'authentification"
 msgstr ""
 
-#: presstify/components/Login/Factory.php:403
+#: presstify/components/Login/Factory.php:400
 msgid "Mot de passe oublié"
 msgstr "Forgotten password?"
 
-#: presstify/components/Login/Factory.php:408
+#: presstify/components/Login/Factory.php:405
 msgid "Récupération de mot de passe perdu"
 msgstr ""
 
-#: presstify/components/Login/Factory.php:421
+#: presstify/components/Login/Factory.php:418
 msgid "Se déconnecter"
 msgstr "Log out"
 
-#: presstify/components/Login/Factory.php:427
+#: presstify/components/Login/Factory.php:424
 msgid "Déconnection"
 msgstr ""
 
@@ -683,7 +685,7 @@ msgstr ""
 msgid "[%s] Réinitialisation de mot de passe"
 msgstr ""
 
-#: presstify/components/Login/Login.php:144
+#: presstify/components/Login/Login.php:151
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: Cookies are blocked due to unexpected output. For "
@@ -691,16 +693,16 @@ msgid ""
 "\"%2$s\">support forums</a>."
 msgstr ""
 
-#: presstify/components/Login/Login.php:145
-#: presstify/components/Login/Login.php:149
+#: presstify/components/Login/Login.php:152
+#: presstify/components/Login/Login.php:156
 msgid "https://codex.wordpress.org/Cookies"
 msgstr ""
 
-#: presstify/components/Login/Login.php:145
+#: presstify/components/Login/Login.php:152
 msgid "https://wordpress.org/support/"
 msgstr ""
 
-#: presstify/components/Login/Login.php:148
+#: presstify/components/Login/Login.php:155
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: Cookies are blocked or not supported by your "
@@ -722,7 +724,7 @@ msgstr "Next"
 
 #: presstify/components/PDFViewer/PDFViewer.php:75
 #: presstify/core/Taboox/Post/Fileshare/Helpers/Fileshare.php:87
-#: presstify/core/Upload/Upload.php:57
+#: presstify/core/Upload/Upload.php:49
 msgid "Télécharger"
 msgstr "Download"
 
@@ -865,28 +867,28 @@ msgstr "%2$s %1$s %3$s"
 msgid "%1$s %2$s %3$s"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Mailer/Mailer.php:32
+#: presstify/core/Forms/Addons/Mailer/Mailer.php:31
 #, php-format
 msgid "Vous avez une nouvelle demande de contact sur le site %s"
 msgstr "You have a new contact request on the website %s"
 
-#: presstify/core/Forms/Addons/Mailer/Mailer.php:103
+#: presstify/core/Forms/Addons/Mailer/Mailer.php:101
 #, php-format
 msgid "Nouvelle demande sur le site %1$s"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Mailer/Mailer.php:123
+#: presstify/core/Forms/Addons/Mailer/Mailer.php:119
 #, php-format
 msgid "Nouvelle demande sur le site %1$s, <a href=\"%2$s\">%2$s<a>"
 msgstr "New request on the website %1$s, <a href=\"%2$s\">%2$s<a>"
 
 #: presstify/core/Forms/Addons/Record/Export.php:63
-#: presstify/core/Forms/Addons/Record/ListTable.php:200
+#: presstify/core/Forms/Addons/Record/ListTable.php:157
 msgid "Tous les formulaires"
 msgstr "All forms"
 
 #: presstify/core/Forms/Addons/Record/Export.php:69
-#: presstify/core/Forms/Addons/Record/ListTable.php:206
+#: presstify/core/Forms/Addons/Record/ListTable.php:163
 msgid "Filtrer"
 msgstr "Filter"
 
@@ -903,49 +905,49 @@ msgstr "Recycle bin"
 msgid "Formulaire"
 msgstr "Form"
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:117
+#: presstify/core/Forms/Addons/Record/ListTable.php:123
 msgid "Mettre à la corbeille"
 msgstr "Move to bin"
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:119
+#: presstify/core/Forms/Addons/Record/ListTable.php:125
 #: presstify/core/Templates/Traits/Form/Actions.php:33
 #: presstify/core/Templates/Traits/Table/Actions.php:142
 msgid "Restaurer"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:120
+#: presstify/core/Forms/Addons/Record/ListTable.php:126
 #: presstify/core/Templates/Traits/Table/Actions.php:126
 msgid "Supprimer définitivement"
 msgstr "Delete permanently"
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:232
+#: presstify/core/Forms/Addons/Record/ListTable.php:189
 msgid "(Formulaire introuvable)"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:236
+#: presstify/core/Forms/Addons/Record/ListTable.php:193
 #, php-format
 msgid "Identifiant: %s"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:237
+#: presstify/core/Forms/Addons/Record/ListTable.php:194
 #, php-format
 msgid "Session : %s"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/ListTable.php:238
+#: presstify/core/Forms/Addons/Record/ListTable.php:195
 #, php-format
 msgid "posté le : %s"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/Record.php:140
+#: presstify/core/Forms/Addons/Record/Record.php:141
 msgid "Formulaires"
 msgstr "Forms"
 
-#: presstify/core/Forms/Addons/Record/Record.php:154
+#: presstify/core/Forms/Addons/Record/Record.php:155
 msgid "Enregistrements"
 msgstr ""
 
-#: presstify/core/Forms/Addons/Record/Record.php:172
+#: presstify/core/Forms/Addons/Record/Record.php:173
 #: presstify/core/Templates/Admin/Model/Export/Export.php:156
 msgid "Exporter"
 msgstr ""
@@ -1105,7 +1107,7 @@ msgstr "The format of the field \"%s\" is invalid"
 msgid ""
 "Votre demande a bien été prise en compte et sera traitée dès que possible"
 msgstr ""
-"Your request has been accepted and will be processed as soon as possible"
+"Your request has been accepted and will be processed as soon as possible."
 
 #: presstify/core/Forms/Form/Handle.php:36
 msgid ""
@@ -2139,7 +2141,7 @@ msgstr "Record"
 msgid "d/m/Y à H:i"
 msgstr "d/m/Y at H:i"
 
-#: presstify/core/Templates/Admin/Model/Table.php:587
+#: presstify/core/Templates/Admin/Model/Table.php:590
 msgid "Chargement en cours ..."
 msgstr ""
 
@@ -2315,48 +2317,48 @@ msgstr ""
 msgid "Filtre #%d"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:74
+#: presstify/core/Upload/Upload.php:69
 msgid ""
 "<h1>Téléchargement du fichier impossible</h1><p>L'url vers le fichier n'est "
 "pas valide.</p>"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:74 presstify/core/Upload/Upload.php:81
+#: presstify/core/Upload/Upload.php:69 presstify/core/Upload/Upload.php:76
 msgid "Impossible de trouver le fichier"
 msgstr "File not found"
 
-#: presstify/core/Upload/Upload.php:81
+#: presstify/core/Upload/Upload.php:76
 msgid ""
 "<h1>Téléchargement du fichier impossible</h1><p>Le fichier n'existe pas.</p>"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:86
+#: presstify/core/Upload/Upload.php:81
 msgid ""
 "<h1>Téléchargement du fichier impossible</h1><p>Le type du fichier est "
 "indeterminé ou non référencé.</p>"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:86
+#: presstify/core/Upload/Upload.php:81
 msgid "Type de fichier erroné"
 msgstr "Can not set the file type"
 
-#: presstify/core/Upload/Upload.php:90
+#: presstify/core/Upload/Upload.php:85
 msgid ""
 "<h1>Téléchargement du fichier impossible</h1><p>Le type de fichier est "
 "interdit.</p>"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:90
+#: presstify/core/Upload/Upload.php:85
 msgid "Type de fichier interdit"
 msgstr "File type not allowed"
 
-#: presstify/core/Upload/Upload.php:97
+#: presstify/core/Upload/Upload.php:92
 msgid ""
 "<h1>Téléchargement du fichier impossible</h1><p>Le téléchargement de ce "
 "fichier n'est pas autorisé.</p>"
 msgstr ""
 
-#: presstify/core/Upload/Upload.php:97
+#: presstify/core/Upload/Upload.php:92
 msgid "Téléchargement interdit"
 msgstr "Downloading this file is not allowed"
 
@@ -2370,7 +2372,7 @@ msgstr "Protected: %s"
 msgid "Private: %s"
 msgstr "Private: %s"
 
-#: presstify/helpers/Core.php:109
+#: presstify/helpers/Core.php:108
 #, php-format
 msgid ""
 "La déclaration du formulaire %s n'est conforme, elle doit désormais contenir "
@@ -2444,6 +2446,9 @@ msgstr ""
 #: presstify/components/TinyMCE/config/config-sample.yml:48
 msgid "Police de glyphs Presstify"
 msgstr ""
+
+#~ msgid " | Votre message a bien été réceptionné"
+#~ msgstr "| Your message was successfully delivered"
 
 #~ msgid "Tous"
 #~ msgstr "All"

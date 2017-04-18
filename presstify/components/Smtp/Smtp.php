@@ -17,6 +17,9 @@ class Smtp extends \tiFy\Environment\Component
     /** == Modification des paramètres SMTP de PHPMailer == **/
     public function phpmailer_init( \PHPMailer $phpmailer )
     {
+        if( ! self::getConfig( 'username' ) )
+            return;
+        
         $phpmailer->IsSMTP();
 
         $phpmailer->Host         = self::getConfig( 'host' );

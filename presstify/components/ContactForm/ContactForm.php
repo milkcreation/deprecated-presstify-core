@@ -125,13 +125,13 @@ final class ContactForm extends \tiFy\Environment\Component
 				'send' 		=> ( get_option( $id .'-confirmation', 'on' ) === 'on' ) ? true : false,
 				'from' 		=> get_option( $id .'-sender' ),
 				'to' 		=> array( array( 'email' => '%%email%%', 'name' => '%%firstname%% %%lastname%%' ) ),
-				'subject' 	=> __( get_bloginfo( 'blogname' ).' | Votre message a bien été réceptionné', 'tify' )
+				'subject' 	=> sprintf( __( '%s | Votre message a bien été réceptionné', 'tify' ), get_bloginfo( 'blogname' ) )
 			),
 			'notification' => array(
 				'send' 		=> ( get_option( $id .'-notification', 'off' ) === 'on' ) ? true : false,
 				'from' 		=> array( 'name' => get_bloginfo( 'blogname' ), 'email' => get_option( 'admin_email' ) ),
 				'to' 		=> get_option( $id .'-recipients' ),
-				'subject' 	=> __( get_bloginfo( 'blogname' ).' | Vous avez reçu une nouvelle demande de contact', 'tify' )
+				'subject' 	=> sprintf( __( '%s | Vous avez reçu une nouvelle demande de contact', 'tify' ), get_bloginfo( 'blogname' ) )
 			),
 			'admin'			=> false
 		);		

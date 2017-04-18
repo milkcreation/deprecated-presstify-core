@@ -142,24 +142,20 @@ class Params extends \tiFy\Environment\App
         endif;        
         tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );                          
                 
-		// Chargement des plugins
-		tiFy::classLoad( '\tiFy\Plugins', TIFY_PLUGINS_DIR );
-		if( ! empty( tiFy::$Params['plugins'] ) ) :						
-    		foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
-    			if( class_exists( $plugin ) ) :
-    				$ClassName	= $plugin;
-    			elseif( class_exists( "\\tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) :
-    				$ClassName	= "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
-    			else :
-    				continue;
-    			endif;
-    			
-    			new $ClassName;			
-    		endforeach;
-		endif;
+        // Chargement des plugins
+        tiFy::classLoad( '\tiFy\Plugins', TIFY_PLUGINS_DIR );
+        if( ! empty( tiFy::$Params['plugins'] ) ) :                        
+            foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
+                if( ! class_exists( "\\tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) 
+                    continue;
+                
+                $ClassName    = "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
+                new $ClassName;
+            endforeach;
+        endif;
         
-		// Chargement des jeux de fonctionnalités complémentaires
-		tiFy::classLoad( '\tiFy\Set', tiFy::$AbsDir .'/set', 'Autoload' );
+        // Chargement des jeux de fonctionnalités complémentaires
+        tiFy::classLoad( '\tiFy\Set', tiFy::$AbsDir .'/set', 'Autoload' );
         
         // Personnalisation de la définition des paramètres 
         do_action( 'tify_params_set' );
