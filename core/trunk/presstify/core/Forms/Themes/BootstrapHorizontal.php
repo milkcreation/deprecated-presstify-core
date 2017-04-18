@@ -16,7 +16,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Ouverture par défaut de l'affichage d'un champ
      */ 
-    public function field_open_default( $field, $id, $class )
+    public function fields_open( $field, $id, $class )
     {
        return   "<div". ( $id ? " id=\"{$id}\"" : "" ) ." class=\"{$class}\">\n<div class=\"form-group\">\n";
     }
@@ -24,7 +24,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Fermeture par défaut de l'affichage d'un champ
      */ 
-    public function field_close_default( $field )
+    public function fields_close( $field )
     {
        return   "</div>\n</div>\n";
     }
@@ -32,7 +32,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Libellé par défault de l'affichage d'un champ
      */
-    public function field_label_default( $field, $input_id, $class, $label, $required )
+    public function fields_label( $field, $input_id, $class, $label, $required )
     {
         return "<label for=\"{$input_id}\" class=\"col-sm-2 control-label {$class}\">{$label}{$required}</label>\n";
     }
@@ -40,7 +40,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Pré-affichage par défaut du contenu d'un champ
      */
-    public function field_before_default( $field, $before )
+    public function fields_before( $field, $before )
     {
         return "<div class=\"col-sm-10\">". $before;
     }
@@ -48,7 +48,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Post-affichage par défaut du contenu d'un champ
      */
-    public function field_after_default( $field, $after )
+    public function fields_after( $field, $after )
     {
         return $after ."</div>";
     }
@@ -56,7 +56,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Liste des classes HTML du contenu d'un champ
      */
-    public function field_classes_default( $field, $classes )
+    public function fields_classes( $field, $classes )
     {
         $classes[] = 'form-control';
         
@@ -66,7 +66,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Ouverture par défaut de l'affichage d'un champ
      */
-    public function button_open_default( $button, $id, $class )
+    public function buttons_open( $button, $id, $class )
     {
         return "<div class=\"form-group\">\n<div". ( $id ? " id=\"{$id}\"" : "" ) ." class=\"col-sm-offset-2 col-sm-10 {$class}\">\n";
     }
@@ -74,7 +74,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
     /**
      * Fermeture par défaut de l'affichage d'un champ
      */
-    public function button_close_default( $button )
+    public function buttons_close( $button )
     {
         return "</div>\n</div>\n";
     }
@@ -84,7 +84,7 @@ class BootstrapHorizontal extends \tiFy\Core\Forms\Factory
      * 
      * @see \tiFy\Core\Forms\Buttons\Factory
      */
-    public function button_classes_default( $button, $classes )
+    public function buttons_classes( $button, $classes )
     {
         $classes[] = 'btn btn-primary';
         
