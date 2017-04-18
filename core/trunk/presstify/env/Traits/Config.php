@@ -62,14 +62,18 @@ trait Config
         $class = get_called_class();
 
         $defaults = self::$DefaultConfig[$this->_ConfName] = ( file_exists( $filename ) ) ? \tiFy\Core\Params::parseAndEval( $filename ) : array();    
-        
+              
         // Configuration personnalisée
-        if( ! empty( tiFy::$Params[$this->SubDir][$this->_ConfName] ) ) :
-            $conf = self::$_ConfParams[$this->_ConfName] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->_ConfName], $defaults );           
-        elseif( preg_match( '/'. preg_quote( $this->Namespace, '\\' ) .'/', $this->_ConfName )  && ! empty( tiFy::$Params[$this->SubDir][$this->_ConfShortName] ) ) :            
-            $conf = self::$_ConfParams[$this->_ConfName] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->_ConfShortName], $defaults );                        
+        if( ! empty( tiFy::$Params[$this->SubDir][$this->_ConfName] ) ) :            
+            $conf = self::$_ConfParams[$this->_ConfName] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->_ConfName], $defaults ); 
         else :
-            $conf = self::$_ConfParams[$this->_ConfName] = $defaults;
+            if( preg_match( '/'. preg_quote( $this->Namespace, '\\' ) .'/', $this->_ConfName )  && 
+                ! empty( tiFy::$Params[$this->SubDir][$this->_ConfShortName] ) 
+            ) :            
+                $conf = self::$_ConfParams[$this->_ConfName] = wp_parse_args( tiFy::$Params[$this->SubDir][$this->_ConfShortName], $defaults );                        
+            else :
+                $conf = self::$_ConfParams[$this->_ConfName] = $defaults;
+            endif;
         endif;
         
         // Surchage de la configuration
@@ -77,7 +81,8 @@ trait Config
             $overrideClass = $overrideNamespace .'\\'. $matches[1] .'\\Config' ; $abstractClass = '\\tiFy\\Environment\\Config'; 
             if( class_exists( $overrideClass ) && is_subclass_of( $overrideClass, $abstractClass ) ) :
                 $overrideConf = new $overrideClass;
-                $conf = self::$_ConfParams[$this->_ConfName] = wp_parse_args( $overrideConf->get(), $conf );
+                $conf = self::$_ConfParams[$this->_ConfName] = $overrideConf->get( $conf );
+                
             endif;                
         endif;
         
