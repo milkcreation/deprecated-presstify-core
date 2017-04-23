@@ -23,10 +23,10 @@ final class Lightbox extends Component
 	{		
 		// Déclaration des thèmes
 		foreach( glob( self::getDirname().'/theme/*.css' ) as $filename ) :
-			wp_register_style( 'tiFyComponentsLightboxTheme'. ucfirst( basename( $filename, '.css' ) ), self::getUrl() .'/theme/'. basename( $filename ), array(), '160902' );
+			wp_register_style( 'tiFyComponentsLightboxTheme'. ucfirst( basename( $filename, '.css' ) ), self::getUrl( get_class() ) .'/theme/'. basename( $filename ), array(), '160902' );
 		endforeach;
 
-		wp_register_script( 'tiFyComponentsLightbox', self::getUrl() .'/Lightbox.js', array( 'imageLightbox' ), '160902', true );
+		wp_register_script( 'tiFyComponentsLightbox', self::getUrl( get_class() ) .'/Lightbox.js', array( 'imageLightbox' ), '160902', true );
 	}
 	
 	/** == == **/

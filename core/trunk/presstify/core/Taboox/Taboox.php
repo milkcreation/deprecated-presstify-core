@@ -232,8 +232,8 @@ class Taboox extends Core
 
 		if( is_string( $hookname ) )
 			$hookname = array( $hookname );
-		
-		foreach( $hookname as $_hookname ) :
+
+		foreach( (array) $hookname as $_hookname ) :
 			if( ! in_array( $_hookname, self::$HooknameMap ) )
 				array_push( self::$HooknameMap, $_hookname );
 			

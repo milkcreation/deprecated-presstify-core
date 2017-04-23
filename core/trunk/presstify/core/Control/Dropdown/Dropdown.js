@@ -39,7 +39,6 @@ jQuery( document ).ready( function($){
 		var $handler	= $( $( $picker.data( 'handler' ) ) );
 		
 		$handler.prop( 'selectedIndex', $(this).index() ).change();	
-
 		$picker.removeClass( 'active' );
 		$selector.removeClass( 'active' );
 			

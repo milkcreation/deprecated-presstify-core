@@ -7,25 +7,27 @@
 [data-tify_control='dropdown']{
 	position:relative;
 	display:inline-block;
+	padding:5px;
 	
-	line-height:100%;
+	line-height:1;
 	background-color:#FFF;
 	border-color:#E4E4E4;
 	border-style:solid;
 	border-width:1px;
 	box-sizing:border-box;
+	vertical-align:middle;
 }
 [data-tify_control='dropdown']::before{
 	position:absolute;
-	content:"";	
 	top:0; right:0; bottom:0;
-	display:block;
+	content:"";	display:block;
 	width:16px;
+	z-index:0;
+	
 	border-left-width:1px;
 	border-left-style:solid;
 	border-left-color:#E4E4E4;
-	background-color:#F4F4F4;
-	z-index:0;
+	background-color:#F4F4F4;	
 }
 [data-tify_control='dropdown']::after{
 	position:absolute;

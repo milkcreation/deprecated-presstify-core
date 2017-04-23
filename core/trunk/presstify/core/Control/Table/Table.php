@@ -44,10 +44,11 @@ class Table extends \tiFy\Core\Control\Factory
 		$output .= "\t</div>\n";		
 		reset( $columns );
 		
+		$i = 0;
 		$output .= "\t<div class=\"tiFyTableBody\">\n";	
 		if( $datas ) :
 			foreach( $datas as $row => $dr ) :
-				$output .= "\t\t<div class=\"tiFyTableBodyTr tiFyTableBodyTr--{$row} tiFyTableTr\">\n";
+				$output .= "\t\t<div class=\"tiFyTableBodyTr tiFyTableBodyTr--{$row} tiFyTableTr tiFyTableTr-". ( ( $i++%2 === 0 ) ? 'even' :'odd' ) ."\">\n";
 				foreach( $columns as $column => $label ) :
 					$output .= "\t\t\t<div class=\"tiFyTableCell{$n} tiFyTableBodyTd tiFyTableBodyTd--{$column} tiFyTableTd\">{$dr[$column]}</div>\n";				
 				endforeach;

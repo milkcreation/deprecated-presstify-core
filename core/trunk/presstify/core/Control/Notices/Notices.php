@@ -40,7 +40,7 @@ class Notices extends \tiFy\Core\Control\Factory
 			'id'				=> 'tiFyControl-Notices--'. self::$Instance,
 			'class'				=> '',
 			'dismissible'		=> false,
-			'type'				=> 'error' 
+			'type'				=> 'info' 
 		);		
 		$args = wp_parse_args( $args, $defaults );
 		extract( $args );

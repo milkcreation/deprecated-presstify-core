@@ -1,0 +1,31 @@
+/* = COLONNAGE = */
+[class^="tiFyCols-"],
+[class^="tiFyCols-"] > *{
+	box-sizing:border-box;
+}
+[class^="tiFyCols-"]::before,
+[class^="tiFyCols-"]::after{
+	display:table;
+	content:"";
+}
+[class^="tiFyCols-"]::after{
+	clear:both;
+}
+[class^="tiFyCols-"] > *{
+	float:left;
+}
+.tiFyCols-2 > *{
+	width:50%;
+}
+.tiFyCols-3 > *{
+	width:33.333333%;
+}
+.tiFyCols-4 > *{
+	width:25%;
+}
+.tiFyCols-5 > *{
+	width:20%;
+}
+.tiFyCols-6 > *{
+	width:16.666666%;
+}

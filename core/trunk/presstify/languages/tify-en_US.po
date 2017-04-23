@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Presstify\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-04-18 14:46+0200\n"
-"PO-Revision-Date: 2017-04-18 14:46+0200\n"
+"PO-Revision-Date: 2017-04-19 10:04+0200\n"
 "Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
 "Language-Team: Milkcreation <contact@milkcreation.fr>\n"
 "Language: en_US\n"
@@ -295,7 +295,7 @@ msgstr ""
 #: presstify/components/Breadcrumb/Template.php:102
 #, php-format
 msgid "Résultat de recherche pour : \"%s\""
-msgstr ""
+msgstr "Search result for : \"%s\""
 
 #: presstify/components/Breadcrumb/Template.php:126
 #: presstify/components/Breadcrumb/Template.php:144
