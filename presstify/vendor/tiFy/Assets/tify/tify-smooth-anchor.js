@@ -1,20 +1,23 @@
 jQuery(document).ready( function($){
 	$(document).on( 'click', "[data-smooth-anchor]", function(e){
-		e.preventDefault();
+		e.preventDefault();	
+		
+		if( $( $(this).data( 'smooth-anchor' ) ).length ){
+		    var target = $(this).data( 'smooth-anchor' );
+		} else {
+            var target = '#'+ $( this ).attr( 'href' ).split("#")[1];
+		}
+		
+		var offset = $( target ).offset();
+		
+		// Options
+		var addOffset = ( $(this).data( 'add-offset' ) ) ? $(this).data( 'add-offset' ) : -30;
 
-		var full_url = $( this ).attr( 'href' );
+		var speed = ( $(this).data( 'speed' ) ) ? $(this).data( 'speed' ) : 1500; 
 
-		var parts = full_url.split("#");
-		var trgt = parts[1];
-
-		var target_offset = $("#"+trgt).offset();
-		var addOffset = -30;
-		if( $(this).data( 'additionnal-offset' ) )
-			addOffset = $(this).data( 'additionnal-offset' );
-			
-		var target_top = target_offset.top+addOffset;
-
-		$('html, body').animate({scrollTop:target_top}, 1500, 'easeInOutExpo');
+		var effect = ( $(this).data( 'effect' ) ) ? $(this).data( 'effect' ) : 'easeInOutExpo'; 
+		
+		$('html, body').animate({ scrollTop: offset.top + addOffset }, speed, effect );
 		
 		return false;
 	});
