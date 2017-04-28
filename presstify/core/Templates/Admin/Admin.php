@@ -5,17 +5,23 @@ use \tiFy\Core\Templates\Templates;
 
 class Admin extends \tiFy\Environment\App
 {
-	/* ARGUMENTS */
-	// Liste des actions à déclencher
+    /**
+     * Liste des actions à déclencher
+     */ 
 	protected $CallActions				= array(
 		'admin_menu'	
 	);
 	
-	/* = DECLENCHEURS = */
-	/** == Menu d'administration == **/
+	/**
+	 * DECLENCHEURS
+	 */
+	/**
+	 * Initialisation du menu d'administration
+	 */
 	final public function admin_menu()
 	{
-		$menus = array(); $submenus = array();		
+		$menus = array(); 
+		$submenus = array();		
 	
 		foreach( (array) Templates::listAdmin() as $id => $Factory ) :
 			// L'entrée de menu de doit pas apparaître
@@ -32,35 +38,30 @@ class Admin extends \tiFy\Environment\App
 				'icon_url' 		=> null, 
 				'position' 		=> 99, 
 				'function' 		=> array( $Factory, 'render' )
-			);			
+			);		
+
+			switch( $Factory->getModel() ) :
+			   default :
+					$defaults['menu_title'] =	$Factory->getLabel( 'menu_name' );
+					break;
+				case 'EditForm' :
+				case 'EditUser' :
+				case 'TabooxEditUser' :
+					$defaults['menu_title'] = $Factory->getLabel( 'add_new' );
+					break;
+				case 'Import' :
+					$defaults['menu_title'] = $Factory->getLabel( 'import_items' );
+					break;
+				case 'TabooxOption' :
+					$defaults['menu_title'] = __( 'Options', 'tify' );
+					break;
+				case 'ListTable' :
+				case 'ListUser' :
+					$defaults['menu_title'] = $Factory->getLabel( 'all_items' );
+					break;						
+			endswitch;
+		
 			$admin_menu = wp_parse_args( $Factory->getAttr( 'admin_menu', array() ), $defaults );
-						
-			if( ! $menu_title = $admin_menu['menu_title'] ) :
-				if( $model = $Factory->getModelName() ) :
-					switch( $model ) :
-						case 'EditForm' :
-						case 'EditUser' :
-						case 'TabooxEditUser' :
-							$admin_menu['menu_title'] = $Factory->getLabel( 'add_new' );
-							break;
-						case 'Import' :
-							$admin_menu['menu_title'] = $Factory->getLabel( 'import_items' );
-							break;
-						case 'TabooxOption' :
-							$admin_menu['menu_title'] = __( 'Options', 'tify' );
-							break;
-						case 'ListTable' :
-						case 'ListUser' :
-							$admin_menu['menu_title'] = $Factory->getLabel( 'all_items' );
-							break;
-						default :
-							$admin_menu['menu_title'] =	$Factory->getLabel( 'menu_name' );
-							break;
-					endswitch;
-				else : 
-					$admin_menu['menu_title'] =$Factory->getLabel( 'menu_name' );
-				endif;
-			endif;
 			
 			if( ! $admin_menu['parent_slug'] ) :				 
 				$menus[$admin_menu['menu_slug']] = $admin_menu;

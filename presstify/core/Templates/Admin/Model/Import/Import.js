@@ -1,105 +1,102 @@
-jQuery( document ).ready( function( $ ){
-	/* = ARGUMENTS = */
-	/** == Classe == **/
-	var id		= $( "#tify_adminview_import-id" ).val();		
-	/** == Upload == **/
-	var files;
-	/** ==  Import == **/
-	var filename, header = 0, offset = 0, limit = -1, per_pass = 10, passed = 0, options = {};
+jQuery(document).ready(function($){    
+    var ajax_action_prefix = $( '#ajaxActionPrefix' ).val(); 
+    /*
 
-	/* = FICHIER D'EXEMPLE = */
 	$( '#tify_adminview_import-download_sample' ).click( function(e){
 		e.stopPropagation();
     	e.preventDefault();
     	window.location.href = tify_ajaxurl + '?action=tiFyCoreAdminModelImport_download_sample_' + id;
     	//$.post( tify_ajaxurl, { action : 'tiFyCoreAdminModelImport_download_sample_'+ id }, function( resp ){ });
-	});
-	
-	/* = TELECHARGEMENT DU FICHIER D'IMPORT = */
-	/** == Déclenchement == **/		
-	$( '#tify_adminview_import-uploadfile_button' ).on( 'change', function(e){
-		e.stopPropagation();
-    	e.preventDefault();
-    	var $button = $(this);
+	});*/
+	    
+    /**
+     * TELECHARGEMENT DU FICHIER D'IMPORT
+     */	
+	$( '.tiFyTemplatesImportUploadForm-FileInput' ).on('change', function(e) {
+		e.stopPropagation(); e.preventDefault();
     	
-    	// Affichage du spinner    	
-		$button.next( '.spinner' ).addClass( 'is-active' );
+		$closest = $(this).closest('.tiFyTemplatesImport-Form--upload' );
+		$spinner = $( '.tiFyTemplatesImportUploadForm-Spinner', $closest );
 		
-		// Suppression du formulaire d'inport actif
-		$( "#tify_adminview_import-table_preview" ).fadeOut( );
-				
+    	// Affichage du spinner    	
+		$spinner.addClass( 'is-active' );
+		
+		// Traitement des données
     	files = e.target.files;
-    	
-	    var data = new FormData();
+    	var data = new FormData();
 	    $.each( files, function( key, value ){
-	        data.append(key, value);
-	    });	    
-	   	data.append( 'header', ( $( "#tify_adminview_import-header" ).attr('checked') ? 1 : 0 ) );
+	        data.append( key, value );
+	    });	
+	    data.append( 'action', ajax_action_prefix +'_upload' );
 	   	
 	    $.ajax({
-	        url			: tify_ajaxurl +'?action=tiFyCoreAdminModelImport_upload_'+ id,
-	        type		: 'POST',
-	        data		: data,
-	        cache		: false,
-	        dataType	: 'json',
-	        processData	: false,
-	        contentType	: false, 
-	        success		: function( resp, textStatus, jqXHR ){
-	        	// Masquage du spinner
-	        	$button.next( '.spinner' ).removeClass( 'is-active' );
-	        	if( resp.success ){
-	        		$( "#tify_adminview_import-table_preview" ).html( resp.data.table ).fadeIn();
-	        		$( "#tify_adminview_import-options_form" ).html( resp.data.options );
-	      			$( '#tify_adminview_import-import' ).addClass( 'active' );
-	        	}	      		
+	        url:           tify_ajaxurl,
+	        type:          'POST',
+	        data:          data,
+	        cache:         false,
+	        dataType:      'json',
+	        processData:   false,
+	        contentType:   false, 
+	        success:       function( resp, textStatus, jqXHR )
+	        {
+	            $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
+	            AjaxListTable.draw(true);
+	            
+	            // Masquage du spinner 
+	        	$spinner.removeClass( 'is-active' );     		
 	        }
 	    });
 	});
 	
-	/* =  IMPORT = */	
-	/** == Déclenchement == **/
-	$( document ).on( 'submit', '#tify_adminview_import-options_form > form', function(e){
-		e.preventDefault();
-		
-		// Récupération des option d'import
-		filename 	= $( "#tify_adminview_import-filename" ).val();
-	   	header 		= parseInt( $( "#tify_adminview_import-hasheader" ).val() );
-		offset 		= parseInt( $( "#tify_adminview_import-offset" ).val() )-1+header;		
-		limit 		= ( $( "#tify_adminview_import-limit" ).val() > -1 ) ? parseInt( $( "#tify_adminview_import-limit" ).val() ) : parseInt( $( "#tify_adminview_import-total" ).val() ); 
-		per_pass 	= 10;
-		if( per_pass > limit )
-			per_pass = limit;
-		
-		$.each( $( '#tify_adminview_import-options_form > form' ).serializeArray(), function( i, j ){
-	    	options[j.name] = j.value;
+	/**
+	 * IMPORT DES DONNEES
+	 */
+	/**
+	 * Lancement de l'import d'une ligne 
+	 */
+	$( document ).on( 'click', '.tiFyTemplatesImport-RowImport', function(e){
+	    e.preventDefault();
+	    
+	    $tr = $(this).closest( 'tr' );
+	    var import_index = $( this ).data( 'import_index' );
+	    
+	    $tr.addClass( 'active' ); 
+	    
+	    
+	    $( 'td', $tr ).each( function(){
+	        $(this).append( '<div class="tdOverlay"/>' );
 	    });
-			
-		tify_csv_import();
-		$( '#tify_progress, #tify_backdrop' ).addClass( 'active' );
+
+	    importData( import_index );	    
+    });
+	
+	/**
+	 * Lancement de l'import complet du fichier
+	 */
+	$( document ).on( 'submit', '.tiFyTemplatesImport-Form--import', function(e){
+		e.preventDefault();	
+		
+		importData();
 	});
 	
-	function tify_csv_import()
-	{	
-		$( '#tify_progress .progress-bar' ).css( 'width', parseInt( ( ( passed/limit )*100 )+1 )+'%' );
-		if( passed < limit ){
-			$.ajax({
-		        url			: tify_ajaxurl,
-		        type		: 'POST',
-		        data		: { action : 'tiFyCoreAdminModelImport_handle_'+ id, filename : filename, header : header, offset : offset, per_pass : per_pass, options : options },
-		        dataType	: 'json', 
-		        success		: function( resp, textStatus, jqXHR ){
-		        	$.each( resp, function( u, v ){
-	        			$( "#the-list > tr" ).eq( u ).addClass( 'imported' ).find( 'td.'+ id +'_tify_adminview_import_result' ).html( v );
-		        	});		        		
-		        	offset += per_pass;
-		        	passed += per_pass;
-		        	tify_csv_import();      		        	       	
-		        }
-		    });
-		} else {
-			filename = undefined, header = 0, offset = 0, limit = -1, per_pass = 10, passed = 0, options = {};
-			$( '#tify_adminview_import-import' ).fadeOut( function( ){ $this.remove(); });
-    		$( '#tify_progress, #tify_backdrop' ).removeClass('active');
-		}
+	/**
+	 * Import d'un ligne de donnée
+	 */
+	var importData = function( import_index = 0 ) {
+	    var data = { action: ajax_action_prefix +'_import', import_index: import_index };
+	    
+	    if( ajax_data = JSON.parse( decodeURIComponent( $( '#datatablesAjaxData' ).val() ) ) )
+	        data = $.extend( data, ajax_data );
+
+	    $.ajax({
+            url: tify_ajaxurl,
+            type:           'POST',
+            data:           data,            
+            dataType:       'json', 
+            success:        function( resp, textStatus, jqXHR )
+            {
+                AjaxListTable.draw( 'page' );
+            }
+        });
 	}
 });

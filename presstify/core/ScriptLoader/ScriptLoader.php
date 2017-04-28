@@ -460,13 +460,42 @@ class ScriptLoader extends \tiFy\Environment\App
             'version'    => '3.3.7',
             'media'        => 'all' 
         );
-            
-        self::$JsLib['bootstrap']                   = array(
+        
+        //// Bootstrap - Transitions
+        self::$JsLib['bootstrap-transitions']      = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap.min.js',
-                'cdn'           => '//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js'                    
+                'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/transitions.min.js'                  
             ),
             'deps'          => array( 'jquery' ),
+            'version'       => '3.3.7',
+            'in_footer'     => true 
+        );
+        
+        /// Bootstrap - Tooltips
+        self::$JsLib['bootstrap-tooltips']          = array(
+            'src'           => array(
+                'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/tooltips.min.js'                   
+            ),
+            'deps'          => array( 'jquery', 'bootstrap-transitions' ),
+            'version'       => '3.3.7',
+            'in_footer'     => true 
+        );
+        
+        /// Bootstrap - Popover
+        self::$CssLib['bootstrap-popover']          = array(
+            'src'        => array(
+                'local'        => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/css/popover.css'
+            ),
+            'deps'        => array(),
+            'version'    => '3.3.7',
+            'media'        => 'all' 
+        );
+                
+        self::$JsLib['bootstrap-popover']           = array(
+            'src'           => array(
+                'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/popover.min.js'                   
+            ),
+            'deps'          => array( 'jquery', 'bootstrap-tooltips', 'bootstrap-transitions' ),
             'version'       => '3.3.7',
             'in_footer'     => true 
         );

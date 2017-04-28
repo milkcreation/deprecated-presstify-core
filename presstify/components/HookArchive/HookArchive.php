@@ -83,7 +83,7 @@ final class HookArchive extends Component
 	/** == Déclaration == **/
 	final public static function Register( $args = array() )
 	{
-		$defaults = array(
+	    $defaults = array(
 			// (requis) Type d'objet d'accroche : post_type (par défaut) | taxonomy
 			'obj'							=> 'post_type',
 			// (requis) Identifiant de l'archive à accrocher (post_type_name | taxonomy_name )
@@ -104,7 +104,25 @@ final class HookArchive extends Component
 			),
 			/// (optionel) Définition des contenus d'accroche 
 			'hooks'						=>	array(
-				array()	
+				array(
+                    /*
+                    // Identifiant du post (post_id) du contenu d'accroche (~tify_hook_id)
+                    'id'          => 0,
+                    
+                    // Type de post du contenu d'accroche 
+                    'post_type'   => 'page',     
+                               
+                    // Réécriture du permalien du contenu d'accroche bool | array
+                    // Pour l'object_type taxonomie : [ 'page', 'post', 'product' ]
+                    'permalink'   => false,
+                    
+                    // Modifiable
+                    'edit'        => true,
+                    
+                    // Identifiant du terme (term_id) - Uniquement si l'objet type est une taxonomie 
+                    'term'          => 0
+                    */
+				)	
 			)			
 		);
 		$args = wp_parse_args( $args, $defaults );
@@ -149,12 +167,12 @@ final class HookArchive extends Component
 	
 	/** == Initialisation de l'interface d'administration == **/
 	final public function current_screen( $current_screen )
-	{
-		if( get_current_screen()->id !== 'settings_page_tify_options' )
+	{	    
+	    if( get_current_screen()->id !== 'settings_page_tify_options' )
 			return;
-		if( $this->Admin && isset( $_GET['settings-updated'] ) ) :
-			flush_rewrite_rules();
-		endif;
+		//if( $this->Admin && isset( $_GET['settings-updated'] ) ) :
+		flush_rewrite_rules();
+		//endif;
 	}
 			
 	/** == Barre d'administration == */
