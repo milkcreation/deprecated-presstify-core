@@ -439,7 +439,82 @@ jQuery(document).ready( function($){
         return $this->get_row_actions( $item, array_keys( $this->RowActions ) );
     }
     
-    /* = AFFICHAGE = */        
+    /**
+     * AFFICHAGE
+     */
+    /**
+     * Contenu par défaut des colonnes
+     */
+    public function column_default( $item, $column_name )
+    {
+        // Bypass 
+        if( ! isset( $item->{$column_name} ) )
+            return;
+        
+        $col_type = strtoupper( $this->db()->getColAttr( $column_name, 'type' ) );
+
+        switch( $col_type ) :
+            default:
+                if( is_array( $item->{$column_name} ) ) :
+                    return join( ', ', $item->{$column_name} );
+                else :    
+                    return $item->{$column_name};
+                endif;
+                break;
+            case 'DATETIME' :
+                return mysql2date( get_option( 'date_format') .' @ '.get_option( 'time_format' ), $item->{$column_name} );
+                break;
+        endswitch;
+    }
+    
+    /**
+     * Contenu de la colonne - Case à cocher
+     */
+    public function column_cb( $item )
+    {
+        return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->db()->Primary, $item->{$this->db()->Primary} );
+    }
+       
+    /**
+     * Rendu de la page
+     */
+    public function render()
+    {
+?>
+<div class="wrap">
+    <h2>
+        <?php echo $this->PageTitle;?>
+        
+        <?php if( $this->EditBaseUri ) : ?>
+            <a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
+        <?php endif;?>
+    </h2>
+    
+    <?php $this->views(); ?>
+    
+    <form method="get" action="">
+        <?php parse_str( parse_url( $this->BaseUri, PHP_URL_QUERY ), $query_vars ); ?>
+        <?php foreach( (array) $query_vars as $name => $value ) : ?>
+            <input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
+        <?php endforeach;?>
+        <?php $this->hidden_fields();?>
+    
+        <?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
+        <?php $this->display();?>
+        <?php $this->inline_preview();?>
+    </form>
+</div>
+<?php
+    }
+    
+    /**
+     * Champs cachés
+     */
+    public function hidden_fields()
+    {
+?><?php
+    }
+    
     /** == Vues filtrées == **/
     public function views() 
     {
@@ -466,35 +541,6 @@ jQuery(document).ready( function($){
         
         if( ! empty( $_views ) )
             echo $output;        
-    }
-                
-    /** == Contenu des colonnes par défaut == **/
-    public function column_default( $item, $column_name )
-    {
-        // Bypass 
-        if( ! isset( $item->{$column_name} ) )
-            return;
-        
-        $col_type = strtoupper( $this->db()->getColAttr( $column_name, 'type' ) );
-
-        switch( $col_type ) :
-            default:
-                if( is_array( $item->{$column_name} ) ) :
-                    return join( ', ', $item->{$column_name} );
-                else :    
-                    return $item->{$column_name};
-                endif;
-                break;
-            case 'DATETIME' :
-                return mysql2date( get_option( 'date_format') .' @ '.get_option( 'time_format' ), $item->{$column_name} );
-                break;
-        endswitch;
-    }
-    
-    /** == Contenu de la colonne Case à cocher == **/
-    public function column_cb( $item )
-    {
-        return sprintf( '<input type="checkbox" name="%1$s[]" value="%2$s" />', $this->db()->Primary, $item->{$this->db()->Primary} );
     }
     
     /** == == **/
@@ -539,35 +585,6 @@ jQuery(document).ready( function($){
         else :
             return $this->column_default($item, $column_name);
         endif;        
-    }
-    
-    /** == Rendu de la page  == **/
-    public function render()
-    {
-    ?>
-        <div class="wrap">
-            <h2>
-                <?php echo $this->PageTitle;?>
-                
-                <?php if( $this->EditBaseUri ) : ?>
-                    <a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
-                <?php endif;?>
-            </h2>
-            
-            <?php $this->views(); ?>
-            
-            <form method="get" action="">
-                <?php parse_str( parse_url( $this->BaseUri, PHP_URL_QUERY ), $query_vars ); ?>
-                <?php foreach( (array) $query_vars as $name => $value ) : ?>
-                    <input type="hidden" name="<?php echo $name;?>" value="<?php echo $value;?>" />
-                <?php endforeach;?>
-            
-                <?php $this->search_box( $this->label( 'search_items' ), $this->template()->getID() );?>
-                <?php $this->display();?>
-                <?php $this->inline_preview();?>
-            </form>
-        </div>
-    <?php
     }
     
     /** == Aperçu en ligne == **/

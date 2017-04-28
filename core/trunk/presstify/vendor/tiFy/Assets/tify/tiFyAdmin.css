@@ -1,17 +1,17 @@
 /* = COLONNAGE = */
-[class^="tiFyCols-"],
-[class^="tiFyCols-"] > *{
+[class*="tiFyCols-"],
+[class*="tiFyCols-"] > *{
 	box-sizing:border-box;
 }
-[class^="tiFyCols-"]::before,
-[class^="tiFyCols-"]::after{
+[class*="tiFyCols-"]::before,
+[class*="tiFyCols-"]::after{
 	display:table;
 	content:"";
 }
-[class^="tiFyCols-"]::after{
+[class*="tiFyCols-"]::after{
 	clear:both;
 }
-[class^="tiFyCols-"] > *{
+[class*="tiFyCols-"] > *{
 	float:left;
 }
 .tiFyCols-2 > *{

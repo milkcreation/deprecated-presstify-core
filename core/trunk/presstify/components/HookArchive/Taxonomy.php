@@ -100,6 +100,8 @@ final class Taxonomy extends Factory
 	final public function add_meta_boxes()
 	{
 		foreach( (array) $this->GetHooks() as $hook ) :	
+		    if( ! $hook['edit'] )
+		        continue;
 			foreach( (array) $hook['permalink'] as $post_type ) :
 				remove_meta_box( 'tagsdiv-'. $this->Archive, $post_type, 'side' );
 				remove_meta_box(  $this->Archive .'div', $post_type, 'side' );

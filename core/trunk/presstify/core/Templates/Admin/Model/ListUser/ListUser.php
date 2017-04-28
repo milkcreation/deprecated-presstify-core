@@ -91,6 +91,21 @@ class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
 		$this->RowActions = $row_actions;
 	}
 	
+    /**
+     * DECLENCHEURS
+     */
+	/**
+	 * Mise en file des scripts de l'interface d'administration
+	 * {@inheritDoc}
+	 * @see \tiFy\Core\Templates\Admin\Model\Table::_admin_enqueue_scripts()
+	 */
+    public function _admin_enqueue_scripts()
+    {
+        parent::_admin_enqueue_scripts();
+
+        wp_enqueue_style( 'tiFyTemplatesAdminListUser', self::getUrl( get_class() ) .'/ListUser.css', array(), 160609 ); 
+    }
+	
 	/* = TRAITEMENT = */
 	/** == Récupération des éléments == **/
 	public function prepare_items()

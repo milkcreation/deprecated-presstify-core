@@ -78,6 +78,7 @@ class HookSelector extends Admin
 				$args = $this->args;
 				
 				$args['exists'] = array();
+				
 				foreach( (array) $this->args['hooks'] as $n => $hook ) :
 					if( ! $hook['term'] )
 						continue;

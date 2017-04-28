@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\EditUser;
 
-use tiFy\Core\Templates\Admin\Model\Form;
-
-class EditUser extends Form
+class EditUser extends \tiFy\Core\Templates\Admin\Model\Form
 {					
 	/* = ARGUMENTS = */
 	/// Roles des utilisateurs

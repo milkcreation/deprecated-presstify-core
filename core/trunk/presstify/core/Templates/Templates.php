@@ -1,91 +1,141 @@
 <?php
 namespace tiFy\Core\Templates;
 
-use \tiFy\Core\Templates\Front\Factory;
-
 final class Templates extends \tiFy\Environment\Core
 {
-	/* ARGUMENTS */
-	// Liste des actions à déclencher
-	protected $CallActions				= array(
-		'init'	
-	);
-	
-	// Ordres de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array(
-		'init'				=> 9
-	);
-	
-	// Liste des gabarits déclarés
-	private static $Registered 			= array();
-	
-	// Liste des fonctions de rappel des gabarits déclarées
-	private static $Factory				= array();
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		parent::__construct();
-		
-		// Instanciation des contrôleurs
-		new Admin\Admin;
-		new Front\Front;
-	}	
-	
-	/* = DECLENCHEURS = */
-	/** == Initialisation globale == **/
-	public function init()
-	{		
-		/*foreach( (array) self::getConfig() as $templates ) :
-			self::Register( $templa );
-		endforeach;*/
-		
-		do_action( 'tify_templates_register' );
-	}
-		
-	/* = CONTRÔLEURS = */
-	/** == Déclaration d'une entité == **/	
-	public static function register( $id, $attrs = array(), $context )
-	{		
-		$context = strtolower( $context );
-		
-		self::$Registered[$context][$id] = $attrs;
-	
-		switch( $context ) :
-			case 'admin' :						
-				return self::$Factory['admin'][$id] = new \tiFy\Core\Templates\Admin\Factory( $id, $attrs );
-				break;
-			case 'front' :
-				return self::$Factory['front'][$id] = new \tiFy\Core\Templates\Front\Factory( $id, $attrs );
-				break;
-		endswitch;
-	}
-		
-	/** == == **/
-	public static function listAdmin()
-	{
-		if( isset( self::$Factory['admin'] ) )
-			return self::$Factory['admin'];
-	}
-	
-	/** == == **/
-	public static function listFront()
-	{
-		if( isset( self::$Factory['front'] ) )
-			return self::$Factory['front'];
-	}
-	
-	/** == == **/
-	public static function getAdmin( $id )
-	{
-		if( isset( self::$Factory['admin'][$id] ) )
-			return self::$Factory['admin'][$id];
-	}
-	
-	/** == == **/
-	public static function getFront( $id )
-	{
-		if( isset( self::$Factory['front'][$id] ) )
-			return self::$Factory['front'][$id];
-	}
+    /**
+     * Liste des actions à déclencher
+     */
+    protected $CallActions              = array(
+        'init'    
+    );
+    
+    /**
+     * Ordres de priorité d'exécution des actions
+     */
+    protected $CallActionsPriorityMap   = array(
+        'init'                              => 9
+    );
+    
+    /**
+     * Classe de rappel des templates déclarés
+     */
+    private static $Factory                = array();
+    
+    /**
+     * CONTRUCTEUR
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        // Instanciation des contrôleurs
+        new Admin\Admin;
+        new Front\Front;
+    }    
+    
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     */
+    public function init()
+    {                
+        do_action( 'tify_templates_register' );
+    }
+    
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Déclaration d'un gabarit
+     * 
+     * @param string $id identifiant unique
+     * @param array $attrs attributs de configuration
+        array(
+            // Identifiant de base de données - posts par défaut
+            // @see PresstiFy/Core/Db
+            'db'                => '',
+            
+            // Identifiant des intitulés
+            // @see PresstiFy/Core/Labels
+            'label'             => '', 
+            
+            // Menu d'administration (contexte admin uniquement)            
+            'admin_menu'        => array(       
+                // Identifiant du menu - Identifiant du template par défaut
+                'menu_slug'         => '',
+                // Identifiant du menu parent (sous-menu uniquement) 
+                'parent_slug'       => null,
+                // Titre de la page    
+                'page_title'        => '',
+                // Intitulé du menu - Intitulé du modèle prédéfini si vide 
+                'menu_title'        => '', 
+                // Habiltation d'affichage du menu
+                'capability'        => 'manage_options', 
+                // Icone de menu (hors sous-menu : 'parent_slug' => null )
+                'icon_url'          => null, 
+                // Ordre d'affichage de l'entrée de menu
+                'position'          => 99,
+                // Fonction d'affichage de la page - Factory::render() par défaut 
+                'function'          => null
+            ),
+            
+            // Attributs spécifiques aux modèles hérités 
+            // @see PresstiFy/Core/Templates/Traits/[MODEL]/Params pour la liste complète   
+            /// + Form
+            //// Identifiant du template d'affichage de la liste des éléments
+            'list_template'     => ''
+             
+            /// + Table
+            //// Identifiant du template d'édition d'un élément
+            'list_template'     => '',            
+        );
+     * 
+     * @param string $context 'admin' | 'front'
+     * 
+     * @return object $Factory
+     */
+    public static function register( $id, $attrs = array(), $context )
+    {                   
+        switch( strtolower( $context ) ) :
+            case 'admin' :
+                if( ! isset( self::$Factory['admin'][$id] ) )
+                    return self::$Factory['admin'][$id] = new \tiFy\Core\Templates\Admin\Factory( $id, $attrs );
+                break;
+            case 'front' :
+                if( ! isset( self::$Factory['front'][$id] ) )
+                    return self::$Factory['front'][$id] = new \tiFy\Core\Templates\Front\Factory( $id, $attrs );
+                break;
+        endswitch;
+    }
+        
+    /** == == **/
+    public static function listAdmin()
+    {
+        if( isset( self::$Factory['admin'] ) )
+            return self::$Factory['admin'];
+    }
+    
+    /** == == **/
+    public static function listFront()
+    {
+        if( isset( self::$Factory['front'] ) )
+            return self::$Factory['front'];
+    }
+    
+    /** == == **/
+    public static function getAdmin( $id )
+    {
+        if( isset( self::$Factory['admin'][$id] ) )
+            return self::$Factory['admin'][$id];
+    }
+    
+    /** == == **/
+    public static function getFront( $id )
+    {
+        if( isset( self::$Factory['front'][$id] ) )
+            return self::$Factory['front'][$id];
+    }
 }

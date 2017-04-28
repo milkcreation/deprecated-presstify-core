@@ -69,7 +69,20 @@ class Import extends \tiFy\Environment\App
 	public $template, $db, $label, $getConfig;		
 	
 	protected $NestedListTable;
-				
+	
+	
+	/* = CONSTRUCTEUR = */
+	public function __construct(){}
+	
+	/* = METHODES MAGIQUES = */
+	/** == Appel des méthodes dynamiques == **/
+    final public function __call( $name, $arguments )
+    {
+        if( in_array( $name, array( 'template', 'db', 'label', 'getConfig' ) ) ) :
+    		return call_user_func_array( $this->{$name}, $arguments );
+        endif;
+    }			
+			
 	/* = DECLENCHEURS = */
     /** == == **/
 	public function _init()
@@ -93,6 +106,26 @@ class Import extends \tiFy\Environment\App
 		);
 		$this->NestedListTable->init();	
 		$this->list_table = $this->NestedListTable->getTemplate();
+	}
+    
+	/** == Initialisation de l'interface d'administration == **/
+	final public function _admin_init()
+	{
+		/// Repertoire d'import des fichiers
+		$upload_dir = wp_upload_dir();
+		$this->upload_dir = $upload_dir['basedir'];
+		
+		// Actions et Filtres Wordpress
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_download_sample_'. $this->template()->getID(), array( $this, 'wp_ajax_download_sample' ) );
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_upload_'. $this->template()->getID(), array( $this, 'wp_ajax_upload' ) );
+		add_action( 'wp_ajax_tiFyCoreAdminModelImport_handle_'. $this->template()->getID(), array( $this, 'wp_ajax_import' ) );		
+	}
+	
+	/** == Initialisation de l'interface d'administration == **/
+	final public function _current_screen( $current_screen )
+	{
+		if( $this->filename )
+			$this->get_table_preview();
 	}
 			
 	/* = PARAMETRAGE = */
@@ -147,6 +180,58 @@ class Import extends \tiFy\Environment\App
 	    foreach ( $rows as $row ) :
 	        fputcsv( $f, $row, $this->delimiter, $this->enclosure );
 		endforeach;
+		exit;
+	}
+	
+	/** == Traitement Ajax de téléchargement du fichier == **/
+	public function wp_ajax_upload()
+	{				
+		// Récupération des variables de requête		
+		$file 		= current( $_FILES );	
+		$filename 	= sanitize_file_name( basename( $file['name'] ) );
+	
+		$response = array();
+		if( ! @move_uploaded_file( $file['tmp_name'],  $this->upload_dir . "/" . $filename  ) ) :
+			$response = array( 
+				'success' 	=> false, 
+				'data' 		=> sprintf( __( 'Impossible de déplacer le fichier "%s" dans le dossier d\'import', 'tify' ), basename( $file['name'] ) )
+			);
+		else :
+			$this->filename = $this->upload_dir . "/" . $filename;			
+			$this->header	= $_POST['header']; 		
+			$data = array();
+			$data['table'] = $this->get_table_preview();
+		
+			ob_start();
+			$this->display_form_import_options();
+			$data['options'] = ob_get_clean();
+			
+			$response = array( 'success' => true, 'data' => $data );
+		endif;
+									
+		wp_send_json( $response );
+	}
+	
+	/** == Traitement Ajax d'import des données == **/
+	public function wp_ajax_import()
+	{		
+		$this->filename 		= $_POST['filename'];
+		$header 				= (int) $_POST['header'];		
+		$offset 				= (int) $_POST['offset'];
+		$per_pass 				= (int) $_POST['per_pass'];
+		$this->import_options	= $_POST['options'];
+				
+		$this->_parse_column_map();		
+		
+		$response 	= array();
+		
+		$n = $header ? - 1 : 0;		
+		foreach( (array) $this->get_file_datas( $offset, $per_pass ) as $row => $datas ) :				
+			$result = $this->import_row( $row, $datas );
+			$response[($offset+$n++)] = ( is_wp_error( $result ) ) ? $result->get_error_message() : __( 'Enregistré avec succés', 'tify' ); 
+		endforeach;
+				
+		wp_send_json( $response );
 		exit;
 	}
 	
@@ -341,7 +426,29 @@ class Import extends \tiFy\Environment\App
 	}
 	
 	/* = AFFICHAGE = */	
+	/** == Formulaire de téléchargement de fichier == **/
+	public function display_form_upload()
+	{
+	?>
+		<div style="position:relative;padding:20px 0 10px;">
+			<label><?php _e( 'Type de fichier autorisés : ', 'tify' );?></label>
+			<p style="line-height:1;"><?php echo implode( ', ', $this->mime_types );?></p>
+			<form id="tify_adminview_import-uploadfile" method="post" action="" enctype="multipart/form-data">				
+				<input id="tify_adminview_import-id" type="hidden" name="tify_adminview_import-id" value="<?php echo $this->template()->getID();?>">
+				<p><label><input id="tify_adminview_import-header" name="tify_adminview_import-header" type="checkbox" value="1" <?php checked( $this->header == 1 );?> /><?php _e( 'Le fichier comporte un en-tête' , 'tify' );?></p>
+				<input style="font-size:0.9em;" id="tify_adminview_import-uploadfile_button" type="file" name="" autocomplete="off"/>
+				<span class="spinner" style="position:absolute; top:0px;right:-10px;"></span>
+			</form>	
+		</div>
+	<?php
+	}
 	
+	/** == Table d'aperçu des données == **/
+	public function display_table_preview()
+	{
+		if( $this->filename ) echo $this->get_table_preview();
+	}
+
 	/** == Affichage des options d'import de formulaire == **/
 	public function display_form_import_options()
 	{
