@@ -1,5 +1,8 @@
 <?php
-namespace tiFy\Core\Control\Token;
+/**
+ * @deprecated
+ */
+namespace tiFy\Core\Control\_Deprecated\Token;
 
 use tiFy\Core\Control\Factory;
 

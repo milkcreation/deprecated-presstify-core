@@ -37,7 +37,7 @@ class Admin extends \tiFy\Environment\App
 				'capability'	=> 'manage_options', 
 				'icon_url' 		=> null, 
 				'position' 		=> 99, 
-				'function' 		=> array( $Factory, 'render' )
+				'function' 		=> array( $Factory, $Factory->getAttr( 'render_cb' ) )
 			);		
 
 			switch( $Factory->getModel() ) :

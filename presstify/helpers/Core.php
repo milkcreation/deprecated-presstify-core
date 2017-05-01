@@ -18,8 +18,8 @@ namespace
             $scripts = array( $scripts );
 
         foreach( $scripts as $script ) :
-            if( isset( tiFy\Core\Control\Control::$Factories[$script] ) ) :
-                tiFy\Core\Control\Control::$Factories[$script]->enqueue_scripts();
+            if( isset( tiFy\Core\Control\Control::$Factory[$script] ) ) :
+                tiFy\Core\Control\Control::$Factory[$script]->enqueue_scripts();
             endif;
         endforeach;
     }
@@ -296,5 +296,10 @@ namespace
     function tify_templates_register( $id, $attrs, $context )
     {
         return tiFy\Core\Templates\Templates::register( $id, $attrs, $context );
+    }
+    
+    function tify_templates_current( )
+    {
+        return tiFy\Core\Templates\Templates::$Current;
     }
 }

@@ -460,6 +460,14 @@ class ScriptLoader extends \tiFy\Environment\App
             'version'    => '3.3.7',
             'media'        => 'all' 
         );
+        self::$JsLib['bootstrap']      = array(
+            'src'           => array(
+                'local'         => tiFy::$AbsUrl .'/vendor/tiFy/Assets/bootstrap/js/bootstrap.min.js'                  
+            ),
+            'deps'          => array( 'jquery' ),
+            'version'       => '3.3.7',
+            'in_footer'     => true 
+        );
         
         //// Bootstrap - Transitions
         self::$JsLib['bootstrap-transitions']      = array(

@@ -1,33 +1,45 @@
 <?php
 namespace tiFy\Core\Control;
 
-class Control
+class Control extends \tiFy\Environment\Core 
 {
-	/* = ARGUMENTS = */
-	// Liste des classes des contrôleurs
-	public static $Factories = array();
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		foreach( glob( __DIR__.'/*', GLOB_ONLYDIR ) as $filename ) :
-			$basename 	= basename( $filename );
-			$ClassName	= "\\tiFy\\Core\\Control\\$basename\\$basename";
-			
-			self::register( $ClassName );
-		endforeach;
-	}
-	
-	/* = CONTROLEUR = */
-	/** == Déclaration == **/
-	final public static function register( $ClassName )
-	{
-		// Bypass
-		if( ! class_exists( $ClassName ) )
-			return;
-		$Class = new $ClassName;
-		
-		if( ! empty( $Class->ID ) && ! isset( self::$Factories[$Class->ID] ) )
-			self::$Factories[$Class->ID] = $Class;
-	}
+    /**
+     * Liste des classes de rappel des controleurs
+     */ 
+    public static $Factory = array();
+
+    /**
+     * CONSTRUCTEUR
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        
+        foreach( glob( self::getDirname() .'/*/', GLOB_ONLYDIR ) as $filename ) :
+            $basename     = basename( $filename );
+            $ClassName    = "\\tiFy\\Core\\Control\\{$basename}\\{$basename}";
+         
+            self::register( $ClassName );
+        endforeach;
+        
+        new _Deprecated\_Deprecated;
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Déclaration des controleurs
+     */
+    final public static function register( $ClassName )
+    {
+        // Bypass
+        if( ! class_exists( $ClassName ) ) :
+            return;
+        endif;
+        $Class = new $ClassName;
+        
+        if( ! empty( $Class->ID ) && ! isset( self::$Factory[$Class->ID] ) )
+            self::$Factory[$Class->ID] = $Class;
+    }
 }

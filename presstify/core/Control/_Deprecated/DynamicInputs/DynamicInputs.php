@@ -1,5 +1,8 @@
 <?php
-namespace tiFy\Core\Control\DynamicInputs;
+/**
+ * @deprecated
+ */
+namespace tiFy\Core\Control\_Deprecated\DynamicInputs;
 
 use tiFy\Core\Control\Factory;
 
@@ -12,8 +15,8 @@ class DynamicInputs extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dynamic_inputs', $this->Url ."/dynamic_inputs.css", array( ), '150525' );
-		wp_register_script( 'tify_control-dynamic_inputs', $this->Url ."/dynamic_inputs.js", array( 'jquery' ), '150525', true );
+		wp_register_style( 'tify_control-dynamic_inputs', self::getUrl( get_class() ) ."/dynamic_inputs.css", array( ), '150525' );
+		wp_register_script( 'tify_control-dynamic_inputs', self::getUrl( get_class() ) ."/dynamic_inputs.js", array( 'jquery' ), '150525', true );
 		wp_localize_script( 'tify_control-dynamic_inputs', 'tyctrl_dinputs', array( 'MaxAttempt' => __( 'Nombre de valeur maximum atteinte', 'tify' ) ) );
 	}
 	

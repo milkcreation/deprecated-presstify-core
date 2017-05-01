@@ -214,7 +214,8 @@ abstract class Factory extends \tiFy\Environment\App
      */
     final public function render()
     {
-        if( $this->Template )
-            return $this->Template->render();    
+        $render_cb = $this->getAttr( 'render_cb' );
+        if( method_exists( $this->Template, $render_cb ) )
+            return call_user_func( array( $this->Template, $render_cb ) );    
     }
 }

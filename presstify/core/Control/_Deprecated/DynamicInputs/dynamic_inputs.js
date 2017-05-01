@@ -1,3 +1,4 @@
+
 jQuery( document ).ready( function($){
 	// Ajout d'un élément
 	$( document ).on( 'click.tify.control.dynamic_inputs.add', '[data-tify_control="dynamic_inputs"] .tify_control_dynamic_inputs-add_button', function(e){

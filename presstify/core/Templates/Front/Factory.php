@@ -6,7 +6,6 @@ class Factory extends \tiFy\Core\Templates\Factory
     /**
      * Liste des actions à déclencher
      */
-    /// 
     protected $CallActions                    = array(
         'init',
         'template_redirect',
@@ -54,17 +53,21 @@ class Factory extends \tiFy\Core\Templates\Factory
         
         // Instanciation du template
         $this->Template = new $className( $this->getAttr( 'args', null ) );
-
-        // Création des methodes dynamiques
+        
+        // Création des méthodes dynamiques
         $factory = $this;
         $this->Template->template     = function() use( $factory ){ return $factory; };
-        $this->Template->db           = function() use( $factory ){ return $factory->db(); };
+        $this->Template->db           = function() use( $factory ){ return $factory->getDb(); };
         $this->Template->label        = function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };        
-        $this->Template->getConfig    = function( $attr, $default = '' ) use( $factory ){ if( func_num_args() ) return call_user_func_array( array( $factory, 'getAttr' ), func_get_args() ); };    
+        $this->Template->getConfig    = function( $attr, $default = '' ) use( $factory ){ if( func_num_args() ) return call_user_func_array( array( $factory, 'getAttr' ), func_get_args() ); };     
             
         if( ! $this->getAttr( 'base_url' ) )
             $this->setAttr( 'base_url', \site_url( $this->getAttr( 'route' ) ) ); 
         
+        // Fonction de rappel d'affichage du template
+        if( ! $this->getAttr( 'render_cb', '' ) )
+           $this->setAttr( 'render_cb', 'render' );     
+            
         // Déclenchement des actions dans le template
         if( method_exists( $this->Template, '_init' ) ) :
             call_user_func( array( $this->Template, '_init' ) );
@@ -81,10 +84,12 @@ class Factory extends \tiFy\Core\Templates\Factory
     {        
         // Bypass
         if( ! $this->Template )
+            return;            
+        if( ! preg_match( '/^\/'. preg_quote( ltrim( $this->getAttr( 'route' ), '//' ), '/' ) .'\/?$/', Front::getRoute() ) )
             return;
-        if( ! preg_match( '/^\/'. preg_quote( $this->getAttr( 'route', $this->getID() ), '/' ) .'\/?$/', Front::getRoute() ) )
-            return;
-                    
+
+        \tiFy\Core\Templates\Templates::$Current = $this; 
+            
         // Déclenchement des actions dans le template           
         if( method_exists( $this->Template, '_current_screen' ) ) :
             call_user_func( array( $this->Template, '_current_screen' ) );
@@ -92,8 +97,14 @@ class Factory extends \tiFy\Core\Templates\Factory
         if( method_exists( $this->Template, 'current_screen' ) ) :
             call_user_func( array( $this->Template, 'current_screen' ) );
         endif;    
-            
-        $this->render();    
+        
+        if( $template = $this->getAttr( 'template_part' ) ) :
+            get_template_part( $template );
+            exit;
+        else :
+            $this->render();
+            exit;
+        endif;           
     }
     
     /**
