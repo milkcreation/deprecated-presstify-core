@@ -84,6 +84,10 @@ class Factory extends \tiFy\Core\Templates\Factory
         $this->setAttr( '_menu_slug', $menu_slug );
         $this->setAttr( '_parent_slug', $parent_slug );
         
+        // Fonction de rappel d'affichage du template
+        if( ! $this->getAttr( 'render_cb', '' ) )
+           $this->setAttr( 'render_cb', 'render' ); 
+        
         // Déclenchement des actions dans le template
         if( method_exists( $this->Template, '_init' ) ) :
             call_user_func( array( $this->Template, '_init' ) );
@@ -128,6 +132,8 @@ class Factory extends \tiFy\Core\Templates\Factory
             return;
         if( $current_screen->id !== $this->getAttr( '_hookname', '' ) )
             return;
+        
+        \tiFy\Core\Templates\Templates::$Current = $this;        
             
         // Mise en file des scripts de l'ecran courant
         add_action( 'admin_enqueue_scripts', array( $this, 'admin_enqueue_scripts' ) );

@@ -19,9 +19,9 @@ class TabooxEditUser extends \tiFy\Core\Templates\Admin\Model\EditUser\EditUser
 	/** == Définition des sections d'édition == **/
 	public function set_sections()
 	{
-		if( $sections = $this->getConfig( 'sections' ) ) :			
-		else :
-			$sections['general'] = __( 'Informations générales', 'tify' );
+	    if( $sections = $this->getConfig( 'sections' ) ) :			
+		else :		    
+			$sections = array( 'general' => __( 'Informations générales', 'tify' ) );
 		endif;
 		
 		return $sections;		

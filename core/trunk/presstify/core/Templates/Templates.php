@@ -20,10 +20,15 @@ final class Templates extends \tiFy\Environment\Core
     /**
      * Classe de rappel des templates déclarés
      */
-    private static $Factory                = array();
+    private static $Factory             = array();
     
     /**
-     * CONTRUCTEUR
+     * Classe de rappel courante
+     */
+    public static $Current              = null;
+    
+    /**
+     * CONSTRUCTEUR
      */
     public function __construct()
     {
@@ -84,11 +89,11 @@ final class Templates extends \tiFy\Environment\Core
             
             // Attributs spécifiques aux modèles hérités 
             // @see PresstiFy/Core/Templates/Traits/[MODEL]/Params pour la liste complète   
-            /// + Form
+            /// Form
             //// Identifiant du template d'affichage de la liste des éléments
             'list_template'     => ''
              
-            /// + Table
+            /// Table
             //// Identifiant du template d'édition d'un élément
             'list_template'     => '',            
         );
@@ -110,29 +115,40 @@ final class Templates extends \tiFy\Environment\Core
                 break;
         endswitch;
     }
-        
-    /** == == **/
+     
+    /**
+     * Liste des templates de l'interface d'administration
+     */
     public static function listAdmin()
     {
         if( isset( self::$Factory['admin'] ) )
             return self::$Factory['admin'];
     }
-    
-    /** == == **/
+    /**
+     * Liste des template de l'interface utilisateur
+     */
     public static function listFront()
     {
         if( isset( self::$Factory['front'] ) )
             return self::$Factory['front'];
     }
     
-    /** == == **/
+    /**
+     * Récupération d'un template de l'interface d'administation
+     * @param string $id
+     * @return mixed
+     */
     public static function getAdmin( $id )
     {
         if( isset( self::$Factory['admin'][$id] ) )
             return self::$Factory['admin'][$id];
     }
     
-    /** == == **/
+    /**
+     * Récupération d'un template de l'interface utilisateur
+     * @param string $id
+     * @return mixed
+     */
     public static function getFront( $id )
     {
         if( isset( self::$Factory['front'][$id] ) )
