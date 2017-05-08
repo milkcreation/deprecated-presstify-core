@@ -14,7 +14,6 @@
     top:50%; right:0px; 
     margin-top:-10px
 }
-
 ._tiFyTemplatesImport_col_action{
     position:relative;
     width:50px;
@@ -26,17 +25,19 @@
     top:0; right:0; bottom:0; left:0;
     display: block;
     outline:none;
+    z-index:1;
 }
 .tiFyTemplatesImport-RowImportIcon{
     position:absolute;
     top:50%; left:50%;
-    margin-top:-12px; margin-left:-12px;
+    margin-top:-11px; margin-left:-11px;
+    font-size:22px;
 }
 .tiFyTemplatesImport-ExistItem{
     position:absolute;
     top:50%; left:50%;
     margin-top:0px; margin-left:0px;
-    font-size:16px;
+    font-size:12px;
 }
 
 .active .tiFyTemplatesImport-RowImportIcon {
@@ -81,7 +82,7 @@
     position:absolute;
     top:0; right:0; bottom:0; left:0;   
     display:block; content:"";
-    z-index:99999;
+    z-index:10;
     
     background-color:rgba(255,255,255,0.5);
 }

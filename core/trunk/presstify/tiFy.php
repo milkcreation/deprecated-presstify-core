@@ -56,9 +56,12 @@ final class tiFy
                     
         // Instanciation de l'environnement
         self::classLoad( 'tiFy\Environment', __DIR__ .'/env' );        
-            
-        // Instanciation des librairies tierce
-        self::classLoad( 'tiFy\Vendor', __DIR__ .'/vendor', 'Autoload' );
+        
+        // Instanciation des librairies proriétaires
+        self::classLoad( 'tiFy\Lib', __DIR__ .'/lib', 'Autoload' );
+  
+        // Chargement des librairies tierces
+        require_once __DIR__ .'/vendor/autoload.php';
         
         // Définition des chemins
         self::$AbsPath = ( $AbsPath ) ? $AbsPath : ABSPATH;
@@ -72,8 +75,7 @@ final class tiFy
         self::classLoad( 'tiFy\Components', __DIR__ .'/components', 'Autoload' );
 
         // Instanciation des fonctions d'aides au développement
-        self::classLoad( 'tiFy\Helpers', __DIR__ .'/helpers', 'Autoload' );
-        
+        self::classLoad( 'tiFy\Helpers', __DIR__ .'/helpers', 'Autoload' );      
         
         // Chargement des Must-Use    
         $this->loadMustUse();
@@ -103,7 +105,7 @@ final class tiFy
     public static function classLoad( $namespace, $base_dir, $bootstrap = null )
     {
         if( is_null( self::$ClassLoader ) ) :
-            require_once __DIR__ .'/vendor/ClassLoader/Psr4ClassLoader.php';
+            require_once __DIR__ .'/lib/ClassLoader/Psr4ClassLoader.php';
             self::$ClassLoader = new \Psr4ClassLoader;
         endif;
         

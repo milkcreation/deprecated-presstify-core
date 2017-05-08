@@ -2,6 +2,7 @@
 namespace tiFy\Core;
 
 use tiFy\tiFy;
+use \Symfony\Component\Yaml\Yaml;
 
 class Params extends \tiFy\Environment\App
 {
@@ -199,9 +200,9 @@ class Params extends \tiFy\Environment\App
     /* = TRAITEMENT DU FICHIER DE CONFIGURATION = */
     public static function parseFile( $filename )
     {
-        $input = file_get_contents( $filename );
-        
-        return spyc_load( $input );
+        $output = \Symfony\Component\Yaml\Yaml::parse( file_get_contents( $filename ) );
+
+        return $output;
     }
     
     /* = TRAITEMENT ET INTERPRETATION PHP DU FICHIER DE CONFIGURATION = */
@@ -216,6 +217,9 @@ class Params extends \tiFy\Environment\App
     /** == Evaluation PHP == **/    
     public static function evalPHP( $input )
     {
+        if( empty( $input ) || ! is_array( $input ) )
+            return array();
+        
         array_walk_recursive( $input, array( __CLASS__, '_pregReplacePHP' ) );
 
         return $input;
