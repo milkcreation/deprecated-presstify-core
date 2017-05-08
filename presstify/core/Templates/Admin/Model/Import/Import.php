@@ -11,10 +11,15 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     protected $UploadDir; 
     
     /**
-     * Fichier d'import
+     * Fichier d'import interne
      */
     protected $Filename; 
-        
+    
+    /**
+     * Habilitation de téléchargement de fichier externe
+     */
+    protected $Uploadable; 
+    
     /**
      * Colonnes du fichier d'import
      */
@@ -58,7 +63,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     public function set_params_map()
     {
         $params = parent::set_params_map();        
-        array_push( $params, 'UploadDir', 'Filename', 'FileColumns', 'Delimiter', 'Importer' );
+        array_push( $params, 'UploadDir', 'Filename', 'Uploadable', 'FileColumns', 'Delimiter', 'Importer' );
         
         return $params;
     }
@@ -72,11 +77,19 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     } 
     
     /**
-     * Définition du fichier d'import
+     * Définition du fichier d'import interne
      */ 
     public function set_filename()
     {
         return '';
+    }
+    
+    /**
+     * Définition si l'utilisateur est habilité à télécharger un fichier externe 
+     */ 
+    public function set_uploadable()
+    {
+        return true;
     }
     
     /**
@@ -118,11 +131,19 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     }
     
     /**
-     * Initialisation du fichier d'import
+     * Initialisation du fichier d'import externe
      */
     public function initParamFilename()
     {               
         return $this->Filename = $this->set_filename();
+    }
+    
+    /**
+     * Initialisation de l'habilitation à télécharger un fichier externe
+     */
+    public function initParamUploadable()
+    {               
+        return $this->Uploadable = $this->set_uploadable();
     }
      
     /**
@@ -175,11 +196,40 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     public function _admin_enqueue_scripts()
     {
         parent::_admin_enqueue_scripts();
-                
+        
+        tify_control_enqueue( 'progress' );
+        
         // Chargement des scripts
-        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.css', array( 'wp-pointer' ), 150607 );
-        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.js', array( 'jquery', 'wp-pointer' ), 150607 );
+        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.css', array( ), 150607 );
+        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.js', array( 'jquery' ), 150607 );
     } 
+    
+    /**
+     * Affichage la page courante
+     */
+    public function current_screen( $current_screen )
+    {
+        parent::current_screen( $current_screen );
+        
+        // DEBUG - Tester la fonctionnalité d'import
+        return;
+        $attrs = array(
+            'filename'      => $this->Filename,
+            'columns'       => $this->FileColumns,
+            'delimiter'     => $this->Delimiter            
+        );
+        
+        $Csv = Csv::getRow( 0, $attrs );  
+	    $input_data = current( $Csv->getItems() );
+
+	    $res = call_user_func( $this->Importer .'::import', $input_data );
+	    if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
+	       echo $res['errors']->get_error_message();
+	    else :
+	       var_dump( $res );
+        endif;	    
+        exit;
+    }
     
     /**
      * Traitement Ajax de téléchargement du fichier d'import
@@ -188,7 +238,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     {                
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
-        
+
         // Récupération des variables de requête        
         $file         = current( $_FILES );    
         $filename     = sanitize_file_name( basename( $file['name'] ) );
@@ -205,7 +255,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
                 'data'          => array( 'filename' => $this->UploadDir . "/" . $filename )
             );    
         endif;
-                                    
+        
         wp_send_json( $response );
     }
     
@@ -228,30 +278,14 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
 	    $input_data = current( $Csv->getItems() );
 
         $res = call_user_func( $this->Importer .'::import', $input_data );
-        
-		wp_send_json( $res );
-		exit;
+                        
+        if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
+	       wp_send_json_error( $res['errors']->get_error_messages() );
+	    else :
+	       wp_send_json_success( $res['insert_id'] );
+        endif;
 	}
-	
-	/**
-	public function current_screen()
-	{
-	    // Attributs de récupération des données CSV
-        $attrs = array(
-            'filename'      => $this->Filename,
-            'columns'       => $this->FileColumns,
-            'delimiter'     => $this->Delimiter            
-        );		
-        
-        $Csv = Csv::getRow( 6, $attrs );  
-	    $input_data = current( $Csv->getItems() );
-
-        $res = call_user_func( $this->Importer .'::import', $input_data );
-        
-		wp_send_json( $this->Importer );
-		exit;
-    }*/
-    
+	    
     /**
      * TRAITEMENT
      */    
@@ -388,9 +422,11 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
          * ex en JS : $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
          */ 
         $filename = isset( $query_args['filename'] ) ? $query_args['filename'] : $this->Filename;
+        $ajaxActionPrefix   = $this->template()->getID() .'_'. self::classShortName();
+        $datatablesAjaxData = ! empty( $filename ) ? array( 'filename' => $filename ) : array();        
 ?>
-<input type="hidden" id="ajaxActionPrefix" value="<?php echo $this->template()->getID() .'_'. self::classShortName();?>" />
-<input type="hidden" id="datatablesAjaxData" value="<?php echo ! empty( $filename ) ? urlencode( json_encode( array( 'filename' => $filename ) ) ) : '';?>" />
+<input type="hidden" id="ajaxActionPrefix" value="<?php echo $ajaxActionPrefix;?>" />
+<input type="hidden" id="datatablesAjaxData" value="<?php echo  urlencode( json_encode( $datatablesAjaxData ) );?>" />
 <?php
     }
     
@@ -399,6 +435,13 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function render()
     {
+        tify_control_progress(
+            array(
+                'id'        => 'tiFyTemplatesImport-ProgressBar',
+                'title'     => __( 'Progression de l\'import', 'tify' ),
+                'value'     => 0
+            )
+        );
 ?>
 <div class="wrap">
     <h2>
@@ -408,9 +451,9 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
             <a class="add-new-h2" href="<?php echo $this->EditBaseUri;?>"><?php echo $this->label( 'add_new' );?></a>
         <?php endif;?>
     </h2>
-    
+
     <div>
-        <?php if( ! $this->Filename ) :?>
+        <?php if( $this->Uploadable ) :?>
         <form class="tiFyTemplatesImport-Form tiFyTemplatesImport-Form--upload" method="post" action="" enctype="multipart/form-data" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
             <input class="tiFyTemplatesImportUploadForm-FileInput" type="file" autocomplete="off" />
             <span class="spinner tiFyTemplatesImportUploadForm-Spinner"></span>

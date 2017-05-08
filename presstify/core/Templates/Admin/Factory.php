@@ -22,7 +22,8 @@ class Factory extends \tiFy\Core\Templates\Factory
      */ 
     protected static $Models                = array(
         'AjaxExport', 
-        'AjaxListTable', 
+        'AjaxListTable',
+        'CsvPreview',
         'EditForm', 
         'EditUser', 
         'Import', 
