@@ -366,7 +366,9 @@ class Csv
             if( empty( $f['term'] ) )
                 continue;
             $term = $f['term'];
-             
+            
+            $exact = ! empty( $f['exact'] ) ? true : false;
+            
             if( empty( $f['columns'] ) ) :
                 $columns = range( 0, ( $count-1 ), 1 );
             elseif( is_string( $f['columns'] ) ) :
@@ -383,6 +385,7 @@ class Csv
                               
                 $this->Filters[] = array(
                     'col'   => (int) $c,
+                    'exact' => $exact,
                     'term'  => $term
                 );
             endforeach;            
@@ -398,7 +401,9 @@ class Csv
     {
         $has = array();
         foreach( $this->Filters as $f ) :
-            if( preg_match( '/'. $f['term'] .'/i', $row[$f['col']] ) ) :                
+            $regex = $f['exact'] ? '^'. $f['term'] .'$' : $f['term'];
+
+            if( preg_match( '/'. $regex .'/i', $row[$f['col']] ) ) :                
                 $has[$f['col']] = 1;
             else :
                 $has[$f['col']] = 0;

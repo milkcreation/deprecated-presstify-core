@@ -44,8 +44,14 @@ class Post extends \tiFy\Inherits\Importer\Importer
      * Insertion des données principales
      */
     final public function insert_datas( $postarr )
-    {
-        return wp_insert_post( $postarr, true );
+    {        
+        if( ! empty( $postarr['ID'] ) ) :
+            $post_id = wp_update_post( $postarr, true );
+        else :
+            $post_id = wp_insert_post( $postarr, true );
+        endif;
+        
+        return $post_id;
     }
     
     /**

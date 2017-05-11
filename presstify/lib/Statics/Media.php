@@ -5,7 +5,7 @@ class Media
 {
     /**
      * Import de fichier dans la médiathèque
-     * @param string $filename chemin relatif ou absolu, ou url vers le fichier 
+     * @param string $filename chemin relatif ou absolu, ou url du fichier 
      * @param array $args
      * 
      */
@@ -43,47 +43,58 @@ class Media
         endif;        
         if( $args['sanitize_name'] ) :
             $args['name'] = sanitize_file_name( $args['name'] );
-        endif;        
-        $name = rawurlencode( $args['name'] );
+        endif;
+        $name = $args['name'];
         
-        // Définition du chemin
-        $path = dirname( $filename );
+        // Définition du chemin d'accès au fichier source
+        $is_url = false;
         /// Chemin absolu local
-        if( preg_match( '/'. preg_quote( ABSPATH, '/' ) .'/', $path ) ) :
-            $path = site_url() .'/'. preg_replace( '/'. preg_quote( ABSPATH, '/' ) .'/', '', $path );
-        // Url locale
-        elseif( preg_match( '/'. preg_quote( site_url(), '/' ) .'/', $path ) ) :
-        // Url distante
-        elseif( preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/',$path ) ) :
-        // Chemin relatif
+        if( preg_match( '/'. preg_quote( ABSPATH, '/' ) .'/', $filename ) ) :            
+        /// Url locale
+        elseif( preg_match( '/'. preg_quote( site_url(), '/' ) .'/', $filename ) ) :
+            $filename = ABSPATH . preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $filename );
+        /// Url distante
+        elseif( preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $filename ) ) :
+            $is_url = true;
+        /// Chemin relatif
         else :
-            $path = site_url() .'/'. ltrim( $path, '/' );
+            $filename = ABSPATH .'/'. ltrim( $filename, '/' );
         endif; 
         
-        $filename = $path . '/' . $name;   
-        
-        // Récupération de la réponse du serveur
-        if ( ! $response = wp_remote_get( $filename ) ) :
-            return new \WP_Error( 
-                'tiFyStaticsMediasImport_NoResponse', 
-                __( 'Le fichier n\'est pas disponible.', 'tify' ) 
+        // Récupération du contenu du fichier source
+        if( $is_url ) :
+            $filename = rawurlencode( $filename );
+            // Récupération de la réponse du serveur
+            if ( ! $response = wp_remote_get( $filename ) ) :
+                return new \WP_Error( 
+                    'tiFyStaticsMediasImport_NoResponse', 
+                    __( 'Le fichier n\'est pas disponible.', 'tify' ) 
+                );
+            endif;            
+            // Traitement des attributs de la réponse
+            $code = wp_remote_retrieve_response_code( $response );
+            $message = wp_remote_retrieve_response_message( $response );
+    
+            if( $code != '200' ) :
+                return new \WP_Error(
+                    'tiFyStaticsMediasImport_ErrorCode', 
+                    sprintf( 
+                        __( 'Le serveur distant a retourné l\'erreur suivante : %1$d %2$s', 'tify' ), 
+                        esc_html( $message ), 
+                        $code 
+                    ) 
+                );
+            endif;            
+            $content = wp_remote_retrieve_body( $response );  
+        elseif( file_exists( $filename ) ) :              
+            $content = file_get_contents( $filename );
+        else :
+            return new \WP_Error(
+                'tiFyStaticsMediasImport_FileNotExist', 
+                __( 'Impossible de récupérer le fichier source', 'tify' )
             );
         endif;
-        
-        // Traitement des attributs de la réponse
-        $code = wp_remote_retrieve_response_code( $response );
-        $message = wp_remote_retrieve_response_message( $response );
-        if( $code != '200' ) :
-            return new \WP_Error( 
-                'tiFyStaticsMediasImport_ErrorCode', 
-                sprintf( 
-                    __( 'Le serveur distant a retourné l\'erreur suivante : %1$d %2$s', 'tify' ), 
-                    esc_html( $message ), 
-                    $code 
-                ) 
-            );
-        endif;
-        
+            
         // Définition du répertoire d'upload
         if( $args['upload_subdir'] ) :
             $subdir = trim( $args['upload_subdir'], '/' );
@@ -97,8 +108,7 @@ class Media
             		'baseurl' => WP_CONTENT_URL . '/uploads',
             		'error'   => false,
             	);    
-            };
-            
+            };            
             add_filter( 'upload_dir', $upload_dir );
         endif;    
         
@@ -113,10 +123,9 @@ class Media
                 4
             );
         endif;
-        
-        // Traitement du fichier
-        $body = wp_remote_retrieve_body( $response );            
-        $upload = wp_upload_bits( $args['name'], 0, $body );        
+                
+        // Traitement du fichier                  
+        $upload = wp_upload_bits( $name, 0, $content );        
         if( ! empty( $upload['error'] ) ) :
             return new \WP_Error( 'tiFyStaticsMediasImport_UploadBits', $upload['error'] );
         endif;
@@ -151,7 +160,7 @@ class Media
                 'post_mime_type'    => $args['post_mime_type'] ? $args['post_mime_type'] : $upload['type'],
                 'guid'              => $args['guid'] ? $args['guid'] : $upload['url'],
                 'post_parent'       => $args['post_parent'],
-                'post_title'        => $args['post_title'] ? $args['post_title'] : sanitize_title( $args['name'] ),
+                'post_title'        => $args['post_title'] ? $args['post_title'] : sanitize_title( $name ),
                 'post_content'      => $args['post_content'],
                 'post_excerpt'      => $args['post_excerpt']
         );
@@ -169,6 +178,93 @@ class Media
         
         return $attachment_id;
     }
+    
+    /**
+     * Mise à jour des médias liés à un post 
+     * @param int $post_id identifiant du post d'accroche
+     * @param array | string filenames chemins relatifs ou absolus, ou url des fichiers à attacher
+     * @param array $args attributs globaux de mise à jour des fichiers attachés
+     */
+    public static function updateAttachments( $post_id, $filenames = array(), $args = array() )
+    {
+        $defaults = array(
+            // Sous-répertoire d'upload
+            'upload_subdir'                         => '',
+            // Traite uniquement les fichiers attachés du sous-repertoire d'upload
+            'attachments_in_subdir_only'            => true
+        );
+        $args = wp_parse_args( $args, $defaults );
+        
+        $args['post_type'] = 'attachment';
+        $args['post_status'] = 'inherit';
+        $args['post_parent'] = $post_id;
+        $args['fields'] = 'ids';
+        
+        // Récupération la liste des fichiers attachés au contenu existants
+        $query_args = array_diff_key( $args, array_flip( array( 'upload_subdir', 'attachments_in_subdir_only' ) ) );
+        $exists = array();
+        
+        $attachment_query = new \WP_Query;
+        if( $attachments = $attachment_query->query( $query_args ) ) :            
+            foreach( $attachments as $attachment_id ) :                
+                $filename = get_attached_file( $attachment_id, true );
+                // Filtrage des fichiers hors du sous-repertoire d'upload
+                if( $args['upload_subdir'] && $args['attachments_in_subdir_only'] ) :
+                    preg_match( '/^'.  preg_quote( WP_CONTENT_DIR . '/uploads', '/' ) .'\/(.*)\/'. basename( $filename ).'/', $filename, $match );
+                    if( ! isset( $match[1] ) || ( $match[1] !== trim( $args['upload_subdir'], '/' ) ) )
+                        continue;
+                endif;
+                $exists[basename( $filename )] = array( 
+                    'attachment_id' => (int) $attachment_id, 
+                    'filemtime'     => ( $filemtime = get_post_meta( $attachment_id, '_filemtime', true ) ) ? (int) $filemtime : 0                   
+                );
+            endforeach;
+        endif;               
+                
+        // Traitement des fichiers à attacher
+        $attachment_ids = array();
+        $import_args = array_intersect_key( $args, array_flip( array( 'upload_subdir' ) ) );
+        
+        foreach( (array) $filenames as $filename ) :
+            // Nom du fichier
+            $name = basename( $filename );
+            // Date de modification du fichier
+            $filemtime = filemtime( $filename );
+            
+            // Importe le fichier s'il n'existe pas ou si celui-ci a été modifié 
+            if( ! isset( $exists[$name] ) || ( $exists[$name]['filemtime'] !== $filemtime )  ) :
+                $attachment_ids[] = $attachment_id = self::import( 
+                    $filename,
+                    wp_parse_args(
+                        $import_args, 
+                        array(
+                            'post_parent'       => $post_id,
+                            'override_id'       => ( isset( $exists[$name] ) ) ? $exists[$name]['attachment_id'] : 0
+                        )
+                    )
+                );
+            // Le fichier attaché existe déjà et n'a pas été modifié    
+            else :
+                $attachment_ids[] = $attachment_id = $exists[$name]['attachment_id'];
+            endif;
+            
+            // Le fichier attaché existant traité est exclu de la liste
+            if( isset( $exists[$name] ) ) :
+                unset( $exists[$name] );
+            endif;
+            
+            if( ! is_wp_error( $attachment_id ) ) :
+                update_post_meta( $attachment_id, '_filemtime', $filemtime );
+            endif;
+        endforeach;
+        
+        // Suppression des fichiers attachés non traités
+        foreach( $exists as $exist ) :
+            wp_delete_post( $exist['attachment_id'] );
+        endforeach;
+        
+        return $attachment_ids;
+    }    
     
     /**
      * Récupération de la source base64 d'un fichier média

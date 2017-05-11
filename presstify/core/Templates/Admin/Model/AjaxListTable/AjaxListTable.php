@@ -130,7 +130,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
             ) 
         );
     }
-    
+        
     /**
      * Récupération Ajax de la liste des éléments
      */
