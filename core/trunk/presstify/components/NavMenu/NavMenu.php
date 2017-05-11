@@ -21,6 +21,9 @@ class NavMenu extends \tiFy\Environment\Component
         endforeach;
         
         do_action( 'tify_register_nav_menu' );
+        
+        //
+        require_once self::getDirname() .'/Helpers.php';
     }
    
     /**

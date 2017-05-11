@@ -51,11 +51,7 @@ class Progress extends \tiFy\Core\Control\Factory
             'class'         => '',
             'title'         => '',
             'value'         => 0,
-            'max'           => 100,   
-            
-            'info'          => '',
-            'cancel'        => false,
-            'backdrop'      => true
+            'max'           => 100
         );    
         $args = wp_parse_args( $args, $defaults );
 
@@ -68,8 +64,7 @@ class Progress extends \tiFy\Core\Control\Factory
             $output .= "<div id=\"{$id}\" class=\"tiFyControlProgress". ( $class ? ' '. $class : '' ) ."\" data-tify_control=\"progress\">\n";
             $output .= "\t<div class=\"tiFyControlProgress-content\">";
             $output .= "\t\t<div class=\"tiFyControlProgress-contentHeader\">\n";
-            if( $title )
-                $output .= "\t\t\t<h3 class=\"tiFyControlProgress-headerTitle\" data-role=\"header-title\">{$title}</h3>\n";
+            $output .= "\t\t\t<h3 class=\"tiFyControlProgress-headerTitle\" data-role=\"header-title\">{$title}</h3>\n";
             $output .= "\t\t</div>\n";
             $output .= "\t\t<div class=\"tiFyControlProgress-contentBody\">\n";
             $output .= "\t\t\t<div class=\"tiFyControlProgress-bar\" style=\"background-position:-{$percent}% 0;\" data-role=\"bar\" data-max=\"". intval( $max ) ."\">\n";
@@ -78,11 +73,10 @@ class Progress extends \tiFy\Core\Control\Factory
             $output .= "\t\t\t<div class=\"tiFyControlProgress-infos\" data-role=\"info\"></div>\n";
             $output .= "\t\t</div>\n";
             $output .= "\t\t<div class=\"tiFyControlProgress-contentFooter\">\n";
-            $output .= "\t\t\t<button class=\"button-primary tiFyControlProgress-close\" data-role=\"close\">". __( 'Annuler', 'tify' ) ."</button>\n";
+            $output .= "\t\t\t<button class=\"tiFyButton--primary tiFyControlProgress-close\" data-role=\"close\">". __( 'Annuler', 'tify' ) ."</button>\n";
             $output .= "\t\t</div>\n";
             $output .= "\t</div>\n";
-            if( $backdrop )
-                $output .= "\t<div id=\"{$id}-backdrop\" class=\"tiFyControlProgress-backdrop\"></div>\n";
+            $output .= "\t<div id=\"{$id}-backdrop\" class=\"tiFyControlProgress-backdrop\"></div>\n";
             $output .= "</div>\n";
             
             echo $output;

@@ -124,7 +124,7 @@ abstract class Importer
         
         // Erreurs de Pré-traitement
         if( $import->hasError()  )            
-            return $import->getErrors();
+            return array( 'insert_id' => 0, 'errors' => $import->getErrors() );
                 
         // Filtrage des données principales
         $import->_filterDataValues();
@@ -134,9 +134,9 @@ abstract class Importer
         
         // Erreurs de traitement
         if( $import->hasError()  )            
-            return $import->getErrors();
+            return array( 'insert_id' => 0, 'errors' => $import->getErrors() );
         
-        // Insertion des données
+        // Insertion des données           
         $insert_id = $import->insert_datas( $import->getDatas() ); 
         
         if( ! is_wp_error( $insert_id ) ) :               

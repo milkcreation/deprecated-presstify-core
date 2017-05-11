@@ -60,11 +60,11 @@ class Taboox extends Core
 		foreach( (array) self::getConfig() as $env => $hooknames ) :
 			if( ! in_array( $env, array( 'post', 'taxonomy', 'user', 'option' ) ) )
 				continue;
-			
 			foreach( (array) $hooknames as $hookname => $args ) :
-				if( $env === 'taxonomy' )
+				if( $env === 'taxonomy' ) :				    
 					$hookname = 'edit-'. $hookname;
-				if( ! empty( $args['box'] ) ):				
+			    endif;
+				if( ! empty( $args['box'] ) ) :				    
 					self::registerBox( $hookname, $env, $args['box'] );
 				endif;
 				if( ! empty( $args['nodes'] ) ):	

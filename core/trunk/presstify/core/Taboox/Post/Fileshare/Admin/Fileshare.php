@@ -10,24 +10,26 @@ class Fileshare extends \tiFy\Core\Taboox\Admin
         $this->args = wp_parse_args( 
             $this->args, 
             array(
-                'name'         => '_tify_taboox_fileshare',
-                'filetype'     => '', // video || application/pdf || video/flv, video/mp4,
-                'max'         => -1
+                'name'          => '_tify_taboox_fileshare',
+                'filetype'      => '', // video || application/pdf || video/flv, video/mp4,
+                'max'           => -1,
+                // Gestion des métadonnées en mode single
+                'single'        => false
             )
         );
         
         // Déclaration des metadonnées à enregistrer
-        \tify_meta_post_register( $current_screen->id, $this->args['name'], false );
+        \tify_meta_post_register( $current_screen->id, $this->args['name'], $this->args['single'] );
         \tify_meta_post_register( $current_screen->id, '_taboox_fileshare_names', true );            
     }
     
     /* = MISE EN FILE DES SCRIPTS = */
     public function admin_enqueue_scripts()
     {
-        if( $this->args['max'] > 1 ) :
-            wp_enqueue_style( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/admin.css', array( ), '151216' );
+        if( $this->args['max'] !== 1 ) :
+            wp_enqueue_style( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/Fileshare.css', array( ), '151216' );
             wp_enqueue_media();
-            wp_enqueue_script( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '151216', true );    
+            wp_enqueue_script( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/Fileshare.js', array( 'jquery', 'jquery-ui-sortable' ), '151216', true );    
         else :
             tify_control_enqueue( 'media_file' );
         endif;
@@ -37,22 +39,24 @@ class Fileshare extends \tiFy\Core\Taboox\Admin
     public function form( $post )
     {
         extract( $this->args, EXTR_SKIP );        
-        $metadatas = \tify_meta_post_get( $post->ID, $name );    
-
-        if( $this->args['max'] > 1 ) :
+        $metadatas = $single ? get_post_meta( $post->ID, $name, true ) : tify_meta_post_get( $post->ID, $name );     
+        
+        if( $this->args['max']  !== 1 ) :        
     ?>
         <div id="fileshare-postbox">
             <input type="hidden" name="tify_meta_post[_taboox_fileshare_names][]" value="<?php echo esc_attr( $name );?>" />
             <ul id="fileshare-<?php echo sanitize_title($name);?>-list" class="fileshare-list">
-            <?php foreach( (array) $metadatas as $meta_id => $meta_value ) : ?>
+            <?php if( ! empty( $metadatas ) ) :?>
+                <?php foreach( (array) $metadatas as $meta_id => $meta_value ) : ?>
                 <li>
                     <span class="icon"><?php echo wp_get_attachment_image( $meta_value, array( 46, 60 ), true );?></span>
                     <span class="title"><?php echo get_the_title( $meta_value );?></span>
                     <span class="mime"><?php echo get_post_mime_type( $meta_value );?></span>                            
                     <a href="#" class="remove tify_button_remove"></a>
-                    <input type="hidden" name="tify_meta_post[<?php echo $name;?>][<?php echo $meta_id;?>]" value="<?php echo esc_attr( $meta_value );?>" />                    
+                    <input type="hidden" name="<?php echo $single ? "tify_meta_post[{$name}][]" : "tify_meta_post[{$name}][{$meta_id}]";?>" value="<?php echo esc_attr( $meta_value );?>" />                    
                 </li>
-            <?php endforeach;?>        
+                <?php endforeach;?>   
+            <?php endif;?>     
             </ul>
             <a href="#" class="add-fileshare button-secondary" 
                 <?php if( $filetype ) echo "data-type=\"{$filetype}\"";?> 
@@ -61,16 +65,17 @@ class Fileshare extends \tiFy\Core\Taboox\Admin
                 data-max="<?php echo $max;?>"
                 data-uploader_title="<?php _e( 'Sélectionner les fichiers à associer', 'tify' );?>"
             >
-                <div class="dashicons dashicons-media-text" style="vertical-align:middle;"></div>&nbsp;
+                <span class="dashicons dashicons-media-text" style="vertical-align:middle;"></span>&nbsp;
                 <?php echo _n( __(  'Ajouter le fichier', 'tify' ), __(  'Ajouter des fichiers', 'tify' ), ( ( $max === 1 ) ? 1 : 2 ), 'tify'  );?>
             </a>
         </div>
-    <?php 
-        
+    <?php         
         else :
+            $_name = $single ? "tify_meta_post[{$name}][]" : "tify_meta_post[{$name}][". ( $metadatas ? key( $metadatas ) : '' ) ."]";
+        
             tify_control_media_file( 
                 array(
-                    'name'      => $metadatas ? 'tify_meta_post['. $this->args['name'] .']['.  key( $metadatas ) .']' : 'tify_meta_post['. $this->args['name'] .'][]',
+                    'name'      => $_name,
                     'filetype'  => $this->args['filetype'],
                     'value'     => $metadatas ? current( $metadatas ) : 0
                 ) 

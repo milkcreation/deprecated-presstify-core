@@ -202,6 +202,15 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         // Chargement des scripts
         wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.css', array( ), 150607 );
         wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.js', array( 'jquery' ), 150607 );
+        wp_localize_script( 
+            'tiFyTemplatesAdminImport', 
+            'tiFyTemplatesAdminImport',
+            array(
+                'prepare'   => __( 'Préparation de l\'import ...', 'tify' ),
+                'cancel'    => __( 'Annulation en cours ...', 'tify' )
+                
+            )
+        );
     } 
     
     /**
@@ -223,6 +232,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
 	    $input_data = current( $Csv->getItems() );
 
 	    $res = call_user_func( $this->Importer .'::import', $input_data );
+
 	    if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
 	       echo $res['errors']->get_error_message();
 	    else :
@@ -280,9 +290,9 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         $res = call_user_func( $this->Importer .'::import', $input_data );
                         
         if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
-	       wp_send_json_error( $res['errors']->get_error_messages() );
+	       wp_send_json_error( array( 'message' => $res['errors']->get_error_messages() ) );
 	    else :
-	       wp_send_json_success( $res['insert_id'] );
+	       wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
         endif;
 	}
 	    
@@ -461,7 +471,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         <?php endif;?>
         
         <form class="tiFyTemplatesImport-Form tiFyTemplatesImport-Form--import" method="post" action="" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
-            <button type="submit" class="tiFyTemplatesImportImportForm-Submit"><?php _e( 'Importer', 'tify' );?></button>
+            <button type="submit" class="tiFyButton--primary tiFyTemplatesImportImportForm-Submit"><?php _e( 'Importer', 'tify' );?></button>
         </form> 
     </div>
     

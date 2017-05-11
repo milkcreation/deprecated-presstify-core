@@ -2,10 +2,15 @@ jQuery(document).ready( function($){
 	$( '.tiFyTabooxRelatedPosts-suggest' ).each( function(){
 		$( this ).on( 'autocompleteselect', function( event, ui ) {
 			event.preventDefault();
-			
+						
 			var $this		= $(this),
 				$closest 	= $(this).closest( '.tiFyTabooxRelatedPosts' );
 	
+			if( ! ui.item.value ) {
+                $( 'input[type="text"]', $this ).val( '' );
+                return false;
+            }			
+			
 			var post_id 		= ui.item.value,
 				action 			= $( '.tiFyTabooxRelatedPosts-action', $closest ).val(),
 				name 			= $( '.tiFyTabooxRelatedPosts-item_name', $closest ).val(),
@@ -51,11 +56,10 @@ jQuery(document).ready( function($){
 				if( $.inArray( post_id, query_args.post__not_in ) < 0 )
 					query_args.post__not_in.push( post_id );
 			});
-			
+
 			$(this).data( 'query_args', query_args );
 		});
-	});
-	
+	});	
 	
 	// Ordonnacement des éléments
 	$( '.tiFyTabooxRelatedPosts-list' ).sortable({

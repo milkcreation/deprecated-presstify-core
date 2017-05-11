@@ -26,9 +26,21 @@ jQuery( document ).ready( function($){
 				picker				= $this.data( 'picker' ),
 				defaults = {
 					source		: function( request, response ){
-						$.post(	tify_ajaxurl, { action : action, term : request.term,  query_args : query_args, elements : elements, extras : extras }, function( data ){
-							( ! data.length ) ? response({ 'label':'X', 'value':'Y', 'render':'' }) : response(data);
-						}, 'json' );
+					    $spinner.addClass( 'active' );
+						$.post(	
+						    tify_ajaxurl, 
+						    { action : action, term : request.term,  query_args : query_args, elements : elements, extras : extras }, 
+						    function( data ){
+						        if( data.length ) {
+						            response(data);
+						        } else {
+						            response( [{ value:'', label:'', render: tiFyControlSuggest.noResultsFound }] );
+						        }
+						        $spinner.removeClass( 'active' );
+						        return;
+						    }, 
+						    'json' 
+					    );
 					},
 					change		: function( event, ui ){
 						// $( 'autocompleteselector' ).on( "autocompletechange", function( event, ui ) {} );
@@ -46,12 +58,10 @@ jQuery( document ).ready( function($){
 					open		: function( event, ui ){
 						// $( 'autocompleteselector' ).on( "autocompleteopen", function( event, ui ) {} );
 					},
-					response 	: function( event, ui ) {
-						$spinner.removeClass( 'active' );
+					response 	: function( event, ui ) {						
 						// $( 'autocompleteselector' ).on( "autocompletereponse", function( event, ui ) {} );
 					},
-					search		: function( event, ui ) {
-						$spinner.addClass( 'active' );
+					search		: function( event, ui ) {						
 						// $( 'autocompleteselector' ).on( "autocompletesearch", function( event, ui ) {} );
 					},
 					select		: function( event, ui ){
@@ -68,14 +78,14 @@ jQuery( document ).ready( function($){
 			options = $.extend( options, defaults );
 
 			$( 'input[type="text"]', $(this) )
-			.autocomplete( options )
-			.data( 'ui-autocomplete' )._renderItem = function(ul, item){
-				ul.addClass( 'tify_control_suggest-picker '+ picker );
-				
-				return $( "<li>" )
-					.append( item.render )
-					.appendTo( ul );
-			};			
+    			.autocomplete( options )
+    			.data( 'ui-autocomplete' )._renderItem = function(ul, item){
+    				ul.addClass( 'tify_control_suggest-picker '+ picker );
+    				
+    				return $( "<li>" )
+    					.append( item.render )
+    					.appendTo( ul );
+    			};			
 		});
 	});
 });

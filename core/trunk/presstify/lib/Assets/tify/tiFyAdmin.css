@@ -1,3 +1,23 @@
+/* = BOUTONS = */
+[class*="tiFyButton--"]{
+    padding:10px 20px;
+    
+    font-size:14px;
+    line-height:14px;
+    font-weight:bold;
+    border:none;
+    cursor:pointer;
+}
+.tiFyButton--primary{
+    background-color:#0073AA;
+    color:#FFF;
+}
+.tiFyButton--primary:hover,
+.tiFyButton--primary:active,
+.tiFyButton--primary:focus{
+    background-color:#00a0d9;
+}
+
 /* = COLONNAGE = */
 [class*="tiFyCols-"],
 [class*="tiFyCols-"] > *{

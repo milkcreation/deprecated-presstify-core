@@ -3,7 +3,7 @@ var gulp    = require( 'gulp' ),
     csso    = require( 'gulp-csso' ),
     rename  = require( 'gulp-rename' ),
     uglify  = require( 'gulp-uglify' ),
-    path    = './vendor/tiFy/Assets/tify';
+    path    = './lib/Assets/tify';
 
 gulp.task( 'minifyCSS', function() {
     gulp.src( [ path + '/*.css', '!'+ path +'/*.min.css' ] )

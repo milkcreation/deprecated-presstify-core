@@ -77,7 +77,7 @@ jQuery(document).ready(function($){
         
         var $row = $(this).closest( 'tr' );        
         import_rows = 1;
-        
+
         importRow( $row );        
     });    
 
@@ -103,16 +103,24 @@ jQuery(document).ready(function($){
                 'option', 
                 { 
                     value :     0, 
-                    max :       import_rows, 
-                    close :     function( event, el ){
+                    max :       import_rows,
+                    show :      true,
+                    info :      '<span style="color:#2980b9;">'+tiFyTemplatesAdminImport.prepare+'</span>',
+                    close :     function( event, ui )
+                    {
+                        // Information d'annulation de l'import
+                        ui.infos( '<span style="color:#f1c40f;">'+tiFyTemplatesAdminImport.cancel+'</span>' );
+                        
                         // Désactivation du processus d'import
                         process = false;
-                        // Fermeture de l'indicateur de progression
-                        el.hide();
+                        
+                        // Attend de la fin de l'import en court pour fermer l'interface
+                        $( document ).on( 'tiFyTemplatesImport.complete', function(){
+                            ui.close();
+                        });                        
                     }  
                 }
-            )
-            .show();
+            );
         
         if( info.page ){
             AjaxListTable.page( 0 ).draw( 'page' );
@@ -134,8 +142,10 @@ jQuery(document).ready(function($){
      */
     var importRow = function( $row ) {
         // Bypass
-        if( ! import_rows || ! process )
+        if( ! import_rows || ! process ){
+            $( document ).trigger( 'tiFyTemplatesImport.complete' );
             return;
+        }
         
         // Traitement des données d'import
         var // Détermine la ligne de données à traiter
@@ -147,10 +157,6 @@ jQuery(document).ready(function($){
         if( ajax_data = JSON.parse( decodeURIComponent( $( '#datatablesAjaxData' ).val() ) ) ){
             data = $.extend( data, ajax_data );
         }
-        
-        // Bypass
-        if( ! data.filename )
-            return;  
 
         // Indicateur de traitement (overlay + animation du bouton)
         $row.addClass( 'active' ); 
@@ -165,21 +171,36 @@ jQuery(document).ready(function($){
             dataType:       'json', 
             success:        function( resp, textStatus, jqXHR )
             {       	
-                if( ! resp.success )
-                    console.log( resp.data );
+                // Information de résultat de l'import
+                if( ! resp.success ) {
+                    $( '#tiFyTemplatesImport-ProgressBar' ).tiFyProgress( 'infos', '<span style="color:#c0392b;">'+resp.data.message+'</span>' );
+                } else if( process ){
+                    $( '#tiFyTemplatesImport-ProgressBar' ).tiFyProgress( 'infos', '<span style="color:#1abc9c;">'+resp.data.message+'</span>' );
+                }
                 
+                // Incrémentation de la barre de progression
                 $( '#tiFyTemplatesImport-ProgressBar' ).tiFyProgress( 'increase' );
                 
                 // Le traitement est complet
                 if( ! --import_rows ){
                     AjaxListTable.draw( 'page' );
-                    // Désactivation du processus actif
-                    process = false;
+                    
+                    $( document )
+                        .on( 'draw.dt.tiFyTemplatesImport', function ( e, settings, json, xhr ) {                
+                            $( '#tiFyTemplatesImport-ProgressBar' ).tiFyProgress( 'close' );
+                            // Désactivation du processus actif
+                            process = false; importRow( 0 );
+                            
+                            $(this).unbind( 'draw.dt.tiFyTemplatesImport' );
+                        });                   
+                    
                     return;
+                    
                 // Le traitement suivant est sur la même page    
-                } if( ! next ){
+                } else if( ! next ){
                     var i = $row.next().index();
                     AjaxListTable.draw( 'page' );            
+                
                 // Le traitement suivant implique de passer à la page suivante    
                 } else {
                     var i = 0;

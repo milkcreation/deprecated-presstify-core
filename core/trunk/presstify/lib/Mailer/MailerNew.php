@@ -3,15 +3,18 @@
  * @see https://emails.hteumeuleu.fr/
  * @see http://openclassrooms.com/courses/e-mail-envoyer-un-e-mail-en-php 
  * @see http://www.iana.org/assignments/message-headers/message-headers.xhtml
+ * 
  * COMPATIBILITE CSS
  * @see http://www.email-standards.org/
  * @see https://www.campaignmonitor.com/css/
  * @see http://templates.mailchimp.com/resources/email-client-css-support/
+ * 
  * EMAIL BOILERPLATE
  * @see http://www.emailology.org
  * @see http://templates.mailchimp.com/development/css/reset-styles/
  * @see http://templates.mailchimp.com/development/css/client-specific-styles/
  * @see http://templates.mailchimp.com/development/css/outlook-conditional-css/
+ * 
  * LISTE DE MERGE TAGS
  * http://kb.mailchimp.com/merge-tags/all-the-merge-tags-cheat-sheet#Merge-tags-for-list-and-account-information
  **/

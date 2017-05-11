@@ -15,6 +15,9 @@
         "facebook/graph-sdk": "^5.5",
         "guzzlehttp/guzzle": "^6.2",
         "bshaffer/oauth2-server-php": "^1.9",
-        "mrclay/minify": "^3.0"
+        "mrclay/minify": "^3.0",
+        "twbs/bootstrap": "^3.3",
+        "FortAwesome/Font-Awesome": "^4.7",
+        "kenwheeler/slick": "^1.6"
     }
 }
