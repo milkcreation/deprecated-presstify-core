@@ -31,7 +31,8 @@ jQuery( document ).ready( function($){
         .disableSelection();
     
     // Suppression d'un élément
-    $( document ).on( 'click.tify.control.repeater.remove', '[data-tify_control="repeater"] > ul > li > .tify_button_remove', function(){
+    $( document ).on( 'click.tify.control.repeater.remove', '[data-tify_control="repeater"] > ul > li > .tify_button_remove', function(e){
+        e.preventDefault();
         $( this ).closest( 'li' ).fadeOut( function(){
             $( this ).remove();
         });

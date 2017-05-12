@@ -21,18 +21,19 @@ class Factory extends \tiFy\Core\Templates\Factory
      * Liste des modèles prédéfinis
      */ 
     protected static $Models                = array(
-        'AjaxExport', 
+        //'AjaxExport', 
         'AjaxListTable',
         'CsvPreview',
         'EditForm', 
-        'EditUser', 
+        'EditUser',
+        //'Export',
+        //'ExportUser',
+        'FileImport',
         'Import', 
         'ListTable', 
-        'ListUser',
-        
-        // Variations    
+        'ListUser',   
         'TabooxEditUser',
-        'TabooxForm'
+        'TabooxOption'
     );    
     
     /**

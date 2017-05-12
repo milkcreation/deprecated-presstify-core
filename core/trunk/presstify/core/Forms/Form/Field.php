@@ -156,7 +156,6 @@ class Field
         
         foreach( (array) $this->form()->addons() as $id => $addon ) :
             $this->Addons[$id] = $addon;
-            
             $addon->setField( $this, ( isset( $attrs[$id] ) ? (array) $attrs[$id] : array() ) );            
         endforeach;
     }

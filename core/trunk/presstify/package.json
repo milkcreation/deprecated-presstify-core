@@ -1,19 +1,13 @@
 {
-    "name":             "tiFyGulpAssets",
-    "version":          "0.2.0",
-    "description":      "Minification des CSS et JS des librairies tiFy",
-    "main":             "gulpfile.js",
-    "scripts": 
-    {
-        "test":             "echo \"Error: no test specified\" && exit 1"
-    },
-    "author":           "PresstiFy",
-    "devDependencies":
-    {
-        "gulp":             "latest",
-        "gulp-csso":        "latest",
-        "gulp-plumber":     "latest",
-        "gulp-rename":      "latest",
-        "gulp-uglify":      "latest"
+    "name":         "tiFyGulp",
+    "version":      "0.2.0",
+    "description":  "Minification des CSS et JS des librairies tiFy",
+    "author":       "Milkcreation",
+    "dependencies": {
+        "gulp":         "latest",
+        "gulp-csso":    "latest",
+        "gulp-plumber": "latest",
+        "gulp-rename":  "latest",
+        "gulp-uglify":  "latest"
     }
 }

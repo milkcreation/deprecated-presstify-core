@@ -4,8 +4,8 @@
 [data-tify_control='repeater'] > ul > li{
 	position:relative;
 	border:solid 1px #E4E4E4;
-	padding:5px 20px;
-	background-color:#F5F5F5;
+	padding:10px 25px;
+	background-color:#F9F9F9;
 }
 [data-tify_control='repeater'] > ul > li::before{
     position:absolute;
@@ -23,7 +23,8 @@
 [data-tify_control='repeater'] > ul > li.tiFyControlRepeater-ItemPlaceholder{
     background-color:#F9F9F9;
     border:dashed 2px #DDD;
-    min-height:50px;
+    padding:8px 23px;
+    min-height:20px;
 }
 [data-tify_control='repeater'] > ul > li.tiFyControlRepeater-ItemPlaceholder::before{
     display:none;
