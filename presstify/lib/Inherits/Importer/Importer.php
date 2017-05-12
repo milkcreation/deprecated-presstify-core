@@ -146,24 +146,24 @@ abstract class Importer
             $import->after_insert_datas( $import->InsertID );
             
             // Traitement des métadonnées
-            if( $metadatas = $import->getMetaDatas() ) :
+            if( $import->getMetaDatas() ) :
                 $import->_filterMetaValues();
                 $import->_checkMetaValues();
                 
-                foreach ( $metadatas as $meta_key => $meta_value ) :
+                foreach ( $import->getMetaDatas() as $meta_key => $meta_value ) :
         			$import->insert_meta( $import->InsertID, $meta_key, $meta_value );
                 endforeach;
-                
+
                 // Evénement post-insertion des metadonnées
                 $import->after_insert_metadatas( $import->InsertID );
             endif;
             
             // Traitement des termes de taxonomy
-            if( $taxonomies = $import->getTaxDatas() ) :
+            if( $import->getTaxDatas() ) :
                 $import->_filterTaxValues();
                 $import->_checkTaxValues();
                 
-                foreach ( $taxonomies as $taxonomy => $terms ) :
+                foreach ( $import->getTaxDatas() as $taxonomy => $terms ) :
         			$import->insert_taxonomy_terms( $import->InsertID, $terms, $taxonomy );
                 endforeach;
                 
@@ -172,11 +172,11 @@ abstract class Importer
             endif; 
             
             // Traitement des options
-            if( $options = $import->getOptDatas() ) :
+            if( $import->getOptDatas() ) :
                 $import->_filterOptionValues();
                 $import->_checkOptionValues();
                 
-                foreach ( $options as $option_name => $option_value ) :
+                foreach ( $import->getOptDatas() as $option_name => $option_value ) :
         			$import->insert_option( $import->InsertID, $option_name, $option_value );
                 endforeach;
                 
@@ -412,15 +412,16 @@ abstract class Importer
         endif;
         
         $insert_id = $this->getInsertId();        
-        
+
         foreach( $metadatas as $key => &$value ) :
             if( method_exists( $this, 'filter_meta_' . $key ) ) :
                 $value = call_user_func( array( $this, 'filter_meta_' . $key ), $value, $insert_id );
             else :
                 $value = call_user_func( array( $this, 'filter_metas' ), $value, $key, $insert_id );
             endif;
+                    
         endforeach;
-                
+              
         $this->MetaDatas = $this->FilteredDatas['metadata'] = $metadatas;
     }
     

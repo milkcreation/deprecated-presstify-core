@@ -86,7 +86,7 @@ class Repeater extends \tiFy\Core\Control\Factory
         if( ! $edit_html ) :
             ob_start();
             self::editHtml();
-            $edit_html = ob_end_clean();
+            $edit_html = ob_get_clean();
         endif;
         if( ! $value_html ) :
             $value_html = $edit_html;
@@ -182,10 +182,10 @@ class Repeater extends \tiFy\Core\Control\Factory
     /**
      * 
      */
-    protected function editHtml()
+    protected static function editHtml()
     {
 ?>
-<input type="text" name="%%name%%[%%index%%]" value="%%value%%"/>
+<input type="text" name="%%name%%[%%index%%]" value="%%value%%" class="widefat"/>
 <?php        
     }
 }

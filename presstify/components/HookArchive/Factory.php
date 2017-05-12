@@ -70,11 +70,14 @@ class Factory extends App
     private function ParseHooks( $hooks )
     {
         $defaults = array(
-            'id'        => 0,
-            'post_type'    => (string) $this->Options['post_type'],
-            'edit'        => (bool)  $this->Options['edit'],    
-            'permalink'    => $this->Options['permalink']
+            'id'            => 0,
+            'post_type'     => (string) $this->Options['post_type'],
+            'edit'          => (bool)  $this->Options['edit'],    
+            'permalink'     => $this->Options['permalink']
         );
+        
+        if( count( $hooks ) === 1 && empty( current( $hooks ) ) )
+            $hooks = array();
         
         switch( $this->Obj ) :
             case 'post_type' :

@@ -9,57 +9,6 @@ jQuery(document).ready(function($){
         process = false;
 
     /**
-     * GENERATION DU FICHIER D'EXEMPLE A TELECHARGER
-     */
-    /*
-    $( '#tify_adminview_import-download_sample' ).click( function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        window.location.href = tify_ajaxurl + '?action=tiFyCoreAdminModelImport_download_sample_' + id;
-        //$.post( tify_ajaxurl, { action : 'tiFyCoreAdminModelImport_download_sample_'+ id }, function( resp ){ });
-    });
-    */
-
-    /**
-     * TELECHARGEMENT DU FICHIER D'IMPORT
-     */    
-    $( '.tiFyTemplatesImportUploadForm-FileInput' ).on('change', function(e) {
-        e.stopPropagation(); e.preventDefault();
-        
-        $closest = $(this).closest('.tiFyTemplatesImport-Form--upload' );
-        $spinner = $( '.tiFyTemplatesImportUploadForm-Spinner', $closest );
-        
-        // Affichage du spinner        
-        $spinner.addClass( 'is-active' );
-        
-        // Traitement des données
-        files = e.target.files;
-        var data = new FormData();
-        $.each( files, function( key, value ){
-            data.append( key, value );
-        });    
-        data.append( 'action', ajax_action_prefix +'_upload' );
-           
-        $.ajax({
-            url:           tify_ajaxurl,
-            type:          'POST',
-            data:          data,
-            cache:         false,
-            dataType:      'json',
-            processData:   false,
-            contentType:   false, 
-            success:       function( resp, textStatus, jqXHR )
-            {
-                $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
-                AjaxListTable.draw(true);
-                
-                // Masquage du spinner 
-                $spinner.removeClass( 'is-active' );             
-            }
-        });
-    });
-
-    /**
      * IMPORT DES DONNEES
      */
     /**
@@ -149,10 +98,13 @@ jQuery(document).ready(function($){
         
         // Traitement des données d'import
         var // Détermine la ligne de données à traiter
-            import_index = $( '.tiFyTemplatesImport-RowImport', $row ).data( 'import_index' ),
+            row_key = $( '.tiFyTemplatesImport-RowImport', $row ).data( 'item_index_key' ),
+            row_value = $( '.tiFyTemplatesImport-RowImport', $row ).data( 'item_index_value' ),
+            
             // Si le traitement concerne la dernière ligne pour un passage à la page suivante
             next = $row.is( ':last-child' ) ? true : false,
-            data = { action: ajax_action_prefix +'_import', import_index: import_index };
+            data = { action: ajax_action_prefix +'_import'};
+            data[row_key] = row_value;
         
         if( ajax_data = JSON.parse( decodeURIComponent( $( '#datatablesAjaxData' ).val() ) ) ){
             data = $.extend( data, ajax_data );
