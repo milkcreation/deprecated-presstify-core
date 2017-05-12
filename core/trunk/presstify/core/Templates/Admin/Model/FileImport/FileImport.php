@@ -174,29 +174,28 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */
     public function _current_screen( $current_screen = null )
     {
-        parent::_current_screen( $current_screen );
+        //$_REQUEST['_import_row_index'] = 0;
         
-        if( ! $this->Importer )
-            return;
+        parent::_current_screen( $current_screen );
         
         // DEBUG - Tester la fonctionnalité d'import
         return;
-        $attrs = array(
-            'filename'      => $this->Filename,
-            'columns'       => $this->FileColumns,
-            'delimiter'     => $this->Delimiter            
-        );
         
-        $Csv = Csv::getRow( 0, $attrs );  
-	    $input_data = current( $Csv->getItems() );
+        if( ! $this->Importer )
+            return;   
 
-	    $res = call_user_func( $this->Importer .'::import', $input_data );
-
-	    if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
-	       echo $res['errors']->get_error_message();
+        if( $this->items ) :
+            $res = call_user_func( $this->Importer .'::import', (array) current( $this->items ) );
+        else :
+            $res = array( 'insert_id' => 0, 'errors' => new \WP_Error( 'tiFyTemplatesAdminImport-UnavailableContent', __( 'Le contenu à importer est indisponible', 'Theme' ) ) );
+        endif;
+            
+        if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
+	       wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
 	    else :
-	       var_dump( $res );
-        endif;	    
+	       wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
+        endif;
+        
         exit;
     }
     
