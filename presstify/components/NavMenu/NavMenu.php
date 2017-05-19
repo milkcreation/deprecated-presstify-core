@@ -38,8 +38,12 @@ class NavMenu extends \tiFy\Environment\Component
         if( isset( self::$Factory[$id] ) )
             return;
         
-        $path = array( "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id ) );
-              
+        $path = array();
+        if( isset( $attrs['cb'] ) ) :
+            $path[] = $attrs['cb'];
+        endif;           
+        $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id );
+        
         return self::$Factory[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Factory", $path );  
     }
     
