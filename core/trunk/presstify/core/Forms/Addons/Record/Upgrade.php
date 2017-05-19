@@ -29,4 +29,14 @@ class Upgrade extends \tiFy\Lib\Upgrade
 
 		return __( 'Translation des données vers les nouvelles tables d\'enregistrement des données de formulaire -> OK', 'tify' );
 	}
+	
+	// Translation des données vers les nouvelles tables et suppression des anciennes tables
+	protected function update_1705151428()
+	{
+        global $wpdb;
+        
+        $wpdb->query( "UPDATE ". $wpdb->prefix ."tify_forms_record SET record_status='publish' WHERE ! record_status;" );
+        
+        return __( 'Mise à jour des statuts d\'enregistrement des données de formulaires enregistrés.', 'tify' );
+	}
 }

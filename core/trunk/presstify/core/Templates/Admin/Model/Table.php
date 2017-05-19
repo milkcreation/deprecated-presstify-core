@@ -316,9 +316,9 @@ jQuery(document).ready( function($){
     /** == Récupération des éléments == **/
     public function prepare_items() 
     {                
-        // Récupération des items
+        // Récupération des items        
         $query = $this->db()->query( $this->parse_query_args() );
-        $this->items = $query->items;
+        $this->items = $query->items;        
         
         // Pagination
         $total_items    = $query->found_items;

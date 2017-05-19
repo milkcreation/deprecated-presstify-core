@@ -39,7 +39,7 @@ class Video extends \tiFy\Lib\Modal\Modal
 			$args['modal']['attrs']['data-type']	= 'video';
 			$args['modal']['attrs']['data-video'] 	= htmlentities( json_encode( wp_parse_args( $args['video'], self::$defaultVideoAttrs ) ) );
 		endif;
-					
+				
 		return parent::toggle( $args, $echo );
 	}
 	

@@ -93,7 +93,7 @@ class Modal extends \tiFy\Environment\App
 	/* = Lien de déclenchement d'une modale = */
 	public static function toggle( $args = array(), $echo = true )
 	{		
-		$args = self::parseToggleAttrs( $args );
+	    $args = self::parseToggleAttrs( $args );
 		
 		$output  = "";
 		$output .= "<a href=\"{$args['href']}\"";
@@ -112,6 +112,7 @@ class Modal extends \tiFy\Environment\App
 		
 		// Chargement de la modal 
 		$modal_attrs = isset( $args['modal'] ) ? $args['modal'] : array();
+
 		if( $modal_attrs !== false ) :
 			$modal_attrs['target'] = $args['target'];				
 			if( ! isset( $modal_attrs['options']['show'] ) ) :
@@ -212,7 +213,7 @@ class Modal extends \tiFy\Environment\App
 		$output .= $args['after'];
 		$output .= "</div>\n";
 		
-		if( $echo && $args['in_footer'] ) :
+		if( $args['in_footer'] ) :
 			add_action( 
 				'wp_footer', 
 				function() use( $output ){
@@ -228,7 +229,7 @@ class Modal extends \tiFy\Environment\App
 		
 		// Chargement des scripts
 		if( ! self::$Instance++ ) :
-			$url = self::getUrl(). '/Modal.min.js';
+			$url = self::getUrl( get_class() ) .'/Modal.min.js';
 			add_action( 
 				'wp_footer', 
 				function() use( $url ){
@@ -237,7 +238,5 @@ class Modal extends \tiFy\Environment\App
 				1
 			);
 		endif;
-		
-		return $output;
 	}
 }
