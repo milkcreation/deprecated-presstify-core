@@ -9,7 +9,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
      * Identifiant de la classe
      */
     protected $ID = 'crypted_data';
-
+    
     /**
      * Instance Courante
      */ 
@@ -99,7 +99,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
         self::$Instance++;
         
         $defaults = array(
-            // ID HTML cu conteneur
+            // ID HTML du conteneur
             'container_id'          => 'tiFyControlCryptedData--'. self::$Instance,
             // Classe HTML du conteneur
             'container_class'       => '',
