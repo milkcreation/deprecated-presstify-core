@@ -45,16 +45,7 @@ class ImageGallery extends \tiFy\Core\Taboox\Helpers
 			// Attribut des vignettes
 			'attrs'				=> array( 'title', 'link', 'caption' ),
 			// Options
-			'options'		=> array(
-				// Résolution du slideshow
-				'ratio'				=> '16:9',			
-				// Navigation suivant/précédent
-				'arrow_nav'			=> true,
-				// Vignette de navigation
-				'tab_nav'			=> true,
-				// Barre de progression
-				'progressbar'		=> false
-			)
+			'options'		    => array() 
 		);		
 		$args = wp_parse_args( $args, $defaults );
 		
@@ -81,7 +72,19 @@ class ImageGallery extends \tiFy\Core\Taboox\Helpers
 			
 		$id = $args['id'];
 		$class = $args['class'];
-		$options = $args['options'];
+		$options = wp_parse_args( 
+		    $args['options'], 
+		    array(
+				// Résolution du slideshow
+				'ratio'				=> '16:9',			
+				// Navigation suivant/précédent
+				'arrow_nav'			=> true,
+				// Vignette de navigation
+				'tab_nav'			=> true,
+				// Barre de progression
+				'progressbar'		=> false
+			)
+	    );
 				
 		return compact( 'id', 'class', 'options', 'slides' );		    
 	}

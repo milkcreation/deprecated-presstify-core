@@ -56,7 +56,15 @@ class Slider extends \tiFy\Core\Control\Factory
         $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\">\n";
         
         // Preview
-        $output .= "\t<div class=\"tiFyControl-sliderPreview viewer\">\n";        
+        $output .= "\t<div class=\"tiFyControl-sliderPreview viewer\"";
+        foreach( $options as $k => $v ) :
+            // @see mu-plugins/presstify/lib/Assets/tify/tify-slideshow.js
+            if( ! in_array( $k, array( 'interval', 'pause', 'transition', 'speed', 'easing' , 'resize', 'bypage' ) ) )
+                continue;
+            $output .= " data-{$k}=\"{$v}\"";                
+        endforeach;
+        $output .= ">\n"; 
+        
         $output .= "\t\t<ul class=\"tiFyControl-sliderPreviewItems roller\">\n";
         foreach( (array) $slides as $slide ) :
             $output .= "\t\t\t<li class=\"tiFyControl-sliderPreviewItem\">\n";            
