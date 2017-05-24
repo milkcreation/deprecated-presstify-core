@@ -105,7 +105,7 @@
 		// Initialisation du plugin	    
 	 	init : function( ){
 			var self = this;
-			
+
 			// Tatouage de l'index des éléments
 			$( '> li', self.$roller ).each( function(u,v){
 				$(this).attr('data-index', u );
@@ -122,8 +122,8 @@
 			
 			// Court-circuitage du diaporama si le nombre de slide est insuffisant
 			if( $( '> li', self.$roller ).length <= self.o.bypage ){
-				$( '[data-arrownav]', self.$el ).hide();
-				return;
+				$( '[data-arrownav], [data-tabnav]', self.$el ).hide();
+				//return;
 			}
 			
 			// Ecoute des actions sur la galerie
@@ -219,7 +219,7 @@
 			
 			// Navigation suivant/précédent
 			self._nav(); 			
-
+			
 			// Responsivité 		
 			if( self.o.resize )
 				self._resize();			
