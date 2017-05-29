@@ -8,16 +8,16 @@ jQuery( document ).ready( function($){
         $.fn.dataTable.defaults, 
         {
             // Liste des colonnes
-            columns:            tiFyTemplatesAdminAjaxListTable.columns,
+            columns:                tiFyTemplatesAdminAjaxListTable.columns,
             
             // Nombre d'éléments par page
-            iDisplayLength:        parseInt( tiFyTemplatesAdminAjaxListTable.per_page ),
+            iDisplayLength:         parseInt( tiFyTemplatesAdminAjaxListTable.per_page ),
             
             // Tri par défaut
-            order:                 [],  
+            order:                  [],  
             
             // Traduction
-            language:            tiFyTemplatesAdminAjaxListTable.language,
+            language:               tiFyTemplatesAdminAjaxListTable.language,
             
             // Interface
             dom: 'rt'

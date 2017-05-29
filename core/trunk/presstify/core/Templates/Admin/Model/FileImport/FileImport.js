@@ -19,7 +19,7 @@ jQuery(document).ready(function($){
      */    
     $( '.tiFyTemplatesFileImportUploadForm-FileInput' ).on('change', function(e) {
         e.stopPropagation(); e.preventDefault();
-        console.log( 'tutu' );
+
         $closest = $(this).closest('.tiFyTemplatesFileImport-Form--upload' );
         $spinner = $( '.tiFyTemplatesFileImportUploadForm-Spinner', $closest );
         

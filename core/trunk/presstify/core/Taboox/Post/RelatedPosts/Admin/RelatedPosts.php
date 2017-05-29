@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Post\RelatedPosts\Admin;
 
-class RelatedPosts extends \tiFy\Core\Taboox\Admin
+class RelatedPosts extends \tiFy\Core\Taboox\Post\Admin
 {
 	/* = ARGUMENTS = */
 	// 

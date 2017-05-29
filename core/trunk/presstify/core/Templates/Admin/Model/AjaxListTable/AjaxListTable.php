@@ -7,19 +7,19 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
      * Nombre d'éléments trouvés
      * @var integer
      */
-    protected  $FoundItems    = 0;
+    protected $FoundItems       = 0;
     
     /**
      * Nombre total d'éléments
      * @var integer
      */
-    protected  $TotalItems    = 0;
+    protected $TotalItems       = 0;
 
     /**
      * Nombre total de page d'éléments
      * @var integer
      */
-    protected $TotalPages    = 0;
+    protected $TotalPages       = 0;
     
     /**
      * PARAMETRES
