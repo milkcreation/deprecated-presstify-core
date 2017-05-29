@@ -228,7 +228,7 @@
 		// Navigation
 		_nav : function(){
 			var self = this;
-			
+
 			// Navigation suivant/précédent
 			$( '[data-arrownav]', self.$el ).click( function(e){
 				e.preventDefault();

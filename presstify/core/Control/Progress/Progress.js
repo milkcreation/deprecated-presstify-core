@@ -114,6 +114,11 @@
             this.el.hide();
         },
         
+        // Réinitialisation
+        reset:          function () {
+            this.value(0);
+        },
+        
         infos:           function ( html ) {
             this.info.html( html ).hide().fadeIn();
         }

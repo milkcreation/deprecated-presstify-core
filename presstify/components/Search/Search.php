@@ -102,9 +102,9 @@ class Search extends Component
 		else :	
 			/// Requête principale
 			if( $query->is_main_query() ) :
-				if( $query->is_search()  ) :
+				if( $query->is_search() ) :
 					add_filter( 'posts_search', array( $this, 'posts_search' ), 10, 2 );
-					add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );					
+					add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );	
 				elseif( $query->get( '_s', '' ) ) :
 					add_filter( 'posts_search', array( $this, 'posts_search' ), 11, 2 );
 					add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 11, 2 );					
@@ -129,7 +129,7 @@ class Search extends Component
 	final public function posts_clauses( $pieces, $query )
 	{	
 		global $wpdb;
-
+        
 		extract( $pieces );
 	
 		$sresults = false;
@@ -227,9 +227,10 @@ class Search extends Component
 		endif;
 
 		// Empêche l'execution multiple du filtre
-		if( $query->is_main_query() )
-			\remove_filter( current_filter(), __METHOD__ );
-			
+		if( $query->is_main_query() ) :
+			\remove_filter( current_filter(), array( $this, 'posts_clauses' ), 10 );
+		endif;
+		
 		return compact( array_keys( $pieces ) );
 	}
 	
