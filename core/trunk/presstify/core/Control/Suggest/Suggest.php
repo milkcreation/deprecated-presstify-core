@@ -160,7 +160,7 @@ class Suggest extends Factory
     }
     
     /**
-     *  Récupération de la reponse via Ajax
+     * Récupération de la reponse via Ajax
      */
     final public function ajax()
     {
