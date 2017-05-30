@@ -203,7 +203,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         $datatablesAjaxData = array();        
 ?>
 <input type="hidden" id="ajaxActionPrefix" value="<?php echo $ajaxActionPrefix;?>" />
-<input type="hidden" id="datatablesAjaxData" value="<?php echo  urlencode( json_encode( $datatablesAjaxData ) );?>" />
+<input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( $datatablesAjaxData ) );?>" />
 <?php
     }
     
