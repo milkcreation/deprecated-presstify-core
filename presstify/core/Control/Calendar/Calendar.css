@@ -69,7 +69,7 @@
 }
 .tiFyCalendar-headerItem{
     float:left;
-    width:14.286%;
+    width:14.285%;
     text-align:center;
 }
 .tiFyCalendar-datesItem{
@@ -83,7 +83,7 @@
 .tiFyCalendar-datesItemDay{
     position:relative;
     float:left;
-    width:14.286%;    
+    width:14.285%;    
 }
 .tiFyCalendar-datesItemDayLink{
     position:absolute;
