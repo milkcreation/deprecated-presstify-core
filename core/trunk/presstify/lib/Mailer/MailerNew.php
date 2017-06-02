@@ -38,7 +38,10 @@ class MailerNew
     public static $Cc                   = array();
     
     /// Destinataires de copie cachée
-    public static $Bcc                  = array();    
+    public static $Bcc                  = array();
+    
+    // Pièces jointes
+    public static $Attachments          = array();
     
     // Sujet
     public static $Subject              = '';
@@ -87,7 +90,7 @@ class MailerNew
         // Paramètres de contact
         'To', 'From', 'ReplyTo', 'Cc', 'Bcc', 
         // Paramètres du mail
-        'Subject', 'Message', 'MessageHeader', 'MessageFooter',
+        'Attachments', 'Subject', 'Message', 'MessageHeader', 'MessageFooter',
         // Variables d'environnement
         'MergeTags', 'MergeTagsFormat',
         // Formatage du message
@@ -167,6 +170,13 @@ class MailerNew
                 continue; 
             self::${$param} = self::parseContact( self::${$param} );
         endforeach;
+        
+        // Traitement des pièces jointes
+        if( ! empty( self::$Attachments ) ) :
+            foreach( self::$Attachments as $n => $attachment ) :
+                self::$Attachments[$n] = self::parseAttachment( $attachment );
+            endforeach;
+        endif;
         
         // Définition de l'éxpéditeur requis
         if( empty( self::$From ) ) :
@@ -253,6 +263,17 @@ class MailerNew
                 $phpmailer->addBCC( $contact['email'], $contact['name'] );          
             endforeach;
         endif;  
+        
+        // Pièces jointes
+        if( ! empty( self::$Attachments ) ) :
+            foreach( self::$Attachments as $attachment ) :
+                if( empty( $attachment['path'] ) ) :
+                    continue;
+                endif;
+                extract( $attachment );
+                $phpmailer->addAttachment( $path, $name, $encoding, $type, $disposition );
+            endforeach;
+        endif;
         
         // Sujet du message
         $phpmailer->Subject = self::$Subject;
@@ -405,6 +426,19 @@ class MailerNew
         endif;
         
         return $contact;        
+    }
+    
+    /** == Traitement des pièces jointes == **/
+    public static function parseAttachment( $attachment )
+    {
+        $defaults = array(
+            'path'          => '',
+            'name'          => '',
+            'encoding'      => 'base64',
+            'type'          => '',
+            'disposition'   => 'attachment'
+        );
+        return wp_parse_args( $attachment, $defaults );
     }
     
     /** == Formatage d'un contact == **/
