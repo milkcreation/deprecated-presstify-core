@@ -9,7 +9,7 @@ class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
 	
 	/// Cartographie des paramètres
 	protected $ParamsMap			= array( 
-		'BaseUri', 'EditBaseUri', 'Plural', 'Singular','Notices', 'FilteredViewLinks', 
+		'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'FilteredViewLinks', 
 	    'ItemIndex', 'Columns', 'SortableColumns', 'PerPage',  
 		'QueryArgs', 'NoItems', 'BulkActions', 'RowActions', 'PageTitle',
 		'Roles'

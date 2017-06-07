@@ -27,7 +27,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     private $Roles                = array();
     
     /// Identifiant de l'utilisateur
-    private $UserID             = 0;
+    protected $UserID             = 0;
     
     /// Page d'édition du profil utilisateur
     private $isProfile            = false;
@@ -241,7 +241,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
         
         // Traitement des metadonnées et options utilisateur
         if( ! is_wp_error( $user_id ) ) :
-            $this->UserID = $user_id;
+            $this->setUserID( $user_id );
 
             // Création ou modification des informations personnelles
             foreach( $this->form()->getFieldsValues( true ) as $slug => $value ) :
@@ -259,6 +259,12 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     }
         
     /* = PARAMETRES = */
+    /** == Initialisation de l'ID Utilisateur == **/
+    final protected function setUserID( $user_id )
+    {
+        $this->UserID = $user_id;
+    }
+    
     /** == Récupération de l'ID Utilisateur == **/
     final protected function getUserID()
     {
