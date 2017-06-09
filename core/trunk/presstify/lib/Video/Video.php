@@ -1,21 +1,20 @@
 <?php
-namespace tiFy\Components\Video;
+namespace tiFy\Lib\Video;
 
 class Video
 {
-	/* = ARGUMENTS = */
-		
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		// Actions et Filtres Wordpress
-		add_action( 'wp_head', array( $this, 'wp_head' ) );
-		add_filter( 'embed_oembed_html', array( $this, 'embed_oembed_html' ), 10, 4 );		
-		add_filter( 'wp_video_extensions', array( $this, 'wp_video_extensions' ) );
+    /**
+     * CONSTRUCTEUR
+     */
+    public function __construct()
+    {
+        add_action( 'wp_head', array( $this, 'wp_head' ) );
+		add_filter( 'embed_oembed_html', array( $this, 'embed_oembed_html' ), 10, 4 );
+        add_filter( 'wp_video_extensions', array( $this, 'wp_video_extensions' ) );
 		add_filter( 'oembed_fetch_url', array( $this, 'oembed_fetch_url' ), 10, 3 );
 		add_filter( 'oembed_result', array( $this, 'oembed_result' ), 10, 3 );
-	}	
-		
+    }
+    
 	/* = DECLENCHEURS = */
 	/** == Responsivité des vidéos intégrées == **/
 	final public function wp_head()
@@ -94,8 +93,14 @@ class Video
     	return $html;
 	}
 		
-	/* = CONTROLEUR * =/
-	/** == Récupération du code d'intégration d'une vidéo == **/
+	/**
+	 * MÉTHODES
+	 */
+	/**
+	 * Récupération du code d'intégration d'une vidéo
+	 * @param array $attr Paramètres de la vidéo
+	 * @return string|false Code d'affichage de la vidéo
+	 */
 	public static function getEmbed( $attr )
 	{
 		$src = preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $attr['src'] );

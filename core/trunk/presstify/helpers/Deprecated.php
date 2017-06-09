@@ -16,18 +16,34 @@ namespace
 		exit;
 	}
 	
-	/** == 0.9.9.161008 == **/
+	/** == 1.0.323 == **/
 	function tify_video_toggle( $target = null, $args = array() )
 	{
-		_deprecated_function( __FUNCTION__, '0.9.9.161008', 'tify_modal_video_toggle' );	
+		_deprecated_function( __FUNCTION__, '1.0.323', 'tify_video_modal_toggle' );	
 		
 		if( ! isset( $args['target'] ) )
 			$args['target'] = $target;
 		
 		$args['video'] = $args['attr'];
 		
-		return tify_modal_video_toggle( $args, ( isset( $args['echo'] ) ? $args['echo'] : true ) );
-	}	
+		return tify_video_modal_toggle( $args, ( isset( $args['echo'] ) ? $args['echo'] : true ) );
+	}
+	
+	/** == 1.0.323 == **/
+	function tify_modal_video_toggle( $args = array(), $echo = true )
+	{
+	    _deprecated_function( __FUNCTION__, '1.0.323', 'tify_video_modal_toggle' );
+		
+		return tify_video_modal_toggle( $args, $echo );
+	}
+	
+	/** == 1.0.323 == **/
+	function tify_modal_video( $args = array(), $echo = true  )
+	{
+	     _deprecated_function( __FUNCTION__, '1.0.323', 'tify_video_modal' );
+	     
+	     return tify_video_modal( $args, $echo );
+	}
 	
 	/** == 0.2.151228 == **/
 	function tify_require(){

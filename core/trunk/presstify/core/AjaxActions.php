@@ -49,7 +49,7 @@ class AjaxActions extends \tiFy\Environment\App
 		if( empty( $_REQUEST['attr']['src'] ) )
 			die(0);
 		
-		wp_die( \tiFy\Components\Video\Video::getEmbed( $_REQUEST['attr'] ) );
+		wp_die( \tiFy\Lib\Video\Video::getEmbed( $_REQUEST['attr'] ) );
 		exit;
 	} 
 }

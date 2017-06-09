@@ -45,5 +45,9 @@ class Autoload
         $loader->addNamespace( 'tiFy\Statics', __DIR__ .'/Statics' );
                         
         $loader->register();
+        /**
+         * Vidéo
+         */
+        new \tiFy\Lib\Video\Video;
     }
 }
