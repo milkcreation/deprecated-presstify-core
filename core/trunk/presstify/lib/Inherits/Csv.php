@@ -91,6 +91,11 @@ class Csv
      * ex array( 'ID', 'title', 'description' );
      */
     public $Columns                 = array();
+       
+    /**
+     * Encodage UTF-8 des données
+     */
+    public $Utf8Encode              = false;
     
     /**
      * Types de fichier autorisés
@@ -160,6 +165,9 @@ class Csv
                     break;
                 case 'columns' :
                     $this->Columns = $option_value;
+                    break;
+                case 'utf8_encode' :
+                    $this->Utf8Encode = $option_value;
                     break;
                 case 'orderby' :
                     $this->OrderBy = $option_value;
@@ -499,11 +507,11 @@ class Csv
         // Récupération des résultats
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
-            function($row){ 
-                return array_map( 'utf8_encode', $row );
+            function($row, $rowOffset){
+                return $csv->Utf8Encode ? array_map( 'utf8_encode', $row ) : $row;
             } 
-        );
-        $csv->Items = iterator_to_array( $results ); 
+        );    
+        $csv->Items = iterator_to_array( $results );       
         
         // Définition du nombre d'élément trouvés pour la requête
         $found_items = count( $csv->Items );
@@ -534,7 +542,7 @@ class Csv
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
             function($row){ 
-                return array_map( 'utf8_encode', $row );
+                return $csv->Utf8Encode ? array_map( 'utf8_encode', $row ) : $row;
             } 
         );
         $csv->Items = iterator_to_array( $results );
