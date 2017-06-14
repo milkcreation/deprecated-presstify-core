@@ -410,7 +410,7 @@ class ScriptLoader extends \tiFy\Environment\App
                 'src'           => array(
                     'local'         => tiFy::$AbsUrl .'/lib/Assets/tify/tify-slideshow'. $min .'.js'
                 ),
-                'deps'          => array( 'jquery', 'easing' ),
+                'deps'          => array( 'jquery', 'easing', 'jquery-ui-draggable', 'jquery-touch-punch' ),
                 'version'       => '160602',
                 'in_footer'     => true 
             ),
@@ -505,11 +505,10 @@ class ScriptLoader extends \tiFy\Environment\App
         /// Easing
         self::$JsLib['easing']                      = array(
             'src'           => array(
-                'local'        => tiFy::$AbsUrl .'/lib/Assets/jquery.easing.min.js',
-                'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js'
+                'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js'
             ),
             'deps'          => array( 'jquery' ),
-            'version'       => '1.3',
+            'version'       => '1.4.1',
             'in_footer'     => true 
         );
         

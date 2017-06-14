@@ -91,11 +91,6 @@ class Csv
      * ex array( 'ID', 'title', 'description' );
      */
     public $Columns                 = array();
-       
-    /**
-     * Encodage UTF-8 des données
-     */
-    public $Utf8Encode              = false;
     
     /**
      * Types de fichier autorisés
@@ -165,9 +160,6 @@ class Csv
                     break;
                 case 'columns' :
                     $this->Columns = $option_value;
-                    break;
-                case 'utf8_encode' :
-                    $this->Utf8Encode = $option_value;
                     break;
                 case 'orderby' :
                     $this->OrderBy = $option_value;
@@ -451,7 +443,7 @@ class Csv
     final public static function getResults( $args = array() )
     {
         $csv = new Static( $args );
-        
+
         // Traitement global du fichier csv
         $reader = \League\Csv\Reader::createFromFileObject( new \SplFileObject( $csv->getFilename() ) );
         
@@ -505,10 +497,11 @@ class Csv
         $reader->setLimit( $per_page );
                
         // Récupération des résultats
+        $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
-            function($row, $rowOffset){
-                return $csv->Utf8Encode ? array_map( 'utf8_encode', $row ) : $row;
+            function($row, $rowOffset) use( $utf8_encode ) {
+                return $utf8_encode ? array_map( 'utf8_encode', $row ) : $row;
             } 
         );    
         $csv->Items = iterator_to_array( $results );       
@@ -539,10 +532,11 @@ class Csv
             ->setLimit( 1 );            
                
         // Récupération des résultats
+        $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
-            function($row){ 
-                return $csv->Utf8Encode ? array_map( 'utf8_encode', $row ) : $row;
+            function($row) use( $utf8_encode ) { 
+                return $utf8_encode ? array_map( 'utf8_encode', $row ) : $row;
             } 
         );
         $csv->Items = iterator_to_array( $results );

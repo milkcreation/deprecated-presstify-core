@@ -19,7 +19,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      * Délimiteur de colonnes du fichier CSV
      */
     protected $Delimiter        = ',';    
-  
+    
     /**
      * Habilitation de téléchargement de fichier externe
      */
@@ -39,7 +39,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function set_params_map()
     {
         $params = parent::set_params_map();        
-        array_push( $params, 'Filename', 'FileColumns', 'Delimiter', 'Uploadable', 'UploadDir' );
+        array_push( $params, 'Filename', 'FileColumns', 'Delimiter', 'Utf8Encode', 'Uploadable', 'UploadDir' );
         
         return $params;
     }

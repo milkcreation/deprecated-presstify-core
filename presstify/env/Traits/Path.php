@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Environment\Traits;
 
+use \tiFy\tiFy;
+
 trait Path
 {
     /* = DEPRECATED = */
@@ -170,5 +172,15 @@ trait Path
 		endif;
 		
 		return self::$_RelPath[$CalledClass];
+	}
+	
+	/**
+	 * Récupération du chemin de surcharge
+	 * @param unknown $CalledClass
+	 * @return unknown
+	 */
+	public static function getOverridePath( $CalledClass = null )
+	{
+		return tiFy::$Params['config']['theme']['base_dir'];
 	}
 }

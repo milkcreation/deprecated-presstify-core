@@ -76,27 +76,27 @@ class Suggest extends Factory
             
             // Options Autocomplete
             /** @see http://api.jqueryui.com/autocomplete/ **/
-            'options'            => array(
+            'options'               => array(
                 //( isset( $args['id'] ) ) ? '#'.$args['id'] .'_response' : '#tify_control_suggest-'. $instance .'_response',
-                'appendTo'        => 'body',
-                'minLength'        => 2
+                'appendTo'              => 'body',
+                'minLength'             => 2
             ),
             // Classe de la liste de selection    
-            'picker'            => ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : 'tify_control_suggest-'. $instance .'_picker',                
+            'picker'                => ( isset( $args['id'] ) ) ? ''.$args['id'] .'_picker' : 'tify_control_suggest-'. $instance .'_picker',
                 
             // Arguments passés par la requête
-            'ajax_action'        => 'tify_control_suggest_ajax',
-            'query_args'        => array(), 
-            'elements'            => array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
-            'extras'            => array()
+            'ajax_action'           => 'tify_control_suggest_ajax',
+            'query_args'            => array(), 
+            'elements'              => array( 'title', 'permalink' /*'id', 'thumbnail', 'ico', 'type', 'status'*/ ),
+            'extras'                => array()
         );
         $args = wp_parse_args( $args, $defaults );
         extract( $args );
         
-        $elements    = htmlentities( json_encode( $elements ) );
-        $query_args    = htmlentities( json_encode( $query_args ) );
-        $extras        = htmlentities( json_encode( $extras ) );
-        $options    = htmlentities( json_encode( $options ) );
+        $elements       = htmlentities( json_encode( $elements ) );
+        $query_args     = htmlentities( json_encode( $query_args ) );
+        $extras         = htmlentities( json_encode( $extras ) );
+        $options        = htmlentities( json_encode( $options ) );
         
         $search_before = '<button type="button" class="tify_control_suggest_button tify_control_suggest_search">';
         $search_after = '</button>';

@@ -83,8 +83,9 @@ class Factory extends App
             case 'post_type' :
                 if( ! empty( $hooks ) ) :
                 else :
-                    $hooks = get_option( "tify_hook_". $this->Obj ."_". $this->Archive, array() );
+                    $hooks = get_option( "tify_hook_". $this->Obj ."_". $this->Archive, array( array() ) );
                 endif;
+                break;
             case 'taxonomy' :
                 $defaults['term'] = 0; 
                 $exists = array();

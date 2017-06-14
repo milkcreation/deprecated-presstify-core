@@ -14,7 +14,7 @@ class Control extends \tiFy\Environment\Core
     public function __construct()
     {
         parent::__construct();
-        
+
         foreach( glob( self::getDirname() .'/*/', GLOB_ONLYDIR ) as $filename ) :
             $basename     = basename( $filename );
             $ClassName    = "\\tiFy\\Core\\Control\\{$basename}\\{$basename}";
@@ -24,7 +24,7 @@ class Control extends \tiFy\Environment\Core
         
         new _Deprecated\_Deprecated;
     }
-
+        
     /**
      * CONTROLEURS
      */
@@ -37,9 +37,10 @@ class Control extends \tiFy\Environment\Core
         if( ! class_exists( $ClassName ) ) :
             return;
         endif;
-        $Class = new $ClassName;
+        $Class = self::loadOverride( $ClassName );
         
-        if( ! empty( $Class->ID ) && ! isset( self::$Factory[$Class->ID] ) )
+        if( ! empty( $Class->ID ) && ! isset( self::$Factory[$Class->ID] ) ) :
             self::$Factory[$Class->ID] = $Class;
+        endif;
     }
 }
