@@ -14,7 +14,7 @@ jQuery(document).ready( function($){
 		
 		$( '[data-hide_unchecked]', $item ).not( ':checked' ).each( function(){
 			var target = $(this).data( 'hide_unchecked' );
-			$(this).closest( '.input-fields' ).find( target ).each( function(){
+			$(this).closest( '.tiFyTabooxSlideshowList-inputFields' ).find( target ).each( function(){
 				$(this).hide();
 			});
 		});
@@ -24,11 +24,12 @@ jQuery(document).ready( function($){
 	var getItem = function( target, post_id ){
 		var $target		= $( target ),
 			$container	= $target.closest( '.tify_taboox_slideshow' ),
-			action		= $container.data( 'action');
+			action		= $container.data('action'),
+			max         = $container.data('max');
 
-		var count = $( '.items > ul > li', $container ).length;
-		
-		if( ( tiFyTabooxOptionSlideshowAdmin.max > 0 ) && ( count == tiFyTabooxOptionSlideshowAdmin.max ) ){
+		var count = $( '.tiFyTabooxSlideshowList-item', $container ).length;
+
+		if( ( max > 0 ) && ( count == max ) ){
 			alert( tiFyTabooxOptionSlideshowAdmin.l10nMax );
 			return false;
 		}		
@@ -39,18 +40,17 @@ jQuery(document).ready( function($){
 			dataType 	: 'html',
 			type 		: 'post',
 			beforeSend : function(){
-				$( '.items > .overlay', $container ).show();
+				$( '.tiFyTabooxSlideshowList-overlay', $container ).show();
 			},
 			complete	: function( resp ){
-				$( '.items > .overlay', $container ).hide();
+				$( '.tiFyTabooxSlideshowList-overlay', $container ).hide();
 			},
 			success		: function( resp ){
 				$( '.items > ul', $container ).prepend( resp );
-				var $item = $( '.items > ul > li:eq(0)', $container );
+				var $item = $( '.tiFyTabooxSlideshowList-item:eq(0)', $container );
 				initItem( $item );
 				orderItem( $container );
 				$( document ).trigger( 'tify_taboox_slideshow_item_load', $item );
-				//$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).val( '' );
 			}
 		});		
 		return false;
@@ -58,24 +58,24 @@ jQuery(document).ready( function($){
 	
 	// Mise à jour de l'ordre des items
 	var orderItem = function( $container ){
-		$( '.items > ul > li', $container ).each( function(){
-			$(this).find( '.order-value').val( parseInt( $(this).index()+1 ) );
+		$( '.tiFyTabooxSlideshowList-item', $container ).each( function(){
+			$(this).find( '.tiFyTabooxSlideshowItemHelper-orderInput').val( parseInt( $(this).index()+1 ) );
 		});
 	};
 	
-	$( '.tify_taboox_slideshow > .items > ul > li' ).each( function(){
+	$( '.tiFyTabooxSlideshowList-item' ).each( function(){
 		initItem( $(this) );
 	});
 	
 	// 
-	$( document ).on( 'change', '.tify_taboox_slideshow > .items > ul > li > .input-fields [data-hide_unchecked]', function(e){
+	$( document ).on( 'change', '.tiFyTabooxSlideshowList-inputFields [data-hide_unchecked]', function(e){
 		var target = $(this).data( 'hide_unchecked' );
 		if( $(this).is(':checked' ) ){
-			$(this).closest( '.input-fields' ).find( target ).each( function(){
+			$(this).closest( '.tiFyTabooxSlideshowList-inputFields' ).find( target ).each( function(){
 				$(this).show();
 			});
 		} else {
-			$(this).closest( '.input-fields' ).find( target ).each( function(){
+			$(this).closest( '.tiFyTabooxSlideshowList-inputFields' ).find( target ).each( function(){
 				$(this).hide();
 			});
 		}
@@ -83,7 +83,7 @@ jQuery(document).ready( function($){
 	
 	// Autocomplete
 	/// Modification de l'autocomplete pour éviter les doublons		
-	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).on( "autocompletesearch", function( e, ui ) {
+	$( '.tiFyTabooxSlideshowSelector-suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).on( "autocompletesearch", function( e, ui ) {
 		var $input		= $( e.target ),
 			$container	= $input.closest( '.tify_taboox_slideshow' ),
 			$suggest 	= $input.closest( '.tify_control_suggest' );
@@ -94,7 +94,7 @@ jQuery(document).ready( function($){
 			extras			= $suggest.data( 'extras' ),
 			post__not_in 	= [];
 		
-		$( '.items > ul > li > .input-fields .post_id', $container ).each( function(){
+		$( '.tiFyTabooxSlideshowInputField-postIdInput', $container ).each( function(){
 			post__not_in.push( $( this ).val() );
 		});
 		
@@ -110,7 +110,7 @@ jQuery(document).ready( function($){
 	});
 	
 	/// Modification de la selection de l'autocomplete
-	$( '.tify_taboox_slideshow > .selectors > .suggest > .tify_taboox_slideshow-suggest > input[type="text"]' ).on( "autocompleteselect", function( e, ui ) {
+	$( '.tiFyTabooxSlideshowSelector-suggest > .tify_taboox_slideshow-suggest > input[type="text"]' ).on( "autocompleteselect", function( e, ui ) {
 		e.preventDefault;
 		
 		ui.item.value = '';
@@ -118,14 +118,14 @@ jQuery(document).ready( function($){
 	});
 		
 	// Bouton d'ajout d'un contenu du site à la liste
-	$( '#add-slideshow_post, #add-custom_link' ).click( function(e){
+	$( '.tiFyTabooxSlideshowSelector-customAdd' ).click( function(e){
 		e.preventDefault();
 		
 		getItem( e.target, 0 );
 	});
 	
 	// Suppression d'un élément de la liste
-	$( document ).on( 'click', '.tify_taboox_slideshow > .items > ul > li .remove', function(e){
+	$( document ).on( 'click', '.tiFyTabooxSlideshowItemHelper-remove', function(e){
 		e.preventDefault();
 		var $container = $(this).closest( 'li' );
 		
@@ -136,7 +136,7 @@ jQuery(document).ready( function($){
 	});
 	
 	// Trie
-	$( '.tify_taboox_slideshow > .items > ul' ).sortable({
+	$( '.tiFyTabooxSlideshowList-items' ).sortable({
 		axis: "y",
 		update : function( event, ui ){
 			var container = $(this).closest( '.tify_taboox_slideshow' );
@@ -146,7 +146,7 @@ jQuery(document).ready( function($){
 	});
 	
 	// Selection de l'image représentative
-	$( document ).on( 'click', '.tify_taboox_slideshow > .items > ul > li .image-select', function( e ){
+	$( document ).on( 'click', '.tiFyTabooxSlideshowInputField-thumbnailSelect', function( e ){
 	 	e.preventDefault();
 		
 	 	var $container = $(this);

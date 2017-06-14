@@ -1,16 +1,24 @@
 <?php
+/**
+ * @Overrideable
+ */
 namespace tiFy\Core\Control\Slider;
 
 class Slider extends \tiFy\Core\Control\Factory
 {
-    /* = ARGUMENTS = */    
-    // Identifiant de la classe        
+    /**
+     * Identifiant de la classe
+     */
     protected $ID = 'slider';
     
-    // Instance courante
-    private static $Instance;
+    /**
+     * Instance courante
+     */
+    protected static $Instance;
     
-    /* = CONSTRUCTEUR = */
+    /**
+     * CONSTRUCTEUR
+     */
     public function __construct()
     {
         parent::__construct();
@@ -19,24 +27,34 @@ class Slider extends \tiFy\Core\Control\Factory
         self::$Instance++;
     }
     
-    /* = DECLENCHEURS = */
-    /** == Initialisation gloabale de Wordpress == **/
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     */
     final public function init()
     {
         wp_register_style( 'tify_control-slider', self::getUrl( get_class() ) .'/Slider.css', array(), 170215 );
         wp_register_script( 'tify_control-slider', self::getUrl( get_class() ) .'/Slider.js', array( 'tify-slideshow' ), 170215, true );
     }
-        
-    /** == Mise en file des scripts == **/
+    
+    /**
+     * Mise en file des scripts
+     */
     final public function enqueue_scripts()
     {
         wp_enqueue_style( 'tify_control-slider' );
         wp_enqueue_script( 'tify_control-slider' );
     }
-        
-    /* = CONTROLEURS = */
-    /** == Affichage == **/
-    public static function display( $args = array(), $echo = true )
+       
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Affichage
+     */
+    final public static function display( $args = array(), $echo = true )
     {
         $defaults = array(
             'id'        => 'tiFyControl-slider'. self::$Instance,
@@ -47,23 +65,84 @@ class Slider extends \tiFy\Core\Control\Factory
             )
         );
         $args = wp_parse_args( $args, $defaults );
+        
+        $output = static::output( $args );      
+        
+        if( $echo )
+            echo $output;
+
+        return $output;
+    }   
+    
+    /**
+     * Traitement des slides
+     */
+    protected static function parseSlides( $slides )
+    {
+        $slides = (array) $slides;
+        $defaults = array(
+            'src'       => '',
+            'alt'       => '',
+            'url'       => '',
+            'title'     => '',
+            'caption'   => ''
+        );
+
+        foreach( $slides as &$slide ) :
+            if( is_string( $slide ) ) :
+                $slide['url'] = $slide;
+            endif;
+            $slide = wp_parse_args( $slide, $defaults );
+        endforeach;
+
+        return $slides;
+    }
+    
+    /**
+     * Traitement des options
+     */
+    protected static function parseOptions( $options )
+    {
+        $options = (array) $options;
+        $defaults = array(
+            'ratio'         => '1:1',
+            'arrow_nav'     => false,
+            'tab_nav'       => false,
+            'progressbar'   => false
+        );
+        $options = wp_parse_args( $options, $defaults );
+        
+        // Calcul du ratio
+        if( !empty( $options['ratio'] ) ) :
+            list( $w, $h ) = preg_split( '/:/', $options['ratio'] );
+            $options['ratio'] = ceil( 100/$w * $h ) .'%';
+        endif;
+        
+        return $options;
+    }    
+        
+    /**
+     * Sortie
+     */
+    public static function output( $args = array() )
+    {
         extract( $args );
         
         $slides = self::parseSlides( $slides );
         $options = self::parseOptions( $options ); 
-        
+  
         $output  = "";
-        $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\">\n";
-        
-        // Preview
-        $output .= "\t<div class=\"tiFyControl-sliderPreview viewer\"";
+        $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\"";
         foreach( $options as $k => $v ) :
             // @see mu-plugins/presstify/lib/Assets/tify/tify-slideshow.js
             if( ! in_array( $k, array( 'interval', 'pause', 'transition', 'speed', 'easing' , 'resize', 'bypage' ) ) )
                 continue;
             $output .= " data-{$k}=\"{$v}\"";                
         endforeach;
-        $output .= ">\n"; 
+        $output .= ">\n";
+        
+        // Preview
+        $output .= "\t<div class=\"tiFyControl-sliderPreview viewer\">\n"; 
         
         $output .= "\t\t<ul class=\"tiFyControl-sliderPreviewItems roller\">\n";
         foreach( (array) $slides as $slide ) :
@@ -136,52 +215,6 @@ class Slider extends \tiFy\Core\Control\Factory
         
         $output .= "</div>\n";
         
-        if( $echo )
-            echo $output;
-
         return $output;
-    }
-    
-    /** == Traitement des slides == **/
-    private static function parseSlides( $slides )
-    {
-        $slides = (array) $slides;
-        $defaults = array(
-            'src'       => '',
-            'alt'       => '',
-            'url'       => '',
-            'title'     => '',
-            'caption'   => ''
-        );
-
-        foreach( $slides as &$slide ) :
-            if( is_string( $slide ) ) :
-                $slide['url'] = $slide;
-            endif;
-            $slide = wp_parse_args( $slide, $defaults );
-        endforeach;
-
-        return $slides;
-    }
-    
-    /** == Traitement des options == **/
-    private static function parseOptions( $options )
-    {
-        $options = (array) $options;
-        $defaults = array(
-            'ratio'         => '1:1',
-            'arrow_nav'     => false,
-            'tab_nav'       => false,
-            'progressbar'   => false
-        );
-        $options = wp_parse_args( $options, $defaults );
-        
-        // Calcul du ratio
-        if( !empty( $options['ratio'] ) ) :
-            list( $w, $h ) = preg_split( '/:/', $options['ratio'] );
-            $options['ratio'] = ceil( 100/$w * $h ) .'%';
-        endif;
-        
-        return $options;
     }
 }

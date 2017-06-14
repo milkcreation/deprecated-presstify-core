@@ -71,9 +71,9 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 			'attrs'				=> array( 'title', 'link', 'caption', 'planning' ),
 			// Options
 			'options'		=> array(
+			    'engine'             => 'tify',
 				// Résolution du slideshow
-				'ratio'				=> '16:9',				
-				
+				'ratio'				=> '16:9',			
 				// Navigation suivant/précédent
 				'arrow_nav'			=> true,
 				// Vignette de navigation
@@ -82,17 +82,18 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 				'progressbar'		=> false
 			)
 		);		
-		$args = wp_parse_args( $args, $defaults );
-		
+				
 		// Traitement des options
-		if( ( $db = get_option( $args['name'], false ) ) && isset( $db['options'] ) )
-			$args['options'] = wp_parse_args( $db['options'], $args['options'] );
-		
+	  	if( ! isset( $args['options'] ) && ( $db = get_option( $args['name'], false ) ) && isset( $db['options'] ) )
+			$args['options'] = $db['options'];
+			
 		foreach( (array) $defaults['options'] as $k => $v ) :
 			if( ! isset( $args['options'][$k] ) )
 				$args['options'][$k] = $v;
 		endforeach;
 		
+		$args = wp_parse_args( $args, $defaults );
+
 		// Classe
 		$args['class'] = 'tify_taboox_slideshow' .( $args['class'] ? ' '.$args['class'] : '' );
 		
@@ -121,12 +122,13 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 	/* = RÉCUPÉRATION = */
 	public static function Get( $args = array() )
 	{
-		$args = static::setAttrs( $args );	
-			
+	    $args = static::setAttrs( $args );	
+
 		if( ! $slideshow = get_option( $args['name'], false ) )
 			return array( 'options' => $args['options'], 'slide' => array() );
 		
 		$slide = isset( $slideshow['slide'] ) ? $slideshow['slide'] : array();
+
 		if( ! empty( $slide ) ) :
 			$slide = mk_multisort( $slide );
 		endif;
@@ -150,13 +152,16 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 				endif;
 			endif;
 									
-			$slides[] =	array(
-				'src'		    => wp_get_attachment_image_url( $s['attachment_id'], $args['size'] ),
-			    'alt'           => trim( strip_tags( get_post_meta( $s['attachment_id'], '_wp_attachment_image_alt', true ) ) ),
-			    'url' 			=> ( in_array( 'link', $args['attrs'] ) && ! empty( $s['clickable'] ) && ! empty( $s['url'] ) ) ? $s['url'] : '',
-				'title'			=> ( in_array( 'title', $args['attrs'] ) && ! empty( $s['title'] ) ) ? $s['title'] : '',
-				'caption'		=> ( in_array( 'caption', $args['attrs'] ) && ! empty( $s['caption'] ) ) ? $s['caption'] : '',				
-			);
+			$slides[] =	wp_parse_args( 
+			    array(
+    				'src'		    => wp_get_attachment_image_url( $s['attachment_id'], $args['size'] ),
+    			    'alt'           => trim( strip_tags( get_post_meta( $s['attachment_id'], '_wp_attachment_image_alt', true ) ) ),
+    			    'url' 			=> ( in_array( 'link', $args['attrs'] ) && ! empty( $s['clickable'] ) && ! empty( $s['url'] ) ) ? $s['url'] : '',
+    				'title'			=> ( in_array( 'title', $args['attrs'] ) && ! empty( $s['title'] ) ) ? $s['title'] : '',
+    				'caption'		=> ( in_array( 'caption', $args['attrs'] ) && ! empty( $s['caption'] ) ) ? $s['caption'] : '',				
+    			),
+			    $s
+		    );
 		endforeach;
 		
 		static::$Slides = $slide;		
@@ -164,7 +169,6 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 		$id = $args['id'];
 	    $class = $args['class'];
 		$options = $args['options'];
-		
 		
 		return compact( 'id', 'class', 'slides', 'options' );
 	}

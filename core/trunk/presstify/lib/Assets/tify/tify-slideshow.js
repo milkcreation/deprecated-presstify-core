@@ -5,7 +5,7 @@
  *
  * @name 		Slideshow
  * @package    	Wordpress
- * @copyright 	Milkcreation 2016
+ * @copyright 	Milkcreation
  * @link 		http://www.milkcreation.fr
  * @version 	1.161005
  *
@@ -92,9 +92,10 @@
 				defaults[u] = v;			
 		});		
 		this.defaults = defaults;
-
+		
+		// Définition des options
 	    this.o = $.extend(true, this.defaults, opts );
-	    
+
 		// Initialisation	
 	    this.init();	   
 	}
@@ -153,23 +154,6 @@
 		{
 			var self = this;
 			
-			/*
-			self.progress = 0;
-			clearTimeout( self.setprogress );
-			
-			$( '.progressbar', self.$el ).removeClass( 'active' );
-			
-			self.setprogress = setInterval( function(){ 
-				if( self.progress >= 100 ){
-					$( '.progressbar', self.$el ).removeClass( 'active' );
-					self.progress = 0;
-				} else {
-					$( '.progressbar', self.$el ).addClass( 'active' );
-					self.progress +=10;
-				}
-				$( '.progressbar > span', self.$el ).css( 'right', ( 100 - self.progress )+'%' );
-			}, self.o.interval/11 );
-			*/
 			self.interval = setInterval( function(){ 
 				self.autoscroll = true;				
 				
@@ -217,12 +201,35 @@
 				}
 			}
 			
+			// 
+			self._drag();
+			
 			// Navigation suivant/précédent
 			self._nav(); 			
 			
 			// Responsivité 		
 			if( self.o.resize )
 				self._resize();			
+		},
+		
+		// 
+		_drag : function()
+		{
+		    var self = this;
+		    
+		    $( '> li', self.$roller ).draggable({		        
+		        axis: 'x',
+		        stop: function( event, ui ) {
+		            
+		            
+                  if( ui.position.left < 0 ){
+                      self.dir = 'next';
+                  } else {
+                      self.dir = 'prev';
+                  }
+                  self._slide();
+		        }
+            });
 		},
 		
 		// Navigation
@@ -271,6 +278,7 @@
 			var self = this;
 			
 			self.$current =  $( '> li.active', self.$roller );
+			self.$current.removeClass('animated');
 			
 			// Définition de la cible
 			if( ! self.$target ){				
@@ -288,6 +296,7 @@
 					}
 				}			
 			}
+			self.$target.addClass('animated');
 			
 			var rollerPos = self.$roller.position().left;
 			var targetPos = self.$target.position().left;			
@@ -300,19 +309,23 @@
 						$('> li', self.$roller ).slice( 0, self.gap ).each( function(){
 							$(this).appendTo( self.$roller );
 						});
-						var ratio = ( self.gap<0)? -self.gap : 1;
+						var ratio = ( self.gap<0)? -self.gap : 1;					
+						
 						self.o.before( self.dir, self.$target, self );
 					
 						self.$viewer.scrollLeft( self.$target.outerWidth()*ratio );
 						self.$viewer.stop().animate({ scrollLeft: 0 }, self.o.speed, self.o.easing, function(){
+						    self.$current.css( 'left', 0 );
 							self.o.after( self.dir, self.$target, self );
 							self.$current = self.$target;
 							self._setCurrent(); 							
 							self._reset();	
 						});					
-					} else {
- 						self.o.before( self.dir, self.$target, self );		
+					} else {					    
+ 						self.o.before( self.dir, self.$target, self );	
+ 						
 						self.$viewer.stop().animate({ scrollLeft: targetPos - rollerPos }, self.o.speed, self.o.easing, function(){
+						    self.$current.css( 'left', 0 );
 							self.o.after( self.dir, self.$target, self );	
 							self.$current = self.$target;
 							self._setCurrent();

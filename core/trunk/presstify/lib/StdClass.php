@@ -36,7 +36,7 @@ class StdClass
         if( empty( $path ) ) :
             $path[] = "\\". self::getOverrideNamespace() . "\\". preg_replace( "/^tiFy\\\/", "", ltrim( $classname, '\\' ) );
         endif;
-         
+                     
         foreach( (array) $path as $override ) :
             if( class_exists( $override ) && is_subclass_of( $override, $classname ) ) :
                 $classname = $override;

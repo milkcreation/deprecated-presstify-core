@@ -21,8 +21,7 @@ class Autoload extends \tiFy\Environment\Core
 		parent::__construct();
 		
 		// Chargement des contrôleurs non configurable
-		new AjaxActions;
-		new Control\Control;
+		new AjaxActions;		
 		new Capabilities;		
 		new Meta\Meta;		
 		new Params;
@@ -35,6 +34,7 @@ class Autoload extends \tiFy\Environment\Core
 	final public function after_setup_tify()
 	{
 		// Chargement des contrôleurs configurable
+		new Control\Control;
 		new	CustomType\CustomType;
 		new Db\Db;
 		new Mail\Mail;
