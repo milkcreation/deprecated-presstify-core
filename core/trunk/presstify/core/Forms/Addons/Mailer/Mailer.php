@@ -93,13 +93,15 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
     {
         // Envoi du message de notification
         if( $options = $this->getFormAttr( 'notification' ) ) :
-            $options = $this->parseOptions( $options );    
+            $options = $this->parseOptions( $options );
+        
             MailerNew::send( $options );    
         endif;
 
         // Envoi du message de confirmation
         if( $options = $this->getFormAttr( 'confirmation' ) ) :
-            $options = $this->parseOptions( $options );    
+            $options = $this->parseOptions( $options );        
+            
             MailerNew::send( $options );
         endif;
     }

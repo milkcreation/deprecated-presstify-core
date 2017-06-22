@@ -20,12 +20,19 @@ class Order extends Helpers
 				array( 
 					'taxonomy' 		=> $taxonomy,
 					'meta_query'	=> array(
-						array(
-							'key' 		=> '_order',
-							'value'		=> 0,
-							'compare'	=> '>=',
-							'type'		=> 'NUMERIC'
-						)
+					    array(
+					       'relation'      => 'OR',
+    						array(
+    							'key' 		=> '_order',
+    							'value'		=> 0,
+    							'compare'	=> '>=',
+    							'type'		=> 'NUMERIC'
+    						),
+                            array(
+        						'key' 		=> '_order',
+                                'compare'	=> 'NOT EXISTS',
+                           )
+				        )
 					),
 					'orderby'		=>'meta_value_num', 
 					'order'			=>'ASC' 					

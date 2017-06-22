@@ -1,24 +1,25 @@
 defaults:
-  posts_per_section:  4
-  show_all:           true
-  fields:             [ 'post_title', 'post_excerpt', 'post_content' ]
-sections:
-  # Exemple :
+  # Type de post du recherche
+  post_type:          'any'
   
-  #@ Identifiant de la section
-  #test:
-    #@ type de poste de la section dans la page de résultat de recherche
-    #post_type:     'page'
+  # Nombre d'éléments affichés par section
+  posts_per_section:  4  
+  
+  # Champs de recherche principaux
+  fields:             ['post_title','post_excerpt','post_content']
+  
+sections:
+  # Exemple :  
+  ## Identification de la section
+  # identifiant-de-test:
+    ## type de post de la section dans la page de résultat de recherche
+    # post_type:      'page'
     
-    #@ Champs de recherche
-    #fields:     
-    
-    #  0:        'post_title'
-    
-    #  1:        'post_content'
-    
-    #@ Champs de recherche par clef de métadonnée
-    #  postmeta: ['data', '_reference']
+    ## Champs de recherche
+    # fields:         ['post_title','post_content'] 
 
-#@ Activation de la recherche par mot-clef    
-#tags:           ['page']    
+    ## Champs de recherche par clef de métadonnée
+    # postmeta:       ['data', '_reference']  
+    
+    ## Activation de la recherche par mots-clefs
+    # tags:           true

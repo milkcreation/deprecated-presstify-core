@@ -50,9 +50,9 @@ class Field
         'pattern'            => false,
         
         // Valeurs multiples    
-        'choices'            => array(),
-        'choice_none'         => '',
-        'choice_all'         => '',    
+        'choices'               => array(),
+        'choice_none'           => '',
+        'choice_all'            => '',    
             
         // Traitement
         /// Le champs est requis
@@ -485,6 +485,9 @@ class Field
         $openClass[] = 'tiFyForm-FieldContainer';
         $openClass[] = 'tiFyForm-FieldContainer--'. $this->getType();
         $openClass[] = 'tiFyForm-FieldContainer--'. $this->getSlug();
+        if( $this->getErrors() ) :
+            $openClass[] = 'tiFyForm-FieldContainer--error';
+        endif;
         $openClass[] = $this->getAttr( 'container_class' );
         if( $this->getAttr( 'required' ) ) :
             $openClass[] = 'tiFyForm-FieldContainer--required';

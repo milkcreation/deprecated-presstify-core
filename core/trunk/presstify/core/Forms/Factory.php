@@ -18,11 +18,15 @@ class Factory
      */
     public function __construct( $id, $attrs = array() )
     {
+        // Traitement des attributs de formulaire
+        $attrs = $this->setAttrs( $attrs );
+                
+        // Instanciation
         $this->Form = new \tiFy\Core\Forms\Form\Form( $id, $attrs );
         
         add_action( 'tify_form_loaded', array( $this, 'tify_form_loaded') );
     }
-     
+    
     /**
      * DECLENCHEURS
      */
@@ -33,8 +37,8 @@ class Factory
     {
         tify_control_enqueue( 'notices' );
         
-        Forms::setCurrent( $this );        
-        $this->Form->handle()->proceed();        
+        Forms::setCurrent( $this );
+        $this->Form->handle()->proceed();
         Forms::resetCurrent();
     }
     
@@ -55,6 +59,16 @@ class Factory
     final public function getField( $field_slug )
     {
         return $this->getForm()->getField( $field_slug );
+    }
+    
+    /**
+     * Execution des surcharges de méthode de rappel
+     */
+    final public function call( $callback, $args = array() )
+    {
+        if( method_exists( $this, 'on_' . $callback ) ) :
+            return call_user_func_array( array( $this, 'on_' . $callback ), $args );     
+        endif;
     }
     
     /**
@@ -82,6 +96,98 @@ class Factory
     }
     
     /**
+     * Définition des attributs de formulaire
+     */
+    final public function setAttrs( $attrs )
+    {
+        $pieces = array( 'add-ons', 'buttons', 'fields', 'notices', 'options' );
+        foreach( $pieces as $piece ) :
+            if( ! empty( $attrs[$piece] ) ) :
+                ${$piece} = $attrs[$piece];
+                unset( $attrs[$piece] );
+            else :
+                ${$piece} = array();
+            endif;
+        endforeach;
+                
+        // Globaux
+        if( $matches = preg_grep( '/^set_form_(.*)/', get_class_methods( $this ) ) ) :
+            foreach( $matches as $method ) :
+                $attr = preg_replace( '/^set_form_/', '', $method );
+                if( in_array( $attr, $pieces ) )
+                    continue;
+                
+                $args = isset( $attrs[$attr] ) ? $attrs[$attr] : null;                   
+                $attrs[$attr] = call_user_func( array( $this, $method ), $args );
+            endforeach;
+        endif;        
+        
+        // Addons @todo
+                
+        // Boutons
+        $buttons = $this->setButtons( $buttons );
+                
+        // Champs
+        $fields = $this->setFields( $fields );
+        
+        // Notices @todo
+                
+        // Options @todo
+        
+        $attrs += compact( $pieces );
+
+        return $attrs;
+    }
+    
+    /**
+     * Définition des boutons de formulaire
+     */
+    final public function setButtons( $items = array() )
+    {
+        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
+
+        if( $matches = preg_grep( '/^set_button_(.*)/', get_class_methods( $this ) ) ) :
+            foreach( $matches as $method ) :
+                $slug = preg_replace( '/^set_button_/', '', $method );
+                
+                if( isset( $slugs[$slug] ) ) :
+                    $k = $slugs[$slug]; $attrs = $items[$k];
+                else :
+                    $k = count( $items ); $attrs = array();
+                endif;
+                
+                $items[$slug] = call_user_func( array( $this, $method ), $attrs );
+            endforeach;
+        endif;
+        
+        return $items;
+    }
+
+    /**
+     * Définition des champs de formulaire
+     */
+    final public function setFields( $items = array() )
+    {
+        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
+
+        if( $matches = preg_grep( '/^set_field_(.*)/', get_class_methods( $this ) ) ) :
+            foreach( $matches as $method ) :
+                $slug = preg_replace( '/^set_field_/', '', $method );
+                
+                if( isset( $slugs[$slug] ) ) :
+                    $k = $slugs[$slug]; $attrs = $items[$k];
+                else :
+                    $k = count( $items ); $attrs = array();
+                endif;
+                
+                $items[$k] = wp_parse_args( array( 'slug' => $slug ), call_user_func( array( $this, $method ), $attrs ) );
+            endforeach;
+        endif;
+        
+        return $items;
+    }
+
+    /**
      * Liste des classes HTML du formulaire
      */
     final public function formClasses( $form, $classes )
@@ -90,7 +196,7 @@ class Factory
             call_user_func( array( $this, 'form_classes' ), $form, $classes ) :
             $classes;
     }
-    
+
     /**
      * Ouverture de l'affichage d'un champ
      */
@@ -100,7 +206,7 @@ class Factory
             call_user_func( array( $this, 'field_open_'. $field->getSlug() ), $field, $id, $class ) :
             call_user_func( array( $this, 'fields_open' ), $field, $id, $class );
     }
-    
+
     /**
      * Fermeture de l'affichage d'un champ
      */
@@ -110,7 +216,7 @@ class Factory
             call_user_func( array( $this, 'field_close_'. $field->getSlug() ), $field ) :
             call_user_func( array( $this, 'fields_close' ), $field );
     }
-    
+
     /**
      * Libellé de l'affichage d'un champ
      */
@@ -130,7 +236,7 @@ class Factory
             call_user_func( array( $this, 'field_before_'. $field->getSlug() ), $field, $before ) :
             call_user_func( array( $this, 'fields_before' ), $field, $before );
     }
-    
+
     /**
      * Post-affichage du contenu d'un champ
      */

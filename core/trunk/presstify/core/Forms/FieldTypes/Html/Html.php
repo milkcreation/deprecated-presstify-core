@@ -10,10 +10,10 @@ class Html extends Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant
-	public $ID 			= 'html';
+	public $ID 	       = 'html';
 	
 	// Support
-	public $Support		= array();
+	public $Supports   = array( 'wrapper' );
 	
 	
 	/* = CONTRÔLEUR = */

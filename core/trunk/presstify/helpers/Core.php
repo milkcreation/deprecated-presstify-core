@@ -29,13 +29,13 @@ namespace
     /** == Déclaration d'une taxonomie personnalisée == **/
     function tify_custom_taxonomy_register( $taxonomy, $args )
     {
-        tiFy\Core\CustomType\CustomType::RegisterTaxonomy( $taxonomy, $args );
+        tiFy\Core\CustomType\CustomType::registerTaxonomy( $taxonomy, $args );
     }
 
     /** == Déclaration d'un type de post personnalisé == **/
     function tify_custom_post_type_register( $post_type, $args )
     {
-        tiFy\Core\CustomType\CustomType::RegisterPostType( $post_type, $args );
+        tiFy\Core\CustomType\CustomType::registerPostType( $post_type, $args );
     }
 
     // --------------------------------------------------------------------------------------------------------------------------

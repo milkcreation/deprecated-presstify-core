@@ -664,6 +664,10 @@ class MailerNew
     {
         self::setParams( $params );
         $mailer = self::setMailer();
-        $mailer->Send();
+        try{
+            $mailer->Send();
+        } catch ( phpmailerException $e ) {
+            wp_die( $e->getMessage(), __( 'Erreur lors de l\'expedition du message', 'tify' ), 500 );
+        }        
     }
 }
