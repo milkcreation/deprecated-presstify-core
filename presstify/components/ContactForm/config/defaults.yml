@@ -28,36 +28,52 @@ form:
       placeholder:  "<?php _e( 'Renseignez votre nom', 'tify' );?>"
       type:         'input'
       required:     true
+      add-ons:
+        mailer:
+          show:         true
     -
       slug:         'firstname'
       label:        "<?php _e( 'Prénom', 'tify' );?>"
       placeholder:  "<?php _e( 'Renseignez votre prénom', 'tify' );?>"
       type:         'input'
       required:     true
+      add-ons:
+        mailer:
+          show:         true
     -
       slug:         'email'
       label:        "<?php _e( 'Adresse mail', 'tify' );?>"
       placeholder:  "<?php _e( 'Indiquez votre adresse email', 'tify' );?>"
       type:         'input'
       integrity_cb: 'is_email'
-      required:     true     
+      required:     true
+      add-ons:
+        mailer:
+          show:         true     
     -
       slug:         'subject'
       label:        "<?php _e( 'Sujet du message', 'tify' );?>"
       placeholder:  "<?php _e( 'Sujet de votre message', 'tify' );?>"
       type:         'input'
-      required:     true 
+      required:     true
+      add-ons:
+        mailer:
+          show:         true 
     -
       slug:         'message'
       label:        "<?php _e( 'Message', 'tify' );?>"
       placeholder:  "<?php _e( 'Votre message', 'tify' );?>"
       type:         'textarea'
       required:     true
+      add-ons:
+        mailer:
+          show:         true
     -
       slug:         'captcha'
       label:        "<?php _e( 'Code de sécurité', 'tify' );?>"
       placeholder:  "<?php _e( 'Code de sécurité', 'tify' );?>"
-      type:         'simple-captcha-image' 
+      type:         'simple-captcha-image'
+       
   options:
   buttons:
   add-ons:

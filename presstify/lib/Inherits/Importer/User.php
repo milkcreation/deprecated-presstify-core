@@ -69,4 +69,13 @@ class User extends \tiFy\Inherits\Importer\Importer
     {
         return update_user_option( $user_id, $option_name, $newvalue );      
     }
+    
+    /**
+     * Filtrage de la valeur du mot de passe
+     */
+    public function filter_data_user_pass( $value )
+    {
+        if( $this->getData( 'ID' ) && $value )
+            return wp_hash_password( $value ); 
+    }
 }

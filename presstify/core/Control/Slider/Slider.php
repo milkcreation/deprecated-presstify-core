@@ -65,7 +65,7 @@ class Slider extends \tiFy\Core\Control\Factory
             )
         );
         $args = wp_parse_args( $args, $defaults );
-        
+                
         $output = static::output( $args );      
         
         if( $echo )
@@ -128,9 +128,9 @@ class Slider extends \tiFy\Core\Control\Factory
     {
         extract( $args );
         
-        $slides = self::parseSlides( $slides );
-        $options = self::parseOptions( $options ); 
-  
+        $slides = static::parseSlides( $slides );
+        $options = static::parseOptions( $options ); 
+        
         $output  = "";
         $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\"";
         foreach( $options as $k => $v ) :

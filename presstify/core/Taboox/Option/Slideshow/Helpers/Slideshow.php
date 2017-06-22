@@ -84,7 +84,7 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 		);		
 				
 		// Traitement des options
-		$name = isset( $args['name'] ) ? $args['name'] : $defaults['name'];	
+		$name = isset( $args['name'] ) ? $args['name'] : $defaults['name'];
 	  	if( ! isset( $args['options'] ) && ( $db = get_option( $name, false ) ) && isset( $db['options'] ) )
 			$args['options'] = $db['options'];
 			
@@ -156,7 +156,7 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 			$slides[] =	wp_parse_args( 
 			    array(
     				'src'		    => wp_get_attachment_image_url( $s['attachment_id'], $args['size'] ),
-    			    'alt'           => trim( strip_tags( get_post_meta( $s['attachment_id'], '_wp_attachment_image_alt', true ) ) ),
+    			    'alt'           => esc_attr( ( $alt = get_post_meta( $s['attachment_id'], '_wp_attachment_image_alt', true ) ) ? $alt : get_the_title( $s['attachment_id'] ) ),
     			    'url' 			=> ( in_array( 'link', $args['attrs'] ) && ! empty( $s['clickable'] ) && ! empty( $s['url'] ) ) ? $s['url'] : '',
     				'title'			=> ( in_array( 'title', $args['attrs'] ) && ! empty( $s['title'] ) ) ? $s['title'] : '',
     				'caption'		=> ( in_array( 'caption', $args['attrs'] ) && ! empty( $s['caption'] ) ) ? $s['caption'] : '',				

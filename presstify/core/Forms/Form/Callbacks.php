@@ -7,41 +7,7 @@ class Callbacks
 	// Paramètres
 	/// Formulaire de référence
 	private $Form					= null;
-	
-	/// Cartographie des accroche de fonctions de court-circuitage
-	private $MapHooks 	= array(			
-		'addon_set_form_options',
-		'addon_set_field_options',
 		
-		'field_set',
-		'field_value',
-		'field_before_display',
-		'field_type_output_display',
-		'field_output_display',
-		
-		'form_set_options',
-		'form_set_addons',
-		'form_set_current',
-		'form_before_display',			
-		'form_before_output_display',
-		'form_parse_action',
-		'form_hidden_fields',
-		'form_after_output_display',
-		'form_output_display',
-		'form_buttons_display',	
-		
-		'handle_proceed',
-		'handle_get_request',			
-		'handle_parse_request_field',
-		'handle_parse_request',
-		'handle_parse_submit',
-		'handle_check_required',
-		'handle_check_request',
-		'handle_submit_request',
-		'handle_before_redirect',
-		'handle_redirect'					
-	);
-	
 	// Fonctions de rappel déclarées
 	public $Registered	= array();
 	
@@ -56,7 +22,11 @@ class Callbacks
 	/** == == **/
 	public function call( $hook, $args = array() )
 	{
-		if( ! isset( $this->Registered[$hook] ) )
+	    if( $this->Form->factory() !== null ) :
+            $this->Form->factory()->call( $hook, $args );
+		endif;
+	    
+	    if( ! isset( $this->Registered[$hook] ) )
 			return;
 		
 		ksort( $this->Registered[$hook] );
@@ -66,6 +36,7 @@ class Callbacks
 				call_user_func_array( $attrs['cb'], $args );
 			endforeach;
 		endforeach;
+		
 	}
 		
 	/** == Définition des fonctions de callback == **/

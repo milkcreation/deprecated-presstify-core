@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overrideable
+ */
 namespace tiFy\Core\Control\Repeater;
 
 class Repeater extends \tiFy\Core\Control\Factory
@@ -30,6 +33,9 @@ class Repeater extends \tiFy\Core\Control\Factory
                 'maxAttempt' => __( 'Nombre de valeur maximum atteinte', 'tify' ) 
             ) 
         );
+        
+        add_action( 'wp_ajax_tify_control_repeater_item', array( $this, 'ajax' ) );
+        add_action( 'wp_ajax_nopriv_tify_control_repeater_item', array( $this, 'ajax' ) );
     }
     
     /**
@@ -46,127 +52,68 @@ class Repeater extends \tiFy\Core\Control\Factory
      */
     /**
      * Affichage du contrôleur
-     * @param array $args
+     * @param array $attrs
      * @return string
      */
-    public static function display( $args = array(), $echo = true )
+    public static function display( $attrs = array(), $echo = true )
     {
         self::$Instance++;
         
         $defaults = array(
+            // Id Html du conteneur
             'id'                    => 'tiFyControlRepeater--'. self::$Instance,
+            // Classe Html du conteneur
             'class'                 => '',
             // Nom de la valeur a enregistrer
             'name'                  => 'tiFyControlRepeater-'. self::$Instance,
             // Valeur string | array indexé de liste des valeurs  
             'value'                 => '',
             // Valeur par défaut string | array à une dimension 
-            'default'               => '',               
-            // Interface d'affichage des valeurs enregistrées            
-            'value_html'            => '',
-            // Interface d'affichage de création de valeur
-            'edit_html'             => '',
-            // Bouton d'ajout d'une interface de création de nouvelle valeur
+            'default'               => '',
+            // Action de récupération via ajax
+            'ajax_action'                => 'tify_control_repeater_item',
+            // Agent de sécurisation de la requête ajax
+            'ajax_nonce'            => wp_create_nonce( 'tiFyControlRepeater' ),
+            // Fonction de rappel d'affichage d'un élément
+            'item_cb'               => '',            
+            // Intitulé du bouton d'ajout d'une interface d'édition
             'add_button_txt'        => __( 'Ajouter', 'tify' ),
+            // Classe du bouton d'ajout d'une interface d'édition
+            'add_button_class'      => 'button-secondary',
             // Nombre maximum de valeur pouvant être ajoutées
             'max'                   => -1,
-            
-            /**
-             * @todo trie des valeur selon order (metadonnées single auto)
-             */
-            // Valeur de l'ordonnacemment
-            'order'                 => '',
-            // Nom de la valeur d'ordonancement (par défaut '__order_'. $args['name'])
-            'order_name'            => '', 
+            // Ordonnacemment des éléments
+            'order'                 => true
         );
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args );
+        $attrs = wp_parse_args( $attrs, $defaults );
+        extract( $attrs );
         
         // Traitement des attributs
-        if( ! $edit_html ) :
-            ob_start();
-            self::editHtml();
-            $edit_html = ob_get_clean();
-        endif;
-        if( ! $value_html ) :
-            $value_html = $edit_html;
-        endif;
-        if( ! $order_name ) :
-            $order_name = '__order_'. $name;
-        endif;
-                    
+        if( $order ) :
+            $order = '__order_'. $name;
+        endif;        
+        $parsed_attrs = compact( array_keys( $defaults ) );
+        
         $output  = "";        
         $output .= "<div id=\"{$id}\" class=\"tiFyControlRepeater". ( $class ? " {$class}" : "" )."\" data-tify_control=\"repeater\">\n";
-        $output .= "\t<ul class=\"tiFyControlRepeater-Items tiFyControlRepeater-Items--sortable\">";
         
-        // Affichage des valeurs
+        // Liste d'éléments
+        $output .= "\t<ul class=\"tiFyControlRepeater-Items". ( $order ? ' tiFyControlRepeater-Items--sortable' : '' ) ."\">";
         if( ! empty( $value ) ) :
-            /**
-             * @todo trie des valeur selon order (metadonnées simple auto)
-             */
-        
             foreach( (array) $value as $i => $v ) :                    
-                $v = ( ! is_array( $v ) ) ? ( $v ? $v : $default ) : wp_parse_args( $v, (array) $default );
-                
-                // Remplacement des variables de valeur
-                if( ! is_array( $v ) ) :
-                    $html = preg_replace( 
-                        '/%%value%%/', 
-                        $v, 
-                        $value_html
-                    );
-                else:
-                    $html = preg_replace_callback( 
-                        '/%%value%%\[([a-zA-Z0-9_\-]*)\]/', 
-                        function( $matches ) use ( $v ) 
-                        { 
-                            return ( isset( $v[ $matches[1] ] ) ) ? $v[ $matches[1] ] : ''; 
-                        }, 
-                        $value_html 
-                    );                    
-                endif;
-                
-                // Remplacement des variables d'index et de nom
-                $patterns = array(); 
-                array_push( $patterns, '/%%name%%/', '/%%index%%/' );
-                $replacements = array();
-                array_push( $replacements, $name, $i );            
-                $html = preg_replace( 
-                    $patterns, 
-                    $replacements, 
-                    $html 
-                );            
-                
-                $output .= "\t\t<li class=\"tiFyControlRepeater-Item\" data-index=\"{$i}\">\n";
-                $output .= $html; 
-                $output .= "\t\t\t<input type=\"hidden\" name=\"{$order_name}[]\" value=\"{$i}\"/>\n";
-                $output .= "\t\t\t<a href=\"#{$id}\" class=\"tify_button_remove\"></a>\n";
-                $output .= "\t\t</li>\n";
+                $v = ( ! is_array( $v ) ) ? ( $v ? $v : $default ) : wp_parse_args( $v, (array) $default ); 
+                ob_start();
+                $parsed_attrs['item_cb'] ? call_user_func( $parsed_attrs['item_cb'], $i, $v, $parsed_attrs ) : self::$item( $i, $v, $parsed_attrs ); 
+                $item = ob_get_clean();        
+                                
+                $output .= self::itemWrap( $item, $i, $v, $parsed_attrs );
             endforeach;            
         endif;
         $output .= "\t</ul>\n";
-
-        // Éditeur
-        if( ! preg_match( '/%%value%%\[([a-zA-Z0-9_\-]*)\]/', $edit_html ) ) :    
-            $html = preg_replace( 
-                '/%%value%%/', 
-                $default, 
-                $edit_html
-            );
-        else :
-            $html = preg_replace_callback( 
-                '/%%value%%\[([a-zA-Z0-9_\-]*)\]/', 
-                function( $matches ) use ( $default ) 
-                { 
-                    return ( isset( $default[ $matches[1] ] ) ) ? $default[ $matches[1] ] : '';  
-                },
-                $edit_html 
-            );
-        endif;
         
-        $output .= "\t<div>\n";        
-        $output .= "\t\t<div style=\"display:none;\">{$html}</div>\n";
-        $output .= "\t\t<a href=\"#tify_control_dynamic_inputs-add_button\" data-name=\"{$name}\" data-order_name=\"{$order_name}\" data-max=\"{$max}\" data-default=\"". ( htmlentities( json_encode( $args['default'] ) ) ) ."\" class=\"tiFyControlRepeater-Add button-secondary\">\n";
+        // Interface de contrôle
+        $output .= "\t<div class=\"tiFyControlRepeater-Handlers\">\n";        
+        $output .= "\t\t<a href=\"#{$id}\" data-attrs=\"". htmlentities( json_encode( $parsed_attrs ) ) ."\" class=\"tiFyControlRepeater-Add". ( $add_button_class ? ' '. $add_button_class : '' ) ."\">\n";
         $output .= $add_button_txt;
         $output .= "\t\t</a>\n";
         $output .= "\t</div>\n";
@@ -178,14 +125,55 @@ class Repeater extends \tiFy\Core\Control\Factory
         
         return $output;
     }
-    
+        
     /**
-     * 
+     * Champs d'édition d'un élément
      */
-    protected static function editHtml()
+    public static function item( $index, $value, $attrs = array() )
     {
 ?>
-<input type="text" name="%%name%%[%%index%%]" value="%%value%%" class="widefat"/>
-<?php        
+<input type="text" name="<?php echo $attrs['name'];?>[<?php echo $index;?>]" value="<?php echo $value;?>" class="widefat"/>
+<?php
+    }
+    
+    /**
+     * Encapsulation Html d'un élément
+     */
+    final protected static function itemWrap( $item, $index, $value, $attrs )
+    {
+        $output  = "";
+        $output .= "\t\t<li class=\"tiFyControlRepeater-Item\" data-index=\"{$index}\">\n";
+        $output .= $item;
+        $output .= "\t\t\t<a href=\"#\" class=\"tiFyControlRepeater-ItemRemove tify_button_remove\"></a>";
+        if( $attrs['order'] ) :
+            $output .= "\t\t\t<input type=\"hidden\" name=\"{$attrs['order']}[]\" value=\"{$index}\"/>\n";
+        endif;
+        $output .= "\t\t</li>\n";
+        
+        return $output;
+    }
+    
+    /**
+     * Récupération de la reponse via Ajax
+     */
+    public function ajax()
+    {
+        check_ajax_referer( 'tiFyControlRepeater' );
+        
+        $index = $_POST['index'];
+        $value = $_POST['value'];
+        $attrs = $_POST['attrs'];
+        
+        ob_start();
+        if( ! empty( $_POST['attrs']['item_cb'] ) ) :
+            call_user_func( wp_unslash( $_POST['attrs']['item_cb'] ), $index, $value, $attrs );
+        else :
+            static::item( $index, $value, $attrs );
+        endif;
+        $item = ob_get_clean();
+        
+        echo self::itemWrap( $item, $index, $value, $attrs );
+        
+        wp_die();
     }
 }

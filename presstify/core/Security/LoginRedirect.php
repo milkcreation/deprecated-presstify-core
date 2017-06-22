@@ -1,12 +1,18 @@
 <?php
+/**
+ * Redirection d'accès à l'interface d'administration
+ * @see https://fr.wordpress.org/plugins/sf-move-login/
+ */
 namespace tiFy\Core\Security;
 
 use tiFy\Core\Security\Security;
 
 class LoginRedirect
 {
-    /* = ARGUMENTS = */    
-    // Points d'accès
+    /**
+     * Points d'accès
+     * @var array
+     */
     private static $Endpoints = array(
         'login'         => 'tify_login',
         'logout'        => 'tify_logout',
@@ -15,8 +21,10 @@ class LoginRedirect
         'register'      => 'tify_register',
         'postpass'      => 'tify_postpass'
     );
-        
-    // Cartographie des redirection
+
+    /**
+     * Cartographie des redirections
+     */
     private static $RedirectMap  = array(
         'login'         => 'wp-login.php',
         'logout'        => 'wp-login.php?action=logout',
@@ -25,11 +33,15 @@ class LoginRedirect
         'register'      => 'wp-login.php?action=register',
         'postpass'      => 'wp-login.php?action=postpass'        
     );
-    
-    // Paramètres
+
+    /**
+     * Paramètres
+     */
     private static $Options = array();
-    
-    /* = CONSTRUCTEUR = */
+
+    /**
+     * CONSTRUCTEUR
+     */
     public function __construct()
     {        
         self::$Options = Security::getConfig( 'login_redirect' );
@@ -55,31 +67,37 @@ class LoginRedirect
        
         remove_action( 'template_redirect', 'wp_redirect_admin_locations', 1000 );
     }
-        
-    /* = DECLENCHEURS = */
-    /** == Initialisation du thème == **/
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation du thème
+     */
     final public function after_setup_theme() 
     {
         global $pagenow;
         
-    	if ( ! ( is_admin() && ! ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || ( 'admin-post.php' === $pagenow && ! empty( $_REQUEST['action'] ) ) ) ) ) :
-    		return;
-    	endif;
+        if ( ! ( is_admin() && ! ( ( defined( 'DOING_AJAX' ) && DOING_AJAX ) || ( 'admin-post.php' === $pagenow && ! empty( $_REQUEST['action'] ) ) ) ) ) :
+            return;
+        endif;
     
-    	if ( is_user_admin() ) :
-    		$scheme = 'logged_in';
-    	else :
-    		$scheme = apply_filters( 'auth_redirect_scheme', '' );
-    	endif;
+        if ( is_user_admin() ) :
+            $scheme = 'logged_in';
+        else :
+            $scheme = apply_filters( 'auth_redirect_scheme', '' );
+        endif;
     
-    	if ( wp_validate_auth_cookie( '', $scheme ) ) :
-    		return;
-    	endif;
+        if ( wp_validate_auth_cookie( '', $scheme ) ) :
+            return;
+        endif;
         
-    	wp_die( __( 'Cheatin&#8217; uh?' ) );
+        wp_die( __( 'Cheatin&#8217; uh?' ) );
     }
-    
-    /** == Initialisation de Wordpress == **/
+
+    /**
+     * Initialisation de Wordpress
+     */
     final public function init()
     {                
         // Définition des règles de réécriture    
@@ -93,16 +111,20 @@ class LoginRedirect
             endforeach;
         endforeach;
     }
-    
-    /** == Initialisation de l'interface d'administration == **/
+
+    /**
+     * Initialisation de l'interface d'administration
+     */
     final public function admin_init()
     {
         if( get_option( 'tysecu_login_redirect_endpoints', '' ) !== base64_encode( serialize( self::$Endpoints ) ) ) :
             self::flushRewriteRules();        
         endif;
     }
-    
-    /** == Initialisation de l'interface de connection == **/
+
+    /**
+     * Initialisation de l'interface de connection
+     */
     final public function login_init()
     {
         // Bypass
@@ -120,8 +142,10 @@ class LoginRedirect
         
         wp_die( __( 'Cheatin&#8217; uh?' ) );
     }
-        
-    /** == Court-circuitage de l'url du site == **/
+
+    /**
+     * Court-circuitage de l'url du site
+     */
     final public function site_url( $url, $path, $scheme, $blog_id = null ) 
     {
         if ( ! empty( $path ) && is_string( $path ) && ( false === strpos( $path, '..' ) ) && ( 0 === strpos( ltrim( $path, '/' ), 'wp-login.php' ) ) ) :
@@ -137,45 +161,57 @@ class LoginRedirect
             $url = set_url_scheme( $url, $scheme );
             $url = rtrim( $url, '/' );
             $path = self::setUrlPath( $path );
-                        
+
             return $url . $path;
         endif;
-    
+        
+        
+        
         return $url;
     }
-    
-    /** == Court-circuitage de l'url d'un multisite == **/
+
+    /**
+     * Court-circuitage de l'url d'un multisite
+     */
     final public function network_site_url( $url, $path, $scheme ) 
     {
-      	return site_url( $path, $scheme );
+          return site_url( $path, $scheme );
     }
-    
-    /** == Court-circuitage de l'url de deconnection == **/
+
+    /**
+     * Court-circuitage de l'url de deconnection
+     */
     final public function logout_url( $url )
     {
         return self::setUrlEndpoint( $url, 'logout' );
     }
-        
-    /** == Court-circuitage de l'url de mot de passe oublié == **/
+       
+    /**
+     * Court-circuitage de l'url de mot de passe oublié
+     */
     final public function lostpassword_url( $url )
     {
         return self::setUrlEndpoint( $url, 'lostpassword' );
     }    
 
-    /** == Court-circuitage de la redirection Wordpress == **/
+    /**
+     * Court-circuitage de la redirection Wordpress
+     */
     final public function wp_redirect( $location ) 
     {
         $base_uri = explode( '?', $location );
         $base_uri = reset( $base_uri );
         
         if ( site_url( $base_uri ) === site_url( 'wp-login.php' ) ) :
-        	return $this->site_url( $location, $location, 'login', get_current_blog_id() );
+            return $this->site_url( $location, $location, 'login', get_current_blog_id() );
         endif;
         
         return $location;
     }
 
-    /** == Court-circuitage du lien dans le message d'accueil Wordpress == **/
+    /**
+     * Court-circuitage du lien dans le message d'accueil Wordpress
+     */
     final public function update_welcome_email( $welcome_email, $blog_id ) 
     {
         if ( false === strpos( $welcome_email, 'wp-login.php' ) ) :
@@ -190,27 +226,33 @@ class LoginRedirect
         
         return str_replace( $url . 'wp-login.php', $login_url, $welcome_email );
     }
-        
-    /** == Court-circuitage de l'url d'enregistrement == **/
+
+    /**
+     * Court-circuitage de l'url d'enregistrement
+     */
     final public function register_url( $url ) 
     {
-    	if( empty( $_SERVER['REQUEST_URI'] ) ) :
-    		return $url;
-    	endif;
-    	
-    	if( false === strpos( $_SERVER['REQUEST_URI'], '/wp-signup.php' ) && false === strpos( $_SERVER['REQUEST_URI'], '/wp-register.php' ) ) :
-    		return $url;
-    	endif;
-    	
-    	if( is_multisite() || is_user_logged_in() ) :
-    		return $url;
-    	endif;
+        if( empty( $_SERVER['REQUEST_URI'] ) ) :
+            return $url;
+        endif;
+        
+        if( false === strpos( $_SERVER['REQUEST_URI'], '/wp-signup.php' ) && false === strpos( $_SERVER['REQUEST_URI'], '/wp-register.php' ) ) :
+            return $url;
+        endif;
+        
+        if( is_multisite() || is_user_logged_in() ) :
+            return $url;
+        endif;
     
-    	wp_die( __( 'Cheatin&#8217; uh?' ) );
+        wp_die( __( 'Cheatin&#8217; uh?' ) );
     }
-    
-    /* = CONTROLEURS = */
-    /** == Récupération d'un point d'accès == **/
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Récupération d'un point d'accès
+     */
     private static function getEndpoint( $context )
     {
         // Bypass
@@ -221,13 +263,17 @@ class LoginRedirect
         
         return current( $endpoint );            
     }
-    
-    /** == Vérification d'un point d'accès == **/
+
+    /**
+     * Vérification d'un point d'accès
+     */
     private static function checkEndpoint( $endpoint )
     {
         foreach( self::$Endpoints as $context => $endpoints ) :
             $endpoints = self::parseEndpointValue( $endpoints );
-
+            
+            $endpoints = array_map( 'self::addEndpointRewriteBase', $endpoints );
+            
             if( in_array( $endpoint, $endpoints ) ) :
                 return true;
             endif;
@@ -235,8 +281,10 @@ class LoginRedirect
         
         return false;
     }
-        
-    /** == Traitement de la valeur d'un point d'accès == **/
+
+    /**
+     * Traitement de la valeur d'un point d'accès
+     */
     private static function parseEndpointValue( $endpoint )
     {
         if( is_string( $endpoint ) ) :
@@ -245,26 +293,47 @@ class LoginRedirect
         
         return (array) $endpoint;
     }
-       
-    /** == Ajout de la régle de réécriture d'un point d'accès == **/
+
+    /**
+     * Ajout du sous-repertoire d'accès au site
+     */
+    private static function addEndpointRewriteBase( $endpoint ) 
+    {
+        $rewrite_base = parse_url( home_url() );
+        if ( isset( $rewrite_base['path'] ) ) :
+            $rewrite_base = trailingslashit( $rewrite_base['path'] );
+        else :
+            $rewrite_base = '/';
+        endif;
+        
+        return $rewrite_base . $endpoint;
+    }
+
+    /**
+     * Ajout de la régle de réécriture d'un point d'accès
+     */
     private static function addEnpointRewriteRule( $endpoint, $redirect )
     {       
         // Déclaration de la régle de réécriture
         add_rewrite_rule( $endpoint .'/?', $redirect, 'top' );
     }
-    
-    /** == Récupération du point d'accès depuis l'url courante == **/
+
+    /**
+     * Récupération du point d'accès depuis l'url courante
+     */
     private static function getUrlEndpoint() 
     {
         $request_uri  = ! empty( $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'] ) ? $GLOBALS['HTTP_SERVER_VARS']['REQUEST_URI'] : ( ! empty( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' );
         @ list( $endpoint, $query_vars )  = explode( '?', $request_uri, 2 );
         
-        $endpoint =  trim( $endpoint, '/' );
+        //$endpoint =  trim( $endpoint, '/' );
 
         return $endpoint;
     }
-    
-    /** == Définition du chemin de l'url == **/
+
+    /**
+     * Définition du chemin de l'url
+     */
     private static function setUrlPath( $path ) 
     {       
         $action = 'login';
@@ -281,7 +350,7 @@ class LoginRedirect
             endif;
         endif;
                 
-        if( ( $endpoint = self::getEndpoint( $action ) ) ) :        
+        if( ( $endpoint = self::getEndpoint( $action ) ) ) :
             $path = str_replace( 'wp-login.php', $endpoint, $path );
             $path = remove_query_arg( 'action', $path );
             
@@ -290,22 +359,26 @@ class LoginRedirect
                 
         return $path;
     }
-    
-    /** == Définition d'url relative à un point d'accès == **/
+
+    /**
+     * Définition d'url relative à un point d'accès
+     */
     private static function setUrlEndpoint( $url, $action ) 
-    {        
+    {
         // Bypass
         if( ! $endpoint = self::getEndpoint( $action ) )
             return $url;
         
         if (  $url && ( false === strpos(  $url, '/' . $endpoint ) ) ) :
-        	 $url = str_replace( array( '/' . self::getEndpoint( 'login' ), '&amp;', '?amp;', '&' ), array( '/' . $endpoint, '&', '?', '&amp;' ), remove_query_arg( 'action', $url ) );
+            $url = str_replace( array( '/' . self::getEndpoint( 'login' ), '&amp;', '?amp;', '&' ), array( '/' . $endpoint, '&', '?', '&amp;' ), remove_query_arg( 'action', $url ) );
         endif;
         
         return $url;
     }
-    
-    /** == Enregistrement des règles de réécriture == **/
+
+    /**
+     * Enregistrement des règles de réécriture
+     */
     private static function flushRewriteRules()
     {
         global $wp_rewrite; 
@@ -323,6 +396,6 @@ class LoginRedirect
             iis7_save_url_rewrite_rules();
         
         update_option( 'tysecu_login_redirect_endpoints', base64_encode( serialize( self::$Endpoints ) ) );
-        wp_redirect( ( stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );            
+        wp_redirect( ( stripos($_SERVER['SERVER_PROTOCOL'],'https') === true ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
     }
 }

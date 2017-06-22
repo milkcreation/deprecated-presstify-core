@@ -64,10 +64,9 @@ class Handle
             
         // Court-cicuitage du traitement avant la redirection
         //$this->Form->call( 'handle_before_redirect', array( &$this->parsed_request, $this->original_request, $this->master ) );
-        
         if( ! $this->_setSuccess() )
             return;
-
+        
         // Post traitement avant la redirection
         $this->Form->call( 'handle_successfully', array( &$this ) );    
         

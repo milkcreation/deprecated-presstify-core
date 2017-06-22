@@ -15,7 +15,7 @@ trait Actions
     protected $CallActionsFunctionsMap    = array();
 
     /**
-     * Ordres de priorité d'exécution des actions
+     * Ordre de priorité d'exécution des actions
      */
     protected $CallActionsPriorityMap    = array();
 

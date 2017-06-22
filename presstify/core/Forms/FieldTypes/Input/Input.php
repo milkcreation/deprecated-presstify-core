@@ -4,9 +4,7 @@
  */
 namespace tiFy\Core\Forms\FieldTypes\Input;
 
-use tiFy\Core\Forms\FieldTypes\Factory;
-
-class Input extends Factory
+class Input extends \tiFy\Core\Forms\FieldTypes\Factory
 {
 	/* = ARGUMENTS = */
 	// Identifiant

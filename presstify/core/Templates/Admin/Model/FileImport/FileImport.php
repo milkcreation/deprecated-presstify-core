@@ -178,7 +178,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         
         parent::_current_screen( $current_screen );
         
-        // DEBUG - Tester la fonctionnalité d'import
+        // DEBUG - Tester la fonctionnalité d'import > Décommenter $_REQUEST['_import_row_index'] et commenter le return (ligne suivante)
         return;
         
         if( ! $this->Importer )

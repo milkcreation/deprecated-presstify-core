@@ -1,19 +1,22 @@
-/* = Champs de saisie = */
-[data-tify_control_suggest]{
+/**
+ * Champs de saisie
+ */
+[data-tify_control="suggest"]{
 	position:relative;
 }
-[data-tify_control_suggest] input[type="text"]{
+.tiFyControlSuggest-textInput{
 	width:100%;
-	padding:0.4em 40px 0.4em 1em;
-	font-size:14px;
 	margin:0;
+	padding:0.4em 40px 0.4em 1em;
+	
+	font-size:14px;
 	box-shadow:none;
 }
-[data-tify_control_suggest] input[type="text"]:focus{	
-	box-shadow: 0 0 5px #FFF;
-}
-/* = Bouton = */
-[data-tify_control_suggest] .tify_control_suggest_button {
+
+/**
+ * Boutons
+ */
+.tiFyControlSuggest-button{
 	position:absolute;
 	display:block;
 	top:0; right:0; bottom:0;
@@ -22,34 +25,34 @@
 	width:40px;
 	text-align:center;
 }
-[data-tify_control_suggest] .tify_control_suggest_button > * {
+.tiFyControlSuggest-button > *{
 	position: absolute;
-	display:inline-block;
-	top: 50%;
-	left: 50%;
-	width :18px;
-	height: 18px;
-	margin-top: -9px;
-	margin-left: -9px;
+	display:block;
+	top: 50%; left: 50%;
+	width:18px; height:18px;
+	margin-top:-9px; margin-left: -9px;
 }
-[data-tify_control_suggest] .tify_control_suggest_delete {
+.tiFyControlSuggest-button--delete{
 	display: none;
 	cursor:pointer;
 }
-[data-tify_control_suggest].selected .tify_control_suggest_delete {
+.tiFyControlSuggest--selected .tiFyControlSuggest-button--delete{
 	display: block;
 }
-[data-tify_control_suggest].selected .tify_control_suggest_search {
+.tiFyControlSuggest--selected .tiFyControlSuggest-button--search{
 	display: none;
 }
-/* = Moniteur d'activité = */
-[data-tify_control_suggest] input.ui-autocomplete-loading[type="text"]{
+
+/**
+ * Indicateur d'activité
+ */
+.tiFyControlSuggest-textInput.ui-autocomplete-loading{
 	background-image:none;
 }
-[data-tify_control_suggest] input.ui-autocomplete-loading[type="text"] + .tify_control_suggest_search{
+.tiFyControlSuggest-textInput.ui-autocomplete-loading + .tiFyControlSuggest-altInput + .tiFyControlSuggest-button--search{
 	display:none;
 }
-[data-tify_control_suggest] .tify_spinner{
+[data-tify_control="suggest"] .tify_spinner{
 	position:absolute;
 	display:none;
 	top:50%; right:0.4em; bottom:0;
@@ -57,87 +60,79 @@
 	width:24px;
 	z-index:1;	
 }
-[data-tify_control_suggest] .tify_spinner.active{
+[data-tify_control="suggest"] .tify_spinner.active{
 	display:block;
 }
-/* = Réponse = */
-[data-tify_control_suggest] .tify_control_suggest_response{
+
+/**
+ * Elément d'accroche de la réponse
+ */
+.tiFyControlSuggest-response{
 	position:absolute;
 	top:100%; right:0; bottom:0; left:0;
 	z-index:99;
 }
-[data-tify_control_suggest] .tify_control_suggest_response > .ui-autocomplete.tify_control_suggest-picker{	
+.tiFyControlSuggest-response > .tiFyControlSuggest-picker{	
 	width:100% !important;
 	left:0 !important;
-	border-top:solid 1px #E4E4E4;
-	max-height:300px;
-	overflow-y: auto;
 }
+
 /* = Selecteur = */
-.ui-autocomplete.tify_control_suggest-picker{
+.tiFyControlSuggest-picker{
+    position:absolute;
 	margin:0; padding:0;
 	background-color:#FFF;
 	overflow-y:auto;
 	max-height:20em;
 }
-.ui-autocomplete.tify_control_suggest-picker,
-.ui-autocomplete.tify_control_suggest-picker > *{
+.tiFyControlSuggest-picker,
+.tiFyControlSuggest-picker > *{
 	box-sizing:border-box;
 }
-.ui-autocomplete.tify_control_suggest-picker > li{
+.tiFyControlSuggest-pickerItem{
+    position:relative;
 	display:block;
 	border-bottom:solid 1px #E4E4E4;
 	padding:0; margin:0;
-}
-.ui-autocomplete.tify_control_suggest-picker > li > a::before,
-.ui-autocomplete.tify_control_suggest-picker > li > a::after{
-	display:table;
-	content:"";
-}
-.ui-autocomplete.tify_control_suggest-picker > li > a::after{
-	clear:both;
-}
-.ui-autocomplete.tify_control_suggest-picker > li > a{
-	position:relative;
-	display:block; 	
-	line-height:1.2;
-	text-decoration:none;
 	min-height:50px;
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a:hover{
-	background-color:#F4F4F4;
-}
-.ui-autocomplete.tify_control_suggest-picker > li > a > span{
+.tiFyControlSuggest-pickerItemAttr{
 	display:block;
+	margin-left:60px;
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a > .ico{
+.tiFyControlSuggest-pickerItemAttr--permalink{
+    position:absolute;
+    top:0; right:0; bottom:0; left:0;
+    display:block; content:"";
+    z-index:99;
+    
+    cursor:pointer; 
+}
+.tiFyControlSuggest-pickerItemAttr--permalink:hover{
+    background-color:rgba(255,255,255,0.3);
+}
+.tiFyControlSuggest-pickerItemAttr--ico{
 	position:absolute;
 	top:50%; left:0;
-	margin-top:-25px;
+	margin-left:0; margin-top:-25px;
 	width:50px; height:50px;
 	background-color:#EEE;
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a > .ico > img{
+.tiFyControlSuggest-pickerItemAttr--ico > img{
 	width:100%; height:100%;
 	object-fit:cover;
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a.has_ico > span:not(.ico ){
-	margin-left:60px;
-	margin-top:0.2em;
-	margin-bottom:0.2em;
-}
-.ui-autocomplete.tify_control_suggest-picker > li > a > .title{
+.tiFyControlSuggest-pickerItemAttr--title{
 	text-transform:uppercase;
 	font-weight:600;
 	font-size:1.1em;	
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a > .type{
+.tiFyControlSuggest-pickerItemAttr--type{
 	font-weight:100;
 	margin-top:0.2em;
 	margin-bottom:0.2em;
 }
-.ui-autocomplete.tify_control_suggest-picker > li > a > .status{
-	color:#AAA;
+.tiFyControlSuggest-pickerItemAttr--status{
 	font-size:0.9em;
 	font-style:italic;
 }

@@ -1,50 +1,55 @@
-jQuery( document ).ready( function($){
+jQuery(document).ready(function($) {
+    var jqxhr;
+    
     // Ajout d'un élément
-    $( document ).on( 'click.tify.control.repeater.add', '[data-tify_control="repeater"] .tiFyControlRepeater-Add', function(e){        
+    $( document ).on('click.tify.control.repeater.add', '[data-tify_control="repeater"] .tiFyControlRepeater-Add', function(e) {        
         e.stopPropagation();
         e.preventDefault();
         
-        var $closest        = $( this ).closest( '[data-tify_control="repeater"]' ),
-            $list           = $( '> ul', $closest );
-        var count           = $( '> li', $list ).length,
-            name            = $( this ).data( 'name' );
-            order_name      = $( this ).data( 'order_name' );
-            max             = $( this ).data( 'max' );
-
-        if( ( max > 0 ) && ( count >= max ) ) {
+        if( jqxhr !== undefined )
+            return;
+        
+        // Eléments du DOM
+        var $this           = $(this);
+            $closest        = $(this).closest('[data-tify_control="repeater"]'),
+            $list           = $('.tiFyControlRepeater-Items', $closest);
+        
+        // Variables
+        var index           = $('.tiFyControlRepeater-Item', $list).length,
+            attrs           = $(this).data('attrs');
+   
+        if((attrs['max'] > 0) && (index >= attrs['max'])) {
             alert( tiFyControlRepeater.maxAttempt );
             return false;
         }
-        
-        $new     = $( $(this).prev() ).clone();
-        index = getUniqIndex( $list );
-        var new_html = $new.html().replace( /%%index%%/g, index ).replace( /%%name%%/g, name );
-        var $el = $( '<li data-index="'+ index +'">'+ new_html +'<input type="hidden" name="'+ order_name +'[]" value="'+ index +'"/><a href="#'+ $closest.attr( 'id' ) +'" class="tify_button_remove"></a></li>' );
-        $list.append( $el );
-        
-        $el.trigger( 'tify_repeater_added' );
+       
+        jqxhr = $.post(
+            tify_ajaxurl,
+            {action: attrs['ajax_action'], _ajax_nonce: attrs['ajax_nonce'], index: index, attrs: attrs},
+            function( resp ){
+                $el = $(resp);
+                $list.append($el);
+            }            
+        )
+        .done(function() {
+            $el.trigger('tify_control_repeater_item_added');
+        })
+        .always(function() {
+            jqxhr = undefined;
+        });
     });
     
     // Ordonnacement des images de la galerie
-    $( '.tiFyControlRepeater-Items--sortable' )
-        .sortable({ placeholder: 'tiFyControlRepeater-ItemPlaceholder', axis: 'y' })
+    $('.tiFyControlRepeater-Items--sortable')
+        .sortable({placeholder: 'tiFyControlRepeater-ItemPlaceholder', axis: 'y'})
         .disableSelection();
     
     // Suppression d'un élément
-    $( document ).on( 'click.tify.control.repeater.remove', '[data-tify_control="repeater"] > ul > li > .tify_button_remove', function(e){
+    $(document).on('click.tify.control.repeater.remove', '[data-tify_control="repeater"] .tiFyControlRepeater-Item .tify_button_remove', function(e) {
         e.preventDefault();
-        $( this ).closest( 'li' ).fadeOut( function(){
-            $( this ).remove();
+        $(this).closest('.tiFyControlRepeater-Item').fadeOut( function(){
+            $(this).remove();            
+            $(document).trigger('tify_control_repeater_item_removed');
         });
     });
-    
-    // Obtention d'un index unique
-    function getUniqIndex( $list ) {
-        index = $( '> li', $list ).length;
-        $( '> li', $list ).each( function() {
-            if( $( this ).data( 'index' ) === index )
-                index++;
-        });
-        return index;
-    }
 });

@@ -165,17 +165,17 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
             $index = uniqid();
         
         $defaults = array(
-            'post_id'        => 0,
-            'title'            => '',
-            'caption'        => '',
-            'attachment_id'    => 0,
-            'clickable'     => 0,
-            'url'             => '',
-            'planning'        => array(
+            'post_id'           => 0,
+            'title'             => '',
+            'caption'           => '',
+            'attachment_id'     => 0,
+            'clickable'         => 0,
+            'url'               => '',
+            'planning'          => array(
                 'from'             => 0,
                 'start'            => '',
-                'to'            => 0,
-                'end'            => '',
+                'to'                => 0,
+                'end'               => '',
             )
         );        
         $slide = wp_parse_args( $slide, $defaults );

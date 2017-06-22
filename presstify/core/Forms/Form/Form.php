@@ -34,22 +34,22 @@ class Form
         'enctype'                => '',
         
         // Attributs de paramètrage
-        'add-ons'                => array(),
-        'buttons'                 => array(),        
-        'fields'                 => array(),
-        'notices'                => array(),
-        'options'                 => array()            
+        'add-ons'               => array(),
+        'buttons'               => array(),        
+        'fields'                => array(),
+        'notices'               => array(),
+        'options'               => array()            
     );
     
     // Paramètres
     /// Identifiant
-    private $ID                = null;
+    private $ID                 = null;
     
     /// Attributs de configuration
-    private $Attrs            = array();
+    private $Attrs              = array();
         
     /// Buttons
-    private $Buttons        = array();
+    private $Buttons            = array();
             
     /// Options
     private $Options        = array();
@@ -78,8 +78,7 @@ class Form
     
     /// Transports
     private $Transport        = null;
-    
-    
+
     /* = CONSTRUCTEUR = */
     public function __construct( $id, $attrs = array() )
     {
@@ -87,9 +86,9 @@ class Form
         $this->ID = $id;
             
         // Chargement des contrôleurs
-        $this->Callbacks     = new Callbacks( $this );
-        $this->Handle         = new Handle( $this );
-        $this->Transport     = new Transport( $this );
+        $this->Callbacks    = new Callbacks( $this );
+        $this->Handle       = new Handle( $this );
+        $this->Transport    = new Transport( $this );
                 
         // Définition des attributs par défaut dynamiques
         foreach( array( 'prefix', 'container_id', 'form_id' ) as $attr ) :
@@ -230,11 +229,11 @@ class Form
         // Réinitialisation de l'instance
         Field::resetInstance();
         
-        $fields     = array();
-        $groups     = array();
-        $orders     = array();
-        $positions     = array(); 
-        $i             = 0;
+        $fields         = array();
+        $groups         = array();
+        $orders         = array();
+        $positions      = array(); 
+        $i              = 0;
         
         foreach( (array) $this->getAttr( 'fields' ) as $attrs ) :
             $fields[] = $field = new Field( $this, $attrs );
