@@ -230,10 +230,16 @@ namespace
 			
     // --------------------------------------------------------------------------------------------------------------------------
 	/* = PDF VIEWER = */
-	/** == Affichage du pdf == **/
+	/** == Affichage brut de la visionneuse Pdf == **/
     function tify_pdfviewer_display( $pdf_url, $args = array(), $echo = true )
     {
-        return \tiFy\Components\PDFViewer\PDFViewer::display( $pdf_url, $args, $echo );
+        return \tiFy\Components\PdfViewer\PdfViewer::display( $pdf_url, $args, $echo );
+    }
+    
+    /** == Affichage d'un déclencheur permettant l'affichage de la visionneuse dans une modal == **/
+    function tify_pdfviewer_modal_toggle( $pdf_url, $args = array(), $footer_buttons = true, $echo = true )
+    {
+        return \tiFy\Components\PdfViewer\PdfViewer::modalToggle( $pdf_url, $args, $footer_buttons, $echo );
     }
 	
 	// --------------------------------------------------------------------------------------------------------------------------

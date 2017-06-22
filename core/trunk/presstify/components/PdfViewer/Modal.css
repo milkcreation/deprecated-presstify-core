@@ -1,0 +1,20 @@
+.tiFyPdfViewer-modal .tiFyPdfViewer {
+	margin-bottom: 0;
+}
+.tiFyPdfViewer-modal--footerButtons .tiFyPdfViewer-inner {
+	padding-top: 0;
+}
+.tiFyPdfViewer-modal--footerButtons .tiFyPdfViewer-page {
+	position: static;
+	top: auto;
+	margin-bottom: 1em;
+}
+.tiFyPdfViewer-modal--footerButtons .tiFyPdfViewer-nav,
+.tiFyPdfViewer-modal--footerButtons .tiFyPdfViewer-download {
+	position: static;
+	top: auto;
+	left: auto;
+	-webkit-transform: perspective(1px) translateZ(0) translateX(0);
+  	transform: perspective(1px) translateZ(0) translateX(0);
+  	margin-left: 1em;
+}
