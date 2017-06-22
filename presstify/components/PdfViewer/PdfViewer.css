@@ -1,23 +1,23 @@
-.tiFyPDFViewer {
+.tiFyPdfViewer {
 	text-align: center;
 	margin-bottom: 50px;
 }
-.tiFyPDFViewer-inner {
+.tiFyPdfViewer-inner {
 	position: relative;
 	display: inline-block;
 	overflow: hidden;
 	padding-top: 90px;
 }
-.tiFyPDFViewer::before,
-.tiFyPDFViewer::after {
+.tiFyPdfViewer::before,
+.tiFyPdfViewer::after {
 	display: table;
 	content: " ";
 }
-.tiFyPDFViewer::after {
+.tiFyPdfViewer::after {
 	clear: both;
 }
-.tiFyPDFViewer-nav,
-.tiFyPDFViewer-download {
+.tiFyPdfViewer-nav,
+.tiFyPdfViewer-download {
 	position: absolute;
 	display: inline-block;
 	vertical-align: middle;
@@ -39,22 +39,22 @@
 	transition-duration: 0.1s;
 	z-index: 1;
 }
-.tiFyPDFViewer-nav--prev {
+.tiFyPdfViewer-nav--prev {
 	left: 0;
 	padding-left: 2.2em;
 }
-.tiFyPDFViewer-nav--next {
+.tiFyPdfViewer-nav--next {
 	right: 0;
 	padding-right: 2.2em;
 }
-.tiFyPDFViewer-download {
+.tiFyPdfViewer-download {
 	left: 50%;
 	padding-right: 2.4em;
 	-webkit-transform: perspective(1px) translateZ(0) translateX(-50%);
   	transform: perspective(1px) translateZ(0) translateX(-50%);
 }
-.tiFyPDFViewer-nav::before,
-.tiFyPDFViewer-download::before {
+.tiFyPdfViewer-nav::before,
+.tiFyPdfViewer-download::before {
 	position: absolute;
 	padding: 0 1px;
 	font: 16px/1 dashicons;
@@ -67,37 +67,37 @@
 	-webkit-transition-timing-function: ease-out;
 	transition-timing-function: ease-out;
 }
-.tiFyPDFViewer-nav--prev::before {
+.tiFyPdfViewer-nav--prev::before {
 	content: "\f341";
 	left: 1em;
 }
-.tiFyPDFViewer-nav--next::before{
+.tiFyPdfViewer-nav--next::before{
 	content: "\f345";
 	right: 1em;
 }
-.tiFyPDFViewer-download::before {
+.tiFyPdfViewer-download::before {
 	content: "\f316";
 	right: 1em;
 }
-.tiFyPDFViewer-nav--prev:hover::before, 
-.tiFyPDFViewer-nav--prev:focus::before, 
-.tiFyPDFViewer-nav--prev:active::before {
+.tiFyPdfViewer-nav--prev:hover::before, 
+.tiFyPdfViewer-nav--prev:focus::before, 
+.tiFyPdfViewer-nav--prev:active::before {
 	-webkit-transform: translateX(-4px);
 	transform: translateX(-4px);
 }
-.tiFyPDFViewer-nav--next:hover::before, 
-.tiFyPDFViewer-nav--next:focus::before, 
-.tiFyPDFViewer-nav--next:active::before {
+.tiFyPdfViewer-nav--next:hover::before, 
+.tiFyPdfViewer-nav--next:focus::before, 
+.tiFyPdfViewer-nav--next:active::before {
 	-webkit-transform: translateX(4px);
 	transform: translateX(4px);
 }
-.tiFyPDFViewer-download:hover:before, 
-.tiFyPDFViewer-download:focus:before, 
-.tiFyPDFViewer-download:active:before {
+.tiFyPdfViewer-download:hover:before, 
+.tiFyPdfViewer-download:focus:before, 
+.tiFyPdfViewer-download:active:before {
   -webkit-transform: translateY(4px);
   transform: translateY(4px);
 }
-.tiFyPDFViewer-page {
+.tiFyPdfViewer-page {
 	position: absolute;
 	display: block;
 	top: 60px;
@@ -107,13 +107,13 @@
 	text-align: center;
 	color: #6C7A89;
 }
-.tiFyPDFViewer-pageCount::before {
+.tiFyPdfViewer-pageCount::before {
 	display: inline-block;
 	vertical-align: top;
 	content: "\002F";
 	margin: 0 5px;
 }
-.tiFyPDFViewer-canvas {
+.tiFyPdfViewer-canvas {
 	margin: 0 auto;
 	width: 100%;
 	max-width: 100%;
@@ -121,24 +121,24 @@
 	border: 2px solid #DADFE1;
 }
 @media (max-width: 480px) {
-	.tiFyPDFViewer-nav,
-	.tiFyPDFViewer-download {
+	.tiFyPdfViewer-nav,
+	.tiFyPdfViewer-download {
 		font-size: 0;
 		width: 40px;
 		height: 40px;
 		padding: 0;
 	}
-	.tiFyPDFViewer-nav::before,
-	.tiFyPDFViewer-download::before {
+	.tiFyPdfViewer-nav::before,
+	.tiFyPdfViewer-download::before {
 		top: 50%;
 		margin-top: -8px;
 	}
-	.tiFyPDFViewer-nav--prev::before {
+	.tiFyPdfViewer-nav--prev::before {
 		left: 50%;
 		margin-left: -9px;
 	}
-	.tiFyPDFViewer-nav--next::before,
-	.tiFyPDFViewer-download::before{
+	.tiFyPdfViewer-nav--next::before,
+	.tiFyPdfViewer-download::before{
 		right: 50%;
 		margin-right: -9px;
 	}

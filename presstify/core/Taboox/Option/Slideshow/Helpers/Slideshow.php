@@ -84,7 +84,8 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 		);		
 				
 		// Traitement des options
-	  	if( ! isset( $args['options'] ) && ( $db = get_option( $args['name'], false ) ) && isset( $db['options'] ) )
+		$name = isset( $args['name'] ) ? $args['name'] : $defaults['name'];	
+	  	if( ! isset( $args['options'] ) && ( $db = get_option( $name, false ) ) && isset( $db['options'] ) )
 			$args['options'] = $db['options'];
 			
 		foreach( (array) $defaults['options'] as $k => $v ) :
