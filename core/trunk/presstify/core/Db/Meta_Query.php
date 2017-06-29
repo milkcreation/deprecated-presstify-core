@@ -243,6 +243,5 @@ class Meta_Query extends \WP_Meta_Query
 		}
 
 		return $sql_chunks;
-	}
-	
+	}	
 }

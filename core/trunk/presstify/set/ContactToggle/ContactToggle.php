@@ -9,6 +9,6 @@ class ContactToggle extends \tiFy\Set\Factory
 	/** == Initialisation == **/
 	final protected function _init()
 	{
-		Control::register( self::getOverride( 'tiFy\Set\ContactToggle\Core\Control\ContactToggle' ) );
+	    Control::register( self::getOverride( 'tiFy\Set\ContactToggle\Core\Control\ContactToggle' ) );
 	}
 }

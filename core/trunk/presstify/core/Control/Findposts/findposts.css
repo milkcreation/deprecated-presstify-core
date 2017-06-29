@@ -9,16 +9,14 @@
     box-shadow: none;
 }
 [data-tify_control="findposts"] > button{
-    position:absolute;
-    display:block;    
+    position:absolute;   
     top:0; right:0; bottom:0;
-    width:30px;
+    width:30px;padding:0;
+    display:block; 
     z-index:1;    
     
     background-color: #F4F4F4;
     border: 1px solid #ddd;
-    padding: 4px 5px;
-    text-align: center;
     display: block;
     text-indent:-9999em;
     overflow:hidden;
@@ -28,11 +26,14 @@
     cursor:pointer;
 }
 [data-tify_control="findposts"] > button::before{
-    position:relative;
-    display: block;
-    content: "\f179";
+    position:absolute;   
+    top:50%; right:0; bottom:0;
+    margin-top:-10px; width:26px;
+    display:block; content:"\f179";
     font: 400 20px/1 Dashicons;
     color: #7eb4ea;
     z-index:2;
+    
+    text-align:center;
     text-indent:0;
 }

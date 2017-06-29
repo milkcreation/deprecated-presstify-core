@@ -166,7 +166,7 @@ final class ContactForm extends \tiFy\Environment\Component
             $args['form']['add-ons'] = (array) $args['form']['add-ons'];
             $args['form']['add-ons']['mailer'] = $mailer_defaults;
         endif;
-        
+
         return $args;
     }
     

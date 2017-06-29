@@ -30,7 +30,7 @@ jQuery(document).ready(function($) {
                         $.post(    
                             tify_ajaxurl, 
                             {action: attrs['ajax_action'], _ajax_nonce: attrs['ajax_nonce'], term: req['term'], query_args: attrs['query_args'], elements: attrs['elements'], extras: attrs['extras']}, 
-                            function( data ){
+                            function( data ){ 
                                 if(data.length) {
                                     response(data);
                                 } else {

@@ -86,32 +86,39 @@ jQuery(document).ready( function($){
 	$( '.tiFyTabooxSlideshowSelector-suggest > .tify_taboox_slideshow-suggest[data-duplicate=""] > input[type="text"]' ).on( "autocompletesearch", function( e, ui ) {
 		var $input		= $( e.target ),
 			$container	= $input.closest( '.tify_taboox_slideshow' ),
-			$suggest 	= $input.closest( '.tify_control_suggest' );
+			$suggest 	= $input.closest( '[data-tify_control="suggest"]' );
 		
-		var action	 		= $suggest.data( 'tify_control_suggest' ),
-			query_args		= $suggest.data( 'query_args' ),
-			elements		= $suggest.data( 'elements' ),
-			extras			= $suggest.data( 'extras' ),
-			post__not_in 	= [];
+		var attrs     = $suggest.data('attrs'),
+			post__not_in  = [];
 		
 		$( '.tiFyTabooxSlideshowInputField-postIdInput', $container ).each( function(){
-			post__not_in.push( $( this ).val() );
+			post__not_in.push($(this).val());
 		});
 		
 		if( post__not_in )
-			query_args = $.extend( query_args, {post__not_in : post__not_in } );
+			attrs['query_args'] = $.extend(attrs['query_args'], {post__not_in: post__not_in});
 				
-		$( e.target ).autocomplete( 'option', 'source', function( request, response ){
-			$.post(	tify_ajaxurl, { action : action, term : request.term,  query_args : query_args, elements : elements, extras : extras }, function( data ){
-				( ! data.length ) ? response({ 'label':'X', 'value':'Y', 'render':'' }) : response(data);
-			}, 'json' );
+		$( e.target ).autocomplete( 'option', 'source', function( req, response ){
+			$.post(	
+		        tify_ajaxurl, 
+		        {action: attrs['ajax_action'], _ajax_nonce: attrs['ajax_nonce'], term: req['term'], query_args: attrs['query_args'], elements: attrs['elements'], extras: attrs['extras']}, 
+		        function( data ){
+		            if(data.length) {
+                        response(data);
+                    } else {
+                        response([{value: '', label: '', render: tiFyControlSuggest.noResultsFound}]);
+                    }                                
+                    return;
+		        }, 
+		        'json' 
+	        );
 		});
 		
 	});
 	
 	/// Modification de la selection de l'autocomplete
 	$( '.tiFyTabooxSlideshowSelector-suggest > .tify_taboox_slideshow-suggest > input[type="text"]' ).on( "autocompleteselect", function( e, ui ) {
-		e.preventDefault;
+		e.preventDefault();
 		
 		ui.item.value = '';
 		getItem( e.target, ui.item.id );

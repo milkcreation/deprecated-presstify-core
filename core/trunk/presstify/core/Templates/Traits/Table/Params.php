@@ -103,7 +103,9 @@ trait Params
         return '';
     }
     
-    /** == Définition des colonnes de la table == **/
+    /**
+     * Définition des colonnes de la table
+     */
     public function set_columns()
     {
         return array();

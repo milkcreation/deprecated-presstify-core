@@ -160,18 +160,77 @@ final class Parse
 	/** == Traitement de la clause ORDER == **/
 	public function clause_order( $orderby, $order = 'DESC' )
 	{
-		if( ( $orderby === 'meta_value' ) &&  $this->MetaQuery ) :		
-			$clauses = $this->MetaQuery->get_clauses();
-			$primary_meta_query = reset( $clauses );
-			$clause = "CAST({$primary_meta_query['alias']}.meta_value AS {$primary_meta_query['cast']}) {$order}";		
-		elseif( $orderby = $this->Db->isCol( $orderby ) ) :
-			$clause = $this->Db->Name .".{$orderby} {$order}";
+        $orderby_array = array();
+		if ( is_array( $orderby ) ) :
+			foreach ( $orderby as $_orderby => $order ) :
+				$orderby = addslashes_gpc( urldecode( $_orderby ) );
+				$parsed  = $this->parse_orderby( $orderby );
+
+				if ( ! $parsed )
+					continue;
+
+				$orderby_array[] = $parsed . ' ' . $this->parse_order( $order );
+			endforeach;
+			$orderby = implode( ', ', $orderby_array );
+
 		else :
-			$clause = $this->Db->Name . $this->Db->Primary ." {$order}";
+			$orderby = urldecode( $orderby );
+			$orderby = addslashes_gpc( $orderby );
+
+			foreach ( explode( ' ', $orderby ) as $i => $orderby ) :
+				$parsed = $this->parse_orderby( $orderby );
+				if ( ! $parsed )
+					continue;
+
+				$orderby_array[] = $parsed;
+			endforeach;
+			$orderby = implode( ' ' . $order . ', ', $orderby_array );
+
+			if ( empty( $orderby ) ) :
+				$orderby = "$this->Db->Name . $this->Db->Primary " . $order;
+			elseif ( ! empty( $q['order'] ) ) :
+				$orderby .= " {$order}";
+			endif;
 		endif;
 		
-		return " ORDER BY ". $clause;
+		return " ORDER BY ". $orderby;
 	}
+	
+	/**
+	 * 
+	 * @param unknown $orderby
+	 */
+	public function parse_orderby( $orderby )
+	{
+	   if( ( $orderby === 'meta_value' ) &&  $this->MetaQuery ) :		
+			$clauses = $this->MetaQuery->get_clauses();
+			$primary_meta_query = reset( $clauses );
+			$orderby_clause = "CAST({$primary_meta_query['alias']}.meta_value AS {$primary_meta_query['cast']})";		
+		elseif( $orderby = $this->Db->isCol( $orderby ) ) :
+			$orderby_clause = $this->Db->Name .".{$orderby}";
+		else :
+			$orderby_clause = $this->Db->Name . $this->Db->Primary;
+		endif;
+	    
+		return $orderby_clause;	    
+	}
+	
+	/**
+	 * 
+	 */
+    public function parse_order( $order = null ) 
+    {
+		if ( ! is_string( $order ) || empty( $order ) ) :
+			return 'DESC';
+		endif;
+
+		if ( 'ASC' === strtoupper( $order ) ) :
+			return 'ASC';
+		else :
+			return 'DESC';
+		endif;
+	}
+	
 	
 	/** == Traitement de la clause GROUPBY == **/
 	public function clause_group_by()
@@ -182,7 +241,8 @@ final class Parse
 	
 	
 	/** == Vérification des arguments de requête == **/
-	final public function validate( $vars ){
+	final public function validate( $vars )
+	{
 		$_vars = array();
 		foreach( $vars as $col_name => $value ) :
 			if( ! $col_name = $this->Db->isCol( $col_name )  )

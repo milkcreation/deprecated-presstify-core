@@ -136,6 +136,8 @@ class Search extends Component
     {
         // Traitement des mots clefs de recherche
         foreach( self::$Section as $id => $attrs ) :
+            if( ! $attrs['tags'] )
+                continue;
             $post_types = ( isset( $attrs['post_type'] ) ) ? $attrs['post_type'] : 'any'; 
             
             if( $post_types === 'any' ) :
@@ -143,7 +145,7 @@ class Search extends Component
             else :
                 $post_types = (array) $post_types;
             endif;            
- 
+
             self::$PostTypeTags = $post_types;
             CustomType::createTaxonomy( 'tify_search_tag', array( 'singular' => __( 'mot-clef de recherche', 'tify' ), 'plural' => __( 'mots-clefs de recherche', 'tify' ), 'object_type' => $post_types ) ); 
         endforeach;
