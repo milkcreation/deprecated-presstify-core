@@ -71,7 +71,7 @@ class Repeater extends \tiFy\Core\Control\Factory
             // Valeur par défaut string | array à une dimension 
             'default'               => '',
             // Action de récupération via ajax
-            'ajax_action'                => 'tify_control_repeater_item',
+            'ajax_action'           => 'tify_control_repeater_item',
             // Agent de sécurisation de la requête ajax
             'ajax_nonce'            => wp_create_nonce( 'tiFyControlRepeater' ),
             // Fonction de rappel d'affichage d'un élément

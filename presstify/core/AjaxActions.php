@@ -37,8 +37,10 @@ class AjaxActions extends \tiFy\Environment\App
 		
 		// Traitement du permalien
 		$permalink = ( $_permalink = get_permalink( $post_id ) ) ? $_permalink : $default;
-		if( $relative )
-			$permalink = preg_replace( '/'. preg_quote( site_url(), '/' ) .'/', '', $permalink );
+		if( $relative ) :
+		    $url_path = parse_url( site_url( '/' ), PHP_URL_PATH );		    
+		    $permalink = $url_path . preg_replace( '/'. preg_quote( site_url( '/' ), '/' ) .'/', '', $permalink );
+		endif;
 		
 		wp_die( $permalink );
 	}

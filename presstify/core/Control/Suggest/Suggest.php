@@ -140,7 +140,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         endif;
         $button_text .= $delete_button_text;
 
-        // Listes des arguments pour le traitement de la requête Ajax
+        // Liste des arguments pour le traitement de la requête Ajax
         $ajax_attrs = compact( 'ajax_action', 'ajax_nonce', 'query_args', 'elements', 'extras', 'select', 'options', 'picker' );
         
         $output  = "";
@@ -319,6 +319,6 @@ class Suggest extends \tiFy\Core\Control\Factory
      */
     public function item_render_permalink( $value, $attrs )
     {
-        return "<a href=\"{$value}\" class=\"tiFyControlSuggest-pickerItemAttr tiFyControlSuggest-pickerItemAttr--permalink\"></a>";
+        return "<a href=\"". ( $value ? $value : '#'. $attrs['id'] ) ."\" class=\"tiFyControlSuggest-pickerItemAttr tiFyControlSuggest-pickerItemAttr--permalink\"></a>";
     }   
 }

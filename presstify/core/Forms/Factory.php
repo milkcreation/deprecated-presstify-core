@@ -103,11 +103,11 @@ class Factory
         $pieces = array( 'add-ons', 'buttons', 'fields', 'notices', 'options' );
         foreach( $pieces as $piece ) :
             if( ! empty( $attrs[$piece] ) ) :
-                ${$piece} = $attrs[$piece];
-                unset( $attrs[$piece] );
+                ${$piece} = $attrs[$piece];                
             else :
                 ${$piece} = array();
             endif;
+            unset( $attrs[$piece] );
         endforeach;
                 
         // Globaux
@@ -124,9 +124,9 @@ class Factory
         
         // Addons @todo
                 
-        // Boutons
+        // Boutons     
         $buttons = $this->setButtons( $buttons );
-                
+
         // Champs
         $fields = $this->setFields( $fields );
         
@@ -145,7 +145,7 @@ class Factory
     final public function setButtons( $items = array() )
     {
         $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
-
+        
         if( $matches = preg_grep( '/^set_button_(.*)/', get_class_methods( $this ) ) ) :
             foreach( $matches as $method ) :
                 $slug = preg_replace( '/^set_button_/', '', $method );
@@ -159,7 +159,7 @@ class Factory
                 $items[$slug] = call_user_func( array( $this, $method ), $attrs );
             endforeach;
         endif;
-        
+
         return $items;
     }
 
