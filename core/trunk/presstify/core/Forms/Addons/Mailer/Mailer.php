@@ -19,25 +19,35 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      */
     public $default_field_options = array( 
         // Affichage de l'intitulé et de la valeur de saisie du champ dans le corps du mail
-        'show'         => false         
+        'show'         => false
     );
     
     /**
      * CONSTRUCTEUR 
      */
     public function __construct() 
-    {    
+    {
         parent::__construct();
         
         // Définition des options de formulaire par défaut
         $this->default_form_options = array(
+            /// Affichage de l'interface d'administration des options
+            /// bool || [ 'confirmation', 'notification' ]
+            'admin'                 => true,
+            
             /// Envoi d'un message de notification à l'administrateur du site
             'notification'         => array(
                 'subject'            => sprintf( __( 'Vous avez une nouvelle demande de contact sur le site %s', 'tify' ), get_bloginfo('name') )
             ),
             /// Envoi d'un message de confirmation de reception à l'emetteur de la demande
-            'confirmation'         => false,
-            'admin'                => true
+            'confirmation'         => array(
+                'to'         => array( 
+                    array( 
+                        'email' => '%%email%%', 
+                        'name'  => '%%firstname%% %%lastname%%'
+                    ) 
+                )
+            )
         );
         
         // Définition des fonctions de court-circuitage
@@ -58,10 +68,10 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
             $id = @ sanitize_html_class( base64_encode( $this->form()->getUID() ) );
             \tify_options_register_node(
                 array(
-                    'id'         => 'tiFyFormMailer_'. $id,
-                    'title'     => $this->form()->getTitle(),
-                    'cb'        => 'tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin\MailOptions',
-                    'args'        => array( 'id' => 'tiFyFormMailer_'. $id )
+                    'id'            => 'tiFyFormMailer_'. $id,
+                    'title'         => $this->form()->getTitle(),
+                    'cb'            => 'tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin\MailOptions',
+                    'args'          => array( 'id' => 'tiFyFormMailer_'. $id )
                 )
             );
             $notification = $this->getFormAttr( 'notification' );
@@ -95,12 +105,12 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         if( $options = $this->getFormAttr( 'notification' ) ) :
             $options = $this->parseOptions( $options );
         
-            MailerNew::send( $options );    
+            MailerNew::send( $options );
         endif;
 
         // Envoi du message de confirmation
         if( $options = $this->getFormAttr( 'confirmation' ) ) :
-            $options = $this->parseOptions( $options );        
+            $options = $this->parseOptions( $options );
             
             MailerNew::send( $options );
         endif;
@@ -119,7 +129,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
             $options['to'] = get_option( 'admin_email' );
         
         if( empty( $options['message'] ) )
-            $options['message'] = $this->defaultHTML( $options );            
+            $options['message'] = $this->defaultHTML( $options );
             
         return $options;
     }

@@ -76,11 +76,18 @@ class Factory extends App
             'permalink'     => $this->Options['permalink']
         );
         
-        if( count( $hooks ) === 1 && empty( current( $hooks ) ) )
+        /**
+         * Commenté parce que sinon un hook vide taxonomy ne fonctionne pas si l'option n'existe pas 
+         * TEST instruction uniquement pour le post_type
+         * if( count( $hooks ) === 1 && empty( current( $hooks ) ) )
             $hooks = array();
+        */
         
         switch( $this->Obj ) :
             case 'post_type' :
+                if( count( $hooks ) === 1 && empty( current( $hooks ) ) )
+                     $hooks = array();
+            
                 if( ! empty( $hooks ) ) :
                 else :
                     $hooks = get_option( "tify_hook_". $this->Obj ."_". $this->Archive, array( array() ) );

@@ -63,6 +63,9 @@ abstract class Table extends \WP_List_Table
     
     /// Mode de prévisualisation
     protected $PreviewMode              = 'dialog';
+    
+    /// Données Ajax passées dans la requête de prévisualisation
+    protected $PreviewAjaxDatas         = array();
 
     /// Nombre d'éléments affichés par page
     protected $PerPage                  = null;
@@ -88,7 +91,7 @@ abstract class Table extends \WP_List_Table
     /// Cartographie des paramètres
     protected $ParamsMap                = array( 
         'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PreviewColumns', 'PreviewMode',
+        'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PreviewColumns', 'PreviewMode', 'PreviewAjaxDatas',
         'PerPage', 'PerPageOptionName',
         'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
         'PageTitle'
@@ -222,7 +225,7 @@ abstract class Table extends \WP_List_Table
     
     /** == == **/
     public function _admin_print_footer_scripts()
-    {       
+    { 
 ?><script type="text/javascript">/* <![CDATA[ */
 jQuery(document).ready( function($){
     $( document ).on( 'click', '#the-list .row-actions .previewinline a', function(e){
@@ -234,7 +237,15 @@ jQuery(document).ready( function($){
         if( $closest.next().attr('id') != 'inline-preview-'+ index ){
             // Création de la zone de prévisualisation
             $preview = $( '#inline-previewer' ).clone(true);
-            var id = 'inline-preview-'+ index;
+            var id      = 'inline-preview-'+ index,
+                data    = $.extend( 
+                    {
+                        action: '<?php echo $this->template()->getID() .'_'. self::classShortName() . '_inline_preview';?>', 
+                        '<?php echo $this->ItemIndex?>': index
+                    },
+                    JSON.parse( decodeURIComponent( $( '#previewAjaxData' ).val() ) )
+                );
+                
             $preview
                 .attr( 'id', id )
                 .hide();
@@ -267,7 +278,7 @@ jQuery(document).ready( function($){
             // Récupération de l'élément à prévisualiser
             $.post( 
                 tify_ajaxurl, 
-                { action: '<?php echo $this->template()->getID() .'_'. self::classShortName() . '_inline_preview';?>', '<?php echo $this->ItemIndex?>': index }, 
+                data, 
                 function( resp ){
                     $( '.content', $preview ).html(resp);
                     <?php if( $this->PreviewMode === 'dialog') : ?>
@@ -289,9 +300,9 @@ jQuery(document).ready( function($){
     /** == Action ajax de récupération de la prévisualisation en ligne == **/
     public function wp_ajax_inline_preview()
     {        
-        // Initialisation des paramètres de configuration de la table
-        $this->initParams(); 
-                
+        check_ajax_referer( 'tiFyCoreTemplatesAdminTablePreview' );
+        
+        $this->initParams();     
         $this->prepare_items();
         $item = current( $this->items );
         $this->preview($item);
@@ -512,7 +523,9 @@ jQuery(document).ready( function($){
      */
     public function hidden_fields()
     {
-?><?php
+        if( $this->PreviewMode ) :
+?><input type="hidden" id="previewAjaxData" value="<?php echo urlencode( json_encode( $this->PreviewAjaxDatas ) );?>" /><?php
+        endif;
     }
     
     /** == Vues filtrées == **/
@@ -559,7 +572,7 @@ jQuery(document).ready( function($){
                 <label><strong><?php echo $column_label;?></strong></label>
             </th>
             <td>
-            <?php 
+            <?php
             if( method_exists( $this, 'preview_' . $column_name ) ) :
                 echo call_user_func( array( $this, 'preview_' . $column_name ), $item );
             else :

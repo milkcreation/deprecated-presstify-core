@@ -55,19 +55,15 @@ final class ContactForm extends \tiFy\Environment\Component
     
     /** == Déclaration de la zone d'édition des options == **/
     final public function tify_options_register_node()
-    {    
-        foreach( (array) self::$Forms as $id => $args ) :
-            if( $args['admin'] ) :        
-                \tify_options_register_node(
-                    array(
-                        'id'         => $id,
-                        'title'     => $args['title'],
-                        'cb'        => '\tiFy\Components\ContactForm\Taboox\Option\MailOptions\Admin\MailOptions',
-                        'args'        => array( 'id' => $id, 'admin' => $args['admin']  )
-                    )
-                );
-            endif;
-        endforeach;
+    {   
+        \tify_options_register_node(
+            array(
+                'id'         => $id,
+                'title'         => $args['title'],
+                'cb'        => '\tiFy\Components\ContactForm\Taboox\Option\MailOptions\Admin\MailOptions',
+                'args'        => array( 'id' => $id, 'admin' => $args['admin']  )
+            )
+        );
     }    
 
     /**
@@ -131,7 +127,7 @@ final class ContactForm extends \tiFy\Environment\Component
         // Préfixe du formulaire
         if( ! isset( $args['form']['prefix'] ) )
             $args['form']['prefix'] = $id;
-        foreach( array( 'container_class', 'before', 'after', 'fields', 'options', 'buttons', 'add-ons'  ) as $attr ) :
+        foreach( array( 'container_class', 'before', 'after', 'fields', 'options', 'buttons', 'addons'  ) as $attr ) :
             if( ! isset( $args['form'][$attr] ) ) :
                 $args['form'][$attr] = self::$Defaults['form'][$attr];
             endif;
@@ -153,18 +149,18 @@ final class ContactForm extends \tiFy\Environment\Component
             ),
             'admin'            => false
         );        
-        if( ! isset ( $args['form']['add-ons'] ) )
-          $args['form']['add-ons'] = array();
+        if( ! isset ( $args['form']['addons'] ) )
+          $args['form']['addons'] = array();
         
-        if( isset( $args['form']['add-ons']['mailer'] ) && $args['form']['add-ons']['mailer'] === false ) :
-            unset( $args['form']['add-ons']['mailer'] );
-        elseif( isset( $args['form']['add-ons']['mailer'] ) && $args['form']['add-ons']['mailer'] === true ) :
-            $args['form']['add-ons']['mailer'] = $mailer_defaults;
-        elseif( isset( $args['form']['add-ons']['mailer'] ) ) :
-            $args['form']['add-ons']['mailer'] = wp_parse_args( $args['form']['add-ons']['mailer'], $mailer_defaults );
+        if( isset( $args['form']['addons']['mailer'] ) && $args['form']['addons']['mailer'] === false ) :
+            unset( $args['form']['addons']['mailer'] );
+        elseif( isset( $args['form']['addons']['mailer'] ) && $args['form']['addons']['mailer'] === true ) :
+            $args['form']['addons']['mailer'] = $mailer_defaults;
+        elseif( isset( $args['form']['addons']['mailer'] ) ) :
+            $args['form']['addons']['mailer'] = wp_parse_args( $args['form']['addons']['mailer'], $mailer_defaults );
         else :
-            $args['form']['add-ons'] = (array) $args['form']['add-ons'];
-            $args['form']['add-ons']['mailer'] = $mailer_defaults;
+            $args['form']['addons'] = (array) $args['form']['addons'];
+            $args['form']['addons']['mailer'] = $mailer_defaults;
         endif;
 
         return $args;

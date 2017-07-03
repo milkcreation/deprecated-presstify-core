@@ -111,8 +111,8 @@ class Notices
             return array();
         
         $errors = array();
-        foreach( $this->Datas[ $code ] as $data ) : 
-           $exists = array_intersect( $data, $args );
+        foreach( $this->Datas[ $code ] as $data ) :
+           $exists = @array_intersect( $data, $args );
 
            if( $exists != $args )
                continue;

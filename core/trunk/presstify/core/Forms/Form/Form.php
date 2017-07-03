@@ -34,7 +34,7 @@ class Form
         'enctype'                => '',
         
         // Attributs de paramètrage
-        'add-ons'               => array(),
+        'addons'                => array(),
         'buttons'               => array(),        
         'fields'                => array(),
         'notices'               => array(),
@@ -121,7 +121,7 @@ class Form
     /** == Définition des addons == **/
     private function _setAddons()
     {        
-        foreach( (array) $this->getAttr( 'add-ons' ) as $k => $v ) :
+        foreach( (array) $this->getAttr( 'addons' ) as $k => $v ) :
             if( ! $v ) :
                 continue;
             elseif( is_string( $v ) ) :
@@ -278,7 +278,7 @@ class Form
     /** == Récupération du titre du formulaire == **/
     public function getTitle()
     {
-        return $this->getAttr( 'title' );
+        return ( $title = $this->getAttr( 'title' ) ) ? $title : $this->getID();
     }
         
     /** == Récupération d'un attribut de formulaire == **/

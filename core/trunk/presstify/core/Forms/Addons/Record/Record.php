@@ -7,7 +7,7 @@
         [...]
         array(
             [...]
-             'add-ons'        => array(
+             'addons'        => array(
                 'record'        => array(
                     // Active l'affichage de la colonne pour ce champ, le label du champ de formulaire est utilisé comme intitulé de colonne
                     'column'         => true,
@@ -24,7 +24,7 @@
         [...]
         array(
             [...]
-             'add-ons'        => array(
+             'addons'        => array(
                 'record'        => array(
                     // Active l'affichage de la colonne pour ce champ
                     'column'         => 'intitulé personnalisé',
@@ -137,11 +137,13 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
         tify_templates_register(
             'tiFyCoreFormsAddonsRecordMenu',
             array(
-                'admin_menu' => array(
+                'admin_menu'    => array(
                     'menu_title'    => __( 'Formulaires', 'tify' ),
-                      'menu_slug'        => 'tify_forms_record',
-                      'icon_url'        => 'dashicons-clipboard'
-                )
+                    'menu_slug'     => 'tify_forms_record',
+                    'icon_url'      => 'dashicons-clipboard'
+                ),
+                'cb'            => '\tiFy\Core\Forms\Addons\Record\ListTable',
+                'db'            => 'tify_forms_record'
             ),
             'admin'
         );
@@ -150,8 +152,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
             'tiFyCoreFormsAddonsRecordListTable',
             array(
                 'admin_menu' => array(
-                    'parent_slug'    => 'tify_forms_record',
-                    'menu_slug'        => 'tify_forms_record',
+                    'parent_slug'   => 'tify_forms_record',
+                    'menu_slug'     => 'tify_forms_record',
                     'menu_title'    => __( 'Enregistrements', 'tify' ),
                     'position'      => 1
                 ),

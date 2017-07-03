@@ -48,7 +48,7 @@ class SurveyForm extends App
 				'buttons' 	=> array(
 					'submit' => $this->currentSurveyFormSubmit
 				),
-				'add-ons'	=> array(
+				'addons'	=> array(
 					'record' 	=> array(
 						'export'	=> false
 					),
@@ -75,7 +75,7 @@ class SurveyForm extends App
 			if( $this->isSubmitButton( $field ) ) :
 				$this->currentSurveyFormSubmit = false;
 				$field['options']['class'] = 'Button Button--inline Button--green';
-				$field['add-ons'] = array(
+				$field['addons'] = array(
 					'record'		=> array(
 						'column' 		=> false,
 						'preview'		=> false
@@ -86,7 +86,7 @@ class SurveyForm extends App
 				);
 				$_fields[] = $this->getCaptcha();
 			else :
-				$field['add-ons'] = array(
+				$field['addons'] = array(
 					'record'		=> array(
 						'column' 		=> true,
 						'preview'		=> true
@@ -133,7 +133,7 @@ class SurveyForm extends App
 				'secretkey'	=> '6LdAgAsUAAAAAKWuO30huPYeAUs9SNcG-OosYp8I',
 				'theme'		=> 'light'
 			),
-			'add-ons'			=> array(
+			'addons'			=> array(
 				'mailer'	=> array(
 					'show'	=> false
 				)

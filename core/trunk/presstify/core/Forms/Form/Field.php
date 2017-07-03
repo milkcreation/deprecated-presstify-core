@@ -65,7 +65,7 @@ class Field
         'transport'            => true,        
             
         // Addons et options
-        'add-ons'            => array(),
+        'addons'             => array(),
         'options'            => array()
     );
     
@@ -152,7 +152,7 @@ class Field
     /** == Définition des attributs d'addons == **/
     private function _setAddons()
     {
-        $attrs = $this->getAttr( 'add-ons' );
+        $attrs = $this->getAttr( 'addons' );
         
         foreach( (array) $this->form()->addons() as $id => $addon ) :
             $this->Addons[$id] = $addon;
@@ -162,7 +162,7 @@ class Field
     
     /** == Définition des options de champ == **/
     private function _setOptions()
-    {        
+    {    
         $this->type()->initOptions( $this->Attrs[ 'options' ] );
     }
     
