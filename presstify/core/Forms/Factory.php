@@ -20,7 +20,7 @@ class Factory
     {
         // Traitement des attributs de formulaire
         $attrs = $this->setAttrs( $attrs );
-                
+        
         // Instanciation
         $this->Form = new \tiFy\Core\Forms\Form\Form( $id, $attrs );
         
@@ -100,7 +100,7 @@ class Factory
      */
     final public function setAttrs( $attrs )
     {
-        $pieces = array( 'add-ons', 'buttons', 'fields', 'notices', 'options' );
+        $pieces = array( 'addons', 'buttons', 'fields', 'notices', 'options' );
         foreach( $pieces as $piece ) :
             if( ! empty( $attrs[$piece] ) ) :
                 ${$piece} = $attrs[$piece];                
@@ -123,7 +123,8 @@ class Factory
         endif;        
         
         // Addons @todo
-                
+        $addons = $this->setAddons( $addons );
+        
         // Boutons     
         $buttons = $this->setButtons( $buttons );
 
@@ -133,10 +134,33 @@ class Factory
         // Notices @todo
                 
         // Options @todo
-        
         $attrs += compact( $pieces );
 
         return $attrs;
+    }
+    
+    /**
+     * Définition des boutons de formulaire
+     */
+    final public function setAddons( $items = array() )
+    {
+        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
+        
+        if( $matches = preg_grep( '/^set_addon_(.*)/', get_class_methods( $this ) ) ) :
+            foreach( $matches as $method ) :
+                $slug = preg_replace( '/^set_addon_/', '', $method );
+                
+                if( isset( $slugs[$slug] ) ) :
+                    $k = $slugs[$slug]; $attrs = $items[$k];
+                else :
+                    $k = count( $items ); $attrs = array();
+                endif;
+                
+                $items[$slug] = call_user_func( array( $this, $method ), $attrs );
+            endforeach;
+        endif;
+
+        return $items;
     }
     
     /**

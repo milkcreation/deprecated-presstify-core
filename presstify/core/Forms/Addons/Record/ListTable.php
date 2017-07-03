@@ -9,14 +9,19 @@ use \tiFy\Core\Forms\Addons;
 
 class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 {
-    /* = ARGUMENTS = */
-    // Liste des formulaires actifs 
+    /**
+     * Liste des formulaires actifs
+     */
     protected $Forms          = array();
 
-    // Formulaire courant
+    /**
+     * Formulaire courant
+     */
     protected $Form           = null;
 
-    /* = CONSTRUCTEUR = */
+    /**
+     * CONSTRUCTEUR
+     */
     public function __construct()
     {
         parent::__construct();
@@ -36,28 +41,34 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         endif;
     }
     
-    /* = DECLARATION DES PARAMETRES = */
-    /** == Définition des vues filtrées == **/
-	public function set_views()
-	{
-		return array(
-			'any'		=> array(
-				'label'				=> __( 'Tous (hors corbeille)', 'tify' ),
-				'current'			=> empty( $_REQUEST['record_status'] ) ? true : null,
-				'add_query_args'	=> array( 'record_status' => array( 'publish' ) ),
-				'remove_query_args'	=> array( 'record_status' ),
-				'count'				=> $this->count_items( array( 'record_status' => array( 'publish' ) ) )
-			),
-			'trash' 		=> array( 
-				'label'				=> __( 'Corbeille', 'tify' ),
-				'add_query_args'	=> array( 'record_status' => 'trash' ),
-				'count'				=> $this->count_items( array( 'record_status' => 'trash' ) ),
-				'hide_empty'		=> true
-			)
-	    );
-	}
+    /**
+     * PARAMETRAGE
+     */
+    /**
+     * Définition des vues filtrées
+     */
+    public function set_views()
+    {
+        return array(
+            'any'        => array(
+                'label'                => __( 'Tous (hors corbeille)', 'tify' ),
+                'current'            => empty( $_REQUEST['record_status'] ) ? true : null,
+                'add_query_args'    => array( 'record_status' => array( 'publish' ) ),
+                'remove_query_args'    => array( 'record_status' ),
+                'count'                => $this->count_items( array( 'record_status' => array( 'publish' ) ) )
+            ),
+            'trash'         => array( 
+                'label'                => __( 'Corbeille', 'tify' ),
+                'add_query_args'    => array( 'record_status' => 'trash' ),
+                'count'                => $this->count_items( array( 'record_status' => 'trash' ) ),
+                'hide_empty'        => true
+            )
+        );
+    }
     
-    /** == Définition des colonnes de la table == **/
+    /**
+     * Définition des colonnes de la table
+     */
     public function set_columns()
     {
         $cols = array(
@@ -76,7 +87,9 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         return $cols;
     }
     
-    /** == Définition des colonnes de prévisualisation == **/
+    /**
+     * Définition des colonnes de prévisualisation
+     */
     public function set_preview_columns()
     {
         if( ! $this->Form ) 
@@ -92,13 +105,45 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         return $cols;
     }
     
-    /** == Définition du mode de prévisualisation == **/
+    /**
+     * Définition du mode de prévisualisation
+     */
     public function set_preview_mode()
     {
         return 'row';
     }
     
-    /** == Définition des actions sur un élément == **/
+    /**
+     * Définition des données passées dans la requête Ajax de prévisualisation 
+     */
+    public function set_preview_ajax_datas()
+    {
+        if( ! $this->Form ) 
+            return array();
+        
+        return array(
+            'form_id'    => $this->Form->getId()  
+        );
+    }
+    
+    /**
+     * Définition des actions groupées
+     */
+    public function set_bulk_actions()
+    {
+        if( empty( $_REQUEST['record_status'] ) ) :
+            $bulk_actions['trash'] = __( 'Mettre à la corbeille', 'tify' );
+        else :
+            $bulk_actions['untrash'] = __( 'Restaurer', 'tify' );
+            $bulk_actions['delete'] = __( 'Supprimer définitivement', 'tify' );
+        endif;
+        
+        return $bulk_actions;
+    }
+    
+    /**
+     * Définition des actions sur un élément
+     */
     public function set_row_actions()
     {
         $actions = array();
@@ -116,41 +161,39 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         return $actions;
     }
     
-    /** == Définition des actions groupées == **/
-	public function set_bulk_actions()
-	{
-		if( empty( $_REQUEST['record_status'] ) ) :
-			$bulk_actions['trash'] = __( 'Mettre à la corbeille', 'tify' );
-		else :
-			$bulk_actions['untrash'] = __( 'Restaurer', 'tify' );
-			$bulk_actions['delete'] = __( 'Supprimer définitivement', 'tify' );
-		endif;
-		
-		return $bulk_actions;
-	}
-    
-	/** == Définition de l'ajout automatique des actions sur l'élément des entrées de la colonne principale == **/
-	public function set_handle_row_actions()
-	{
-		return false;
-	}
-    
-    /* = TRAITEMENT = */
-    /** == Récupération des éléments == **/
-    public function parse_query_arg_form_id() 
+    /**
+     * Définition de l'ajout automatique des actions sur l'élément à la colonne principale
+     */
+    public function set_handle_row_actions()
     {
-        // Définition 
-        if( $this->Form )
-            $this->QueryArgs['form_id'] =  $this->Form->getID();
+        return false;
     }
     
-    /* = AFFICHAGE = */
-    /** == Liste de filtrage du formulaire courant == **/
+    /**
+     * TRAITEMENT
+     */
+    /**
+     * Données de récupération des éléments
+     */
+    public function parse_query_arg_form_id() 
+    {
+        if( $this->Form ) :
+            $this->QueryArgs['form_id'] =  $this->Form->getID();
+        endif;
+    }
+    
+    /**
+     * AFFICHAGE
+     */
+    /**
+     * Interface de navigation complémentaire
+     */
     public function extra_tablenav( $which ) 
     {
         if( count( $this->Forms ) <= 1 )
             return;
-                
+        
+        // Liste de filtrage du formulaire courant
         $output = "<div class=\"alignleft actions\">";
         if ( 'top' == $which ) :
             $output  .= "\t<select name=\"form_id\" autocomplete=\"off\">\n";
@@ -167,7 +210,9 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         echo $output;
     }
     
-    /** == Contenu des colonnes par défaut == **/
+    /**
+     * Contenu des colonnes par défaut
+     */
     public function column_default( $item, $column_name )
     {
         if( ! $field = $this->Form->getField( $column_name ) )
@@ -180,10 +225,12 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
             endif;
         endforeach;
         
-        return join( ', ', $values );        
+        return join( ', ', $values );
     }
     
-    /** == Colonne des informations d'enregistrement == **/
+    /**
+     * Colonne - Informations d'enregistrement
+     */
     public function column_form_infos( $item )
     {
         $form_title = ( $form = Forms::get( $item->form_id ) ) ? $form->getForm()->getTitle() : __( '(Formulaire introuvable)', 'tify' );
@@ -198,17 +245,19 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         $actions = $this->RowActions;
         
         if( $item->record_status == 'trash' ) :
-            unset( $actions['trash'] );		    
-			$row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
-		else :
+            unset( $actions['trash'] );            
+            $row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
+        else :
             unset( $actions['untrash'], $actions['delete'] );
-			$row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
-		endif;
-	
-		return sprintf('%1$s %2$s', $output, $row_actions );
+            $row_actions =  $this->row_actions( $this->item_row_actions( $item, array_keys( $actions ) ) );
+        endif;
+    
+        return sprintf('%1$s %2$s', $output, $row_actions );
     }
     
-    /** == Contenu de l'aperçu par défaut == **/
+    /**
+     * Contenu de l'aperçu par défaut
+     */
     public function preview_default( $item, $column_name )
     {     
         if( ! $field = $this->Form->getField( $column_name ) )

@@ -46,7 +46,7 @@ class Notices extends \tiFy\Core\Control\Factory
 		extract( $args );
 		
 		$output  = "";
-		$output .= "<div". ( $id ? " id=\"{$id}\"" : "" ) ." class=\"tiFyNotice tiFyNotice-". ucfirst( $type )."". ( $class ? " ".$class : "" ) ."\" >";
+		$output .= "<div". ( $id ? " id=\"{$id}\"" : "" ) ." class=\"tiFyNotice tiFyNotice--". strtolower( $type )."". ( $class ? " ".$class : "" ) ."\" >";
 		
 		if( $dismissible ) :
 			$output .= "<button type=\"button\" data-dismiss=\"tiFyNotice\">";

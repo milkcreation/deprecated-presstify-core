@@ -141,6 +141,14 @@ trait Params
         return 'dialog';
     }
     
+    /**
+     * Définition des données ajax passées dans la requête de prévisualisation
+     */
+    public function set_preview_ajax_datas()
+    {
+        return array();
+    }
+    
     /** == Définition des arguments de requête == **/
     public function set_query_args()
     {
@@ -312,7 +320,7 @@ trait Params
 
         if( $preview_cols ) :
             $this->PreviewColumns = $preview_cols;
-        endif;        
+        endif;
     }
     
     /** == Initialisation du mode de prévisualisation == **/
@@ -325,6 +333,24 @@ trait Params
         else :
             $this->PreviewMode = false;
         endif;        
+    }
+    
+    /**
+     * Initialisation des données passées dans la requête Ajax de prévisualisation
+     */
+    public function initParamPreviewAjaxDatas()
+    {
+        if( $preview_ajax_datas = $this->set_preview_ajax_datas() ) :
+        elseif( $preview_ajax_datas = $this->getConfig( 'preview_ajax_datas' ) ) :
+        else :
+            $preview_ajax_datas = array();
+        endif;
+        
+        if( ! isset( $preview_ajax_datas['_ajax_nonce'] ) ) :
+            $preview_ajax_datas['_ajax_nonce'] = wp_create_nonce( 'tiFyCoreTemplatesAdminTablePreview' );
+        endif;
+            
+        $this->PreviewAjaxDatas = $preview_ajax_datas;
     }
     
     /** == Initialisation de la colonne principale == **/

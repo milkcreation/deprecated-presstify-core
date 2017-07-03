@@ -193,7 +193,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      * Champs cachés
      */
     public function hidden_fields()
-    {
+    {        
         /**
          * Ajout dynamique d'arguments passés dans la requête ajax de récupération d'éléments
          * ex en PHP : <input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( array( 'key' => 'value' ) ) );?>"/>

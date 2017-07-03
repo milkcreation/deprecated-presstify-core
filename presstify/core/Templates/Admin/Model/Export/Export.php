@@ -157,7 +157,7 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Table
      * Champs cachés
      */
     public function hidden_fields()
-    {
+    {                
         $ajaxData = array(
             'action' => $this->template()->getID() .'_'. self::classShortName() .'_export_items'            
         );
