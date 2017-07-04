@@ -156,9 +156,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
                     'menu_slug'     => 'tify_forms_record',
                     'menu_title'    => __( 'Enregistrements', 'tify' ),
                     'position'      => 1
-                ),
-                'cb'            => '\tiFy\Core\Forms\Addons\Record\ListTable',
-                'db'            => 'tify_forms_record'
+                )
             ),
             'admin'
         );

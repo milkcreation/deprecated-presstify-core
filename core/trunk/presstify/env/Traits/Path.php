@@ -40,6 +40,9 @@ trait Path
 	// Chemin relatif la racine de la classe
 	protected static $_RelPath;
 	
+	// Url absolue vers la racine de la classe
+	protected static $_AssetsUrl;
+		
 	// Liste des arguments pouvant être récupérés
 	private $GetPathAttrs		= array( 'ReflectionClass', 'ClassShortName', 'Filename', 'Dirname', 'Basename', 'Url' );
 	
@@ -172,6 +175,19 @@ trait Path
 		endif;
 		
 		return self::$_RelPath[$CalledClass];
+	}
+	
+	/** == Récupération du répertoire de déclaration de la classe == **/
+	public static function getAssetsUrl( $CalledClass = null )
+	{
+		if( ! $CalledClass )
+			$CalledClass = get_called_class();
+					
+		if( ! isset( self::$_AssetsUrl[$CalledClass] ) ) :
+			self::$_AssetsUrl[$CalledClass] = \tiFy\tiFy::$AbsUrl . '/assets/'. untrailingslashit( \tiFy\Lib\File::getRelativeFilename( self::getDirname( $CalledClass ), \tiFy\tiFy::$AbsDir ) );
+		endif;
+		
+		return self::$_AssetsUrl[$CalledClass];
 	}
 	
 	/**

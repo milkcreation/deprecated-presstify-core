@@ -18,6 +18,7 @@
         "mrclay/minify": "^3.0",
         "twbs/bootstrap": "^3.3",
         "FortAwesome/Font-Awesome": "^4.7",
-        "kenwheeler/slick": "^1.6"
+        "kenwheeler/slick": "^1.6",
+        "pear/http2": "^1.1"
     }
 }

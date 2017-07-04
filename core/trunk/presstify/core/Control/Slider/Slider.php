@@ -35,8 +35,10 @@ class Slider extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        wp_register_style( 'tify_control-slider', self::getUrl( get_class() ) .'/Slider.css', array(), 170215 );
-        wp_register_script( 'tify_control-slider', self::getUrl( get_class() ) .'/Slider.js', array( 'tify-slideshow' ), 170215, true );
+        $min = SCRIPT_DEBUG ? '' : '.min';
+        
+        wp_register_style( 'tify_control-slider', self::getAssetsUrl( get_class() ) .'/Slider'. $min .'.css', array(), 170215 );
+        wp_register_script( 'tify_control-slider', self::getAssetsUrl( get_class() ) .'/Slider'. $min .'.js', array( 'tify-slideshow' ), 170215, true );
     }
     
     /**
@@ -134,7 +136,7 @@ class Slider extends \tiFy\Core\Control\Factory
         $output  = "";
         $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\"";
         foreach( $options as $k => $v ) :
-            // @see mu-plugins/presstify/lib/Assets/tify/tify-slideshow.js
+            // @see mu-plugins/presstify/assets/lib/tify-slideshow.js
             if( ! in_array( $k, array( 'interval', 'pause', 'transition', 'speed', 'easing' , 'resize', 'bypage' ) ) )
                 continue;
             $output .= " data-{$k}=\"{$v}\"";                

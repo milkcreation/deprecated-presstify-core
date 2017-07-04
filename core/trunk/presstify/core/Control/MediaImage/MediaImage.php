@@ -12,8 +12,10 @@ class MediaImage extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-media_image', $this->Url ."/media_image.css", array( ), '141212' );
-		wp_register_script( 'tify_control-media_image', $this->Url ."/media_image.js", array( 'jquery' ), '141212', true );
+		$min = SCRIPT_DEBUG ? '' : '.min';
+	    
+	    wp_register_style( 'tify_control-media_image', self::getAssetsUrl( get_class() ) .'/MediaImage'. $min .'.css', array( ), '141212' );
+		wp_register_script( 'tify_control-media_image', self::getAssetsUrl( get_class() ) .'/MediaImage'. $min .'.js', array( 'jquery' ), '141212', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
