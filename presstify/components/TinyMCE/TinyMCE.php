@@ -32,9 +32,10 @@ class TinyMCE extends Component
 		parent::__construct();
 		
 		// Récupération de la configuration des plugins externe
-		if( ! empty( self::getConfig( 'external_plugins' ) ) )
-			self::$ExternalPluginsConfig = self::getConfig( 'external_plugins' );
-
+		if( $external_plugins = self::getConfig( 'external_plugins' ) ) :
+			self::$ExternalPluginsConfig = $external_plugins;
+        endif;
+        
 		// Chargement des plugins
 		new ExternalPlugins\Dashicons\Dashicons;	
 		new ExternalPlugins\FontAwesome\FontAwesome;
@@ -52,8 +53,8 @@ class TinyMCE extends Component
 	final public function tiny_mce_before_init( $mceInit )
 	{
 		// Traitement de la configuration personnalisée
-		if( ! empty( self::getConfig( 'init' ) ) ) :
-			foreach( (array) self::getConfig( 'init' ) as $key => $value ) :
+		if( $init = self::getConfig( 'init' ) ) :
+			foreach( (array) $init as $key => $value ) :
 				switch( $key ) :
 					default			:
 						if( is_array( $value ) )
@@ -128,7 +129,7 @@ class TinyMCE extends Component
 		if( ! empty( self::$ExternalPluginsActive ) )
 			return self::$ExternalPluginsActive;
 		
-		if( empty( self::getConfig( 'external_plugins' ) ) )
+		if( ! self::getConfig( 'external_plugins' ) )
 			return array();
 	
 		$plugins = array();

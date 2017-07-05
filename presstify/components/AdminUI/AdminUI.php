@@ -31,7 +31,7 @@ class AdminUI extends Component
 		parent::__construct();		
 		
 		foreach( (array) array_keys( self::getDefaultConfig() ) as $prop ) :
-			if( ! empty( self::getConfig( $prop ) ) ) :
+			if( self::getConfig( $prop ) ) :
 				$value = is_array( self::getDefaultConfig( $prop ) ) ? wp_parse_args( self::getConfig( $prop ), self::getDefaultConfig( $prop ) ) : self::getConfig( $prop );
 			else :
 				$value = self::getDefaultConfig( $prop );

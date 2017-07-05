@@ -119,8 +119,8 @@ class Search extends Component
         self::$Defaults = wp_parse_args( self::getConfig( 'defaults' ), self::$Defaults );
 
         /// Sections
-        if( ! empty( self::getConfig( 'sections' ) ) ) :
-            foreach( (array) self::getConfig( 'sections' ) as $name => $args ) :    
+        if( $sections = self::getConfig( 'sections' ) ) :
+            foreach( (array) $sections as $name => $args ) :    
                 self::$Section[$name] = wp_parse_args( $args, self::$Defaults );
             endforeach;
         endif;

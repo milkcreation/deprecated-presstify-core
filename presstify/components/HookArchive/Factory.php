@@ -85,7 +85,7 @@ class Factory extends App
         
         switch( $this->Obj ) :
             case 'post_type' :
-                if( count( $hooks ) === 1 && empty( current( $hooks ) ) )
+                if( count( $hooks ) === 1 && ! current( $hooks ) )
                      $hooks = array();
             
                 if( ! empty( $hooks ) ) :
