@@ -57,7 +57,7 @@ class Media
         elseif( preg_match( '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/', $filename ) ) :
             $is_url = true;
         /// Chemin relatif
-        else :
+        elseif( file_exists( ABSPATH .'/'. ltrim( $filename, '/' ) ) ) :
             $filename = ABSPATH .'/'. ltrim( $filename, '/' );
         endif; 
         

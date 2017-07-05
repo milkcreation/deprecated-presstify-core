@@ -144,7 +144,7 @@ class Factory
      */
     final public function setAddons( $items = array() )
     {
-        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
+        $slugs = ( ! empty( $items ) ) ? \array_flip( \array_column( $items, 'slug' ) ) : array();
         
         if( $matches = preg_grep( '/^set_addon_(.*)/', get_class_methods( $this ) ) ) :
             foreach( $matches as $method ) :

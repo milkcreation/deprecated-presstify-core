@@ -100,7 +100,7 @@ class File extends \tiFy\Core\Forms\FieldTypes\Factory
     private function isAllowedFileType( $filename )
     {
         // Bypass
-        if( empty( $this->getOption( 'allowed_file_ext', false ) ) ) :
+        if( ! $this->getOption( 'allowed_file_ext', false ) ) :
             $check = wp_check_filetype( $filename );
             return ( $check['ext'] &&  $check['type'] );
         endif;

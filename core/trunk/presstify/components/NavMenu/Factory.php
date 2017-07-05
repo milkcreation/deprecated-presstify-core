@@ -1,4 +1,7 @@
 <?php
+/**
+ * @Overrideable
+ */
 namespace tiFy\Components\NavMenu; 
 
 class Factory
