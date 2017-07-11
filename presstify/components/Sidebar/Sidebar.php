@@ -53,16 +53,6 @@ class Sidebar extends \tiFy\Environment\Component
      * Liste des greffons déclarés
      */
     private static $Nodes;
-        
-    /**
-     * CONSTRUCTEUR 
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        
-        self::$Factory = self::loadOverride( '\tiFy\Components\Sidebar\Factory' );
-    }
     
     /**
      * DECLENCHEURS
@@ -77,6 +67,9 @@ class Sidebar extends \tiFy\Environment\Component
         
         wp_register_style( 'tiFySidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
         wp_register_script( 'tiFySidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
+        
+        wp_register_style( 'tiFySidebar--theme-dark', self::getAssetsUrl( get_class() ) .'/Sidebar-ThemeDark'. $min .'.css', array( 'tiFySidebar' ), 170704 );
+        wp_register_style( 'tiFySidebar--theme-light', self::getAssetsUrl( get_class() ) .'/Sidebar-ThemeLight'. $min .'.css', array( 'tiFySidebar' ), 170704 );        
     }
     
     /**
@@ -90,8 +83,6 @@ class Sidebar extends \tiFy\Environment\Component
         foreach( (array) self::getConfig( 'nodes' ) as $id => $args ) :
             self::register( $id, $args );
         endforeach;
-        
-        self::$Factory->register();
         
         foreach( (array) self::$Nodes as $id => $args ) :
             $order[$id] = $args['position'];
@@ -111,6 +102,10 @@ class Sidebar extends \tiFy\Environment\Component
         
         wp_enqueue_style( 'tiFySidebar' );
         wp_enqueue_script( 'tiFySidebar' );
+        
+        if( $theme = self::getTheme( get_class() ) ) :
+            wp_enqueue_style( 'tiFySidebar--theme-'. $theme );
+        endif;
     }
     
     /**
@@ -230,10 +225,10 @@ class Sidebar extends \tiFy\Environment\Component
         switch( self::getConfig( 'initial' ) ) :
             default:
             case 'closed' :
-                $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Closed' ;
+                    $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Closed' ;
                 break;
             case 'opened' :
-                 $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Opened' ;
+                    $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Opened' ;
                  break;
         endswitch;
         
@@ -258,7 +253,7 @@ class Sidebar extends \tiFy\Environment\Component
         $defaults = array(
             'class'         => '',
             'position'      => 99,
-            'html'          => '',
+            'content'       => '',
             /**
              * @deprecated : Utiliser l'argument html 
              */
@@ -277,6 +272,9 @@ class Sidebar extends \tiFy\Environment\Component
      */
     public static function display()
     {
+        $Nodes = self::loadOverride( '\tiFy\Components\Sidebar\Nodes' );
+        $items = $Nodes->customs( self::$Nodes );
+      
         $output  = "";
         $output .= "<div class=\"tiFySidebar tiFySidebar--". self::getConfig( 'pos' ) ."\" data-pos=\"". self::getConfig( 'pos' ) ."\">";
                 
@@ -296,20 +294,10 @@ class Sidebar extends \tiFy\Environment\Component
         // PANNEAU DES GREFFONS
         $output .= "\t<div class=\"tiFySidebar-panel\">\n";
         $output .= "\t\t<div class=\"tiFySidebar-nodesWrapper\">\n";
-        if( self::$Nodes ) :    
-            $output .= "\t\t\t<ul class=\"tiFySidebar-nodes\">";
-            foreach( (array) self::$Nodes as $id => $attrs ) :
-                $output .= "\t\t\t\t<li id=\"tify_sidebar-node-{$id}\" class=\"{$attrs['class']} tiFySidebar-node tiFySidebar-node--{$id}\">";
-                if( ! empty( $attrs['html'] ) ) :
-                    $output .= $attrs['html']; 
-                else :
-                    ob_start(); call_user_func( $attrs['cb'] );
-                    $output .= ob_get_clean();  
-                endif;
-                $output .= "\t\t\t\t</li>";
-            endforeach;
-            $output .= "\t\t\t</ul>";
-        endif;
+        $output .= "\t\t\t<div class=\"tiFySidebar-nodesContainer\">\n";
+		$Walker = self::loadOverride( '\tiFy\Components\Sidebar\Walker' );
+        $output .= $Walker->walk( $items );
+        $output .= "\t\t\t</div>"; 
         $output .= "\t\t</div>";        
         $output .= "\t</div>";
         $output .= "</div>";
@@ -323,23 +311,19 @@ class Sidebar extends \tiFy\Environment\Component
      */
     public static function displayToggleButton( $args = array(), $echo = true )
     {
-        ob_start(); 
-        include self::getDirname() .'/Sidebar.svg';
-        $default_text = ob_get_clean();
-        
         $defaults = array(
-            'pos'    => self::getConfig( 'pos' ),
-            'text'    => $default_text,
-            'class'    => ''
+            'pos'       => self::getConfig( 'pos' ),
+            'text'      => '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 75 75" xml:space="preserve" fill="#000" ><g><rect width="75" height="10" x="0" y="0" ry="0"/><rect width="75" height="10" x="0" y="22" ry="0"/><rect width="75" height="10" x="0" y="44" ry="0"/></g></svg>',
+            'class'     => ''
         );        
         $args = wp_parse_args( $args, $defaults );
         extract( $args );
         
         $output  = "";
-        $output .= "\t<a href=\"#tify_sidebar-panel_{$pos}\"". ( $class ? " class=\"". $class ."\"" : "" ) ." data-toggle=\"tiFySidebar\" data-target=\"{$pos}\">";
+        $output .= "<a href=\"#tify_sidebar-panel_{$pos}\"". ( $class ? " class=\"". $class ."\"" : "" ) ." data-toggle=\"tiFySidebar\" data-target=\"{$pos}\">";
         $output .= $text;
-        $output .= "\t</a>\n";
-        
+        $output .= "</a>\n";
+               
         if( $echo )
             echo $output;
         

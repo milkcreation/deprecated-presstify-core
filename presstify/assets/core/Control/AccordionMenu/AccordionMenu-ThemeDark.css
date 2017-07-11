@@ -1,0 +1,14 @@
+.tiFyControlAccordionMenu
+.tiFyControlAccordionMenu-item {
+    background-color:#23282D;
+}
+.tiFyControlAccordionMenu-itemLink{
+    color:#EEE;
+    border-bottom:solid 1px #2C333A; 
+}
+.tiFyControlAccordionMenu-itemLink:hover,
+.tiFyControlAccordionMenu-itemLink:active,
+.tiFyControlAccordionMenu-itemLink:focus{
+    color:#CCC;
+}
+

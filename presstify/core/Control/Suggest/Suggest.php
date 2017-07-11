@@ -64,10 +64,12 @@ class Suggest extends \tiFy\Core\Control\Factory
         self::$Instance++;
         
         $defaults = array(
-            // Id Html du conteneur
+            // Identification du controleur
             'id'                    => 'tiFyControlSuggest--'. self::$Instance,
+            // Id Html du conteneur
+            'container_id'          => 'tiFyControlSuggest--'. self::$Instance,
             // Classe Html du conteneur
-            'class'                 => '',
+            'container_class'       => '',
             // Nom de la variable de requête du champ de recherche
             'name'                  => 'tiFyControlSuggest-'. self::$Instance,
             // Valeur du champs de recherche
@@ -130,7 +132,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         endif;
 
         if( $value ) :
-            $class .= ' tiFyControlSuggest--selected';
+            $container_class .= ' tiFyControlSuggest--selected';
             $readonly = true;
         endif;
         $delete_button_before = '<button type="button" class="tiFyControlSuggest-button tiFyControlSuggest-button--delete">';
@@ -146,7 +148,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         $ajax_attrs = compact( 'ajax_action', 'ajax_nonce', 'query_args', 'elements', 'extras', 'select', 'options', 'picker' );
         
         $output  = "";
-        $output .= "<div id=\"{$id}\" class=\"tiFyControlSuggest". ( $class ? ' '. $class : '' ) ."\"";
+        $output .= "<div id=\"{$container_id}\" class=\"tiFyControlSuggest". ( $container_class ? ' '. $container_class : '' ) ."\"";
         $output .= "data-tify_control=\"suggest\" data-attrs=\"". htmlentities( json_encode( $ajax_attrs ) ) ."\"";
         foreach( (array) $attrs as $k => $v )
             $output .= " {$k}=\"{$v}\"";
