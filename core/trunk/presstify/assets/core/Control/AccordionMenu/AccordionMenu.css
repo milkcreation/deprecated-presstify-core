@@ -1,0 +1,44 @@
+.tiFyControlAccordionMenu {
+    overflow:hidden;
+}
+.tiFyControlAccordionMenu-item {
+    position:relative;
+    overflow:hidden;
+}
+.tiFyControlAccordionMenu-item .tiFyControlAccordionMenu-item{
+    padding-left:1em;
+}
+.tiFyControlAccordionMenu-itemLink{
+    position:relative;
+    display:block;
+    padding:10px 30px 10px 10px;   
+}
+.tiFyControlAccordionMenu-item--hasChildren > .tiFyControlAccordionMenu-itemLink::before{
+    position:absolute;
+    top:50%; right:10px;
+    margin-top:-10px;
+    display:block;
+    content: "\f345";
+    font-family:"Dashicons";
+    line-height:1;
+    font-size:20px;
+}
+.tiFyControlAccordionMenu-item--hasChildren.active > .tiFyControlAccordionMenu-itemLink::before{
+    content: "\f347";
+}
+
+/**
+ * ANIMATIONS
+ */
+.tiFyControlAccordionMenu ul > li > ul{
+    -moz-transition:        max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
+    -ms-transition:         max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
+    -o-transition:          max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
+    -webkit-transition:     max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
+    transition:             max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0); 
+    
+    max-height:0; 
+}
+.tiFyControlAccordionMenu ul > li.current-cat-ancestor > ul{
+    max-height:none;
+}

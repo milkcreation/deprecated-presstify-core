@@ -27,13 +27,16 @@ trait Config
     protected $SubDir;
     
     // Schema
-    protected $Schema                      = false;
+    protected $Schema                   = false;
     
     // Configuration par défaut
     protected static $DefaultConfig;
     
     // Configuration
     protected static $_ConfParams;
+    
+    // Theme (dark|light)
+    protected static $Theme             = array(); 
 
     /* = CONSTRUCTEUR = */
     public function __construct()
@@ -190,5 +193,20 @@ trait Config
         $class = get_called_class();
         
         return static::$_ConfParams[$class][$index] = $value;
+    }
+    
+    /**
+     * Récupération du theme
+     */
+    public static function getTheme( $class = null )
+    {
+        if( ! $class )
+            $class = get_called_class();
+
+        if( isset( static::$Theme[$class] ) ) :
+            return static::$Theme[$class];
+        else :
+            return static::$Theme[$class] = 'dark';
+        endif;
     }
 }

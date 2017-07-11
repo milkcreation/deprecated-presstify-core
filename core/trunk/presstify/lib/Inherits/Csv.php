@@ -498,10 +498,11 @@ class Csv
                
         // Récupération des résultats
         $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
+        // @todo Récupération de l'encodage
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
             function($row, $rowOffset) use( $utf8_encode ) {
-                return $utf8_encode ? array_map( 'utf8_encode', $row ) : $row;
+                return $utf8_encode ? mb_convert_encoding( $row, 'UTF-8', 'Windows-1252' ) : $row;
             } 
         );    
         $csv->Items = iterator_to_array( $results );       
@@ -532,11 +533,12 @@ class Csv
             ->setLimit( 1 );            
                
         // Récupération des résultats
+        // @todo Récupération de l'encodage
         $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
             function($row) use( $utf8_encode ) { 
-                return $utf8_encode ? array_map( 'utf8_encode', $row ) : $row;
+                return $utf8_encode ? mb_convert_encoding( $row, 'UTF-8', 'Windows-1252' ) : $row;
             } 
         );
         $csv->Items = iterator_to_array( $results );

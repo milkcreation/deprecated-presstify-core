@@ -1,85 +1,86 @@
-/* = BODY = */
-body.tiFySidebar-body{
+body.tiFySidebar-body {
 	overflow-x:hidden;
 }
-
-/* = SIDEBAR = */
-.tiFySidebar{
+body.tiFySidebar-body.admin-bar .tiFySidebar{
+    top:32px;
+    height:calc(100% - 32px);
+}
+.tiFySidebar {
 	position:fixed;
 	top:0; bottom:0; 
 	height:100%;
 	content:"";
 }
-.tiFySidebar--left{
+.tiFySidebar--left {
 	left:0;
 }
-.tiFySidebar--right{
+.tiFySidebar--right {
 	right:0;
 }
-
-/* = BOUTON DE BASCULE = */
-.tiFySidebar-toggleButton{
+.tiFySidebar-toggleButton {
 	position:absolute;
 	top:0;
 	width:30px; height:30px;
 	display:block;
 	padding:7px 4px;
 }
-.tiFySidebar-toggleButton--left{
+.tiFySidebar-toggleButton--left {
 	right:0;
 	transform:translateX(100%);
 }
-.tiFySidebar-toggleButton--right{
+.tiFySidebar-toggleButton--right {
 	left:0;
 	transform:translateX(-100%);
 }
-.tiFySidebar-toggleButton > div{
+.tiFySidebar-toggleButton > div {
 	position: relative;
 	width: 100%; height: 0;
-    padding-top: 100%;    
+    padding-top: 100%;
 }
-.tiFySidebar-toggleButton > div > svg{
+.tiFySidebar-toggleButton > div > svg {
 	position:absolute;
 	top:0; left:0;
 }
-
-/* = PANNEAU = */
-.tiFySidebar-panel{
+.tiFySidebar-panel {
 	position:absolute;
 	top:0; right:0; bottom:0; left:0; 
 	overflow:hidden;
+	
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing:    content-box;
+    box-sizing:         content-box;
 }	
-.tiFySidebar-nodesWrapper{
-	position:static;
-	width:calc( 100% + 17px );
-	height:100%;
-	overflow-y:auto;
+.tiFySidebar-nodesWrapper {
+	position:relative;
+	width:100%;	height:100%;
+    overflow-y: scroll;
+    padding-right:17px;
+    
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing:    content-box;
+    box-sizing:         content-box
 }
-
-/** == GREFFONS == **/
-.tiFySidebar-nodes{
-	min-height:100.1%; /* Impose à la barre d'être toujours présente */
+.tiFySidebar-nodesContainer {
+    height:100%;
 }
-.tiFySidebar-node{
+.tiFySidebar-items {
 	margin:0; padding:0;
 	list-style-type:none;
 }
 
-/* = BARRE D'ADMINISTRATION = */
-body.tiFySidebar-body.admin-bar .tiFySidebar{
-	top:32px;
-	height: calc( 100% - 32px );
-}
+/**
+ * RESPONSIVE
+ */
 @media (max-width: 782px){
 	body.tiFySidebar-body.admin-bar .tiFySidebar{
 		top:46px;
-		height: calc( 100% - 46px );
+		height:calc(100% - 46px);
 	}
 }
 @media (max-width: 600px){
 	body.tiFySidebar-body.admin-bar .tiFySidebar{
 		top:0;
-		height: 100%;
+		height:100%;
 	}
 	body.tiFySidebar-body.admin-bar .tiFySidebar-panel{
 		top:46px;

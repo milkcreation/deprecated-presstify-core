@@ -2,7 +2,7 @@
 /**
  * @Overrideable
  */
-namespace tiFy\Core\Control\Repeater;
+namespace tiFy\Core\Control\CurtainMenu;
 
 class CurtainMenu extends \tiFy\Core\Control\Factory
 {
@@ -25,9 +25,12 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
     final public function init()
     {
         $min = SCRIPT_DEBUG ? '' : '.min';
-        
+     
         wp_register_style( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.css', array( ), 170704 );
-        wp_register_script( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.js', array( 'jquery' ), 170704, true );
+        wp_register_script( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true );
+    
+        wp_register_style( 'tify_control-curtain_menu--theme-dark', self::getAssetsUrl( get_class() ) .'/CurtainMenu-ThemeDark'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
+        wp_register_style( 'tify_control-curtain_menu--theme-light', self::getAssetsUrl( get_class() ) .'/CurtainMenu-ThemeLight'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
     }
     
     /**
@@ -37,6 +40,8 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
     {
         wp_enqueue_style( 'tify_control-curtain_menu' );
         wp_enqueue_script( 'tify_control-curtain_menu' );
+        
+        wp_enqueue_style( 'tify_control-curtain_menu--theme-dark' );
     }
     
     /**
@@ -53,103 +58,48 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         
         $defaults = array(
             // Marqueur d'identification unique
-            'id'                    => 'tiFyControlRepeater--'. self::$Instance,
+            'id'                    => 'tiFyControlCurtainMenu--'. self::$Instance,
             // Id Html du conteneur
-            'container_id'          => 'tiFyControlRepeater--'. self::$Instance,            
+            'container_id'          => 'tiFyControlCurtainMenu--'. self::$Instance,            
             // Classe Html du conteneur
             'container_class'       => '',
             // Entrées de menu
-            'items'                 => array()
+            'nodes'                 => array()
         );
         $attrs = wp_parse_args( $attrs, $defaults );
         extract( $attrs );
         
-        // Traitement des attributs
-        if( $order ) :
-            $order = '__order_'. $name;
-        endif;        
-        $parsed_attrs = compact( array_keys( $defaults ) );
-        
-        $output  = "";        
-        $output .= "<div id=\"{$id}\" class=\"tiFyControlRepeater". ( $class ? " {$class}" : "" )."\" data-tify_control=\"repeater\">\n";
-        
-        // Liste d'éléments
-        $output .= "\t<ul class=\"tiFyControlRepeater-Items". ( $order ? ' tiFyControlRepeater-Items--sortable' : '' ) ."\">";
-        if( ! empty( $value ) ) :
-            foreach( (array) $value as $i => $v ) :                    
-                $v = ( ! is_array( $v ) ) ? ( $v ? $v : $default ) : wp_parse_args( $v, (array) $default ); 
-                ob_start();
-                $parsed_attrs['item_cb'] ? call_user_func( $parsed_attrs['item_cb'], $i, $v, $parsed_attrs ) : self::$item( $i, $v, $parsed_attrs ); 
-                $item = ob_get_clean();        
-                                
-                $output .= self::itemWrap( $item, $i, $v, $parsed_attrs );
-            endforeach;            
+        if( count($nodes) === 2 ) :
+            $type = $nodes[0];
+            $query_args = $nodes[1];
+        else :
+            $type = 'custom';
+            $query_args = array();
         endif;
-        $output .= "\t</ul>\n";
         
-        // Interface de contrôle
-        $output .= "\t<div class=\"tiFyControlRepeater-Handlers\">\n";        
-        $output .= "\t\t<a href=\"#{$id}\" data-attrs=\"". htmlentities( json_encode( $parsed_attrs ) ) ."\" class=\"tiFyControlRepeater-Add". ( $add_button_class ? ' '. $add_button_class : '' ) ."\">\n";
-        $output .= $add_button_txt;
-        $output .= "\t\t</a>\n";
-        $output .= "\t</div>\n";
-            
+        $Nodes = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Nodes' );
+        switch( $type ) :
+            case 'terms' :
+                $nodes = $Nodes->terms( $query_args );
+            break;
+            default:
+            case 'custom' :
+                break;
+        endswitch;
+        
+        $output  = "";
+        $output  = "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"curtain_menu\">\n";
+        $output .= "\t<nav class=\"tiFyControlCurtainMenu-nav\">\n";
+		$output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";	
+		$Walker = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Walker' );
+        $output .= $Walker->walk( $nodes );
+        $output .= "\t\t</div>\n";
+        $output .= "\t</nav>\n";
         $output .= "</div>\n";
         
         if( $echo )
             echo $output;
         
         return $output;
-    }
-        
-    /**
-     * Champs d'édition d'un élément
-     */
-    public static function item( $index, $value, $attrs = array() )
-    {
-?>
-<input type="text" name="<?php echo $attrs['name'];?>[<?php echo $index;?>]" value="<?php echo $value;?>" class="widefat"/>
-<?php
-    }
-    
-    /**
-     * Encapsulation Html d'un élément
-     */
-    final protected static function itemWrap( $item, $index, $value, $attrs )
-    {
-        $output  = "";
-        $output .= "\t\t<li class=\"tiFyControlRepeater-Item\" data-index=\"{$index}\">\n";
-        $output .= $item;
-        $output .= "\t\t\t<a href=\"#\" class=\"tiFyControlRepeater-ItemRemove tify_button_remove\"></a>";
-        if( $attrs['order'] ) :
-            $output .= "\t\t\t<input type=\"hidden\" name=\"{$attrs['order']}[]\" value=\"{$index}\"/>\n";
-        endif;
-        $output .= "\t\t</li>\n";
-        
-        return $output;
-    }
-    
-    /**
-     * Récupération de la reponse via Ajax
-     */
-    public function ajax()
-    {
-        check_ajax_referer( 'tiFyControlRepeater' );
-        
-        $index = $_POST['index'];
-        $value = $_POST['value'];
-        $attrs = $_POST['attrs'];
-        
-        ob_start();
-        if( ! empty( $_POST['attrs']['item_cb'] ) ) :
-            call_user_func( wp_unslash( $_POST['attrs']['item_cb'] ), $index, $value, $attrs );
-        else :
-            static::item( $index, $value, $attrs );
-        endif;
-        $item = ob_get_clean();
-        
-        echo self::itemWrap( $item, $index, $value, $attrs );
-        
-        wp_die();
     }
 }

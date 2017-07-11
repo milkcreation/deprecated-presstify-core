@@ -1,88 +1,63 @@
 <?php
-/**
- * @Overrideable
- */
-namespace tiFy\Components\NavMenu; 
+namespace tiFy\Abstracts;
 
-class Factory
+abstract class TreeMenuWalker
 {
     /**
-     *  Entrées de menu
-     */   
-    protected static $Items;
+     * Liste de éléments
+     */
+    protected $Items        = array();
+    
+    /**
+     * Niveau de départ de l'intentation
+     */
+    protected $StartIndent  = "";
     
     /**
      * CONTROLEURS
      */
     /**
-     * Ajout d'une entrée de menu
-     * 
-     * @param array $attrs
-     * @return array
+     * Traitement des éléments
      */
-    final public static function add( $attrs = array() )
+    final public function parseItems( $items = array() )
     {
-        $defaults = array(
-            'id'            => '',
-            'parent'        => '',
-            'title'         => '',
-            'content'       => '',
-            'capability'    => 'read',
-            'cb'            => '', 
-            'order'         => null
-        );
-        $attrs = wp_parse_args( $attrs, $defaults );
-        
-        return self::$Items[$attrs['id']] = $attrs;
+        foreach( $items as $item ) :
+            $this->Items[$item['id']] = $item;
+        endforeach;
     }
     
     /**
-     * Traitement d'une entrée de menu
-     * @todo
-     * @param array $item
+     * Récupération d'un élément de menu
      */
-    final protected static function parseItem( $item )
-    {        
-        if ( null === $order ) :
-            self::$Items[] = $attrs;
-        elseif ( isset( self::$Items[ "{$order}" ] ) ) :
-            $order = $order + substr( base_convert( md5( $slug . $title ), 16, 10 ) , -5 ) * 0.00001;
-            self::$Items[ "{$order}" ] = $attrs;
-        else :
-            self::$Items[ $order ] = $attrs;
-        endif;        
+    final public function getItem( $id )
+    {
+        if( isset( $this->Items[$id] ) )
+            return $this->Items[$id];
     }
     
     /**
-     * Affichage du menu
-     * 
-     * @param array $args
-     * @param string $echo
-     * @return string
+     * Récupération d'attribut d'un élément de menu
      */
-    final public static function display( $args = array(), $echo = true )
-    {        
-        $defaults = array(
-            'title'     => '',
-            'walker'    => ''
-        );
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args );
+    final public function getItemAttr( $id, $attr = 'id', $defaults = '' )
+    {
+        if( ! $attrs = $this->getItem( $id ) )
+            return $defaults;
         
-        if( $walker ) :
-            $Walker = new $walker;
+        if( isset( $attrs[$attr] ) ) :
+            return $attrs[$attr];
         else :
-            $Walker = new Static;
+            return $defaults;
         endif;
-            
-        $output = $Walker->walk( self::$Items, 0 );
-        
-        if( $echo )
-            echo $output;
-        
-        return $output;
     }
     
+    /**
+     * Récupération de l'indentation
+     */
+    final public function getIndent( $depth = 0 )
+    {
+       return $this->StartIndent . str_repeat( "\t", $depth ); 
+    }
+            
     /**
      * Iterateur d'affichage de menu
      * 
@@ -91,8 +66,10 @@ class Factory
      * @param string $parent
      * @return string
      */
-    final protected function walk( $items, $depth, $parent = '' )
+    final public function walk( $items = array(), $depth = 0, $parent = '' )
     {         
+        if( ! $this->Items )
+            $this->parseItems( $items );
         $output = "";
         $prevDepth = 0;
 
@@ -100,17 +77,17 @@ class Factory
             $output .= $this->open_menu();            
             
         foreach ( $items as $item ) : 
-        	if ( $parent !== $item['parent'] )
-        	    continue;
+            if ( $parent !== $item['parent'] )
+                continue;
             
-    	    if ( $prevDepth < $depth ) 
-    	        $output .= $this->open_submenu( $item, $depth, $parent );
+            if ( $prevDepth < $depth ) 
+                $output .= $this->open_submenu( $item, $depth, $parent );
          
-    	   $output .= $this->open_item( $item, $depth, $parent ) . $this->item( $item, $depth, $parent );
+           $output .= $this->open_item( $item, $depth, $parent ) . $this->item( $item, $depth, $parent );
      
-    	   $prevDepth = $depth;
+           $prevDepth = $depth;
      
-    	   $output .= $this->walk( $items, ($depth + 1), $item['id'] );
+           $output .= $this->walk( $items, ($depth + 1), $item['id'] );
         endforeach;
          
         if ( ( $prevDepth == $depth ) && ( $prevDepth != 0 ) ) :
@@ -179,7 +156,7 @@ class Factory
      */
     public function open_menu()
     {
-        return "<ul>\n";
+        return "<ul class=\"tiFyTreeMenu-items tiFyTreeMenu-items--open\">\n";
     }
     
     /**
@@ -193,40 +170,40 @@ class Factory
     /**
      * Ouverture par défaut d'un élément
      */
-    public function open_item_default( $item, $depth, $parent )
-    {
-        return "<li>";
+    public function open_item_default( $item, $depth = 0, $parent = '' )
+    {        
+        return $this->getIndent( $depth ) ."\t<li class=\"tiFyTreeMenu-item TreeMenu-item--{$depth}\">\n";
     }
     
     /**
      * Fermeture par défaut d'un élément
      */
-    public function close_item_default( $item, $depth, $parent )
+    public function close_item_default( $item, $depth = 0, $parent = '' )
     {
-        return "</li>\n";
+        return $this->getIndent( $depth ) ."\t</li>\n";
     }
     
     /**
      * Ouverture par défaut d'un sous-menu
      */
-    public function open_submenu_default( $item, $depth, $parent )
+    public function open_submenu_default( $item, $depth = 0, $parent = '' )
     {
-        return "<ul>\n";
+        return $this->getIndent( $depth ) ."\t\t<ul class=\"tiFyTreeMenu-items TreeMenu-items--{$depth}\">\n";
     }
         
     /**
      * Fermeture par défaut d'un sous-menu
      */
-    public function close_submenu_default( $item, $depth, $parent )
+    public function close_submenu_default( $item, $depth = 0, $parent = '' )
     {
-        return "</ul>\n";
+        return $this->getIndent( $depth ) ."\t\t</ul>\n";
     }
     
     /**
      * Rendu par défaut d'un élément
      */
-    public function item_default( $item, $depth, $parent )
+    public function item_default( $item, $depth = 0, $parent = '' )
     {
-        return $item['title'];
+        return ! empty( $item['content'] ) ? $item['content'] : '';
     } 
 }

@@ -23,8 +23,8 @@ class Findposts extends \tiFy\Core\Control\Factory
     {
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tify_control-findposts', self::getAssetsUrl( get_class() ) ."/Findposts'. $min .'.css", array(), '170530' );
-        wp_register_script( 'tify_control-findposts', self::getAssetsUrl( get_class() ) ."/Findposts'. $min .'.js", array( 'media' ), '170530' );
+        wp_register_style( 'tify_control-findposts', self::getAssetsUrl( get_class() ) .'/Findposts'. $min .'.css', array(), '170530' );
+        wp_register_script( 'tify_control-findposts', self::getAssetsUrl( get_class() ) .'/Findposts'. $min .'.js', array( 'media' ), '170530' );
         
         add_action( 'wp_ajax_tify_control_findposts', array( $this, 'wp_ajax' ) );
         add_action( 'wp_ajax_nopriv_tify_control_findposts', array( $this, 'wp_ajax' ) );

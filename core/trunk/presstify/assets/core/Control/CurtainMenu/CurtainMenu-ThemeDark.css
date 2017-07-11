@@ -1,0 +1,35 @@
+.tiFyControlCurtainMenu,
+.tiFyControlCurtainMenu-panelWrapper,
+.tiFyControlCurtainMenu-panelTitle,
+.tiFyControlCurtainMenu-itemLink {
+    background-color:#23282D;
+}
+.tiFyControlCurtainMenu-panelTitle,
+.tiFyControlCurtainMenu-panelTitleLink {
+    color:#FFF;
+}	
+.tiFyControlCurtainMenu-panelTitleLink:hover,
+.tiFyControlCurtainMenu-panelTitleLink:active,
+.tiFyControlCurtainMenu-panelTitleLink:focus {
+    color:#EEE;
+}
+.tiFyControlCurtainMenu-panelBack {
+    background-color:#32373C;
+    color:#EEE;
+}
+.tiFyControlCurtainMenu-panelBack:hover,
+.tiFyControlCurtainMenu-panelBack:active,
+.tiFyControlCurtainMenu-panelBack:focus {
+    color:#BBB;
+}
+.tiFyControlCurtainMenu-itemLink {
+    color:#EEE;
+    border-bottom:solid 1px #2C333A;
+}
+.tiFyControlCurtainMenu-itemLink:hover,
+.tiFyControlCurtainMenu-itemLink:active,
+.tiFyControlCurtainMenu-itemLink:focus {
+    color:#CCC;
+    background-color:#161a1d;
+}
+
