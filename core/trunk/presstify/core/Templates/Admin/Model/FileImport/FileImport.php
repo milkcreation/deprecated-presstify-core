@@ -164,9 +164,11 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     {
         parent::_admin_enqueue_scripts();
         
+        $min = SCRIPT_DEBUG ? '' : '.min';
+        
         // Chargement des scripts
-        wp_enqueue_style( 'tiFyTemplatesAdminFileImport', self::getUrl( get_class() ) .'/FileImport.css', array( ), 150607 );
-        wp_enqueue_script( 'tiFyTemplatesAdminFileImport', self::getUrl( get_class() ) .'/FileImport.js', array( 'jquery' ), 150607 );
+        wp_enqueue_style( 'tiFyTemplatesAdminFileImport', self::getAssetsUrl(get_class()) .'/FileImport'. $min .'.css', array( ), 150607 );
+        wp_enqueue_script( 'tiFyTemplatesAdminFileImport', self::getAssetsUrl(get_class()) .'/FileImport'. $min .'.js', array( 'jquery' ), 150607 );
     } 
     
     /**
@@ -322,7 +324,14 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
 </form> 
 <?php
         endif;
-
+        if( $this->Filename ) :
+?>
+<div class="tiFyTemplatesFileImport-handeFilename">
+    <strong class="tiFyTemplatesFileImport-handeFilenameLabel"><?php _e( 'Fichier en cours de traitement :', 'tify' );?></strong>
+    <div class="tiFyTemplatesFileImport-handeFilenameValue"><?php echo $this->Filename;?></div> 
+</div>
+<?php         
+        endif;
         parent::views();
     }
 }

@@ -19,6 +19,7 @@ class Search extends Component
      */
     protected $CallFilters                  = array(
         'query_vars',
+        'search_template'
     );
     
     /**
@@ -26,7 +27,14 @@ class Search extends Component
      */
     protected $CallFiltersPriorityMap       = array(
         'init'              => 20,
-        'query_vars'        => 1
+        'query_vars'        => 99
+    );
+    
+    /**
+     * Nombre d'arguments autorisés
+     */
+    protected $CallFiltersArgsMap           = array(
+        'search_template'   => 3
     );
     
     /**
@@ -78,7 +86,7 @@ class Search extends Component
      * 
      */
     private $SectionLimitRequest            = array();
-    
+        
     /**
      * Résultats de recherche
      */
@@ -136,7 +144,7 @@ class Search extends Component
     {
         // Traitement des mots clefs de recherche
         foreach( self::$Section as $id => $attrs ) :
-            if( ! $attrs['tags'] )
+            if( ! isset( $attrs['tags'] ) )
                 continue;
             $post_types = ( isset( $attrs['post_type'] ) ) ? $attrs['post_type'] : 'any'; 
             
@@ -157,9 +165,9 @@ class Search extends Component
     final public function query_vars( $aVars ) 
     {
         $aVars[] = '_s';
-
+        
         return $aVars;
-    }    
+    }
     
     /**
      * 
@@ -175,17 +183,17 @@ class Search extends Component
             if( $query->is_main_query() ) :
                 if( $query->is_search() ) :
                     add_filter( 'posts_search', array( $this, 'posts_search' ), 10, 2 );
-                    add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );    
+                    add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );
                 elseif( $query->get( '_s', '' ) ) :
                     add_filter( 'posts_search', array( $this, 'posts_search' ), 11, 2 );
-                    add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 11, 2 );                    
+                    add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 11, 2 );
                 endif;
             endif;
         endif;
     }
     
     /**
-     * Désactivation des condition de requête native de Wordpress
+     * Désactivation des conditions de requêtes
      */
     final public function posts_search( $search, $query )
     {
@@ -197,14 +205,14 @@ class Search extends Component
     }
     
     /**
-     * Condition de requête personnalisée pour la recherche 
+     * Conditions de requêtes personnalisées 
      */
     final public function posts_clauses( $pieces, $query )
     {    
         global $wpdb;
         
         extract( $pieces );
-    
+
         $sresults = false;
         
         // Récupération de la requête de recheche        
@@ -215,7 +223,7 @@ class Search extends Component
         else :
             $q['s'] = false;
         endif;
-        
+
         if( self::$Section ) :
             $subquery_where = array(); $section_num = 1; $section_join = '';    
             foreach( (array) self::$Section as $name => $args ) :                
@@ -256,20 +264,19 @@ class Search extends Component
                 /// Traitement du status
                 $this->SectionStatusRequest[$name] = $this->ParseSectionStatusRequest( $args );                                
                 /// Limite du nombre de résultat
-                $this->SectionLimitRequest[$name] = $this->ParseSectionLimitRequest( $args, $query );
+                $this->SectionLimitRequest[$name] = $this->parseSectionLimitRequest( $args, $query );
                                                 
                 $countquery = "SELECT COUNT(DISTINCT {$wpdb->posts}.ID) FROM {$wpdb->posts} {$section_join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]}";
 
                 // Création de la requête s'il existe des posts
-                if( self::$SectionFoundPosts[$name] = (int) $wpdb->get_var( $countquery ) ) :
+                if( self::$SectionFoundPosts[$name] = (int) $wpdb->get_var( $countquery ) ) :                      
                     // Compte des resultats
-                    self::$PostCount     += self::$SectionPostCount[$name] = ( self::$SectionFoundPosts[$name] < $this->SectionLimitRequest[$name] ) ? self::$SectionFoundPosts[$name] : $this->SectionLimitRequest[$name];
+                    $per_page = $this->getSectionPerPage( $args, $query );
+                    self::$PostCount     += self::$SectionPostCount[$name] = ( self::$SectionFoundPosts[$name] < $per_page ) ? self::$SectionFoundPosts[$name] : $per_page;
                     self::$FoundPosts    += self::$SectionFoundPosts[$name];
-                    
-                    $from = ( $paged = get_query_var( 'paged', 0 ) ) ?  ( $this->SectionLimitRequest[$name] * ( $paged -1 ) ) : 0;
- 
+
                     // Requête de récupération des posts
-                    $subquery            = "SELECT * FROM ( SELECT DISTINCT ID FROM {$wpdb->posts} {$section_join} WHERE 1 {$this->SectionPostTypeRequest[$name]} {$this->SectionSearchRequest[$name]} {$this->SectionStatusRequest[$name]} LIMIT {$from},{$this->SectionLimitRequest[$name]} ) as tyssub{$name}";
+                    $subquery            = " SELECT * FROM ( SELECT DISTINCT ID FROM {$wpdb->posts} {$section_join} WHERE 1{$this->SectionPostTypeRequest[$name]}{$this->SectionSearchRequest[$name]}{$this->SectionStatusRequest[$name]}{$this->SectionLimitRequest[$name]}) as tyssub{$name} ";
                     $subquery_where[]     = "( ( {$wpdb->posts}.ID IN ({$subquery})". ( $sresults ? " AND @section:=if( {$wpdb->posts}.ID, {$section_num}, 0 )" : "" ). " ) )";
                     
                     self::$SectionHasResults[$section_num] = $name;
@@ -279,7 +286,8 @@ class Search extends Component
         
                 add_filter( 'found_posts', array( $this, 'found_posts' ), 10, 2 );
             endforeach;            
-            
+                    
+
             // Personnalisation des éléments de requête 
             /// Définition des variables de requête 
             if( $sresults ) :
@@ -289,7 +297,7 @@ class Search extends Component
                 $fields .= ", @postnum:= @postnum+1 as tify_search_postnum, @section as tify_search_section_num";
                 
                 /// Gestion du tri
-                $orderby = "tify_search_section_num ASC, tify_search_postnum DESC,". $orderby;
+                $orderby = "tify_search_section_num ASC, tify_search_postnum DESC, ". $orderby;
                 
                 /// Limite du nombre de résultat
                 $limits = "LIMIT ". self::$PostCount;
@@ -312,7 +320,7 @@ class Search extends Component
     }
     
     /**
-     * 
+     * Nombre de resultats de requête
      */
     public function found_posts( $found_posts, &$wp_query )
     {
@@ -321,9 +329,20 @@ class Search extends Component
         return self::$FoundPosts;
     }
     
+    /**
+     * Gabarit d'affichage des résultats de recherche
+     */
+    public function search_template( $template, $type, $templates )
+    {
+        return self::getTemplatePath( $template, $type, $templates );
+    }
     
-    /* = TRAITEMENT DES ARGUMENTS DE REQUETE
-    /** == Type de post de section == **/
+    /**
+     * CONTROLEURS
+     */    
+    /**
+     * Traitement du type de post par section
+     */
     private function ParseSectionPostTypeRequest( &$args )
     {
         $post_types = array();        
@@ -343,11 +362,13 @@ class Search extends Component
         
         if( ! empty( $post_types ) ) :
             $args['post_type'] = $post_types;
-            return "AND post_type IN ('". join("', '", $post_types ) ."')";    
+            return " AND post_type IN ('". join("', '", $post_types ) ."') ";    
         endif;
     }
-        
-    /** == Champs de recherche de section == **/
+    
+    /**
+     * Traitement de l'argument terme(s) de recherche par section
+     */
     private function ParseSectionSearchRequest( $name, &$q )
     {
         global $wpdb;
@@ -434,7 +455,9 @@ class Search extends Component
         return $search;
     }
     
-    /** == Status de section == **/
+    /**
+     * Traitement du status de post par section
+     */
     private function ParseSectionStatusRequest( $args )
     {
         global $wpdb;
@@ -471,19 +494,35 @@ class Search extends Component
         
         return $status;
     }
+           
+    /**
+     * Traitement de la limitation d'arrivée du nombre de résultat de la recherche
+     */
+    private function parseSectionLimitRequest( $args, $query )
+    {        
+        if( $paged = get_query_var('paged') )
+            return "";
+        $per_page = $this->getSectionPerPage( $args, $query );
+        $from = absint( ( $paged - 1 ) * $per_page );     
+            
+        return " LIMIT {$from},{$per_page}";
+    }
     
-    /** == == **/
-    private function ParseSectionLimitRequest( $args, $query )
+    /**
+     * Récupération du nombre d'élément par page d'une section
+     */
+    private function getSectionPerPage( $args, $query )
     {
         if( ! self::$ShowAll ) :     
             return $args['posts_per_section'];        
         else :   
             return $query->get( 'posts_per_page', get_option( 'posts_per_page' ) );
-        endif;
-    }
+        endif; 
+    }    
     
-    /* = CONTROLEURS = */
-    /** == Récupération de l'objet d'un type de post == **/
+    /**
+     * Récupération de l'objet "type de post" pour un intitulé de type
+     */
     private static function GetPostTypeObject( $post_type )
     {
         if( ! empty( self::$PostTypeObject[$post_type] ) )
@@ -495,7 +534,9 @@ class Search extends Component
         return null;    
     }
     
-    /** == Récupération du nombre de contenu trouvé pour une section == **/
+    /**
+     * Récupération du nombre de résultats trouvés d'une section
+     */
     private static function GetSectionPostCount( $section )
     {
         if( isset( self::$SectionPostCount[$section] ) )
@@ -503,8 +544,10 @@ class Search extends Component
         
         return 0;
     }
-    
-    /** == Récupération du nombre de contenu total par section == **/
+        
+    /**
+     * Récupération du nombre total de résultat d'une section
+     */
     private static function GetSectionFoundPosts( $section )
     {
         if( isset( self::$SectionFoundPosts[$section] ) )
@@ -513,7 +556,6 @@ class Search extends Component
         return 0;
     }
                     
-    /* = METHODES PUBLIQUES = */
     /** == Numéro du post (deprecated: utilisé pour le debug) == **/
     public static function PostNum( $post = null )
     {
@@ -569,14 +611,10 @@ class Search extends Component
     {
         if( ! $section && ! ( $section = self::PostSection() ) )
             return;
-        
         if( ! ( self::SectionFoundPosts( $section ) > self::SectionPostCount( $section ) ) )
             return;
-        
-        if( empty( self::$Section[$section]['showall_link'] ) )
-            return;
-        
-        $type = current( (array) self::$Section[$section]['post_type'] );        
+
+        $type = current( (array) self::$Section[$section]['post_type'] );
 
         $defaults = array(
             'url'    => esc_attr( add_query_arg( '_s', get_search_query(), get_post_type_archive_link( $type ) ) ),
@@ -584,8 +622,6 @@ class Search extends Component
             'title'    => sprintf( __( 'Afficher les résultats de recherche pour %s', 'tify' ), get_post_type_object( $type )->labels->name ),
             'class'    => ''
         );
-        if( is_array( self::$Section[$section]['showall_link'] ) )
-            $defaults = wp_parse_args( self::$Section[$section]['showall_link'], $defaults );        
         $args = wp_parse_args( $args, $defaults );
         
         $output  = "";
@@ -599,7 +635,7 @@ class Search extends Component
         if( $echo )
             echo $output;
 
-        return $ouput;
+        return $output;
     }
     
     /** == == **/

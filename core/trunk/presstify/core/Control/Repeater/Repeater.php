@@ -102,10 +102,10 @@ class Repeater extends \tiFy\Core\Control\Factory
         // Liste d'éléments
         $output .= "\t<ul class=\"tiFyControlRepeater-Items". ( $order ? ' tiFyControlRepeater-Items--sortable' : '' ) ."\">";
         if( ! empty( $value ) ) :
-            foreach( (array) $value as $i => $v ) :                    
+            foreach( (array) $value as $i => $v ) :    
                 $v = ( ! is_array( $v ) ) ? ( $v ? $v : $default ) : wp_parse_args( $v, (array) $default ); 
                 ob_start();
-                $parsed_attrs['item_cb'] ? call_user_func( $parsed_attrs['item_cb'], $i, $v, $parsed_attrs ) : self::$item( $i, $v, $parsed_attrs ); 
+                $parsed_attrs['item_cb'] ? call_user_func( $parsed_attrs['item_cb'], $i, $v, $parsed_attrs ) : self::item( $i, $v, $parsed_attrs ); 
                 $item = ob_get_clean();        
                                 
                 $output .= self::itemWrap( $item, $i, $v, $parsed_attrs );

@@ -33,6 +33,14 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
     }
     
     /**
+     * Listes des options de Datatables
+     */
+    public function getDatatablesOptions()
+    {
+        return array();
+    }
+    
+    /**
      * Définition du fichier de traduction
      */
     private function getDatatablesLanguageUrl()
@@ -110,14 +118,32 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
     public function _admin_enqueue_scripts()
     {        
         parent::_admin_enqueue_scripts();
-                  
-        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::getUrl( get_class() ) .'/AjaxListTable.css', array( 'datatables' ), '160506' );                        
-        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::getUrl( get_class() ) .'/AjaxListTable.js', array( 'datatables' ), '160506', true );    
+        
+        $min = SCRIPT_DEBUG ? '' : '.min';
+        
+        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable.css', array( 'datatables' ), '160506' );                        
+        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable.js', array( 'datatables' ), '160506', true );    
+        
+        // Déclaration des options
+        $options = array_diff_key( 
+            $this->getDatatablesOptions(), 
+            array_flip( 
+                array( 
+                    'processing',                     
+                    'serverSide',
+                    'deferLoading',
+                    'ajax',
+                    'drawCallback',
+                    'initComplete'
+                ) 
+            ) 
+        );           
         wp_localize_script( 
             'tiFyTemplatesAdminAjaxListTable',
             'tiFyTemplatesAdminAjaxListTable', 
             array(
-                'data'              => $this->getDatatablesData(),    
+                'data'              => $this->getDatatablesData(),
+                'options'           => $options,
                 'columns'           => $this->getDatatablesColumns(),
                 'language'          => array( 
                     'url'               => $this->getDatatablesLanguageUrl(),

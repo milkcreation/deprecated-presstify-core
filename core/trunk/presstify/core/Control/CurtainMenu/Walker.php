@@ -28,7 +28,7 @@ class Walker extends \tiFy\Abstracts\TreeMenuWalker
         endif;
         $output .= $this->getIndent( $depth ) ."\t\t\t\t\t<a href=\"#tiFyControlCurtainMenu-panel--{$item['id']}\" class=\"tiFyControlCurtainMenu-panelBack\" data-toggle=\"curtain_menu-back\">". __( 'Retour', 'Theme' ) ."</a>\n";
         
-        $output .= $this->getIndent( $depth ) ."\t\t\t\t\t<ul class=\"tiFyControlCurtainMenu-items tiFyControlCurtainMenu--{$depth}\">\n";
+        $output .= $this->getIndent( $depth ) ."\t\t\t\t\t<ul class=\"tiFyControlCurtainMenu-items tiFyControlCurtainMenu-items--depth{$depth}\">\n";
         
         return $output;
     }
@@ -38,7 +38,7 @@ class Walker extends \tiFy\Abstracts\TreeMenuWalker
      */
     public function open_item_default( $item, $depth = 0, $parent = '' )
     {        
-        return $this->getIndent( $depth ) ."\t\t\t\t\t\t<li class=\"tiFyControlCurtainMenu-item tiFyControlCurtainMenu-item--{$depth}". ( $item['has_children'] ? ' tiFyControlCurtainMenu-item--hasChildren' : '' )."\">\n";
+        return $this->getIndent( $depth ) ."\t\t\t\t\t\t<li class=\"tiFyControlCurtainMenu-item tiFyControlCurtainMenu-item--{$item['id']} tiFyControlCurtainMenu-item--depth{$depth}". ( $item['has_children'] ? ' tiFyControlCurtainMenu-item--hasChildren' : '' )."\">\n";
     }
         
     /**

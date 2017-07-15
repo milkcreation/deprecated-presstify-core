@@ -4,9 +4,14 @@ namespace tiFy\Components\NavMenu;
 class NavMenu extends \tiFy\Environment\Component
 {
     /**
-     * Classe de rappel des menus déclarés
+     * Classe de rappel d'affichage des menus déclarés
      */
-    protected static $Factory   = array();
+    protected static $Walkers   = array();
+    
+    /**
+     * Liste des greffons
+     */
+    protected static $Nodes     = array();
     
     /**
      * CONSTRUCTEUR
@@ -21,8 +26,7 @@ class NavMenu extends \tiFy\Environment\Component
         endforeach;
         
         do_action( 'tify_register_nav_menu' );
-        
-        //
+
         require_once self::getDirname() .'/Helpers.php';
     }
    
@@ -35,16 +39,16 @@ class NavMenu extends \tiFy\Environment\Component
     final public static function register( $id, $attrs )
     {
         // Bypass
-        if( isset( self::$Factory[$id] ) )
+        if( isset( self::$Walkers[$id] ) )
             return;
         
         $path = array();
-        if( isset( $attrs['cb'] ) ) :
-            $path[] = $attrs['cb'];
+        if( isset( $attrs['walker'] ) ) :
+            $path[] = $attrs['walker'];
         endif;           
         $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id );
         
-        return self::$Factory[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Factory", $path );  
+        return self::$Walkers[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Walker", $path );  
     }
     
     /**
@@ -53,11 +57,13 @@ class NavMenu extends \tiFy\Environment\Component
     final public static function addNode( $id, $attrs )
     {
         // Bypass
-        if( ! isset( self::$Factory[$id] ) )
+        if( ! isset( self::$Walkers[$id] ) )
             return;
-        $Factory = self::$Factory[$id];
         
-        return $Factory::add( $attrs );
+        if( ! isset( self::$Nodes[$id] ) )
+           self::$Nodes[$id] = array(); 
+            
+        array_push( self::$Nodes[$id], $attrs );
     }
     
     /**
@@ -66,23 +72,37 @@ class NavMenu extends \tiFy\Environment\Component
     final public static function display( $args, $echo = true )
     {
         $defaults = array(
-            'id'                => current( array_keys( self::$Factory ) ),
+            // Identifiant du menu
+            'id'                => current( array_keys( self::$Walkers ) ),
+            /**
+             * @todo
+             */
             'container'         => 'nav', 
             'container_id'      => '',
             'container_class'   => '',
             'menu_id'           => '',
             'menu_class'        => 'menu',
-            'depth'             => 0            
+            'depth'             => 0
         );        
         $args = wp_parse_args( $args, $defaults );
+        extract( $args );
         
-        if( ! $args['id'] )
+        if( ! $id )
             return;
-        if( ! isset( self::$Factory[$args['id']] ) )
+        if( ! isset( self::$Walkers[$id] ) )
             return;
+        if( ! isset( self::$Nodes[$id] ) )
+            return;  
+            
+        $Nodes = self::loadOverride( '\tiFy\Components\NavMenu\Nodes' );
+        $nodes = $Nodes->customs( self::$Nodes[$id] );        
+        $Walker = self::$Walkers[$id];
         
-        $Factory = self::$Factory[$args['id']];
+        $output = $Walker->walk( $nodes );
         
-        return $Factory::display( $args, $echo );
+        if( $echo )
+            echo $output;
+        
+        return $output;
     }
 }
