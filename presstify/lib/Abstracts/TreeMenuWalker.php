@@ -156,7 +156,7 @@ abstract class TreeMenuWalker
      */
     public function open_menu()
     {
-        return "<ul class=\"tiFyTreeMenu-items tiFyTreeMenu-items--open\">\n";
+        return $this->getIndent( 0 ) ."<ul class=\"tiFyTreeMenu-items tiFyTreeMenu-items--open\">\n";
     }
     
     /**
@@ -164,7 +164,7 @@ abstract class TreeMenuWalker
      */
     public function close_menu()
     {
-        return "</ul>\n";
+        return $this->getIndent( 0 ) ."</ul>\n";
     }
     
     /**

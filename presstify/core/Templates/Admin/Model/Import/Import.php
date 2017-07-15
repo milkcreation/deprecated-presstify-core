@@ -214,7 +214,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     {
 ?>   
 <form class="tiFyTemplatesImport-Form tiFyTemplatesImport-Form--import" method="post" action="" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
-    <button type="submit" class="tiFyButton--primary tiFyTemplatesImportImportForm-Submit"><?php _e( 'Importer', 'tify' );?></button>
+    <button type="submit" class="tiFyButton--primary tiFyTemplatesImportImportForm-Submit"><?php _e( 'Lancer l\'import', 'tify' );?></button>
 </form> 
 <?php
         tify_control_progress(

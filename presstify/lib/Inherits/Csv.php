@@ -42,6 +42,7 @@
 namespace tiFy\Inherits;
 
 use \League\Csv\Reader;
+use \ForceUTF8\Encoding;
 //use \League\Csv\Writer;
 
 class Csv
@@ -445,7 +446,7 @@ class Csv
         $csv = new Static( $args );
 
         // Traitement global du fichier csv
-        $reader = \League\Csv\Reader::createFromFileObject( new \SplFileObject( $csv->getFilename() ) );
+        $reader = Reader::createFromFileObject( new \SplFileObject( $csv->getFilename() ) );
         
         // Définition des propriétés csv
         $reader
@@ -497,15 +498,13 @@ class Csv
         $reader->setLimit( $per_page );
                
         // Récupération des résultats
-        $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
-        // @todo Récupération de l'encodage
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
-            function($row, $rowOffset) use( $utf8_encode ) {
-                return $utf8_encode ? mb_convert_encoding( $row, 'UTF-8', 'Windows-1252' ) : $row;
+            function($row, $rowOffset) {
+                return array_map( function( $str ){ return Encoding::toUTF8( $str ); }, $row );
             } 
         );    
-        $csv->Items = iterator_to_array( $results );       
+        $csv->Items = iterator_to_array( $results );
         
         // Définition du nombre d'élément trouvés pour la requête
         $found_items = count( $csv->Items );
@@ -522,7 +521,7 @@ class Csv
         $csv = new Static( $args );
         
         // Traitement global du fichier csv
-        $reader = \League\Csv\Reader::createFromFileObject( new \SplFileObject( $csv->getFilename() ) );
+        $reader = Reader::createFromFileObject( new \SplFileObject( $csv->getFilename() ) );
         
         // Définition des propriétés csv
         $reader
@@ -531,14 +530,12 @@ class Csv
             ->setEscape( $csv->getProperty( 'escape', '\\' ) )
             ->setOffset( $offset )
             ->setLimit( 1 );            
-               
+
         // Récupération des résultats
-        // @todo Récupération de l'encodage
-        $utf8_encode = mb_check_encoding( file_get_contents( $csv->getFilename() ), 'UTF-8') ? false : true;
         $results = $reader->fetchAssoc( 
             $csv->getColumns(), 
-            function($row) use( $utf8_encode ) { 
-                return $utf8_encode ? mb_convert_encoding( $row, 'UTF-8', 'Windows-1252' ) : $row;
+            function($row, $rowOffset) {
+                return array_map( function( $str ){ return Encoding::toUTF8( $str ); }, $row );
             } 
         );
         $csv->Items = iterator_to_array( $results );

@@ -24,11 +24,9 @@ jQuery( document ).ready( function($){
         }
     );
 
-    var $table = $( '.wp-list-table' );
-    var filters = {}
-    
-    AjaxListTable = $table
-        .DataTable({
+    var $table  = $( '.wp-list-table' ),
+        filters = {};
+        o       = {
             // Activation de l'indicateur de chargement 
             processing:     true,
             
@@ -170,5 +168,9 @@ jQuery( document ).ready( function($){
                     return false;
                 });
             }
-        });
+        };
+    o = $.extend(o, tiFyTemplatesAdminAjaxListTable.options );
+
+    AjaxListTable = $table
+        .DataTable(o);
 });
