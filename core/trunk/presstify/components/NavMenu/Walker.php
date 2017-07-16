@@ -19,7 +19,7 @@ class Walker extends \tiFy\Abstracts\TreeMenuWalker
      */
     public function open_item_default( $item, $depth = 0, $parent = '' )
     {
-        return $this->getIndent( $depth ) ."<li class=\"tiFyNavMenu-item tiFyNavMenu-item--{$item['id']} tiFyNaMenu-item--depth{$depth}\">";
+        return $this->getIndent( $depth ) ."\t<li class=\"tiFyNavMenu-item tiFyNavMenu-item--{$item['id']} tiFyNaMenu-item--depth{$depth}\">";
     }
     
     /**
