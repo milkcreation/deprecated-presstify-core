@@ -172,7 +172,7 @@ abstract class TreeMenuWalker
      */
     public function open_item_default( $item, $depth = 0, $parent = '' )
     {        
-        return $this->getIndent( $depth ) ."\t<li class=\"tiFyTreeMenu-item TreeMenu-item--{$depth}\">\n";
+        return $this->getIndent( $depth ) ."\t<li class=\"tiFyTreeMenu-item TreeMenu-item--depth{$depth}\">\n";
     }
     
     /**
@@ -188,7 +188,7 @@ abstract class TreeMenuWalker
      */
     public function open_submenu_default( $item, $depth = 0, $parent = '' )
     {
-        return $this->getIndent( $depth ) ."\t\t<ul class=\"tiFyTreeMenu-items TreeMenu-items--{$depth}\">\n";
+        return $this->getIndent( $depth ) ."\t\t<ul class=\"tiFyTreeMenu-items TreeMenu-items--depth{$depth}\">\n";
     }
         
     /**

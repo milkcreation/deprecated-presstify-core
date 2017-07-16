@@ -46,7 +46,8 @@ class NavMenu extends \tiFy\Environment\Component
         if( isset( $attrs['walker'] ) ) :
             $path[] = $attrs['walker'];
         endif;           
-        $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id );
+        $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id ) ."\\Walker";
+        $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\Walker";
         
         return self::$Walkers[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Walker", $path );  
     }
@@ -70,7 +71,7 @@ class NavMenu extends \tiFy\Environment\Component
      * Affichage d'un menu
      */
     final public static function display( $args, $echo = true )
-    {
+    {       
         $defaults = array(
             // Identifiant du menu
             'id'                => current( array_keys( self::$Walkers ) ),
@@ -93,11 +94,13 @@ class NavMenu extends \tiFy\Environment\Component
             return;
         if( ! isset( self::$Nodes[$id] ) )
             return;  
-            
+        
+        $nodes_path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id ) ."\\Nodes";
+        $nodes_path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\Nodes";
         $Nodes = self::loadOverride( '\tiFy\Components\NavMenu\Nodes' );
         $nodes = $Nodes->customs( self::$Nodes[$id] );        
-        $Walker = self::$Walkers[$id];
         
+        $Walker = self::$Walkers[$id];
         $output = $Walker->walk( $nodes );
         
         if( $echo )
