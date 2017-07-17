@@ -374,10 +374,11 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
      */
     public function admin_enqueue_scripts()
     {
+        $min = SCRIPT_DEBUG ? '' : '.min';
         tify_control_enqueue('admin_panel');
-        wp_enqueue_style('tiFyTabooxGoogleMap', self::getUrl(get_class()).'/GoogleMap.css', array('dashicons','spinkit-circle'), '170703');
+        wp_enqueue_style('tiFyTabooxGoogleMap', self::getAssetsUrl(get_class()).'/GoogleMap'.$min.'.css', array('dashicons','spinkit-circle'), '170703');
         wp_enqueue_script('GoogleMapApi', "https://maps.googleapis.com/maps/api/js?key={$this->args['ApiKey']}&libraries=places", array(), false );
-        wp_enqueue_script('tiFyTabooxGoogleMap', self::getUrl(get_class()).'/GoogleMap.js', array('jquery', 'jquery-ui-widget'), '170703', true);
+        wp_enqueue_script('tiFyTabooxGoogleMap', self::getAssetsUrl(get_class()).'/GoogleMap'.$min.'.js', array('jquery', 'jquery-ui-widget'), '170703', true);
     }
     
     /**
