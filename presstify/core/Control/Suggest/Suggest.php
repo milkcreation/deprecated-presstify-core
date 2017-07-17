@@ -154,7 +154,7 @@ class Suggest extends \tiFy\Core\Control\Factory
             $output .= " {$k}=\"{$v}\"";
         $output .= ">\n";
         $output .= $before;
-        $output .= "\t<input type=\"text\" class=\"tiFyControlSuggest-textInput\" placeholder=\"{$placeholder}\" autocomplete=\"off\"". ( $readonly ? ' readonly' : '' ) ." value=\"{$value}\">\n";
+        $output .= "\t<input type=\"text\" class=\"tiFyControlSuggest-textInput\" placeholder=\"{$placeholder}\" autocomplete=\"off\"". ( $readonly ? ' readonly' : '' ) ." value=\"{$select}\">\n";
         $output .= "\t<input type=\"hidden\" class=\"tiFyControlSuggest-altInput\" name=\"{$name}\" value=\"{$value}\">";                       
         $output .= $button_text;
         $output .= $after;         
