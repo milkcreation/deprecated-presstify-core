@@ -184,24 +184,28 @@ trait Path
         if( ! $CalledClass )
             $CalledClass = get_called_class();
         
-        $subdir = trailingslashit( ltrim( File::getRelativeFilename( self::getDirname( $CalledClass ), tiFy::$AbsDir ), '/' ) );
+        $subdir = ltrim( File::getRelativeFilename( self::getDirname( $CalledClass ), tiFy::$AbsDir ), '/' );
         
-        return get_template_directory() . '/templates/' . $subdir;
+        return $subdir ? get_template_directory() . '/templates/' . trailingslashit( $subdir ) : get_template_directory() . '/templates/';
     }
     
     /**
      * Récupération du gabarit d'affichage
+     * 
      */
-    public static function getTemplatePath( $template, $type, $templates, $CalledClass = null )
+    public static function getQueryTemplate( $template = null, $type, $templates = array(), $CalledClass = null )
     {
         if( ! $CalledClass )
             $CalledClass = get_called_class();
-        
+
         if( ! isset( self::$_TemplatePath[$CalledClass] ) ) :
            self::$_TemplatePath[$CalledClass] = array(); 
         endif;
+        
+        if( $template && ! in_array( $template, $templates ) )
+            array_unshift ( $templates, $template );
             
-        if( ! isset( self::$_TemplatePath[$CalledClass][$type] ) ) :   
+        if( ! isset( self::$_TemplatePath[$CalledClass][$type] ) ) :
             $located = '';
             // Récupération du gabarit depuis le thème
             foreach( $templates as $template_name ) :
@@ -217,13 +221,13 @@ trait Path
             // Récupération du gabarit depuis l'application tiFy
             if( ! $located ) :
                 // Récupération du gabarit depuis le thème
-                foreach( $templates as $template_name ) :
+                foreach( $templates as $template_name ) :                      
                     if ( ! $template_name )
                          continue;
                     if ( ! file_exists( self::getAppTemplateDir( $CalledClass ) . $template_name ) )
                         continue;
                     
-                    $located = self::getAppTemplateDir( $CalledClass ) . $template_name;
+                    $located = self::getAppTemplateDir( $CalledClass ) . $template_name;                    
                     break;
                 endforeach;
             endif;
@@ -233,8 +237,17 @@ trait Path
             endif;
             self::$_TemplatePath[$CalledClass][$type] = $located;
         endif;
-        
+      
         return self::$_TemplatePath[$CalledClass][$type];
+    }
+    
+    /**
+     * Chargement du gabarit d'affichage
+     */
+    public static function loadTemplate( $template = null, $type, $templates = array(), $CalledClass = null )
+    {
+        if( $template_file = static::getQueryTemplate( $template, $type, $templates, $CalledClass ) )
+            require_once( $template_file );
     }
     
     /**

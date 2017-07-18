@@ -25,9 +25,9 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
      * PARAMETRES
      */
     /**
-     * Listes de données supplémentaire porté par les requêtes Datatables
+     * Données passées dans la requête de récupération Ajax de Datatables
      */
-    public function getDatatablesData()
+    public function getAjaxDatatablesData()
     {
         return array();
     }
@@ -121,8 +121,8 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
         
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable.css', array( 'datatables' ), '160506' );                        
-        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable.js', array( 'datatables' ), '160506', true );    
+        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable'. $min .'.css', array( 'datatables' ), '160506' );                        
+        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable'. $min .'.js', array( 'datatables' ), '160506', true );    
         
         // Déclaration des options
         $options = array_diff_key( 
@@ -142,7 +142,6 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
             'tiFyTemplatesAdminAjaxListTable',
             'tiFyTemplatesAdminAjaxListTable', 
             array(
-                'data'              => $this->getDatatablesData(),
                 'options'           => $options,
                 'columns'           => $this->getDatatablesColumns(),
                 'language'          => array( 
@@ -334,7 +333,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
             endforeach;
         endif;
 
-        return wp_parse_args( $this->QueryArgs, $query_args );
+        return $this->QueryArgs = wp_parse_args( $this->QueryArgs, $query_args );
     }
     
     /**
@@ -360,9 +359,9 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
     {        
         /**
          * Ajout dynamique d'arguments passés dans la requête ajax de récupération d'éléments
-         * ex en PHP : <input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( array( 'key' => 'value' ) ) );?>"/>
-         * ex en JS : $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
+         * ex en PHP : <input type="hidden" id="ajaxDatatablesData" value="<?php echo urlencode( json_encode( array( 'key' => 'value' ) ) );?>"/>
+         * ex en JS : $( '#ajaxDatatablesData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
          */ 
-?><input type="hidden" id="datatablesAjaxData" value="" /><?php
+?><input type="hidden" id="ajaxDatatablesData" value="<?php echo rawurlencode( json_encode( $this->getAjaxDatatablesData() ) );?>"/><?php
     }
 }

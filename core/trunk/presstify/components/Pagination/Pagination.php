@@ -50,7 +50,7 @@ class Pagination extends Component
 			$query = $wp_query;			
 		endif;
 		$tify_query = ( $query instanceof \tiFy\Core\Db\Query ) ? true : false;
-		
+
 		/// Page courante
 		if( ! $paged )
 			$paged = isset( $query->query_vars['paged'] ) ? $query->query_vars['paged'] : 0;

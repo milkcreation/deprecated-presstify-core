@@ -28,11 +28,11 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
 
         // Liste des formulaires actifs
         $forms = Addons::activeForms( 'record' );
-
+       
         foreach( $forms as $id => $form ) :
             $this->Forms[$form->getID()] = $form;
         endforeach;
-        
+
         // Définition de la vue filtré
         if( ! empty( $_REQUEST['form_id'] ) && isset( $this->Forms[$_REQUEST['form_id']] ) ) :
             $this->Form = $this->Forms[$_REQUEST['form_id']];

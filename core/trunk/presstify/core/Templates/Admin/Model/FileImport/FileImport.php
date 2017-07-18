@@ -139,6 +139,19 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     }
     
     /**
+     * Données passées dans la requête de récupération Ajax de Datatables
+     */
+    public function getAjaxDatatablesData()
+    {
+        return wp_parse_args(
+            array(
+                'filename' => $this->QueryArgs['filename']
+            ),
+            parent::getAjaxDatatablesData()
+        );
+    }
+    
+    /**
      * DECLENCHEURS
      */
     /**
@@ -238,15 +251,17 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function parse_query_args()
     {
         // Arguments par défaut
-        $query_args = parent::parse_query_args();
+        parent::parse_query_args();
         
         if( isset( $_REQUEST['filename'] ) ) :
-            $query_args['filename'] = $_REQUEST['filename'];
+            $this->QueryArgs['filename'] = $_REQUEST['filename'];
         elseif( $this->Filename ) :
-            $query_args['filename'] = $this->Filename;
+            $this->QueryArgs['filename'] = is_array( $this->Filename ) ? current( $this->Filename ) : (string) $this->Filename;
+        else :
+            $this->QueryArgs['filename'] = '';
         endif;        
         
-        return $query_args;
+        return $this->QueryArgs;
     }
     
     /**
@@ -315,23 +330,44 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      * Vues
      */
     public function views()
-    {       
+    {   
+        // Import de fichier personnel
         if( $this->Uploadable ) :        
 ?>
 <form class="tiFyTemplatesFileImport-Form tiFyTemplatesFileImport-Form--upload" method="post" action="" enctype="multipart/form-data" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
+    <strong><?php _e( 'Import de fichier personnel :', 'tify' );?></strong><br>
+    
     <input class="tiFyTemplatesFileImportUploadForm-FileInput" type="file" autocomplete="off" />
     <span class="spinner tiFyTemplatesFileImportUploadForm-Spinner"></span>
 </form> 
 <?php
         endif;
-        if( $this->Filename ) :
+        
+        // Liste de fichiers à traiter
+        if( is_array( $this->Filename ) ) :
+?>
+<form method="post" action="">
+    <strong><?php _e( 'Choix du fichier à traiter :', 'tify' );?></strong><br>
+    
+    <select name="filename">
+    <?php foreach( $this->Filename as $filename ) :?>
+        <option value="<?php echo $filename;?>" <?php selected( $filename, $this->QueryArgs['filename'] );?>><?php echo $filename;?></option>        
+    <?php endforeach;?>
+    </select>
+    <button type="submit" class="button-secondary"><?php _e('Traiter', 'tify');?></button>
+</form>
+<?php   endif;
+        
+        // Indication de fichier en traitement
+        if( $this->QueryArgs['filename'] ) :
 ?>
 <div class="tiFyTemplatesFileImport-handeFilename">
     <strong class="tiFyTemplatesFileImport-handeFilenameLabel"><?php _e( 'Fichier en cours de traitement :', 'tify' );?></strong>
-    <div class="tiFyTemplatesFileImport-handeFilenameValue"><?php echo $this->Filename;?></div> 
+    <div class="tiFyTemplatesFileImport-handeFilenameValue"><?php echo $this->QueryArgs['filename'];?></div> 
 </div>
 <?php         
         endif;
+        
         parent::views();
     }
 }

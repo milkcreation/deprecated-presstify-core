@@ -44,7 +44,7 @@ jQuery(document).ready(function($){
             contentType:   false, 
             success:       function( resp, textStatus, jqXHR )
             {
-                $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
+                $( '#ajaxDatatablesData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
                 AjaxListTable.draw(true);
                 
                 // Masquage du spinner 

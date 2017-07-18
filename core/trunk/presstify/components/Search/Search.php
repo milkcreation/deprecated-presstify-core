@@ -241,7 +241,7 @@ class Search extends Component
                         $metakeys[] = " tyspm{$name}.meta_key = '{$mk}'";
                     endforeach;
                     
-                    $_metakeys     = ( ! empty( $metakeys ) ) ? " AND (". join( ' OR ', $metakeys ) .")" : '';
+                    $_metakeys = ( ! empty( $metakeys ) ) ? " AND (". join( ' OR ', $metakeys ) .")" : '';
                     
                     $section_join .= " LEFT OUTER JOIN {$wpdb->postmeta} AS tyspm{$name} ON ({$wpdb->posts}.ID = tyspm{$name}.post_id{$_metakeys})";
                     $groupby = "{$wpdb->posts}.ID";
@@ -310,7 +310,6 @@ class Search extends Component
                 $where .= " )";
             endif;
         endif;
-
         // Empêche l'execution multiple du filtre
         if( $query->is_main_query() ) :
             \remove_filter( current_filter(), array( $this, 'posts_clauses' ), 10 );
@@ -334,7 +333,7 @@ class Search extends Component
      */
     public function search_template( $template, $type, $templates )
     {
-        return self::getTemplatePath( $template, $type, $templates );
+        return self::getQueryTemplate( $template, $type, $templates );
     }
     
     /**
@@ -504,8 +503,8 @@ class Search extends Component
             return "";
         $per_page = $this->getSectionPerPage( $args, $query );
         $from = absint( ( $paged - 1 ) * $per_page );     
-            
-        return " LIMIT {$from},{$per_page}";
+   
+        return " LIMIT {$per_page}";
     }
     
     /**
