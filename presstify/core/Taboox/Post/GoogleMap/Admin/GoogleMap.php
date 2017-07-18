@@ -664,8 +664,8 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		            'remove'  => __('Supprimer', 'tify')
     		        ),
     		        'header'      => array(
-    		            'title'   => $marker['title'],
-    		            'icon'    => $this->getMarkerTypeIcon($marker['type'])
+    		            'title'   => !empty($marker['title']) ? $marker['title'] : '',
+    		            'icon'    => !empty($marker['type']) ? $this->getMarkerTypeIcon($marker['type']) : false
     		        ),
     		        'nodes'       => array(
     		            'marker'  => array(
@@ -673,7 +673,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                'fields'  => array(
     		                    array(
     		                        'type'    => 'input',
-    		                        'value'   => $marker['title'],
+    		                        'value'   => !empty($marker['title']) ? $marker['title'] : '',
     		                        'title'   => __("Intitulé du marqueur", 'tify'),
     		                        'attrs'   => array(
     		                            'save'    => 'title'    
@@ -682,7 +682,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'dropdown',
     		                        'title'   => __('Type du marqueur', 'tify' ),
-    		                        'value'   => $marker['type'],
+    		                        'value'   => !empty($marker['type']) ? $marker['type'] : '',
     		                        'choices' => $this->getMarkersChoices(),
     		                        'attrs'   => array(
     		                            'save'    => 'type' 
@@ -692,7 +692,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                        'type'        => 'input',
     		                        'id'          => $_POST['autocomplete_id'],
     		                        'title'       => __("Entrez l'adresse du marqueur", 'tify'),
-    		                        'value'       => $marker['address'],
+    		                        'value'       => !empty($marker['address']) ? $marker['address'] : '',
     		                        'placeholder' => __("Saisissez l'adresse du marqueur", 'tify'),
     		                        'attrs'   => array(
     		                            'save'    => 'address'    
@@ -701,7 +701,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Longitude', 'tify'),
-    		                        'value'   => $marker['lng'],
+    		                        'value'   => !empty($marker['lng']) ? $marker['lng'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'lng',
     		                            'save'            => 'lng'
@@ -710,7 +710,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Latitude', 'tify'),
-    		                        'value'   => $marker['lat'],
+    		                        'value'   => !empty($marker['lat']) ? $marker['lat'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'lat',
     		                            'save'            => 'lat'
@@ -723,7 +723,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                'fields'  => array(
     		                    array(
     		                        'type'    => 'hidden',
-    		                        'value'   => $marker['formatted_address'],
+    		                        'value'   => !empty($marker['formatted_address']) ? $marker['formatted_address'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'formatted_address',
     		                            'save'            => 'formatted_address'
@@ -732,7 +732,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Numéro', 'tify'),
-    		                        'value'   => $marker['street_number'],
+    		                        'value'   => !empty($marker['street_number']) ? $marker['street_number'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'street_number',
     		                            'save'            => 'street_number'
@@ -741,7 +741,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Rue', 'tify'),
-    		                        'value'   => $marker['route'],
+    		                        'value'   => !empty($marker['route']) ? $marker['route'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'route',
     		                            'save'            => 'route'
@@ -750,7 +750,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Ville', 'tify'),
-    		                        'value'   => $marker['locality'],
+    		                        'value'   => !empty($marker['locality']) ? $marker['locality'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'locality',
     		                            'save'            => 'locality'
@@ -759,7 +759,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Code postal', 'tify'),
-    		                        'value'   => $marker['postal_code'],
+    		                        'value'   => !empty($marker['postal_code']) ? $marker['postal_code'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'postal_code',
     		                            'save'            => 'postal_code'
@@ -768,7 +768,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
     		                    array(
     		                        'type'    => 'input',
     		                        'title'   => __('Pays', 'tify'),
-    		                        'value'   => $marker['country'],
+    		                        'value'   => !empty($marker['country']) ? $marker['country'] : '',
     		                        'attrs'   => array(
     		                            'autocomplete'    => 'country',
     		                            'save'            => 'country'
