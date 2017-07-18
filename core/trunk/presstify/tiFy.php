@@ -6,7 +6,7 @@ final class tiFy
     /**
      * Version de PresstiFy
      */ 
-    public static $Version            = '1.0.347';
+    public static $Version            = '1.0.349';
     
     /**
      * Chemins absolue vers la racine de l'environnement
