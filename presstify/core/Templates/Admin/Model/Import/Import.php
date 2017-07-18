@@ -6,12 +6,12 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     /**
      * Classe de l'importateur de données
      */
-    protected $Importer         = null;
+    protected $Importer             = null;
     
     /**
      * Table de correspondance des données array( 'column_id' => 'input_key' )
      */ 
-    protected $MapColumns                   = array();  
+    protected $MapColumns           = array();  
     
     /**
      * PARAMETRAGE
@@ -66,6 +66,14 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
     }
     
     /**
+     * Données passées dans la requête d'import Ajax 
+     */
+    public function getAjaxImportData()
+    {
+        return array();
+    }    
+    
+    /**
      * DECLENCHEURS
      */
     /**
@@ -87,13 +95,15 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function _admin_enqueue_scripts()
     {
-        parent::_admin_enqueue_scripts();
+        parent::_admin_enqueue_scripts();       
         
         tify_control_enqueue( 'progress' );
         
         // Chargement des scripts
-        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.css', array( ), 150607 );
-        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getUrl( get_class() ) .'/Import.js', array( 'jquery' ), 150607 );
+        $min = SCRIPT_DEBUG ? '' : '.min';
+        
+        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getAssetsUrl(get_class())  .'/Import'. $min .'.css', array( ), 150607 );
+        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getAssetsUrl(get_class())  .'/Import'. $min .'.js', array( 'jquery' ), 150607 );
         wp_localize_script( 
             'tiFyTemplatesAdminImport', 
             'tiFyTemplatesAdminImport',
@@ -124,7 +134,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         endif;
             
         if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
-	       wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
+	       wp_send_json_error( array( 'message' => $res['errors']->get_error_messages() ) );
 	    else :
 	       wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
         endif;
@@ -169,11 +179,33 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         else :
             return $this->Columns;
         endif;
-    }
+    }    
     
     /**
      * AFFICHAGE
      */
+    /** == == **/
+    protected function extra_tablenav( $which ) 
+    {
+        parent::extra_tablenav( $which );
+?>           
+<button type="submit" class="button-primary tiFyTemplatesImport-submit" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">
+    <span class="dashicons dashicons-admin-generic" style="vertical-align:middle;line-height:18px;"></span>
+    <?php _e( 'Lancer l\'import', 'tify' );?>
+</button>
+<?php
+        if( $which === 'top' ) :
+            tify_control_progress(
+                array(
+                    'id'        => 'tiFyTemplatesImport-ProgressBar',
+                    'title'     => __( 'Progression de l\'import', 'tify' ),
+                    'value'     => 0
+                )
+            );
+        endif;
+    }
+    
+    
     /**
      * Colonne de traitement des actions
      */
@@ -194,36 +226,14 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function hidden_fields()
     {        
-        /**
-         * Ajout dynamique d'arguments passés dans la requête ajax de récupération d'éléments
-         * ex en PHP : <input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( array( 'key' => 'value' ) ) );?>"/>
-         * ex en JS : $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
-         */ 
-        $ajaxActionPrefix   = $this->template()->getID() .'_'. self::classShortName();
-        $datatablesAjaxData = array();        
-?>
-<input type="hidden" id="ajaxActionPrefix" value="<?php echo $ajaxActionPrefix;?>" />
-<input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( $datatablesAjaxData ) );?>" />
-<?php
-    }
-    
-    /**
-     * Vues
-     */
-    public function views()
-    {
-?>   
-<form class="tiFyTemplatesImport-Form tiFyTemplatesImport-Form--import" method="post" action="" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
-    <button type="submit" class="tiFyButton--primary tiFyTemplatesImportImportForm-Submit"><?php _e( 'Lancer l\'import', 'tify' );?></button>
-</form> 
-<?php
-        tify_control_progress(
+        parent::hidden_fields();
+        
+        $data = wp_parse_args( 
+            $this->getAjaxImportData(),
             array(
-                'id'        => 'tiFyTemplatesImport-ProgressBar',
-                'title'     => __( 'Progression de l\'import', 'tify' ),
-                'value'     => 0
+                'action'    => $this->template()->getID() .'_'. self::classShortName() .'_import'
             )
-        );
-        parent::views();
+        );        
+?><input type="hidden" id="ajaxImportData" value="<?php echo rawurlencode( json_encode( $data ) );?>" /><?php
     }
 }

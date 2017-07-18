@@ -14,7 +14,7 @@ class Steps
 			$master;
 	
 	/* = CONSTRUCTEUR = */
-	public function __construct( tiFy_Forms $master )
+	public function __construct( $master )
 	{
 		// Définition du contrôleur principal
         $this->master = $master;

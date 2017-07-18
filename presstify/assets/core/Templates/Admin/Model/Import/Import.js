@@ -1,8 +1,5 @@
 jQuery(document).ready(function($){
-    var // Préfixe des actions ajax
-        ajax_action_prefix = $( '#ajaxActionPrefix' ).val(),
-
-        // Nombre de ligne à traiter lors d'un import
+    var // Nombre de ligne à traiter lors d'un import
         import_rows = 0,
         
         // Processus actif
@@ -33,7 +30,7 @@ jQuery(document).ready(function($){
     /**
      * Lancement de l'import complet du fichier
      */
-    $( document ).on( 'submit', '.tiFyTemplatesImport-Form--import', function(e){
+    $( document ).on( 'click', '.tiFyTemplatesImport-submit', function(e){
         e.preventDefault();
         
         // Empêche l'execution si un processus est actif
@@ -103,13 +100,18 @@ jQuery(document).ready(function($){
             
             // Si le traitement concerne la dernière ligne pour un passage à la page suivante
             next = $row.is( ':last-child' ) ? true : false,
-            data = { action: ajax_action_prefix +'_import'};
-            data[row_key] = row_value;
+            data = {};
         
-        if( ajax_data = JSON.parse( decodeURIComponent( $( '#datatablesAjaxData' ).val() ) ) ){
-            data = $.extend( data, ajax_data );
+        data[row_key] = row_value;   
+        
+        if( import_data = JSON.parse( decodeURIComponent( $( '#ajaxImportData' ).val() ) ) ){
+            data = $.extend( data, import_data );
         }
 
+        if( datatables_data = JSON.parse( decodeURIComponent( $( '#ajaxDatatablesData' ).val() ) ) ){
+            data = $.extend( data, datatables_data );
+        }
+        
         // Indicateur de traitement (overlay + animation du bouton)
         $row.addClass( 'active' ); 
         $( 'td', $row ).each( function(){

@@ -80,8 +80,8 @@ class CsvPreview extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxList
     public function initParamDelimiter()
     {               
         return $this->Delimiter = $this->set_delimiter();
-    }   
-	    
+    }
+    	    
     /**
      * TRAITEMENT
      */    
@@ -144,34 +144,16 @@ class CsvPreview extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxList
     public function parse_query_args()
     {
         // Arguments par défaut
-        $query_args = parent::parse_query_args();
+        parent::parse_query_args();
         
         if( isset( $_REQUEST['filename'] ) ) :
-            $query_args['filename'] = $_REQUEST['filename'];
+            $this->QueryArgs['filename'] = $_REQUEST['filename'];
         elseif( $this->Filename ) :
-            $query_args['filename'] = $this->Filename;
+            $this->QueryArgs['filename'] = $this->Filename;
+        else :
+            $this->QueryArgs['filename'] = '';
         endif;        
         
-        return $query_args;
-    }
-        
-    /**
-     * AFFICHAGE
-     */    
-    /**
-     * Champs cachés
-     */
-    public function hidden_fields()
-    {        
-        /**
-         * Ajout dynamique d'arguments passés dans la requête ajax de récupération d'éléments
-         * ex en PHP : <input type="hidden" id="datatablesAjaxData" value="<?php echo urlencode( json_encode( array( 'key' => 'value' ) ) );?>"/>
-         * ex en JS : $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
-         */ 
-        $filename = isset( $query_args['filename'] ) ? $query_args['filename'] : $this->Filename;
-        $datatablesAjaxData = ! empty( $filename ) ? array( 'filename' => $filename ) : array();        
-?>
-<input type="hidden" id="datatablesAjaxData" value="<?php echo  urlencode( json_encode( $datatablesAjaxData ) );?>" />
-<?php
+        return $this->QueryArgs;
     }
 }

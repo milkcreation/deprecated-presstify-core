@@ -14,13 +14,13 @@ namespace
     /** == Test d'existance de filtres pour la vue courante == **/
     function tify_archive_filters_has()
     {
-        return tiFy\Components\ArchiveFilters\ArchiveFilters::Has();
+        return \tiFy\Components\ArchiveFilters\ArchiveFilters::Has();
     }
     
     /** == Affichage des filtres == **/
     function tify_archive_filters_display( $echo = true )
     {
-        return tiFy\Components\ArchiveFilters\ArchiveFilters::Display( $echo );
+        return \tiFy\Components\ArchiveFilters\ArchiveFilters::Display( $echo );
     }
     /*** === Déclaration d'un filtre === ***/
     function tify_archive_filters_register( $obj_type = 'post', $obj = 'post_type', $args = array() )

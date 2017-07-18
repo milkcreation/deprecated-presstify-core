@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\ArchiveFilters;
 
-final class ArchiveFilters extends \tiFy\Environment\Component
+class ArchiveFilters extends \tiFy\Environment\Component
 {
     /**
      * Liste des actions à déclencher
@@ -336,11 +336,12 @@ final class ArchiveFilters extends \tiFy\Environment\Component
             endforeach;
             $output .= "\t\t</ul>\n";
         endif;
+        
         $output .= "\t\t<button type=\"submit\" name=\"_tyaf[submit]\" value=\"{$obj}:{$obj_type}\" >". __( 'Rechercher', 'tify' ) ."</button>";
         $output .= "\t</form>\n";
         $output .= "</div>";
                 
-        if( $echo ) :
+        if( $echo )
             echo $output;
         
         return $output;

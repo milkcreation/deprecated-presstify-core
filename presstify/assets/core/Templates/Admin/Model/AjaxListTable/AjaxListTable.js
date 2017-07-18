@@ -42,15 +42,15 @@ jQuery( document ).ready( function($){
                url:         tify_ajaxurl,
                
                data:        function ( d ) {
-                    d = $.extend( d, filters, { action: tiFyTemplatesAdminAjaxListTable.action_prefix +'_get_items' }, tiFyTemplatesAdminAjaxListTable.data );
+                    d = $.extend(d, filters, { action: tiFyTemplatesAdminAjaxListTable.action_prefix +'_get_items' });
                     /**
                      * Ajout dynamique d'arguments passés dans la requête ajax de récupération d'éléments
                      * @see tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTable::hidden_fields();
-                     * $( '#datatablesAjaxData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
+                     * $( '#ajaxDatatablesData' ).val( encodeURIComponent( JSON.stringify( resp.data ) ) );
                      */
-                    if( $( '#datatablesAjaxData' ).val() )
+                    if( $( '#ajaxDatatablesData' ).val() )
                     {
-                        var ajax_data = JSON.parse( decodeURIComponent( $( '#datatablesAjaxData' ).val() ) );
+                        var ajax_data = JSON.parse( decodeURIComponent( $( '#ajaxDatatablesData' ).val() ) );
                         d = $.extend( d, ajax_data );
                     }
                     

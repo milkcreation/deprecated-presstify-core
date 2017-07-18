@@ -20,6 +20,7 @@
         "FortAwesome/Font-Awesome": "^4.7",
         "kenwheeler/slick": "^1.6",
         "pear/http2": "^1.1",
-        "neitanod/forceutf8": "^2.0"
+        "neitanod/forceutf8": "^2.0",
+        "league/commonmark": "^0.11"
     }
 }
