@@ -44,6 +44,7 @@
 namespace tiFy\Core\Forms\Addons\Record;
 
 use tiFy\Core\Db\Db;
+use tiFy\Core\Templates\Templates;
 
 class Record extends \tiFy\Core\Forms\Addons\Factory
 {
@@ -134,7 +135,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     /** == Définition de l'interface d'administration == **/
     public function tify_templates_register()
     {
-        tify_templates_register(
+        Templates::register(
             'tiFyCoreFormsAddonsRecordMenu',
             array(
                 'admin_menu'    => array(
@@ -148,7 +149,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
             'admin'
         );
         
-        tify_templates_register(
+        Templates::register(
             'tiFyCoreFormsAddonsRecordListTable',
             array(
                 'admin_menu' => array(
@@ -164,7 +165,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
         if( ! self::$ExportMenu && $this->getFormAttr( 'export', false ) ) :
             self::$ExportMenu = true;
         
-            tify_templates_register(
+            Templates::register(
                 'tiFyCoreFormsAddonsRecordExport',
                 array(
                     'admin_menu' => array(
@@ -184,7 +185,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     /** == Définition de la base de données (admin uniquement) == **/
     public function tify_db_register()
     {
-        tify_db_register( 
+        Db::register( 
             'tify_forms_record', 
             self::$DbAttrs
         );
