@@ -23,7 +23,7 @@ class Button extends \tiFy\Core\Forms\FieldTypes\Factory
 			return;
 		
 		$button = new $className;
-		$button->init( $this->form(), $this->field()->getAttrs() );
+		$button->init( $this->form(), $this->field()->getOptions() );
 		
 		return $button->display();
 	}
