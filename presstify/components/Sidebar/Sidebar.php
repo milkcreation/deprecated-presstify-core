@@ -251,6 +251,7 @@ class Sidebar extends \tiFy\Environment\Component
             $id = uniqid();
         
         $defaults = array(
+            'id'            => $id,
             'class'         => '',
             'position'      => 99,
             'content'       => '',
@@ -274,7 +275,7 @@ class Sidebar extends \tiFy\Environment\Component
     {
         $Nodes = self::loadOverride( '\tiFy\Components\Sidebar\Nodes' );
         $items = $Nodes->customs( self::$Nodes );
-      
+
         $output  = "";
         $output .= "<div class=\"tiFySidebar tiFySidebar--". self::getConfig( 'pos' ) ."\" data-pos=\"". self::getConfig( 'pos' ) ."\">";
                 
