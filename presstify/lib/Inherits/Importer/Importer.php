@@ -292,12 +292,12 @@ abstract class Importer
                     if( is_numeric( $key ) ) :
                         $key = $map;
                     endif;
-    
+                    
                     if( isset( $this->InputDatas[$map] ) ) :
                         $metadata[$key] = $this->InputDatas[$map];
                     elseif( method_exists( $this, 'set_meta_' . $key ) ) :
                         $metadata[$key] = call_user_func( array( $this, 'set_meta_' . $key ) ); 
-                    else :
+                    else :                        
                         $metadata[$key] = call_user_func( array( $this, 'set_metas' ), $key );
                     endif;
                 endforeach;
