@@ -11,8 +11,7 @@
 }
 .tiFyTemplatesFileImportUploadForm-Spinner{
     position:absolute; 
-    top:50%; right:0px; 
-    margin-top:-10px
+    top:0; right:0; 
 }
 .tiFyTemplatesFileImport-handeFilename{
     margin:10px 0;   

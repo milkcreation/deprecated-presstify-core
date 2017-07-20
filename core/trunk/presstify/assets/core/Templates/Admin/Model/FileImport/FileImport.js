@@ -1,19 +1,4 @@
 jQuery(document).ready(function($){
-    var // Préfixe des actions ajax
-        ajax_action_prefix = $( '#ajaxActionPrefix' ).val();
-
-    /**
-     * GENERATION DU FICHIER D'EXEMPLE A TELECHARGER
-     */
-    /*
-    $( '#tify_adminview_import-download_sample' ).click( function(e){
-        e.stopPropagation();
-        e.preventDefault();
-        window.location.href = tify_ajaxurl + '?action=tiFyCoreAdminModelImport_download_sample_' + id;
-        //$.post( tify_ajaxurl, { action : 'tiFyCoreAdminModelImport_download_sample_'+ id }, function( resp ){ });
-    });
-    */
-
     /**
      * TELECHARGEMENT DU FICHIER D'IMPORT
      */    
@@ -28,14 +13,15 @@ jQuery(document).ready(function($){
         
         // Traitement des données
         files = e.target.files;
-        var data = new FormData();
+        var data = new FormData(),
+            action = $( '#ajaxActionFileImport' ).val();
+        
         $.each( files, function( key, value ){
             data.append( key, value );
-        });    
-        data.append( 'action', ajax_action_prefix +'_upload' );
-           
+        }); 
+        
         $.ajax({
-            url:           tify_ajaxurl,
+            url:           tify_ajaxurl +'?action='+ action,
             type:          'POST',
             data:          data,
             cache:         false,

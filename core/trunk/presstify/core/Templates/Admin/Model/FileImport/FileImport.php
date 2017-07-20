@@ -162,10 +162,9 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function _admin_init()
     {
         parent::_admin_init();       
-        
+
         // Actions Ajax
-        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_sample', array( $this, 'wp_ajax_sample' ) );
-        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_upload', array( $this, 'wp_ajax_upload' ) );  
+        add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_fileimport_upload', array( $this, 'wp_ajax_upload' ) );  
     }
     
     /**
@@ -218,7 +217,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      * Traitement Ajax de téléchargement du fichier d'import
      */
     public function wp_ajax_upload()
-    {                        
+    {        
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
 
@@ -227,7 +226,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         $filename     = sanitize_file_name( basename( $file['name'] ) );
     
         $response = array();
-        if( ! @move_uploaded_file( $file['tmp_name'],  $this->UploadDir . "/" . $filename  ) ) :
+        if( ! @ move_uploaded_file( $file['tmp_name'],  $this->UploadDir . "/" . $filename  ) ) :
             $response = array( 
                 'success'       => false, 
                 'data'          => sprintf( __( 'Impossible de déplacer le fichier "%s" dans le dossier d\'import', 'tify' ), basename( $file['name'] ) )
@@ -369,5 +368,15 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         endif;
         
         parent::views();
+    }
+    
+    /**
+     * Champs cachés
+     */
+    public function hidden_fields()
+    {        
+        parent::hidden_fields();
+        
+?><input type="hidden" id="ajaxActionFileImport" value="<?php echo $this->template()->getID() .'_'. self::classShortName() .'_fileimport_upload';?>" /><?php
     }
 }
