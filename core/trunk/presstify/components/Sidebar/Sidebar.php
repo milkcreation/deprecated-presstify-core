@@ -65,11 +65,11 @@ class Sidebar extends \tiFy\Environment\Component
         // Déclaration des scripts    
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tiFySidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
-        wp_register_script( 'tiFySidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
+        wp_register_style( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
+        wp_register_script( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
         
-        wp_register_style( 'tiFySidebar--theme-dark', self::getAssetsUrl( get_class() ) .'/Sidebar-ThemeDark'. $min .'.css', array( 'tiFySidebar' ), 170704 );
-        wp_register_style( 'tiFySidebar--theme-light', self::getAssetsUrl( get_class() ) .'/Sidebar-ThemeLight'. $min .'.css', array( 'tiFySidebar' ), 170704 );        
+        wp_register_style( 'tiFyComponentsSidebar-theme--light', self::getAssetsUrl( get_class() ) .'/Sidebar-themeLight'. $min .'.css', array( 'tiFySidebar' ), 170704 );
+        wp_register_style( 'tiFyComponentsSidebar-theme--dark', self::getAssetsUrl( get_class() ) .'/Sidebar-themeDark'. $min .'.css', array( 'tiFySidebar' ), 170704 );
     }
     
     /**
@@ -100,11 +100,11 @@ class Sidebar extends \tiFy\Environment\Component
         if( ! self::getConfig( 'enqueue_scripts' ) )
             return;
         
-        wp_enqueue_style( 'tiFySidebar' );
-        wp_enqueue_script( 'tiFySidebar' );
+        wp_enqueue_style( 'tiFyComponentsSidebar' );
+        wp_enqueue_script( 'tiFyComponentsSidebar' );
         
         if( $theme = self::getTheme( get_class() ) ) :
-            wp_enqueue_style( 'tiFySidebar--theme-'. $theme );
+            wp_enqueue_style( 'tiFyComponentsSidebar-theme--'. $theme );
         endif;
     }
     

@@ -29,8 +29,8 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         wp_register_style( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.css', array( ), 170704 );
         wp_register_script( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true );
     
-        wp_register_style( 'tify_control-curtain_menu--theme-dark', self::getAssetsUrl( get_class() ) .'/CurtainMenu-ThemeDark'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
-        wp_register_style( 'tify_control-curtain_menu--theme-light', self::getAssetsUrl( get_class() ) .'/CurtainMenu-ThemeLight'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
+        wp_register_style( 'tify_control-curtain_menu-theme--dark', self::getAssetsUrl( get_class() ) .'/CurtainMenu-themeDark'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
+        wp_register_style( 'tify_control-curtain_menu-theme--light', self::getAssetsUrl( get_class() ) .'/CurtainMenu-themeLight'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
     }
     
     /**
@@ -41,7 +41,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         wp_enqueue_style( 'tify_control-curtain_menu' );
         wp_enqueue_script( 'tify_control-curtain_menu' );
         
-        wp_enqueue_style( 'tify_control-curtain_menu--theme-dark' );
+        wp_enqueue_style( 'tify_control-curtain_menu-theme--dark' );
     }
     
     /**

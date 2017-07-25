@@ -7,7 +7,7 @@ class Modal extends \tiFy\Environment\App
 	/** == CONFIGURATION == **/
 	// Attributs par défaut du lien de déclenchement de la fenêtre modale
 	private static $defaultToggleAttrs	= array(
-		'target'			=> null,	
+		'target'			    => null,	
 		'id' 				=> '',
 		'class'				=> '',
 		'href'				=> '',

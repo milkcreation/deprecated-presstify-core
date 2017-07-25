@@ -227,7 +227,7 @@ trait Path
                     if ( ! file_exists( self::getAppTemplateDir( $CalledClass ) . $template_name ) )
                         continue;
                     
-                    $located = self::getAppTemplateDir( $CalledClass ) . $template_name;                    
+                    $located = self::getAppTemplateDir( $CalledClass ) . $template_name;
                     break;
                 endforeach;
             endif;
@@ -244,10 +244,19 @@ trait Path
     /**
      * Chargement du gabarit d'affichage
      */
-    public static function loadTemplate( $template = null, $type, $templates = array(), $CalledClass = null )
+    public static function getTemplatePart( $slug, $name = null, $args = array(), $CalledClass = null )
     {
-        if( $template_file = static::getQueryTemplate( $template, $type, $templates, $CalledClass ) )
-            require_once( $template_file );
+        if( ! $CalledClass )
+            $CalledClass = get_called_class();
+
+        if ( '' !== $name )
+            $templates[] = "{$slug}-{$name}.php";
+        $templates[] = "{$slug}.php";
+        
+        $_template_file = self::getQueryTemplate( null, $CalledClass .'-'. $slug . ( $name ? '-'. $name : '' ), $templates, $CalledClass );
+
+        extract( $args );
+        require( $_template_file );
     }
     
     /**

@@ -29,8 +29,8 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         wp_register_style( 'tify_control-accordion_menu', self::getAssetsUrl( get_class() ) .'/AccordionMenu'. $min .'.css', array( ), 170704 );
         wp_register_script( 'tify_control-accordion_menu', self::getAssetsUrl( get_class() ) .'/AccordionMenu'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true );
     
-        wp_register_style( 'tify_control-accordion_menu--theme-dark', self::getAssetsUrl( get_class() ) .'/AccordionMenu-ThemeDark'. $min .'.css', array( 'tify_control-accordion_menu' ), 170704 );
-        wp_register_style( 'tify_control-accordion_menu--theme-light', self::getAssetsUrl( get_class() ) .'/AccordionMenu-ThemeLight'. $min .'.css', array( 'tify_control-accordion_menu' ), 170704 );
+        wp_register_style( 'tify_control-accordion_menu-theme--dark', self::getAssetsUrl( get_class() ) .'/AccordionMenu-themeDark'. $min .'.css', array( 'tify_control-accordion_menu' ), 170704 );
+        wp_register_style( 'tify_control-accordion_menu-theme--light', self::getAssetsUrl( get_class() ) .'/AccordionMenu-themeLight'. $min .'.css', array( 'tify_control-accordion_menu' ), 170704 );
     }
     
     /**
@@ -42,7 +42,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         wp_enqueue_script( 'tify_control-accordion_menu' );
         
         if( $theme = self::getTheme( get_class() ) ) :
-            wp_enqueue_style( 'tify_control-accordion_menu--theme-'. $theme );
+            wp_enqueue_style( 'tify_control-accordion_menu-theme--'. $theme );
         endif;
     }
     
