@@ -9,67 +9,87 @@
 
 namespace tiFy\Core\Control\Switcher;
 
-use tiFy\Core\Control\Factory;
-
-class Switcher extends Factory
+class Switcher extends \tiFy\Core\Control\Factory
 {
-	/* = ARGUMENTS = */	
-	// Identifiant de la classe		
-	protected $ID = 'switch';
-	
-	// Nombre d'instance
-	static $Instance = 0;
-	
-	/* = INITIALISATION DE WORDPRESS = */
-	final public function init()
-	{
-		wp_register_style( 'tify_control-switch', $this->Url ."/switch.css", array( ), '150310' );
-	}
-		
-	/* = MISE EN FILE DES SCRIPTS = */
-	final public function enqueue_scripts()
-	{
-		wp_enqueue_style( 'tify_control-switch' );
-	}
-		
-	/* = AFFICHAGE = */
-	public static function display( $args = array(), $instance = 0 )
-	{
-		if( ! $instance ) 
-			$instance = self::$Instance++;
-		
-		$defaults = array(
-			'id'				=> 'tify_control_switch-'. $instance,
-			'class'				=> 'tify_control_switch',
-			'name'				=> 'tify_control_switch-'. $instance,
-			'label_on'			=> _x( 'Oui', 'tify_control_switch', 'tify' ),
-			'label_off'			=> _x( 'Non', 'tify_control_switch', 'tify' ),
-			'value_on'			=> 'on',
-			'value_off'			=> 'off',
-			'checked' 			=> null,
-			'default'			=> 'on',
-			'echo'				=> 1
-		);
-		$args = wp_parse_args( $args, $defaults );
-		extract( $args );	
-		
-		if( is_null( $checked ) )
-			$checked = $default;
+    /**
+     * Identifiant de la classe
+     */
+    protected $ID = 'switch';
+    
+    /**
+     * Instance courante
+     * @var integer
+     */
+    protected static $Instance = 0;
 
-		$output  = "";
-		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"switch\">\n";
-		$output .= "\t<div class=\"tify_control_switch-wrapper\">\n";
-	    $output .= "\t\t<input type=\"radio\" id=\"{$id}-on\" class=\"tify_control_switch-radio tify_control_switch-radio-on\" name=\"{$name}\" value=\"{$value_on}\" autocomplete=\"off\" ". checked( ( $value_on === $checked ), true, false ) .">\n";
-	    $output .= "\t\t<label for=\"{$id}-on\" class=\"tify_control_switch-label tify_control_switch-label-on\">{$label_on}</label>\n";
-	    $output .= "\t\t<input type=\"radio\" id=\"{$id}-off\" class=\"tify_control_switch-radio tify_control_switch-radio-off\" name=\"{$name}\" value=\"{$value_off}\" autocomplete=\"off\" ". checked( ( $value_off === $checked ), true, false ) .">\n";
-	    $output .= "\t\t<label for=\"{$id}-off\" class=\"tify_control_switch-label tify_control_switch-label-off\">{$label_off}</label>\n";
-	   	$output .= "\t\t<span class=\"tify_control_switch-selection\"></span>\n";
-	  	$output .= "\t</div>\n";
-		$output .= "</div>\n";
-		
-		if( $echo )
-			echo $output;
-		else
-			return $output;
-	}
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation générale
+     */
+    final public function init()
+    {
+        $min = SCRIPT_DEBUG ? '' : '.min';
+        
+        wp_register_style( 'tify_control-switch', self::getAssetsUrl( get_class() ) .'/Switcher'. $min .'.css', array( ), '150310' );
+        wp_register_script( 'tify_control-switch', self::getAssetsUrl( get_class() ) .'/Switcher'. $min .'.js', array( 'jquery' ), 170724 );
+    }
+
+    /**
+     * Mise en file des scripts
+     */
+    final public function enqueue_scripts()
+    {
+        wp_enqueue_style( 'tify_control-switch' );
+        wp_enqueue_script( 'tify_control-switch' );
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Affichage
+     * @param array $args
+     * @param number $instance
+     * @return string
+     */
+    public static function display( $args = array(), $echo = true  )
+    {
+        self::$Instance++;
+
+        $defaults = array(
+            'id'                => 'tify_control_switcher-'. self::$Instance,
+            'container_id'      => 'tifyControlSwitcher--'. self::$Instance,
+            'container_class'   => '',
+            'name'              => 'tify_control_switcher-'. self::$Instance,
+            'label_on'          => _x( 'Oui', 'tify_control_switch', 'tify' ),
+            'label_off'         => _x( 'Non', 'tify_control_switch', 'tify' ),
+            'value_on'          => 'on',
+            'value_off'         => 'off',
+            'checked'           => null,
+            'default'           => 'on'
+        );
+        $args = wp_parse_args( $args, $defaults );
+        extract( $args );    
+        
+        if( is_null( $checked ) )
+            $checked = $default;
+
+        $output  = "";
+        $output .= "<div id=\"{$container_id}\" class=\"tifyControlSwitcher". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"switcher\">\n";
+        $output .= "\t<div class=\"tifyControlSwitcher-wrapper\">\n";
+        $output .= "\t\t<input type=\"radio\" id=\"{$id}-on\" class=\"tifyControlSwitcher-input tifyControlSwitcher-input--on\" name=\"{$name}\" value=\"{$value_on}\" autocomplete=\"off\" ". checked( ( $value_on === $checked ), true, false ) .">\n";
+        $output .= "\t\t<label for=\"{$id}-on\" class=\"tifyControlSwitcher-label tifyControlSwitcher-label--on\">{$label_on}</label>\n";
+        $output .= "\t\t<input type=\"radio\" id=\"{$id}-off\" class=\"tifyControlSwitcher-input tifyControlSwitcher-input--off\" name=\"{$name}\" value=\"{$value_off}\" autocomplete=\"off\" ". checked( ( $value_off === $checked ), true, false ) .">\n";
+        $output .= "\t\t<label for=\"{$id}-off\" class=\"tifyControlSwitcher-label tifyControlSwitcher-label--off\">{$label_off}</label>\n";
+        $output .= "\t\t<span class=\"tifyControlSwitcher-handler\"></span>\n";
+        $output .= "\t</div>\n";
+        $output .= "</div>\n";
+        
+        if( $echo )
+            echo $output;
+
+        return $output;
+    }
 }

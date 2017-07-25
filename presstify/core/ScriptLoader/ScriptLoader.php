@@ -148,6 +148,16 @@ class ScriptLoader extends \tiFy\Environment\App
                 'media'         => 'all' 
             ),
             
+            /// tiFy - Image Lightbox
+            'tify-imagelightbox'                              => array(
+                'src'           => array(
+                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-imagelightbox'. $min .'.css'
+                ),
+                'deps'          => array(),
+                'version'       => '170724',
+                'media'         => 'all' 
+            ),
+            
             /// TiFy - Slideshow
             'tify-slideshow'            => array(
                 'src'           => array(
@@ -364,14 +374,14 @@ class ScriptLoader extends \tiFy\Environment\App
                 'version'       => '2.2.2',
                 'in_footer'     => true 
             ),
-                                         
-            /// TiFy - Lightbox
-            'tify-lightbox'                 => array(
+            
+            /// tiFy - Image Lightbox
+            'tify-imagelightbox'                              => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-lightbox'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-imagelightbox'. $min .'.js'
                 ),
-                'deps'          => array( 'jquery' ),
-                'version'       => '150325',
+                'deps'          => array( 'imageLightbox' ),
+                'version'       => '170724',
                 'in_footer'     => true 
             ),
                 
