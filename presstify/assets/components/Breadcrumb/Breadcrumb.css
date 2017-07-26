@@ -1,4 +1,4 @@
-.tiFyBreadcrumb{
+.tiFyBreadcrumb {
 	margin:0; padding:0;
 }
 .tiFyBreadcrumb > li + li::before {
