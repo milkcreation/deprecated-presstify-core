@@ -34,7 +34,7 @@
 .tifyControlSwitcher-label:active {
     font-weight: bold;
 }
-.tifyControlSwitcher-input{
+.tifyControlSwitcher .tifyControlSwitcher-input{
     display: none;
 }
 .tifyControlSwitcher-handler {
