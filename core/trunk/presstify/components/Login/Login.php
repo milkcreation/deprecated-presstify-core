@@ -50,7 +50,6 @@ final class Login extends \tiFy\Environment\Component
                 $this->_signon();
                 break;
             case 'logout' :
-              
                 $this->_logout();
                 break;
         endswitch;

@@ -20,7 +20,6 @@ final class Lightbox extends \tiFy\Environment\Component
     public function init()
     {
         $min = SCRIPT_DEBUG ? '' : '.min';
-
         wp_register_script( 'tiFyComponentsLightbox', self::getAssetsUrl( get_class() ) .'/Lightbox'. $min .'.js', array( 'tify-imagelightbox' ), 170724, true );
     }
     

@@ -23,6 +23,9 @@
         "neitanod/forceutf8": "^2.0",
         "league/commonmark": "^0.11",
         "madcoda/php-youtube-api": "^1.2",
-        "vimeo/vimeo-api": "^1.2"
+        "vimeo/vimeo-api": "^1.2",
+        "mpratt/embera": "^1.9",
+        "egeloen/google-map": "^2.0",
+        "google/apiclient": "^2.2"
     }
 }
