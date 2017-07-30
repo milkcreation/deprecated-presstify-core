@@ -35,6 +35,7 @@ class Autoload extends \tiFy\Environment\Core
 	{
 		// Chargement des contrôleurs configurable
 		new Control\Control;
+		new Cron\Cron;
 		new	CustomType\CustomType;
 		new Db\Db;
 		new Mail\Mail;

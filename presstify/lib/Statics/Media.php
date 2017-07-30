@@ -72,8 +72,8 @@ class Media
                 );
             endif;            
             // Traitement des attributs de la réponse
-            $code = wp_remote_retrieve_response_code( $response );
-            $message = wp_remote_retrieve_response_message( $response );
+            $code = \wp_remote_retrieve_response_code( $response );
+            $message = \wp_remote_retrieve_response_message( $response );
     
             if( $code != '200' ) :
                 return new \WP_Error(
@@ -85,7 +85,7 @@ class Media
                     ) 
                 );
             endif;            
-            $content = wp_remote_retrieve_body( $response );  
+            $content = \wp_remote_retrieve_body( $response );  
         elseif( file_exists( $filename ) ) :              
             $content = file_get_contents( $filename );
         else :
@@ -167,9 +167,11 @@ class Media
         $attachment_id = wp_insert_attachment( $attachment_attrs, $upload['file'] );
         
         if ( ! is_wp_error( $attachment_id ) ) :
-            wp_update_attachment_metadata( 
+            require_once(ABSPATH . 'wp-admin/includes/image.php');
+        
+            \wp_update_attachment_metadata( 
                 $attachment_id, 
-                wp_generate_attachment_metadata( 
+                \wp_generate_attachment_metadata( 
                     $attachment_id, 
                     $upload['file'] 
                 ) 
