@@ -11,9 +11,7 @@
  * 
  * # ETAPE 2 - AFFICHAGE :
  * ## AUTOLOAD -> false 
- * <?php tify_sidebar_display();?>
- * 
- * 
+ * <?php tify_sidebar_display();?> 
  * 
  * RESSOURCES POUR EVOLUTION : 
  * http://tympanus.net/Blueprints/SlidePushMenus/
@@ -65,11 +63,8 @@ class Sidebar extends \tiFy\Environment\Component
         // Déclaration des scripts    
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
-        wp_register_script( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
-        
-        wp_register_style( 'tiFyComponentsSidebar-theme--light', self::getAssetsUrl( get_class() ) .'/Sidebar-themeLight'. $min .'.css', array( 'tiFySidebar' ), 170704 );
-        wp_register_style( 'tiFyComponentsSidebar-theme--dark', self::getAssetsUrl( get_class() ) .'/Sidebar-themeDark'. $min .'.css', array( 'tiFySidebar' ), 170704 );
+        wp_register_style( 'tiFyComponentSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
+        wp_register_script( 'tiFyComponentSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
     }
     
     /**
@@ -251,6 +246,7 @@ class Sidebar extends \tiFy\Environment\Component
             $id = uniqid();
         
         $defaults = array(
+            // Marqueur d'identification unique
             'id'            => $id,
             'class'         => '',
             'position'      => 99,

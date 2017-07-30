@@ -28,6 +28,25 @@
 }
 
 /**
+ * THEMES
+ */
+/**
+ * Dark
+ */ 
+.tiFyControlAccordionMenu--dark .tiFyControlAccordionMenu-item {
+    background-color:#23282D;
+}
+.tiFyControlAccordionMenu--dark .tiFyControlAccordionMenu-itemLink {
+    color:#EEE;
+    border-bottom:solid 1px #2C333A; 
+}
+.tiFyControlAccordionMenu--dark .tiFyControlAccordionMenu-itemLink:hover,
+.tiFyControlAccordionMenu--dark .tiFyControlAccordionMenu-itemLink:active,
+.tiFyControlAccordionMenu--dark .tiFyControlAccordionMenu-itemLink:focus{
+    color:#CCC;
+}
+
+/**
  * ANIMATIONS
  */
 .tiFyControlAccordionMenu ul > li > ul{

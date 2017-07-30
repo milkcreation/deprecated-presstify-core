@@ -28,9 +28,6 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      
         wp_register_style( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.css', array( ), 170704 );
         wp_register_script( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true );
-    
-        wp_register_style( 'tify_control-curtain_menu-theme--dark', self::getAssetsUrl( get_class() ) .'/CurtainMenu-themeDark'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
-        wp_register_style( 'tify_control-curtain_menu-theme--light', self::getAssetsUrl( get_class() ) .'/CurtainMenu-themeLight'. $min .'.css', array( 'tify_control-curtain_menu' ), 170704 );
     }
     
     /**
@@ -40,8 +37,6 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
     {
         wp_enqueue_style( 'tify_control-curtain_menu' );
         wp_enqueue_script( 'tify_control-curtain_menu' );
-        
-        wp_enqueue_style( 'tify_control-curtain_menu-theme--dark' );
     }
     
     /**
@@ -60,9 +55,11 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
             // Marqueur d'identification unique
             'id'                    => 'tiFyControlCurtainMenu--'. self::$Instance,
             // Id Html du conteneur
-            'container_id'          => 'tiFyControlCurtainMenu--'. self::$Instance,            
+            'container_id'          => 'tiFyControlCurtainMenu--'. self::$Instance,
             // Classe Html du conteneur
             'container_class'       => '',
+            // Theme (light | dark | false)
+            'theme'                 => 'dark',
             // Entrées de menu
             'nodes'                 => array()
         );

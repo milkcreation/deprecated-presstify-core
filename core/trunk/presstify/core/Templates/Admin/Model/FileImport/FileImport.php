@@ -205,9 +205,9 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         endif;
             
         if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
-	       wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
-	    else :
-	       wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
+            wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
+        else :
+            wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
         endif;
         
         exit;
@@ -278,7 +278,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
             $attrs = array(
                 'filename'      => $params['filename'],
                 'columns'       => $this->FileColumns,
-                'delimiter'     => $this->Delimiter           
+                'delimiter'     => $this->Delimiter
             );
             $Csv = Csv::getRow( current( $this->current_item() ), $attrs );
         else :
@@ -288,7 +288,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
                 'delimiter'     => $this->Delimiter,
                 'query_args'    => array(
                     'paged'         => isset( $params['paged'] ) ? (int) $params['paged'] : 1,
-                    'per_page'      => $this->PerPage   
+                    'per_page'      => $this->PerPage
                 ),            
             );
             

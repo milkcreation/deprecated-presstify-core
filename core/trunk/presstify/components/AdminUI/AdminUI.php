@@ -2,7 +2,7 @@
 /**
  * @name AdminUI
  * @package PresstiFy
- * @category Components
+ * @subpackage Components
  * @namespace tiFy\Components\AdminUI
  * @desc Configuration de l'interface d'administration de Wordpress
  * @author Jordy Manner
