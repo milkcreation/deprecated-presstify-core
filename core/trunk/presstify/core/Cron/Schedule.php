@@ -157,6 +157,9 @@ class Schedule
      */
     final public function _handle()
     {
+        // Désactivation de la limitation d'exécution PHP
+        set_time_limit(0);
+        
         // Initialisation de la journalisation
         $output = $this->Log['format'];
         $formatter = new LineFormatter( $output );
@@ -166,7 +169,6 @@ class Schedule
         $this->Logger->pushHandler( $stream );
         
         // Vérrouillage
-        
         
         // Rapport
         // @todo
