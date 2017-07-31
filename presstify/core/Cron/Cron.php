@@ -59,9 +59,6 @@ class Cron extends \tiFy\Environment\Core
             return;
 
         if( $schedule = self::get( $_REQUEST['tFy_doing_cron'] ) ) :
-            // Désactivation de la limitation d'exécution PHP
-            set_time_limit(0);
-
             return do_action_ref_array( $schedule->getHook(), $schedule->getArgs() );
         endif;
     }

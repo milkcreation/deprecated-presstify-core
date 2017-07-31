@@ -1,3 +1,5 @@
+# Tâches Planifiées
+
 ## Créer une tâche
 
 METHODE 1
@@ -30,7 +32,13 @@ METHODE 1
   path:         []
   
   # Activation de la journalisation (optionnel)
-  log:          true
+  log:
+    ## Nom du fichier
+    name:       [task_id]
+    ## Format du fichier de log
+    format:     ''
+    ## Rotation de fichier
+    rotate:     10
 ```
 
 METHODE 2
