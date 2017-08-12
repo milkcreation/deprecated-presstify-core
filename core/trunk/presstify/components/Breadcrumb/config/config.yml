@@ -1,15 +1,11 @@
-# STYLES
-## ID HTML du conteneur
+# Id HTML du conteneur
 id:           ''
 
-## Classe HTML du conteneur   
+# Classe HTML du conteneur
 class:        ''
 
-## Thème
-theme:        'base'
-
-## HTML affiché avant le fil d'Ariane 
+# Contenu HTML affiché avant le fil d'Ariane 
 before:       ''
 
-## HTML affiché après le fil d'Ariane
+# Contenu HTML affiché après le fil d'Ariane
 after:        ''

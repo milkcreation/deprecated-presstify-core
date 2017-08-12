@@ -6,38 +6,50 @@ use \Symfony\Component\Yaml\Yaml;
 
 class Params extends \tiFy\Environment\App
 {
-    /* = ARGUMENTS = */    
-    // Liste des actions à déclencher
+    /**
+     * Liste des actions à déclencher
+     * @var string[]
+     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
+     */
     protected $CallActions                = array(
-        'after_setup_theme'    
+        'after_setup_theme'
     );
-    // Ordres de priorité d'exécution des actions
+    
+    /**
+     * Ordre de priorité d'exécution des actions
+     * @var mixed
+     */
     protected $CallActionsPriorityMap    = array(
         'after_setup_theme' => 0
     );
     
-    /* = PARAMETRAGE = */    
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Après l'initialisation du thème
+     */
     final public function after_setup_theme()
-    {        
+    {
         $attrs = array(
             'config'        => array(
-                'eval'            => true        
+                'eval'            => true
             ),
             'components'    => array(
-                'eval'            => true        
+                'eval'            => true
             ),
             'core'            => array(
-                'eval'            => true        
+                'eval'            => true
             ),
             'plugins'        => array(
-                'eval'            => true        
+                'eval'            => true
             ),
             'schema'        => array(
-                'eval'            => true        
+                'eval'            => true
             ),
             'set'            => array(
-                'eval'            => true        
-            )            
+                'eval'            => true
+            )
         );
 
         // Récupération du paramétrage natif
@@ -76,14 +88,14 @@ class Params extends \tiFy\Environment\App
                 endif;
                 
                 if( ! isset( $config ) ) :
-                    $config = array();        
+                    $config = array();
                 endif;
 
                 $config = self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, $config, TIFY_CONFIG_EXT, $attrs['config'] );
             endwhile;
             closedir( $_dir );            
         endif;
-        tiFy::$Params['config'] = $config;    
+        tiFy::$Params['config'] = $config;
         
         // Définition de l'espace de nom du thème
         if( $theme = tiFy::getConfig( 'theme' ) ) :
@@ -111,7 +123,7 @@ class Params extends \tiFy\Environment\App
             foreach( array( 'components', 'core', 'plugins', 'set' ) as $dir ) :
                 if( ! file_exists( $theme['base_dir']. '/' .$dir ) )
                     continue;
-                tify_class_loader( "\\{$theme['namespace']}\\". ucfirst( $dir ), $theme['base_dir']. '/' .$dir, 'Autoload' );
+                tiFy::classLoad( "\\{$theme['namespace']}\\". ucfirst( $dir ), $theme['base_dir']. '/' .$dir, 'Autoload' );
             endforeach;
         endif;
         
@@ -127,30 +139,30 @@ class Params extends \tiFy\Environment\App
                     continue;
                 endif;
                 
-                $basename = basename( $file, ".". TIFY_CONFIG_EXT );        
+                $basename = basename( $file, ".". TIFY_CONFIG_EXT );
                 if( ! isset( $attrs[$basename] ) ) :
                      continue;
                 endif;
                 
                 $attr = $attrs[$basename];
                 if( ! isset( ${$basename} ) ) :
-                    ${$basename} = array();    
+                    ${$basename} = array();
                 endif;
                 
                 ${$basename} += self::_parseFilename( TIFY_CONFIG_DIR ."/". $file, ${$basename}, TIFY_CONFIG_EXT, $attr );
             endwhile;
-            closedir( $_dir );            
+            closedir( $_dir );
         endif;        
-        tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );                          
+        tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );
                 
         // Chargement des plugins
         tiFy::classLoad( '\tiFy\Plugins', TIFY_PLUGINS_DIR );
-        if( ! empty( tiFy::$Params['plugins'] ) ) :                        
+        if( ! empty( tiFy::$Params['plugins'] ) ) :
             foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
                 if( ! class_exists( "\\tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) 
                     continue;
-                
-                $ClassName    = "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
+
+                $ClassName = "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
                 new $ClassName;
             endforeach;
         endif;
@@ -162,10 +174,17 @@ class Params extends \tiFy\Environment\App
         do_action( 'tify_params_set' );
         
         // Déclenchement des actions post-paramétrage
-        do_action( 'after_setup_tify' );        
+        do_action( 'after_setup_tify' );
     }
-    
-    /* = Traitement d'un chemin = */
+  
+    /**
+     * Traitement d'un chemin
+     * @param string $filename
+     * @param array $current
+     * @param string $ext
+     * @param array $attr
+     * @return array|array[]|array[][]
+     */
     public static function _parseFilename( $filename, $current,  $ext = 'yml', $attr = array() )
     {
         if( ! is_dir( $filename ) ) :
@@ -176,8 +195,8 @@ class Params extends \tiFy\Environment\App
             $res = array();
             while ( ( $subfile = readdir( $subdir ) ) !== false ) :
                 if ( substr( $subfile, 0, 1 ) == '.' ) 
-                    continue;                        
-                $subbasename = basename( $subfile, ".{$ext}" );    
+                    continue;
+                $subbasename = basename( $subfile, ".{$ext}" );
 
                 $current[$subbasename] = isset( $current[$subbasename] ) ? $current[$subbasename] : array();
                 $res[$subbasename] = self::_parseFilename( "$filename/{$subfile}", $current[$subbasename], $ext, $attr );
@@ -187,7 +206,13 @@ class Params extends \tiFy\Environment\App
         endif;
     }
     
-    /* = = */
+    /**
+     * 
+     * @param unknown $filename
+     * @param array $defaults
+     * @param string $eval
+     * @return array
+     */
     private static function _parseConfig( $filename, $defaults = array(), $eval = true )
     {
         if( $eval ) :
@@ -196,16 +221,24 @@ class Params extends \tiFy\Environment\App
             return wp_parse_args( self::parseFile( $filename ), $defaults );
         endif;
     }
-        
-    /* = TRAITEMENT DU FICHIER DE CONFIGURATION = */
+
+    /**
+     * Traitement du fichier de configuration
+     * @param unknown $filename
+     * @return mixed|NULL|\Symfony\Component\Yaml\Tag\TaggedValue|string|\stdClass|NULL[]|\Symfony\Component\Yaml\Tag\TaggedValue[]|string[]|unknown[]|mixed[]
+     */
     public static function parseFile( $filename )
     {
-        $output = \Symfony\Component\Yaml\Yaml::parse( file_get_contents( $filename ) );
+        $output = Yaml::parse( file_get_contents( $filename ) );
 
         return $output;
     }
     
-    /* = TRAITEMENT ET INTERPRETATION PHP DU FICHIER DE CONFIGURATION = */
+    /**
+     * Traitement et interprétation PHP du fichier de configuration
+     * @param unknown $filename
+     * @return array|unknown
+     */
     public static function parseAndEval( $filename )
     {
         $input = self::parseFile( $filename );

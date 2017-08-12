@@ -33,11 +33,11 @@ class Factory extends \tiFy\Core\Templates\Factory
      * Initialisation globale
      */
     final public function init()
-    {            
+    {
         // Bypass
         if( ! $callback = $this->getAttr( 'cb' ) )
             return;
-        
+
         $className = false;
         if( preg_match( '/\\\/', $callback ) ) :
             $className = self::getOverride( $callback );
@@ -66,7 +66,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         
         // Fonction de rappel d'affichage du template
         if( ! $this->getAttr( 'render_cb', '' ) )
-           $this->setAttr( 'render_cb', 'render' );     
+           $this->setAttr( 'render_cb', 'render' );
             
         // Déclenchement des actions dans le template
         if( method_exists( $this->Template, '_init' ) ) :
@@ -81,11 +81,19 @@ class Factory extends \tiFy\Core\Templates\Factory
      * Court-circuitage de l'affichage
      */
     final public function template_redirect()
-    {        
+    {
         // Bypass
         if( ! $this->Template )
-            return;            
-        if( ! preg_match( '/^\/'. preg_quote( ltrim( $this->getAttr( 'route' ), '//' ), '/' ) .'\/?$/', Front::getRoute() ) )
+            return;
+        $rewrite_base = parse_url( home_url() );
+        
+        if ( isset( $rewrite_base['path'] ) ) :
+            $rewrite_base = trailingslashit( $rewrite_base['path'] );
+        else :
+            $rewrite_base = '/';
+        endif;
+
+        if( ! preg_match( '/^'. preg_quote( $rewrite_base . ltrim( $this->getAttr( 'route' ), '//' ), '/' ) .'\/?$/', Front::getRoute() ) )
             return;
 
         \tiFy\Core\Templates\Templates::$Current = $this; 

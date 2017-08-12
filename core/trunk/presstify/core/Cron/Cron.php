@@ -7,8 +7,7 @@
  * @desc Gestion de tâches planifiées
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.170729
- * 
+ * @version 1.2.369
  * @see https://developer.wordpress.org/plugins/cron/hooking-into-the-system-task-scheduler/
  */
 namespace tiFy\Core\Cron;
@@ -37,7 +36,7 @@ class Cron extends \tiFy\Environment\Core
         parent::__construct();
 
         // Déclaration des tâches planifiées configurées
-        foreach( self::getConfig() as $schedule_id => $schedules_attrs ) :
+        foreach( (array) self::getConfig() as $schedule_id => $schedules_attrs ) :
             self::register( $schedule_id, $schedules_attrs );
         endforeach;
     }

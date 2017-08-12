@@ -5,26 +5,31 @@ final class tiFy
 {
     /**
      * Version de PresstiFy
+     * @var string
      */ 
     public static $Version            = '1.0.369';
     
     /**
-     * Chemins absolue vers la racine de l'environnement
+     * Chemin absolu vers la racine de l'environnement
+     * @var string
      */
     public static $AbsPath;
     
     /**
-     * Chemins absolue vers la racine de presstiFy
+     * Chemin absolu vers la racine de presstiFy
+     * @var string
      */
     public static $AbsDir;
     
     /**
      * Url absolue vers la racine la racine de presstiFy
+     * @var string
      */
     public static $AbsUrl;
     
     /**
      * Paramètres de configuration des éléments de presstiFy
+     * @var mixed
      */
     public static $Params;
     
@@ -35,6 +40,8 @@ final class tiFy
     
     /**
      * CONSTRUCTEUR
+     * 
+     * @return void
      */
     public function __construct( $AbsPath = null )
     {
@@ -89,6 +96,8 @@ final class tiFy
      */
     /**
      * Après le chargement des plugins
+     * 
+     * @return bool
      */
     public function plugins_loaded()
     {
@@ -124,8 +133,19 @@ final class tiFy
     }
     
     /**
+     * Récupération d'une liste de paramètres
+     */
+    public static function getParams($type = null)
+    {
+        if(is_null($type))
+            return self::$Params;
+        $type = strtolower($type);
+        if(isset(self::$Params[$type]))
+            return self::$Params[$type];
+    }
+    
+    /**
      * Récupération des attributs de configuration
-     * 
      * @param string $index
      * @param string $default
      * 
@@ -133,10 +153,29 @@ final class tiFy
      */
     public static function getConfig( $index, $default = '' )
     {
-        if( isset( self::$Params['config'][$index] ) )
+        if( isset( self::$Params['config'][$index] ) ) :
             return self::$Params['config'][$index];
+        endif;
         
         return $default;
+    }
+    
+    /**
+     * Récupération de la liste des plugins
+     */
+    public static function getPlugins()
+    {
+        if( ! empty( self::$Params['plugins'] ) )
+            return array_keys( self::$Params['plugins'] );
+    }
+    
+    /**
+     * Récupération de la liste des sets
+     */
+    public static function getSets()
+    {
+        if( ! empty( self::$Params['set'] ) )
+            return array_keys( self::$Params['plugins'] );
     }
     
     /**
@@ -149,11 +188,11 @@ final class tiFy
                 continue;
             if ( ! $dh = opendir( $plugin_dir .'/MustUse' ) )
                 continue;
-                while ( ( $file = readdir( $dh ) ) !== false ) :
-                    if ( substr( $file, -4 ) == '.php' ) :
-                        include_once( $plugin_dir .'/MustUse/' . $file );
-                    endif;
-                endwhile;
+            while ( ( $file = readdir( $dh ) ) !== false ) :
+                if ( substr( $file, -4 ) == '.php' ) :
+                    include_once( $plugin_dir .'/MustUse/' . $file );
+                endif;
+            endwhile;
         endforeach;
     }
 }

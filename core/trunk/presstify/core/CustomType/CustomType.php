@@ -22,8 +22,9 @@ class CustomType extends \tiFy\Environment\Core
         
         // Traitement des types personnalisés passés en arguments
         // Taxonomie
-        foreach( (array) self::getConfig( 'taxonomy' ) as $taxonomy => $args )
+        foreach( (array) self::getConfig( 'taxonomy' ) as $taxonomy => $args ) :
             self::registerTaxonomy( $taxonomy, $args );
+        endforeach;
         
         // Type de post        
         foreach( (array) self::getConfig( 'post_type' ) as $post_type => $args )
@@ -249,9 +250,9 @@ class CustomType extends \tiFy\Environment\Core
     {
         // Traitement des arguments généraux
         /// Intitulés
-        $label         = _x( $post_type, 'post type general name', 'tify' );
+        $label      = _x( $post_type, 'post type general name', 'tify' );
         $plural     = _x( $post_type, 'post type plural name', 'tify' );
-        $singular     = _x( $post_type, 'post type singular name', 'tify' );
+        $singular   = _x( $post_type, 'post type singular name', 'tify' );
         $gender     = false; 
         foreach( array( 'gender', 'label', 'plural', 'singular' ) as $attr ) :
             if ( isset( $args[$attr] ) ) :

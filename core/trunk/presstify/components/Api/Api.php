@@ -2,12 +2,12 @@
 /**
  * @name API
  * @package PresstiFy
- * @category Components
+ * @subpackage Components
  * @namespace tiFy\Components\Api
  * @desc Gestion d'API
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.170726
+ * @version 1.2.369
  */
 namespace tiFy\Components\Api;
 
@@ -15,6 +15,7 @@ class Api extends \tiFy\Environment\Component
 {
     /**
      * Liste des api autorisées
+     * @var string[]
      */
     private static $Allowed         = array(
         //'google',
@@ -27,7 +28,8 @@ class Api extends \tiFy\Environment\Component
     );
     
     /**
-     * 
+     * Liste des classes de rappel
+     * @var object[]
      */
     private static $Api             = array();
     

@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Environment;
 
-use tiFy\Environment\App;
-
-abstract class Addon extends App
+abstract class Addon extends \tiFy\Environment\App
 {	
 	/* = ARGUMENTS = */
 	// Chemin vers la classe principale du plugin (requis)

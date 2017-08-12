@@ -5,33 +5,39 @@ trait Actions
 {
     /**
      * Liste des actions à déclencher
+     * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
     protected $CallActions                = array(); 
 
     /**
      * Cartographie des méthodes de rappel des actions
+     * @var mixed
      */
     protected $CallActionsFunctionsMap    = array();
 
     /**
      * Ordre de priorité d'exécution des actions
+     * @var mixed
      */
     protected $CallActionsPriorityMap    = array();
 
     /**
      * Nombre d'arguments autorisés
+     * @var mixed
      */ 
     protected $CallActionsArgsMap        = array();
 
     /**
      * CONSTRUCTEUR
+     * 
+     * @return void
      */
     public function __construct()
     {
         foreach( $this->CallActions as $method_name ) :
-            $priority         = ( isset( $this->CallActionsPriorityMap[$method_name] ) )     ? (int) $this->CallActionsPriorityMap[$method_name] : 10;
-            $accepted_args     = ( isset( $this->CallActionsArgsMap[$method_name] ) )         ? (int) $this->CallActionsArgsMap[$method_name]     : 1;
+            $priority       = ( isset( $this->CallActionsPriorityMap[$method_name] ) )     ? (int) $this->CallActionsPriorityMap[$method_name] : 10;
+            $accepted_args  = ( isset( $this->CallActionsArgsMap[$method_name] ) )         ? (int) $this->CallActionsArgsMap[$method_name]     : 1;
             
             if( ! isset( $this->CallActionsFunctionsMap[$method_name] ) ) :
                 $function = array( $this, (string) $method_name );
@@ -39,9 +45,9 @@ trait Actions
                 $function = array( $this, (string) $this->CallActionsFunctionsMap[$method_name][$priority] );
             else :
                 $function = array( $this, (string) $this->CallActionsFunctionsMap[$method_name] );
-            endif;            
+            endif;
                 
-            \add_action( $method_name, $function, $priority, $accepted_args );            
+            \add_action( $method_name, $function, $priority, $accepted_args );
         endforeach;
     }
 
@@ -50,10 +56,15 @@ trait Actions
      */
     /**
      * Appel de méthode
+     * @param string $method_name
+     * @param array $arguments
+     * 
+     * @return $mixed
      */
     public function __call( $method_name, $arguments )
-    {            
-        if( in_array( $method_name, $this->CallActions ) && method_exists( $this, $method_name ) )
+    {
+        if( in_array( $method_name, $this->CallActions ) && method_exists( $this, $method_name ) ) :
             return call_user_func_array( array( $this, $method_name ), $arguments );
+        endif;
     }
 }

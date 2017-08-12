@@ -17,7 +17,7 @@ abstract class Nodes
             endif;
         endforeach;
         
-        if( $methods = preg_grep( '/^(.*)_node/', get_class_methods( $this ) ) ) :                    
+        if( $methods = preg_grep( '/^(.*)_node/', get_class_methods( $this ) ) ) :
             foreach( $methods as $method ) :
                 preg_match( '/^(.*)_node/', $method, $matches );
                 if( ! isset( $matches[1] ) || in_array( $matches[1], array( 'term', 'post') ) || in_array( $matches[1], $ids ) ) :
@@ -28,7 +28,7 @@ abstract class Nodes
             endforeach;
         endif;
 
-        array_walk(            
+        array_walk(
             $nodes,
             array( $this, 'parseCustom' ),
             $args

@@ -249,7 +249,7 @@ final class Parse
 
             if ( empty( $orderby ) ) :
                 $orderby = "$this->Db->Name . $this->Db->Primary " . $order;
-            elseif ( ! empty( $q['order'] ) ) :
+            elseif ( ! empty( $order ) ) :
                 $orderby .= " {$order}";
             endif;
         endif;

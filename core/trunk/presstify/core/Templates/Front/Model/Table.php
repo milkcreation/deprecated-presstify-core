@@ -248,8 +248,8 @@ abstract class Table
     
     /** == Récupération des éléments == **/
     public function prepare_items() 
-    {                            
-        // Récupération des items
+    {
+        //var_dump( $this->parse_query_args() ); exit;
         $query = $this->db()->query( $this->parse_query_args() );
         $this->items = $query->items;
         
@@ -326,7 +326,7 @@ abstract class Table
             endif;
         endforeach;
 
-        return wp_parse_args( $this->QueryArgs, $query_args );
+        return $this->QueryArgs = wp_parse_args( $this->QueryArgs, $query_args );
     }
     
     /** == Traitement de l'argument de requête de recherche == **/
