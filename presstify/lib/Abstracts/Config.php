@@ -1,37 +1,38 @@
 <?php 
-namespace tiFy\Environment;
+namespace tiFy\Abstracts;
 
 abstract class Config
 {
     /**
      * Récupération de la surchage de configuration
+     * @param array $attrs Attributs de configuration initiaux
      * 
-     * @param array $original_conf
      * @return array|mixed
      */   
-    final public function get( $original_conf = array() )
+    final public function filter( $attrs = array() )
     {
         // Traitement global des attributs de configuration
-        $config = (array) call_user_func( array( $this, 'defaults' ), $original_conf );
+        $attrs = (array) call_user_func( array( $this, 'sets' ), $attrs );
         
         // Traitement par propriété des attributs de configuration
         if( $matches = preg_grep( '/^set_(.*)/', get_class_methods( $this ) ) ) :
             foreach( $matches as $method ) :
                 $key = preg_replace( '/^set_/', '', $method );
-                $config[$key] = call_user_func( array( $this, $method ) );
+                $default = isset( $attrs[$key] ) ? $attrs[$key] : '';
+                $attrs[$key] = call_user_func( array( $this, $method ), $default );
             endforeach;
         endif;
 
-        return $config;
+        return $attrs;
     }
     
     /**
      * Traitement global des attributs de configuration
-     * 
      * @param array $attrs
+     * 
      * @return array|mixed
      */
-    public function defaults( $attrs = array() )
+    public function sets( $attrs = array() )
     {
         return $attrs;
     }

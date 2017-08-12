@@ -1,11 +1,15 @@
 # Tâches Planifiées
 
-## Créer une tâche
+## Configuration générale
 
-METHODE 1
+### METHODE 1 | Intégrateur - priorité basse
+
+Configuration "semi-dynamique" YAML 
+Créer un fichier de configuration yml dans votre dossier de configuration.
+/config/core/Cron.yml
 
 ```yml
-[task_id]:
+%task_id%:
   # Identifiant unique d'accorche de la tâche planifiée (optionnel)
   # default : tiFyCoreCron--[task_id]
   hook:         ''
@@ -41,19 +45,114 @@ METHODE 1
     rotate:     10
 ```
 
-METHODE 2
+### METHODE 2 | Intégrateur/Développeur - priorité moyenne
+
+Configuration "dynamique" PHP 
+Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Core\Cron\Cron;
+use tiFy\Core\Params;
+
+add_action( 'tify_params_set', 'my_tify_params_set' );
+function my_tify_params_set()
+{
+    return Params::set(
+        'core', 
+        'Cron',
+        array(
+            '%task_id%'        => array(
+                // Identifiant unique d'accorche de la tâche planifiée
+                'hook'          => '',
+                // Intitulé de la tâche planifiée
+                'title'         => '',
+                // Description de la tâche planifiée
+                'desc'          => '',
+                // Date d'exécution de la tâche planifiée
+                'timestamp'     => '',
+                // Fréquence d'exécution de la tâche planifiée
+                'recurrence'    => 'daily',
+                // Arguments passés dans la tâche planifiée
+                'args'          => array(),
+                // Chemins de classe de surcharge
+                'path'          => array(),
+                // Attributs de journalisation des données
+                'log'           => true
+            )
+        ), 
+        true
+    );
+}
+?>
+```
+
+### METHODE 3 | Développeur avancé - priorité haute
+
+Surcharge de configuration "dynamique" PHP
+Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
+/app/Core/Cron/Config.php
+
+```php
+<?php
+namespace MyNamespace\App\Core\Cron
+
+class Config extends \tiFy\Abstracts\Config
+{
+    public function set_%task_id%( $attrs = array() )
+    {
+        // Identifiant unique d'accorche de la tâche planifiée
+        $attrs['hook'] = '',
+        // Intitulé de la tâche planifiée
+        $attrs['title'] = '',
+        // Description de la tâche planifiée
+        $attrs['desc'] = '',
+        // Date d'exécution de la tâche planifiée
+        $attrs['timestamp'] = '',
+        // Fréquence d'exécution de la tâche planifiée
+        $attrs['recurrence'] = 'daily',
+        // Arguments passés dans la tâche planifiée
+        $attrs['args'] = array(),
+        // Chemins de classe de surcharge
+        $attrs['path'] = array(),
+        // Attributs de journalisation des données
+        $attrs['log'] = true
+        
+        return $attrs;
+    }
+}
+?>
+```
+
+## Déclaration ponctuelle de tâches planifiées
+
+Dans une fonction ou un objet
+
+```php
+<?php
+use tiFy\Core\Cron;
 
 add_action( 'tify_cron_register', 'my_tify_cron_register' );
 function my_tify_cron_register()
 {
     return Cron::register(
-        [task_id],
+        '%task_id%', 
         array(
-            
+            // Identifiant unique d'accorche de la tâche planifiée
+            'hook'          => '',
+            // Intitulé de la tâche planifiée
+            'title'         => '',
+            // Description de la tâche planifiée
+            'desc'          => '',
+            // Date d'exécution de la tâche planifiée
+            'timestamp'     => '',
+            // Fréquence d'exécution de la tâche planifiée
+            'recurrence'    => 'daily',
+            // Arguments passés dans la tâche planifiée
+            'args'          => array(),
+            // Chemins de classe de surcharge
+            'path'          => array(),
+            // Attributs de journalisation des données
+            'log'           => true
         )
     );
 }
@@ -62,14 +161,18 @@ function my_tify_cron_register()
 
 ## Test de la tâche en mode console
 
-MONITORING - Ouvrir le fichier de log depuis une console
+### MONITORING
+
+Ouvrir le fichier de log depuis une console
 
 ```bash
-$ tail -f /wp-content/uploads/tFyLogs/[task_id]-%Y-%m-%d.log
+$ tail -f /wp-content/uploads/tFyLogs/%task_id%-%Y-%m-%d.log
 ```
 
-EXECUTION - Lancer l'exécution de la tâche depuis une autre console 
+### EXECUTION 
+
+Lancer l'exécution de la tâche depuis une autre console
  
 ```bash
-$ curl https://port01.tigreblanc.fr/sedea-pro.fr/wp-cron.php?tFy_doing_cron=[task_id]
+$ curl https://port01.tigreblanc.fr/sedea-pro.fr/wp-cron.php?tFy_doing_cron=%task_id%
 ```

@@ -7,7 +7,7 @@
  * @desc Configuration de l'interface d'administration de Wordpress
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.170726
+ * @version 1.2.369
  */
 namespace tiFy\Components\AdminUI; 
 
@@ -15,6 +15,7 @@ class AdminUI extends \tiFy\Environment\Component
 {
     /**
      * Liste des actions à déclencher
+     * @var callable[]
      */
     protected $CallActions                  = array(
         'init',
@@ -28,6 +29,7 @@ class AdminUI extends \tiFy\Environment\Component
 
     /**
      * Ordre de priorité d'exécution des actions
+     * @var mixed[]
      */
     protected $CallActionsPriorityMap       = array(
         'init'                  => 99,
@@ -101,7 +103,7 @@ class AdminUI extends \tiFy\Environment\Component
     final public function admin_menu()
     {
          $this->remove_menu();
-         $this->remove_dashboard_meta_box();         
+         $this->remove_dashboard_meta_box();
     }
 
     /**
@@ -114,6 +116,7 @@ class AdminUI extends \tiFy\Environment\Component
 
     /**
      * Initialisation de la barre d'administration
+     * @param object $wp_admin_bar
      */
     final public function admin_bar_menu( $wp_admin_bar )
     {
@@ -134,6 +137,9 @@ class AdminUI extends \tiFy\Environment\Component
 
     /**
      * Personnalisation du pied de page de l'interface d'administration
+     * @param string $text
+     * 
+     * @return string
      */
     final public function admin_footer_text( $text = '' )
     {
@@ -287,7 +293,7 @@ class AdminUI extends \tiFy\Environment\Component
                 endif;
                 
                 // Hack Wordpress : Maintient du support de la modification du permalien
-                if( $_metabox === 'slugdiv' ) :                    
+                if( $_metabox === 'slugdiv' ) :
                     add_action( 'edit_form_before_permalink', function( $post ) use ( $post_type ) {
                         if( $post->post_type !== $post_type )
                             return;
@@ -307,7 +313,7 @@ class AdminUI extends \tiFy\Environment\Component
         global $wp_admin_bar;
         
         foreach( (array) self::getConfig( 'remove_admin_bar_menu' ) as $admin_bar_node ) :
-                $wp_admin_bar->remove_node( $admin_bar_node );
+            $wp_admin_bar->remove_node( $admin_bar_node );
         endforeach;
     }
 
@@ -327,12 +333,13 @@ class AdminUI extends \tiFy\Environment\Component
      */
     final public function disable_post_remove_menu()
     {
-        remove_menu_page( 'edit.php' );  
+        remove_menu_page( 'edit.php' );
     }
     
     /**
      * Désactivation de la metaboxe de menu
      * @param string $post_type
+     * 
      * @return boolean|string
      */
     final public function disable_post_nav_menu_meta_box_object( $post_type )
@@ -394,7 +401,7 @@ class AdminUI extends \tiFy\Environment\Component
         $wp_admin_bar->remove_node( 'comments' );
         
         if( is_multisite() ) :
-               foreach( get_sites() as $site ) :
+            foreach( get_sites() as $site ) :
                 $wp_admin_bar->remove_menu( 'blog-'. $site->blog_id .'-c' );
             endforeach;
         endif;
@@ -437,6 +444,7 @@ class AdminUI extends \tiFy\Environment\Component
     final public function unregister_taxonomy_for_object_type()
     {
         global $wp_taxonomies;
+        
         foreach( array_keys( self::getConfig() ) as $config ) :
             if( ! preg_match( '/^unregister_taxonomy_for_(.*)/', $config, $post_type ) )
                 continue;
@@ -444,9 +452,9 @@ class AdminUI extends \tiFy\Environment\Component
                 continue;
             if( ! $taxonomies = self::getConfig( 'unregister_taxonomy_for_'. $post_type[1] ) )
                 continue;
-            foreach( $taxonomies as $taxonomy )
-                unregister_taxonomy_for_object_type( $taxonomy, $post_type[1] );            
-                
+            foreach( $taxonomies as $taxonomy ) :
+                unregister_taxonomy_for_object_type( $taxonomy, $post_type[1] );
+            endforeach;
         endforeach;
     }
 }

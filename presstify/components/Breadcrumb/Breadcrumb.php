@@ -2,12 +2,12 @@
 /**
  * @name Breadcrumb
  * @package PresstiFy
- * @category Components
+ * @subpackage Components
  * @namespace tiFy\Components\Breadcrumb
- * @desc Affichage de fil d'Ariane
+ * @desc Affichage de fil d'Ariane des contenus Wordpress
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.170726
+ * @version 1.2.369
  */
 namespace tiFy\Components\Breadcrumb;
 
@@ -32,6 +32,8 @@ class Breadcrumb extends \tiFy\Environment\Component
      */
     /**
      * Initialisation globale
+     * 
+     * @return void
      */
     final public function init()
     {

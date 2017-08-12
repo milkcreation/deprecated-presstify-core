@@ -14,7 +14,7 @@ class Front extends \tiFy\Environment\Core
     public function __construct()
     {
         parent::__construct();
-        
+
         // Définition de la route courante
         $matches = preg_split( '/\?.*/', $_SERVER['REQUEST_URI'], 2 );
         self::$Route = current( $matches );

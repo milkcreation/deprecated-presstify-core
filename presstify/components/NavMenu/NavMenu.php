@@ -47,13 +47,26 @@ class NavMenu extends \tiFy\Environment\Component
             $path[] = $attrs['walker'];
         endif;           
         $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\". self::sanitizeControllerName( $id ) ."\\Walker";
-        $path[] = "\\". self::getOverrideNamespace() ."\\Components\\NavMenu\\Walker";
+        foreach( self::getOverrideNamespaceList() as $namespace ) :
+            $path[] = $namespace ."\\Components\\NavMenu\\Walker";
+        endforeach;
+        self::$Walkers[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Walker", $path );
         
-        return self::$Walkers[$id] = self::loadOverride( "\\tiFy\\Components\\NavMenu\\Walker", $path );  
+        if( isset( $attrs['nodes'] ) ) :
+            foreach($attrs['nodes'] as $node_id => $node_attrs) :
+                self::addNode($id, $node_attrs);
+            endforeach;
+        endif;
+        
+        return self::$Walkers[$id];
     }
-    
+
     /**
      * Ajout d'une entrée de menu
+     * @param string $id
+     * @param mixed $attrs
+     * 
+     * @return void
      */
     final public static function addNode( $id, $attrs )
     {
@@ -66,12 +79,15 @@ class NavMenu extends \tiFy\Environment\Component
             
         array_push( self::$Nodes[$id], $attrs );
     }
-    
+
     /**
      * Affichage d'un menu
+     * @param array $args
+     * @param string $echo
+     * @return void|mixed
      */
-    final public static function display( $args, $echo = true )
-    {       
+    final public static function display( $args = array(), $echo = true )
+    {
         $defaults = array(
             // Identifiant du menu
             'id'                => current( array_keys( self::$Walkers ) ),
