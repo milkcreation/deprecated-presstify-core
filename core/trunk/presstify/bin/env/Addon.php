@@ -1,4 +1,7 @@
 <?php
+/**
+ * @deprecated
+ */
 namespace tiFy\Environment;
 
 abstract class Addon extends \tiFy\Environment\App

@@ -1,8 +1,8 @@
 <?php
-namespace tiFy\Core;
+namespace tiFy;
 
 use tiFy\tiFy;
-use \Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Yaml;
 
 class Params extends \tiFy\Environment\App
 {
@@ -53,7 +53,7 @@ class Params extends \tiFy\Environment\App
         );
 
         // Récupération du paramétrage natif
-        $_dir = @ opendir( tiFy::$AbsDir ."/config" );
+        $_dir = @ opendir( tiFy::$AbsDir . "/bin/config" );
         if( $_dir ) :
             while ( ( $file = readdir( $_dir ) ) !== false ) :
                 if ( substr( $file, 0, 1 ) == '.' ) :
@@ -70,7 +70,7 @@ class Params extends \tiFy\Environment\App
                     ${$basename} = array();        
                 endif;
                 
-                ${$basename} = self::_parseFilename( tiFy::$AbsDir ."/config/{$file}", ${$basename}, 'yml', $attr );
+                ${$basename} = self::_parseFilename( tiFy::$AbsDir ."/bin/config/{$file}", ${$basename}, 'yml', $attr );
                 
             endwhile;
             closedir( $_dir );
@@ -128,7 +128,7 @@ class Params extends \tiFy\Environment\App
         endif;
         
         // Chargement des traductions
-        do_action( 'tify_load_textdomain' );
+        do_action('tify_load_textdomain');
         
         // Récupération du paramétrage personnalisé
         $_dir = @ opendir( TIFY_CONFIG_DIR );
@@ -153,28 +153,13 @@ class Params extends \tiFy\Environment\App
             endwhile;
             closedir( $_dir );
         endif;        
-        tiFy::$Params += compact( 'components', 'core', 'plugins', 'schema', 'set' );
-                
-        // Chargement des plugins
-        tiFy::classLoad( '\tiFy\Plugins', TIFY_PLUGINS_DIR );
-        if( ! empty( tiFy::$Params['plugins'] ) ) :
-            foreach( (array) array_keys( tiFy::$Params['plugins'] ) as $plugin ) :
-                if( ! class_exists( "\\tiFy\\Plugins\\{$plugin}\\{$plugin}" ) ) 
-                    continue;
-
-                $ClassName = "\\tiFy\\Plugins\\{$plugin}\\{$plugin}";
-                new $ClassName;
-            endforeach;
-        endif;
-        
-        // Chargement des jeux de fonctionnalités complémentaires
-        tiFy::classLoad( '\tiFy\Set', tiFy::$AbsDir .'/set', 'Autoload' );
+        tiFy::$Params += compact('components', 'core', 'plugins', 'schema', 'set');
         
         // Personnalisation de la définition des paramètres 
-        do_action( 'tify_params_set' );
-        
+        do_action('tify_params_set');
+
         // Déclenchement des actions post-paramétrage
-        do_action( 'after_setup_tify' );
+        do_action('after_setup_tify');
     }
   
     /**
@@ -267,7 +252,7 @@ class Params extends \tiFy\Environment\App
             if( $merge ) :
                 tiFy::$Params[$type][$params] = wp_parse_args( $value, tiFy::$Params[$type][$params] );
             else :
-               tiFy::$Params[$type][$params] = $value;
+                tiFy::$Params[$type][$params] = $value;
             endif;
         endif;
     }

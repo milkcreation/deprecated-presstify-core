@@ -54,7 +54,7 @@ class StdClass
         $path = array();
         foreach((array) self::getOverrideNamespaceList() as $namespace) :
             $namespace = ltrim( $namespace, '\\' );
-            $path[] = "\\". $namespace ."\\". preg_replace( "/^tiFy\\\/", "", ltrim( $classname, '\\' ));
+            $path[] = $namespace ."\\". preg_replace( "/^tiFy\\\/", "", ltrim( $classname, '\\' ));
         endforeach;
         
         return $path;

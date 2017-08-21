@@ -67,9 +67,16 @@ class Attrs
     public function __construct($classname)
     {
         $reflection = new \ReflectionClass($classname);
+        $classname = $reflection->getName();
         $namespace = $reflection->getNamespaceName();
-        $shortname = $reflection->getShortName();
-        $type = (preg_match("/^\\\?tiFy\\\(Components|Core|Plugins|Set)\\\?/", $namespace, $matches)) ? strtolower($matches[1]) : null;
+        $shortname = $reflection->getShortName();        
+        
+        if($app = tiFy::getApp($classname)) :
+            $type = $app['type'];
+        else :
+            $type = null;
+        endif;        
+        
         // Chemins
         $filename = $reflection->getFileName();
         $dirname = dirname($filename);

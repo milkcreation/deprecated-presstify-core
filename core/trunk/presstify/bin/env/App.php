@@ -132,7 +132,7 @@ abstract class App
      * 
      * @return null|mixed[]
      */
-    public static function __tFyAppGetAttrs($classname = null)
+    final public static function __tFyAppGetAttrs($classname = null)
     {
         if(!$classname)
             $classname = get_called_class();
@@ -143,11 +143,12 @@ abstract class App
 
     /**
      * Récupération d'un attribut de l'app
+     * @param string $attr ReflectionClass | ClassName | ShortName | Namespace | Type | Filename | Dirname | Url | Rel
      * @param string classname
      * 
      * @return null|mixed
      */
-    public static function __tFyAppGetAttr($attr, $classname = null)
+    final public static function __tFyAppGetAttr($attr, $classname = null)
     {
         if(!$classname)
             $classname = get_called_class();
@@ -163,7 +164,7 @@ abstract class App
      * 
      * @return null|mixed
      */
-    public static function __tFyAppGetDefaultConfig($name = null, $classname = null)
+    final public static function __tFyAppGetDefaultConfig($name = null, $classname = null)
     {
         if(!$classname)
             $classname = get_called_class();
@@ -177,7 +178,7 @@ abstract class App
      * 
      * @return null|mixed
      */
-    public static function __tFyAppGetConfigList($classname = null)
+    final public static function __tFyAppGetConfigList($classname = null)
     {
         if(!$classname)
             $classname = get_called_class();
@@ -194,7 +195,7 @@ abstract class App
      * 
      * @return mixed
      */
-    public static function __tFyAppGetConfig($name, $default = '', $classname = null)
+    final public static function __tFyAppGetConfig($name, $default = '', $classname = null)
     {
         if(!$classname)
             $classname = get_called_class();
@@ -211,7 +212,7 @@ abstract class App
      * 
      * @return void
      */
-    public static function __tFyAppSetConfig($name, $value, $classname = null)
+    final public static function __tFyAppSetConfig($name, $value, $classname = null)
     {
         if(!$classname)
             $classname = get_called_class();

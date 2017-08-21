@@ -6,16 +6,16 @@ class Factory extends \tiFy\Core\Templates\Factory
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                    = array(
+    protected $CallActions                  = array(
         'init',
         'template_redirect',
-        'wp_enqueue_scripts'    
+        'wp_enqueue_scripts'
     );
     
     /**
      * Contexte d'exécution
      */
-    protected static $Context                = 'front';
+    protected static $Context               = 'front';
     
     /**
      * Liste des modèles prédéfinis
@@ -37,7 +37,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         // Bypass
         if( ! $callback = $this->getAttr( 'cb' ) )
             return;
-
+        
         $className = false;
         if( preg_match( '/\\\/', $callback ) ) :
             $className = self::getOverride( $callback );
@@ -47,7 +47,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 
         if( ! $className || ! class_exists( $className ) )
             return;
-                    
+        
         // Définition du modèle de base du template
         $this->setModel( $className );        
         
@@ -95,7 +95,7 @@ class Factory extends \tiFy\Core\Templates\Factory
 
         if( ! preg_match( '/^'. preg_quote( $rewrite_base . ltrim( $this->getAttr( 'route' ), '//' ), '/' ) .'\/?$/', Front::getRoute() ) )
             return;
-
+        
         \tiFy\Core\Templates\Templates::$Current = $this; 
             
         // Déclenchement des actions dans le template           
@@ -112,7 +112,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         else :
             $this->render();
             exit;
-        endif;           
+        endif;
     }
     
     /**

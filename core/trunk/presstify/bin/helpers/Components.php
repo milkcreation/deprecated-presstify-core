@@ -3,10 +3,11 @@ namespace
 {
     /* = GLOBAL = */
     /** == Déclaration dynamique d'un composant == **/
-    function tify_component_register( $component )
+    function tify_component_register($component)
     {
-        add_action( "tify_component_register", function() use ( $component ){
-            return tiFy\Components\Autoload::register( $component );
+        add_action( "tify_component_register", function() use ($component)
+        {
+            return tiFy\Components::register($component);
         });
     }
         

@@ -51,7 +51,7 @@ trait Path
             $CalledClass = get_called_class();
                     
         if( ! isset( self::$_AssetsUrl[$CalledClass] ) ) :
-            self::$_AssetsUrl[$CalledClass] = tiFy::$AbsUrl . '/assets/'. untrailingslashit( File::getRelativeFilename( self::getDirname( $CalledClass ), tiFy::$AbsDir ) );
+            self::$_AssetsUrl[$CalledClass] = tiFy::$AbsUrl . '/bin/assets/'. untrailingslashit( File::getRelativeFilename( self::getDirname( $CalledClass ), tiFy::$AbsDir ) );
         endif;
         
         return self::$_AssetsUrl[$CalledClass];

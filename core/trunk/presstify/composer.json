@@ -27,6 +27,7 @@
         "mpratt/embera": "^1.9",
         "egeloen/google-map": "^1.0",
         "google/apiclient": "^2.2",
-	"dompdf/dompdf": "^0.8.0"
+        "dompdf/dompdf": "^0.8.0",
+        "phpdocumentor/reflection-docblock": "^3.2.2"
     }
 }

@@ -18,6 +18,3 @@ https://gist.github.com/franz-josef-kaiser/5840282
 ## WISTIFY
 http://templates.mailchimp.com/development/
 http://blog.simple-mail.fr/2014/11/07/guide-eviter-etre-considere-spam/
-
-# DIAPORAMA
-http://kenwheeler.github.io/slick/

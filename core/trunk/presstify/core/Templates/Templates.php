@@ -46,8 +46,8 @@ final class Templates extends \tiFy\Environment\Core
      * Initialisation globale
      */
     public function init()
-    {                
-        do_action( 'tify_templates_register' );
+    {
+        do_action('tify_templates_register');
     }
     
     /**
@@ -103,7 +103,7 @@ final class Templates extends \tiFy\Environment\Core
      * @return object $Factory
      */
     public static function register( $id, $attrs = array(), $context )
-    {                   
+    {
         switch( strtolower( $context ) ) :
             case 'admin' :
                 if( ! isset( self::$Factory['admin'][$id] ) )
