@@ -229,7 +229,7 @@ namespace
     /** == Définition dynamique de paramètre == **/
     function tify_params_set( $type, $param, $value, $merge = true )
     {
-        return tiFy\Core\Params::set( $type, $param, $value, $merge );
+        return tiFy\Binary\Params::set( $type, $param, $value, $merge );
     }
     
     // --------------------------------------------------------------------------------------------------------------------------

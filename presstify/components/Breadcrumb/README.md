@@ -31,7 +31,7 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Core\Params;
+use tiFy\Params;
 
 add_action( 'tify_params_set', 'my_tify_params_set' );
 function my_tify_params_set()

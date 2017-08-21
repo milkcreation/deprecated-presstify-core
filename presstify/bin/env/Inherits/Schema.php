@@ -2,7 +2,7 @@
 namespace tiFy\Environment\Inherits;
 
 use \tiFy\tiFy;
-use \tiFy\Core\Params;
+use \tiFy\Binary\Params;
 
 class Schema
 {
@@ -25,7 +25,7 @@ class Schema
                 if( $basename !== 'schema' )
                     continue;
                 
-                $schema += \tiFy\Core\Params::_parseFilename( "{$dirname}/{$file}", array(), 'yml', array( 'eval' => true ) );
+                $schema += \tiFy\Params::_parseFilename( "{$dirname}/{$file}", array(), 'yml', array( 'eval' => true ) );
             endwhile;
             closedir( $_dir );
         endif;

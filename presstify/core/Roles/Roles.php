@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core;
+namespace tiFy\Core\Roles;
 
-class Capabilities extends \tiFy\Environment\App
+class Roles extends \tiFy\Environment\App
 {
 	/* = ARGUMENTS = */
 	// Habilitations

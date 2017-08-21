@@ -3,7 +3,7 @@ namespace tiFy\Environment\Inherits;
 
 use \tiFy\tiFy;
 use \tiFy\Environment\App;
-use \tiFy\Core\Params;
+use \tiFy\Params;
 use \tiFy\Lib\StdClass;
 
 class Config
@@ -30,7 +30,7 @@ class Config
         // Définition de la configuration par défaut
         $filename = $attrs['Dirname'] .'/config/config.yml';
         $this->Defaults = file_exists($filename) ? Params::parseAndEval($filename) : array();
-        
+
         // Traitement de la configuration
         if(!empty(tiFy::$Params[$attrs['Type']][$classname])) :
             $this->Attrs = wp_parse_args(tiFy::$Params[$attrs['Type']][$classname], $this->Defaults); 
@@ -41,7 +41,7 @@ class Config
                 $this->Attrs = $this->Defaults;
             endif;
         endif;
-
+        
         // Surcharge de configuration "Dynamique"
         if(preg_match("/^\\\?tiFy\\\((Components|Core|Plugins|Set)\\\.*)/", $attrs['Namespace'], $matches)) :
             foreach((array) StdClass::getOverrideNamespaceList() as $namespace) :
@@ -59,14 +59,17 @@ class Config
      * Récupération des attributs de configuration par défaut
      * @param null|string $name
      * 
-     * @return null|mixed
+     * @return NULL|mixed
      */
     public function getDefaults($name = null)
     {
-        if(is_null($name))
+        if(is_null($name)) :
             return $this->Defaults;
-        if(isset($this->Defaults[$name]))
+        endif;
+        
+        if(isset($this->Defaults[$name])) :
             return $this->Defaults[$name];
+        endif;
     }
     
     /**

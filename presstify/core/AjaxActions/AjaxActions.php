@@ -1,11 +1,15 @@
 <?php
-namespace tiFy\Core;
+namespace tiFy\Core\AjaxActions;
+
+use tiFy\Environment\App;
 
 class AjaxActions extends \tiFy\Environment\App
 {
 	/* = CONSTRUCTEUR = */
 	public function __construct()
 	{
+	    parent::__construct();
+	    
 		// Actions et Filtres Wordpress
 		/// Récupération d'un permalien de post selon son ID 
 		add_action( 'wp_ajax_tify_get_post_permalink', array( $this, 'getPostPermalink' ) );
