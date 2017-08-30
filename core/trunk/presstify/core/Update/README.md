@@ -29,13 +29,12 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Params;
+use tiFy\Core;
 
-add_action( 'tify_params_set', 'my_tify_params_set' );
-function my_tify_params_set()
+add_action( 'tify_core_register', 'my_tify_core_register' );
+function my_tify_core_register()
 {
-    return Params::set(
-        'core', 
+    return Core::register(
         'Update',
         array(
             '%update_id%'       => array(
@@ -49,8 +48,7 @@ function my_tify_params_set()
                     'screen_id'         => ''
                 )
             )
-        ), 
-        true
+        )
     );
 }
 ?>
@@ -66,7 +64,7 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 <?php
 namespace MyNamespace\App\Core\Update
 
-class Config extends \tiFy\Abstracts\Config
+class Config extends \tiFy\App\Config
 {
     public function set_%update_id%( $attrs = array() )
     {
@@ -129,7 +127,7 @@ class %Update_Id% extends \tiFy\Core\Update\Factory
         if($success) :
             return true;
         else :
-            return new \WP_Error( 'Echec_Code', 'Message de l\'echec' );
+            return new \WP_Error( 'Echec_Code', 'Message d\'échec' );
         endif;
     }
 }

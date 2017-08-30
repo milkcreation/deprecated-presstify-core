@@ -15,7 +15,7 @@ class EditForm extends \tiFy\Core\Templates\Admin\Model\Form
 	{
         parent::_admin_enqueue_scripts();
         
-        wp_enqueue_style( 'tiFyTemplatesAdminEditForm', self::getUrl( get_class() ) .'/EditForm.css', array(), 151211 );
+        wp_enqueue_style( 'tiFyTemplatesAdminEditForm', self::tFyAppUrl( get_class() ) .'/EditForm.css', array(), 151211 );
     }
     
 }

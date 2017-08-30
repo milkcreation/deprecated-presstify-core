@@ -1,15 +1,14 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\FontAwesome;
 
-use tiFy\Environment\App;
 use tiFy\Lib\File;
 
-class FontAwesome extends App
+class FontAwesome extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */	
 	/** == ACTIONS == **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array( 
+	protected $tFyAppActions				= array( 
 		'init',
 		'admin_init',
 		'admin_enqueue_scripts',

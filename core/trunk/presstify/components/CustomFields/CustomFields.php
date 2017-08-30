@@ -9,7 +9,7 @@ final class CustomFields extends Component
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/
 	// Liste des Actions à déclencher
-	protected 		$CallActions		= array(
+	protected 		tFyAppActions		= array(
 		'current_screen'
 	);
 
@@ -23,7 +23,7 @@ final class CustomFields extends Component
 		parent::__construct();
 		
 		foreach( array( 'post_type', 'taxonomy' ) as $env ) :
-			foreach( (array) self::getConfig( $env ) as $type => $custom_fields ) :
+			foreach( (array) self::tFyAppConfig( $env ) as $type => $custom_fields ) :
 				foreach( (array) $custom_fields as $cfk => $cfv ) :
 					if( is_int($cfk) ) :
 						$ClassName 	= $cfv;

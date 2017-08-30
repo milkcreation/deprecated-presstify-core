@@ -27,7 +27,7 @@ class Sidebar extends \tiFy\Environment\Component
     /**
      * Liste des actions à déclencher
      */ 
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'init',
         'wp_loaded',
         'wp_enqueue_scripts',    
@@ -38,7 +38,7 @@ class Sidebar extends \tiFy\Environment\Component
     /**
      * Ordres de priorité d'exécution des actions
      */ 
-    protected $CallActionsArgsMap    = array(
+    protected $tFyAppActionsArgs   = array(
         'body_class' => 2        
     );
     
@@ -75,7 +75,7 @@ class Sidebar extends \tiFy\Environment\Component
         do_action( 'tify_sidebar_register' );        
         
         // Traitement des éléments
-        foreach( (array) self::getConfig( 'nodes' ) as $id => $args ) :
+        foreach( (array) self::tFyAppConfig( 'nodes' ) as $id => $args ) :
             self::register( $id, $args );
         endforeach;
         
@@ -92,7 +92,7 @@ class Sidebar extends \tiFy\Environment\Component
     final public function wp_enqueue_scripts()
     {
         // Bypass
-        if( ! self::getConfig( 'enqueue_scripts' ) )
+        if( ! self::tFyAppConfig( 'enqueue_scripts' ) )
             return;
         
         wp_enqueue_style( 'tiFyComponentsSidebar' );
@@ -110,10 +110,10 @@ class Sidebar extends \tiFy\Environment\Component
         ?>
         <style type="text/css">
             .tiFySidebar{
-                <?php if( $width = self::getConfig( 'width' ) ) :?>
+                <?php if( $width = self::tFyAppConfig( 'width' ) ) :?>
                 width:<?php echo $width ?>;
                 <?php endif;?>
-                <?php if( $zindex = self::getConfig( 'z-index' ) ) :?>
+                <?php if( $zindex = self::tFyAppConfig( 'z-index' ) ) :?>
                 z-index:<?php echo $zindex;?>;
                 <?php endif;?>    
             }
@@ -151,7 +151,7 @@ class Sidebar extends \tiFy\Environment\Component
             }
             
             /* = RESPONSIVE = */
-            @media (min-width: <?php echo ( self::getConfig( 'min-width' ) );?>) {
+            @media (min-width: <?php echo ( self::tFyAppConfig( 'min-width' ) );?>) {
                 body.tiFySidebar-body .tiFySidebar{
                     display:none;
                 }
@@ -196,7 +196,7 @@ class Sidebar extends \tiFy\Environment\Component
             }
                
             /* = ANIMATION = */    
-            <?php if( self::getConfig( 'animated' ) ) :    ?>
+            <?php if( self::tFyAppConfig( 'animated' ) ) :    ?>
             body.tiFySidebar-body--animated .tiFySidebar,
             body.tiFySidebar-body--animated .tiFySidebar-pushed{
                 -webkit-transition:     -webkit-transform   300ms cubic-bezier(0.7,0,0.3,1);
@@ -217,17 +217,17 @@ class Sidebar extends \tiFy\Environment\Component
     {
         $classes[] = 'tiFySidebar-body';
         
-        switch( self::getConfig( 'initial' ) ) :
+        switch( self::tFyAppConfig( 'initial' ) ) :
             default:
             case 'closed' :
-                    $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Closed' ;
+                    $classes[] = 'tiFySidebar-body--'. self::tFyAppConfig( 'pos' ).'Closed' ;
                 break;
             case 'opened' :
-                    $classes[] = 'tiFySidebar-body--'. self::getConfig( 'pos' ).'Opened' ;
+                    $classes[] = 'tiFySidebar-body--'. self::tFyAppConfig( 'pos' ).'Opened' ;
                  break;
         endswitch;
         
-        if( self::getConfig( 'animated' ) ) :            
+        if( self::tFyAppConfig( 'animated' ) ) :            
             $classes[] = 'tiFySidebar-body--animated';
         endif;
         
@@ -273,16 +273,16 @@ class Sidebar extends \tiFy\Environment\Component
         $items = $Nodes->customs( self::$Nodes );
 
         $output  = "";
-        $output .= "<div class=\"tiFySidebar tiFySidebar--". self::getConfig( 'pos' ) ."\" data-pos=\"". self::getConfig( 'pos' ) ."\">";
+        $output .= "<div class=\"tiFySidebar tiFySidebar--". self::tFyAppConfig( 'pos' ) ."\" data-pos=\"". self::tFyAppConfig( 'pos' ) ."\">";
                 
         // BOUTON DE BASCULE
-        if( self::getConfig( 'toggle' ) ) :
+        if( self::tFyAppConfig( 'toggle' ) ) :
             $buttonAttrs = array(
-                'pos'    => self::getConfig( 'pos' ),
-                'class'    => 'tiFySidebar-toggleButton tiFySidebar-toggleButton--'. self::getConfig( 'pos' )
+                'pos'    => self::tFyAppConfig( 'pos' ),
+                'class'    => 'tiFySidebar-toggleButton tiFySidebar-toggleButton--'. self::tFyAppConfig( 'pos' )
             );
-            if( is_string( self::getConfig( 'toggle' ) ) ) :
-                $buttonAttrs['text'] = self::getConfig( 'toggle' );
+            if( is_string( self::tFyAppConfig( 'toggle' ) ) ) :
+                $buttonAttrs['text'] = self::tFyAppConfig( 'toggle' );
             endif;
                         
             $output .= self::displayToggleButton( $buttonAttrs, false );
@@ -309,7 +309,7 @@ class Sidebar extends \tiFy\Environment\Component
     public static function displayToggleButton( $args = array(), $echo = true )
     {
         $defaults = array(
-            'pos'       => self::getConfig( 'pos' ),
+            'pos'       => self::tFyAppConfig( 'pos' ),
             'text'      => '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 75 75" xml:space="preserve" fill="#000" ><g><rect width="75" height="10" x="0" y="0" ry="0"/><rect width="75" height="10" x="0" y="22" ry="0"/><rect width="75" height="10" x="0" y="44" ry="0"/></g></svg>',
             'class'     => ''
         );        

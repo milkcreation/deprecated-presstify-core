@@ -12,11 +12,11 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array( 
+	protected $tFyAppActions				= array( 
 		'wp_loaded'
 	);
 	// Ordres de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array(
+	protected $tFyAppActionsPriority	= array(
 		'wp_loaded' => 11	
 	);
 	

@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\Table;
 
-use tiFy\Environment\App;
-
-class Table extends App
+class Table extends \tiFy\App\Factory
 {
 	/* = CONSTRUCTEUR = */
 	public function __construct()

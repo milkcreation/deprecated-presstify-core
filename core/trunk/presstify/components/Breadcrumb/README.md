@@ -11,16 +11,9 @@ Créer un fichier de configuration yml dans votre dossier de configuration.
 /config/components/Breadcrumb.yml
 
 ```yml
-# Id HTML du conteneur
 id:           ''
-
-# Classe HTML du conteneur
 class:        ''
-
-# Contenu HTML affiché avant le fil d'Ariane 
 before:       ''
-
-# Contenu HTML affiché après le fil d'Ariane
 after:        ''
 ```
 
@@ -31,21 +24,19 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Params;
+use tiFy\Components;
 
-add_action( 'tify_params_set', 'my_tify_params_set' );
-function my_tify_params_set()
+add_action('tify_components_register', 'my_tify_components_register');
+function my_tify_components_register()
 {
-    return Params::set(
-        'components', 
+    return Components::register( 
         'Breadcrumb',
         array(
             'id'        => '',
             'class'     => '',
             'before'    => '',
             'after'     => ''
-        ), 
-        true
+        )
     );
 }
 ?>
@@ -61,7 +52,7 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 <?php
 namespace MyNamespace\App\Components\Breadcrumb
 
-class Config extends \tiFy\Abstracts\Config
+class Config extends \tiFy\App\Config
 {
     public function sets( $attrs )
     {
@@ -69,7 +60,6 @@ class Config extends \tiFy\Abstracts\Config
         $attrs['class'] = '';
         $attrs['before'] = '';
         $attrs['after'] = '';
-        
         return $attrs;
     }
 }

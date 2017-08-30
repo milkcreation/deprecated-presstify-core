@@ -29,8 +29,8 @@ class Calendar extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        wp_register_style( 'tify_control-calendar', self::getUrl( get_class() ) .'/Calendar.css', array( 'spinkit-pulse' ), 170519 );
-        wp_register_script( 'tify_control-calendar', self::getUrl( get_class() ) .'/Calendar.js', array( 'jquery' ), 170519, true );
+        wp_register_style( 'tify_control-calendar', self::tFyAppUrl( get_class() ) .'/Calendar.css', array( 'spinkit-pulse' ), 170519 );
+        wp_register_script( 'tify_control-calendar', self::tFyAppUrl( get_class() ) .'/Calendar.js', array( 'jquery' ), 170519, true );
    
         // Actions ajax
         add_action( 'wp_ajax_tiFyControlCalendar', array( $this, 'wp_ajax' ) );

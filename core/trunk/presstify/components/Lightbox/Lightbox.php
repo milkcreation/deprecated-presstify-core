@@ -6,7 +6,7 @@ final class Lightbox extends \tiFy\Environment\Component
     /**
      * Liste des Actions à déclencher
      */ 
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'init',
         'wp_enqueue_scripts'
     );
@@ -29,7 +29,7 @@ final class Lightbox extends \tiFy\Environment\Component
     public function wp_enqueue_scripts()
     {
         $args = wp_parse_args(
-            self::getConfig(),
+            self::tFyAppConfig(),
             array(
                 'theme'                 => 'dark',
                 'overlay'               => true,    // Couleur de fond

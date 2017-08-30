@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\HookArchive;
 
-use \tiFy\Environment\App;
-
-class Factory extends App
+class Factory extends \tiFy\App\Factory
 {    
     /* = ARGUMENTS = */
     /** == ACTIONS == **/

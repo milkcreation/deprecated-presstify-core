@@ -6,7 +6,7 @@ class ArchiveFilters extends \tiFy\Environment\Component
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'wp_loaded',
         'wp_enqueue_scripts'
     );     
@@ -52,7 +52,7 @@ class ArchiveFilters extends \tiFy\Environment\Component
         parent::__construct();
         
         // Traitement de la configuration
-        foreach( (array) self::getConfig() as $obj => $attrs ) :
+        foreach( (array) self::tFyAppConfig() as $obj => $attrs ) :
             foreach( (array) $attrs as $obj_type => $args ) :
                 self::Register( $obj_type, $obj, $args );
             endforeach;

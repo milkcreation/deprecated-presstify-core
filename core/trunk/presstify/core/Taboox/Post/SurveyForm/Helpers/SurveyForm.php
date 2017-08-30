@@ -6,7 +6,7 @@ class SurveyForm extends \tiFy\Core\Taboox\Helpers
 	/* = ARGUMENTS = */
 	/** @see https://codex.wordpress.org/Plugin_API/Action_Reference **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'wp'
 	);
 	

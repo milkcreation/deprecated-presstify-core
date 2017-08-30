@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox;
 
-use tiFy\Environment\App;
-
-class Screen extends App
+class Screen extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// ID de l'écran courant

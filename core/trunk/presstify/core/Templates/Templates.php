@@ -6,14 +6,14 @@ final class Templates extends \tiFy\Environment\Core
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions              = array(
+    protected $tFyAppActions              = array(
         'init'    
     );
     
     /**
      * Ordres de priorité d'exécution des actions
      */
-    protected $CallActionsPriorityMap   = array(
+    protected $tFyAppActionsPriority   = array(
         'init'                              => 9
     );
     

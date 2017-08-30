@@ -29,9 +29,7 @@ function tify_mailer_test(){
  
 namespace tiFy\Lib\Mailer;
 
-use tiFy\Environment\App;
-	
-class Mailer extends App
+class Mailer extends \tiFy\App\Factory
 {
 	private	// Configuration
 			$not_rn			= "hotmail|live|msn",	// Serveur qui ne nécéssite pas un saut de ligne de type \r\n

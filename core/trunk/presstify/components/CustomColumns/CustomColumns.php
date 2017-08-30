@@ -9,7 +9,7 @@ class CustomColumns extends \tiFy\Environment\Component
      * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected         $CallActions        = array(
+    protected $tFyAppActions        = array(
         'admin_init',
         'current_screen'
     );
@@ -18,7 +18,7 @@ class CustomColumns extends \tiFy\Environment\Component
      * Ordre de priorité d'exécution des actions
      * @var mixed
      */
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'admin_init'    => 99
     );
 
@@ -34,7 +34,7 @@ class CustomColumns extends \tiFy\Environment\Component
     {
         // Récupération des colonnes personnalisées déclarées dans les fichiers de configuration
         foreach( array( 'post_type', 'taxonomy' ) as $env ) :
-            foreach( (array) self::getConfig( $env ) as $type => $custom_columns ) :
+            foreach( (array) self::tFyAppConfig( $env ) as $type => $custom_columns ) :
                 foreach( (array) $custom_columns as $cb => $args ) :
                     self::Register( $cb, $args, $env, $type );
                 endforeach;

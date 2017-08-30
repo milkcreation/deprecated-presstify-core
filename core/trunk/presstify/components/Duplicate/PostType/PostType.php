@@ -4,11 +4,11 @@ namespace tiFy\Components\Duplicate\PostType;
 use tiFy\Components\Duplicate\Duplicate;
 use tiFy\tiFy;
 
-final class PostType extends \tiFy\Environment\App
+final class PostType extends \tiFy\App\Factory
 {
     /* = ARGUMENTS = */
     // ACTIONS
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'post_action_tiFyDuplicatePost',
         'admin_notices'
     );

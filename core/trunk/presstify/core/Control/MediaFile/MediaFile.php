@@ -10,8 +10,8 @@ class MediaFile extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-media_file', self::getUrl() ."/MediaFile.css", array( 'dashicons' ), '160621' );
-		wp_register_script( 'tify_control-media_file', self::getUrl() ."/MediaFile.js", array( 'jquery' ), '160621', true );
+		wp_register_style( 'tify_control-media_file', self::tFyAppUrl() ."/MediaFile.css", array( 'dashicons' ), '160621' );
+		wp_register_script( 'tify_control-media_file', self::tFyAppUrl() ."/MediaFile.js", array( 'jquery' ), '160621', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

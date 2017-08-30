@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Lib\Video;
 
-class Inline extends \tiFy\Environment\App
+class Inline extends \tiFy\App\Factory
 {
     /**
      * ATTRIBUTS
@@ -108,7 +108,7 @@ class Inline extends \tiFy\Environment\App
 		
 		// Chargement des scripts
 		if( ! self::$Instance++ ) :
-			$url = self::getUrl( get_class() ). '/Inline.js';
+			$url = self::tFyAppUrl( get_class() ). '/Inline.js';
 			add_action( 
 				'wp_footer', 
 				function() use ($url){

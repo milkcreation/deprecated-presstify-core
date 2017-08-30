@@ -13,8 +13,8 @@ class Checkbox extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-checkbox', self::getUrl() .'/Checkbox.css', array( 'dashicons' ), '150420' );
-		wp_register_script( 'tify_control-checkbox', self::getUrl() .'/Checkbox.js', array( 'jquery' ), '150420', true );
+		wp_register_style( 'tify_control-checkbox', self::tFyAppUrl() .'/Checkbox.css', array( 'dashicons' ), '150420' );
+		wp_register_script( 'tify_control-checkbox', self::tFyAppUrl() .'/Checkbox.js', array( 'jquery' ), '150420', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

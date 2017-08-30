@@ -50,7 +50,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
 {
     /* = ARGUMENTS = */
     // Liste des actions à déclencher
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'admin_init',
         'tify_templates_register',
         'tify_db_register',    

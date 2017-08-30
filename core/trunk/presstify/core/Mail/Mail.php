@@ -7,7 +7,7 @@ class Mail extends \tiFy\Environment\Core
 {
     /* = ARGUMENTS = */    
         // Liste des actions à déclencher
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'password_change_email',
         'email_change_email',
         'retrieve_password_title',
@@ -15,17 +15,17 @@ class Mail extends \tiFy\Environment\Core
     ); 
     
     // Cartographie des méthodes de rappel des actions
-    protected $CallActionsFunctionsMap    = array();
+    protected $tFyAppActionsMethods    = array();
         
     // Ordres de priorité d'exécution des actions
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'password_change_email'     => 99,
         'email_change_email'        => 99,
         'retrieve_password_title'   => 99
     );
     
     // Nombre d'arguments autorisés
-    protected $CallActionsArgsMap        = array(
+    protected $tFyAppActionsArgs       = array(
         'password_change_email'     => 3,
         'email_change_email'        => 3,
         'retrieve_password_title'   => 3,
@@ -50,17 +50,17 @@ class Mail extends \tiFy\Environment\Core
         parent::__construct();
 
          // Définition des paramètres généraux
-        foreach( (array) self::getConfig( 'global' ) as $param => $value ) :
+        foreach( (array) self::tFyAppConfig( 'global' ) as $param => $value ) :
             self::$GlobalParams[$param] = $value;
         endforeach;        
         
         // Déclaration des emails natif de wordpress
-        foreach( (array) self::getConfig( 'wp' ) as $id => $attrs ) :
+        foreach( (array) self::tFyAppConfig( 'wp' ) as $id => $attrs ) :
             self::$WpMail[self::sanitizeName( $id )] = $attrs;
         endforeach;
         
         // Déclaration des emails personnalisés
-        foreach( (array) self::getConfig( 'custom' ) as $id => $attrs ) :
+        foreach( (array) self::tFyAppConfig( 'custom' ) as $id => $attrs ) :
             self::register( $id, $attrs );
         endforeach;
      

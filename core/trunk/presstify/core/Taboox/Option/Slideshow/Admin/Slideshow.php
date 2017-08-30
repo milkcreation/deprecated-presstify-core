@@ -79,8 +79,8 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
         wp_register_script( 'jQuery-tinyMCE', '//cdn.tinymce.com/4/jquery.tinymce.min.js', array( 'jquery', 'tinyMCE-editor' ), true );
         
         wp_enqueue_media();
-        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::getUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-switch', 'tify_control-suggest', 'tify_control-touch_time' ), '160222' );
-        wp_enqueue_script( 'tiFyTabooxOptionSlideshowAdmin',self::getUrl( get_class() ) .'/Slideshow.js', array( 'jQuery-tinyMCE', 'tify_control-suggest', 'tify_control-touch_time', 'jquery-ui-sortable' ), '160222', true );
+        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::tFyAppUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-switch', 'tify_control-suggest', 'tify_control-touch_time' ), '160222' );
+        wp_enqueue_script( 'tiFyTabooxOptionSlideshowAdmin',self::tFyAppUrl( get_class() ) .'/Slideshow.js', array( 'jQuery-tinyMCE', 'tify_control-suggest', 'tify_control-touch_time', 'jquery-ui-sortable' ), '160222', true );
         wp_localize_script( 
             'tiFyTabooxOptionSlideshowAdmin', 
             'tiFyTabooxOptionSlideshowAdmin',

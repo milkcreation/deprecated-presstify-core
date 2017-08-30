@@ -32,7 +32,7 @@ class TinyMCE extends Component
 		parent::__construct();
 		
 		// Récupération de la configuration des plugins externe
-		if( $external_plugins = self::getConfig( 'external_plugins' ) ) :
+		if( $external_plugins = self::tFyAppConfig( 'external_plugins' ) ) :
 			self::$ExternalPluginsConfig = $external_plugins;
         endif;
         
@@ -53,7 +53,7 @@ class TinyMCE extends Component
 	final public function tiny_mce_before_init( $mceInit )
 	{
 		// Traitement de la configuration personnalisée
-		if( $init = self::getConfig( 'init' ) ) :
+		if( $init = self::tFyAppConfig( 'init' ) ) :
 			foreach( (array) $init as $key => $value ) :
 				switch( $key ) :
 					default			:
@@ -129,11 +129,11 @@ class TinyMCE extends Component
 		if( ! empty( self::$ExternalPluginsActive ) )
 			return self::$ExternalPluginsActive;
 		
-		if( ! self::getConfig( 'external_plugins' ) )
+		if( ! self::tFyAppConfig( 'external_plugins' ) )
 			return array();
 	
 		$plugins = array();
-		foreach( (array) self::getConfig( 'external_plugins' ) as $k => $v ) :
+		foreach( (array) self::tFyAppConfig( 'external_plugins' ) as $k => $v ) :
 			$name = false;
 			if( is_string( $k ) )
 				$name = $k;

@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Admin;
 
-use tiFy\Environment\App;
+use tiFy\App\Factory;
 use tiFy\tiFy;
 
 class Plugins extends App

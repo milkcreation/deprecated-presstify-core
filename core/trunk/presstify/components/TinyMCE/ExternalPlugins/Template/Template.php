@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\Template;
 
-use tiFy\Environment\App;
-
-class Template extends App
+class Template extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */	
 

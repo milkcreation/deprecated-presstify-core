@@ -47,7 +47,7 @@ class Modal extends \tiFy\Lib\Modal\Modal
 	public static function display( $args = array(), $echo = true )
 	{
 		if( ! self::$Instance ) :
-			$url = self::getUrl( get_class() ). '/Modal.js';
+			$url = self::tFyAppUrl( get_class() ). '/Modal.js';
 			add_action( 
 				'wp_footer', 
 				function() use ($url){

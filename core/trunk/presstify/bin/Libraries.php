@@ -3,7 +3,7 @@ namespace tiFy;
 
 use tiFy\tiFy;
 
-class Libraries extends \tiFy\Environment\App
+class Libraries extends \tiFy\App\Factory
 {
     /**
      * CONSTRUCTEUR
@@ -11,7 +11,12 @@ class Libraries extends \tiFy\Environment\App
      * @return void
      */
     public function __construct()
-    {        
+    {
+        tiFy::classLoad('tiFy\Lib', tiFy::$AbsDir .'/bin/lib');
+        foreach (glob(tiFy::$AbsDir . '/bin/lib/*', GLOB_ONLYDIR) as $dirname) :
+            tiFy::classLoad('tiFy\Lib', $dirname);
+        endforeach;
+        
         /**
          * Librairies Tierces
          */

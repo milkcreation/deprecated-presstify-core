@@ -9,7 +9,7 @@ class Search extends Component
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                  = array(
+    protected $tFyAppActions                  = array(
         'init',
         'pre_get_posts'        
     );
@@ -124,10 +124,10 @@ class Search extends Component
                 
         // Traitement de la configuration
         /// Arguments par défaut
-        self::$Defaults = wp_parse_args( self::getConfig( 'defaults' ), self::$Defaults );
+        self::$Defaults = wp_parse_args( self::tFyAppConfig( 'defaults' ), self::$Defaults );
 
         /// Sections
-        if( $sections = self::getConfig( 'sections' ) ) :
+        if( $sections = self::tFyAppConfig( 'sections' ) ) :
             foreach( (array) $sections as $name => $args ) :    
                 self::$Section[$name] = wp_parse_args( $args, self::$Defaults );
             endforeach;

@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\VisualBlocks;
 
-use tiFy\Environment\App;
-
-class VisualBlocks extends App
+class VisualBlocks extends \tiFy\App\Factory
 {
 	/* = CONSTRUCTEUR = */
 	public function __construct()

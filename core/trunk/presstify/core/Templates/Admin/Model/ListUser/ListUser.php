@@ -103,7 +103,7 @@ class ListUser extends \tiFy\Core\Templates\Admin\Model\Table
     {
         parent::_admin_enqueue_scripts();
 
-        wp_enqueue_style( 'tiFyTemplatesAdminListUser', self::getUrl( get_class() ) .'/ListUser.css', array(), 160609 ); 
+        wp_enqueue_style( 'tiFyTemplatesAdminListUser', self::tFyAppUrl( get_class() ) .'/ListUser.css', array(), 160609 ); 
     }
 	
 	/* = TRAITEMENT = */

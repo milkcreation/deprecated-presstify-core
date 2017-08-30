@@ -1,15 +1,14 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\Genericons;
 
-use tiFy\Environment\App;
 use tiFy\Lib\File;
 
-class Genericons extends App
+class Genericons extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */	
 	/** == ACTIONS == **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array( 
+	protected $tFyAppActions				= array( 
 		'init',
 		'admin_init',
 		'admin_enqueue_scripts',

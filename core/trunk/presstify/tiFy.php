@@ -4,7 +4,7 @@
  * @namespace tiFy
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.0.371
+ * @version 1.2.372
  */
 namespace tiFy;
 
@@ -30,16 +30,10 @@ final class tiFy
     public static $AbsUrl;
     
     /**
-     * Paramètres de configuration de presstiFy
+     * Attributs de configuration
      * @var mixed
      */
-    public static $Params;
-    
-    /**
-     * Liste des applicatifs chargés
-     * @var mixed
-     */
-    public static $Apps                 = array();
+    protected static $Config            = array();
     
     
     /**
@@ -57,34 +51,36 @@ final class tiFy
         if( defined( 'WP_INSTALLING' ) && ( WP_INSTALLING === true ) )
             return;
 
-        // Définition des constantes d'environnement
-        /// Attributs de configuration
-        if( ! defined( 'TIFY_CONFIG_DIR' ) )
-            define( 'TIFY_CONFIG_DIR', get_template_directory() .'/config' );
-        if( ! defined( 'TIFY_CONFIG_EXT' ) )
-            define( 'TIFY_CONFIG_EXT', 'yml' );
-        /// Répertoire des plugins
-        if( ! defined( 'TIFY_PLUGINS_DIR' ) )
-            define( 'TIFY_PLUGINS_DIR', dirname( __DIR__ ) .'/presstify-plugins' );
-        
         // Définition des chemins absolus
         self::$AbsPath = $AbsPath ? $AbsPath : ABSPATH;
         self::$AbsDir = dirname(__FILE__);
+
+        // Définition des constantes d'environnement
+        if(! defined('TIFY_CONFIG_DIR'))
+            define( 'TIFY_CONFIG_DIR', get_template_directory() . '/config');
+        if(! defined('TIFY_CONFIG_EXT'))
+            define('TIFY_CONFIG_EXT', 'yml');
+        /// Répertoire des plugins
+        if(! defined('TIFY_PLUGINS_DIR'))
+            define('TIFY_PLUGINS_DIR', self::$AbsDir . '/plugins');
         
         // Instanciation du moteur
         self::classLoad('tiFy', self::$AbsDir .'/bin');
         
-        // Instanciation de l'environnement
-        self::classLoad('tiFy\Environment', self::$AbsDir .'/bin/env');
+        // Instanciation des depréciations
+        self::classLoad('tiFy\Deprecated', self::$AbsDir . '/bin/deprecated', 'Deprecated');
+        
+        // Instanciation des l'environnement des applicatifs
+        self::classLoad('tiFy\App', self::$AbsDir .'/bin/app');
         
         // Instanciation des librairies proriétaires
-        self::classLoad('tiFy\Lib', self::$AbsDir .'/bin/lib');
-  
+        new Libraries;
+
         // Chargement des librairies tierces
         require_once tiFy::$AbsDir .'/vendor/autoload.php';
         
         // Instanciation des fonctions d'aides au développement
-        self::classLoad('tiFy\Helpers', __DIR__ .'/helpers');        
+        self::classLoad('tiFy\Helpers', __DIR__ .'/helpers');
         
         // Définition de l'url absolue
         self::$AbsUrl = \tiFy\Lib\File::getFilenameUrl(self::$AbsDir, self::$AbsPath);
@@ -101,21 +97,11 @@ final class tiFy
         // Instanciation des jeux de fonctionnalités complémentaires
         self::classLoad('tiFy\Set', tiFy::$AbsDir . '/set');
         
-        // Chargement des controleurs
-        /// Librairies proriétaires
-        new Libraries;
-        /// Fonctions d'aide au développement
+        // Instanciation des fonctions d'aide au développement
         new Helpers;
-        /// Paramètres
-        new Params;
-        /// Jeux de fonctionnalités
-        new Set;
-        /// Extensions
-        new Plugins;
-        /// Composants dynamiques
-        new Components;
-        /// Composants natifs
-        new Core;
+        
+        // Instanciation des applicatifs
+        new Apps;
     }
         
     /**
@@ -152,123 +138,32 @@ final class tiFy
     }
     
     /**
-     * Récupération d'une liste de paramètres
-     */
-    public static function getParams($type = null)
-    {
-        if(is_null($type)) :
-            return self::$Params;
-        endif;
-        
-        $type = strtolower($type);
-        if(isset(self::$Params[$type])) :
-            return self::$Params[$type];
-        endif;
-    }
-    
-    /**
-     * Définition d'un applicatif
+     * Récupération d'attributs de configuration globale
      * 
-     * @param string $class_name
-     * @param mixed $attrs 
-     * 
-     * @return void
-     */
-    public static function setApp($classname, $attrs = array())
-    {
-        self::$Apps[$classname] = $attrs;
-    }
-    
-    /**
-     * Récupération des attributs d'un applicatif
-     * 
-     * @param string $class_name
-     * 
-     * @return void
-     */
-    public static function getApp($classname)
-    {
-        if(isset(self::$Apps[$classname]))
-            return self::$Apps[$classname];
-    }    
-    
-    /**
-     * Requête de récupération d'applicatifs selon une liste d'argument 
-     * 
-     * @param string $class_name
-     * @param mixed $attrs 
-     * 
-     * @return mixed
-     */
-    public static function queryApps($args = array())
-    {
-        $apps = array(); $res = array();
-        if(empty($args)) :
-            $apps = self::$Apps;
-        endif;
-        
-        foreach($apps as $classname => $attrs) :
-            $attrs = wp_parse_args(
-                array(
-                    'classname' => $classname
-                ),
-                $attrs    
-            );
-            $res[] = $attrs; 
-        endforeach;
-        
-        return $res;
-    }
-    
-    /**
-     * Récupération des attributs de configuration
-     * @param string $index
-     * @param string $default
+     * @param NULL|string $attr Attribut de configuration
+     * @param string $default Valeur de retour par défaut
      * 
      * @return mixed|$default
      */
-    public static function getConfig($index, $default = '')
+    public static function getConfig($attr = null, $default = '')
     {
-        if( isset( self::$Params['config'][$index] ) ) :
-            return self::$Params['config'][$index];
+        if(is_null($attr))
+            return self::$Config;
+        
+        if(isset(self::$Config[$attr])) :
+            return self::$Config[$attr];
         endif;
         
         return $default;
     }
     
     /**
-     * Récupération de la liste des composants dynamiques
+     * Définition d'un attribut de configuration globale
      * 
-     * @return string[]
-     */
-    public static function getComponents()
-    {
-        if(! empty(self::$Params['components'])) :
-            return array_keys(self::$Params['components']);
-        endif;
-    }
-    
-    /**
-     * Récupération de la liste des plugins
      * 
-     * @return string[]
      */
-    public static function getPlugins()
+    public static function setConfig($key, $value = '')
     {
-        if(! empty(self::$Params['plugins'])) :
-            return array_keys(self::$Params['plugins']);
-        endif;
-    }
-    
-    /**
-     * Récupération de la liste des sets
-     * 
-     * @return string[]
-     */
-    public static function getSets()
-    {
-        if(! empty(self::$Params['set'])) :
-            return array_keys(self::$Params['set']);
-        endif;
+        self::$Config[$key] = $value;
     }
 }

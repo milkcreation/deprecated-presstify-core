@@ -1,14 +1,14 @@
 <?php
 namespace Theme\tiFy\Core\Taboox\Post\SurveyForm;
 
-use \tiFy\Environment\App;
+use \tiFy\App\Factory;
 
 class SurveyForm extends App
 {
 	/* = ARGUMENTS = */
 	/** @see https://codex.wordpress.org/Plugin_API/Action_Reference **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'tify_form_register',
 	);
 	/** == Nom == **/

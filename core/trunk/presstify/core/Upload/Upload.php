@@ -3,12 +3,12 @@ namespace tiFy\Core\Upload;
 
 use \Defuse\Crypto\Crypto;
 
-class Upload extends \tiFy\Environment\App
+class Upload extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// ACTIONS
 	/// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'template_redirect',
 		'tify_upload_register'
 	);

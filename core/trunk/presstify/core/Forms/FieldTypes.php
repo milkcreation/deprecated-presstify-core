@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
-class FieldTypes extends \tiFy\Environment\App
+class FieldTypes extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Liste des addons prédéfinis

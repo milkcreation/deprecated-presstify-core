@@ -3,7 +3,7 @@ namespace tiFy\Core\Mail;
 
 use \tiFy\Lib\Mailer\MailerNew;
 
-class Factory extends \tiFy\Environment\App
+class Factory extends \tiFy\App\Factory
 {
     /* = ARGUMENTS = */
     /// Destinataires

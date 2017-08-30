@@ -1,33 +1,10 @@
 <?php
 namespace tiFy;
 
-use tiFy\tiFy;
-use tiFy\Environment\App;
+use tiFy\Apps;
 
-class Plugins extends \tiFy\Environment\App
+final class Plugins
 {
-    /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
-     */
-    protected $CallActions                = array(
-        'after_setup_tify'
-    );
-    
-    /**
-     * Ordre de priorité d'exécution des actions
-     * @var mixed
-     */
-    protected $CallActionsPriorityMap    = array(
-        'after_setup_tify' => 1
-    );
-    
-    /**
-     * Classes de rappel des composants déclarés
-     */
-    private static $Registered = array();
-    
     /**
      * CONSTRUCTEUR
      * 
@@ -35,26 +12,7 @@ class Plugins extends \tiFy\Environment\App
      */
     public function __construct()
     {
-        parent::__construct();
-        
         $this->loadMustUse();
-    }    
-    
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Après l'initialisation de PresstiFy
-     */
-    final public function after_setup_tify()
-    {
-        // Enregistrement des extensions déclarées dans la configuration 
-        foreach(tiFy::getPlugins() as $id) :
-            self::register($id);
-        endforeach;
-        
-        // Enregistrement dynamique
-        do_action('tify_plugin_register');
     }
     
     /**
@@ -63,27 +21,23 @@ class Plugins extends \tiFy\Environment\App
     /**
      * Déclaration
      * 
-     * @param string $id
+     * @param string $id Identifiant de l'extension
+     * @param mixed $attrs Attributs de configuration de l'extension
      * 
-     * @return object
+     * @return NULL|object
      */
-    public static function register($id)
+    public static function register($id, $attrs = array())
     {
-        $class_name = "tiFy\\Plugins\\{$id}\\{$id}";
-        if(! class_exists($class_name))
-            return;        
-        if( isset(self::$Registered[$id]))
-            return;
-        
-        tiFy::setApp(
-            $class_name, 
+        $classname = "tiFy\\Plugins\\{$id}\\{$id}";
+
+        Apps::register(
+            $classname,
+            'plugins',
             array(
-                'id'    => $id,
-                'type'  => 'plugins'
+                'Id'        => $id,
+                'Config'    => $attrs
             )
         );
-            
-        return self::$Registered[$id] = new $class_name;
     }
     
     /**

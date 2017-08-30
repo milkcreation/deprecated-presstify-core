@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\AjaxActions;
 
-use tiFy\Environment\App;
-
-class AjaxActions extends \tiFy\Environment\App
+class AjaxActions extends \tiFy\App\Factory
 {
 	/* = CONSTRUCTEUR = */
 	public function __construct()

@@ -13,8 +13,8 @@ class TouchTime extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-touch_time', static::getUrl( get_class() ) ."/TouchTime.css", array(), '150418' );
-		wp_register_script( 'tify_control-touch_time', static::getUrl( get_class() ) ."/TouchTime.js", array( 'jquery', 'moment' ), '150418', true );
+		wp_register_style( 'tify_control-touch_time', static::tFyAppUrl( get_class() ) ."/TouchTime.css", array(), '150418' );
+		wp_register_script( 'tify_control-touch_time', static::tFyAppUrl( get_class() ) ."/TouchTime.js", array( 'jquery', 'moment' ), '150418', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

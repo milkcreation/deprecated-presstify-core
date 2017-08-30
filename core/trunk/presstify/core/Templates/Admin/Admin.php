@@ -3,12 +3,12 @@ namespace tiFy\Core\Templates\Admin;
 
 use \tiFy\Core\Templates\Templates;
 
-class Admin extends \tiFy\Environment\App
+class Admin extends \tiFy\App\Factory
 {
     /**
      * Liste des actions à déclencher
      */ 
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'admin_menu'    
     );
     

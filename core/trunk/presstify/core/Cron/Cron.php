@@ -18,7 +18,7 @@ class Cron extends \tiFy\Environment\Core
      * Liste des actions à déclencher
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected $CallActions              = array(
+    protected $tFyAppActions              = array(
         'init'
     );
     
@@ -36,7 +36,7 @@ class Cron extends \tiFy\Environment\Core
         parent::__construct();
 
         // Déclaration des tâches planifiées configurées
-        foreach( (array) self::getConfig() as $schedule_id => $schedules_attrs ) :
+        foreach( (array) self::tFyAppConfig() as $schedule_id => $schedules_attrs ) :
             self::register( $schedule_id, $schedules_attrs );
         endforeach;
     }

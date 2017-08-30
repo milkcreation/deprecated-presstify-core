@@ -1,7 +1,8 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model;
 
-use \tiFy\Core\Templates\Admin\Helpers;
+use tiFy\Apps;
+use tiFy\Core\Templates\Admin\Helpers;
 
 /** 
  * @see https://codex.wordpress.org/Class_Reference/WP_List_Table
@@ -11,7 +12,7 @@ if( ! class_exists( 'WP_List_Table' ) )
     
 abstract class Table extends \WP_List_Table
 {
-    use \tiFy\Environment\Traits\Path;
+    use \tiFy\Core\Templates\Traits\Factory;
     use \tiFy\Core\Templates\Traits\Table\Actions;
     use \tiFy\Core\Templates\Traits\Table\Notices;
     use \tiFy\Core\Templates\Traits\Table\Params;
@@ -104,7 +105,10 @@ abstract class Table extends \WP_List_Table
     
     /* = CONSTRUCTEUR = */
     /** == ! IMPORTANT : court-circuitage du constructeur natif de WP_List_Table == **/
-    public function __construct(){}
+    public function __construct()
+    {
+        Apps::register($this);    
+    }
     
     /* = METHODES MAGIQUES = */
     /** == Appel des méthodes dynamiques == **/

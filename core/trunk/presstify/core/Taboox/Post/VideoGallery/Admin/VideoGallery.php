@@ -32,8 +32,8 @@ class VideoGallery extends \tiFy\Core\Taboox\Admin
 	public function admin_enqueue_scripts()
 	{
 		wp_enqueue_media();
-		wp_enqueue_style( 'tiFyTabooxVideoGallery', self::getUrl() .'/VideoGallery.css', array( ), '150325' );	
-		wp_enqueue_script( 'tiFyTabooxVideoGallery',self::getUrl() .'/VideoGallery.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
+		wp_enqueue_style( 'tiFyTabooxVideoGallery', self::tFyAppUrl() .'/VideoGallery.css', array( ), '150325' );	
+		wp_enqueue_script( 'tiFyTabooxVideoGallery',self::tFyAppUrl() .'/VideoGallery.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
 		wp_localize_script( 'tiFyTabooxVideoGallery', 'tify_taboox_video_gallery', array(
 				'maxAttempt' => __( 'Nombre maximum de vidéos dans la galerie atteint', 'tify' ),
 			)

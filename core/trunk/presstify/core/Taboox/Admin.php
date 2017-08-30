@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox;
 
-abstract class Admin extends \tiFy\Environment\App
+abstract class Admin extends \tiFy\App\Factory
 {
     /**
      * ID l'écran courant d'affichage du formulaire

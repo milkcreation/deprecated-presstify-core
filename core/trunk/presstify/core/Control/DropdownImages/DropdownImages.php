@@ -24,8 +24,8 @@ class DropdownImages extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {        
-        wp_register_style( 'tify_control-dropdown_images', self::getUrl( get_class() ) .'/DropdownImages.css', array( ), '150122' );
-        wp_register_script( 'tify_control-dropdown_images', self::getUrl( get_class() ) .'/DropdownImages.js', array( 'jquery' ), '150122', true );
+        wp_register_style( 'tify_control-dropdown_images', self::tFyAppUrl( get_class() ) .'/DropdownImages.css', array( ), '150122' );
+        wp_register_script( 'tify_control-dropdown_images', self::tFyAppUrl( get_class() ) .'/DropdownImages.js', array( 'jquery' ), '150122', true );
     }
     
     /**
@@ -62,7 +62,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
             ),          
             'choices'               => array(),
             'selected'              => 0,
-            'show_option_none'      => self::getDirname( get_class() ) .'/none.jpg',
+            'show_option_none'      => self::tFyAppDirname( get_class() ) .'/none.jpg',
             'option_none_value'     => -1,
             // Nombre de colonnes d'icônes à afficher par ligne  
             'cols'                  => 6,                                                           

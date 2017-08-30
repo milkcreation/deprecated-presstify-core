@@ -23,8 +23,8 @@ class CryptedData extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        wp_register_style( 'tify_control-crypted_data', self::getUrl( get_class() ) .'/CryptedData.css', array( 'dashicons' ), 170501 );
-        wp_register_script( 'tify_control-crypted_data', self::getUrl( get_class() ) .'/CryptedData.js', array( 'jquery' ), 170501, true );
+        wp_register_style( 'tify_control-crypted_data', self::tFyAppUrl( get_class() ) .'/CryptedData.css', array( 'dashicons' ), 170501 );
+        wp_register_script( 'tify_control-crypted_data', self::tFyAppUrl( get_class() ) .'/CryptedData.js', array( 'jquery' ), 170501, true );
         
         // Actions ajax       
         add_action( 'wp_ajax_tiFyControlCryptedData_encrypt', array( $this, 'wp_ajax_encrypt' ) );

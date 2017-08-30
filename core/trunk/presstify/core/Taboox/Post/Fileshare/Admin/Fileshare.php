@@ -27,9 +27,9 @@ class Fileshare extends \tiFy\Core\Taboox\Admin
     public function admin_enqueue_scripts()
     {
         if( $this->args['max'] !== 1 ) :
-            wp_enqueue_style( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/Fileshare.css', array( ), '151216' );
+            wp_enqueue_style( 'tify_taboox_fileshare', self::tFyAppUrl( get_class() ) .'/Fileshare.css', array( ), '151216' );
             wp_enqueue_media();
-            wp_enqueue_script( 'tify_taboox_fileshare', self::getUrl( get_class() ) .'/Fileshare.js', array( 'jquery', 'jquery-ui-sortable' ), '151216', true );    
+            wp_enqueue_script( 'tify_taboox_fileshare', self::tFyAppUrl( get_class() ) .'/Fileshare.js', array( 'jquery', 'jquery-ui-sortable' ), '151216', true );    
         else :
             tify_control_enqueue( 'media_file' );
         endif;

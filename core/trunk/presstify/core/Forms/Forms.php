@@ -7,14 +7,14 @@ class Forms extends \tiFy\Environment\Core
 {
     /* = ARGUMENTS = */
     // Liste des actions à déclencher
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'after_setup_tify',
         'init',
         'admin_init',
         'wp'
     );        
     // Ordres de priorité d'exécution des actions
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'after_setup_tify'     => 11,
         'init'                => 1,
         'wp'                => 0        
@@ -85,7 +85,7 @@ class Forms extends \tiFy\Environment\Core
     {
         // Déclaration des formulaires
         /// Depuis la configuration statique
-        foreach( (array) self::getConfig() as $id => $attrs ) :
+        foreach( (array) self::tFyAppConfig() as $id => $attrs ) :
             $this->register( $id, $attrs );
         endforeach;
             

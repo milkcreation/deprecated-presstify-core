@@ -3,12 +3,12 @@ namespace tiFy\Core\ScriptLoader;
 
 use tiFy\tiFy;
 
-class ScriptLoader extends \tiFy\Environment\App
+class ScriptLoader extends \tiFy\App\Factory
 {
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'after_setup_theme',
         'init',
         'admin_enqueue_scripts',
@@ -20,7 +20,7 @@ class ScriptLoader extends \tiFy\Environment\App
     /**
      * Ordres de priorité d'exécution des actions
      */
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'wp_enqueue_scripts' => 0
     );
     
@@ -111,7 +111,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Theme
             'tiFyTheme'              => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tiFyTheme'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tiFyTheme'. $min .'.css'
                 ),
                 'deps'          => array(),
                 'version'       => 170130,
@@ -121,7 +121,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Admin Styles
             'tify-admin_styles'         => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-admin_styles'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-admin_styles'. $min .'.css'
                 ),
                 'deps'          => array(),
                 'version'       => '150409',
@@ -131,7 +131,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Admin Styles BEM
             'tiFyAdmin'                 => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tiFyAdmin'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tiFyAdmin'. $min .'.css'
                 ),
                 'deps'          => array(),
                 'version'       => '170421',
@@ -141,7 +141,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Calendar    
             'tify-calendar'             => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-calendar'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-calendar'. $min .'.css'
                 ),
                 'deps'          => array( 'spinkit-pulse' ),
                 'version'       => '150409',
@@ -151,7 +151,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// tiFy - Image Lightbox
             'tify-imagelightbox'                              => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-imagelightbox'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-imagelightbox'. $min .'.css'
                 ),
                 'deps'          => array(),
                 'version'       => '170724',
@@ -161,7 +161,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Slideshow
             'tify-slideshow'            => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-slideshow'. $min .'.css'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-slideshow'. $min .'.css'
                 ),
                 'deps'          => array(),
                 'version'       => '160602',
@@ -171,7 +171,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Modal
             'tify-modal_video-theme'    => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-modal_video-theme'. $min .'.css',
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-modal_video-theme'. $min .'.css',
                 ),
                 'deps'          => array(),
                 'version'       => '161008',
@@ -181,7 +181,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Threesixty View
             'tify-threesixty_view'      => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-threesixty_view'. $min .'.css',
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-threesixty_view'. $min .'.css',
                 ),
                 'deps'          => array( 'threesixty', 'dashicons' ),
                 'version'       => '150904',
@@ -194,9 +194,9 @@ class ScriptLoader extends \tiFy\Environment\App
             // Genericons
             'genericons'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/genericons/genericons.css',
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/genericons/genericons.css',
                     'cdn'        => '//cdn.rawgit.com/Automattic/Genericons/master/genericons/genericons.css',
-                    'dev'        => tiFy::$AbsUrl .'/assets/vendor/genericons/genericons.css',    // Pour les références plugin
+                    'dev'        => tiFy::$AbsUrl . '/bin/assets/vendor/genericons/genericons.css',    // Pour les références plugin
                 ),
                 'deps'        => array(),
                 'version'    => '4.4.0',
@@ -206,7 +206,7 @@ class ScriptLoader extends \tiFy\Environment\App
             // Image Lightbox
             'imagelightbox'                            => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/vendor/imagelightbox.min.css',
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/imagelightbox.min.css',
                 ),
                 'deps'          => array(),
                 'version'       => '160902',
@@ -216,7 +216,7 @@ class ScriptLoader extends \tiFy\Environment\App
             // NanoScroller    
             'nanoscroller'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/nanoscroller/nanoscroller.min.css',
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/nanoscroller/nanoscroller.min.css',
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.7/css/nanoscroller.min.css'
                 ),
                 'deps'        => array(),
@@ -227,7 +227,7 @@ class ScriptLoader extends \tiFy\Environment\App
             // SpinKit
             'spinkit'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/spinkit.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/spinkit.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -236,7 +236,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Rotating Plane
             'spinkit-rotating-plane'    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/1-rotating-plane.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/1-rotating-plane.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -245,7 +245,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Fading Circle
             'spinkit-fading-circle'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/10-fading-circle.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/10-fading-circle.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -254,7 +254,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Folding Cube
             'spinkit-folding-cube'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/11-folding-cube.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/11-folding-cube.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -263,7 +263,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Double Bounce
             'spinkit-double-bounce'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/2-double-bounce.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/2-double-bounce.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -272,7 +272,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Wave
             'spinkit-wave'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/3-wave.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/3-wave.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -281,7 +281,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Wandering Cubes
             'spinkit-wandering-cubes'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/4-wandering-cubes.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/4-wandering-cubes.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -290,7 +290,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Pulse
             'spinkit-pulse'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/5-pulse.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/5-pulse.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -299,7 +299,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Chasing Dots
             'spinkit-chasing-dots'            => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/6-chasing-dots.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/6-chasing-dots.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -308,7 +308,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Three bounce
             'spinkit-three-bounce'            => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/7-three-bounce.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/7-three-bounce.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -317,7 +317,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Circle
             'spinkit-circle'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/8-circle.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/8-circle.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -326,7 +326,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// Cube Grid
             'spinkit-cube-grid'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/spinkit/9-cube-grid.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/9-cube-grid.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '1.2.2',
@@ -336,7 +336,7 @@ class ScriptLoader extends \tiFy\Environment\App
             // ThreeSixty Slider
             'threesixty'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/vendor/threesixty/threesixty.min.css'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/threesixty/threesixty.min.css'
                 ),
                 'deps'        => array(),
                 'version'    => '2.0.5',
@@ -348,7 +348,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Theme
             'tiFyTheme'                 => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tiFyTheme'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tiFyTheme'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery' ),
                 'version'       => 170130,
@@ -358,7 +358,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Calendar
             'tify-calendar'                 => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-calendar'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-calendar'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery' ),
                 'version'       => '150409',
@@ -368,7 +368,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Find Posts
             'tify-findposts'                => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-findposts'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-findposts'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery', 'jquery-ui-draggable', 'wp-ajax-response' ),
                 'version'       => '2.2.2',
@@ -378,7 +378,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// tiFy - Image Lightbox
             'tify-imagelightbox'                              => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-imagelightbox'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-imagelightbox'. $min .'.js'
                 ),
                 'deps'          => array( 'imageLightbox' ),
                 'version'       => '170724',
@@ -388,7 +388,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Parallax
             'tify-parallax'                 => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-parallax'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-parallax'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery' ),
                 'version'       => 170120,
@@ -398,7 +398,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Lightbox
             'tify-onepage-scroll'           => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-onepage-scroll'. $min .'.js',
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-onepage-scroll'. $min .'.js',
                 ),
                 'deps'          => array( 'jquery', 'easing', 'mousewheel' ),
                 'version'       => '150325',
@@ -408,7 +408,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Smooth Anchor
             'tify-smooth-anchor'            => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-smooth-anchor'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-smooth-anchor'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery', 'easing' ),
                 'version'       => '150329',
@@ -418,7 +418,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Slideshow
             'tify-slideshow'                => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-slideshow'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-slideshow'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery', 'easing', 'jquery-ui-draggable', 'jquery-touch-punch' ),
                 'version'       => '160602',
@@ -428,7 +428,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Fixed SubmitDiv
             'tify-fixed_submitdiv'          => array(
                 'src'           => array(
-                    'local'        => tiFy::$AbsUrl .'/assets/lib/tify-fixed_submitdiv'. $min .'.js'
+                    'local'        => tiFy::$AbsUrl . '/bin/assets/lib/tify-fixed_submitdiv'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery' ),
                 'version'       => '151023',
@@ -438,7 +438,7 @@ class ScriptLoader extends \tiFy\Environment\App
             /// TiFy - Threesixty View
             'tify-threesixty_view'          => array(
                 'src'           => array(
-                    'local'         => tiFy::$AbsUrl .'/assets/lib/tify-threesixty_view'. $min .'.js'
+                    'local'         => tiFy::$AbsUrl . '/bin/assets/lib/tify-threesixty_view'. $min .'.js'
                 ),
                 'deps'          => array( 'jquery', 'threesixty' ),
                 'version'       => '150904',
@@ -504,7 +504,7 @@ class ScriptLoader extends \tiFy\Environment\App
         /// Dentist
         self::$JsLib['dentist']                     = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/dentist.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/dentist.min.js',
                 'cdn'           => '//cdn.rawgit.com/kelvintaywl/dentist.js/master/build/js/dentist.min.js'    
             ),
             'deps'          => array( 'jquery' ),
@@ -537,7 +537,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // Image Lightbox
         self::$JsLib['imageLightbox']               = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/imageLightbox.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/imageLightbox.min.js',
             ),
             'deps'          => array( 'jquery' ),
             'version'       => '160902',
@@ -547,7 +547,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // Holder
         self::$JsLib['holder']                      = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/holder.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/holder.min.js',
                 'cdn'           => '//cdn.rawgit.com/imsky/holder/master/holder.min.js'
             ),
             'deps'          => array(),
@@ -562,7 +562,7 @@ class ScriptLoader extends \tiFy\Environment\App
          **/
         self::$JsLib['isMobile']                    = array(
             'src'           => array(
-                'local'        => tiFy::$AbsUrl .'/assets/vendor/isMobile.min.js'
+                'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/isMobile.min.js'
             ),
             'deps'          => array( 'jquery' ),
             'version'       => '0.4.1',
@@ -572,7 +572,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // Moment
         self::$JsLib['moment']                      = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/moment.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/moment.min.js',
                 'cdn'           => '//cdn.rawgit.com/moment/moment/develop/min/moment.min.js'
             ),
             'deps'          => array(), 
@@ -583,7 +583,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // MouseWheel
         self::$JsLib['mousewheel']                  = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/jquery.mousewheel.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/jquery.mousewheel.min.js',
                 'cdn'           => '//cdn.rawgit.com/jquery/jquery-mousewheel/master/jquery.mousewheel.min.js'
             ),
             'deps'          => array( 'jquery' ),
@@ -594,7 +594,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // Nanoscroller        
         self::$JsLib['nanoscroller']                = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/nanoscroller/jquery.nanoscroller.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/nanoscroller/jquery.nanoscroller.min.js',
                 'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/jquery.nanoscroller/0.8.7/javascripts/jquery.nanoscroller.min.js'
             ),
             'deps'          => array( 'jquery' ),
@@ -605,7 +605,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // jQuery Parallax
         self::$JsLib['jquery-parallax']             = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/jquery-parallax-min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/jquery-parallax-min.js',
                 'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax-min.js'
             ),
             'deps'          => array( 'jquery' ),
@@ -645,12 +645,12 @@ class ScriptLoader extends \tiFy\Environment\App
         /**
          * Spectrum
          * @todo   
-            if( file_exists( $this->dir .'/assets/js/bgrins-spectrum/i18n/jquery.spectrum-'. $_locale[0] .'.js' ) )
+            if( file_exists( $this->dir . '/bin/assets/js/bgrins-spectrum/i18n/jquery.spectrum-'. $_locale[0] .'.js' ) )
                 wp_register_script( 'spectrum-i10n', '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/i18n/jquery.spectrum-'. $_locale[0] .'.js', array( ), '1.7.0', true );
         */
         self::$CssLib['spectrum']                   = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/spectrum/spectrum.min.css',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/spectrum/spectrum.min.css',
                 'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/spectrum.min.css'
             ),
             'deps'          => array(),
@@ -659,7 +659,7 @@ class ScriptLoader extends \tiFy\Environment\App
         );            
         self::$JsLib['spectrum']                    = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/spectrum/spectrum.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/spectrum/spectrum.min.js',
                 'cdn'           => '//cdnjs.cloudflare.com/ajax/libs/spectrum/1.7.0/spectrum.min.js'
             ),
             'deps'          => array( 'jquery' ),
@@ -670,7 +670,7 @@ class ScriptLoader extends \tiFy\Environment\App
         // ThreeSixty Slider
         self::$JsLib['threesixty']                  = array(
             'src'           => array(
-                'local'         => tiFy::$AbsUrl .'/assets/vendor/threesixty/threesixty.min.js',
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/threesixty/threesixty.min.js',
             ),
             'deps'          => array( 'jquery' ),
             'version'       => '2.0.5',

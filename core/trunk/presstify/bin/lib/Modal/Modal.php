@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Lib\Modal;
 
-class Modal extends \tiFy\Environment\App
+class Modal extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	/** == CONFIGURATION == **/
@@ -229,7 +229,7 @@ class Modal extends \tiFy\Environment\App
 		
 		// Chargement des scripts
 		if( ! self::$Instance++ ) :
-			$url = self::getUrl( get_class() ) .'/Modal.min.js';
+			$url = self::tFyAppUrl( get_class() ) .'/Modal.min.js';
 			add_action( 
 				'wp_footer', 
 				function() use( $url ){

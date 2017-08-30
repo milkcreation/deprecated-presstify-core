@@ -4,7 +4,7 @@
  *            
     $Csv = \tiFy\Inherits\Csv::getResults( 
         array(
-            'filename'      => ABSPATH .'/example.csv'           
+            'filename'      => ABSPATH .'/example.csv'
             'delimiter'     => ';',
             'query_args'    => array(
                 'paged'         => 1,
@@ -21,7 +21,7 @@
                 ),
                 array(
                     'term'      => 'john',
-                    'cols'      => array()          
+                    'cols'      => array()
                 ),
             )               
         ); 

@@ -15,7 +15,7 @@ class Control extends \tiFy\Environment\Core
     {
         parent::__construct();
 
-        foreach( glob( self::getDirname() .'/*/', GLOB_ONLYDIR ) as $filename ) :
+        foreach( glob( self::tFyAppDirname() .'/*/', GLOB_ONLYDIR ) as $filename ) :
             $basename     = basename( $filename );
             $ClassName    = "\\tiFy\\Core\\Control\\{$basename}\\{$basename}";
          
