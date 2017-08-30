@@ -184,6 +184,8 @@ abstract class Importer
                 $import->after_insert_options( $import->InsertID );
             endif;
             
+            $import->after_insert($import->InsertID);
+            
             $errors = $import->getErrors();
         else :
             $errors = $insert_id;
@@ -870,5 +872,10 @@ abstract class Importer
     /**
      * Evénement post-insertion des options
      */
-    public function after_insert_options( $insert_id ){}    
+    public function after_insert_options( $insert_id ){} 
+    
+    /**
+     * Evénement post-insertion de l'ensemble des éléments (metadonnées|termes de taxonomies|options)
+     */
+    public function after_insert( $insert_id ){}
 }
