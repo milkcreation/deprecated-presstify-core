@@ -19,8 +19,8 @@ class CustomHeader extends \tiFy\Core\Taboox\Taxonomy\Admin
      */
     public function admin_enqueue_scripts()
     {
-        wp_enqueue_style( 'Taboox_Taxonomy_CustomHeader_Admin', self::getUrl( get_class() ) .'/CustomHeader.css', array( 'tify_control-media_image' ), '150325' );
-        wp_enqueue_script( 'Taboox_Taxonomy_CustomHeader_Admin', self::getUrl( get_class() ) .'/CustomHeader.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );
+        wp_enqueue_style( 'Taboox_Taxonomy_CustomHeader_Admin', self::tFyAppUrl( get_class() ) .'/CustomHeader.css', array( 'tify_control-media_image' ), '150325' );
+        wp_enqueue_script( 'Taboox_Taxonomy_CustomHeader_Admin', self::tFyAppUrl( get_class() ) .'/CustomHeader.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );
     }
     
         /**

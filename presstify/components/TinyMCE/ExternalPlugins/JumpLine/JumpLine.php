@@ -1,13 +1,11 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\JumpLine;
 
-use tiFy\Environment\App;
-
-class JumpLine extends App
+class JumpLine extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'admin_init',
 		'admin_head',
 		'admin_print_styles',
@@ -34,7 +32,7 @@ class JumpLine extends App
 	/** == Ajout des styles dans l'éditeur == **/
 	final public function mce_css( $mce_css )
 	{
-	    return $mce_css .= ', '. self::getUrl( get_class() ).'/Jumpline.css';
+	    return $mce_css .= ', '. self::tFyAppUrl( get_class() ).'/Jumpline.css';
 	}
 	
 	/** == Personnalisation des scripts de l'entête de l'interface d'administration == **/

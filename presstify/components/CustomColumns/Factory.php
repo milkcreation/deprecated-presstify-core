@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns;
 
-abstract class Factory extends \tiFy\Environment\App
+abstract class Factory extends \tiFy\App\Factory
 {
     /* = ARGUMENTS = */
     // Instance    

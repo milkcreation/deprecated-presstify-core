@@ -1,9 +1,7 @@
 <?php 
 namespace tiFy\Core\Templates\Admin\Model\AjaxExport;
 
-use tiFy\Environment\App;
-
-class AjaxExport extends App
+class AjaxExport extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Classe de la vue

@@ -26,7 +26,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      */
     public function init()
     {
-        wp_register_script( 'tify_control-contact_toggle', static::getUrl( get_class() ) .'/ContactToggle.js', array( 'jquery' ), 170301, true );
+        wp_register_script( 'tify_control-contact_toggle', static::tFyAppUrl( get_class() ) .'/ContactToggle.js', array( 'jquery' ), 170301, true );
     
         add_action( 'wp_ajax_tiFySetCoreControl_ContactToggle', array( $this, 'ajax' ) );
         add_action( 'wp_ajax_nopriv_tiFySetCoreControl_ContactToggle', array( $this, 'ajax' ) );

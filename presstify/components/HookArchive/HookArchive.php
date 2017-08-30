@@ -3,26 +3,23 @@ namespace tiFy\Components\HookArchive;
 
 use tiFy\Environment\Component;
 
-/** @Autoload */
 final class HookArchive extends Component
 {
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions			= array(
 		'init',
 		'current_screen',
 		'admin_bar_menu',
 		'tify_options_register_node'
 	);
+	
 	// Ordres de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array(
+	protected $tFyAppActionsPriority	= array(
 		'admin_bar_menu'		=> 99,
 	);
-	// Nombre d'arguments autorisés
-	protected $CallActionsArgsMap		= array(
-		
-	);
+
 	
 	/** == FILTRES == **/
 	// Liste des Filtres à déclencher
@@ -57,7 +54,7 @@ final class HookArchive extends Component
 	{
 		parent::__construct();
 
-		foreach( (array) self::getConfig() as $obj => $hooks ) :
+		foreach( (array) self::tFyAppConfig() as $obj => $hooks ) :
 			foreach( $hooks as $archive => $args ) :
 				$args['obj'] 			= $obj;
 				$args['archive']		= $archive;

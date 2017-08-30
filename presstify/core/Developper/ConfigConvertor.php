@@ -1,20 +1,20 @@
 <?php
 namespace tiFy\Components\DevTools\Tools\ConfigConvertor;
 
-use tiFy\Environment\App;
+use tiFy\App\Factory;
 
 class ConfigConvertor extends App
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'admin_menu',
 		'current_screen',
 		'wp_ajax_tiFy_ConfigConvertor_Process'
 	); 
 	
 	// Fonctions de rappel des actions
-	protected $CallActionsFunctionsMap	= array(
+	protected $tFyAppActionsMethods	= array(
 		'wp_ajax_tiFy_ConfigConvertor_Process' => 'wp_ajax_process'	
 	);
 	

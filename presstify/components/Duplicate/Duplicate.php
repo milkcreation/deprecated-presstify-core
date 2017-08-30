@@ -15,13 +15,13 @@ final class Duplicate extends \tiFy\Environment\Component
     {
         parent::__construct();
         
-        if( $post_type = self::getConfig( 'post_type' ) ) :        
+        if( $post_type = self::tFyAppConfig( 'post_type' ) ) :        
             foreach( $post_type as $type => $attrs ) :
                 self::$PostType[$type] = $this->parseAttrs( $attrs );
             endforeach;
         endif;
         
-        if( $taxonomy = self::getConfig( 'taxonomy' ) ) :      
+        if( $taxonomy = self::tFyAppConfig( 'taxonomy' ) ) :      
             foreach( $taxonomy as $type => $attrs ) :
                 self::$Taxonomy[$pt] = $this->parseAttrs( $attrs );
             endforeach;

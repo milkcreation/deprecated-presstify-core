@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Control;
 
-abstract class Factory extends \tiFy\Environment\App
+abstract class Factory extends \tiFy\App\Factory
 {
     /**
      * Intitulés des prefixes des fonctions
@@ -16,7 +16,7 @@ abstract class Factory extends \tiFy\Environment\App
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions      = array(
+    protected $tFyAppActions      = array(
         'init'
     );
 

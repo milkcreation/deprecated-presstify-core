@@ -14,8 +14,8 @@ class DropdownColors extends \tiFy\Core\Control\Factory
 	/** == Initialisation de Wordpress == **/
     final public function init()
     {
-        wp_register_style( 'tify_control-dropdown_colors', self::getUrl( get_class() ) .'/DropdownColors.css', array( ), '150512' );
-        wp_register_script( 'tify_control-dropdown_colors', self::getUrl( get_class() ) .'/DropdownColors.js', array( 'jquery' ), '150512', true );
+        wp_register_style( 'tify_control-dropdown_colors', self::tFyAppUrl( get_class() ) .'/DropdownColors.css', array( ), '150512' );
+        wp_register_script( 'tify_control-dropdown_colors', self::tFyAppUrl( get_class() ) .'/DropdownColors.js', array( 'jquery' ), '150512', true );
     }
     
     /** == Mise en file des scripts == **/

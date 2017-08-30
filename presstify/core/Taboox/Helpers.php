@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox;
 
-use tiFy\Environment\App;
-
-abstract class Helpers extends App
+abstract class Helpers extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */	
 	// Intitulés des prefixes des fonctions		

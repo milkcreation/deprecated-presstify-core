@@ -17,7 +17,7 @@ class AdminUI extends \tiFy\Environment\Component
      * Liste des actions à déclencher
      * @var callable[]
      */
-    protected $CallActions                  = array(
+    protected $tFyAppActions                  = array(
         'init',
         'widgets_init',
         'admin_menu',
@@ -31,7 +31,7 @@ class AdminUI extends \tiFy\Environment\Component
      * Ordre de priorité d'exécution des actions
      * @var mixed[]
      */
-    protected $CallActionsPriorityMap       = array(
+    protected $tFyAppActionsPriority       = array(
         'init'                  => 99,
         'admin_menu'            => 99,
         'add_meta_boxes'        => 99,
@@ -45,34 +45,34 @@ class AdminUI extends \tiFy\Environment\Component
     {
         parent::__construct();
         
-        foreach( (array) array_keys( self::getDefaultConfig() ) as $prop ) :
-            if( self::getConfig( $prop ) ) :
-                $value = is_array( self::getDefaultConfig( $prop ) ) ? wp_parse_args( self::getConfig( $prop ), self::getDefaultConfig( $prop ) ) : self::getConfig( $prop );
+        foreach( (array) array_keys( self::tFyAppConfigDefault() ) as $prop ) :
+            if( self::tFyAppConfig( $prop ) ) :
+                $value = is_array( self::tFyAppConfigDefault( $prop ) ) ? wp_parse_args( self::tFyAppConfig( $prop ), self::tFyAppConfigDefault( $prop ) ) : self::tFyAppConfig( $prop );
             else :
-                $value = self::getDefaultConfig( $prop );
+                $value = self::tFyAppConfigDefault( $prop );
             endif;
-            self::setConfig( $prop, $value );
+            self::tFyAppConfigSet( $prop, $value );
         endforeach;
-
-        if( self::getConfig( 'disable_post' ) ) :
+        
+        if( self::tFyAppConfig( 'disable_post' ) ) :
             add_action( 'admin_init', array( $this, 'disable_post_dashboard_meta_box' ) );
             add_action( 'admin_menu', array( $this, 'disable_post_remove_menu' )  );
             add_filter( 'nav_menu_meta_box_object', array( $this, 'disable_post_nav_menu_meta_box_object' ) );
             add_action( 'wp_before_admin_bar_render', array( $this, 'disable_post_wp_before_admin_bar_render' ) );
         endif;
         
-        if( self::getConfig( 'disable_comment' ) ) :            
+        if( self::tFyAppConfig( 'disable_comment' ) ) :
             add_action( 'init', array( $this, 'disable_comment_init' ) );
             add_action( 'wp_widgets_init', array( $this, 'disable_comment_wp_widgets_init' ) );
             add_action( 'admin_menu', array( $this, 'disable_comment_remove_menu' ) );
             add_action( 'wp_before_admin_bar_render', array( $this, 'disable_comment_wp_before_admin_bar_render' ) );
         endif;
         
-        if( self::getConfig( 'disable_post_category' ) ) :
+        if( self::tFyAppConfig( 'disable_post_category' ) ) :
             add_action( 'init', array( $this, 'disable_post_category' ) );
         endif;
         
-        if( self::getConfig( 'disable_post_tag' ) ) :
+        if( self::tFyAppConfig( 'disable_post_tag' ) ) :
             add_action( 'init', array( $this, 'disable_post_tag' ) );
         endif;
     }
@@ -120,7 +120,7 @@ class AdminUI extends \tiFy\Environment\Component
      */
     final public function admin_bar_menu( $wp_admin_bar )
     {
-        if( ! $admin_bar_menu_logo = self::getConfig( 'admin_bar_menu_logo' ) ) :
+        if( ! $admin_bar_menu_logo = self::tFyAppConfig( 'admin_bar_menu_logo' ) ) :
             return;
         endif;
     
@@ -137,13 +137,14 @@ class AdminUI extends \tiFy\Environment\Component
 
     /**
      * Personnalisation du pied de page de l'interface d'administration
+     * 
      * @param string $text
      * 
      * @return string
      */
     final public function admin_footer_text( $text = '' )
     {
-        if( $admin_footer_text = self::getConfig( 'admin_footer_text' ) ) :
+        if( $admin_footer_text = self::tFyAppConfig( 'admin_footer_text' ) ) :
             $text = $admin_footer_text;
         endif;
     
@@ -166,7 +167,7 @@ class AdminUI extends \tiFy\Environment\Component
      */
     private function remove_menu()
     {
-        foreach( (array) self::getConfig( 'remove_menu' ) as $menu ) :
+        foreach( (array) self::tFyAppConfig( 'remove_menu' ) as $menu ) :
             switch( $menu ) :
                 default :
                     remove_menu_page( $menu ); 
@@ -210,13 +211,13 @@ class AdminUI extends \tiFy\Environment\Component
      */
     private function remove_support_post_type()
     {        
-        foreach( array_keys( self::getConfig() ) as $config ) :
+        foreach( array_keys( self::tFyAppConfig() ) as $config ) :
             if( ! preg_match( '/^remove_support_(.*)/', $config, $post_type ) )
                 continue;
             if( ! post_type_exists( $post_type[1] ) )
                 return;
             
-            foreach( (array) self::getConfig( $config ) as $support )
+            foreach( (array) self::tFyAppConfig( $config ) as $support )
                 remove_post_type_support( $post_type[1], $support );
         endforeach;
     }
@@ -226,7 +227,7 @@ class AdminUI extends \tiFy\Environment\Component
      */
     private function unregister_widget()
     {
-        foreach( (array) self::getConfig( 'unregister_widget' ) as $widget  ) :
+        foreach( (array) self::tFyAppConfig( 'unregister_widget' ) as $widget  ) :
             switch( $widget ) :
                 default :
                     unregister_widget( $widget );
@@ -261,7 +262,7 @@ class AdminUI extends \tiFy\Environment\Component
      */
     private function remove_dashboard_meta_box()
     {
-        foreach( (array) self::getConfig( 'remove_dashboard_meta_box' ) as $metabox => $context ) :
+        foreach( (array) self::tFyAppConfig( 'remove_dashboard_meta_box' ) as $metabox => $context ) :
             if( is_numeric( $metabox ) ) :
                 remove_meta_box( 'dashboard_'. $context, 'dashboard', false );
             elseif( is_string( $metabox ) ) :
@@ -275,7 +276,7 @@ class AdminUI extends \tiFy\Environment\Component
      */
     private function remove_meta_box_post_types()
     {
-        foreach( array_keys(self::getConfig() ) as $config ) :
+        foreach( array_keys(self::tFyAppConfig() ) as $config ) :
             if( ! preg_match( '/^remove_meta_box_(.*)/', $config, $post_type ) )
                 continue;
             if( ! post_type_exists( $post_type[1] ) )
@@ -283,7 +284,7 @@ class AdminUI extends \tiFy\Environment\Component
                 
             $post_type = $post_type[1];    
             
-            foreach( (array) self::getConfig( $config ) as $metabox => $context ) :
+            foreach( (array) self::tFyAppConfig( $config ) as $metabox => $context ) :
                 if( is_numeric( $metabox ) ) :
                     $_metabox = $context;
                     remove_meta_box( $context, $post_type, false );
@@ -312,7 +313,7 @@ class AdminUI extends \tiFy\Environment\Component
     {
         global $wp_admin_bar;
         
-        foreach( (array) self::getConfig( 'remove_admin_bar_menu' ) as $admin_bar_node ) :
+        foreach( (array) self::tFyAppConfig( 'remove_admin_bar_menu' ) as $admin_bar_node ) :
             $wp_admin_bar->remove_node( $admin_bar_node );
         endforeach;
     }
@@ -445,12 +446,12 @@ class AdminUI extends \tiFy\Environment\Component
     {
         global $wp_taxonomies;
         
-        foreach( array_keys( self::getConfig() ) as $config ) :
+        foreach( array_keys( self::tFyAppConfig() ) as $config ) :
             if( ! preg_match( '/^unregister_taxonomy_for_(.*)/', $config, $post_type ) )
                 continue;
             if( ! post_type_exists( $post_type[1] ) )
                 continue;
-            if( ! $taxonomies = self::getConfig( 'unregister_taxonomy_for_'. $post_type[1] ) )
+            if( ! $taxonomies = self::tFyAppConfig( 'unregister_taxonomy_for_'. $post_type[1] ) )
                 continue;
             foreach( $taxonomies as $taxonomy ) :
                 unregister_taxonomy_for_object_type( $taxonomy, $post_type[1] );

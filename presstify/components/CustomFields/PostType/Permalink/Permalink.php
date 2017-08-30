@@ -1,13 +1,11 @@
 <?php
 namespace tiFy\Components\CustomFields\PostType\Permalink;
 
-use tiFy\Environment\App;
-
-class Permalink extends App
+class Permalink extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'wp_ajax_tiFyComponentsCustomFieldsPostTypePermalink',
 		'wp_loaded',
 		'current_screen',

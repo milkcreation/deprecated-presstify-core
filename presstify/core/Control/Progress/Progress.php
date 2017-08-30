@@ -22,8 +22,8 @@ class Progress extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        wp_register_style( 'tify_control-progress', self::getUrl( get_class() ) .'/Progress.css', array(), '160605' );
-        wp_register_script( 'tify_control-progress', self::getUrl( get_class() ) .'/Progress.js', array( 'jquery-ui-widget' ), '160605', true );
+        wp_register_style( 'tify_control-progress', self::tFyAppUrl( get_class() ) .'/Progress.css', array(), '160605' );
+        wp_register_script( 'tify_control-progress', self::tFyAppUrl( get_class() ) .'/Progress.js', array( 'jquery-ui-widget' ), '160605', true );
     }
     
     /**

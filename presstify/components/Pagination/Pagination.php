@@ -7,7 +7,7 @@ class Pagination extends Component
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'init',
 		'wp_enqueue_scripts'	
 	);
@@ -17,10 +17,10 @@ class Pagination extends Component
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function init()
 	{
-		wp_register_style( 'tiFyPagination', self::getUrl() ."/theme/base.css", array(), '160318' );
+		wp_register_style( 'tiFyPagination', self::tFyAppUrl() ."/theme/base.css", array(), '160318' );
 		
-		if( $theme = self::getConfig( 'theme' ) ) :
-			wp_register_style( 'tiFyPagination-theme', self::getUrl() ."/theme/{$theme}.css", array( 'tiFyPagination' ), '160318' );
+		if( $theme = self::tFyAppConfig( 'theme' ) ) :
+			wp_register_style( 'tiFyPagination-theme', self::tFyAppUrl() ."/theme/{$theme}.css", array( 'tiFyPagination' ), '160318' );
 		endif;
 		
 	}
@@ -28,7 +28,7 @@ class Pagination extends Component
 	/* = MISE EN FILE DES SCRIPTS = */
 	final public function wp_enqueue_scripts()
 	{
-		if( $theme = self::getConfig( 'theme' ) ) :
+		if( $theme = self::tFyAppConfig( 'theme' ) ) :
 			wp_enqueue_style( 'tiFyPagination-theme' );
 		endif;
 	}
@@ -37,7 +37,7 @@ class Pagination extends Component
 	/** == Interface de navigation == **/
 	static function display( $args = false, $echo = true ) 
 	{	
-		$config = wp_parse_args( $args, self::getConfig() );
+		$config = wp_parse_args( $args, self::tFyAppConfig() );
 		extract( $config, EXTR_SKIP );
 		
 		if( ! $id )

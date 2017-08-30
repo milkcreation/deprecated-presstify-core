@@ -29,7 +29,7 @@ class TaxonomySelect extends \tiFy\Core\Taboox\Admin
 	/* = MISE EN FILE DE SCRIPTS = */
 	public function admin_enqueue_scripts()
 	{
-		wp_enqueue_style( 'tiFyTabooxPostTaxonomySelectAdmin', self::getUrl( get_class() ) .'/TaxonomySelect.css' );
+		wp_enqueue_style( 'tiFyTabooxPostTaxonomySelectAdmin', self::tFyAppUrl( get_class() ) .'/TaxonomySelect.css' );
 	}
 	
 	/* = FORMULAIRE DE SAISIE = */	

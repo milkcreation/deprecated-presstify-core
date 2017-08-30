@@ -5,11 +5,11 @@ class Smtp extends \tiFy\Environment\Component
 {
     /* = ARGUMENTS = */
     // Liste des actions à déclencher
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'phpmailer_init'
     );
     // Ordres de priorité d'exécution des actions
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'phpmailer_init' => 0    
     );
     
@@ -17,17 +17,17 @@ class Smtp extends \tiFy\Environment\Component
     /** == Modification des paramètres SMTP de PHPMailer == **/
     public function phpmailer_init( \PHPMailer $phpmailer )
     {
-        if( ! self::getConfig( 'username' ) )
+        if( ! self::tFyAppConfig( 'username' ) )
             return;
         
         $phpmailer->IsSMTP();
 
-        $phpmailer->Host         = self::getConfig( 'host' );
-        $phpmailer->Port         = self::getConfig( 'port' );
-        $phpmailer->Username     = self::getConfig( 'username' );
-        $phpmailer->Password     = self::getConfig( 'password' );
-        $phpmailer->SMTPAuth     = self::getConfig( 'smtp_auth' );
-        if( $smtp_secure = self::getConfig( 'smtp_secure' ) ) 
+        $phpmailer->Host         = self::tFyAppConfig( 'host' );
+        $phpmailer->Port         = self::tFyAppConfig( 'port' );
+        $phpmailer->Username     = self::tFyAppConfig( 'username' );
+        $phpmailer->Password     = self::tFyAppConfig( 'password' );
+        $phpmailer->SMTPAuth     = self::tFyAppConfig( 'smtp_auth' );
+        if( $smtp_secure = self::tFyAppConfig( 'smtp_secure' ) ) 
             $phpmailer->SMTPSecure = $smtp_secure; // ssl | tls
     }
 }

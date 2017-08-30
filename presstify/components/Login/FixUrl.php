@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\Login;
 
-class FixUrl extends \tiFy\Environment\App
+class FixUrl extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	protected $CallFilters	= array(

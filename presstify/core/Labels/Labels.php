@@ -7,12 +7,12 @@ class Labels extends Core
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'init',
 	);
 	
 	// Ordres de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array(
+	protected $tFyAppActionsPriority	= array(
 		'init'				=> 9
 	);
 	
@@ -23,7 +23,7 @@ class Labels extends Core
 	{
 		parent::__construct();		
 
-		foreach( (array) self::getConfig() as $id => $args ) :
+		foreach( (array) self::tFyAppConfig() as $id => $args ) :
 			self::Register( $id, $args );
 		endforeach;		
 	}

@@ -4,7 +4,7 @@ namespace tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\Form\Helpers;
 
-abstract class Factory extends \tiFy\Environment\App
+abstract class Factory extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Configuration

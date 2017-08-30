@@ -16,7 +16,7 @@ class Breadcrumb extends \tiFy\Environment\Component
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'init',
         'wp_enqueue_scripts'
     );
@@ -50,7 +50,7 @@ class Breadcrumb extends \tiFy\Environment\Component
      */
     final public function wp_enqueue_scripts()
     {    
-        if( $theme = self::getConfig( 'theme' ) )
+        if( $theme = self::tFyAppConfig( 'theme' ) )
             wp_enqueue_style( 'tiFyComponentBreadcrumb' );
     }
 
@@ -66,7 +66,7 @@ class Breadcrumb extends \tiFy\Environment\Component
         
         $Template = self::getController( 'template' );
         
-        $config = wp_parse_args( $args, self::getConfig() );
+        $config = wp_parse_args( $args, self::tFyAppConfig() );
         extract( $config, EXTR_SKIP );
         
         if( empty( $id )  )

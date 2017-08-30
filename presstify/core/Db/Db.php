@@ -7,7 +7,7 @@ class Db extends \tiFy\Environment\Core
      * Liste des actions à déclencher
      * @var array
      */
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'init'
     );
     
@@ -15,7 +15,7 @@ class Db extends \tiFy\Environment\Core
      * Ordre de priorité d'exécution des actions
      * @var array
      */
-    protected $CallActionsPriorityMap    = array(
+    protected $tFyAppActionsPriority    = array(
         'init'                => 9
     );
     
@@ -38,7 +38,7 @@ class Db extends \tiFy\Environment\Core
     {
         parent::__construct();
                 
-        foreach( (array) self::getConfig() as $id => $args ) :
+        foreach( (array) self::tFyAppConfig() as $id => $args ) :
             self::register( $id, $args );
         endforeach;
     }

@@ -1,9 +1,11 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model;
 
+use tiFy\Apps;
+
 abstract class Form
 {
-	use \tiFy\Environment\Traits\Path;
+	use \tiFy\Core\Templates\Traits\Factory;
 	use \tiFy\Core\Templates\Traits\Form\Actions;
 	use \tiFy\Core\Templates\Traits\Form\Notices;
 	use \tiFy\Core\Templates\Traits\Form\Params;
@@ -48,8 +50,11 @@ abstract class Form
 	// Élément à éditer
 	protected $item					= null;
 	
-	/* = CONSTRUCTEUR = */
-	public function __construct(){}
+    /* = CONSTRUCTEUR = */
+    public function __construct()
+    {
+        Apps::register($this);    
+    }
 	
 	/* = METHODES MAGIQUES = */
 	/** == Appel des méthodes dynamiques == **/

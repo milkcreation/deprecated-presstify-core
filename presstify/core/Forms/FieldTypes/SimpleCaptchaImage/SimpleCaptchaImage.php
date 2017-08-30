@@ -24,7 +24,7 @@ class SimpleCaptchaImage extends \tiFy\Core\Forms\FieldTypes\Factory
 		// Options par défaut
 		$this->Defaults = array(
 			// Chemins vers l'image relatif ou absolue
-			'imagepath'		=> self::getDirname() .'/texture.jpg',
+			'imagepath'		=> self::tFyAppDirname() .'/texture.jpg',
 			// Couleur du texte (hexadecimal ou array rgb)	
 			'textcolor'		=> '#CCC', 	
 		);
@@ -169,7 +169,7 @@ class SimpleCaptchaImage extends \tiFy\Core\Forms\FieldTypes\Factory
 		
 		// Alternative imagettftext (Serveur MacOSX)
 		if( function_exists('imagettftext') ) :
-			$text 		= imagettftext( $img, 16, rand(-10,10), rand(10,30), rand(25,35), $text_color, self::getDirname() .'/fonts/courbd.ttf', $image_text );
+			$text 		= imagettftext( $img, 16, rand(-10,10), rand(10,30), rand(25,35), $text_color, self::tFyAppDirname() .'/fonts/courbd.ttf', $image_text );
 		else :
 			$font 		= imageloadfont( "./fonts/DaveThin_8x16_BE.gdf" );
 			$text 		= imagestring ( $img, $font, rand(10,30), rand(25,35), $image_text, $text_color );

@@ -22,12 +22,12 @@ class CustomType extends \tiFy\Environment\Core
         
         // Traitement des types personnalisés passés en arguments
         // Taxonomie
-        foreach( (array) self::getConfig( 'taxonomy' ) as $taxonomy => $args ) :
+        foreach( (array) self::tFyAppConfig( 'taxonomy' ) as $taxonomy => $args ) :
             self::registerTaxonomy( $taxonomy, $args );
         endforeach;
         
         // Type de post        
-        foreach( (array) self::getConfig( 'post_type' ) as $post_type => $args )
+        foreach( (array) self::tFyAppConfig( 'post_type' ) as $post_type => $args )
             self::registerPostType( $post_type, $args );        
             
         add_action( 'init', array( $this, 'register_taxonomy' ), 0 );

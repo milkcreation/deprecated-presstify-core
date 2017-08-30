@@ -3,14 +3,14 @@ namespace tiFy;
 
 use tiFy\tiFy;
 
-class Languages extends \tiFy\Environment\App
+class Languages extends \tiFy\App\Factory
 {
     /**
      * Liste des actions à déclencher
      * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'plugins_loaded'
     );
     

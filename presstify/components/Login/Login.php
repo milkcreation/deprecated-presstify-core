@@ -5,7 +5,7 @@ final class Login extends \tiFy\Environment\Component
 {
     /* = ARGUMENTS = */
     // Liste des Actions à déclencher
-    protected $CallActions                = array(
+    protected $tFyAppActions                = array(
         'init'
     );
     

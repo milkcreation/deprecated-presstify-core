@@ -15,6 +15,6 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\Table
 	{
         parent::_admin_enqueue_scripts();
         
-        wp_enqueue_style( 'tiFyTemplatesAdminListTable', self::getUrl( get_class() ) .'/ListTable.css', array(), 160617 ); 
+        wp_enqueue_style( 'tiFyTemplatesAdminListTable', self::tFyAppUrl( get_class() ) .'/ListTable.css', array(), 160617 ); 
     }    
 }

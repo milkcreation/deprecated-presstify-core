@@ -34,7 +34,7 @@ class Taboox extends Core
 	public static $Screen = null;	
 		
 	// Actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'after_setup_tify',
 		'init',
 		'admin_init',	
@@ -45,7 +45,7 @@ class Taboox extends Core
 	);
 	
 	// Ordre de priorité d'exécution des actions
-	protected $CallActionsPriorityMap	= array( 
+	protected $tFyAppActionsPriority	= array( 
 		'after_setup_tify'	=> 11,	
 		'init' 				=> 25,
 		'admin_init'		=> 25,
@@ -57,7 +57,7 @@ class Taboox extends Core
 		//parent::__construct();
 		
 		// Traitement des paramètres
-		foreach( (array) self::getConfig() as $env => $hooknames ) :
+		foreach( (array) self::tFyAppConfig() as $env => $hooknames ) :
 			if( ! in_array( $env, array( 'post', 'taxonomy', 'user', 'option' ) ) )
 				continue;
 			foreach( (array) $hooknames as $hookname => $args ) :

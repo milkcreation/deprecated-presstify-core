@@ -1,13 +1,13 @@
 <?php
 namespace tiFy\Components\DevTools\Tools\RestrictedAccess;
 
-use tiFy\Environment\App;
+use tiFy\App\Factory;
 
 class RestrictedAccess extends App
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'template_redirect'
 	);
 	

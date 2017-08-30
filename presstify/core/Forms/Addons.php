@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Forms;
 
-class Addons extends \tiFy\Environment\App
+class Addons extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Configuration

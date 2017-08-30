@@ -4,7 +4,7 @@ namespace tiFy\Core\Forms\Addons;
 use tiFy\Core\Forms\Addons;
 use tiFy\Core\Forms\Form\Helpers;
 
-class Factory extends \tiFy\Environment\App
+class Factory extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Configuration

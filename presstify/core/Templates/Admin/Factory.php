@@ -6,7 +6,7 @@ class Factory extends \tiFy\Core\Templates\Factory
     /**
      * Liste des actions à déclencher
      */
-    protected $CallActions                    = array(
+    protected $tFyAppActions                    = array(
         'init',
         'admin_init',
         'current_screen'    

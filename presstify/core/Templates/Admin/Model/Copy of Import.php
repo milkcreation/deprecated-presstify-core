@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model;
 
-class Import extends \tiFy\Environment\App
+class Import extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	public	$table,

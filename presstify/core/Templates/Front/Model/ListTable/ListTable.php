@@ -11,6 +11,6 @@ class ListTable extends \tiFy\Core\Templates\Front\Model\Table
      */
     public function wp_enqueue_scripts()
     {
-        wp_enqueue_style( 'tiFy\Core\Templates\Front\Model\ListTable\ListTable', self::getUrl( get_class() ) .'/ListTable.css', array(), 161214 );
+        wp_enqueue_style( 'tiFy\Core\Templates\Front\Model\ListTable\ListTable', self::tFyAppUrl( get_class() ) .'/ListTable.css', array(), 161214 );
     }
 }

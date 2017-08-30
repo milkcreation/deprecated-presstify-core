@@ -9,7 +9,7 @@ class PdfViewer extends \tiFy\Environment\Component
 	 * Liste des Actions à déclencher
 	 * @var array
 	 */
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'init',
 		'wp_enqueue_scripts',
 	    'wp_ajax_tify_components_pdfviewer_modal',
@@ -19,7 +19,7 @@ class PdfViewer extends \tiFy\Environment\Component
      * Cartographie des méthodes de rappel des actions
      * @var array
      */
-    protected $CallActionsFunctionsMap    = array(
+    protected $tFyAppActionsMethods    = array(
         'wp_ajax_tify_components_pdfviewer_modal'           => 'wp_ajax',
 		'wp_ajax_nopriv_tify_components_pdfviewer_modal'    => 'wp_ajax'
     );
@@ -94,14 +94,14 @@ class PdfViewer extends \tiFy\Environment\Component
 		 */
 		$worker_src = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/1.7.225/pdf.worker.min.js';
 		wp_register_script( 'pdf-js', '//cdnjs.cloudflare.com/ajax/libs/pdf.js/1.7.225/pdf.min.js', array(), '1.7.225', true );
-		wp_register_style( 'tiFyComponentsPdfViewer', self::getUrl() .'/PdfViewer.css', array( 'dashicons' ), '170321' );
-		wp_register_script( 'tiFyComponentsPdfViewer', self::getUrl() .'/PdfViewer.js', array( 'jquery', 'jquery-ui-widget', 'pdf-js' ), '170321', true );
+		wp_register_style( 'tiFyComponentsPdfViewer', self::tFyAppUrl() .'/PdfViewer.css', array( 'dashicons' ), '170321' );
+		wp_register_script( 'tiFyComponentsPdfViewer', self::tFyAppUrl() .'/PdfViewer.js', array( 'jquery', 'jquery-ui-widget', 'pdf-js' ), '170321', true );
 		wp_localize_script( 'tiFyComponentsPdfViewer', 'tiFyComponentsPdfViewer', array( 'workerSrc' => $worker_src ) );
 		/**
 		 * Modal
 		 */
-		wp_register_style( 'tiFyComponentsPdfViewerModal', self::getUrl() .'/Modal.css', array( 'tiFyComponentsPdfViewer' ), '170615' );
-		wp_register_script( 'tiFyComponentsPdfViewerModal', self::getUrl() .'/Modal.js', array( 'tiFyComponentsPdfViewer' ), '170615', true );
+		wp_register_style( 'tiFyComponentsPdfViewerModal', self::tFyAppUrl() .'/Modal.css', array( 'tiFyComponentsPdfViewer' ), '170615' );
+		wp_register_script( 'tiFyComponentsPdfViewerModal', self::tFyAppUrl() .'/Modal.js', array( 'tiFyComponentsPdfViewer' ), '170615', true );
 	}
 	
 	/**
@@ -110,10 +110,10 @@ class PdfViewer extends \tiFy\Environment\Component
 	final public function wp_enqueue_scripts()
 	{
 		// Bypass
-		if( ! self::getConfig( 'enqueue_scripts' ) )
+		if( ! self::tFyAppConfig( 'enqueue_scripts' ) )
 			return;
 		
-		if( self::getConfig( 'modal' ) ) :
+		if( self::tFyAppConfig( 'modal' ) ) :
 		    wp_enqueue_style( 'tiFyComponentsPdfViewerModal' );
 		    wp_enqueue_script( 'tiFyComponentsPdfViewerModal' );
 		else :

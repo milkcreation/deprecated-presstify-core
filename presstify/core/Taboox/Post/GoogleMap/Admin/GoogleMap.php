@@ -109,7 +109,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
             'main'  => array(
                 'label' => __('Marqueur principal', 'tify' ),
 				'icon' 	=> array(
-				    'src'       => self::getDirname(get_class($this)).'/markers/marker.svg',
+				    'src'       => self::tFyAppDirname(get_class($this)).'/markers/marker.svg',
 				    'anchor'    => 'BOTTOM_CENTER'
 				),
 				'max'	=> 1,
@@ -118,7 +118,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
             'poi'  => array(
                 'label' => __("Point d'intérêt", 'tify' ),
 				'icon' 	=> array(
-				    'src'       => self::getDirname(get_class($this)).'/markers/flag.svg',
+				    'src'       => self::tFyAppDirname(get_class($this)).'/markers/flag.svg',
 				    'anchor'    => 'BOTTOM_LEFT'
                 ),
 				'max'	=> 99,
@@ -461,7 +461,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
 		        ),
 		        'header'      => array(
 		            'title'   => __( 'Nouveau marqueur', 'tify' ),
-		            'icon'    => \tiFy\Lib\Utils::get_svg(self::getDirname().'/markers/marker.svg', false)
+		            'icon'    => \tiFy\Lib\Utils::get_svg(self::tFyAppDirname().'/markers/marker.svg', false)
 		        ),
 		        'nodes'       => array(
 		            'marker'  => array(

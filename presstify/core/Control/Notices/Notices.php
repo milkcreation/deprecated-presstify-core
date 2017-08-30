@@ -21,8 +21,8 @@ class Notices extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-notices', static::getUrl( get_class() ) ."/Notices.css", array(), 170130 );
-		wp_register_script( 'tify_control-notices', static::getUrl( get_class() ) ."/Notices.js", array( 'jquery' ), 170130 );
+		wp_register_style( 'tify_control-notices', static::tFyAppUrl( get_class() ) ."/Notices.css", array(), 170130 );
+		wp_register_script( 'tify_control-notices', static::tFyAppUrl( get_class() ) ."/Notices.js", array( 'jquery' ), 170130 );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

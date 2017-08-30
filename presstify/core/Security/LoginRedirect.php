@@ -44,7 +44,7 @@ class LoginRedirect
      */
     public function __construct()
     {        
-        self::$Options = Security::getConfig( 'login_redirect' );
+        self::$Options = Security::tFyAppConfig( 'login_redirect' );
         
         if( ! self::$Options['enabled'] )
             return;

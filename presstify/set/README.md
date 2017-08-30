@@ -53,7 +53,7 @@ function my_tify_set_load()
     );
 }
 ?>
-
+```
 
 ## Configuration générale
 
@@ -74,17 +74,15 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Params;
+use tiFy\Set;
 
-add_action( 'tify_params_set', 'my_tify_params_set' );
-function my_tify_params_set()
+add_action( 'tify_set_register', 'my_tify_set_register' );
+function my_tify_set_register()
 {
-    return Params::set(
-        'set', 
+    return Set::register(
         '%set_id%',
         array(
-        ), 
-        true
+        )
     );
 }
 ?>
@@ -98,7 +96,7 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 
 ```php
 <?php
-namespace MyNamespace\App\Components\AdminUI
+namespace MyNamespace\App\Components\%set_id%
 
 class Config extends \tiFy\Abstracts\Config
 {

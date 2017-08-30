@@ -11,7 +11,7 @@ class HolderImage extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-holder_image', self::getUrl() ."/HolderImage.css", array(), 160714 );
+		wp_register_style( 'tify_control-holder_image', self::tFyAppUrl() ."/HolderImage.css", array(), 160714 );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

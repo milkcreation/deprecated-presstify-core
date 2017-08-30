@@ -1,14 +1,12 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\Dashicons;
 
-use tiFy\Environment\App;
-
-class Dashicons extends App
+class Dashicons extends \tiFy\App\Factory
 {	
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/
 	// Liste des actions à déclencher
-	protected $CallActions				= array( 
+	protected $tFyAppActions				= array( 
 		'init',
 		'admin_init',
 		'admin_enqueue_scripts',

@@ -10,6 +10,5 @@ class Helpers
         require tiFy::$AbsDir . '/bin/helpers/Components.php';
         require tiFy::$AbsDir . '/bin/helpers/Core.php';
         require tiFy::$AbsDir . '/bin/helpers/Lib.php';
-        require tiFy::$AbsDir . '/bin/helpers/Deprecated.php';
     }
 }

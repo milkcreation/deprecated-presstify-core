@@ -33,8 +33,8 @@ class ColorPalette extends \tiFy\Core\Taboox\Option\Admin
      */
     public function admin_enqueue_scripts()
     {
-        wp_enqueue_style( 'tify_taboox-color_palette', self::getUrl( get_class() ) ."/ColorPalette.css", array( 'tify_control-colorpicker' ), '150325' );
-        wp_enqueue_script( 'tify_taboox-color_palette', self::getUrl( get_class() ) ."/ColorPalette.js", array( 'jquery', 'jquery-ui-sortable', 'tify_control-colorpicker' ), '150325', true );
+        wp_enqueue_style( 'tify_taboox-color_palette', self::tFyAppUrl( get_class() ) ."/ColorPalette.css", array( 'tify_control-colorpicker' ), '150325' );
+        wp_enqueue_script( 'tify_taboox-color_palette', self::tFyAppUrl( get_class() ) ."/ColorPalette.js", array( 'jquery', 'jquery-ui-sortable', 'tify_control-colorpicker' ), '150325', true );
     }
     
     /**

@@ -20,7 +20,7 @@ class Api extends \tiFy\Environment\Component
     private static $Allowed         = array(
         //'google',
         //'google-analytics',
-        'google-map',
+        //'google-map',
         'recaptcha',
         'youtube',
         'vimeo',
@@ -41,7 +41,7 @@ class Api extends \tiFy\Environment\Component
         parent::__construct();
 
         // Déclaration
-        if( $apis = self::getConfig() ) :
+        if( $apis = self::tFyAppConfig() ) :
             foreach( $apis as $api => $attrs ) :
                 self::register( $api, $attrs );
             endforeach;

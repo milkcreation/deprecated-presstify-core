@@ -21,13 +21,13 @@ class NavMenu extends \tiFy\Environment\Component
         parent::__construct();
 
         // Déclaration des menus
-        foreach( (array) self::getConfig() as $id => $attrs ) :
+        foreach( (array) self::tFyAppConfig() as $id => $attrs ) :
             self::register( $id, $attrs );
         endforeach;
         
         do_action( 'tify_register_nav_menu' );
 
-        require_once self::getDirname() .'/Helpers.php';
+        require_once self::tFyAppDirname() .'/Helpers.php';
     }
    
     /**

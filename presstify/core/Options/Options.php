@@ -27,14 +27,14 @@ class Options extends Core
 	protected $Cap						= 'manage_options';
 	
 	// Actions à déclencher
-	protected $CallActions				= array(
+	protected $tFyAppActions				= array(
 		'init',
 		'admin_menu',
 		'admin_bar_menu'
 	);
 	
 	// Ordre de priorité d'exécution des actions valide
-	protected $CallActionsPriorityMap	= array(
+	protected $tFyAppActionsPriority	= array(
 		'init'					=> 15,
 		'after_setup_tify' 		=> 98
 	);		
@@ -44,7 +44,7 @@ class Options extends Core
 	{		
 		// Traitement des paramètres
 		/// Déclaration des sections de boîtes à onglets
-		foreach( (array) self::getConfig( 'nodes' ) as $node_id => $args ) :
+		foreach( (array) self::tFyAppConfig( 'nodes' ) as $node_id => $args ) :
 			$args['id'] = $node_id;				
 			$this->registerNode( $args );
 		endforeach;

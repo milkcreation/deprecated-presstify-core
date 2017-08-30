@@ -38,20 +38,18 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Params;
+use tiFy\Components;
 
-add_action( 'tify_params_set', 'my_tify_params_set' );
-function my_tify_params_set()
+add_action('tify_components_register', 'my_tify_components_register');
+function my_tify_components_register()
 {
-    return Params::set(
-        'components', 
+    return Components::register(
         'Api',
         array(
             'google-map'     => array( 
                 'key'           => '1234567890ABCDEF'
             )
-        ), 
-        true
+        )
     );
 }
 ?>
@@ -67,7 +65,7 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 <?php
 namespace MyNamespace\App\Components\Api
 
-class Config extends \tiFy\Abstracts\Config
+class Config extends \tiFy\App\Config
 {
     public function sets( $attrs )
     {

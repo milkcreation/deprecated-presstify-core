@@ -1,20 +1,18 @@
 <?php
 namespace tiFy\Components\InfiniteScroll;
 
-use tiFy\Environment\App;
-
-class InfiniteScroll extends App
+class InfiniteScroll extends \tiFy\App\Factory
 {
 	/* = ARGUMENTS = */
 	// Actions
 	/// Liste des actions à déclencher
-	protected $CallActions				= array( 
+	protected $tFyAppActions				= array( 
 		'wp_enqueue_scripts',
 		'wp_ajax_tify_infinite_scroll',
 		'wp_ajax_nopriv_tify_infinite_scroll'
 	);
 	/// Fonctions de rappel des actions
-	protected $CallActionsFunctionsMap	= array(
+	protected $tFyAppActionsMethods	= array(
 		'wp_ajax_tify_infinite_scroll' 			=> 'wp_ajax',
 		'wp_ajax_nopriv_tify_infinite_scroll'	=> 'wp_ajax'
 	);
@@ -35,7 +33,7 @@ class InfiniteScroll extends App
 	/** == Initialisation globale == **/
 	public function wp_enqueue_scripts()
 	{
-		wp_enqueue_script( 'tiFyInfiniteScroll', self::getUrl( get_class() ) .'/InfiniteScroll.js', array( 'jquery' ), 170328, true );
+		wp_enqueue_script( 'tiFyInfiniteScroll', self::tFyAppUrl( get_class() ) .'/InfiniteScroll.js', array( 'jquery' ), 170328, true );
 	}
 	
 	/** == Chargement des post == **/

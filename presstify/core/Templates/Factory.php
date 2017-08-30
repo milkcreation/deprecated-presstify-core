@@ -4,7 +4,7 @@ namespace tiFy\Core\Templates;
 use tiFy\Core\Db\Db;
 use tiFy\Core\Labels\Labels;
 
-abstract class Factory extends \tiFy\Environment\App
+abstract class Factory extends \tiFy\App\Factory
 {
     /**
      * Contexte d'execution

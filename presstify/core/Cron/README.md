@@ -52,13 +52,12 @@ Dans une fonction ou un objet
 
 ```php
 <?php
-use tiFy\Params;
+use tiFy\Core;
 
-add_action( 'tify_params_set', 'my_tify_params_set' );
-function my_tify_params_set()
+add_action( 'tify_core_register', 'my_tify_core_register' );
+function my_tify_core_register()
 {
-    return Params::set(
-        'core', 
+    return Core::register(
         'Cron',
         array(
             '%task_id%'        => array(
@@ -79,8 +78,7 @@ function my_tify_params_set()
                 // Attributs de journalisation des données
                 'log'           => true
             )
-        ), 
-        true
+        )
     );
 }
 ?>
@@ -96,9 +94,9 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 <?php
 namespace MyNamespace\App\Core\Cron
 
-class Config extends \tiFy\Abstracts\Config
+class Config extends \tiFy\App\Config
 {
-    public function set_%task_id%( $attrs = array() )
+    public function set_%task_id%($attrs = array())
     {
         // Identifiant unique d'accorche de la tâche planifiée
         $attrs['hook'] = '',
@@ -176,3 +174,5 @@ Lancer l'exécution de la tâche depuis une autre console
 ```bash
 $ curl https://port01.tigreblanc.fr/sedea-pro.fr/wp-cron.php?tFy_doing_cron=%task_id%
 ```
+
+

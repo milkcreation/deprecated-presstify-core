@@ -18,7 +18,7 @@ class Update extends \tiFy\Environment\Core
      * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected $CallActions              = array(
+    protected $tFyAppActions              = array(
         'init'
     ); 
     
