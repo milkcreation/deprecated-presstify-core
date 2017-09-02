@@ -22,18 +22,23 @@ class CustomType extends \tiFy\Environment\Core
         
         // Traitement des types personnalisés passés en arguments
         // Taxonomie
-        foreach( (array) self::tFyAppConfig( 'taxonomy' ) as $taxonomy => $args ) :
-            self::registerTaxonomy( $taxonomy, $args );
-        endforeach;
+        if (!empty(self::tFyAppConfig('taxonomy'))) :
+            foreach ((array) self::tFyAppConfig('taxonomy') as $taxonomy => $args) :
+                self::registerTaxonomy($taxonomy, $args);
+            endforeach;
+        endif;
         
-        // Type de post        
-        foreach( (array) self::tFyAppConfig( 'post_type' ) as $post_type => $args )
-            self::registerPostType( $post_type, $args );        
+        // Type de post
+        if (!empty(self::tFyAppConfig('post_type'))) :
+            foreach ((array) self::tFyAppConfig('post_type') as $post_type => $args) :
+                self::registerPostType($post_type, $args);
+            endforeach;
+        endif;
             
-        add_action( 'init', array( $this, 'register_taxonomy' ), 0 );
-        add_action( 'init', array( $this, 'register_post_type' ), 0 );
-        add_action( 'init', array( $this, 'register_taxonomy_for_object_type' ), 25 );
-        add_action( 'admin_init', array( $this, 'create_initial_terms' ) );
+        add_action('init', array($this, 'register_taxonomy'), 0);
+        add_action('init', array($this, 'register_post_type'), 0);
+        add_action('init', array($this, 'register_taxonomy_for_object_type'), 25);
+        add_action('admin_init', array($this, 'create_initial_terms'), 10);
     }
     
     /**

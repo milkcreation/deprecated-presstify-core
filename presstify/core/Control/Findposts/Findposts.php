@@ -4,12 +4,14 @@ namespace tiFy\Core\Control\Findposts;
 class Findposts extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
+     * Identifiant de qualification de la classe
+     * @var string
      */
     protected $ID = 'findposts';
     
     /**
      * Instance
+     * @var int
      */
     protected static $Instance = 0;
 
@@ -18,35 +20,41 @@ class Findposts extends \tiFy\Core\Control\Factory
      */
     /**
      * Initialisation globale
+     * 
+     * @return void
      */
     final public function init()
     {
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tify_control-findposts', self::getAssetsUrl( get_class() ) .'/Findposts'. $min .'.css', array(), '170530' );
-        wp_register_script( 'tify_control-findposts', self::getAssetsUrl( get_class() ) .'/Findposts'. $min .'.js', array( 'media' ), '170530' );
+        wp_register_style('tify_control-findposts', self::getAssetsUrl(get_class()) . '/Findposts'. $min .'.css', array(), '170530');
+        wp_register_script('tify_control-findposts', self::getAssetsUrl(get_class()) . '/Findposts'. $min .'.js', array('media'), '170530');
         
-        add_action( 'wp_ajax_tify_control_findposts', array( $this, 'wp_ajax' ) );
-        add_action( 'wp_ajax_nopriv_tify_control_findposts', array( $this, 'wp_ajax' ) );
+        add_action('wp_ajax_tify_control_findposts', array($this, 'wp_ajax'));
+        add_action('wp_ajax_nopriv_tify_control_findposts', array($this, 'wp_ajax'));
     }
 
     /**
      * Mise en file des scripts
+     * 
+     * @return void
      */
-    public function enqueue_scripts()
+    public static function enqueue_scripts()
     {        
-        wp_enqueue_style( 'tify_control-findposts' );
-        wp_enqueue_script( 'tify_control-findposts' );
+        wp_enqueue_style('tify_control-findposts');
+        wp_enqueue_script('tify_control-findposts');
     }
     
     /**
      * Récupération de la reponse via Ajax
+     * 
+     * @return \wp_send_json_error()|wp_send_json_success()
      */
     public function wp_ajax() 
     {
-        check_ajax_referer( 'find-posts' );
+        check_ajax_referer('find-posts');
     
-        $post_types = get_post_types( array( 'public' => true ), 'objects' );        
+        $post_types = get_post_types(array('public' => true), 'objects');
         unset( $args['post_type']['attachment'] );
         
         $s = wp_unslash( $_POST['ps'] );
@@ -102,7 +110,7 @@ class Findposts extends \tiFy\Core\Control\Factory
     
         $html .= '</tbody></table>';
     
-        wp_send_json_success( $html );
+        wp_send_json_success($html);
     }
 
     /**
@@ -110,8 +118,25 @@ class Findposts extends \tiFy\Core\Control\Factory
      */
     /**
      * Affichage du champ
+     * 
+     * @param array $args {
+     *      Attributs d'affichage du controleur
+     *      
+     *      @param string $id Identifiant de qualification
+     *      @param string $class Classe HTML du conteneur
+     *      @param string $name Nom du champ d'enregistrement
+     *      @param int $value ID de l'attachment.
+     *      @param bool $readonly Activation de l'administrabilité du champs. Lecture seule par défaut.
+     *      @param string $placeholder Texte d'aide à la saisie.
+     *      @param array $attrs Attributs HTML du champ.
+     *      @param string $ajax_action Action ajax de traitement de la requête.
+     *      @param array $query_args Argument de requête @see \WP_Query
+     *  }
+     *  @param bool $echo Activation de l'ecriture de l'affichage
+     * 
+     * @return string
      */
-    public static function display( $args = array(), $echo = true )
+    public static function display($args = array(), $echo = true)
     {        
         $defaults = array(
             'id'                    => 'tiFyControlFindposts-'. self::$Instance,

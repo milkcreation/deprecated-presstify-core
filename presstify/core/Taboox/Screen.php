@@ -34,8 +34,8 @@ class Screen extends \tiFy\App\Factory
 	/* = RECUPÉRATION DE DONNÉES = */
 	/** == Récupération d'une section de boîte à onglets selon son ID == **/
 	private function getNode( $id )
-	{
-		if( isset( $this->Nodes[ $id ] ) )
+	{	    
+	    if( isset( $this->Nodes[ $id ] ) )
 			return $this->Nodes[ $id ];
 	}
 		
@@ -175,6 +175,7 @@ class Screen extends \tiFy\App\Factory
 			$class = 'nav nav-tabs';			
 		
 		$output  =	"<ul class=\"{$class}\">";
+
 		foreach( $nodes as $id ) :
 			if( ! $node = $this->getNode( $id ) )
 				continue;				
@@ -202,7 +203,7 @@ class Screen extends \tiFy\App\Factory
 		$output .=	"<div class=\"tab-content\">";
 		foreach( $nodes as $id ) :	
 			$node = $this->getNode( $id );
-			
+
 			$output .= "<div role=\"tabpanel\" class=\"tab-pane ". ( $id === $this->ActiveNodeID ? 'active' : '' ) ."\" id=\"tify_taboox-node-{$id}\">";
 			if( empty( $node['cb'] ) ) :
 				$output .= 	"<div class=\"tabbable tabs-top\">";							

@@ -42,17 +42,23 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 
 ```php
 <?php
-namespace MyNamespace\App\Components\%component_id%
+namespace MyNamespace\Components\%component_id%
 
 class Config extends \tiFy\App\Config
 {
-    public function sets()
+    /**
+     * Traitement global des attributs de configuration
+     * 
+     * @param array $attrs
+     * 
+     * @return array|mixed
+     */
+    public function sets($attrs = array())
     {
         return array(
-            'param_1'	=> '',
-            'param_2'	=> ''
+            'param_1'   => '',
+            'param_2'   => ''
         );
     }
 }
-?>
 ```

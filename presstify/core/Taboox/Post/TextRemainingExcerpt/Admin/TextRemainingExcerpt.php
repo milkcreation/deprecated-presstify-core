@@ -20,7 +20,7 @@ class TextRemainingExcerpt extends \tiFy\Core\Taboox\Admin
     /* = MISE EN FILE DES SCRIPTS = */
     public function admin_enqueue_scripts()
     {
-        tify_control_enqueue( 'text_remaining' );       
+        tify_control_enqueue('text_remaining');
     }
     
     /* = FORMULAIRE DE SAISIE = */  
