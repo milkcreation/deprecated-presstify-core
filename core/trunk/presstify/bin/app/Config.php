@@ -10,7 +10,7 @@ abstract class Config
      * 
      * @return array|mixed
      */   
-    final public function filter( $attrs = array() )
+    final public function filter($attrs = array())
     {
         // Traitement global des attributs de configuration
         $attrs = (array) call_user_func( array( $this, 'sets' ), $attrs );
@@ -34,7 +34,7 @@ abstract class Config
      * 
      * @return array|mixed
      */
-    public function sets( $attrs = array() )
+    public function sets($attrs = array())
     {
         return $attrs;
     }

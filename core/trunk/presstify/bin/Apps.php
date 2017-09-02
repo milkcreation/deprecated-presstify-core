@@ -239,8 +239,8 @@ final class Apps
      * @param array $attrs {
      *      Attributs de paramétrage de l'applicatif
      *      
-     *      @param string $Id Identifiant qualificatif de l'applicatif
-     *      @param array $Config Attributs de configuration
+     *      @var string $Id Identifiant qualificatif de l'applicatif
+     *      @var array $Config Attributs de configuration
      * }
      * 
      * @return NULL|mixed
@@ -323,7 +323,7 @@ final class Apps
      * Récupération d'une liste applicatifs déclarés selon une liste de critères relatif aux attributs
      * 
      * @param array {
-     *      @param string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
+     *      @var string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
      * }
      * 
      */

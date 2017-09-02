@@ -97,7 +97,7 @@ abstract class Factory
      * @param object|string classname
      * 
      * @return array {
-     *      @var NULL|string $Id Identifiant de qualification de l'applicatif
+     *      @var null|string $Id Identifiant de qualification de l'applicatif
      *      @var string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
      *      @var \ReflectionClass $ReflectionClass Informations sur la classe
      *      @var string $ClassName Nom complet et unique de la classe (espace de nom inclus)
@@ -135,6 +135,18 @@ abstract class Factory
         
         if(isset($attrs[$attr]))
             return $attrs[$attr];
+    }
+    
+    /**
+     * Récupération du nom complet de la classe (Espace de nom inclus)
+     * 
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * 
+     * @return NULL|string
+     */
+    final public static function tFyAppClassname($classname = null)
+    {
+        return self::tFyAppAttr('ClassName', $classname);
     }
     
     /**
@@ -254,8 +266,10 @@ abstract class Factory
         // Surcharge de configuration "Dynamique"
         if (in_array($attrs['Type'], array('Core', 'Components', 'Plugins', 'Set' ))) :
             foreach((array) StdClass::getOverrideNamespaceList() as $namespace) :
-                $overrideClass = $namespace ."\\". $attrs['Type'] ."\\Config";
-                $abstractClass = "\\tiFy\\App\\Config"; 
+                $overrideNamespace = preg_replace('#\\\?tiFy\\\#', '', $attrs['Namespace']);
+                $overrideClass = $namespace ."\\". $overrideNamespace ."\\Config";
+                $abstractClass = "\\tiFy\\App\\Config";
+                
                 if(class_exists($overrideClass) && is_subclass_of($overrideClass, $abstractClass)) :
                     $overrideConf = new $overrideClass;
                     $Config = $overrideConf->filter($Config);

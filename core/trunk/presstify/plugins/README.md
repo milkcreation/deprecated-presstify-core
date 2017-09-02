@@ -1,12 +1,12 @@
-# Composants Natifs
+# Extensions
 
 ## Déclaration et Configuration générale
 
 ### METHODE 1 | Intégrateur - priorité basse
 
-Déclaration et Configuration "semi-dynamique" YAML 
+Configuration "semi-dynamique" YAML 
 Créer un fichier de configuration .yml dans votre dossier de configuration.
-/config/core/%core_id%.yml
+/config/plugins/%plugin_id%.yml
 
 ```yml
 param_1 :   ''
@@ -15,17 +15,17 @@ param_2 :   ''
 
 ### METHODE 2 | Intégrateur/Développeur - priorité moyenne
 
-Déclaration et Configuration "dynamique" PHP 
+Configuration "dynamique" PHP 
 Dans une fonction ou un objet
 
 ```php
-use tiFy\Core;
+use tiFy\Plugins;
 
-add_action('tify_core_register', 'my_tify_core_register');
-function my_tify_core_register()
+add_action('tify_plugins_register', 'my_tify_plugins_register');
+function my_tify_plugins_register()
 {
-    return Core::register(
-        '%core_id%',
+    return Plugins::register(
+        '%plugin_id%',
         array(
             'param_1'	=> '',
             'param_2'	=> ''
@@ -36,14 +36,13 @@ function my_tify_core_register()
 
 ### METHODE 3 | Développeur avancé - priorité haute (recommandée)
 
-Le composant natif doit être déclaré
 Surcharge de configuration "dynamique" PHP
 Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
-/app/Core/%core_id%/Config.php
+/app/Plugins/%plugin_id%/Config.php
 
 ```php
 <?php
-namespace MyNamespace\Core\%core_id%
+namespace MyNamespace\Plugins\%plugin_id%
 
 class Config extends \tiFy\App\Config
 {
@@ -57,8 +56,8 @@ class Config extends \tiFy\App\Config
     public function sets($attrs = array())
     {
         return array(
-            'param_1'	=> '',
-            'param_2'	=> ''
+            'param_1'   => '',
+            'param_2'   => ''
         );
     }
 }

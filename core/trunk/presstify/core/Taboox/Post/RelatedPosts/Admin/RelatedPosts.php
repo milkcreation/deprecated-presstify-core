@@ -4,44 +4,53 @@ namespace tiFy\Core\Taboox\Post\RelatedPosts\Admin;
 class RelatedPosts extends \tiFy\Core\Taboox\Post\Admin
 {
     /**
-     * 
+     * Instance
      * @var integer
      */ 
     static $Instance        = 0;
     
     /**
      * Liste des éléments
+     * @var array
      */
     protected $Items        = array();
 
     /**
      * Ordre des éléments
+     * @var int
      */
     protected $Order        = 0;
 
     /**
      * Action ajax
+     * @var string
      */
     protected $AjaxAction;
 
     /**
      * Initialisation de l'interface d'administration
+     * 
+     * @return void
      */
     public function admin_init()
     {
         // Définition des arguments
-        $this->AjaxAction = 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPostsItemRender'. ++static::$Instance;
+        $this->AjaxAction = 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPostsItemRender' . ++static::$Instance;
         
-        add_action( 'wp_ajax_'. $this->AjaxAction, array( $this, 'ajaxItemRender' ) );
+        add_action('wp_ajax_'. $this->AjaxAction, array( $this, 'ajaxItemRender'));
     }
 
     /**
      * Chargement de la page courante
+     * 
+     * @param \WP_Screen $current_screen
+     * 
+     * @return void
      */
-    public function current_screen( $current_screen )
+    public function current_screen($current_screen)
     {
         // Traitement des arguments
-        $this->args =     wp_parse_args( 
+        $this->args = wp_parse_args(
             $this->args, 
             array(
                 'name'              => '_tify_taboox_related_posts',
