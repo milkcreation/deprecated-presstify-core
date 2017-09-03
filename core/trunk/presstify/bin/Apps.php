@@ -79,7 +79,7 @@ final class Apps
             endwhile;
             closedir($_dir);
         endif;
-        
+
         // Récupération du fichier de configuration personnalisée globale de PresstiFy
         $_dir = @ opendir(TIFY_CONFIG_DIR);
         if ($_dir) :
@@ -175,7 +175,20 @@ final class Apps
             $App = ucfirst($app);
             self::$Config[$App] = ${$app};
         endforeach;
-        
+
+        // Chargement des MustUse
+        foreach(glob(TIFY_PLUGINS_DIR . '/*', GLOB_ONLYDIR) as $plugin_dir) :
+            if(! file_exists($plugin_dir . '/MustUse'))
+                continue;
+            if(! $dh = opendir($plugin_dir . '/MustUse'))
+                continue;
+            while(($file = readdir( $dh )) !== false) :
+                if(substr( $file, -4 ) == '.php') :
+                    include_once($plugin_dir . '/MustUse/' . $file);
+                endif;
+            endwhile;
+        endforeach;
+
         // Chargement des applicatifs
         // Jeux de fonctionnalités
         new Set;
@@ -239,8 +252,8 @@ final class Apps
      * @param array $attrs {
      *      Attributs de paramétrage de l'applicatif
      *      
-     *      @var string $Id Identifiant qualificatif de l'applicatif
-     *      @var array $Config Attributs de configuration
+     *      @type string $Id Identifiant qualificatif de l'applicatif
+     *      @type array $Config Attributs de configuration
      * }
      * 
      * @return NULL|mixed

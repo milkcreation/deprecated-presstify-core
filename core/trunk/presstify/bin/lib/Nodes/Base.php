@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Abstracts;
+namespace tiFy\Lib\Nodes;
 
-abstract class Nodes
+abstract class Base
 {
     /**
      * Récupération de greffons personnalisés

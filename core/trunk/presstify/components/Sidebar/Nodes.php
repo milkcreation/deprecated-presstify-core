@@ -4,7 +4,7 @@
  */
 namespace tiFy\Components\Sidebar;
 
-class Nodes extends \tiFy\Abstracts\Nodes
+class Nodes extends \tiFy\Lib\Nodes\Base
 {    
     /**
      * Attribut "class" global d'un greffon personnalisé

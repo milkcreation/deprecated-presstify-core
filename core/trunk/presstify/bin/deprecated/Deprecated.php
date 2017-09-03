@@ -22,6 +22,9 @@ class Deprecated
         
         // Ancien environnement des applicatifs
         tiFy::classLoad('tiFy\Environment', dirname(__FILE__) .'/env');
+
+        // Anciennes classe abstraites de la librairie libraries
+        tiFy::classLoad('tiFy\Abstracts', dirname(__FILE__) .'/lib/Abstracts');
     }
     
     /**
@@ -53,7 +56,7 @@ class Deprecated
     }
     
     /**
-     * Déclaration d'une fonction dépréciée
+     * Déclaration d'un argument dépréciée
      * @see \_deprecated_argument()
      * 
      * @param string $function Fonction appelée.

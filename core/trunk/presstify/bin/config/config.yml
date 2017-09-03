@@ -1,7 +1,7 @@
 # Environnement de surcharge
 app:
   namespace:          'App'
-  base_dir:           '<?php echo get_template_directory() ."/app";?>'
+  base_dir:           '<?php echo get_template_directory() ."app";?>'
   bootstrap:          'Autoload'
 
 # Déclaration des jeux de fonctionnalités personnalisés

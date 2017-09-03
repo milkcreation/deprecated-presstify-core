@@ -72,7 +72,7 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
         $output  = "";
         $output  = "<div id=\"{$container_id}\" class=\"tiFyControlSlickCarousel". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"slick_carousel\" data-slick=\"". htmlentities( json_encode( $options ) ) ."\">\n";
         $Walker = self::loadOverride( '\tiFy\Core\Control\SlickCarousel\Walker' );
-        $output .= $Walker->walk( $nodes );
+        $output .= $Walker->output($nodes);
         $output .= "</div>\n";
         
         if( $echo )

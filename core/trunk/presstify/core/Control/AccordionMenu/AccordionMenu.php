@@ -99,7 +99,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         $output  = "<div id=\"{$container_id}\" class=\"tiFyControlAccordionMenu tiFyControlAccordionMenu--{$theme}". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"accordion_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlAccordionMenu-nav\">\n";	
 		$Walker = self::loadOverride( '\tiFy\Core\Control\AccordionMenu\Walker' );
-        $output .= $Walker->walk( $nodes );
+        $output .= $Walker->output($nodes);
         $output .= "\t</nav>\n";
         $output .= "</div>\n";
         

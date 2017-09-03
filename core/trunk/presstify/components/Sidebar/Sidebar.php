@@ -292,10 +292,10 @@ class Sidebar extends \tiFy\Environment\Component
         $output .= "\t<div class=\"tiFySidebar-panel\">\n";
         $output .= "\t\t<div class=\"tiFySidebar-nodesWrapper\">\n";
         $output .= "\t\t\t<div class=\"tiFySidebar-nodesContainer\">\n";
-		$Walker = self::loadOverride( '\tiFy\Components\Sidebar\Walker' );
-        $output .= $Walker->walk( $items );
+        $Walker = self::loadOverride( '\tiFy\Components\Sidebar\Walker' );
+        $output .= $Walker->output($items);
         $output .= "\t\t\t</div>"; 
-        $output .= "\t\t</div>";        
+        $output .= "\t\t</div>";
         $output .= "\t</div>";
         $output .= "</div>";
         
