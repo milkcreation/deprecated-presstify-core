@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Db;
 
-class Db extends \tiFy\Environment\Core
+class Db extends \tiFy\App\Core
 {
     /**
      * Liste des actions à déclencher
@@ -59,13 +59,18 @@ class Db extends \tiFy\Environment\Core
      */
     /**
      * Déclaration
+     *
+     * {@inheritdoc}
+     * @see \tiFy\Core\Db\Factory::__construct()
+     *
+     * @return \tiFy\Core\Db\Factory
      */
-    public static function register( $id, $args = array() )
+    public static function register($id, $attrs = array())
     {
-        if( isset( $args['cb'] ) ) :
-            self::$Factories[$id] = new $args['cb']( $id, $args );
+        if(isset($attrs['cb'] ) ) :
+            self::$Factories[$id] = new $attrs['cb']( $id, $attrs );
         else :
-            self::$Factories[$id] = new Factory( $id, $args );
+            self::$Factories[$id] = new Factory($id, $attrs);
         endif;
         
         if( self::$Factories[$id] instanceof Factory )

@@ -3,73 +3,141 @@ namespace tiFy\Core\Templates\Front\Model;
     
 abstract class Table 
 {
-    use \tiFy\Environment\Traits\Path;
+    use \tiFy\Core\Templates\Traits\Factory;
     use \tiFy\Core\Templates\Traits\Table\Actions;
     use \tiFy\Core\Templates\Traits\Table\Notices;
     use \tiFy\Core\Templates\Traits\Table\Params;
     use \tiFy\Core\Templates\Traits\Table\Views;
-    
-    /* = ARGUMENTS = */
-    // Paramètres
-    /// Url de la page d'administration
-    protected $BaseUri                = null;
-    
-    /// Url de la page d'édition d'un élément
-    protected $EditBaseUri            = null;
-    
-    // Intitulé des objets traités
-    protected $Plural                = null;
-    
-    // Intitulé d'un objet traité
-    protected $Singular                = null;
-    
-    /// Message de notification
-    protected $Notices                = array();
-    
-    /// Liste des statuts des objets traités
-    protected $Statuses                = array();
-    
-    /// Liens de vue filtrées
-    protected $FilteredViewLinks    = array();    
-        
-    /// Classes de la table
-    protected $TableClasses            = array();
-    
-    /// Colonnes de la table
-    protected $Columns                = array();
-    
-    /// Colonne principale de la table
-    protected $PrimaryColumn        = null;
-    
-    /// Colonnes selon lesquelles les éléments peuvent être triés
-    protected $SortableColumns        = array();
-    
-    /// Colonnes Masquées
-    protected $HiddenColumns        = array();
-    
-    /// Nombre d'éléments affichés par page
-    protected $PerPage                = null;
+
+    /**
+     * Url de la page d'affichage de l'interface d'administration
+     * @var string
+     */
+    protected $BaseUri;
+
+    /**
+     * Url de la page d'affichage d'édition d'un élément de l'interface d'administration
+     * @var string
+     */
+    protected $EditBaseUri;
+
+    /**
+     * Intitulé de multiples éléments
+     * @var string
+     */
+    protected $Plural;
+
+    /**
+     * Intitulé d'un élement unique
+     * @var string
+     */
+    protected $Singular ;
+
+    /**
+     * Liste des message de notification
+     * @var array
+     */
+    protected $Notices                  = array();
+
+    /**
+     * Liste des statuts possibles des éléments
+     * @var array
+     */
+    protected $Statuses                 = array();
+
+    /**
+     * Liens de vue filtrées
+     * @var array
+     */
+    protected $FilteredViewLinks        = array();
+
+    /**
+     * Classes de la table
+     * @var array
+     */
+    protected $TableClasses             = array();
+
+    /**
+     * Colonnes de la table
+     * @var array
+     */
+    protected $Columns                  = array();
+
+    /**
+     * Colonne principale de la table
+     * @var string
+     */
+    protected $PrimaryColumn;
+
+    /**
+     * Liste des colonnes selon lesquelles les éléments peuvent être triés
+     * @var array
+     */
+    protected $SortableColumns          = array();
+
+    /**
+     * Listes des colonnes masquées
+     * @var array
+     */
+    protected $HiddenColumns            = array();
+
+    /**
+     * Nombre d'éléments affichés par page
+     * @var int
+     */
+    protected $PerPage                = 20;
     
     /// 
     protected $PerPageOptionName    = null;
-    
-    /// Arguments de requête
+
+    /**
+     * Liste des arguments de requête des récupération des éléments à afficher
+     * @var array
+     */
     protected $QueryArgs            = array();
-    
-    /// Intitulé affiché lorsque la table est vide
-    protected $NoItems                = array();
-    
-    /// Actions groupées
+
+    /**
+     * Intitulé affiché lorsque la table est vide
+     * @var array
+     */
+    protected $NoItems;
+
+    /**
+     * Liste des actions groupées
+     * @var array
+     */
     protected $BulkActions            = array();
-    
-    /// Actions sur un élément
+
+    /**
+     * Liste des actions sur un élément
+     * @var array
+     */
     protected $RowActions            = array();
-    
-    /// Cartographie des paramètres permis
+
+    /**
+     * Carographie des paramètres autorisés
+     * @var string[]
+     */
     protected $ParamsMap            = array( 
-        'BaseUri', 'EditBaseUri', 'Plural', 'Singular', 'Notices', 'Statuses', 'FilteredViewLinks', 
-        'TableClasses', 'ItemIndex', 'Columns', 'PrimaryColumn', 'SortableColumns', 'HiddenColumns', 'PerPage', 'PerPageOptionName',
-        'QueryArgs', 'NoItems', 'BulkActions', 'RowActions',
+        'BaseUri',
+        'EditBaseUri',
+        'Plural',
+        'Singular',
+        'Notices',
+        'Statuses',
+        'FilteredViewLinks',
+        'TableClasses',
+        'ItemIndex',
+        'Columns',
+        'PrimaryColumn',
+        'SortableColumns',
+        'HiddenColumns',
+        'PerPage',
+        'PerPageOptionName',
+        'QueryArgs',
+        'NoItems',
+        'BulkActions',
+        'RowActions',
         'PageTitle'
     );
         
@@ -249,7 +317,6 @@ abstract class Table
     /** == Récupération des éléments == **/
     public function prepare_items() 
     {
-        //var_dump( $this->parse_query_args() ); exit;
         $query = $this->db()->query( $this->parse_query_args() );
         $this->items = $query->items;
         

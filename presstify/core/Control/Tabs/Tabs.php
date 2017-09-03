@@ -70,7 +70,7 @@ class Tabs extends \tiFy\Core\Control\Factory
         $output  = "";
         $output  = "<div id=\"{$container_id}\" class=\"tiFyControlTabs". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"tabs\">\n";	
 		$Walker = self::loadOverride( '\tiFy\Core\Control\Tabs\Walker' );
-        $output .= $Walker->walk( $nodes );
+        $output .= $Walker->output($nodes);
         $output .= "</div>\n";
         
         if( $echo )

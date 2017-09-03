@@ -4,7 +4,7 @@
  */
 namespace tiFy\Components\Sidebar;
 
-class Walker extends \tiFy\Abstracts\TreeMenuWalker
+class Walker extends \tiFy\Lib\Walkers\MenuTree
 {            
     /**
      * Ouverture du menu

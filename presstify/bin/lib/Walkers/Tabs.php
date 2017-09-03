@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Abstracts;
+namespace tiFy\Lib\Walkers;
 
-abstract class TabWalker extends \tiFy\Abstracts\Walker
+abstract class Tabs extends Base
 {            
     /**
      * Iterateur d'affichage
@@ -9,13 +9,11 @@ abstract class TabWalker extends \tiFy\Abstracts\Walker
      * @param array $items
      * @param int $depth
      * @param string $parent
+     *
      * @return string
      */
-    final public function walk( $items = array(), $depth = 0, $parent = '' )
-    {         
-        if( ! $this->Items )
-            $this->parseItems( $items );
-
+    public function walk($items = array(), $depth = 0, $parent = '')
+    {
         $output = "";
         
         // Onglets de navigation
@@ -55,7 +53,7 @@ abstract class TabWalker extends \tiFy\Abstracts\Walker
             $output .= $this->content_item( $item, $depth, $parent );
             $output .= $this->end_content_item( $item, $depth, $parent );
             
-            $prevDepth = $depth;            
+            $prevDepth = $depth;
         endforeach;
         if( $opened ) :      
             $output .= $this->end_content_items( null, $depth, $parent );

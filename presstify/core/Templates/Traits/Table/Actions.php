@@ -6,7 +6,7 @@ trait Actions
     /** == Véfification d'existance d'un action == **/
     public function hasRowAction( $action )
     {
-        return isset( $this->RowActions[$action] );            
+        return isset( $this->RowActions[$action] );
     }
     
     /** == Récupération des actions sur un élément == **/

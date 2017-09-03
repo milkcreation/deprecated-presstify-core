@@ -75,7 +75,7 @@ class Factory
             $Walker = new Static;
         endif;
             
-        $output = $Walker->walk( self::$Items, 0 );
+        $output = $Walker->output( self::$Items, 0 );
         
         if( $echo )
             echo $output;

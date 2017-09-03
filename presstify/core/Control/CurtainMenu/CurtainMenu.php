@@ -89,7 +89,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         $output .= "\t<nav class=\"tiFyControlCurtainMenu-nav\">\n";
 		$output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";	
 		$Walker = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Walker' );
-        $output .= $Walker->walk( $nodes );
+        $output .= $Walker->output($nodes);
         $output .= "\t\t</div>\n";
         $output .= "\t</nav>\n";
         $output .= "</div>\n";
