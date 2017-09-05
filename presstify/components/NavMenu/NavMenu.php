@@ -117,8 +117,8 @@ class NavMenu extends \tiFy\Environment\Component
         $nodes = $Nodes->customs( self::$Nodes[$id] );        
         
         $Walker = self::$Walkers[$id];
-        $output = $Walker->walk( $nodes );
-        
+        $output = $Walker::output($nodes);
+
         if( $echo )
             echo $output;
         

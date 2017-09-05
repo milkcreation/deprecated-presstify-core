@@ -4,7 +4,7 @@
  */
 namespace tiFy\Core\Control\SlickCarousel;
 
-class Nodes extends \tiFy\Abstracts\Nodes
+class Nodes extends \tiFy\Lib\Nodes\Base
 {    
     /**
      * 
@@ -16,10 +16,11 @@ class Nodes extends \tiFy\Abstracts\Nodes
     }
     
     /**
+     *
      * @return string
      */
-    public function node_content( $node )
+    public function node_content($node)
     {
-        return isset( $node['content'] ) ? $node['content'] : '';
+        return isset($node['content']) ? $node['content'] : '';
     }
 }

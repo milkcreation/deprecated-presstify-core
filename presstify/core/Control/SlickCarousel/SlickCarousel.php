@@ -65,10 +65,10 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
         $args = wp_parse_args( $args, $defaults );
         extract( $args );
         
-        
+
         $Nodes = self::loadOverride( '\tiFy\Core\Control\SlickCarousel\Nodes' );
-        $nodes = $Nodes->customs( $nodes );
-        
+        $nodes = $Nodes->customs($nodes);
+
         $output  = "";
         $output  = "<div id=\"{$container_id}\" class=\"tiFyControlSlickCarousel". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"slick_carousel\" data-slick=\"". htmlentities( json_encode( $options ) ) ."\">\n";
         $Walker = self::loadOverride( '\tiFy\Core\Control\SlickCarousel\Walker' );

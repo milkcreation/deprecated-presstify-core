@@ -6,7 +6,7 @@ abstract class Base
     /**
      * Récupération de greffons personnalisés
      */
-    final public function customs( $nodes = array(), $args = array() )
+    final public function customs($nodes = array(), $args = array())
     {
         $ids = array();
         foreach( (array) $nodes as $node ) :
@@ -40,7 +40,7 @@ abstract class Base
     /**
      * Traitement des attributs d'un greffon personnalisé 
      */
-    final public function parseCustom( &$node, $key, $args )
+    final public function parseCustom(&$node, $key, $args)
     {
         $_node = array();
         
@@ -49,25 +49,27 @@ abstract class Base
         
         if( $matches = preg_grep( '/^node_(.*)/', get_class_methods( $this ) ) ) :
             foreach( $matches as $method ) :
-                $attr = preg_replace( '/^node_/', '', $method );                       
+                $attr = preg_replace( '/^node_/', '', $method );
                 $_node[$attr] = call_user_func( array( $this, 'node_'. $attr ), $node, $args ); 
             endforeach;
         endif;
         
         if( $matches = preg_grep( '/^'. $_node['id'] .'_node_(.*)/', get_class_methods( $this ) ) ) :
             foreach( $matches as $method ) :
-                $attr = preg_replace( '/^'. $_node['id'] .'_node_/', '', $method );                       
+                $attr = preg_replace( '/^'. $_node['id'] .'_node_/', '', $method );
                 $_node[$attr] = call_user_func( array( $this, $_node['id'] .'_node_'. $attr ), $node, $args ); 
             endforeach;
         endif;
                 
-        $node = $_node; 
+        $node = \wp_parse_args($_node, $node);
     }
     
     /**
      * Récupération de greffons depuis une liste de termes lié à une taxonomie
+     *
      * @param $args array
-     * @see wp-includes/taxonomy.php - get_terms( $args );
+     * @see get_terms()
+     *
      */
     final public function terms( $args = array() )
     {
@@ -98,7 +100,7 @@ abstract class Base
             endforeach;
         endif;
                 
-        $term =  $_term; 
+        $term =  \wp_parse_args($_term, $term);
     }
     
     /**
