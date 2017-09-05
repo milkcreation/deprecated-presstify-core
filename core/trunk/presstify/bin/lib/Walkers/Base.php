@@ -12,6 +12,7 @@ abstract class Base
      * Liste des attributs par défaut d'un élément
      */
     protected $ItemDefaults = array(
+        'class'         => '',
         'parent'        => '',
         'content'       => ''
     );
@@ -64,6 +65,24 @@ abstract class Base
         else :
             return $defaults;
         endif;
+    }
+
+    /**
+     * Récupération de la classe HTML d'un élément de menu
+     */
+    public function getItemClass($item = null, $depth = 0, $parent = '')
+    {
+        // Bypass
+        if(!$item)
+            return '';
+
+        $classes = array();
+        $classes[] = 'tiFyWalker-contentItem';
+        $classes[] = "tiFyWalker-contentItem--depth{$depth}";
+        if(! empty($item['class']))
+            $classes[] = $item['class'];
+
+        return implode(' ', $classes);
     }
     
     /**
@@ -196,7 +215,7 @@ abstract class Base
      */
     public function default_start_content_item($item, $depth = 0, $parent = '')
     {          
-        return $this->getIndent($depth) . "<div class=\"tiFyWalker-contentItem tiFyWalker-contentItem--depth{$depth}\" id=\"tiFyWalker-contentItem--{$item['id']}\">\n";
+        return $this->getIndent($depth) . "<div class=\"" . $this->getItemClass($item, $depth, $parent) . "\" id=\"tiFyWalker-contentItem--{$item['id']}\">\n";
     }
     
     /**

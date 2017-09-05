@@ -402,7 +402,7 @@ class Media
      *      @type string $post_excerpt Texte court (extrait) du fichier média importé    
      *      @type array $upload_dir {
      *          Attributs du répertoire du repertoire de destination
-     *          @see \wp_upload_dir()
+     *          @see wp_upload_dir()
      *          
      *          @type string $path
      *          @type string $url,
