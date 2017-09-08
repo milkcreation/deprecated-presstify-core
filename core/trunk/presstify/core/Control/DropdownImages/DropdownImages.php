@@ -65,7 +65,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
             'show_option_none'      => self::tFyAppDirname( get_class() ) .'/none.jpg',
             'option_none_value'     => -1,
             // Nombre de colonnes d'icônes à afficher par ligne  
-            'cols'                  => 6,                                                           
+            'cols'                  => 6
         );
         $args = wp_parse_args( $args, $defaults );
         extract( $args );
@@ -83,7 +83,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
         );    
 
         if( ! $choices ) :
-            $client = Emojione::getClient();            
+            $client = Emojione::getClient();
             $n = 0;
             foreach( (array) $client->getRuleset()->getShortcodeReplace() as $shotcode => $filename ) :                
                 $src = 'https:'. $client->imagePathSVG . $filename .'.svg'. $client->cacheBustParam;
@@ -143,7 +143,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
                 $output .= "\t\t\t</ul>\n\t\t</li>\n";
                 $col = 0;
             endif;
-        endforeach;        
+        endforeach;
         /// Fermeture de ligne si requise
         if( $col )
             $output .= "\t\t\t</ul>\n\t\t</li>\n";

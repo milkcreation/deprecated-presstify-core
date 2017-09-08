@@ -37,7 +37,7 @@ class File
             if (! preg_match('#^'. preg_quote(site_url() . '/' . $root_subdir, '/') .'(.*)#', $filename, $matches) || ! isset($matches[1]))
                 return null;
             
-            return ltrim($matches[1], '/');
+            return trim($matches[1], '/');
         else :        
             $filename = rtrim(wp_normalize_path($filename), '/') . '/';            
 
@@ -45,7 +45,7 @@ class File
             if (! preg_match('#' . preg_quote($root_path, '/') .'(.*)#', $filename, $matches))
                 return null;
 
-            return ltrim($matches[1], '/');        
+            return trim($matches[1], '/');
         endif;
         
         return null;
