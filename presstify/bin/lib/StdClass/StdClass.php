@@ -14,8 +14,14 @@ class StdClass
      * 
      * @return string
      **/
-    public static function sanitizeName($classname)
+    public static function sanitizeName($classname = null)
     {
+        if (!$classname)
+            $classname = get_called_class();
+
+        if (is_object($classname))
+            $classname = get_class($classname);
+
         $classname = implode( '', array_map( 'ucfirst', explode( '-', $classname ) ) );
         $classname = implode( '_', array_map( 'ucfirst', explode( '_', $classname ) ) );
                 
@@ -47,15 +53,21 @@ class StdClass
      */
     public static function getOverrideNamespace()
     {
-        if( $namespaces = self::getOverrideNamespaceList() )
-            return current( $namespaces );
+        if($namespaces = self::getOverrideNamespaceList())
+            return current($namespaces);
     }
     
     /**
      * Récupération des chemins de surcharge
      */
-    public static function getOverridePath($classname)
+    public static function getOverridePath($classname = null)
     {
+        if (!$classname)
+            $classname = get_called_class();
+
+        if (is_object($classname))
+            $classname = get_class($classname);
+
         $path = array();
         foreach((array) self::getOverrideNamespaceList() as $namespace) :
             $namespace = ltrim( $namespace, '\\' );
@@ -68,12 +80,18 @@ class StdClass
     /** 
      * Récupération d'une classe de surcharge
      */
-    public static function getOverride( $classname, $path = array() )
+    public static function getOverride($classname = null, $path = array() )
     {
+        if (!$classname)
+            $classname = get_called_class();
+
+        if (is_object($classname))
+            $classname = get_class($classname);
+
         if( empty( $path ) ) :
             $path = self::getOverridePath($classname);
         endif;
-        
+
         foreach( (array) $path as $override ) :
             if( class_exists( $override ) && is_subclass_of( $override, $classname ) ) :
                 $classname = $override;
@@ -88,9 +106,15 @@ class StdClass
     /** 
      * Chargement d'une classe de surcharge 
      */
-    public static function loadOverride( $classname, $path = array() )
+    public static function loadOverride($classname = null, $path = array() )
     {
-        if( $classname = self::getOverride( $classname, $path ) )
+        if (!$classname)
+            $classname = get_called_class();
+
+        if (is_object($classname))
+            $classname = get_class($classname);
+
+        if($classname = self::getOverride( $classname, $path ) )
             return new $classname;
     }    
 }

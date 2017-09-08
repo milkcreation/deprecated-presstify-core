@@ -11,6 +11,8 @@ abstract class Plugin extends \tiFy\App\Factory
 
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {

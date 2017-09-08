@@ -1,11 +1,14 @@
 # Id HTML du conteneur
-id:           ''
+container_id:      ''
 
 # Classe HTML du conteneur
-class:        ''
+container_class:  ''
 
 # Contenu HTML affiché avant le fil d'Ariane 
-before:       ''
+before:           ''
 
 # Contenu HTML affiché après le fil d'Ariane
-after:        ''
+after:            ''
+
+# Mise en file automatique des scripts
+enqueue_scripts:  true

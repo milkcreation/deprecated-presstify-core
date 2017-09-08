@@ -116,11 +116,11 @@ class Cron extends \tiFy\Environment\Core
         
         //self::unregister( $id );
         
-        if( ! wp_get_schedule( $hook ) ) :
-            wp_schedule_event( $timestamp, $recurrence, $hook, $args );
+        if(! wp_get_schedule($hook)) :
+            wp_schedule_event($timestamp, $recurrence, $hook, $args);
         endif;
         
-        add_action( $hook, array( $schedule, '_handle' ) );
+        add_action($hook, array($schedule, '_handle'));
         
         return $schedule;
     }

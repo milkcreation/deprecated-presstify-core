@@ -2,7 +2,7 @@
 /**
  * @Overridable 
  */
-namespace tiFy\Set\ContactToggle\Core\Control;
+namespace tiFy\Set\ContactToggle\Control;
 
 use tiFy\Lib\Modal\Modal;
 

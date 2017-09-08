@@ -17,8 +17,8 @@ trait Controllers
 	/**
 	 * Définition d'un controleur
 	 */
-    public static function setController( $id, $StdClass )
-    {           
+    public static function setController($id, $StdClass)
+    {
         if( is_object( $StdClass ) && get_class( $StdClass ) ) :
         elseif( class_exists( $StdClass ) ) :
             $StdClass = self::loadOverride( $StdClass );
@@ -32,7 +32,7 @@ trait Controllers
     /**
      * Récupération d'un controleur déclaré
      */
-    public static function getController( $id )
+    public static function getController($id)
     {
         if( isset( self::$Controllers[$id] ) )
             return self::$Controllers[$id];
@@ -41,7 +41,7 @@ trait Controllers
     /**
      * Formatage du nom d'un controleur
      */
-    public static function sanitizeControllerName( $classname )
+    public static function sanitizeControllerName($classname = null)
     {
         $lcfirst = preg_match( '/^tiFy/', $classname );
         $classname = StdClass::sanitizeName( $classname );
@@ -71,7 +71,7 @@ trait Controllers
     /**
      * Récupération des chemins de surcharge
      */
-    public static function getOverridePath($classname)
+    public static function getOverridePath($classname = null)
     {
         return StdClass::getOverridePath($classname);
     }
@@ -79,30 +79,30 @@ trait Controllers
     /**
      * Récupération d'une contrôleur de surcharge
      */
-    public static function getOverride( $classname, $path = array() )
+    public static function getOverride($classname = null, $path = array())
     {
-        return StdClass::getOverride( $classname, $path );
+        return StdClass::getOverride($classname, $path );
     }
     
     /**
      * Chargement d'un contrôleur de surcharge
      */
-    public static function loadOverride( $classname, $path = array() )
+    public static function loadOverride($classname = null, $path = array())
     {
-        return StdClass::loadOverride( $classname, $path );
+        return StdClass::loadOverride($classname, $path );
     }
     
     /**
      * Initialisation 
      */
-    public static function initOverrideAutoloader( $namespace = null, $dirname = null, $autoload = 'Autoload' )
+    public static function initOverrideAutoloader($namespace = null, $dirname = null, $autoload = 'Autoload')
     {
         if( ! $namespace )
             $namespace = self::tFyAppAttr('Namespace');
         if( ! $dirname )
-            $dirname = self::tFyAppDirname() .'/app';
+            $dirname = self::tFyAppDirname() . '/app';
         
-        foreach(array( 'components', 'core', 'plugins', 'set' ) as $dir) :
+        foreach( array('components', 'core', 'plugins', 'set') as $dir) :
             if(! file_exists( $dirname. '/' .$dir ))
                 continue;
             tiFy::classLoad( $namespace ."\\App\\". ucfirst( $dir ), $dirname. '/' .$dir, 'Autoload' );
