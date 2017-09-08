@@ -9,7 +9,7 @@ final class CustomFields extends Component
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/
 	// Liste des Actions à déclencher
-	protected 		tFyAppActions		= array(
+	protected 		$tFyAppActions		= array(
 		'current_screen'
 	);
 
