@@ -71,12 +71,13 @@ trait Path
     /**
      * Récupération du répertoire de stockage des gabarits du theme pour l'appli
      */
-    public static function getThemeTemplateDir( $CalledClass = null )
+    public static function getThemeTemplateDir($CalledClass = null)
     {
         if( ! $CalledClass )
             $CalledClass = get_called_class();
-        
-        $subdir = ltrim( File::getRelativeFilename( self::tFyAppDirname( $CalledClass ), tiFy::$AbsDir ), '/' );
+
+        $subdir = preg_replace('#^(.*)\/app\/#', '', self::tFyAppDirname($CalledClass));
+        // ltrim( File::getRelativeFilename( self::tFyAppDirname( $CalledClass ), tiFy::$AbsDir ), '/' );
         
         return $subdir ? get_template_directory() . '/templates/' . trailingslashit( $subdir ) : get_template_directory() . '/templates/';
     }
@@ -92,7 +93,7 @@ trait Path
         if( ! isset( self::$_TemplatePath[$CalledClass] ) ) :
            self::$_TemplatePath[$CalledClass] = array(); 
         endif;
-        
+
         if( $template && ! in_array( $template, $templates ) )
             array_unshift ( $templates, $template );
             
@@ -102,7 +103,7 @@ trait Path
             foreach( $templates as $template_name ) :
                 if ( ! $template_name )
                     continue;
-                if ( ! file_exists( self::getThemeTemplateDir( $CalledClass ) . $template_name ) ) 
+                if ( ! file_exists( self::getThemeTemplateDir( $CalledClass ) . $template_name ) )
                     continue;
                 
                 $located = self::getThemeTemplateDir( $CalledClass ) . $template_name;
@@ -137,13 +138,13 @@ trait Path
      */
     public static function getTemplatePart($slug, $name = null, $args = array(), $CalledClass = null)
     {
-        if( ! $CalledClass )
+        if(! $CalledClass)
             $CalledClass = get_called_class();
 
-        if ( '' !== $name )
+        if ( $name )
             $templates[] = "{$slug}-{$name}.php";
         $templates[] = "{$slug}.php";
-        
+
         $_template_file = self::getQueryTemplate( null, $CalledClass .'-'. $slug . ( $name ? '-'. $name : '' ), $templates, $CalledClass );
 
         extract( $args );
