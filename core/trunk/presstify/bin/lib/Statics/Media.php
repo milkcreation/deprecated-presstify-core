@@ -279,7 +279,7 @@ class Media
         endif;
             
         // Définition du répertoire d'upload personnalisé
-        if ($attrs['upload_dir']) :            
+        if ($attrs['upload_dir']) :
             // Modification du répertoire d'upload
             $Media->UploadDir = $attrs['upload_dir'];
             add_filter('upload_dir', array($Media, 'upload_dir'), 10);
@@ -296,7 +296,7 @@ class Media
         endif;
         
         // Traitement d'attachment existant
-        if ($attrs['attachment_id']) :            
+        if ($attrs['attachment_id']) :
             // Traitement du fichier d'origine
             if($exist_path = get_attached_file($attrs['attachment_id'])) :
                 // Le nom du fichier d'origine ou son répertoire de stockage est différent
@@ -419,18 +419,12 @@ class Media
         // Contrôle d'intégrité du répertoire de stockage
         $upload_dir = isset($attrs['upload_dir']) ? $attrs['upload_dir'] : wp_upload_dir();
         if (! isset($upload_dir['error'])) :
-            // Réinitialisation
-            $Media->reset();
-        
             // Rapport d'erreur
             return new \WP_Error( 
                 'tiFy\Statics\Medias::addAttachedFile|UploadDirInvalid', 
                 __('Le format du répertoire de stockage n\'est pas valide', 'tify') 
             );
         elseif ($upload_dir['error'] !== false) :
-            // Réinitialisation
-            $Media->reset();
-        
             // Rapport d'erreur
             return new \WP_Error( 
                 'tiFy\Statics\Medias::addAttachedFile|UploadDirError', 
@@ -477,7 +471,10 @@ class Media
         
         // Définition du nom du fichier
         $name = $attrs['name'] ? $attrs['name'] : basename($file);
-        
+        if($attrs['sanitize_name']) :
+            $name = sanitize_file_name($name);
+        endif;
+
         // Définition des attributs de requête de récupération du fichier à mettre à jour
         $query_args['post_type'] = 'attachment';
         $query_args['post_status'] = 'inherit';

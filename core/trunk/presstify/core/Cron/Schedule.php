@@ -163,7 +163,7 @@ class Schedule
         // Initialisation de la journalisation
         $output = $this->Log['format'];
         $formatter = new LineFormatter( $output );
-        $stream = new RotatingFileHandler( WP_CONTENT_DIR .'/uploads/tFyLogs/'. $this->Log['name'] .'.log', $this->Log['rotate'] );
+        $stream = new RotatingFileHandler(WP_CONTENT_DIR . '/uploads/tFyLogs/'. $this->Log['name'] .'.log', $this->Log['rotate']);
         $stream->setFormatter( $formatter );
         $this->Logger = new Logger( $this->getId() );
         $this->Logger->pushHandler( $stream );

@@ -42,7 +42,7 @@ class Breadcrumb extends \tiFy\Environment\Component
         
         // Déclaration des scripts
         $min = SCRIPT_DEBUG ? '' : '.min';
-        wp_register_style( 'tiFyComponentBreadcrumb', self::getAssetsUrl( get_class() ) .'/Breadcrumb'. $min.'.css', array(), 160318 );
+        wp_register_style('tiFyComponentBreadcrumb', self::getAssetsUrl(get_class()) .'/Breadcrumb'. $min.'.css', array(), 160318);
     }
 
     /**
@@ -50,8 +50,8 @@ class Breadcrumb extends \tiFy\Environment\Component
      */
     final public function wp_enqueue_scripts()
     {    
-        if( $theme = self::tFyAppConfig( 'theme' ) )
-            wp_enqueue_style( 'tiFyComponentBreadcrumb' );
+        if(self::tFyAppConfig('enqueue_scripts'))
+            wp_enqueue_style('tiFyComponentBreadcrumb');
     }
 
     /**
@@ -64,16 +64,16 @@ class Breadcrumb extends \tiFy\Environment\Component
     {
         global $post;
         
-        $Template = self::getController( 'template' );
+        $Template = self::getController('template');
         
-        $config = wp_parse_args( $args, self::tFyAppConfig() );
+        $config = wp_parse_args($args, self::tFyAppConfig());
         extract( $config, EXTR_SKIP );
         
-        if( empty( $id )  )
-            $id = 'tiFyBreadcrumb-'. self::$Instance++;
+        if(empty($container_id))
+            $container_id = 'tiFyBreadcrumb-'. self::$Instance++;
         
         $output  = "";
-        $output .= $before ."<ol id=\"{$id}\" class=\"tiFyBreadcrumb". ( ! empty( $class ) ? ' '. $class : '' ) ."\">";
+        $output .= $before . "<ol id=\"{$container_id}\" class=\"tiFyBreadcrumb". ( ! empty( $container_class ) ? ' '. $container_class : '' ) ."\">";
         
         // Retour à la racine du site
         $output .= $Template::root();
@@ -138,9 +138,9 @@ class Breadcrumb extends \tiFy\Environment\Component
         // else :
         endif;
                 
-        $output .= "</ol>". $after;
+        $output .= "</ol>" . $after;
         
-        if( $echo )
+        if($echo)
             echo $output;
 
         return $output;

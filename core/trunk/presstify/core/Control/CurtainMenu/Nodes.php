@@ -4,7 +4,7 @@
  */
 namespace tiFy\Core\Control\CurtainMenu;
 
-class Nodes extends \tiFy\Abstracts\Nodes
+class Nodes extends \tiFy\Lib\Nodes\Base
 {    
     /**
      * Attribut "title" d'un greffon de terme lié à une taxonomie

@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Control;
 
-class Control extends \tiFy\Environment\Core 
+class Control extends \tiFy\App\Core
 {
     /**
      * Liste des classes de rappel des controleurs
@@ -15,13 +15,15 @@ class Control extends \tiFy\Environment\Core
     {
         parent::__construct();
 
-        foreach( glob( self::tFyAppDirname() .'/*/', GLOB_ONLYDIR ) as $filename ) :
+        foreach(glob(self::tFyAppDirname() .'/*/', GLOB_ONLYDIR) as $filename) :
             $basename     = basename( $filename );
             $ClassName    = "\\tiFy\\Core\\Control\\{$basename}\\{$basename}";
          
-            self::register( $ClassName );
+            self::register($ClassName);
         endforeach;
-        
+
+        do_action('tify_control_register');
+
         new _Deprecated\_Deprecated;
     }
         
@@ -30,17 +32,23 @@ class Control extends \tiFy\Environment\Core
      */
     /**
      * Déclaration des controleurs
+     *
+     * @param string $classname
+     *
+     * @return void
      */
-    final public static function register( $ClassName )
+    final public static function register($classname)
     {
         // Bypass
-        if( ! class_exists( $ClassName ) ) :
+        if(! class_exists($classname)) :
             return;
         endif;
-        $Class = self::loadOverride( $ClassName );
+
+        // Initialisation de la classe
+        $Instance = self::loadOverride($classname);
         
-        if( ! empty( $Class->ID ) && ! isset( self::$Factory[$Class->ID] ) ) :
-            self::$Factory[$Class->ID] = $Class;
+        if(! empty($Instance->ID) && ! isset(self::$Factory[$Instance->ID])) :
+            self::$Factory[$Instance->ID] = $Instance;
         endif;
     }
 }

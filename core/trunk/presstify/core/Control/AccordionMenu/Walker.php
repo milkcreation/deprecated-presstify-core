@@ -4,7 +4,7 @@
  */
 namespace tiFy\Core\Control\AccordionMenu;
 
-class Walker extends \tiFy\Abstracts\TreeMenuWalker
+class Walker extends \tiFy\Lib\Walkers\MenuTree
 {            
     /**
      * Ouverture du menu
