@@ -245,6 +245,21 @@ abstract class Factory
     }
 
     /**
+     * Récupération de template de surcharge
+     *
+     * @param string $slug Identification du template.
+     * @param string $name Modifieur de template.
+     * @param mixed $args Liste des arguments passés en variable dans le template
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     *
+     * @see get_template_part()
+     */
+    final public static function tFyAppGetTemplatePart($slug, $name = null, $args = array(), $classname = null)
+    {
+        return self::getTemplatePart($slug, $name, $args, $classname);
+    }
+
+    /**
      * CONSTRUCTEUR
      *
      * @todo revoir la syntaxe pour simplifier
