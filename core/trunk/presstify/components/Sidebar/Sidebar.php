@@ -63,8 +63,8 @@ class Sidebar extends \tiFy\Environment\Component
         // Déclaration des scripts    
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tiFyComponentSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
-        wp_register_script( 'tiFyComponentSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
+        wp_register_style( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
+        wp_register_script( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
     }
     
     /**
@@ -72,7 +72,7 @@ class Sidebar extends \tiFy\Environment\Component
      */
     final public function wp_loaded()
     {
-        do_action( 'tify_sidebar_register' );        
+        do_action('tify_sidebar_register');
         
         // Traitement des éléments
         foreach( (array) self::tFyAppConfig( 'nodes' ) as $id => $args ) :
@@ -92,13 +92,13 @@ class Sidebar extends \tiFy\Environment\Component
     final public function wp_enqueue_scripts()
     {
         // Bypass
-        if( ! self::tFyAppConfig( 'enqueue_scripts' ) )
+        if( ! self::tFyAppConfig('enqueue_scripts'))
             return;
-        
+
         wp_enqueue_style( 'tiFyComponentsSidebar' );
         wp_enqueue_script( 'tiFyComponentsSidebar' );
         
-        if( $theme = self::getTheme( get_class() ) ) :
+        if( $theme = self::getTheme(get_class()) ) :
             wp_enqueue_style( 'tiFyComponentsSidebar-theme--'. $theme );
         endif;
     }
@@ -252,7 +252,7 @@ class Sidebar extends \tiFy\Environment\Component
             'position'      => 99,
             'content'       => '',
             /**
-             * @deprecated : Utiliser l'argument html 
+             * @deprecated : Utiliser l'argument content
              */
             'cb'            => '__return_false',
         );
@@ -292,7 +292,7 @@ class Sidebar extends \tiFy\Environment\Component
         $output .= "\t<div class=\"tiFySidebar-panel\">\n";
         $output .= "\t\t<div class=\"tiFySidebar-nodesWrapper\">\n";
         $output .= "\t\t\t<div class=\"tiFySidebar-nodesContainer\">\n";
-        $Walker = self::loadOverride( '\tiFy\Components\Sidebar\Walker' );
+        $Walker = self::loadOverride('\tiFy\Components\Sidebar\Walker');
         $output .= $Walker->output($items);
         $output .= "\t\t\t</div>"; 
         $output .= "\t\t</div>";

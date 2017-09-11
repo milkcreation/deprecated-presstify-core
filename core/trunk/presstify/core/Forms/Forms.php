@@ -15,9 +15,9 @@ class Forms extends \tiFy\Environment\Core
     );        
     // Ordres de priorité d'exécution des actions
     protected $tFyAppActionsPriority    = array(
-        'after_setup_tify'     => 11,
-        'init'                => 1,
-        'wp'                => 0        
+        'after_setup_tify'      => 11,
+        'init'                  => 1,
+        'wp'                    => 0
     );
     
     // Liste des Formulaires déclarés
@@ -86,7 +86,7 @@ class Forms extends \tiFy\Environment\Core
         // Déclaration des formulaires
         /// Depuis la configuration statique
         foreach( (array) self::tFyAppConfig() as $id => $attrs ) :
-            $this->register( $id, $attrs );
+            $this->register($id, $attrs);
         endforeach;
             
         /// Depuis la déclaration dynamique    
@@ -94,17 +94,17 @@ class Forms extends \tiFy\Environment\Core
     }    
     
     /** == Déclaration d'un formulaire == **/
-    final public static function register( $id, $attrs = array() )
+    final public static function register($id, $attrs = array())
     {
-        // Compatibilité
-        if( ! empty( $attrs['ID'] ) ) :
+        // retro-compatibilité
+        if (! empty($attrs['ID'])) :
             $id = $attrs['ID'];
         else :
             $attrs['ID'] = $id;
-        endif;        
-                
-        $FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". self::getOverrideNamespace() ."\\Core\\Forms\\". self::sanitizeControllerName( $id ) ) );
-        $form = self::$Factories[$id] = new $FactoryClassName( $id, $attrs );
+        endif;
+
+        $FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". self::getOverrideNamespace() ."\\Core\\Forms\\". self::sanitizeControllerName($id)));
+        $form = self::$Factories[$id] = new $FactoryClassName($id, $attrs);
         
         return $form->getForm()->getID();
     }

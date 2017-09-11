@@ -161,7 +161,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */
     public function _admin_init()
     {
-        parent::_admin_init();       
+        parent::_admin_init();
 
         // Actions Ajax
         add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_fileimport_upload', array( $this, 'wp_ajax_upload' ) );  
@@ -190,21 +190,23 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     {
         //$_REQUEST['_import_row_index'] = 0;
         
-        parent::_current_screen( $current_screen );
+        parent::_current_screen($current_screen);
         
         // DEBUG - Tester la fonctionnalité d'import > Décommenter $_REQUEST['_import_row_index'] et commenter le return (ligne suivante)
         return;
-        
-        if( ! $this->Importer )
-            return;   
 
-        if( $this->items ) :
-            $res = call_user_func( $this->Importer .'::import', (array) current( $this->items ) );
+        if (! $this->Importer)
+            return;
+
+        if (isset($this->items[$_REQUEST['_import_row_index']])) :
+            $res = call_user_func($this->Importer .'::import', (array) $this->items[$_REQUEST['_import_row_index']]);
+        elseif ($this->items) :
+            $res = call_user_func($this->Importer .'::import', (array) current($this->items));
         else :
-            $res = array( 'insert_id' => 0, 'errors' => new \WP_Error( 'tiFyTemplatesAdminImport-UnavailableContent', __( 'Le contenu à importer est indisponible', 'Theme' ) ) );
+            $res = array('insert_id' => 0, 'errors' => new \WP_Error( 'tiFyTemplatesAdminImport-UnavailableContent', __( 'Le contenu à importer est indisponible', 'Theme' ) ) );
         endif;
             
-        if( ! empty( $res['errors'] ) && is_wp_error( $res['errors'] ) ) :
+        if (! empty($res['errors']) && is_wp_error($res['errors'])) :
             wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
         else :
             wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
@@ -221,8 +223,8 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
 
-        // Récupération des variables de requête        
-        $file         = current( $_FILES );    
+        // Récupération des variables de requête
+        $file         = current($_FILES);
         $filename     = sanitize_file_name( basename( $file['name'] ) );
     
         $response = array();
@@ -270,17 +272,17 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     {
         $params = $this->parse_query_args();
         
-        if( empty( $params['filename'] ) ) 
+        if (empty( $params['filename']))
             return;
 
         // Attributs de récupération des données CSV
-        if( $this->current_item() ) :
+        if ($this->current_item()) :
             $attrs = array(
                 'filename'      => $params['filename'],
                 'columns'       => $this->FileColumns,
                 'delimiter'     => $this->Delimiter
             );
-            $Csv = Csv::getRow( current( $this->current_item() ), $attrs );
+            $Csv = Csv::getRow(current($this->current_item()), $attrs);
         else :
             $attrs = array(
                 'filename'      => $params['filename'],
@@ -293,12 +295,12 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
             );
             
             /// Trie
-            if( ! empty( $params['orderby'] ) ) :
+            if (! empty($params['orderby'])) :
                 $attrs['orderby'] = $params['orderby'];
             endif;
             
             /// Recherche
-            if( ! empty( $params['search'] ) ) :
+            if (! empty($params['search'])) :
                 $attrs['search'] = array(
                     array(
                         'term'      => $params['search']
@@ -311,7 +313,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
                 
         $items = array();
         
-        foreach( $Csv->getItems() as $import_index => $item ) :
+        foreach($Csv->getItems() as $import_index => $item) :
             $item['_import_row_index'] = $import_index;
             $items[] = (object) $item;
         endforeach;

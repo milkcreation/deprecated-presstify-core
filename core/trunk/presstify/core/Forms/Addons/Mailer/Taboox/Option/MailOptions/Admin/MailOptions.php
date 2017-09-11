@@ -1,8 +1,17 @@
 <?php
 namespace tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin;
 
+use tiFy\Core\Forms\Forms;
+use tiFy\Core\Control\Switcher\Switcher;
+
 class MailOptions extends \tiFy\Core\Taboox\Option\Admin
 {
+    /**
+     * Prefixe du nom d'enregistrement des options en base de données
+     * @var string
+     */
+    protected $OptionNamePrefix;
+
     /**
      * DECLENCHEURS
      */
@@ -11,10 +20,16 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
      */
     public function admin_init()
     {
-        register_setting( $this->page, $this->args['id'] .'-confirmation' );
-        register_setting( $this->page, $this->args['id'] .'-sender', array( $this, 'sanitize_sender' ) );
-        register_setting( $this->page, $this->args['id'] .'-notification' );
-        register_setting( $this->page, $this->args['id'] .'-recipients', array( $this, 'sanitize_recipients' ) );        
+        if (! $form = Forms::get($this->args['form_id']))
+            return;
+
+        $this->OptionNamePrefix = $form->getForm()->getAddonAttr('mailer', 'option_name_prefix', $this->args['form_id']);
+
+        register_setting($this->page, $this->OptionNamePrefix .'-confirmation');
+        register_setting($this->page, $this->OptionNamePrefix .'-sender', array( $this, 'sanitize_sender'));
+        register_setting($this->page, $this->OptionNamePrefix .'-notification');
+        register_setting($this->page, $this->OptionNamePrefix .'-recipients', array( $this, 'sanitize_recipients'));
+
     }
     
     /**
@@ -22,8 +37,8 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
      */
     public function admin_enqueue_scripts()
     {
-        tify_control_enqueue( 'switch' );
-        tify_control_enqueue( 'dynamic_inputs' );
+        Switcher::enqueue_scripts();
+        tify_control_enqueue('dynamic_inputs');
     }
         
     /**
@@ -33,23 +48,35 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
      * Formulaire de saisie
      */
     public function form()
-    {        
+    {
+        $confirmation = isset($this->args['confirmation']) ? $this->args['confirmation'] : true;
+        $notification = isset($this->args['notification']) ? $this->args['notification'] : true;
     ?>
+        <?php if ($confirmation) :?>
         <h3><?php _e( 'Message de confirmation de réception de la demande', 'tify' );?></h3>
         <table class="form-table">
             <tbody>
                 <tr>
                     <th scope="row"><?php _e( 'Envoyer un message de confirmation de réception à l\'utilisateur', 'tify' );?></th>
-                    <td><?php tify_control_switch( array( 'name' => $this->args['id'] .'-confirmation', 'checked' => get_option( $this->args['id'] .'-confirmation', 'on' ) ) );?>
-                </td>
+                    <td>
+                        <?php
+                        Switcher::display(
+                            [
+                                'name'      => $this->OptionNamePrefix . '-confirmation',
+                                'checked'   => get_option($this->OptionNamePrefix .'-confirmation', 'off')
+                            ]
+                        );
+                        ?>
+                    </td>
+                </tr>
                 
-                <?php $s = get_option( $this->args['id'] .'-sender' );?>
+                <?php $s = get_option( $this->OptionNamePrefix .'-sender' );?>
                 <?php $value['email'] = ! empty( $s['email'] ) ?  $s['email'] : get_option( 'admin_email' ); $value['name'] = ! empty( $s['name'] ) ? $s['name'] : '';?>
                 <tr>
                     <th scope="row"><?php _e( 'Email de l\'expéditeur (requis)', 'tify' );?></th>
                     <td>
                         <div class="tify_input_email">
-                            <input type="text" name="<?php echo $this->args['id'];?>-sender[email]" placeholder="<?php _e( 'Email (requis)', 'tify' );?>" value="<?php echo $value['email'];?>" size="40" autocomplete="off">
+                            <input type="text" name="<?php echo $this->OptionNamePrefix;?>-sender[email]" placeholder="<?php _e( 'Email (requis)', 'tify' );?>" value="<?php echo $value['email'];?>" size="40" autocomplete="off">
                         </div>
                     </td>
                 </tr>
@@ -57,20 +84,31 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
                     <th scope="row"><?php _e( 'Nom de l\'expéditeur (optionnel)', 'tify' );?></th>
                     <td>
                         <div class="tify_input_user">
-                            <input type="text" name="<?php echo $this->args['id'];?>-sender[name]" placeholder="<?php _e( 'Nom (optionnel)', 'tify' );?>" value="<?php echo $value['name'];?>" size="40" autocomplete="off">
+                            <input type="text" name="<?php echo $this->OptionNamePrefix;?>-sender[name]" placeholder="<?php _e( 'Nom (optionnel)', 'tify' );?>" value="<?php echo $value['name'];?>" size="40" autocomplete="off">
                         </div>
                     </td>
                 </tr>
             </tbody>
-        </table>        
-        
+        </table>
+        <?php endif;?>
+
+        <?php if ($notification) :?>
         <h3><?php _e( 'Message de notification aux administrateurs', 'tify' );?></h3>
         <table class="form-table">
             <tbody>
                 <tr>
                     <th scope="row"><?php _e( 'Envoyer un message de notification aux administrateurs du site', 'tify' );?></th>
-                    <td><?php tify_control_switch( array( 'name' => $this->args['id'] .'-notification', 'checked' => get_option( $this->args['id'] .'-notification', 'off' ) ) );?>
-                </td>
+                    <td>
+                    <?php
+                        Switcher::display(
+                            [
+                                'name'      => $this->OptionNamePrefix .'-notification',
+                                'checked'   => get_option($this->OptionNamePrefix .'-notification', 'off')
+                            ]
+                        );
+                    ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
         <hr>
@@ -79,8 +117,8 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
                 array( 
                     'default'               => array( 'name'=> '', 'email' => get_option( 'admin_email' ) ),
                     'add_button_txt'        => __( 'Ajouter un destinataire', 'tify' ),
-                    'values'                => get_option( $this->args['id'] .'-recipients' ), 
-                    'name'                  => $this->args['id'] .'-recipients',
+                    'values'                => get_option( $this->OptionNamePrefix .'-recipients' ),
+                    'name'                  => $this->OptionNamePrefix .'-recipients',
                     'sample_html'           => 
                         "<table class=\"form-table\">\n".
                         "\t<tbody>\n".
@@ -104,7 +142,8 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
                         "</table>"
                 ) 
             );
-    ?>
+        ?>
+        <?php endif;?>
     <?php
     }
     

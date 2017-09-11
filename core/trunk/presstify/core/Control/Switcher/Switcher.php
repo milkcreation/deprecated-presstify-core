@@ -32,8 +32,8 @@ class Switcher extends \tiFy\Core\Control\Factory
     {
         $min = SCRIPT_DEBUG ? '' : '.min';
         
-        wp_register_style( 'tify_control-switch', self::getAssetsUrl( get_class() ) .'/Switcher'. $min .'.css', array( ), '150310' );
-        wp_register_script( 'tify_control-switch', self::getAssetsUrl( get_class() ) .'/Switcher'. $min .'.js', array( 'jquery' ), 170724 );
+        wp_register_style('tify_control-switch', self::getAssetsUrl(get_class()) .'/Switcher'. $min .'.css', array( ), '150310');
+        wp_register_script('tify_control-switch', self::getAssetsUrl(get_class()) .'/Switcher'. $min .'.js', array( 'jquery' ), 170724);
     }
 
     /**
@@ -41,8 +41,8 @@ class Switcher extends \tiFy\Core\Control\Factory
      */
     public static function enqueue_scripts()
     {
-        wp_enqueue_style( 'tify_control-switch' );
-        wp_enqueue_script( 'tify_control-switch' );
+        wp_enqueue_style('tify_control-switch');
+        wp_enqueue_script('tify_control-switch');
     }
 
     /**
@@ -50,8 +50,10 @@ class Switcher extends \tiFy\Core\Control\Factory
      */
     /**
      * Affichage
+     *
      * @param array $args
      * @param number $instance
+     *
      * @return string
      */
     public static function display( $args = array(), $echo = true  )

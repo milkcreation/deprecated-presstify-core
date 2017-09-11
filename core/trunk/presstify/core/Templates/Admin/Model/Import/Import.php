@@ -21,7 +21,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function set_params_map()
     {
-        $params = parent::set_params_map();        
+        $params = parent::set_params_map();
         array_push( $params, 'Importer', 'MapColumns' );
         
         return $params;

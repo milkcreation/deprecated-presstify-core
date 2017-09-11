@@ -218,7 +218,7 @@ class MailerNew
                         
         // Au format Texte    
         else :
-            /// Message de l'email        
+            /// Message de l'email
             if( empty( self::$Message ) ) :
                 self::$Message = self::getDefaultMessageText();
             endif;
@@ -668,6 +668,6 @@ class MailerNew
             $mailer->Send();
         } catch ( phpmailerException $e ) {
             wp_die( $e->getMessage(), __( 'Erreur lors de l\'expedition du message', 'tify' ), 500 );
-        }        
+        }
     }
 }

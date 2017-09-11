@@ -67,7 +67,7 @@ abstract class Base
     /**
      * Récupération de greffons depuis une liste de termes lié à une taxonomie
      *
-     * @param $args array
+     * @param array $args
      * @see get_terms()
      *
      */

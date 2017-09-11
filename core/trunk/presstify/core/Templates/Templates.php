@@ -57,35 +57,25 @@ final class Templates extends \tiFy\Environment\Core
      * Déclaration d'un gabarit
      * 
      * @param string $id identifiant unique
-     * @param array $attrs attributs de configuration
-        array(
-            // Identifiant de base de données - posts par défaut
-            // @see PresstiFy/Core/Db
-            'db'                => '',
-            
-            // Identifiant des intitulés
-            // @see PresstiFy/Core/Labels
-            'label'             => '', 
-            
-            // Menu d'administration (contexte admin uniquement)            
-            'admin_menu'        => array(       
-                // Identifiant du menu - Identifiant du template par défaut
-                'menu_slug'         => '',
-                // Identifiant du menu parent (sous-menu uniquement) 
-                'parent_slug'       => null,
-                // Titre de la page    
-                'page_title'        => '',
-                // Intitulé du menu - Intitulé du modèle prédéfini si vide 
-                'menu_title'        => '', 
-                // Habiltation d'affichage du menu
-                'capability'        => 'manage_options', 
-                // Icone de menu (hors sous-menu : 'parent_slug' => null )
-                'icon_url'          => null, 
-                // Ordre d'affichage de l'entrée de menu
-                'position'          => 99,
-                // Fonction d'affichage de la page - Factory::render() par défaut 
-                'function'          => null
-            ),
+     * @param array $attrs {
+     *      Attributs de configuration
+     *
+     *      @param string $cb Nom complet de la classe de rappel du gabarit
+     *      @param string $db Identifiant de base de données. posts par défaut
+     *      @param string $label Identifiant des intitulés
+     *      @param array $admin_menu {
+     *          Menu d'administration (contexte admin uniquement)
+     *
+     *          @param string $menu_slug Identifiant du menu - Identifiant du template par défaut
+     *          @param string $parent_slug Identifiant du menu parent pour les sous-menus uniquement.
+     *          @param string $page_title Intitulé de la page
+     *          @param string $menu_title Intitulé du menu - Intitulé du modèle prédéfini si vide
+     *          @param string $capability Habiltation d'affichage
+     *          @param string $icon_url Icone de menu (hors sous-menu : 'parent_slug' => null)
+     *          @param int $position Ordre d'affichage de l'entrée de menu
+     *          @param string Fonction d'affichage de la page - Factory::render() par défaut
+     *      }
+     *      @param array related Liste des templates en relation. @todo En remplacement de list_template && edit_template
             
             // Attributs spécifiques aux modèles hérités 
             // @see PresstiFy/Core/Templates/Traits/[MODEL]/Params pour la liste complète   
@@ -95,11 +85,10 @@ final class Templates extends \tiFy\Environment\Core
              
             /// Table
             //// Identifiant du template d'édition d'un élément
-            'list_template'     => '',            
-        );
-     * 
+            'edit_template'     => '',
+     * }
      * @param string $context 'admin' | 'front'
-     * 
+     *
      * @return object $Factory
      */
     public static function register( $id, $attrs = array(), $context )
