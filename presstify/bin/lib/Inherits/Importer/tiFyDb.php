@@ -13,14 +13,14 @@ class tiFyDb extends \tiFy\Inherits\Importer\Importer
     /**
      * Type de données prises en charge
      */
-    protected $DataType     = array( 'data', 'metadata' );    
+    protected $DataType     = array( 'data', 'metadata' );
     
     /**
      * CONSTRUCTEUR
      */
     public function __construct( $inputdata = array(), $attrs = array() )
     {
-        $this->initDb( $attrs );        
+        $this->initDb( $attrs );
         parent::__construct( $inputdata, $attrs );
     }
     

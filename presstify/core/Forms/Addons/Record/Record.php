@@ -53,8 +53,8 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     protected $tFyAppActions                = array(
         'admin_init',
         'tify_templates_register',
-        'tify_db_register',    
-        'tify_upload_register'            
+        'tify_db_register',
+        'tify_upload_register'
     ); 
     
     // Définition de l'identifiant
@@ -67,12 +67,12 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
     );
     
     // Options de champs par défaut
-    public $default_field_options     = array(            
-        'record'        => true,
-        'export'        => false,
-        'column'        => false,
-        'preview'        => false,
-        'editable'        => false
+    public $default_field_options     = array(
+        'record'            => true,
+        'export'            => false,
+        'column'            => false,
+        'preview'           => false,
+        'editable'          => false
     );
     
     // Argument de base de données
@@ -86,7 +86,7 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
                 'size'          => 20,
                 'unsigned'      => true,
                 'auto_increment'=> true,
-                'prefix'        => false,        
+                'prefix'        => false
             ),
             'form_id'        => array(
                 'type'          => 'VARCHAR',

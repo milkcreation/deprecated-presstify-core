@@ -74,10 +74,10 @@ class Breadcrumb extends \tiFy\Environment\Component
         
         $output  = "";
         $output .= $before . "<ol id=\"{$container_id}\" class=\"tiFyBreadcrumb". ( ! empty( $container_class ) ? ' '. $container_class : '' ) ."\">";
-        
+
         // Retour à la racine du site
         $output .= $Template::root();
-        
+
         // Page 404 - Contenu introuvable
         if( is_404() ) : 
             $output .= $Template::is_404();

@@ -31,8 +31,8 @@ class MediaImage extends \tiFy\Core\Control\Factory
      * @return void
      */
     public static function enqueue_scripts()
-    {    
-        wp_enqueue_media();
+    {
+        @ wp_enqueue_media();
         wp_enqueue_style('tify_control-media_image');
         wp_enqueue_script('tify_control-media_image');
     }

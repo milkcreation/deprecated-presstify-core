@@ -34,6 +34,28 @@ final class Apps
      *          @var string $Url Url absolu vers le repertoire racine de la classe
      *          @var string $Rel Chemin relatif vers le repertoire racine de la classe
      *          @var mixed $Config Attributs de configuration de configuration de l'applicatif
+     *          @var array $TemplatesPath {
+     *              Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
+     *
+     *              @var array $app {
+     *                  Attributs du repertoire des gabarits de l'application
+     *
+     *                  @var string $url Url vers le repertoire des gabarits
+     *                  @var string $path Chemin absolu vers le repertoire des gabarits
+     *                  @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *                  @var string $baseurl Url vers le repertoire racine
+     *                  @var string $basedir Chemin absolu vers le repertoire
+     *
+     *              }
+     *              @var array $theme {
+     *                  Attributs du repertoire des gabarits de surcharge du theme actif
+     *
+     *                  @var string $url Url vers le repertoire des gabarits
+     *                  @var string $path Chemin absolu vers le repertoire des gabarits
+     *                  @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *                  @var string $baseurl Url vers le repertoire racine
+     *                  @var string $basedir Chemin absolu vers le repertoire
+     *          }
      *      }
      * }
      */
@@ -290,8 +312,30 @@ final class Apps
                 $Id = $ClassName;
                 $Type = 'Customs';
             endif;
-            
+
+            // Configuration
             $Config = $config_attrs;
+
+            // Gabarits d'affichage
+            // Chemins de gabarits de l'application
+            $TemplatesPath['app'] = [
+                'path' => $Dirname . '/templates',
+                'url' => $Url . '/templates',
+                'subdir' => '',
+                'basedir' => $Dirname . '/templates',
+                'baseurl' => $Url . '/templates'
+            ];
+
+            // Chemins de gabarits de surchage du thème
+            if($subdir = preg_replace('#^(.*)\/app\/#', '', $Dirname))
+                $subdir = \untrailingslashit($subdir);
+            $TemplatesPath['theme'] = [
+                'path' => get_template_directory() . '/templates/' . $subdir,
+                'url' => get_template_directory_uri() . '/templates/' . $subdir,
+                'subdir' => $subdir,
+                'basedir' => get_template_directory() . '/templates',
+                'baseurl' => get_template_directory_uri() . '/templates'
+            ];
         else :
             extract(self::$Registered[$classname]);
             $Config = wp_parse_args($config_attrs, $Config);
@@ -313,7 +357,9 @@ final class Apps
             'Url',
             'Rel',
             // Configuration
-            'Config'
+            'Config',
+            // Gabarits d'affichage
+            'TemplatesPath'
         );
     }
     

@@ -33,51 +33,51 @@ abstract class Factory
      * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected $tFyAppActions = array();
+    protected $tFyAppActions = [];
 
     /**
      * Cartographie des méthodes de rappel des actions
      * @var mixed
      */
-    protected $tFyAppActionsMethods = array();
+    protected $tFyAppActionsMethods = [];
 
     /**
      * Ordre de priorité d'exécution des actions
      * @var mixed
      */
-    protected $tFyAppActionsPriority = array();
+    protected $tFyAppActionsPriority = [];
 
     /**
      * Nombre d'arguments autorisés
      * @var mixed
      */
-    protected $tFyAppActionsArgs = array();
+    protected $tFyAppActionsArgs = [];
 
     /**
      * Liste des filtres à déclencher
      */
-    protected $tFyAppFilters = array();
+    protected $tFyAppFilters = [];
 
     /**
      * Cartographie des méthodes de rappel des filtres
      */
-    protected $tFyAppFiltersMethods = array();
+    protected $tFyAppFiltersMethods = [];
 
     /**
      * Ordres de priorité d'exécution des filtres
      */
-    protected $tFyAppFiltersPriority = array();
+    protected $tFyAppFiltersPriority = [];
 
     /**
      * Nombre d'arguments autorisés
      */
-    protected $tFyAppFiltersArgs = array();
+    protected $tFyAppFiltersArgs = [];
 
     /**
      * CONTROLEURS
      */
     /**
-     * Définition d'attribut de l'applicatif
+     * Définition d'attributs de l'applicatif
      *
      * @param $attrs
      * @param object|string $classname
@@ -98,17 +98,41 @@ abstract class Factory
      * @param object|string classname
      *
      * @return array {
-     * @var null|string $Id Identifiant de qualification de l'applicatif
-     * @var string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
-     * @var \ReflectionClass $ReflectionClass Informations sur la classe
-     * @var string $ClassName Nom complet et unique de la classe (espace de nom inclus)
-     * @var string $ShortName Nom court de la classe
-     * @var string $Namespace Espace de Nom
-     * @var string $Filename Chemin absolu vers le fichier de la classe
-     * @var string $Dirname Chemin absolu vers le repertoire racine de la classe
-     * @var string $Url Url absolue vers le repertoire racine de la classe
-     * @var string $Rel Chemin relatif vers le repertoire racine de la classe
-     * @var mixed $Config Attributs de configuration de configuration de l'applicatif
+     *      Liste des attributs de configuration
+     *
+     *      @var null|string $Id Identifiant de qualification de l'applicatif
+     *      @var string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
+     *      @var \ReflectionClass $ReflectionClass Informations sur la classe
+     *      @var string $ClassName Nom complet et unique de la classe (espace de nom inclus)
+     *      @var string $ShortName Nom court de la classe
+     *      @var string $Namespace Espace de Nom
+     *      @var string $Filename Chemin absolu vers le fichier de la classe
+     *      @var string $Dirname Chemin absolu vers le repertoire racine de la classe
+     *      @var string $Url Url absolue vers le repertoire racine de la classe
+     *      @var string $Rel Chemin relatif vers le repertoire racine de la classe
+     *      @var mixed $Config Attributs de configuration de configuration de l'applicatif
+     *      @var array $TemplatesPath {
+     *          Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
+     *
+     *          @var array $app {
+     *              Attributs du repertoire des gabarits de l'application
+     *
+     *              @var string $url Url vers le repertoire des gabarits
+     *              @var string $path Chemin absolu vers le repertoire des gabarits
+     *              @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *              @var string $baseurl Url vers le repertoire racine
+     *              @var string $basedir Chemin absolu vers le repertoire
+     *          }
+     *          @var array $theme {
+     *              Attributs du repertoire des gabarits de surcharge du theme actif
+     *
+     *              @var string $url Url vers le repertoire des gabarits
+     *              @var string $path Chemin absolu vers le repertoire des gabarits
+     *              @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *              @var string $baseurl Url vers le repertoire racine
+     *              @var string $basedir Chemin absolu vers le repertoire
+     *          }
+     *      }
      * }
      */
     final public static function tFyAppAttrs($classname = null)
@@ -125,7 +149,7 @@ abstract class Factory
     /**
      * Récupération d'un attribut de l'applicatif
      *
-     * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config
+     * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|TemplatesPath
      * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
      *
      * @return NULL|mixed
@@ -245,18 +269,143 @@ abstract class Factory
     }
 
     /**
-     * Récupération de template de surcharge
+     * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
-     * @param string $slug Identification du template.
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     *
+     * @return array {
+     *      @var array $app {
+     *          Attributs du repertoire des gabarits de l'application
+     *
+     *          @var string $url Url vers le repertoire des gabarits
+     *          @var string $path Chemin absolu vers le repertoire des gabarits
+     *          @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *          @var string $baseurl Url vers le repertoire racine
+     *          @var string $basedir Chemin absolu vers le repertoire
+     *      }
+     *      @var array $theme {
+     *         Attributs du repertoire des gabarits de surcharge du theme actif
+     *
+     *         @var string $url Url vers le repertoire des gabarits
+     *         @var string $path Chemin absolu vers le repertoire des gabarits
+     *         @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *         @var string $baseurl Url vers le repertoire racine
+     *         @var string $basedir Chemin absolu vers le repertoire
+     *      }
+     * }
+     */
+    final public static function tFyAppTemplatesPath($classname = null)
+    {
+        return self::tFyAppAttr('TemplatesPath', $classname);
+    }
+
+    /**
+     * Chargement d'un gabarit d'affichage
+     *
+     * @param string $slug Identification du template ou chemin relatif .
      * @param string $name Modifieur de template.
      * @param mixed $args Liste des arguments passés en variable dans le template
      * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
      *
      * @see get_template_part()
+     *
+     * @return null|string
      */
     final public static function tFyAppGetTemplatePart($slug, $name = null, $args = array(), $classname = null)
     {
-        return self::getTemplatePart($slug, $name, $args, $classname);
+        // Récupération du nom de la classe d'affilitation
+        if (is_object($classname)) :
+            $classname = get_class($classname);
+        endif;
+        if (! $classname) :
+            $classname = get_called_class();
+        endif;
+
+        // Définition de la liste des templates
+        $templates = [];
+        if ($name) :
+            $templates[] = "{$slug}-{$name}.php";
+        endif;
+        $templates[] = "{$slug}.php";
+
+        if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname))
+            return;
+
+        extract($args);
+        require($_template_file);
+    }
+
+    /**
+     * Récupération d'un gabarit d'affichage
+     *
+     *
+     *
+     */
+    public static function tFyAppQueryTemplate($template, $templates = array(), $classname = null)
+    {
+        // Récupération du nom de la classe d'affilitation
+        if (is_object($classname)) :
+            $classname = get_class($classname);
+        endif;
+        if (! $classname) :
+            $classname = get_called_class();
+        endif;
+
+        // Récupération de la liste des chemin de gabarit
+        $TemplatesPath = self::tFyAppTemplatesPath($classname);
+
+        // Fusion de la liste des gabarits à vérifier
+        if ($template && ! in_array($template, $templates)) :
+            array_unshift($templates, $template);
+        endif;
+
+        $located = '';
+        // Récupération du gabarit de surcharge depuis le thème
+        foreach ((array)$templates as $template_name) :
+            // Bypass
+            if (! $template_name)
+                continue;
+
+            $template_file = $TemplatesPath['theme']['path'] . '/' . $template_name;
+
+            // Bypass - le fichier n'existe pas physiquement
+            if (! file_exists($template_file))
+                continue;
+
+            $located = $template_file;
+            break;
+        endforeach;
+
+        // Récupération du gabarit original depuis l'application
+        if (! $located) :
+            reset($templates);
+            // Récupération du gabarit depuis le thème
+            foreach ((array)$templates as $template_name) :
+                // Bypass
+                if (! $template_name )
+                    continue;
+
+                $template_file = $TemplatesPath['app']['path'] . '/' . $template_name;
+
+                // Bypass - le fichier n'existe pas physiquement
+                if (! file_exists($template_file))
+                    continue;
+
+                $located = $template_file;
+            endforeach;
+        endif;
+
+        if( ! $located ) :
+            foreach ($templates as $template_file) :
+                // Bypass - le fichier n'existe pas physiquement
+                if (! file_exists($template_file))
+                    continue;
+
+                $located = $template_file;
+            endforeach;
+        endif;
+
+        return ($located ? $located : $template);
     }
 
     /**

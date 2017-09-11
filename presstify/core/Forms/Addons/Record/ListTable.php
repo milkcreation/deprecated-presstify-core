@@ -77,13 +77,13 @@ class ListTable extends \tiFy\Core\Templates\Admin\Model\ListTable\ListTable
         );
 
         if( $this->Form ) :
-            foreach( $this->Form->fields() as $field ) :
+            foreach($this->Form->fields() as $field) :
                 if( ! $col = $field->getAddonAttr( 'record', 'column', false ) )
                     continue;
                 $cols[$field->getSlug()] = ( is_bool( $col ) ) ? $field->getLabel() : $col;
-            endforeach;        
+            endforeach;
         endif;
-    
+
         return $cols;
     }
     

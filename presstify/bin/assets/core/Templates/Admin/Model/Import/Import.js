@@ -63,7 +63,7 @@ jQuery(document).ready(function($){
                         // Attend de la fin de l'import en court pour fermer l'interface
                         $( document ).on( 'tiFyTemplatesImport.complete', function(){
                             ui.close();
-                        });                        
+                        });
                     }  
                 }
             );

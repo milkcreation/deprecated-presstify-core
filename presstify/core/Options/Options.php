@@ -94,7 +94,7 @@ class Options extends \tiFy\App\Core
         $this->menu_slug        = 'tify_options';
 
         do_action('tify_options_register_node');
-        
+
         add_action('tify_taboox_register_box', array($this, 'registerBox'));
         add_action('tify_taboox_register_node', array($this, 'registerNodes'));
     }

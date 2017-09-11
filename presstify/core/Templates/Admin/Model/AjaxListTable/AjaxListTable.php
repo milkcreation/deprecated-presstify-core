@@ -164,7 +164,7 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
     
-        $res = $this->getResponse();    
+        $res = $this->getResponse();
         
         // Traitement des erreurs
         if( \is_wp_error( $res ) ) :

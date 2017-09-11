@@ -120,10 +120,10 @@ abstract class Importer
      */
     final public static function import( $inputdata = array(), $attrs = array() )
     {        
-        $import = new static( $inputdata, $attrs );        
-        
+        $import = new static($inputdata, $attrs);
+
         // Erreurs de Pré-traitement
-        if( $import->hasError()  )            
+        if($import->hasError())
             return array( 'insert_id' => 0, 'errors' => $import->getErrors() );
                 
         // Filtrage des données principales
@@ -131,7 +131,10 @@ abstract class Importer
         
         // Vérification d'intégrité des données
         $import->_checkDataValues();
-        
+
+        // Evénement pré-insertion global
+        $import->before_insert();
+
         // Erreurs de traitement
         if( $import->hasError()  )            
             return array( 'insert_id' => 0, 'errors' => $import->getErrors() );
@@ -183,7 +186,8 @@ abstract class Importer
                 // Evénement post-insertion des options
                 $import->after_insert_options( $import->InsertID );
             endif;
-            
+
+            // Evénement post-insertion global
             $import->after_insert($import->InsertID);
             
             $errors = $import->getErrors();
@@ -821,6 +825,11 @@ abstract class Importer
     {
         return;
     }
+
+    /**
+     * Evénement pré-insertion de l'ensemble des éléments (metadonnées|termes de taxonomies|options)
+     */
+    public function before_insert() {}
     
     /**
      * Insertion des données principales

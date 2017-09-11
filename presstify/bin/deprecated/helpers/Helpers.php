@@ -2,7 +2,37 @@
 use tiFy\Deprecated\Deprecated;
 
 /**
- * @version 1.0.323
+ * @version 1.2.391
+ */
+/**
+ * Vérification d'affichage du formulaire de contact sur une page
+ */
+function tify_contact_form_is($post = 0)
+{
+    Deprecated::addFunction(__FUNCTION__, '1.2.391', 'tify_set_contactform_is');
+    return tify_set_contactform_is($post);
+}
+
+/**
+ * Récupération de la identifiant de la page d'affichage du formulaire de contact
+ */
+function tify_contact_form_hookpage($default = 0)
+{
+    Deprecated::addFunction(__FUNCTION__, '1.2.391', 'tify_set_contactform_hook_id');
+    return tify_set_contactform_get($default);
+}
+
+/**
+ * Affichage du formulaire de contact
+ */
+function tify_contact_form_display()
+{
+    Deprecated::addFunction(__FUNCTION__, '1.2.391', 'tify_set_contactform_display');
+    return tify_set_contactform_display();
+}
+
+/**
+ * @version 1.0.371
  */
 /**
  * Définition dynamique de paramètre
