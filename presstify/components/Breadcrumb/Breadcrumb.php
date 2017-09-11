@@ -42,7 +42,7 @@ class Breadcrumb extends \tiFy\Environment\Component
         
         // Déclaration des scripts
         $min = SCRIPT_DEBUG ? '' : '.min';
-        wp_register_style('tiFyComponentBreadcrumb', self::getAssetsUrl(get_class()) .'/Breadcrumb'. $min.'.css', array(), 160318);
+        wp_register_style('tiFyComponentsBreadcrumb', self::getAssetsUrl(get_class()) .'/Breadcrumb'. $min.'.css', array(), 160318);
     }
 
     /**
@@ -51,7 +51,7 @@ class Breadcrumb extends \tiFy\Environment\Component
     final public function wp_enqueue_scripts()
     {    
         if(self::tFyAppConfig('enqueue_scripts'))
-            wp_enqueue_style('tiFyComponentBreadcrumb');
+            wp_enqueue_style('tiFyComponentsBreadcrumb');
     }
 
     /**

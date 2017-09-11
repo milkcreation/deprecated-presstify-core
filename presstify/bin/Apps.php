@@ -68,6 +68,19 @@ final class Apps
      */
     public function __construct()
     {
+        // Chargement des MustUse
+        foreach(glob(TIFY_PLUGINS_DIR . '/*', GLOB_ONLYDIR) as $plugin_dir) :
+            if(! file_exists($plugin_dir . '/MustUse'))
+                continue;
+            if(! $dh = opendir($plugin_dir . '/MustUse'))
+                continue;
+            while(($file = readdir( $dh )) !== false) :
+                if(substr( $file, -4 ) == '.php') :
+                    include_once($plugin_dir . '/MustUse/' . $file);
+                endif;
+            endwhile;
+        endforeach;
+
         add_action('after_setup_theme', array($this, 'after_setup_theme'), 0);
     }
     
@@ -196,19 +209,6 @@ final class Apps
             
             $App = ucfirst($app);
             self::$Config[$App] = ${$app};
-        endforeach;
-
-        // Chargement des MustUse
-        foreach(glob(TIFY_PLUGINS_DIR . '/*', GLOB_ONLYDIR) as $plugin_dir) :
-            if(! file_exists($plugin_dir . '/MustUse'))
-                continue;
-            if(! $dh = opendir($plugin_dir . '/MustUse'))
-                continue;
-            while(($file = readdir( $dh )) !== false) :
-                if(substr( $file, -4 ) == '.php') :
-                    include_once($plugin_dir . '/MustUse/' . $file);
-                endif;
-            endwhile;
         endforeach;
 
         // Chargement des applicatifs
