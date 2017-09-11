@@ -78,7 +78,7 @@ final class HookArchive extends Component
 			
 	/* = CONFIGURATION = */
 	/** == Déclaration == **/
-	final public static function Register( $args = array() )
+	final public static function register( $args = array() )
 	{
 	    $defaults = array(
 			// (requis) Type d'objet d'accroche : post_type (par défaut) | taxonomy
