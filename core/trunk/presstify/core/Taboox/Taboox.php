@@ -97,7 +97,7 @@ class Taboox extends Core
 
         // Déclaration des helpers
         do_action( 'tify_taboox_register_helpers' );
-                
+
         // Initialisation des sections de boîtes à onglets            
         foreach( (array) self::$HooknameMap as $hookname ) :
             if( isset( self::$Nodes[$hookname] ) ) :

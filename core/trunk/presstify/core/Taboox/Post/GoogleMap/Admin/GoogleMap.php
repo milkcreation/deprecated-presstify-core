@@ -54,6 +54,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
         parent::__construct();
         $this->setMarkersTypes();
         $this->setOptions();
+
         // Actions ajax
         /// Ajout d'un nouveau marqueur
         add_action('wp_ajax_tiFyGoogleMapAddMarker', array($this, 'wp_ajax_new_marker'));
@@ -92,7 +93,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
                 'streetViewControl'     => false,
                 'rotateControl'         => false,
                 'fullscreenControl'     => false,
-                'style'                 => null
+                'styles'                => null
             ),
             'Autocomplete'      => array(),
             'MarkersTypes'       => $this->markersTypes
