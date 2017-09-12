@@ -19,13 +19,15 @@ trait Actions
     public function item_row_actions( $item, $actions = array() )
     {        
         $row_actions = array();
-        foreach( (array) $actions as $action ) :
-            if( ! isset( $this->RowActions[$action] ) )
+        foreach ((array)$actions as $action => $attrs) :
+            if (is_int($action))
+                $action = $attrs;
+            if (! isset($this->RowActions[$action]))
                 continue;
-            if( is_string( $this->RowActions[$action] ) ) :
+            if (is_string($this->RowActions[$action])) :
                 $row_actions[$action] = $this->RowActions[$action];
             else :
-                $args = $this->row_action_item_parse_args( $item, $action, $this->RowActions[$action] );
+                $args = $this->row_action_item_parse_args( $item, $action, $attrs);
                 $row_actions[$action] = $this->row_action_link( $action, $args );
             endif;
         endforeach;        
@@ -61,14 +63,15 @@ trait Actions
     public function row_action_link( $action, $args = array() )
     {
         $defaults = array(
-            'label'                     => $action,    
+            'label'                     => $action,
             'title'                     => '',
             'class'                     => '',
             'link_attrs'                => array(),
             'base_uri'                  => set_url_scheme( '//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ),
             'query_args'                => array(),
             'nonce'                     => true,
-            'referer'                   => true
+            'referer'                   => true,
+            'href'                      => ''
         );
         $args = wp_parse_args( $args, $defaults );
         
@@ -76,7 +79,8 @@ trait Actions
     
         // Traitement des arguments
         /// Url de destination
-        $href = add_query_arg( array_merge( $query_args, array( 'action' => $action ) ), $base_uri );
+        if (!$href)
+            $href = add_query_arg( array_merge( $query_args, array( 'action' => $action ) ), $base_uri );
         
         if( $referer ) :
             if( is_bool( $referer ) )

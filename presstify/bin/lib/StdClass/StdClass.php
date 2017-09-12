@@ -44,7 +44,11 @@ class StdClass
         foreach ((array) Apps::queryPlugins() as $classname => $attrs) :
             $namespaces[] = "tiFy\\Plugins\\{$attrs['Id']}\\App";
         endforeach;
-        
+
+        foreach ((array) Apps::querySet() as $classname => $attrs) :
+            $namespaces[] = "{$attrs['Namespace']}\\App";
+        endforeach;
+
         return $namespaces;
     }
     

@@ -103,7 +103,12 @@ class Forms extends \tiFy\Environment\Core
             $attrs['ID'] = $id;
         endif;
 
-        $FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', array( "\\". self::getOverrideNamespace() ."\\Core\\Forms\\". self::sanitizeControllerName($id)));
+        $override_path = [];
+        foreach ((array)self::getOverrideNamespaceList() as $namespace) :
+            $override_path[] = $namespace . "\\Core\\Forms\\". self::sanitizeControllerName($id);
+        endforeach;
+
+        $FactoryClassName = self::getOverride( '\tiFy\Core\Forms\Factory', $override_path);
         $form = self::$Factories[$id] = new $FactoryClassName($id, $attrs);
         
         return $form->getForm()->getID();
