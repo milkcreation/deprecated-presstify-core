@@ -21,7 +21,7 @@ class Admin extends \tiFy\App\Factory
     final public function admin_menu()
     {
         $menus = array(); 
-        $submenus = array();        
+        $submenus = array();
     
         foreach( (array) Templates::listAdmin() as $id => $Factory ) :
             // L'entrée de menu de doit pas apparaître
@@ -69,7 +69,7 @@ class Admin extends \tiFy\App\Factory
                 $submenus[$admin_menu['parent_slug']][] = $admin_menu;
             endif;
         endforeach;
-        
+
         // Déclaration des menus
         foreach( (array) $menus as $menu_slug => $menu ) :
             add_menu_page( $menu['page_title'], $menu['menu_title'], $menu['capability'], $menu_slug, $menu['function'], $menu['icon_url'], $menu['position'] );

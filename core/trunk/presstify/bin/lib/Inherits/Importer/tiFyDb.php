@@ -13,7 +13,7 @@ class tiFyDb extends \tiFy\Inherits\Importer\Importer
     /**
      * Type de données prises en charge
      */
-    protected $DataType     = array( 'data', 'metadata' );
+    protected $DataType     = ['data', 'metadata'];
     
     /**
      * CONSTRUCTEUR

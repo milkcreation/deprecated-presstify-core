@@ -47,7 +47,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         // Bypass
         if( ! $callback = $this->getAttr( 'cb' ) )
             return;
-        
+
         $className = false;
         if( preg_match( '/\\\/', $callback ) ) :
             $className = self::getOverride( $callback );
@@ -67,6 +67,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         // Création des méthodes dynamiques
         $factory = $this;
         $this->Template->template     = function() use( $factory ){ return $factory; };
+        /** @var \tiFy\Core\Db\Factory */
         $this->Template->db           = function() use( $factory ){ return $factory->getDb(); };
         $this->Template->label        = function( $label = '' ) use( $factory ){ if( func_num_args() ) return $factory->getLabel( func_get_arg(0) ); };        
         $this->Template->getConfig    = function( $attr, $default = '' ) use( $factory ){ if( func_num_args() ) return call_user_func_array( array( $factory, 'getAttr' ), func_get_args() ); };    

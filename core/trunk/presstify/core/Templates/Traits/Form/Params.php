@@ -3,16 +3,62 @@ namespace tiFy\Core\Templates\Traits\Form;
 
 trait Params
 {
-	/* = INITIALISATION DES PARAMETRES = */
-	/** == Initialisation des paramètres de configuration de la table == **/
-	protected function initParams()
-	{
-		foreach( (array) $this->ParamsMap as $param ) :
-			if( ! method_exists( $this, 'initParam' . $param ) ) 
-				continue;
-			call_user_func( array( $this, 'initParam' . $param ) );
-		endforeach;
-	}
+    /** == Formatage du nom d'un paramètre == **/
+    protected function sanitizeParam( $param )
+    {
+        return implode( array_map( 'ucfirst', explode( '_', $param ) ) );
+    }
+
+    /** == Récupération de la liste de paramètres permis == **/
+    protected function allowedParams()
+    {
+        return $this->ParamsMap;
+    }
+
+    /** == Définition d'un paramètre == **/
+    protected function setParam( $param, $value )
+    {
+        $param = self::sanitizeParam( $param );
+        if( in_array( $param, $this->allowedParams() ) ) :
+            $this->{$param} = $value;
+        endif;
+    }
+
+    /** == Récupération d'un paramètre == **/
+    protected function getParam( $param, $default = '' )
+    {
+        $param = self::sanitizeParam( $param );
+        if( ! in_array( $param, $this->allowedParams() ) )
+            return $default;
+
+        if( method_exists( $this, 'get'. $param ) ) :
+            return call_user_func( array( $this, 'get'. $param ) );
+        elseif( isset( $this->{$param} ) ) :
+            return $this->{$param};
+        endif;
+
+        return $default;
+    }
+
+    /** == Initialisation des paramètres de configuration de la table == **/
+    protected function initParams()
+    {
+        $this->ParamsMap = $this->set_params_map();
+
+        foreach( (array) $this->allowedParams() as $param ) :
+            if( ! method_exists( $this, 'initParam' . $param ) )
+                continue;
+            call_user_func( array( $this, 'initParam' . $param ) );
+        endforeach;
+    }
+
+    /**
+     * Définition de la cartographie des paramètres autorisés
+     */
+    public function set_params_map()
+    {
+        return $this->ParamsMap;
+    }
 	
 	/** == Initialisation de l'url de la page d'administration == **/
 	public function initParamBaseUri()

@@ -164,7 +164,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
             return false;
         
         return $this->db()->select()->has( $this->ItemIndex, $item->{$item->{$index}} );
-    }    
+    }
     
     /**
      * RECUPERATION DE PARAMETRE
