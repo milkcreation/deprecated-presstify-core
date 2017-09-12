@@ -45,8 +45,8 @@ class Repeater extends \tiFy\Core\Control\Factory
      */
     public static function enqueue_scripts()
     {
-        wp_enqueue_style( 'tify_control-repeater' );
-        wp_enqueue_script( 'tify_control-repeater' );
+        wp_enqueue_style('tify_control-repeater');
+        wp_enqueue_script('tify_control-repeater');
     }
     
     /**
@@ -54,7 +54,9 @@ class Repeater extends \tiFy\Core\Control\Factory
      */
     /**
      * Affichage du contrôleur
-     * @param array $attrs
+     *
+     * @param array $attrs {
+     * }
      * @return string
      */
     public static function display( $attrs = array(), $echo = true )
@@ -77,7 +79,7 @@ class Repeater extends \tiFy\Core\Control\Factory
             // Agent de sécurisation de la requête ajax
             'ajax_nonce'            => wp_create_nonce( 'tiFyControlRepeater' ),
             // Fonction de rappel d'affichage d'un élément
-            'item_cb'               => '',            
+            'item_cb'               => '',
             // Intitulé du bouton d'ajout d'une interface d'édition
             'add_button_txt'        => __( 'Ajouter', 'tify' ),
             // Classe du bouton d'ajout d'une interface d'édition
@@ -106,7 +108,7 @@ class Repeater extends \tiFy\Core\Control\Factory
                 $v = ( ! is_array( $v ) ) ? ( $v ? $v : $default ) : wp_parse_args( $v, (array) $default ); 
                 ob_start();
                 $parsed_attrs['item_cb'] ? call_user_func( $parsed_attrs['item_cb'], $i, $v, $parsed_attrs ) : self::item( $i, $v, $parsed_attrs ); 
-                $item = ob_get_clean();        
+                $item = ob_get_clean();
                                 
                 $output .= self::itemWrap( $item, $i, $v, $parsed_attrs );
             endforeach;            
@@ -141,7 +143,7 @@ class Repeater extends \tiFy\Core\Control\Factory
     /**
      * Encapsulation Html d'un élément
      */
-    final protected static function itemWrap( $item, $index, $value, $attrs )
+    final public static function itemWrap( $item, $index, $value, $attrs )
     {
         $output  = "";
         $output .= "\t\t<li class=\"tiFyControlRepeater-Item\" data-index=\"{$index}\">\n";
@@ -168,7 +170,7 @@ class Repeater extends \tiFy\Core\Control\Factory
         
         ob_start();
         if( ! empty( $_POST['attrs']['item_cb'] ) ) :
-            call_user_func( wp_unslash( $_POST['attrs']['item_cb'] ), $index, $value, $attrs );
+            call_user_func(wp_unslash( $_POST['attrs']['item_cb'] ), $index, $value, $attrs);
         else :
             static::item( $index, $value, $attrs );
         endif;

@@ -28,8 +28,13 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     /**
      * Répertoire d'upload
      */
-    protected $UploadDir; 
-            
+    protected $UploadDir;
+
+    /**
+     * Données complémentaires d'import
+     */
+    protected $ImportMisc       = [];
+
     /**
      * PARAMETRAGE
      */    
@@ -38,8 +43,8 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */
     public function set_params_map()
     {
-        $params = parent::set_params_map();        
-        array_push( $params, 'Filename', 'FileColumns', 'Delimiter', 'Utf8Encode', 'Uploadable', 'UploadDir' );
+        $params = parent::set_params_map();
+        array_push( $params, 'Filename', 'FileColumns', 'Delimiter', 'Utf8Encode', 'Uploadable', 'UploadDir', 'ImportMisc' );
         
         return $params;
     }
@@ -65,7 +70,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */ 
     public function set_file_columns()
     {
-        return array();
+        return [];
     }
     
     /**
@@ -90,6 +95,14 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function set_uploadable()
     {
         return true;
+    }
+
+    /**
+     * Définition des données complémentaires d'import
+     */
+    public function set_import_misc()
+    {
+        return [];
     }
         
     /**
@@ -360,15 +373,23 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
 <?php   endif;
         
         // Indication de fichier en traitement
-        if( $this->QueryArgs['filename'] ) :
+        if ($this->QueryArgs['filename']) :
 ?>
-<div class="tiFyTemplatesFileImport-handeFilename">
-    <strong class="tiFyTemplatesFileImport-handeFilenameLabel"><?php _e( 'Fichier en cours de traitement :', 'tify' );?></strong>
-    <div class="tiFyTemplatesFileImport-handeFilenameValue"><?php echo $this->QueryArgs['filename'];?></div> 
+<div class="tiFyTemplatesFileImport-handleFilename">
+    <strong class="tiFyTemplatesFileImport-handleFilenameLabel"><?php _e( 'Fichier en cours de traitement :', 'tify' );?></strong>
+    <div class="tiFyTemplatesFileImport-handleFilenameValue"><?php echo $this->QueryArgs['filename'];?></div>
 </div>
 <?php         
         endif;
-        
+?>
+<div class="tiFyTemplatesFileImport-options">
+    <strong class="tiFyTemplatesFileImport-optionsLabel"><?php _e( 'Options d\'import :', 'tify' );?></strong>
+    <div class="tiFyTemplatesFileImport-optionsForm">
+
+
+    </div>
+</div>
+<?php
         parent::views();
     }
     

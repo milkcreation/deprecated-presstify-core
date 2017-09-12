@@ -40,7 +40,7 @@ trait Actions
     /** == Récupération de l'attribut de sécurisation d'une action == **/
     public function get_item_nonce_action( $action, $suffix = null )
     {
-        $nonce_action = $this->getParam( 'Singular' ) . $action;
+        $nonce_action = $this->getParam('Singular') . $action;
         
         if( isset( $suffix ) )
             $nonce_action .= $suffix;
