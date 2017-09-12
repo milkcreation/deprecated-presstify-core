@@ -15,7 +15,7 @@ class MediaFile extends \tiFy\Core\Control\Factory
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
-	public function enqueue_scripts()
+	public static function enqueue_scripts()
 	{	
 		wp_enqueue_media();	
 		wp_enqueue_style( 'tify_control-media_file' );
