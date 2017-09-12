@@ -20,7 +20,7 @@ trait Params
     protected function setParam( $param, $value )
     {
         $param = self::sanitizeParam( $param );
-        if( in_array( $param, $this->allowedParams() ) ) :            
+        if( in_array( $param, $this->allowedParams() ) ) :
             $this->{$param} = $value;  
         endif;
     }
