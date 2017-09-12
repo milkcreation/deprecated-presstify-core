@@ -38,10 +38,13 @@
         _parseMapOptions: function(mapOptions) {
         	var self = this;
         	$.each(mapOptions, function(index, value) {
-        		if(index === 'position') {
+        		if (index === 'position') {
         			mapOptions[index] = eval("google.maps.ControlPosition."+value);
         		}
-        		if(typeof value === 'object') {
+        		if (index === 'styles') {
+                    mapOptions[index] = JSON.parse(value);
+                }
+        		if (typeof value === 'object') {
         			return self._parseMapOptions(value);
         		}
 			});
@@ -86,7 +89,7 @@
 			    self._setCenter();
 			});
         },
-        /**
+        /**Nouveau marqueur
          * Initialisation du centrage de la carte en fonction des coordonnées
          * Si pas de coordonnées, centrage en fonction de la géolocalisation de l'utilisateur
          * Sinon centrage sur la Tour Eiffel
