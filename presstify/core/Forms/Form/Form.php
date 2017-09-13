@@ -439,7 +439,7 @@ class Form
         $values = array();
         
         foreach( $this->fields() as $field ) :
-            $values[ $field->getSlug()] = $field->getValue( $raw );
+            $values[$field->getSlug()] = $field->getValue( $raw );
         endforeach;
         
         return $values;

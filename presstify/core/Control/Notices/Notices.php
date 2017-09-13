@@ -26,7 +26,7 @@ class Notices extends \tiFy\Core\Control\Factory
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
-	public function enqueue_scripts()
+	public static function enqueue_scripts()
 	{	
 		wp_enqueue_style( 'tify_control-notices' );
 		wp_enqueue_script( 'tify_control-notices' );
