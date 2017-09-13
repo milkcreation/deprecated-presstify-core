@@ -13,7 +13,7 @@ class ContactForm extends \tiFy\App\Set
      * @var string[]
      * @see https://codex.wordpress.org/Plugin_API/Action_Reference
      */
-    protected $tFyAppActions = ['tify_form_register', 'tify_router_register', 'the_content'];
+    protected $tFyAppActions = ['tify_form_register', 'tify_router_register'];
 
     /**
      * CONSTRUCTEUR
@@ -24,6 +24,8 @@ class ContactForm extends \tiFy\App\Set
 
         // Initialisation des fonctions d'aide à la saisie
         include self::tFyAppDirname() . '/Helpers.php';
+
+        add_filter('the_content', 'tiFy\Set\ContactForm\ContactForm::the_content');
     }
 
     /**
@@ -37,6 +39,7 @@ class ContactForm extends \tiFy\App\Set
     public function tify_form_register()
     {
         $attrs = self::tFyAppConfig('form');
+
         return Forms::register(
             (isset($attrs['ID']) ? $attrs['ID'] : 'tiFySetContactForm'),
             $attrs
@@ -72,7 +75,9 @@ class ContactForm extends \tiFy\App\Set
         // Bypass
         if (! in_the_loop())
             return $content;
-        if (! $id = ContentHook::get('tiFySetContactForm'))
+        if (! is_singular())
+            return $content;
+        if (ContentHook::get('tiFySetContactForm') !== get_the_ID())
             return $content;
 
         // Masque le contenu et le formulaire sur la page d'accroche
@@ -93,6 +98,8 @@ class ContactForm extends \tiFy\App\Set
         if ($content_display === 'after' ) :
             $output .= $content;
         endif;
+
+        remove_filter(current_filter(), __METHOD__, 10);
 
         return $output;
     }
