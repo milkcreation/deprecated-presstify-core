@@ -279,7 +279,7 @@ class Messager extends \tiFy\Core\Templates\Admin\Model\Form
             <li class="tiFyCoreTemplatesAdminModelMessager-mailOption tiFyCoreTemplatesAdminModelMessager-mailOption--sender">
                 <label class="tiFyCoreTemplatesAdminModelMessager-mailOptionLabel"><?php _e('Expéditeur :', 'Theme'); ?></label>
                 <div class="tiFyCoreTemplatesAdminModelMessager-mailOptionContent">
-                    <input type="text" class="widefat" name="from" value="<?php echo $from;?>"/>
+                    <input type="text" class="widefat" name="from" value="<?php echo $from; ?>"/>
                 </div>
             </li>
             <li class="tiFyCoreTemplatesAdminModelMessager-mailOption tiFyCoreTemplatesAdminModelMessager-mailOption--recipients">
@@ -325,7 +325,7 @@ class Messager extends \tiFy\Core\Templates\Admin\Model\Form
         </ul>
         <div class="tiFyCoreTemplatesAdminModelMessager-mailMessage">
             <?php
-            wp_editor(
+            @ \wp_editor(
                 wp_unslash($message),
                 'tiFyCoreTemplatesAdminModelMessager-editor',
                 [
@@ -360,6 +360,6 @@ class Messager extends \tiFy\Core\Templates\Admin\Model\Form
         </div>
     </form>
 </div>
-<?
+<?php
     }
 }

@@ -87,6 +87,8 @@ class Db extends \tiFy\App\Core
     
     /**
      * Récupération
+     *
+     * @return null|\tiFy\Core\Db\Factory
      */
     public static function get( $id )
     {
