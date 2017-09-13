@@ -19,7 +19,7 @@ class DropdownColors extends \tiFy\Core\Control\Factory
     }
     
     /** == Mise en file des scripts == **/
-    final public function enqueue_scripts()
+    public static function enqueue_scripts()
     {
         wp_enqueue_style( 'tify_control-dropdown_colors' );
         wp_enqueue_script( 'tify_control-dropdown_colors' );
