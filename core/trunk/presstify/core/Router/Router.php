@@ -55,7 +55,8 @@ class Router extends \tiFy\App\Core
                 'id'        => 'tifyCoreRouter-optionsNode--contentHook',
                 'parent'    => 'tifyCoreRouter-optionsNode',
                 'title'     => __('Pages de contenu spéciales', 'tify'),
-                'cb'        => 'tiFy\Core\Router\Taboox\Admin\ContentHook'
+                'cb'        => 'tiFy\Core\Router\Taboox\Admin\ContentHook',
+                'helpers'   => 'tiFy\Core\Router\Taboox\Helpers\ContentHook'
             )
         );
     }
