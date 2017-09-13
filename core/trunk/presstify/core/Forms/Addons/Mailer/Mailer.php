@@ -92,7 +92,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         $id = @ sanitize_html_class(base64_encode($this->form()->getUID()));
 
         // Bypass
-        if (! $admin = $this->getFormAttr('admin')) :
+        if ($admin = $this->getFormAttr('admin')) :
             // Définition des attributs de configuration de l'interface d'administration
             $defaults = [
                 'form_id'               => $this->form()->getId(),
