@@ -161,9 +161,12 @@ final class Taxonomy extends Factory
 	final public function post_type_link( $post_link, $post, $leavename, $sample )
 	{
 		// Bypass
-		if( ! $this->Options['rewrite'] )
+		if (! $this->Options['rewrite'])
 			return $post_link;
-		
+
+        if (! $post->post_name)
+            return $post_link;
+
 		if( ! is_object_in_taxonomy( $post->post_type, $this->Archive ) )
 			return $post_link;
 		
