@@ -17,7 +17,7 @@ class Api extends \tiFy\Environment\Component
      * Liste des api autorisées
      * @var string[]
      */
-    private static $Allowed         = array(
+    private static $Allowed         = [
         //'google',
         //'google-analytics',
         //'google-map',
@@ -25,25 +25,27 @@ class Api extends \tiFy\Environment\Component
         'youtube',
         'vimeo',
         'facebook'
-    );
+    ];
     
     /**
      * Liste des classes de rappel
      * @var object[]
      */
-    private static $Api             = array();
+    private static $Api             = [];
     
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
         parent::__construct();
 
         // Déclaration
-        if( $apis = self::tFyAppConfig() ) :
-            foreach( $apis as $api => $attrs ) :
-                self::register( $api, $attrs );
+        if ($apis = self::tFyAppConfig()) :
+            foreach ($apis as $api => $attrs) :
+                self::register($api, $attrs);
             endforeach;
         endif;
     }
@@ -53,8 +55,13 @@ class Api extends \tiFy\Environment\Component
      */
     /**
      * Déclaration
+     *
+     * @param string $api Nom de l'api. Doit faire parti des api permises.
+     * @param array $attrs Attributs de configuration
+     *
+     * @return null|object
      */
-    public function register( $api, $attrs = array() )
+    public function register($api, $attrs = [])
     {
         // Bypass
         if( ! in_array( $api, self::$Allowed ) )
@@ -69,9 +76,10 @@ class Api extends \tiFy\Environment\Component
     /**
      * Récupération
      */
-    public static function get( $api )
+    public static function get($api)
     {
-        if( isset( self::$Api[$api] ) )
+        if(isset(self::$Api[$api])) :
             return self::$Api[$api];
+        endif;
     }
 }

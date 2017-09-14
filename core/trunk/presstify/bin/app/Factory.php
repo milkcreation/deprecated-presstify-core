@@ -328,6 +328,7 @@ abstract class Factory
         endif;
         $templates[] = "{$slug}.php";
 
+        
         if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname))
             return;
 
@@ -395,13 +396,15 @@ abstract class Factory
             endforeach;
         endif;
 
-        if( ! $located ) :
-            foreach ($templates as $template_file) :
-                // Bypass - le fichier n'existe pas physiquement
-                if (! file_exists($template_file))
-                    continue;
-
-                $located = $template_file;
+        if (! $located ) :
+            foreach ($templates as $template_name) :
+                if (file_exists(get_template_directory() . '/templates/' . $template_name)) :
+                    $located = get_template_directory() . '/templates/' . $template_name;
+                    break;
+                elseif (file_exists($template_name)) :
+                    $located = $template_name;
+                    break;
+                endif;
             endforeach;
         endif;
 
