@@ -80,7 +80,7 @@ abstract class Factory
      * Définition d'attributs de l'applicatif
      *
      * @param $attrs
-     * @param object|string $classname
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
      *
      * @return bool
      */
@@ -111,7 +111,7 @@ abstract class Factory
      *      @var string $Url Url absolue vers le repertoire racine de la classe
      *      @var string $Rel Chemin relatif vers le repertoire racine de la classe
      *      @var mixed $Config Attributs de configuration de configuration de l'applicatif
-     *      @var array $TemplatesPath {
+     *      @var array $OverridePath {
      *          Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
      *          @var array $app {
@@ -149,7 +149,7 @@ abstract class Factory
     /**
      * Récupération d'un attribut de l'applicatif
      *
-     * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|TemplatesPath
+     * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|OverridePath
      * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
      *
      * @return NULL|mixed
@@ -294,9 +294,9 @@ abstract class Factory
      *      }
      * }
      */
-    final public static function tFyAppTemplatesPath($classname = null)
+    final public static function tFyAppOverridePath($classname = null)
     {
-        return self::tFyAppAttr('TemplatesPath', $classname);
+        return self::tFyAppAttr('OverridePath', $classname);
     }
 
     /**
@@ -352,7 +352,7 @@ abstract class Factory
         endif;
 
         // Récupération de la liste des chemin de gabarit
-        $TemplatesPath = self::tFyAppTemplatesPath($classname);
+        $OverridePath = self::tFyAppOverridePath($classname);
 
         // Fusion de la liste des gabarits à vérifier
         if ($template && ! in_array($template, $templates)) :
@@ -366,7 +366,7 @@ abstract class Factory
             if (! $template_name)
                 continue;
 
-            $template_file = $TemplatesPath['theme']['path'] . '/' . $template_name;
+            $template_file = $OverridePath['theme_templates']['path'] . '/' . $template_name;
 
             // Bypass - le fichier n'existe pas physiquement
             if (! file_exists($template_file))
@@ -385,7 +385,7 @@ abstract class Factory
                 if (! $template_name )
                     continue;
 
-                $template_file = $TemplatesPath['app']['path'] . '/' . $template_name;
+                $template_file = $OverridePath['theme_app']['path'] . '/' . $template_name;
 
                 // Bypass - le fichier n'existe pas physiquement
                 if (! file_exists($template_file))
