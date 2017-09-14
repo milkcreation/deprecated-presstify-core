@@ -34,7 +34,7 @@ final class Apps
      *          @var string $Url Url absolu vers le repertoire racine de la classe
      *          @var string $Rel Chemin relatif vers le repertoire racine de la classe
      *          @var mixed $Config Attributs de configuration de configuration de l'applicatif
-     *          @var array $TemplatesPath {
+     *          @var array $OverridePath {
      *              Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
      *              @var array $app {
@@ -318,24 +318,83 @@ final class Apps
 
             // Gabarits d'affichage
             // Chemins de gabarits de l'application
-            $TemplatesPath['app'] = [
-                'path' => $Dirname . '/templates',
-                'url' => $Url . '/templates',
-                'subdir' => '',
-                'basedir' => $Dirname . '/templates',
-                'baseurl' => $Url . '/templates'
-            ];
+            if (in_array($Type, ['Set', 'Plugins'])) :
+                $OverridePath['app'] = [
+                    'path' => $Dirname . '/app',
+                    'url' => $Url . '/app',
+                    'subdir' => '',
+                    'basedir' => $Dirname . '/app',
+                    'baseurl' => $Url . '/app',
+                    'error' => false
+                ];
+                $OverridePath['templates'] = [
+                    'path' => $Dirname . '/templates',
+                    'url' => $Url . '/templates',
+                    'subdir' => '',
+                    'basedir' => $Dirname . '/templates',
+                    'baseurl' => $Url . '/templates',
+                    'error' => false
+                ];
+            else :
+                $OverridePath['app'] = [
+                    'path' => '',
+                    'url' => '',
+                    'subdir' => '',
+                    'basedir' => '',
+                    'baseurl' => '',
+                    'error' => new \WP_Error('OverridePathAppInvalidType', __('Seules les extensions (plugins) et les jeux de fonctionnalités (set) sont en mesure de surcharger les applications', 'tify'))
+                ];
+                $OverridePath['templates'] = [
+                    'path' => '',
+                    'url' => '',
+                    'subdir' => '',
+                    'basedir' => '',
+                    'baseurl' => '',
+                    'error' => new \WP_Error('OverridePathTemplatesInvalidType', __('Seules les extensions (plugins) et les jeux de fonctionnalités (set) sont en mesure de surcharger les gabarits', 'tify'))
+                ];
+            endif;
 
             // Chemins de gabarits de surchage du thème
-            if($subdir = preg_replace('#^(.*)\/app\/#', '', $Dirname))
+            if ($subdir = File::getRelativeFilename($Dirname, tiFy::$AbsDir)) :
+            //elseif (preg_match('#^(.*)\/app\/#', $Dirname) && ($subdir = preg_replace('#^(.*)\/app\/#', '', $Dirname))) :
+
                 $subdir = \untrailingslashit($subdir);
-            $TemplatesPath['theme'] = [
-                'path' => get_template_directory() . '/templates/' . $subdir,
-                'url' => get_template_directory_uri() . '/templates/' . $subdir,
-                'subdir' => $subdir,
-                'basedir' => get_template_directory() . '/templates',
-                'baseurl' => get_template_directory_uri() . '/templates'
-            ];
+                $_subdir = $subdir ? '/' . $subdir : '';
+
+                $OverridePath['theme_app'] = [
+                    'path' => get_template_directory() . '/app' . $_subdir,
+                    'url' => get_template_directory_uri() . '/app' . $_subdir,
+                    'subdir' => $subdir,
+                    'basedir' => get_template_directory() . '/app',
+                    'baseurl' => get_template_directory_uri() . '/app',
+                    'error' => false
+                ];
+                $OverridePath['theme_templates'] = [
+                    'path' => get_template_directory() . '/templates' . $_subdir,
+                    'url' => get_template_directory_uri() . '/templates' . $_subdir,
+                    'subdir' => $subdir,
+                    'basedir' => get_template_directory() . '/templates',
+                    'baseurl' => get_template_directory_uri() . '/templates',
+                    'error' => false
+                ];
+            else :
+                $OverridePath['theme_app'] = [
+                    'path' => '',
+                    'url' => '',
+                    'subdir' => '',
+                    'basedir' => '',
+                    'baseurl' => '',
+                    'error' => new \WP_Error('OverridePathAppTemplatesOut', __('Fonctionnalité non active pour le moment', 'tify'))
+                ];
+                $OverridePath['theme_templates'] = [
+                    'path' => '',
+                    'url' => '',
+                    'subdir' => '',
+                    'basedir' => '',
+                    'baseurl' => '',
+                    'error' => new \WP_Error('OverridePathThemeTemplatesOut', __('Fonctionnalité non active pour le moment', 'tify'))
+                ];
+            endif;
         else :
             extract(self::$Registered[$classname]);
             $Config = wp_parse_args($config_attrs, $Config);
@@ -359,7 +418,7 @@ final class Apps
             // Configuration
             'Config',
             // Gabarits d'affichage
-            'TemplatesPath'
+            'OverridePath'
         );
     }
     
