@@ -49,9 +49,7 @@ class Password extends Factory
 		/// Placeholder
 		$output .= " placeholder=\"". esc_attr( $this->getInputPlaceholder() ) ."\"";
 		/// Attributs
-		foreach( (array) $this->getInputHtmlAttrs() as $k => $v ) :
-			$output .= " {$k}=\"{$v}\"";
-		endforeach;
+        $output .= $this->getInputHtmlAttrs();
 		/// Value
 		$output .= " value=\"". esc_attr( $this->field()->getValue() ) ."\"";
 		/// TabIndex

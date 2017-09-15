@@ -139,7 +139,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
     /**
      * Avant la redirection
      */
-    public function cb_handle_successfully(&$handle)
+    public function cb_handle_successfully($handle)
     {
         // Expédition du message de confirmation
         if ($options = $this->getFormAttr('confirmation')) :

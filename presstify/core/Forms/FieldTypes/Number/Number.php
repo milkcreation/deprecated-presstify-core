@@ -67,13 +67,10 @@ class Number extends \tiFy\Core\Forms\FieldTypes\Factory
         $output .= " class=\"" . join(' ', $this->getInputClasses()) . "\"";
         /// Name
         $output .= " name=\"" . esc_attr($this->field()->getDisplayName()) . "\"";
-
-        /// Attributs
-        foreach ((array)$this->getInputHtmlAttrs() as $k => $v) :
-            $output .= " {$k}=\"{$v}\"";
-        endforeach;
         /// Value
         $output .= " value=\"" . esc_attr($this->field()->getValue()) . "\"";
+        /// Attributs
+        $output .= $this->getInputHtmlAttrs();
         /// TabIndex
         $output .= " " . $this->getTabIndex();
         /// Fermeture

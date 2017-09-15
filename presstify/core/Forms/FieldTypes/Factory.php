@@ -141,16 +141,12 @@ abstract class Factory extends \tiFy\App\Factory
     public function getInputHtmlAttrs()
     {
         $attrs = [];
-
         foreach ($this->HtmlAttrs as $attr) :
-            if ( ! $value = $this->field()->getAttr($attr)) {
-                continue;
-            }
-            $attrs[$attr] = HtmlAttrs::getValue($attr,
-                $this->field()->getAttr($attr));
+            $attrs[] = HtmlAttrs::getValue($attr, $this->field()->getAttr($attr));
         endforeach;
 
-        return $attrs;
+        if(! empty($attrs))
+            return implode(" ", $attrs);
     }
 
     /** == Attributs tabindex de navigation au clavier == **/
