@@ -36,9 +36,7 @@ class Textarea extends \tiFy\Core\Forms\FieldTypes\Factory
 		/// Placeholder
 		$output .= " placeholder=\"". esc_attr( $this->getInputPlaceholder() ) ."\"";
 		/// Attributs
-		foreach( (array) $this->getInputHtmlAttrs() as $k => $v ) :
-			$output .= " {$k}=\"{$v}\"";
-		endforeach;
+        $output .= $this->getInputHtmlAttrs();
 		/// TabIndex
 		$output .= " ". $this->getTabIndex();
 		$output .= ">";

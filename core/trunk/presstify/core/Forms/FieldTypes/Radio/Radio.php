@@ -36,9 +36,7 @@ class Radio extends \tiFy\Core\Forms\FieldTypes\Factory
 			$output .= " value=\"". esc_attr( $value ) ."\"";
 			$output .= " name=\"". esc_attr( $this->field()->getDisplayName() ) ."\"";
 			$output .= "". checked( ( $this->field()->getValue() == $value ), true, false ) ."";
-			foreach( (array) $this->getInputHtmlAttrs() as $attr ) :
-				$output .= " {$k}=\"{$v}\"";
-			endforeach;
+            $output .= $this->getInputHtmlAttrs();
 			/// TabIndex
 			$output .= " ". $this->getTabIndex();
 			$output .= "/>";
