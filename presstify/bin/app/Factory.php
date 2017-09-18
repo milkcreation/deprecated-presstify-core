@@ -2,6 +2,7 @@
 
 namespace tiFy\App;
 
+use tiFy\tiFy;
 use tiFy\Apps;
 use tiFy\Environment\Traits\Old;
 
@@ -386,7 +387,7 @@ abstract class Factory
      *
      * @return null|string
      */
-    final public static function tFyAppGetTemplatePart($slug, $name = null, $args = array(), $classname = null)
+    final public static function tFyAppGetTemplatePart($slug, $name = null, $args = [], $classname = null)
     {
         // Récupération du nom de la classe d'affilitation
         if (is_object($classname)) :
@@ -403,20 +404,15 @@ abstract class Factory
         endif;
         $templates[] = "{$slug}.php";
 
-        
         if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname)) :
             return;
         endif;
 
-        extract($args);
-        require($_template_file);
+        self::tFyAppTemplateLoad($_template_file, $args);
     }
 
     /**
      * Récupération d'un gabarit d'affichage
-     *
-     *
-     *
      */
     public static function tFyAppQueryTemplate($template, $templates = array(), $classname = null)
     {
@@ -424,7 +420,7 @@ abstract class Factory
         if (is_object($classname)) :
             $classname = get_class($classname);
         endif;
-        if (! $classname) :
+        if (!$classname) :
             $classname = get_called_class();
         endif;
 
@@ -438,20 +434,43 @@ abstract class Factory
 
         $located = '';
         // Récupération du gabarit de surcharge depuis le thème
-        foreach ((array)$templates as $template_name) :
-            // Bypass
-            if (! $template_name)
-                continue;
+        if (!\is_wp_error($OverridePath['theme_templates']['error'])) :
+            foreach ((array)$templates as $template_name) :
+                // Bypass
+                if (!$template_name)
+                    continue;
 
-            $template_file = $OverridePath['theme_templates']['path'] . '/' . $template_name;
+                $template_file = $OverridePath['theme_templates']['path'] . '/' . $template_name;
 
-            // Bypass - le fichier n'existe pas physiquement
-            if (! file_exists($template_file))
-                continue;
+                // Bypass - le fichier n'existe pas physiquement
+                if (! file_exists($template_file))
+                    continue;
 
-            $located = $template_file;
-            break;
-        endforeach;
+                $located = $template_file;
+                break;
+            endforeach;
+        endif;
+
+        // Cas particulier à traiter - App déclaré dans le répertoire de surcharge des apps du thème
+        if(!$located && preg_match('#^'. preg_quote(get_template_directory() . '/app', '/') .'#', self::tFyAppDirname($classname))) :
+            $subdir = preg_replace('#^'. preg_quote(get_template_directory() . '/app/', '/') .'#', '', self::tFyAppDirname($classname));
+
+            reset($templates);
+            // Récupération du gabarit depuis le thème
+            foreach ((array)$templates as $template_name) :
+                // Bypass
+                if (! $template_name)
+                    continue;
+
+                $template_file = get_template_directory() . "/templates/{$subdir}/{$template_name}";
+                // Bypass - le fichier n'existe pas physiquement
+                if (! file_exists($template_file))
+                    continue;
+
+                $located = $template_file;
+            endforeach;
+        endif;
+
 
         // Récupération du gabarit original depuis l'application
         if (! $located) :
@@ -459,10 +478,10 @@ abstract class Factory
             // Récupération du gabarit depuis le thème
             foreach ((array)$templates as $template_name) :
                 // Bypass
-                if (! $template_name )
+                if (! $template_name)
                     continue;
 
-                $template_file = $OverridePath['theme_app']['path'] . '/' . $template_name;
+                $template_file = self::tFyAppDirname($classname) . '/templates/' . $template_name;
 
                 // Bypass - le fichier n'existe pas physiquement
                 if (! file_exists($template_file))
@@ -485,6 +504,19 @@ abstract class Factory
         endif;
 
         return ($located ? $located : $template);
+    }
+
+    /**
+     *
+     */
+    public static function tFyAppTemplateLoad($__template_file, $args = [])
+    {
+        if(isset($args[$__template_file])) :
+            unset($args[$__template_file]);
+        endif;
+
+        extract($args);
+        require($__template_file);
     }
 
     /**
