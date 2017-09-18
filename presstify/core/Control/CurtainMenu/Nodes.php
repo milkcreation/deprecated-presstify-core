@@ -5,20 +5,73 @@
 namespace tiFy\Core\Control\CurtainMenu;
 
 class Nodes extends \tiFy\Lib\Nodes\Base
-{    
+{
     /**
-     * Attribut "title" d'un greffon de terme lié à une taxonomie
+     * Ordre d'éxecution des méthodes de surchage des greffons
      */
-    public function term_node_title( $term, $args = array() )
+    public $MethodsMapOrder = ['parent', 'has_children', 'link', 'content', 'class'];
+
+    /**
+     * Attribut "title" du greffon de terme lié à une taxonomie
+     *
+     * @param array $node Attributs du greffon
+     * @param obj $term Attributs du terme courant
+     * @param array $query_args Argument de requête de récupération des termes de taxonomie
+     * @param array $extras Données complémentaires (ex: selected)
+     *
+     * @return string
+     */
+    public function term_node_title(&$node, $term, $query_args = [], $extras = [])
     {
-        return "<a href=\"". \get_term_link( $term ) ."\" class=\"tiFyControlCurtainMenu-panelTitleLink tiFyControlCurtainMenu-panelTitleLink--{$term->term_id}\">{$term->name}</a>";
+        return "<a href=\"". \get_term_link($term) ."\" class=\"tiFyControlCurtainMenu-panelTitleLink tiFyControlCurtainMenu-panelTitleLink--{$term->term_id}\">{$term->name}</a>";
     }
-    
+
     /**
-     * Attribut "content" d'un greffon de terme lié à une taxonomie
+     * Attribut "content" du greffon de terme lié à une taxonomie
+     *
+     * @param array $node Attributs du greffon
+     * @param obj $term Attributs du terme courant
+     * @param array $query_args Argument de requête de récupération des termes de taxonomie
+     * @param array $extras Données complémentaires (ex: selected)
+     *
+     * @return string
      */
-    public function term_node_content( $term, $args = array())
+    public function term_node_content(&$node, $term, $query_args = [], $extras = [])
     {
-        return "<a href=\"". \get_term_link( $term ) ."\" class=\"tiFyControlCurtainMenu-itemLink tiFyControlCurtainMenu-itemLink--{$term->term_id}\">{$term->name}</a>";
+        return "<a href=\"". \get_term_link($term) ."\" class=\"tiFyControlCurtainMenu-itemLink tiFyControlCurtainMenu-itemLink--{$term->term_id}\">{$term->name}</a>";
+    }
+
+    /**
+     * Attribut "class" du greffon de terme lié à une taxonomie
+     *
+     * @param array $node Attributs du greffon
+     * @param obj $term Attributs du terme courant
+     * @param array $query_args Argument de requête de récupération des termes de taxonomie
+     * @param array $extras Données complémentaires (ex: selected)
+     *
+     * @return string
+     */
+    public function term_node_class(&$node, $term, $query_args = [], $extras = [])
+    {
+        $classes = [];
+        if (!empty($node['has_children'])) :
+            $classes[] = 'tiFyControlCurtainMenu-item--hasChildren';
+        endif;
+
+        /*
+        if (!empty($node['ancestor'])) :
+            $classes[] = 'tiFyControlCurtainMenu-item--ancestor';
+        endif;
+
+        if (!empty($node['current'])) :
+            $classes[] = 'tiFyControlCurtainMenu-item--current';
+        endif;
+
+        if(!empty($node['ancestor']) || !empty($node['current'])) :
+            $classes[] = 'tiFyControlCurtainMenu-item--open';
+        endif;
+        */
+
+        return implode(' ', $classes);
     }
 }

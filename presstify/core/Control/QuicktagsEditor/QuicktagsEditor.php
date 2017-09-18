@@ -14,8 +14,8 @@ class QuicktagsEditor extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-quicktags_editor', $this->Url ."/quicktags_editor.css", array( 'font-awesome' ), '141212' );
-		wp_register_script( 'tify_control-quicktags_editor', $this->Url ."/quicktags_editor.js", array( 'jquery', 'quicktags' ), '141212', true );
+		wp_register_style( 'tify_control-quicktags_editor', self::tFyAppUrl() . "/quicktags_editor.css", array( 'font-awesome' ), '141212' );
+		wp_register_script( 'tify_control-quicktags_editor', self::tFyAppUrl() . "/quicktags_editor.js", array( 'jquery', 'quicktags' ), '141212', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

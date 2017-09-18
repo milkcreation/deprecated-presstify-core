@@ -24,10 +24,8 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-     
-        wp_register_style( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.css', array( ), 170704 );
-        wp_register_script( 'tify_control-curtain_menu', self::getAssetsUrl( get_class() ) .'/CurtainMenu'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true );
+        wp_register_style( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.css', get_class()), array( ), 170704 );
+        wp_register_script( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.js', get_class()), array( 'jquery-ui-widget' ), 170704, true );
     }
     
     /**
@@ -47,7 +45,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      * @param array $attrs
      * @return string
      */
-    public static function display( $attrs = array(), $echo = true )
+    public static function display($attrs = [], $echo = true)
     {
         self::$Instance++;
         
@@ -61,9 +59,11 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
             // Theme (light | dark | false)
             'theme'                 => 'dark',
             // Entrées de menu
-            'nodes'                 => array()
+            'nodes'                 => [],
+            // Selection active
+            'selected'              => 0
         );
-        $attrs = wp_parse_args( $attrs, $defaults );
+        $attrs = wp_parse_args($attrs, $defaults);
         extract( $attrs );
         
         if( count($nodes) === 2 ) :
@@ -77,7 +77,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         $Nodes = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Nodes' );
         switch( $type ) :
             case 'terms' :
-                $nodes = $Nodes->terms( $query_args );
+                $nodes = $Nodes->terms($query_args,['selected' => $selected]);
             break;
             default:
             case 'custom' :
@@ -85,18 +85,19 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         endswitch;
         
         $output  = "";
-        $output  = "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"curtain_menu\">\n";
+        $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu". ($container_class ? ' '. $container_class : '') ."\" data-tify_control=\"curtain_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlCurtainMenu-nav\">\n";
-		$output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";	
-		$Walker = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Walker' );
-        $output .= $Walker->output($nodes);
+        $output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";
+        $Walker = self::loadOverride('\tiFy\Core\Control\CurtainMenu\Walker');
+        $output .= $Walker->output($nodes,['selected' => $selected]);
         $output .= "\t\t</div>\n";
         $output .= "\t</nav>\n";
         $output .= "</div>\n";
         
-        if( $echo )
+        if($echo) :
             echo $output;
-        
+        endif;
+
         return $output;
     }
 }

@@ -157,7 +157,7 @@ class Messager extends \tiFy\Core\Templates\Admin\Model\Form
     final public function mce_css($mce_css)
     {
         return '';
-        //return $mce_css = Emailing::tFyAppUrl() . '/assets/reset.css, ' . $this->Url . '/editor-style.css';
+        //return $mce_css = Emailing::tFyAppUrl() . '/assets/reset.css, ' . self::tFyAppUrl() . '/editor-style.css';
     }
 
     public function initParamGroupList()
@@ -167,7 +167,7 @@ class Messager extends \tiFy\Core\Templates\Admin\Model\Form
 
     public function admin_enqueue_scripts()
     {
-        wp_enqueue_style('tiFyCoreTemplatesAdminModelMessager', self::getAssetsUrl(get_class()) . '/Messager.css', array(), '170912');
+        wp_enqueue_style('tiFyCoreTemplatesAdminModelMessager', self::tFyAppAssetsUrl('Messager.css', get_class()), array(), '170912');
         Repeater::enqueue_scripts();
     }
 

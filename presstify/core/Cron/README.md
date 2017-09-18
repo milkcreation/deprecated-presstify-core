@@ -92,7 +92,7 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 
 ```php
 <?php
-namespace MyNamespace\App\Core\Cron
+namespace App\Core\Cron
 
 class Config extends \tiFy\App\Config
 {

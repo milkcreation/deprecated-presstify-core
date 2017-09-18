@@ -23,8 +23,8 @@ class ImageGallery extends \tiFy\Core\Taboox\Admin
 	public function admin_enqueue_scripts()
 	{		
 		wp_enqueue_media();
-		wp_enqueue_style( 'tify_taboox_image_gallery-admin', $this->Url .'/admin.css', array( ), '150325' );
-		wp_enqueue_script( 'tify_taboox_image_gallery-admin', $this->Url .'/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
+		wp_enqueue_style( 'tify_taboox_image_gallery-admin', self::tFyAppUrl() . '/admin.css', array( ), '150325' );
+		wp_enqueue_script( 'tify_taboox_image_gallery-admin', self::tFyAppUrl() . '/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '150325', true );
 		wp_localize_script( 'tify_taboox_image_gallery', 'tify_taboox_image_gallery', array(
 				'maxAttempt' => __( 'Nombre maximum d\'images dans la galerie atteint', 'tify' ),
 			)

@@ -29,6 +29,11 @@ abstract class Base
     protected $StartIndent  = "";
 
     /**
+     * Attributs de configuration
+     */
+    protected $Attrs        = [];
+
+    /**
      * CONTROLEURS
      */
     /**
@@ -76,11 +81,12 @@ abstract class Base
         if(!$item)
             return '';
 
-        $classes = array();
+        $classes = [];
         $classes[] = 'tiFyWalker-contentItem';
         $classes[] = "tiFyWalker-contentItem--depth{$depth}";
-        if(! empty($item['class']))
+        if(! empty($item['class'])) :
             $classes[] = $item['class'];
+        endif;
 
         return implode(' ', $classes);
     }
@@ -96,10 +102,11 @@ abstract class Base
     /**
      *
      */
-    public static function output($items = null, $attrs = array())
+    public static function output($items = null, $attrs = [])
     {
         $instance = new static;
         $items = $items ? $instance->setItems($items) : $instance->Items;
+        $instance->Attrs = $attrs;
 
         return $instance->walk($items, 0, '');
     }
@@ -114,7 +121,7 @@ abstract class Base
      *
      * @return string
      */
-    public function walk($items = array(), $depth = 0, $parent = '')
+    public function walk($items = [], $depth = 0, $parent = '')
     {
         $output = "";
        
@@ -123,9 +130,9 @@ abstract class Base
         foreach ($items as $item) :
             if ($parent !== $item['parent'])
                 continue;
-            
+
             if (! $opened) :
-                $output .= $this->start_content_items(null, $depth, $parent);
+                $output .= $this->start_content_items($item, $depth, $parent);
                 $opened = true;
             endif;
             
@@ -147,7 +154,7 @@ abstract class Base
     /**
      * Ouverture d'une liste de contenu d'éléments
      */
-    final public function start_content_items($item = null, $depth = 0, $parent = '')
+    final protected function start_content_items($item = null, $depth = 0, $parent = '')
     {
         return is_callable($item && array($this, 'start_content_items_'. $item['id'])) ?
             call_user_func(array($this, 'start_content_items_'. $item['id']), $item, $depth, $parent) :
@@ -157,7 +164,7 @@ abstract class Base
     /**
      * Fermeture d'une liste de contenu d'éléments
      */
-    final public function end_content_items($item = null, $depth = 0, $parent = '')
+    final protected function end_content_items($item = null, $depth = 0, $parent = '')
     {
         return is_callable($item && array( $this, 'end_content_items_'. $item['id'])) ?
             call_user_func(array($this, 'end_content_items_'. $item['id']), $item, $depth, $parent) :
@@ -167,7 +174,7 @@ abstract class Base
     /**
      * Ouverture d'un contenu d'élement
      */
-    final public function start_content_item($item, $depth = 0, $parent = '')
+    final protected function start_content_item($item, $depth = 0, $parent = '')
     {
         return is_callable(array( $this, 'start_content_item_'. $item['id'])) ?
             call_user_func(array( $this, 'start_content_item_'. $item['id']), $item, $depth, $parent) :
@@ -177,7 +184,7 @@ abstract class Base
     /**
      * Fermeture d'un contenu d'élement
      */
-    final public function end_content_item($item, $depth = 0, $parent = '')
+    final protected function end_content_item($item, $depth = 0, $parent = '')
     {
         return is_callable(array($this, 'end_content_item_'. $item['id'])) ?
             call_user_func(array($this, 'end_content_item_'. $item['id']), $item, $depth, $parent) :
@@ -187,7 +194,7 @@ abstract class Base
     /**
      * Rendu d'un contenu d'élément
      */
-    final public function content_item($item, $depth, $parent)
+    final protected function content_item($item, $depth, $parent)
     {
         return is_callable(array($this, 'content_item'. $item['id'])) ?
             call_user_func(array($this, 'content_item'. $item['id']), $item, $depth, $parent) :

@@ -59,12 +59,9 @@ class Sidebar extends \tiFy\Environment\Component
      * Inititalisation globale
      */
     final public function init()
-    {                
-        // Déclaration des scripts    
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.css', array(), '150206' );
-        wp_register_script( 'tiFyComponentsSidebar', self::getAssetsUrl( get_class() )  .'/Sidebar'. $min .'.js', array( 'jquery' ), '150206', true );
+    {
+        wp_register_style( 'tiFyComponentsSidebar', self::tFyAppAssetsUrl('Sidebar.css', get_class()), array(), '150206' );
+        wp_register_script( 'tiFyComponentsSidebar', self::tFyAppAssetsUrl('Sidebar.js', get_class()), array( 'jquery' ), '150206', true );
     }
     
     /**

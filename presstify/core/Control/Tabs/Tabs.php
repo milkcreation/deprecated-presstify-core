@@ -24,10 +24,8 @@ class Tabs extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-     
-        wp_register_style( 'tify_control-tabs', self::getAssetsUrl( get_class() ) .'/Tabs'. $min .'.css', array( ), 170704 );
-        wp_register_script( 'tify_control-tabs', self::getAssetsUrl( get_class() ) .'/Tabs'. $min .'.js', array( 'jquery-ui-widget' ), 170704, true ); 
+        wp_register_style( 'tify_control-tabs', self::tFyAppAssetsUrl('Tabs.css', get_class()), array( ), 170704 );
+        wp_register_script( 'tify_control-tabs', self::tFyAppAssetsUrl('Tabs.js', get_class()), array( 'jquery-ui-widget' ), 170704, true );
     }
     
     /**

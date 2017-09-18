@@ -30,7 +30,7 @@ class Genericons extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'genericons', $this->Url .'/plugin.js' );
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'genericons', self::tFyAppUrl() . '/plugin.js' );
 	}
 	
 	/* = ACTIONS ET FILTRES WORPDRESS = */
@@ -59,7 +59,7 @@ class Genericons extends \tiFy\App\Factory
 		);
 		// Déclaration des scripts
 		wp_register_style( $this->options['hookname'], $this->options['css'], $this->options['dependencies'], $this->options['version'] );
-		wp_register_style( 'tinymce-genericons', $this->Url .'/plugin.css', array(), '20141219' );
+		wp_register_style( 'tinymce-genericons', self::tFyAppUrl() . '/plugin.css', array(), '20141219' );
 		
 		// Récupération des glyphs
 		$css = File::getContents( $this->options['css'] );
@@ -109,7 +109,7 @@ class Genericons extends \tiFy\App\Factory
 	/** == Ajout des styles dans l'éditeur == **/
  	final public function mce_css( $mce_css ) 
  	{
- 		return $mce_css .= ', '. $this->options['css'] .', '. $this->Url.'/editor.css';
+ 		return $mce_css .= ', '. $this->options['css'] .', ' . self::tFyAppUrl() . '/editor.css';
     }
 	
 	/* = CONTROLEUR = */

@@ -118,11 +118,9 @@ class AjaxListTable extends \tiFy\Core\Templates\Admin\Model\Table
     public function _admin_enqueue_scripts()
     {        
         parent::_admin_enqueue_scripts();
-        
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable'. $min .'.css', array( 'datatables' ), '160506' );                        
-        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::getAssetsUrl(get_class()) .'/AjaxListTable'. $min .'.js', array( 'datatables' ), '160506', true );    
+
+        wp_enqueue_style( 'tiFyTemplatesAdminAjaxListTable', self::tFyAppAssetsUrl('AjaxListTable.css', get_class()), array( 'datatables' ), '160506' );
+        wp_enqueue_script( 'tiFyTemplatesAdminAjaxListTable', self::tFyAppAssetsUrl('AjaxListTable.js', get_class()), array( 'datatables' ), '160506', true );
         
         // Déclaration des options
         $options = array_diff_key( 

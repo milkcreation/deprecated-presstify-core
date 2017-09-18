@@ -29,9 +29,7 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_script( 'tify_control-image_lightbox', self::getAssetsUrl( get_class() ) .'/ImageLightbox'. $min .'.js', array( 'tify-imagelightbox' ), 170724, true );
+        wp_register_script( 'tify_control-image_lightbox', self::tFyAppAssetsUrl('ImageLightbox.js', get_class()), array( 'tify-imagelightbox' ), 170724, true );
     }
     
     /**

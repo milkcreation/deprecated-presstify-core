@@ -57,12 +57,12 @@ function my_tify_core_register()
 ### METHODE 3 | Développeur avancé - priorité haute
 
 Surcharge de configuration "dynamique" PHP
-Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
+Créer un fichier Config.php dans le dossier core/Update de l'environnement de surcharge.
 /app/Core/Update/Config.php
 
 ```php
 <?php
-namespace MyNamespace\App\Core\Update
+namespace App\Core\Update
 
 class Config extends \tiFy\App\Config
 {

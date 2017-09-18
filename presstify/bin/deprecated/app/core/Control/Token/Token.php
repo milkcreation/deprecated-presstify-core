@@ -2,7 +2,7 @@
 /**
  * @deprecated
  */
-namespace tiFy\Core\Control\_Deprecated\Token;
+namespace tiFy\Core\Control\Token;
 
 use tiFy\Core\Control\Factory;
 
@@ -14,12 +14,12 @@ class Token extends Factory
 	
 	// Instance Courante
 	static $Instance = 0;
-	
+
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-token', $this->Url .'/Token.css', array( 'dashicons' ), '141212' );
-		wp_register_script( 'tify_control-token', $this->Url .'/Token.js', array( 'jquery' ), '141212', true );
+		wp_register_style( 'tify_control-token', self::tFyAppUrl() . '/Token.css', array( 'dashicons' ), '141212' );
+		wp_register_script( 'tify_control-token', self::tFyAppUrl() . '/Token.js', array( 'jquery' ), '141212', true );
 		
 		add_action( 'wp_ajax_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );
 		add_action( 'wp_ajax_nopriv_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );

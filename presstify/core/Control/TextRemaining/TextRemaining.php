@@ -26,10 +26,8 @@ class TextRemaining extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style('tify_control-text_remaining', self::getAssetsUrl(get_class()) . '/TextRemaining'. $min .'.css', array(), '141213');
-        wp_register_script('tify_control-text_remaining', self::getAssetsUrl(get_class()) . '/TextRemaining'. $min .'.js', array('jquery'), '141213', true);
+        wp_register_style('tify_control-text_remaining', self::tFyAppAssetsUrl('TextRemaining.css', get_class()), array(), '141213');
+        wp_register_script('tify_control-text_remaining', self::tFyAppAssetsUrl('TextRemaining.js', get_class()), array('jquery'), '141213', true);
         wp_localize_script('tify_control-text_remaining', 'tifyTextRemaining',
             array(
                     'plural'    => __('caractères restants', 'tify'),

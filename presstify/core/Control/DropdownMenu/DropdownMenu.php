@@ -12,8 +12,8 @@ class DropdownMenu extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dropdown_menu', $this->Url ."/DropdownMenu.css", array( ), '160913' );
-		wp_register_script('tify_control-dropdown_menu', $this->Url ."/DropdownMenu.js", array( 'jquery' ), '160913', true );
+		wp_register_style( 'tify_control-dropdown_menu', self::tFyAppUrl() . "/DropdownMenu.css", array( ), '160913' );
+		wp_register_script('tify_control-dropdown_menu', self::tFyAppUrl() . "/DropdownMenu.js", array( 'jquery' ), '160913', true );
 	}
 			
 	/* = Déclaration des scripts = */

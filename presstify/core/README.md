@@ -38,12 +38,12 @@ function my_tify_core_register()
 
 Le composant natif doit être déclaré
 Surcharge de configuration "dynamique" PHP
-Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
+Créer un fichier Config.php dans le dossier core/%core_id% de l'environnement de surcharge.
 /app/Core/%core_id%/Config.php
 
 ```php
 <?php
-namespace MyNamespace\Core\%core_id%
+namespace App\Core\%core_id%
 
 class Config extends \tiFy\App\Config
 {

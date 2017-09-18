@@ -24,11 +24,9 @@ class CookieNotice extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_script( 'tify_control-cookie_notice', self::getAssetsUrl( get_class() ) .'/CookieNotice'. $min .'.js', array( 'jquery' ), 170626, true );
+        wp_register_script( 'tify_control-cookie_notice', self::tFyAppAssetsUrl('CookieNotice.js', get_class()), array( 'jquery' ), 170626, true );
 
-        // Actions ajax       
+        // Actions ajax
         add_action( 'wp_ajax_tiFyControlCookieNotice', array( $this, 'wp_ajax' ) );
         add_action( 'wp_ajax_nopriv_tiFyControlCookieNotice', array( $this, 'wp_ajax' ) );
     }

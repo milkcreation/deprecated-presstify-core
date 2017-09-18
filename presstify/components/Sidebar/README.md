@@ -109,12 +109,12 @@ function my_tify_components_register()
 Le composants doit être d'abord être activé avant d'être configuré.
 
 Surcharge de configuration "dynamique" PHP
-Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
+Créer un fichier Config.php dans le le dossier components/Sidebar de l'environnement de surcharge.
 /app/Components/Sidebar/Config.php
 
 ```php
 <?php
-namespace MyNamespace\App\Components\Sidebar;
+namespace App\Components\Sidebar;
 
 class Config extends \tiFy\App\Config
 {
@@ -163,7 +163,7 @@ class Config extends \tiFy\App\Config
              * }
              */ 
             'nodes'         => []
-        ]
+        ];
     }
 }
 ?>

@@ -65,9 +65,8 @@ class AdminPanel extends \tiFy\Core\Control\Factory
 	 */
 	final public function init()
 	{
-	    $min = SCRIPT_DEBUG ? '' : '.min';
-		wp_register_style('tify_control-admin_panel', self::getAssetsUrl(get_class()).'/AdminPanel'.$min.'.css', array('dashicons'), 170705);
-		wp_register_script('tify_control-admin_panel', self::getAssetsUrl(get_class()).'/AdminPanel'.$min.'.js', array('jquery', 'jquery-ui-widget'), 170705);
+		wp_register_style('tify_control-admin_panel', self::tFyAppAssetsUrl('AdminPanel.css', get_class()), array('dashicons'), 170705);
+		wp_register_script('tify_control-admin_panel', self::tFyAppAssetsUrl('AdminPanel.js', get_class()), array('jquery', 'jquery-ui-widget'), 170705);
 	}
 	
 	/**

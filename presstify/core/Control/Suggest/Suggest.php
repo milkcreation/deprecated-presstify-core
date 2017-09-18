@@ -24,10 +24,8 @@ class Suggest extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tify_control-suggest', self::getAssetsUrl( get_class() ) .'/Suggest'. $min .'.css', array( 'tiFyTheme' ), '160222' );
-        wp_register_script( 'tify_control-suggest', self::getAssetsUrl( get_class() ) .'/Suggest'. $min .'.js', array( 'jquery-ui-autocomplete' ), '160222', true );
+        wp_register_style( 'tify_control-suggest', self::tFyAppAssetsUrl('Suggest.css', get_class()), array('tiFyTheme' ), '160222' );
+        wp_register_script( 'tify_control-suggest', self::tFyAppAssetsUrl('Suggest.js', get_class()), array('jquery-ui-autocomplete' ), '160222', true );
         wp_localize_script( 
             'tify_control-suggest', 
             'tiFyControlSuggest', 

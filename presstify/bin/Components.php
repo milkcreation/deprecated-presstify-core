@@ -19,8 +19,8 @@ final class Components
     public static function register($id, $attrs = array())
     {
         $classname = "tiFy\\Components\\{$id}\\{$id}";
-        
-        Apps::register(
+
+        return Apps::register(
             $classname,
             'components',
             array(

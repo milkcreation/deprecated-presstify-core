@@ -18,8 +18,8 @@ class CustomHeader extends Admin
 	public function admin_enqueue_scripts()
 	{
 		wp_enqueue_media();
-		wp_enqueue_style( 'tify_taboox_custom_header', $this->Url .'/admin.css', array( 'tify_control-media_image' ), '150325' );
-		wp_enqueue_script( 'tify_taboox_custom_header', $this->Url .'/admin.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );
+		wp_enqueue_style( 'tify_taboox_custom_header', self::tFyAppUrl() . '/admin.css', array( 'tify_control-media_image' ), '150325' );
+		wp_enqueue_script( 'tify_taboox_custom_header', self::tFyAppUrl() . '/admin.js', array( 'jquery', 'tify_control-media_image' ), '150325', true );
 	}
 	
 	/* = FORMULAIRE DE SAISIE = */	

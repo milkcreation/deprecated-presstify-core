@@ -24,7 +24,7 @@
             this._initEvents();
         },
         _initEvents :       function() {
-            self = this;
+            var self = this;
             
             this.menuItems.each(function(i,j) {
                 var subLevel = $('> .tiFyControlCurtainMenu-panel', j);
@@ -60,19 +60,15 @@
             subLevel.addClass('tiFyControlCurtainMenu-panel--open');
             var parentLevel = subLevel.closest('li').closest('.tiFyControlCurtainMenu-panel');
             if(parentLevel.length){
-                parentLevel.addClass('tiFyControlCurtainMenu-panel--pushed').scrollTop(0);
+                parentLevel.scrollTop(0);
             }
 
         },
         _closeMenu : function(curLevel) {
-            --this.level;            
+            --this.level;
             curLevel.removeClass('tiFyControlCurtainMenu-panel--open');
             var parentLevel = curLevel.closest('li').closest('.tiFyControlCurtainMenu-panel');
-            if(parentLevel.length){
-                parentLevel.removeClass('tiFyControlCurtainMenu-panel--pushed')
-            }
         }
     });
-    
-    $( '[data-tify_control="curtain_menu"]' ).tiFyControlCurtainMenu();
+    $('[data-tify_control="curtain_menu"]').tiFyControlCurtainMenu();
 })(jQuery);

@@ -11,9 +11,7 @@ class Table extends \tiFy\Core\Control\Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		$min = SCRIPT_DEBUG ? '' : '.min';
-		
-	    wp_register_style( 'tify_control-table', self::getAssetsUrl( get_class() ) .'/Table'. $min .'.css', array(), 160714 );
+	    wp_register_style( 'tify_control-table', self::tFyAppAssetsUrl('Table.css', get_class()), array(), 160714 );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

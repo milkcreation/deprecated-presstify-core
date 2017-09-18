@@ -13,8 +13,8 @@ class DropdownGlyphs extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dropdown_glyphs', $this->Url .'/dropdown_glyphs.css', array( ), '141212' );
-		wp_register_script('tify_control-dropdown_glyphs', $this->Url .'/dropdown_glyphs.js', array( 'jquery' ), '141212', true );
+		wp_register_style( 'tify_control-dropdown_glyphs', self::tFyAppUrl() . '/dropdown_glyphs.css', array( ), '141212' );
+		wp_register_script('tify_control-dropdown_glyphs', self::tFyAppUrl() . '/dropdown_glyphs.js', array( 'jquery' ), '141212', true );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */

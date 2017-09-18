@@ -33,8 +33,8 @@ class ConfigConvertor extends App
 	{
 		if( $this->Hookname !== $current_screen->id )
 			return;
-		wp_enqueue_style( 'DevToolsConfigConvertor', $this->Url .'/ConfigConvertor.css', array(), 160609 );
-		wp_enqueue_script( 'DevToolsConfigConvertor', $this->Url .'/ConfigConvertor.js', array( 'jquery' ), 160609, true );
+		wp_enqueue_style( 'DevToolsConfigConvertor', self::tFyAppUrl() . '/ConfigConvertor.css', array(), 160609 );
+		wp_enqueue_script( 'DevToolsConfigConvertor', self::tFyAppUrl() . '/ConfigConvertor.js', array( 'jquery' ), 160609, true );
 	}
 	
 	/** == == **/

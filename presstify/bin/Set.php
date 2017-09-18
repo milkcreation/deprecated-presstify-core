@@ -100,13 +100,13 @@ class Set
     public static function register($id, $attrs = [])
     {
         // Bypass
-        if ( ! isset(self::$Loaded[$id])) {
+        if (! isset(self::$Loaded[$id])) :
             return;
-        }
+        endif;
 
         $classname = self::$Loaded[$id];
 
-        Apps::register(
+        return Apps::register(
             $classname,
             'set',
             [

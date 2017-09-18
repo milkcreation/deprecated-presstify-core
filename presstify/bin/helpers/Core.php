@@ -14,8 +14,10 @@ namespace
     /** == Mise en file des scripts du contrôleur == **/
     function tify_control_enqueue( $scripts )
     {
-        if( is_string( $scripts ) )
+
+        if(is_string($scripts)) :
             $scripts = array( $scripts );
+        endif;
 
         foreach( $scripts as $script ) :
             if( isset( tiFy\Core\Control\Control::$Factory[$script] ) ) :

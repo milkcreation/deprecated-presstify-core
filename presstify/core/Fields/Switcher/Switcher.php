@@ -27,10 +27,8 @@ class Switcher extends \tiFy\Core\Fields\Factory
      */
     final public static function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style('tiFyCoreFieldsSwitcher', self::getAssetsUrl(get_class()) . '/Switcher'. $min .'.css', array( ), '150310');
-        wp_register_script('tiFyCoreFieldsSwitcher', self::getAssetsUrl(get_class()) . '/Switcher'. $min .'.js', array( 'jquery' ), 170724);
+        wp_register_style('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.css', get_class()), array( ), '150310');
+        wp_register_script('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.js', get_class()), array( 'jquery' ), 170724);
     }
 
     /**

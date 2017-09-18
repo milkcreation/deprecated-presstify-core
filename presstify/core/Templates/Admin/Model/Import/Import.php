@@ -100,10 +100,8 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         tify_control_enqueue( 'progress' );
         
         // Chargement des scripts
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::getAssetsUrl(get_class())  .'/Import'. $min .'.css', array( ), 150607 );
-        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::getAssetsUrl(get_class())  .'/Import'. $min .'.js', array( 'jquery' ), 150607 );
+        wp_enqueue_style( 'tiFyTemplatesAdminImport', self::tFyAppAssetsUrl('Import.css', get_class()), array( ), 150607 );
+        wp_enqueue_script( 'tiFyTemplatesAdminImport', self::tFyAppAssetsUrl('Import.js', get_class()), array( 'jquery' ), 150607 );
         wp_localize_script( 
             'tiFyTemplatesAdminImport', 
             'tiFyTemplatesAdminImport',

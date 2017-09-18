@@ -24,10 +24,8 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tify_control-slick_carousel', self::getAssetsUrl( get_class() ) .'/SlickCarousel'. $min .'.css', array( 'slick', 'slick-theme' ), 170722 );
-        wp_register_script( 'tify_control-slick_carousel', self::getAssetsUrl( get_class() ) .'/SlickCarousel'. $min .'.js', array( 'slick' ), 170722, true );
+        wp_register_style('tify_control-slick_carousel', self::tFyAppAssetsUrl('SlickCarousel.css', get_class()), array('slick', 'slick-theme'), 170722 );
+        wp_register_script('tify_control-slick_carousel', self::tFyAppAssetsUrl('SlickCarousel.js', get_class()), array('slick'), 170722, true);
     }
     
     /**
@@ -35,8 +33,8 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
      */
     final public function enqueue_scripts()
     {
-        wp_enqueue_style( 'tify_control-slick_carousel' );
-        wp_enqueue_script( 'tify_control-slick_carousel' );
+        wp_enqueue_style('tify_control-slick_carousel');
+        wp_enqueue_script('tify_control-slick_carousel');
     }
        
     /**

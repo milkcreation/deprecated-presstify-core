@@ -20,7 +20,7 @@ final class Plugins
     {
         $classname = "tiFy\\Plugins\\{$id}\\{$id}";
 
-        Apps::register(
+        return Apps::register(
             $classname,
             'plugins',
             array(

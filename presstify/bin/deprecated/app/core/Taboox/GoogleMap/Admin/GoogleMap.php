@@ -61,7 +61,7 @@ class GoogleMap extends \tiFy\Core\Taboox\Admin
 		wp_register_style( 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap', self::tFyAppUrl() .'/GoogleMap.css', array( ), 161207 );			
 		wp_register_script( 'googleMap', '//maps.google.com/maps/api/js?key='. $this->args['api_key']. '&libraries=places', array(), 'v3', false );
 		wp_register_script( 'gMap3', '//cdn.jsdelivr.net/gmap3/5.1.1/gmap3.min.js', array( 'jquery', 'googleMap' ), '5.1.1', true );		
-		wp_register_script( 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap', $this->Url .'/GoogleMap.js', array( 'gMap3' ), 161207, true );
+		wp_register_script( 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap', self::tFyAppUrl() .'/GoogleMap.js', array( 'gMap3' ), 161207, true );
 		wp_localize_script( 'tiFyCoreTabooxAdminPostGoogleMapAdminGoogleMap', 'TabooxPostAdminGMap', array( 
 				// Configuration
 				'url' 				=> self::tFyAppUrl(),

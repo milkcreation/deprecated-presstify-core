@@ -51,7 +51,7 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
                 // Moteur d'affichage
                 'engine'            => 'tify',
                 // Résolution du slideshow
-                'ratio'                => '16:9',                
+                'ratio'                => '16:9',
                 // Taille des images
                 'size'                 => 'full',
                 // Navigation suivant/précédent
