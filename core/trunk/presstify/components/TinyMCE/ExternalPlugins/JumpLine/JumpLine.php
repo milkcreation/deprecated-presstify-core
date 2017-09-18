@@ -18,7 +18,7 @@ class JumpLine extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'jumpline', $this->Url .'/plugin.js' );
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'jumpline', self::tFyAppUrl() . '/plugin.js' );
 	}
 	
 	/* = DECLENCHEURS = */
@@ -50,6 +50,6 @@ class JumpLine extends \tiFy\App\Factory
 	/** == Mise en file des scripts == **/
 	final public function wp_enqueue_scripts()
 	{
-		wp_enqueue_style( 'tiFyComponentsTinyMCEExternalPluginsJumpLine', $this->Url .'/theme.css', array(), 160625 );
+		wp_enqueue_style( 'tiFyComponentsTinyMCEExternalPluginsJumpLine', self::tFyAppUrl() . '/theme.css', array(), 160625 );
 	}
 }

@@ -30,7 +30,7 @@ class OwnGlyphs extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'ownglyphs', $this->Url .'/plugin.js' );
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'ownglyphs', self::tFyAppUrl() . '/plugin.js' );
 
 		add_action( 'wp_ajax_tinymce-ownglyphs-class', array( $this, 'wp_ajax' ) );
 	}
@@ -65,7 +65,7 @@ class OwnGlyphs extends \tiFy\App\Factory
 
 		// Déclaration des scripts
 		wp_register_style( $this->options['hookname'], $this->options['css'], $this->options['dependencies'], $this->options['version'] );
-		wp_register_style( 'tinymce-ownglyphs', $this->Url .'/plugin.css', array(), '20141219' );
+		wp_register_style( 'tinymce-ownglyphs', self::tFyAppUrl() . '/plugin.css', array(), '20141219' );
 		
 		// Récupération des glyphs
 		$css = File::getContents( $this->options['css'] );
@@ -121,7 +121,7 @@ class OwnGlyphs extends \tiFy\App\Factory
 	/** == Ajout des styles dans l'éditeur == **/
  	final public function add_tinymce_editor_style( $mce_css )
  	{
-        return $mce_css .= ', '. $this->options['css'] .', '. $this->Url .'/editor.css, '. admin_url( 'admin-ajax.php?action=tinymce-ownglyphs-class&bogus='.current_time( 'timestamp' ) );
+        return $mce_css .= ', '. $this->options['css'] .', '. self::tFyAppUrl() . '/editor.css, '. admin_url( 'admin-ajax.php?action=tinymce-ownglyphs-class&bogus='.current_time( 'timestamp' ) );
     }
 	
 	/* = CONTROLEUR = */

@@ -144,7 +144,7 @@ class ArchiveFilters extends \tiFy\Environment\Component
     final public function wp_enqueue_scripts()
     {
         if( self::Has() )
-            wp_enqueue_script( 'tiFyComponentsArchiveFilters', $this->Url .'/ArchiveFilters.js', array( 'jquery' ), '160607', true );
+            wp_enqueue_script( 'tiFyComponentsArchiveFilters', self::tFyAppUrl() . '/ArchiveFilters.js', array( 'jquery' ), '160607', true );
     }
     
     /**

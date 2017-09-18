@@ -19,10 +19,8 @@ class MediaImage extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style('tify_control-media_image', self::getAssetsUrl(get_class()) . '/MediaImage'. $min .'.css', array(), '141212');
-        wp_register_script('tify_control-media_image', self::getAssetsUrl(get_class()) . '/MediaImage'. $min .'.js', array('jquery'), '141212', true);
+        wp_register_style('tify_control-media_image', self::tFyAppAssetsUrl('MediaImage.css', get_class()), array(), '141212');
+        wp_register_script('tify_control-media_image', self::tFyAppAssetsUrl('MediaImage.js', get_class()), array('jquery'), '141212', true);
     }
     
     /**

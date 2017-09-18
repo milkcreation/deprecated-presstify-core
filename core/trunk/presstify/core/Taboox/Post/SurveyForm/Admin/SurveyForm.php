@@ -332,8 +332,8 @@ class SurveyForm extends \tiFy\Core\Taboox\Admin
 	{
 		tify_control_enqueue( 'dropdown_menu' );
 		tify_control_enqueue( 'switch' );
-		wp_enqueue_style( 'ThemeTabooxSurveyForm', $this->Url.'/admin.css', array( 'dashicons', 'spinkit-rotating-plane' ), '161123' );
-		wp_enqueue_script( 'ThemeTabooxSurveyForm', $this->Url.'/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '161123' );
+		wp_enqueue_style( 'ThemeTabooxSurveyForm', self::tFyAppUrl() . '/admin.css', array( 'dashicons', 'spinkit-rotating-plane' ), '161123' );
+		wp_enqueue_script( 'ThemeTabooxSurveyForm', self::tFyAppUrl() . '/admin.js', array( 'jquery', 'jquery-ui-sortable' ), '161123' );
 	}
 		
 	/* = FORMULAIRE DE SAISIE = */	

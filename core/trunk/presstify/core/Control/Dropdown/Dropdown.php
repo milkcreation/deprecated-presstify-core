@@ -13,11 +13,9 @@ class Dropdown extends \tiFy\Core\Control\Factory
     /* = DECLENCHEURS = */
     /** == Initialisation de Wordpress == **/
     final public function init()
-    {        
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tify_control-dropdown', self::getAssetsUrl( get_class() ) .'/Dropdown'. $min .'.css', array( ), '141212' );
-        wp_register_script( 'tify_control-dropdown', self::getAssetsUrl( get_class() )  .'/Dropdown'. $min .'.js', array( 'jquery' ), '141212', true );
+    {
+        wp_register_style( 'tify_control-dropdown', self::tFyAppAssetsUrl('Dropdown.css', get_class()), array( ), '141212' );
+        wp_register_script( 'tify_control-dropdown', self::tFyAppAssetsUrl('Dropdown.js', get_class()), array( 'jquery' ), '141212', true );
     }
     
     /** == Mise en file des scripts == **/

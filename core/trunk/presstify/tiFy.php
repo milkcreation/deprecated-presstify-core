@@ -124,16 +124,18 @@ final class tiFy
             self::$ClassLoader = new \Psr4ClassLoader;
         endif;
         
-        if (! $base_dir)
+        if (!$base_dir) :
             $base_dir = dirname(__FILE__);
-        
+        endif;
+
         self::$ClassLoader->addNamespace($namespace, $base_dir, false);
         self::$ClassLoader->register();
             
         if ($bootstrap) :
-            $class_name = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
-            if(class_exists($class_name)) :
-                new $class_name;
+            $classname = "\\". ltrim( $namespace, '\\' ) ."\\". $bootstrap;
+
+            if(class_exists($classname)) :
+                new $classname;
             endif;
         endif;
     }

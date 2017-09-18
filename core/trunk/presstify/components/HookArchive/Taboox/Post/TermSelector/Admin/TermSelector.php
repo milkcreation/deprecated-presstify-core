@@ -35,7 +35,7 @@ class TermSelector extends Admin
 	/* = MISE EN FILE DE SCRIPTS = */
 	public function admin_enqueue_scripts()
 	{
-		wp_enqueue_script( 'tiFy_HookArchive_Post_TermSelector_Admin', $this->Url .'/TermSelector.js', array( 'jquery' ), '160420' );
+		wp_enqueue_script( 'tiFy_HookArchive_Post_TermSelector_Admin', self::tFyAppUrl() . '/TermSelector.js', array( 'jquery' ), '160420' );
 		$this->Nested->admin_enqueue_scripts();
 	}
 	

@@ -24,7 +24,7 @@ class Minify extends Plugin
 	
 	final public function init()
 	{
-		/*$path = preg_replace( '#'. preg_quote( site_url(), '/' ) .'#', '', $this->Url );
+		/*$path = preg_replace( '#'. preg_quote( site_url(), '/' ) .'#', '', self::tFyAppUrl());
 		add_rewrite_rule('^min/f=(.*)?', $path .'/min/f=$matches[1]','top' );*/
 	}
 	
@@ -32,8 +32,8 @@ class Minify extends Plugin
 	{
 		global $wp_styles, $wp_scripts;
 
-		new Styles( array( 'wp_styles' => $wp_styles, 'uri' => $this->Url ) );
-		new Scripts( array( 'wp_scripts' => $wp_scripts, 'uri' => $this->Url ) );
+		new Styles( array( 'wp_styles' => $wp_styles, 'uri' => self::tFyAppUrl()) );
+		new Scripts( array( 'wp_scripts' => $wp_scripts, 'uri' => self::tFyAppUrl()) );
 	}
 }
 new Minify();

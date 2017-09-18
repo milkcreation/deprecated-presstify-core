@@ -25,6 +25,9 @@ class Deprecated
 
         // Anciennes classe abstraites de la librairie libraries
         tiFy::classLoad('tiFy\Abstracts', dirname(__FILE__) .'/lib/Abstracts');
+
+        // Anciennes core/Control
+        tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control', 'Deprecated');
     }
     
     /**

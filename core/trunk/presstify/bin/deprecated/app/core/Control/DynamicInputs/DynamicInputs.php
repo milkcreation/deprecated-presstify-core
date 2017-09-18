@@ -2,7 +2,7 @@
 /**
  * @deprecated
  */
-namespace tiFy\Core\Control\_Deprecated\DynamicInputs;
+namespace tiFy\Core\Control\DynamicInputs;
 
 use tiFy\Core\Control\Factory;
 
@@ -11,7 +11,7 @@ class DynamicInputs extends Factory
 	/* = ARGUMENTS = */	
 	// Identifiant de la classe		
 	protected $ID = 'dynamic_inputs';
-	
+
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{

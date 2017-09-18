@@ -1,8 +1,23 @@
 <?php 
 namespace tiFy\App;
 
+use tiFy\Apps;
+
 abstract class Config
 {
+    /**
+     * CONSTRUCTEUR
+     */
+    public function __construct($classname)
+    {
+
+        if (!$attrs = Apps::getAttrs($classname)) :
+            return;
+        endif;
+
+        $this->filter($attrs['Config'], $classname);
+    }
+
     /**
      * Récupération de la surchage de configuration
      * 
@@ -10,7 +25,7 @@ abstract class Config
      * 
      * @return array|mixed
      */   
-    final public function filter($attrs = [])
+    final private function filter($attrs = [], $classname)
     {
         // Traitement global des attributs de configuration
         $attrs = (array) call_user_func( array( $this, 'sets' ), $attrs );
@@ -24,7 +39,7 @@ abstract class Config
             endforeach;
         endif;
 
-        return $attrs;
+        Apps::setAttrs(['Config' => $attrs],$classname);
     }
     
     /**

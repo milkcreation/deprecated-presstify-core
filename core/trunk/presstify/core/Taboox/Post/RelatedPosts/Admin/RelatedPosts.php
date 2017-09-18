@@ -72,10 +72,8 @@ class RelatedPosts extends \tiFy\Core\Taboox\Post\Admin
      */
     public function admin_enqueue_scripts()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_enqueue_style( 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPosts', self::getAssetsUrl( get_class() ) .'/RelatedPosts'. $min .'.css', array( 'tify_control-suggest', 'tify_control-holder_image' ) );
-        wp_enqueue_script( 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPosts', self::getAssetsUrl( get_class() ) .'/RelatedPosts'. $min .'.js', array( 'jquery', 'jquery-ui-sortable', 'tify_control-suggest' ) );
+        wp_enqueue_style( 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPosts', self::tFyAppAssetsUrl('RelatedPosts.css', get_class()), array( 'tify_control-suggest', 'tify_control-holder_image' ) );
+        wp_enqueue_script( 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPosts', self::tFyAppAssetsUrl('RelatedPosts.js', get_class()), array( 'jquery', 'jquery-ui-sortable', 'tify_control-suggest' ) );
         wp_localize_script( 'tiFyCoreTabooxPostRelatedPostsAdminRelatedPosts', 'tiFyTabooxRelatedPostsAdmin', array(
                 'maxAttempt' => __( 'Nombre maximum de contenu en relation atteint', 'tify' ),
             )

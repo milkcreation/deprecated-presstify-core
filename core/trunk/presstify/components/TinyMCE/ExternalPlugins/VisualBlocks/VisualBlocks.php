@@ -9,6 +9,6 @@ class VisualBlocks extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'visualblocks', $this->Url .'/plugin.min.js' );
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'visualblocks', self::tFyAppUrl() .'/plugin.min.js' );
 	}
 }

@@ -24,10 +24,8 @@ class Repeater extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tify_control-repeater', self::getAssetsUrl( get_class() ) .'/Repeater'. $min .'.css', array( ), 170421 );
-        wp_register_script( 'tify_control-repeater', self::getAssetsUrl( get_class() ) .'/Repeater'. $min .'.js', array( 'jquery', 'jquery-ui-sortable' ), 170421, true );
+        wp_register_style( 'tify_control-repeater', self::tFyAppAssetsUrl('Repeater.css', get_class()), array( ), 170421 );
+        wp_register_script( 'tify_control-repeater', self::tFyAppAssetsUrl('Repeater.js', get_class()), array( 'jquery', 'jquery-ui-sortable' ), 170421, true );
         wp_localize_script( 
             'tify_control-repeater', 
             'tiFyControlRepeater', 

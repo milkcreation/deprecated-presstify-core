@@ -1,8 +1,6 @@
 <?php
 namespace tiFy\Environment\Traits;
 
-use tiFy\tiFy;
-use tiFy\Lib\File;
 use tiFy\Deprecated\Deprecated;
 
 trait Old
@@ -85,6 +83,102 @@ trait Old
         Deprecated::addFunction('self::getRelPath', '1.0.371', 'self::tFyAppRel');
         return self::tFyAppRel($CalledClass);
     }
+
+    /**
+     * Définition des informations de la classe
+     * @deprecated
+     */
+    private function setReflectionClass()
+    {
+        Deprecated::addFunction('self::setReflectionClass', '1.0.412');
+        return $this->ReflectionClass = self::tFyAppAttr('ReflectionClass');
+    }
+
+    /**
+     * Définition du chemin absolu vers le fichier de déclaration de la classe fille
+     * @deprecated
+     */
+    private function setFilename()
+    {
+        Deprecated::addFunction('self::setFilename', '1.0.412');
+        return $this->Filename = self::tFyAppAttr('Filename');
+    }
+
+    /**
+     * Définition du chemin absolu vers le dossier racine de la classe fille
+     * @deprecated
+     */
+    private function setDirname()
+    {
+        Deprecated::addFunction('self::setDirname', '1.0.412');
+        return $this->Dirname = self::tFyAppDirname();
+    }
+
+    /**
+     * Définition du nom du dossier racine de la classe fille
+     * @deprecated
+     */
+    private function setBasename()
+    {
+        Deprecated::addFunction('self::setBasename', '1.0.412');
+        return $this->Basename = basename( self::tFyAppDirname());
+    }
+
+    /**
+     * Définition de l'url absolue vers le dossier racine de la classe fille
+     * @deprecated
+     */
+    private function setUrl()
+    {
+        Deprecated::addFunction('self::setUrl', '1.0.412');
+        return $this->Url = self::tFyAppUrl();
+    }
+
+    /**
+     * Récupération du répertoire de déclaration de la classe
+     * @deprecated
+     */
+    public static function getAssetsUrl($classname = null)
+    {
+        Deprecated::addFunction('self::getAssetsUrl', '1.0.412', 'self::tFyAppAssetsUrl');
+        return self::tFyAppAssetsUrl(null, $classname);
+    }
+
+    /**
+     * Récupération du répertoire de stockage des gabarits de l'appli
+     * @deprecated
+     */
+    public static function getAppTemplateDir($classname = null)
+    {
+        Deprecated::addFunction('self::getAppTemplateDir', '1.0.412');
+    }
+
+    /**
+     * Récupération du répertoire de stockage des gabarits du theme pour l'appli
+     * @deprecated
+     */
+    public static function getThemeTemplateDir($classname = null)
+    {
+        Deprecated::addFunction('self::getThemeTemplateDir', '1.0.412');
+    }
+
+    /**
+     * Récupération du gabarit d'affichage
+     * @deprecated
+     */
+    public static function getQueryTemplate($template = null, $type, $templates = array(), $classname = null)
+    {
+        Deprecated::addFunction('self::getQueryTemplate', '1.0.412');
+    }
+
+    /**
+     * Chargement du gabarit d'affichage
+     * @deprecated
+     */
+    public static function getTemplatePart($slug, $name = null, $args = array(), $classname = null)
+    {
+        Deprecated::addFunction('self::getTemplatePart', '1.0.412');
+    }
     
     /**
      * Liste des actions à déclencher
@@ -133,9 +227,111 @@ trait Old
      * @deprecated 1.0.371
      */
     protected $CallFiltersArgsMap        = array();
-    
+
     /**
-     * Constructeur
+     * Informations sur la classe
+     * @deprecated
+     */
+    private $ReflectionClass;
+
+    /**
+     * Nom court de la classe
+     * @deprecated
+     */
+    private $ClassShortName;
+
+    /**
+     * Chemin absolu vers le fichier de déclaration de la classe
+     * @deprecated
+     */
+    private $Filename;
+
+    /**
+     * Chemin absolu vers le dossier racine de la classe
+     * @deprecated
+     */
+    private $Dirname;
+
+    /**
+     * Nom du dossier racine de la classe
+     * @deprecated
+     */
+    private $Basename;
+
+    /**
+     * Url absolue vers la racine de la classe
+     * @deprecated
+     */
+    private $Url;
+
+    /**
+     * Url absolue vers  la racine de la classe
+     * @deprecated
+     */
+    protected static $_ClassShortName;
+
+    /**
+     * Url absolue vers  la racine de la classe
+     * @deprecated
+     */
+    protected static $_Filename;
+
+    /**
+     * Chemin absolu vers le dossier racine de la classe
+     * @deprecated
+     */
+    protected static $_Dirname;
+
+    /**
+     * Url absolue vers la racine de la classe
+     * @deprecated
+     */
+    protected static $_Url;
+
+    /**
+     * Chemin relatif à la racine de la classe
+     * @deprecated
+     */
+    protected static $_RelPath;
+
+    /**
+     * Url absolue vers la racine de la classe
+     * @deprecated
+     */
+    protected static $_AssetsUrl;
+
+    /**
+     * Chemin vers un gabarit d'affichage en contexte
+     * @deprecated
+     */
+    protected static $_TemplatePath;
+
+    /**
+     * Liste des arguments pouvant être récupérés
+     * @deprecated
+     */
+    protected $GetAttrs = [];
+
+    /**
+     * Liste des arguments pouvant être récupérés
+     * @deprecated
+     */
+    protected $GetPathAttrs = ['ReflectionClass', 'ClassShortName', 'Filename', 'Dirname', 'Basename', 'Url'];
+
+    /**
+     * Liste des arguments pouvant être récupérés
+     * @deprecated
+     */
+    protected $getattrs = [];
+
+    /**
+     * Liste des arguments pouvant être défini
+     * @deprecated
+     */
+    protected $SetAttrs = [];
+
+    /**
+     * CONSTRUCTEUR
      */
     public function __construct()
     {
@@ -174,93 +370,120 @@ trait Old
             //Deprecated::addArgument('\tiFy\App\Factory::CallFiltersArgsMap', '1.0.371', __('Utiliser \tiFy\App\Factory::tFyAppFiltersArgs en remplacement', 'tify'));
             $this->tFyAppFiltersArgs = $this->CallFiltersArgsMap;
         endif;
+
+        // Attributs de configuration
+        if(! empty($this->ReflectionClass)) :
+            Deprecated::addArgument('\tiFy\App\Factory::ReflectionClass', '1.0.412', __('Utiliser \tiFy\App\Factory::tFyAppAttr(\'ReflectionClass\') en remplacement', 'tify'));
+        endif;
+        if(! empty($this->ClassShortName)) :
+            Deprecated::addArgument('\tiFy\App\Factory::ClassShortName', '1.0.412', __('Utiliser \tiFy\App\Factory::tFyAppAttr(\'ClassShortName\') en remplacement', 'tify'));
+        endif;
+        if(! empty($this->Filename)) :
+            Deprecated::addArgument('\tiFy\App\Factory::Filename', '1.0.412', __('Utiliser \tiFy\App\Factory::tFyAppAttr(\'Filename\') en remplacement', 'tify'));
+        endif;
+        if(! empty($this->Dirname)) :
+            Deprecated::addArgument('\tiFy\App\Factory::Dirname', '1.0.412', __('Utiliser \tiFy\App\Factory::tFyAppDirname() en remplacement', 'tify'));
+        endif;
+        if(! empty($this->Basename)) :
+            Deprecated::addArgument('\tiFy\App\Factory::Basename', '1.0.412', __('Utiliser basename(\tiFy\App\Factory::tFyAppAttr(\'Dirname\')) en remplacement', 'tify'));
+        endif;
+        if(! empty($this->Url)) :
+            Deprecated::addArgument('\tiFy\App\Factory::Dirname', '1.0.412', __('Utiliser \tiFy\App\Factory::tFyAppUrl() en remplacement', 'tify'));
+        endif;
+
+        // Chemin
+        if(! empty(static::$_ClassShortName)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_ClassShortName', '1.0.412');
+        endif;
+        if(! empty(static::$_Filename)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_Filename', '1.0.412');
+        endif;
+        if(! empty(static::$_Dirname)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_Dirname', '1.0.412');
+        endif;
+        if(! empty(static::$_Url)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_Url', '1.0.412');
+        endif;
+        if(! empty(static::$_RelPath)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_RelPath', '1.0.412');
+        endif;
+        if(! empty(static::$_AssetsUrl)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_AssetsUrl', '1.0.412');
+        endif;
+        if(! empty(static::$_TemplatePath)) :
+            Deprecated::addArgument('\tiFy\App\Factory::$_TemplatePath', '1.0.412');
+        endif;
+        /** @todo Helpers */
+        /*if(! empty($this->GetPathAttrs)) :
+            Deprecated::addArgument('\tiFy\App\Factory::GetPathAttrs', '1.0.412');
+        endif;
+        if(! empty($this->GetAttrs)) :
+            Deprecated::addArgument('\tiFy\App\Factory::GetAttrs', '1.0.412');
+        endif;
+        if(! empty($this->SetAttrs)) :
+            Deprecated::addArgument('\tiFy\App\Factory::SetAttrs', '1.0.412');
+        endif;
+        if(! empty($this->getattrs)) :
+            Deprecated::addArgument('\tiFy\App\Factory::getattrs', '1.0.412');
+        endif;*/
     }
-    
-    /**
-     * Informations sur la classe
-     * @deprecated
-     */
-    private $ReflectionClass;
-    
-    /**
-     * Nom court de la classe
-     * @deprecated
-     */
-    private $ClassShortName;
-    
-    /**
-     * Chemin absolu vers le fichier de déclaration de la classe
-     * @deprecated
-     */
-    private $Filename;
-    
-    /**
-     * Chemin absolu vers le dossier racine de la classe
-     * @deprecated
-     */ 
-    private $Dirname;
 
     /**
-     * Nom du dossier racine de la classe
+     * Récupération des données accessibles
      * @deprecated
      */
-    private $Basename;
-    
-    /**
-     * Url absolue vers la racine de la classe
-     * @deprecated
-     */
-    private $Url;
-    
+    public function __get($name)
+    {
+        if (in_array($name, $this->GetPathAttrs)) :
+            if ( ! $this->{$name}) :
+                if (method_exists($this, 'set' . $name)) :
+                    return call_user_func([$this, 'set' . $name]);
+                endif;
+            else :
+                return $this->{$name};
+            endif;
+        elseif (in_array($name, $this->GetAttrs)) :
+            return $this->{$name};
+        elseif (in_array($name, $this->getattrs)) :
+            return $this->{$name};
+        endif;
+
+        return false;
+    }
 
     /**
-     * Liste des arguments pouvant être récupérés
+     * Vérification d'existance des données accessibles
      * @deprecated
      */
-    private $GetPathAttrs       = array( 'ReflectionClass', 'ClassShortName', 'Filename', 'Dirname', 'Basename', 'Url' );
-    
-    /**
-     * Définition des informations de la classe
-     * @deprecated
-     */
-    private function setReflectionClass()
+    public function __isset( $name )
     {
-        return $this->ReflectionClass = new \ReflectionClass(get_called_class());
+        if (in_array($name, $this->GetPathAttrs)) :
+            if ( ! $this->{$name}) :
+                if (method_exists($this, 'set' . $name)) :
+                    return call_user_func([$this, 'set' . $name]);
+                endif;
+            endif;
+
+            return isset($this->{$name});
+        elseif (in_array($name, $this->GetAttrs)) :
+            return isset($this->{$name});
+        elseif (in_array($name, $this->getattrs)) :
+            return isset($this->{$name});
+        endif;
+
+        return false;
     }
-     
+
     /**
-     * Définition du chemin absolu vers le fichier de déclaration de la classe fille
+     * Définition des données permises
      * @deprecated
      */
-    private function setFilename()
+    public function __set($name, $value)
     {
-        return $this->Filename = self::getFilename();
-    }
-    
-    /**
-     * Définition du chemin absolu vers le dossier racine de la classe fille
-     * @deprecated
-     */
-    private function setDirname()
-    {
-        return $this->Dirname = self::tFyAppDirname();
-    }
-    
-    /**
-     * Définition du nom du dossier racine de la classe fille
-     * @deprecated
-     */
-    private function setBasename()
-    {                
-        return $this->Basename = basename( self::tFyAppDirname() );
-    }
-    
-    /**
-     * Définition de l'url absolue vers le dossier racine de la classe fille
-     * @deprecated
-     */
-    private function setUrl()
-    {        
-        return $this->Url = self::tFyAppUrl();
+        if (in_array($name, $this->SetAttrs)) :
+            return $this->{$name} = $value;
+        endif;
+
+        return false;
     }
 }

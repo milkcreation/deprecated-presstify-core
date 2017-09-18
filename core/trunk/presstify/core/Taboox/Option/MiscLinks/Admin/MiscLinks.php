@@ -28,8 +28,8 @@ class MiscLinks extends Admin
 		\tify_control_enqueue( 'dynamic_inputs' );
 		\tify_control_enqueue( 'text_remaining' );
 		\tify_control_enqueue( 'media_image' );
-		\wp_enqueue_style( 'tify_taboox_misclinks', $this->Url .'/admin.css', array( ), '150626' );
-		\wp_enqueue_script( 'tify_taboox_misclinks', $this->Url .'/admin.js', array( 'jquery' ), '150626', true );
+		\wp_enqueue_style( 'tify_taboox_misclinks', self::tFyAppUrl() . '/admin.css', array( ), '150626' );
+		\wp_enqueue_script( 'tify_taboox_misclinks', self::tFyAppUrl() . '/admin.js', array( 'jquery' ), '150626', true );
 	}
 		
 	/* = FORMULAIRE DE SAISIE = */

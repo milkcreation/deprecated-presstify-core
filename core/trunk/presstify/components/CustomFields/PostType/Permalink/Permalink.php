@@ -103,8 +103,8 @@ class Permalink extends \tiFy\App\Factory
 		tify_control_enqueue( 'dropdown' );	
 		tify_control_enqueue( 'findposts' );
 		tify_control_enqueue( 'suggest' );
-		wp_enqueue_style( 'tiFyComponentsCustomFieldsPostTypePermalink', $this->Url .'/Permalink.css', array(), '160526' );
-		wp_enqueue_script( 'tiFyComponentsCustomFieldsPostTypePermalink', $this->Url .'/Permalink.js', array( 'jquery' ), '160526' );
+		wp_enqueue_style( 'tiFyComponentsCustomFieldsPostTypePermalink', self::tFyAppUrl() . '/Permalink.css', array(), '160526' );
+		wp_enqueue_script( 'tiFyComponentsCustomFieldsPostTypePermalink', self::tFyAppUrl() . '/Permalink.js', array( 'jquery' ), '160526' );
 	}
 		
 	/** == Affichage d'un message d'avertissement lorsque le lien est personalisé == **/

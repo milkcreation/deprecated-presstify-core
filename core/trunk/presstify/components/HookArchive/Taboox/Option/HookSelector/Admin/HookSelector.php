@@ -14,7 +14,7 @@ class HookSelector extends Admin
 	/* = MISE EN FILE DES SCRIPTS = */
 	public function admin_enqueue_scripts()
 	{
-		\wp_enqueue_style( 'Hook_Taboox_Option_Selector_Admin', $this->Url .'/HookSelector.css', array( 'tify_control-switch' ), '160315' );
+		\wp_enqueue_style( 'Hook_Taboox_Option_Selector_Admin', self::tFyAppUrl() . '/HookSelector.css', array( 'tify_control-switch' ), '160315' );
 	}
 	
 	/* = FORMULAIRE DE SAISIE = */

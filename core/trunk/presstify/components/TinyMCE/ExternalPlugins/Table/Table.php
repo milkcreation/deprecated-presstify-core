@@ -9,6 +9,6 @@ class Table extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'table', $this->Url .'/plugin.min.js' );
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'table', self::tFyAppUrl() . '/plugin.min.js' );
 	}
 }

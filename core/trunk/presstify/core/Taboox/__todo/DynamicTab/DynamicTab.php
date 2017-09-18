@@ -21,7 +21,7 @@ class DynamicTab extends Admin
 
 	/** == Mise en file des scripts de l'interface d'administration == **/
 	public function admin_enqueue_scripts(){
-		wp_enqueue_script( 'tify_taboox_dynamic_tab', $this->Url .'/admin.js', array( 'jquery' ), '150325', true );
+		wp_enqueue_script( 'tify_taboox_dynamic_tab', self::tFyAppUrl() . '/admin.js', array( 'jquery' ), '150325', true );
 	}
 	
 	/* = Formulaire de saisie = */

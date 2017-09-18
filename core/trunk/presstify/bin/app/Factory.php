@@ -3,30 +3,22 @@
 namespace tiFy\App;
 
 use tiFy\Apps;
-use tiFy\Lib\StdClass;
-use tiFy\Core\Db\Db;
-use tiFy\Core\Labels\Labels;
-use tiFy\Core\Templates\Templates;
 use tiFy\Environment\Traits\Old;
 
 abstract class Factory
 {
     use Traits\Controllers,
-        Traits\Getter,
         Traits\Helpers,
         Traits\HelpersNew,
-        Traits\Path,
-        Traits\Setter,
-        Old {
-        Traits\Getter::__get            as private __GetterGet;
-        Traits\Getter::__isset          as private __GetterIsset;
-        Traits\Helpers::__construct     as private __HelpersConstruct;
-        Traits\HelpersNew::__construct  as private __HelpersNewConstruct;
-        Traits\Path::__get              as private __PathGet;
-        Traits\Path::__isset            as private __PathIsset;
-        Traits\Setter::__set            as private __SetterSet;
-        Old::__construct                as private __OldConstruct;
-    }
+        Old
+        {
+            Traits\Helpers::__construct     as private __HelpersConstruct;
+            Traits\HelpersNew::__construct  as private __HelpersNewConstruct;
+            Old::__construct                as private __OldConstruct;
+            Old::__get                      as private __OldGet;
+            Old::__isset                    as private __OldIsset;
+            Old::__set                      as private __OldSet;
+        }
 
     /**
      * Liste des actions à déclencher
@@ -86,8 +78,9 @@ abstract class Factory
      */
     final public static function tFyAppAttrsSet($attrs, $classname = null)
     {
-        if (!$classname)
+        if (!$classname) :
             $classname = get_called_class();
+        endif;
 
         return Apps::setAttrs($attrs, $classname);
     }
@@ -137,11 +130,23 @@ abstract class Factory
      */
     final public static function tFyAppAttrs($classname = null)
     {
-        if (!$classname)
+        if (!$classname) :
             $classname = get_called_class();
+        endif;
 
-        if (!Apps::is($classname))
+        if (!Apps::is($classname)) :
+            // Déclaration de l'application
             Apps::register($classname);
+
+            // Définition des attributs de l'application parente
+            Apps::setAppParent($classname);
+
+            // Définition des espaces de nom de surcharge
+            Apps::setAppOverrideNamespace($classname);
+
+            // Définition de la liste des chemins vers les repertoires de surcharge
+            Apps::setOverridePath($classname);
+        endif;
 
         return Apps::getAttrs($classname);
     }
@@ -158,8 +163,9 @@ abstract class Factory
     {
         $attrs = self::tFyAppAttrs($classname);
 
-        if (isset($attrs[$attr]))
+        if (isset($attrs[$attr])) :
             return $attrs[$attr];
+        endif;
     }
 
     /**
@@ -208,6 +214,74 @@ abstract class Factory
     final public static function tFyAppRel($classname = null)
     {
         return self::tFyAppAttr('Rel', $classname);
+    }
+
+    /**
+     * Récupération des chemins vers le repertoire des assets (stockage des ressources de type feuilles de styles CSS, scripts JS, images, SVG)
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     *
+     * @return array {
+     *      Attributs du repertoire de surchage des ressources de l'application (là où récupérer les feuilles de styles CSS, le scripts JS, les images, les SVG)
+     *
+     *      @var string $url Url vers le repertoire des gabarits
+     *      @var string $path Chemin absolu vers le repertoire des gabarits
+     *      @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *      @var string $baseurl Url vers le repertoire racine
+     *      @var string $basedir Chemin absolu vers le repertoire
+     *      @var \WP_Error $error Message d'erreur d'accessibilité aux chemins
+     * }
+     */
+    public static function tFyAppAssetsPath($classname = null)
+    {
+        $OverridePath = self::tFyAppAttr('OverridePath', $classname);
+        if (!is_wp_error($OverridePath['assets']['error'])) :
+            return $OverridePath['assets'];
+        else :
+            return $OverridePath['assets'];
+        endif;
+    }
+
+    /**
+     * @param null $asset
+     * @param null $classname
+     */
+    public static function tFyAppAssetsUrl($asset = null, $classname = null)
+    {
+        $path = self::tFyAppAssetsPath($classname);
+
+        if(!$asset) :
+            return $path['url'];
+        endif;
+
+        $url = '';
+        $_asset = ltrim($asset, '/');
+
+        // Version minifiée de la ressource
+        if($min = SCRIPT_DEBUG ? '' : '.min') :
+            $ext = pathinfo($_asset, PATHINFO_EXTENSION);
+            $min_asset = preg_replace_callback('#(\.' . $ext .')$#', function($m) use ($min) { return $min . $m[1];}, $_asset);
+
+            if (file_exists($path['path'] . "/{$min_asset}")) :
+                $url = $path['url'] . "/{$min_asset}";
+            endif;
+        // Version brute de la ressource
+        else :
+            if (file_exists($path['path'] . "/{$_asset}")) :
+                $url = $path['url'] . "/{$_asset}";
+            endif;
+        endif;
+
+        if(! $url) :
+            if (file_exists(self::tFyAppDirname($classname) . "/{$_asset}")) :
+                $url = self::tFyAppUrl($classname) . "/{$_asset}";
+            endif;
+        endif;
+        if(! $url) :
+            $url = $asset;
+        endif;
+
+        return $url;
     }
 
     /**
@@ -262,8 +336,9 @@ abstract class Factory
      */
     final public static function tFyAppConfigSet($name, $value, $classname = null)
     {
-        if (!$classname)
+        if (!$classname) :
             $classname = get_called_class();
+        endif;
 
         return Apps::setConfigAttr($name, $value, $classname);
     }
@@ -329,8 +404,9 @@ abstract class Factory
         $templates[] = "{$slug}.php";
 
         
-        if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname))
+        if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname)) :
             return;
+        endif;
 
         extract($args);
         require($_template_file);
@@ -414,92 +490,11 @@ abstract class Factory
     /**
      * CONSTRUCTEUR
      *
-     * @todo revoir la syntaxe pour simplifier
-     *
      * @return void
      */
     public function __construct()
     {
         $this->__OldConstruct();
-
-        // Récupération des attributs
-        $attrs = self::tFyAppAttrs();
-
-        // Initialisation de la configuration
-        // Définition de la configuration par défaut
-        $filename = $attrs['Dirname'] . '/config/config.yml';
-        $ConfigDefault = file_exists($filename) ? Apps::parseAndEval($filename) : array();
-        $Config = wp_parse_args($attrs['Config'], $ConfigDefault);
-
-        // Surcharge de configuration "Dynamique"
-        if (in_array($attrs['Type'], array('Core', 'Components', 'Plugins', 'Set'))) :
-            foreach ((array)StdClass::getOverrideNamespaceList() as $namespace) :
-                $overrideNamespace = preg_replace('#\\\?tiFy\\\#', '', $attrs['Namespace']);
-                $overrideClass = $namespace . "\\" . $overrideNamespace . "\\Config";
-                $abstractClass = "\\tiFy\\App\\Config";
-
-                if (class_exists($overrideClass) && is_subclass_of($overrideClass, $abstractClass)) :
-                    $overrideConf = new $overrideClass;
-                    $Config = $overrideConf->filter($Config);
-                endif;
-            endforeach;
-        endif;
-
-        self::tFyAppAttrsSet(compact('Config', 'ConfigDefault'));
-
-        // Initialisation des schemas
-        $dirname = $attrs['Dirname'] . '/config/';
-        $schema = array();
-
-        // Récupération du paramétrage natif
-        $_dir = @ opendir($dirname);
-        if ($_dir) :
-            while (($file = readdir($_dir)) !== false) :
-                if (substr($file, 0, 1) == '.')
-                    continue;
-                $basename = basename($file, ".yml");
-                if ($basename !== 'schema')
-                    continue;
-
-                $schema += Apps::parseConfigFile("{$dirname}/{$file}", array(), 'yml', true);
-            endwhile;
-            closedir($_dir);
-        endif;
-
-        // Traitement du parametrage
-        foreach ((array)$schema as $id => $entity) :
-            /// Classe de rappel des données en base
-            if (isset($entity['Db'])) :
-                Db::Register($id, $entity['Db']);
-            endif;
-
-            /// Classe de rappel des intitulés
-            Labels::Register($id, (isset($entity['Labels']) ? $entity['Labels'] : array()));
-
-            /// Gabarits de l'interface d'administration
-            if (isset($entity['Admin'])) :
-                foreach ((array)$entity['Admin'] as $i => $tpl) :
-                    if (!isset($tpl['db']))
-                        $tpl['db'] = $id;
-                    if (!isset($tpl['labels']))
-                        $tpl['labels'] = $id;
-
-                    Templates::Register($i, $tpl, 'admin');
-                endforeach;
-            endif;
-
-            /// Gabarits de l'interface utilisateur
-            if (isset($entity['Front'])) :
-                foreach ((array)$entity['Front'] as $i => $tpl) :
-                    if (!isset($tpl['db']))
-                        $tpl['db'] = $id;
-                    if (!isset($tpl['labels']))
-                        $tpl['labels'] = $id;
-
-                    Templates::Register($i, $tpl, 'front');
-                endforeach;
-            endif;
-        endforeach;
 
         // Définition des actions à déclencher
         foreach ($this->tFyAppActions as $tag) :
@@ -507,9 +502,9 @@ abstract class Factory
             $accepted_args = isset($this->tFyAppActionsArgs[$tag]) ? (int)$this->tFyAppActionsArgs[$tag] : 1;
 
             if (!isset($this->tFyAppActionsMethods[$tag])) :
-                $function_to_add = array($this, (string)$tag);
+                $function_to_add = [$this, (string)$tag];
             else :
-                $function_to_add = array($this, (string)$this->tFyAppActionsMethods[$tag]);
+                $function_to_add = [$this, (string)$this->tFyAppActionsMethods[$tag]];
             endif;
 
             \add_action($tag, $function_to_add, $priority, $accepted_args);
@@ -521,9 +516,9 @@ abstract class Factory
             $accepted_args = isset($this->tFyAppFiltersArgs[$tag]) ? (int)$this->tFyAppFiltersArgs[$tag] : 1;
 
             if (!isset($this->tFyAppFiltersMethods[$tag])) :
-                $function_to_add = array($this, (string)$tag);
+                $function_to_add = [$this, (string)$tag];
             else :
-                $function_to_add = array($this, (string)$this->tFyAppFiltersMethods[$tag]);
+                $function_to_add = [$this, (string)$this->tFyAppFiltersMethods[$tag]];
             endif;
 
             \add_filter($tag, $function_to_add, $priority, $accepted_args);
@@ -540,42 +535,27 @@ abstract class Factory
     {
         // Exécution des actions à déclencher
         if (in_array($method_name, $this->tFyAppActions) && method_exists($this, $method_name)) :
-            return call_user_func_array(array($this, $method_name), $arguments);
+            return call_user_func_array([$this, $method_name], $arguments);
         // Exécution des filtres à déclencher
         elseif (in_array($method_name, $this->CallFilters) && method_exists($this, $method_name)) :
-            return call_user_func_array(array($this, $method_name), $arguments);
+            return call_user_func_array([$this, $method_name], $arguments);
         endif;
     }
 
     /**
      * Récupération d'attributs
-     * @deprecated
      */
     public function __get($name)
     {
-        if ($__get = $this->__EnvGet($name))
-            return $__get;
-        elseif ($__get = $this->__PathGet($name))
-            return $__get;
-        elseif ($__get = $this->__GetterGet($name))
-            return $__get;
-
-        return false;
+        return $this->__OldGet($name);
     }
 
     /**
      * Vérification d'existance d'attribut
-     * @deprecated
      */
     public function __isset($name)
     {
-        if ($__isset = $this->__GetterIsset($name)) :
-            return $__isset;
-        elseif ($__isset = $this->__PathIsset($name)) :
-            return $__isset;
-        endif;
-
-        return false;
+        return $this->__OldIsset($name);
     }
 
     /**
@@ -584,11 +564,6 @@ abstract class Factory
      */
     public function __set($name, $value)
     {
-        if ($__set = $this->__EnvSet($name, $value))
-            return $__set;
-        elseif ($__set = $this->__SetterSet($name, $value))
-            return $__set;
-
-        return null;
+        return $this->__OldSet($name, $value);
     }
 }

@@ -188,12 +188,12 @@ function my_tify_set_register()
 ### METHODE 3 | Développeur avancé - priorité haute
 
 Surcharge de configuration "dynamique" PHP
-Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du theme.
+Créer un fichier Config.php dans le dossier set/ContactForm de l'environnement de surcharge.
 /app/Set/ContactForm/Config.php
 
 ```php
 <?php
-namespace MyNamespace\App\Set\ContactForm;
+namespace App\Set\ContactForm;
 
 class Config extends \tiFy\App\Config
 {

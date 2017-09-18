@@ -27,8 +27,8 @@ class tiFy_Taboox_ThreeSixtyView extends tiFy\Core\Taboox\Form{
 	public function admin_enqueue_scripts(){
 		wp_enqueue_media();
 		wp_enqueue_style( 'spinkit-three-bounce' );
-		wp_enqueue_style( 'tify_taboox_threesixty_view', $this->Url .'/admin.css', array(), 150907 );
-		wp_enqueue_script( 'tify_taboox_threesixty_view', $this->Url .'/admin.js', array( 'jquery' ), 150907, true );
+		wp_enqueue_style( 'tify_taboox_threesixty_view', self::tFyAppUrl() . '/admin.css', array(), 150907 );
+		wp_enqueue_script( 'tify_taboox_threesixty_view', self::tFyAppUrl() . '/admin.js', array( 'jquery' ), 150907, true );
 		wp_localize_script( 'tify_taboox_threesixty_view', 'tify', array(
 				'max'	  => $this->max,
 				'l10nMax' => __( 'Nombre maximum de vues atteint', 'tify' )

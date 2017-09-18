@@ -35,10 +35,8 @@ class Slider extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
-        wp_register_style( 'tify_control-slider', self::getAssetsUrl( get_class() ) .'/Slider'. $min .'.css', array(), 170215 );
-        wp_register_script( 'tify_control-slider', self::getAssetsUrl( get_class() ) .'/Slider'. $min .'.js', array( 'tify-slideshow' ), 170215, true );
+        wp_register_style('tify_control-slider', self::tFyAppAssetsUrl('Slider.css', get_class()), array(), 170215 );
+        wp_register_script('tify_control-slider', self::tFyAppAssetsUrl('Slider.js', get_class()), array( 'tify-slideshow' ), 170215, true);
     }
     
     /**

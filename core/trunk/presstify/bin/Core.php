@@ -20,7 +20,7 @@ final class Core
     {
         $classname = "tiFy\\Core\\{$id}\\{$id}";
         
-        Apps::register(
+        return Apps::register(
             $classname,
             'core',
             array(

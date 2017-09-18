@@ -27,7 +27,7 @@ class Dashicons extends \tiFy\App\Factory
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'dashicons', $this->Url .'/plugin.js' ); 
+		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin('dashicons', self::tFyAppUrl() . '/plugin.js' );
 	}
 	
 	/* = ACTIONS WORPDRESS = */
@@ -57,7 +57,7 @@ class Dashicons extends \tiFy\App\Factory
 		);
 		// Déclaration des scripts
 		wp_register_style( $this->options['hookname'], $this->options['css'], $this->options['dependencies'], $this->options['version'] );
-		wp_register_style( 'tinymce-dashicons', $this->Url .'/plugin.css', array(), '20141219' );
+		wp_register_style( 'tinymce-dashicons', self::tFyAppUrl() . '/plugin.css', array(), '20141219' );
 		
 		// Récupération des glyphs
 		$css_path = tify_get_relative_url( $this->options['css'] );
@@ -102,7 +102,7 @@ class Dashicons extends \tiFy\App\Factory
 	/** == Ajout des styles dans l'éditeur == **/
 	final public function mce_css( $mce_css )
 	{
-		return $mce_css .= ', '. $this->options['css'] .', '. $this->Url.'/editor.css';
+		return $mce_css .= ', '. $this->options['css'] .', '. self::tFyAppUrl() . '/editor.css';
 	}
 	
 	/* = CONTROLEUR = */

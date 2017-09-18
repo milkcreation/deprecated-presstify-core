@@ -17,14 +17,12 @@ class Control extends \tiFy\App\Core
 
         foreach(glob(self::tFyAppDirname() .'/*/', GLOB_ONLYDIR) as $filename) :
             $basename     = basename( $filename );
-            $ClassName    = "\\tiFy\\Core\\Control\\{$basename}\\{$basename}";
+            $ClassName    = "tiFy\\Core\\Control\\{$basename}\\{$basename}";
          
             self::register($ClassName);
         endforeach;
 
         do_action('tify_control_register');
-
-        new _Deprecated\_Deprecated;
     }
         
     /**
@@ -46,9 +44,11 @@ class Control extends \tiFy\App\Core
 
         // Initialisation de la classe
         $Instance = self::loadOverride($classname);
-        
+
         if(! empty($Instance->ID) && ! isset(self::$Factory[$Instance->ID])) :
             self::$Factory[$Instance->ID] = $Instance;
         endif;
+
+
     }
 }

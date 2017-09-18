@@ -188,12 +188,10 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function _admin_enqueue_scripts()
     {
         parent::_admin_enqueue_scripts();
-        
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        
+
         // Chargement des scripts
-        wp_enqueue_style( 'tiFyTemplatesAdminFileImport', self::getAssetsUrl(get_class()) .'/FileImport'. $min .'.css', array( ), 150607 );
-        wp_enqueue_script( 'tiFyTemplatesAdminFileImport', self::getAssetsUrl(get_class()) .'/FileImport'. $min .'.js', array( 'jquery' ), 150607 );
+        wp_enqueue_style( 'tiFyTemplatesAdminFileImport', self::tFyAppAssetsUrl('FileImport.css', get_class()), array( ), 150607 );
+        wp_enqueue_script( 'tiFyTemplatesAdminFileImport', self::tFyAppAssetsUrl('FileImport.js', get_class()), array( 'jquery' ), 150607 );
     } 
     
     /**

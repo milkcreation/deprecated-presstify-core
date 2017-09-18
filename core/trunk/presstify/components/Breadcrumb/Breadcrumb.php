@@ -41,8 +41,7 @@ class Breadcrumb extends \tiFy\Environment\Component
         self::setController( 'template', '\tiFy\Components\Breadcrumb\Template' );
         
         // Déclaration des scripts
-        $min = SCRIPT_DEBUG ? '' : '.min';
-        wp_register_style('tiFyComponentsBreadcrumb', self::getAssetsUrl(get_class()) .'/Breadcrumb'. $min.'.css', array(), 160318);
+        wp_register_style('tiFyComponentsBreadcrumb', self::tFyAppAssetsUrl('Breadcrumb.css', get_class()), array(), 160318);
     }
 
     /**
