@@ -1081,14 +1081,28 @@ final class Apps
         $subdir  = \untrailingslashit($subdir);
         $_subdir = $subdir ? '/' . $subdir : '';
 
-        $OverridePath['theme_app']       = [
-            'path'    => get_template_directory() . '/app' . $_subdir,
-            'url'     => get_template_directory_uri() . '/app' . $_subdir,
-            'subdir'  => $subdir,
-            'basedir' => get_template_directory() . '/app',
-            'baseurl' => get_template_directory_uri() . '/app',
-            'error'   => false
-        ];
+        if (in_array($attrs['Type'], ['Core', 'Components','Set', 'Plugins']) || $attrs['ParentClassname']) :
+            $OverridePath['theme_app']       = [
+                'path'    => get_template_directory() . '/app' . $_subdir,
+                'url'     => get_template_directory_uri() . '/app' . $_subdir,
+                'subdir'  => $subdir,
+                'basedir' => get_template_directory() . '/app',
+                'baseurl' => get_template_directory_uri() . '/app',
+                'error'   => false
+            ];
+        else :
+            $OverridePath['theme_app'] = [
+                'path'    => '',
+                'url'     => '',
+                'subdir'  => '',
+                'basedir' => '',
+                'baseurl' => '',
+                'error'   => new \WP_Error('OverridePathThemeAppInvalidType',
+                    __('Seules les composants natifs (core), dynamiques (components), les extensions (plugins) et les jeux de fonctionnalités (set) et leurs héritiers sont en mesure d\'être surchargés dans le thème',
+                        'tify'))
+            ];
+        endif;
+
         $OverridePath['theme_templates'] = [
             'path'    => get_template_directory() . '/templates' . $_subdir,
             'url'     => get_template_directory_uri() . '/templates' . $_subdir,
