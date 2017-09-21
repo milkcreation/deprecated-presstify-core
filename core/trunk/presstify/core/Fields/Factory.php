@@ -105,7 +105,9 @@ class Factory extends \tiFy\App\Factory
             $attrs[]= $name . "=" . $html_attrs[$name];
         endforeach;
 
-        return implode(' ', $attrs);
+        if($attrs) :
+            return implode(' ', $attrs);
+        endif;
     }
 
     /**

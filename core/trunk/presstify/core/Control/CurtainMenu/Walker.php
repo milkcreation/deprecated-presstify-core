@@ -31,13 +31,16 @@ class Walker extends \tiFy\Lib\Walkers\MenuTree
      */
     public function default_start_content_items($item = null, $depth = 0, $parent = '')
     {
+        $_parent = (isset($this->Items[$parent])) ? $this->Items[$parent] : [];
+
         $output  = "";
         if(! $depth) :
             $output .= $this->getIndent($depth) . "<ul class=\"tiFyControlCurtainMenu-items tiFyControlCurtainMenu--open\">\n";
         else :
-            if ($item['ancestor'] ||
+            if ($item['is_ancestor'] ||
                 $item['current'] ||
-                (isset($this->Attrs['selected']) && ($item['parent'] === $this->Attrs['selected']))
+                (isset($this->Attrs['selected']) && ($item['parent'] === $this->Attrs['selected'])) ||
+                (!empty($_parent) && $_parent['is_ancestor'])
             ) :
                 $isOpenClass = ' tiFyControlCurtainMenu-panel--open';
             else :

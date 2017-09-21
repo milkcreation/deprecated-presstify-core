@@ -2,7 +2,7 @@
 /**
  *  USAGE : 
  *            
-    $Csv = \tiFy\Inherits\Csv::getResults( 
+    $Csv = \tiFy\Lib\Csv\Csv::getResults(
         array(
             'filename'      => ABSPATH .'/example.csv'
             'delimiter'     => ';',
@@ -39,10 +39,10 @@
     // Nombre d'éléments trouvés
     $found_items = $Csv->getFoundItems(); 
  */
-namespace tiFy\Inherits;
+namespace tiFy\Lib\Csv;
 
-use \League\Csv\Reader;
-use \ForceUTF8\Encoding;
+use League\Csv\Reader;
+use ForceUTF8\Encoding;
 //use \League\Csv\Writer;
 
 class Csv
@@ -136,13 +136,13 @@ class Csv
     /**
      * Liste des éléments
      */
-    protected $Items                = array();
+    protected $Items                = [];
     
     /**
      * CONSTRUCTEUR
      * @param array $options
      */
-    public function __construct( $options = array() )
+    public function __construct($options = [])
     {
         foreach( $options as $option_name => $option_value ) :
             switch( $option_name ) :

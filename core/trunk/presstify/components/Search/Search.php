@@ -9,40 +9,40 @@ class Search extends Component
     /**
      * Liste des actions à déclencher
      */
-    protected $tFyAppActions                  = array(
+    protected $tFyAppActions                = [
         'init',
-        'pre_get_posts'        
-    );
+        'pre_get_posts'
+    ];
     
     /**
      * Liste des Filtres à déclencher
      */
-    protected $CallFilters                  = array(
+    protected $CallFilters                  = [
         'query_vars',
-        'search_template'
-    );
+        //'search_template'
+    ];
     
     /**
      * Ordre de priorité d'exécution des filtres
      */
-    protected $CallFiltersPriorityMap       = array(
+    protected $CallFiltersPriorityMap       = [
         'init'              => 20,
         'query_vars'        => 99
-    );
+    ];
     
     /**
      * Nombre d'arguments autorisés
      */
-    protected $CallFiltersArgsMap           = array(
+    protected $CallFiltersArgsMap           = [
         'search_template'   => 3
-    );
+    ];
     
     /**
      * Liste des arguments de section par défaut
      */
-    private static $Defaults                = array(
+    private static $Defaults                = [
         'posts_per_section'                     => 4
-    );
+    ];
 
     /**
      * Liste des sections déclarées
@@ -124,10 +124,10 @@ class Search extends Component
                 
         // Traitement de la configuration
         /// Arguments par défaut
-        self::$Defaults = wp_parse_args( self::tFyAppConfig( 'defaults' ), self::$Defaults );
+        self::$Defaults = wp_parse_args( self::tFyAppConfig('defaults'), self::$Defaults );
 
         /// Sections
-        if( $sections = self::tFyAppConfig( 'sections' ) ) :
+        if ($sections = self::tFyAppConfig('sections')) :
             foreach( (array) $sections as $name => $args ) :    
                 self::$Section[$name] = wp_parse_args( $args, self::$Defaults );
             endforeach;
@@ -183,7 +183,7 @@ class Search extends Component
             if( $query->is_main_query() ) :
                 if( $query->is_search() ) :
                     add_filter( 'posts_search', array( $this, 'posts_search' ), 10, 2 );
-                    add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );
+                    //add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 10, 2 );
                 elseif( $query->get( '_s', '' ) ) :
                     add_filter( 'posts_search', array( $this, 'posts_search' ), 11, 2 );
                     add_filter( 'posts_clauses', array( $this, 'posts_clauses' ), 11, 2 );
@@ -195,27 +195,28 @@ class Search extends Component
     /**
      * Désactivation des conditions de requêtes
      */
-    final public function posts_search( $search, $query )
+    final public function posts_search($search, $query)
     {
         // Empêche l'execution multiple du filtre
-        if( $query->is_main_query() )
-            \remove_filter( current_filter(), __METHOD__ );
-        
-        return '';
+        if($query->is_main_query()) :
+            \remove_filter(current_filter(), __METHOD__);
+        endif;
+
+        return $search;
     }
     
     /**
      * Conditions de requêtes personnalisées 
      */
-    final public function posts_clauses( $pieces, $query )
+    final public function posts_clauses($pieces, $query)
     {    
         global $wpdb;
-        
-        extract( $pieces );
+
+        extract($pieces);
 
         $sresults = false;
         
-        // Récupération de la requête de recheche        
+        // Récupération de la requête de recheche
         if( $q['s'] = $query->get( 's', '' ) ) :
             $sresults = true;
         elseif( $q['s'] = $query->get( '_s', '' ) ) :
@@ -225,8 +226,8 @@ class Search extends Component
         endif;
 
         if( self::$Section ) :
-            $subquery_where = array(); $section_num = 1; $section_join = '';    
-            foreach( (array) self::$Section as $name => $args ) :                
+            $subquery_where = array(); $section_num = 1; $section_join = '';
+            foreach( (array) self::$Section as $name => $args ) :
                 $args['s'] = $q['s'];
     
                 // Traitement des arguments de requête
@@ -306,15 +307,16 @@ class Search extends Component
             /// Conditions de recherche
             if( $subquery_where ) :
                 $where .= " AND (";
-                $where .= join( " OR ", $subquery_where );            
+                $where .= join( " OR ", $subquery_where );
                 $where .= " )";
             endif;
         endif;
+
         // Empêche l'execution multiple du filtre
         if( $query->is_main_query() ) :
-            \remove_filter( current_filter(), array( $this, 'posts_clauses' ), 10 );
+            \remove_filter(current_filter(), array( $this, 'posts_clauses' ), 10);
         endif;
-        
+
         return compact( array_keys( $pieces ) );
     }
     
@@ -331,11 +333,19 @@ class Search extends Component
     /**
      * Gabarit d'affichage des résultats de recherche
      */
-    public function search_template( $template, $type, $templates )
+    public function search_template($template, $type, $templates)
     {
-        return self::getQueryTemplate( $template, $type, $templates );
+        add_action('template_include', [$this, 'template_include'], 99);
     }
-    
+
+    /**
+     *
+     */
+    public function template_include($template)
+    {
+        return self::tFyAppQueryTemplate('search.php');
+    }
+
     /**
      * CONTROLEURS
      */    

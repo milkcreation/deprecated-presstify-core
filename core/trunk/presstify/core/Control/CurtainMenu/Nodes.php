@@ -9,7 +9,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Ordre d'éxecution des méthodes de surchage des greffons
      */
-    public $MethodsMapOrder = ['parent', 'has_children', 'link', 'content', 'class'];
+    public $MethodsMapOrder = ['parent', 'link', 'content', 'class'];
 
     /**
      * Attribut "title" du greffon de terme lié à une taxonomie
@@ -58,19 +58,13 @@ class Nodes extends \tiFy\Lib\Nodes\Base
             $classes[] = 'tiFyControlCurtainMenu-item--hasChildren';
         endif;
 
-        /*
-        if (!empty($node['ancestor'])) :
+        if (!empty($node['is_ancestor'])) :
             $classes[] = 'tiFyControlCurtainMenu-item--ancestor';
         endif;
 
         if (!empty($node['current'])) :
             $classes[] = 'tiFyControlCurtainMenu-item--current';
         endif;
-
-        if(!empty($node['ancestor']) || !empty($node['current'])) :
-            $classes[] = 'tiFyControlCurtainMenu-item--open';
-        endif;
-        */
 
         return implode(' ', $classes);
     }
