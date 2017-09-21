@@ -1,6 +1,6 @@
 <?php get_header();?>
 
-<?php if( have_posts() ) : $current_section = false; ?>
+<?php if(have_posts()) : $current_section = false; ?>
     <div class="tiFySearchResults">
     <?php while( have_posts() ) : the_post(); if( ! tify_search_section_post_count() ) continue;?>
         <?php if( $current_section !== tify_search_post_section() ) : $current_section = tify_search_post_section(); $i = 1;?>

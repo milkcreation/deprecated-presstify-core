@@ -140,9 +140,11 @@ class Factory extends \tiFy\App\Factory
     /** == Chemin vers les archives == **/
     final public function GetArchiveSlug( $hook_id )
     {
+        /**
+        Désactivation de la mise en cache - pose problème dans le cas d'un switch_to_blog
         if( ! empty( $this->ArchiveSlugs[$hook_id] ) )
             return $this->ArchiveSlugs[$hook_id];
-        
+        */
         $archive_slug = "";
         
         // Bypass

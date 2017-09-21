@@ -83,9 +83,9 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
             case 'custom' :
                 break;
         endswitch;
-        
+
         $output  = "";
-        $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu". ($container_class ? ' '. $container_class : '') ."\" data-tify_control=\"curtain_menu\">\n";
+        $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu tiFyControlCurtainMenu--{$theme}". ($container_class ? ' '. $container_class : '') ."\" data-tify_control=\"curtain_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlCurtainMenu-nav\">\n";
         $output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";
         $Walker = self::loadOverride('\tiFy\Core\Control\CurtainMenu\Walker');

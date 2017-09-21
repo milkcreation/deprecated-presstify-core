@@ -11,6 +11,12 @@ class Fields extends \tiFy\App\Core
     protected $tFyAppActions = ['init'];
 
     /**
+     * Liste des types de champs déclarés
+     * @var array
+     */
+    private static $Registered = [];
+
+    /**
      * DECLENCHEURS
      */
     /**
@@ -20,7 +26,28 @@ class Fields extends \tiFy\App\Core
     {
         foreach (glob(self::tFyAppDirname() . '/*', GLOB_ONLYDIR) as $filename) :
             $FieldName = basename($filename);
+            array_push(static::$Registered, $FieldName);
             call_user_func("tiFy\\Core\\Fields\\$FieldName\\$FieldName::init");
         endforeach;
+    }
+
+    /**
+     * @param $name
+     * @param $arguments
+     */
+    public static function __callStatic($name, $args)
+    {
+        $FieldName = ucfirst($name);
+        if (!in_array($FieldName, static::$Registered)) :
+            return;
+        endif;
+
+        $echo = isset($args[1]) ? $args[1] : true;
+
+        if ($echo) :
+            call_user_func("tiFy\\Core\\Fields\\$FieldName\\$FieldName::display", $args[0]);
+        else :
+            return call_user_func("tiFy\\Core\\Fields\\$FieldName\\$FieldName::content", $args[0]);
+        endif;
     }
 }

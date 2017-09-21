@@ -58,7 +58,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
             $classes[] = 'tiFyControlAccordionMenu-item--hasChildren';
         endif;
 
-        if (!empty($node['ancestor'])) :
+        if (!empty($node['is_ancestor'])) :
             $classes[] = 'tiFyControlAccordionMenu-item--ancestor';
         endif;
 
@@ -66,7 +66,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
             $classes[] = 'tiFyControlAccordionMenu-item--current';
         endif;
 
-        if(!empty($node['ancestor']) || !empty($node['current'])) :
+        if(!empty($node['is_ancestor']) || !empty($node['current'])) :
             $classes[] = 'active';
         endif;
 

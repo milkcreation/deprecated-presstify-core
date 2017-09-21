@@ -2,7 +2,9 @@
 namespace tiFy\Core\Db;
 
 class Handle{
-	/* = ARGUMENTS =*/
+    /**
+     * @var Factory
+     */
 	protected	$Db;
 	
 	/* = CONSTRUCTEUR = */	

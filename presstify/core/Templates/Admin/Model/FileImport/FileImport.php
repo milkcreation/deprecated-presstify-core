@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\FileImport;
 
-use tiFy\Inherits\Csv;
+use tiFy\Lib\Csv\Csv;
 
 class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
 {                
@@ -197,7 +197,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     /**
      * Affichage la page courante
      */
-    public function _current_screen( $current_screen = null )
+    public function _current_screen($current_screen = null)
     {
         //$_REQUEST['_import_row_index'] = 0;
         
@@ -206,23 +206,30 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         // DEBUG - Tester la fonctionnalité d'import > Décommenter $_REQUEST['_import_row_index'] et commenter le return (ligne suivante)
         return;
 
-        if (! $this->Importer)
+        if (!$this->Importer) :
             return;
+        endif;
 
         if (isset($this->items[$_REQUEST['_import_row_index']])) :
-            $res = call_user_func($this->Importer .'::import', (array) $this->items[$_REQUEST['_import_row_index']]);
+            $res = call_user_func($this->Importer . '::import', (array)$this->items[$_REQUEST['_import_row_index']]);
         elseif ($this->items) :
-            $res = call_user_func($this->Importer .'::import', (array) current($this->items));
+            $res = call_user_func($this->Importer . '::import', (array)current($this->items));
         else :
-            $res = array('insert_id' => 0, 'errors' => new \WP_Error( 'tiFyTemplatesAdminImport-UnavailableContent', __( 'Le contenu à importer est indisponible', 'Theme' ) ) );
+            $res = [
+                'insert_id' => 0,
+                'success'   => false,
+                'notices'   => [
+                    'error' => [
+                        'tiFyTemplatesAdminImport-UnavailableContent' => [
+                            'message'   => __('Le contenu à importer est indisponible', 'tify')
+                        ]
+                    ]
+                ]
+            ];
         endif;
-            
-        if (! empty($res['errors']) && is_wp_error($res['errors'])) :
-            wp_send_json_error( array( 'message' => $res['errors']->get_error_message() ) );
-        else :
-            wp_send_json_success( array( 'message' => __( 'Le contenu a été importé avec succès', 'tify' ), 'insert_id' => $res['insert_id'] ) );
-        endif;
-        
+
+        wp_send_json($res);
+
         exit;
     }
     
@@ -344,7 +351,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function views()
     {   
         // Import de fichier personnel
-        if( $this->Uploadable ) :        
+        if( $this->Uploadable ) :
 ?>
 <form class="tiFyTemplatesFileImport-Form tiFyTemplatesFileImport-Form--upload" method="post" action="" enctype="multipart/form-data" data-id="<?php echo $this->template()->getID() .'_'. self::classShortName();?>">              
     <strong><?php _e( 'Import de fichier personnel :', 'tify' );?></strong><br>
@@ -379,18 +386,10 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
 </div>
 <?php         
         endif;
-?>
-<div class="tiFyTemplatesFileImport-options">
-    <strong class="tiFyTemplatesFileImport-optionsLabel"><?php _e( 'Options d\'import :', 'tify' );?></strong>
-    <div class="tiFyTemplatesFileImport-optionsForm">
 
-
-    </div>
-</div>
-<?php
         parent::views();
     }
-    
+
     /**
      * Champs cachés
      */

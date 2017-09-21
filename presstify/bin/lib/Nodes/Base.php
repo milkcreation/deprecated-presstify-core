@@ -152,7 +152,8 @@ abstract class Base
         $node['id']        = $term->term_id;
         $node['parent']    = $term->parent;
         $node['current']   = (isset($attrs['extras']['selected']) && ($term->term_id == $attrs['extras']['selected'])) ? 1 : 0;
-        $node['ancestor']  = (isset($attrs['extras']['selected']) && \term_is_ancestor_of($term->term_id, (int)$attrs['extras']['selected'], $term->taxonomy)) ? 1 : 0;
+        $node['is_ancestor']  = (isset($attrs['extras']['selected']) && \term_is_ancestor_of($term->term_id, (int)$attrs['extras']['selected'], $term->taxonomy)) ? 1 : 0;
+        $node['has_children'] = \get_term_children($term->term_id, $term->taxonomy) ? 1 : 0;
 
         foreach($this->MethodsMap as $attr) :
             $node[$attr] = call_user_func_array([$this, 'term_node_'. $attr], [&$node, $term, $attrs['query_args'], $attrs['extras']]);
@@ -175,22 +176,7 @@ abstract class Base
     {
         return !$term->parent ? '' : ((isset($query_args['child_of']) && ($query_args['child_of'] == $term->parent)) ? '' : $term->parent);
     }
-    
-    /**
-     * Attribut "has_children" du greffon de term lié à une taxonomie
-     *
-     * @param array $node Attributs du greffon
-     * @param obj $term Attributs du terme courant
-     * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Données complémentaires (ex: selected)
-     *
-     * @return bool
-     */
-    public function term_node_has_children(&$node, $term, $query_args = [], $extras = [])
-    {
-        return \get_term_children($term->term_id, $term->taxonomy) ? true : false;
-    }
-    
+
     /**
      * Attribut "content" du greffon de terme lié à une taxonomie
      *
