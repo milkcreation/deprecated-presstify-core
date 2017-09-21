@@ -26,9 +26,9 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
         $this->OptionNamePrefix = $form->getForm()->getAddonAttr('mailer', 'option_name_prefix', $this->args['form_id']);
 
         register_setting($this->page, $this->OptionNamePrefix .'-confirmation');
-        register_setting($this->page, $this->OptionNamePrefix .'-sender', array( $this, 'sanitize_sender'));
+        register_setting($this->page, $this->OptionNamePrefix .'-sender', array($this, 'sanitize_sender'));
         register_setting($this->page, $this->OptionNamePrefix .'-notification');
-        register_setting($this->page, $this->OptionNamePrefix .'-recipients', array( $this, 'sanitize_recipients'));
+        register_setting($this->page, $this->OptionNamePrefix .'-recipients', array($this, 'sanitize_recipients'));
 
     }
     
@@ -150,7 +150,7 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
     /**
      * Vérification du format de l'email de l'expéditeur
      */
-    public function sanitize_sender( $sender )
+    public function sanitize_sender($sender)
     {
         if( empty( $sender['email'] ) ) :
             add_settings_error( $this->page, 'sender-email_empty', sprintf( __( 'L\'email "%s" ne peut être vide', 'tify' ), __( 'Expéditeur du message de confirmation de reception', 'tify' ) ) ); 
@@ -164,7 +164,7 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
     /**
      * Vérification du format de l'email du destinataire de notification
      */
-    public function sanitize_recipients( $recipients )
+    public function sanitize_recipients($recipients)
     {
         foreach( (array) $recipients as $recipient => $recip ) :
             if( empty( $recip['email'] ) ) :

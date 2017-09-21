@@ -199,7 +199,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */
     public function _current_screen($current_screen = null)
     {
-        //$_REQUEST['_import_row_index'] = 0;
+        //$_REQUEST['_import_row_index'] = 6;
         
         parent::_current_screen($current_screen);
         
