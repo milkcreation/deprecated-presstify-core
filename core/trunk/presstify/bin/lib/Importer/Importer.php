@@ -139,7 +139,7 @@ abstract class Importer
         $import->_setValues();
 
         // Evénement pré-insertion global
-        $import->before_insert();
+        $import->before_insert($import->getInsertId());
 
         // Filtrage des données principales
         $import->_filterValues('data');
@@ -281,7 +281,6 @@ abstract class Importer
                     endforeach;
                 endif;
             endif;
-
         endforeach;
 
         $this->Setted = compact($this->Types);
@@ -395,33 +394,6 @@ abstract class Importer
     }
 
     /**
-     * Récupération de la liste des données definies
-     *
-     * @return array
-     */
-    final public function getSetList()
-    {
-        return $this->Setted;
-    }
-
-    /**
-     * Récupération d'une valeur de donnée définie
-     *
-     * @param string $key Clé d'index de la valeur à récupérer
-     * @param mixed $default Valeur de retour par défaut
-     *
-     * @return mixed
-     */
-    final public function getSet($key, $default = '')
-    {
-        if (isset($this->Setted[$key])) :
-            return $this->Setted[$key];
-        else :
-            return $default;
-        endif;
-    }
-
-    /**
      * Récupération de la valeur de clé primaire du contenu enregistré
      *
      * @return null|string|int
@@ -463,6 +435,42 @@ abstract class Importer
     final public function setSuccess($success)
     {
         $this->Success = $success;
+    }
+
+    /**
+     * Récupération de la liste des données definies
+     *
+     * @param string $type data|meta|tax|opt
+     *
+     * @return array
+     */
+    final public function getSetList($type)
+    {
+        if (isset($this->Setted[$type])) :
+            return $this->Setted[$type];
+        endif;
+    }
+
+    /**
+     * Récupération d'une valeur de donnée définie
+     *
+     * @param string $key Clé d'index de la valeur à récupérer
+     * @param mixed $default Valeur de retour par défaut
+     * @param string $type data|meta|tax|opt
+     *
+     * @return mixed
+     */
+    final public function getSet($key, $default = '', $type)
+    {
+        if(!$TypeSetted = $this->getSetList($type)) :
+            return $default;
+        endif;
+
+        if (isset($TypeSetted[$key])) :
+            return $TypeSetted[$key];
+        else :
+            return $default;
+        endif;
     }
 
     /**
@@ -769,7 +777,7 @@ abstract class Importer
     /**
      * Evénement pré-insertion global
      */
-    public function before_insert()
+    public function before_insert($insert_id)
     {
         return;
     }
@@ -777,7 +785,7 @@ abstract class Importer
     /**
      * Evénement post-insertion global
      */
-    public function after_insert()
+    public function after_insert($insert_id)
     {
         return;
     }

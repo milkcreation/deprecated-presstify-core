@@ -8,6 +8,8 @@
 
 namespace tiFy\Core\Control\TextRemaining;
 
+use tiFy\Lib\Chars;
+
 class TextRemaining extends \tiFy\Core\Control\Factory
 {
     /**
@@ -80,13 +82,20 @@ class TextRemaining extends \tiFy\Core\Control\Factory
             'name'                  => 'tify_control_text_remaining-'. $instance,
             'selector'              => 'textarea',    // textarea (default) // @TODO | input 
             'value'                 => '',
+            'value_filter'          => true,
             'attrs'                 => array(),
             'length'                => 150,
             'maxlength'             => true     // Stop la saisie en cas de dépassement
         );    
         $args = wp_parse_args( $args, $defaults );
-        extract( $args );
-        
+        extract($args);
+
+        if ($value_filter) :
+            $value = nl2br($value);
+            $value = Chars::br2nl($value);
+            $value = wp_unslash($value);
+        endif;
+
         $output = "";
         $output .= "<div id=\"{$container_id}\" class=\"tify_control_text_remaining-container\">\n";
         switch( $selector ) :
@@ -100,7 +109,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
                 if( $attrs )
                     foreach( $attrs as $iattr => $vattr )
                         $output .= " {$iattr}=\"{$vattr}\"";
-                $output .= ">". wp_unslash( $value ) ."</textarea>\n";
+                $output .= ">". $value ."</textarea>\n";
                 $output .= "\t<span id=\"tify_control_text_remaining-feedback-{$instance}\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
                 break;
             case 'input' :                    
@@ -112,7 +121,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
                 if( $attrs )
                     foreach( $attrs as $iattr => $vattr )
                         $output .= " {$iattr}=\"{$vattr}\"";
-                $output .= " value=\"". wp_unslash( $value ) ."\">\n";
+                $output .= " value=\"". $value ."\">\n";
                 $output .= "\t<span id=\"tify_control_text_remaining-feedback-{$instance}\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
                 break;
         endswitch;

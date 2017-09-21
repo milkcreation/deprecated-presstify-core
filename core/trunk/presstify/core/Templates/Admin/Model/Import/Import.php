@@ -123,7 +123,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function _admin_init()
     {
-        parent::_admin_init();       
+        parent::_admin_init();
 
         add_action( 'wp_ajax_'. $this->template()->getID() .'_'. self::classShortName() .'_import', array( $this, 'wp_ajax_import' ) );    
     }
