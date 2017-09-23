@@ -74,6 +74,7 @@ class Taxonomy extends \tiFy\Lib\Importer\Importer
             $term_id = 0;
         else :
             $term_id = $term['term_id'];
+            $this->Notices->addSuccess(__('La catégorie a été importé avec succès', 'tify'), 'tFyLibImportInsertDatasSuccess');
             $this->setInsertId($term_id);
             $this->setSuccess(true);
         endif;

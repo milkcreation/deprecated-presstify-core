@@ -1,3 +1,36 @@
+# Recherche globale de Wordpress
+global:
+  # Liste des types de post parmis lequels lancer la recherche
+  # @var string|array
+  post_type:          'any'
+
+  # Nombre de post affichés par page de résultat de recherche
+  # @var int
+  post_per_page:      20
+
+  # Statut de publication
+  # @var string|array
+  post_status:        ['publish', 'private']
+
+  # Liste des champs utilisés pour la recherche
+  # @var string[]
+  search_fields:      ['post_title']
+
+  # Liste de métadonnées utilisées pour la recherche
+  # @var string[]
+  search_metas:       []
+
+  # Activation de la recherche par mots-clef
+  # @var bool
+  search_tags:        false
+
+  # Activation de la recherche de la séquence complète ou sur chacun des mots constituant la séquences
+  # @var bool
+  sentence:           true
+
+  # Activation de la recherche selon le (les) terme exact de la séquence
+  exact:              false
+
 defaults:
   # Type de post du recherche
   post_type:          'any'

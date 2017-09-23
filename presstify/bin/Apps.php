@@ -558,12 +558,14 @@ final class Apps
      */
     public static function setConfigAttr($name, $value = '', $classname)
     {
-        if (is_object($classname))
+        if (is_object($classname)) :
             $classname = get_class($classname);
-        
-        if (! isset(self::$Registered[$classname]))
+        endif;
+
+        if (! isset(self::$Registered[$classname])) :
             return false;
-        
+        endif;
+
         self::$Registered[$classname]['Config'][$name] = $value;
         
         return true;
