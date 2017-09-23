@@ -61,6 +61,7 @@ class User extends \tiFy\Lib\Importer\Importer
             $this->setSuccess(false);
             $user_id = 0;
         else :
+            $this->Notices->addSuccess(__('L\'utilisateur a été importé avec succès', 'tify'), 'tFyLibImportInsertDatasSuccess');
             $this->setInsertId($user_id);
             $this->setSuccess(true);
         endif;

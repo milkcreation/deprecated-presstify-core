@@ -94,10 +94,11 @@ namespace
     /** == Affichage d'un formulaire == **/
     function tify_form_display( $form = null, $echo = true )
     {
-        if( $echo )
-            echo do_shortcode( '[formulaire id="'. $form .'"]' );
-
-        return do_shortcode( '[formulaire id="'. $form .'"]' );
+        if ($echo) :
+            echo do_shortcode('[formulaire id="'. $form .'"]');
+        else :
+            return do_shortcode('[formulaire id="'. $form .'"]');
+        endif;
     }
     
     /** == Déclaration d'un formulaire == **/

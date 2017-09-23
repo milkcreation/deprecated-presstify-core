@@ -30,7 +30,7 @@ abstract class Factory
 
     /**
      * Cartographie des méthodes de rappel des actions
-     * @var mixed
+     * @var array
      */
     protected $tFyAppActionsMethods = [];
 
@@ -48,11 +48,13 @@ abstract class Factory
 
     /**
      * Liste des filtres à déclencher
+     * @var string[]
      */
     protected $tFyAppFilters = [];
 
     /**
      * Cartographie des méthodes de rappel des filtres
+     * @var array
      */
     protected $tFyAppFiltersMethods = [];
 

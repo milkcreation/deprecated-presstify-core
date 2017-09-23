@@ -49,6 +49,7 @@ class Schedule
     
     /**
      * Classe de rappel de journalisation
+     * @var \Monolog\Logger
      */
     private $Logger         = null;
     
@@ -133,6 +134,8 @@ class Schedule
     
     /**
      * Récupération de la classe de rappel de journalisation
+     *
+     * @return \Monolog\Logger
      */
     final public function getLogger()
     {
