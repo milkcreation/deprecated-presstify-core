@@ -5,8 +5,8 @@ jQuery(document).ready(function ($) {
         // Processus actif
         process = false,
 
-        // Notifications
-        notices = [],
+        // Mise en cache de la reponse
+        response = [],
 
         // Liste des options d'import
         import_options = [];
@@ -108,12 +108,57 @@ jQuery(document).ready(function ($) {
         if(! $('form[name="tiFyTemplatesImport-optionsForm"]').length) {
             return;
         }
-        var opt = $('form[name="tiFyTemplatesImport-optionsForm"]').serializeArray();
-        import_options = {};
-        $.each(opt, function(i,j){
-            import_options[j.name] = j.value;
+        import_options = $('form[name="tiFyTemplatesImport-optionsForm"]').serialize();
+    };
+
+    /**
+     * Ajout des informations d'import d'une ligne traitée
+     * @param $row
+     */
+    var appendRowResponse = function ($row) {
+        var cell = AjaxListTable.cell($row[0], 0);
+        var $cell = $(cell.node());
+        var i = $('.tiFyTemplatesImport-RowImport', $cell).data('item_index_value');
+
+        if(response[i] === undefined) {
+            return;
+        }
+        var r = response[i];
+
+        // Affichage de l'indicateur de succès
+        $('.tiFyTemplatesImport-Result', $cell).hide();
+        if (r.success) {
+            $('.tiFyTemplatesImport-Result--success', $cell).show();
+        } else {
+            $('.tiFyTemplatesImport-Result--error', $cell).show();
+        }
+
+        // Enrichissement de l'interface d'affichage des messages
+        $('.tiFyTemplatesImport-Notices', $cell).html(r.messages.join('')).addClass('tiFyTemplatesImport-Notices--filled');
+    };
+
+    /**
+     * Evénement d'ajout des informations d'import des lignes traitées sur la page courante
+     */
+    $(document)
+        .on('draw.dt.tiFyTemplatesImportAppendResponse', function (e, settings, json, xhr) {
+            AjaxListTable.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+                appendRowResponse($(this));
+            });
         });
-    }
+
+    /**
+     * Affichage des messages d'informations d'import d'une ligne traitées
+     */
+    $(document)
+        .on('mouseenter mouseleave', '.tiFyTemplatesImport-RowImport', function(e){
+            var $closest = $(this).closest('td');
+            if(e.type === 'mouseenter') {
+                $('.tiFyTemplatesImport-Notices--filled', $closest).show();
+            } else {
+                $('.tiFyTemplatesImport-Notices--filled', $closest).hide();
+            }
+        });
 
     /**
      * Import d'un ligne de donnée
@@ -160,27 +205,28 @@ jQuery(document).ready(function ($) {
             data: data,
             dataType: 'json',
             success: function (resp, textStatus, jqXHR) {
-                notices[row_value] = resp.notices;
-                var infos = '';
+                var messages = [];
                 // Traitement des notifications
                 $.each(resp.notices, function(type,v)
                 {
                     $.each(v, function(code,j)
                     {
                         if(j['message']){
-                            infos += '<span style="color:'+ tiFyTemplatesAdminImport['notices'][type]['color'] +';display:block;">' + j['message'] + '</span>';
+                            messages.push('<span style="color:'+ tiFyTemplatesAdminImport['notices'][type]['color'] +';display:block;">' + j['message'] + '</span>');
                         }
                     });
                 });
-                $('#tiFyTemplatesImport-ProgressBar').tiFyProgress('infos', infos);
+                $('#tiFyTemplatesImport-ProgressBar').tiFyProgress('infos', messages.join(''));
 
                 // Incrémentation de la barre de progression
                 $('#tiFyTemplatesImport-ProgressBar').tiFyProgress('increase');
 
+                // Traitement de la reponse
+                response[row_value] = {success: resp.success, messages: messages};
+
                 // Le traitement est complet
                 if (!--import_rows) {
                     AjaxListTable.draw('page');
-
                     $(document)
                         .on('draw.dt.tiFyTemplatesImport', function (e, settings, json, xhr) {
                             $('#tiFyTemplatesImport-ProgressBar').tiFyProgress('close');
@@ -206,11 +252,13 @@ jQuery(document).ready(function ($) {
 
                 $(document)
                     .on('draw.dt.tiFyTemplatesImport', function (e, settings, json, xhr) {
+                        // Lancement de l'import suivant
                         var $next = $(AjaxListTable.row(':eq(' + i + ')', {page: 'current'}).node());
                         importRow($next);
+
                         $(this).unbind('draw.dt.tiFyTemplatesImport');
                     });
             }
         });
-    }
+    };
 });

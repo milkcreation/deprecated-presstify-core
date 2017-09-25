@@ -31,11 +31,6 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     protected $UploadDir;
 
     /**
-     * Données complémentaires d'import
-     */
-    protected $ImportMisc       = [];
-
-    /**
      * PARAMETRAGE
      */    
     /** 
@@ -44,7 +39,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function set_params_map()
     {
         $params = parent::set_params_map();
-        array_push( $params, 'Filename', 'FileColumns', 'Delimiter', 'Utf8Encode', 'Uploadable', 'UploadDir', 'ImportMisc' );
+        array_push($params, 'Filename', 'FileColumns', 'Delimiter', 'Utf8Encode', 'Uploadable', 'UploadDir');
         
         return $params;
     }
@@ -97,14 +92,6 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
         return true;
     }
 
-    /**
-     * Définition des données complémentaires d'import
-     */
-    public function set_import_misc()
-    {
-        return [];
-    }
-        
     /**
      * Initialisation du fichier d'import externe
      */
@@ -349,7 +336,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      * Vues
      */
     public function views()
-    {   
+    {
         // Import de fichier personnel
         if( $this->Uploadable ) :
 ?>

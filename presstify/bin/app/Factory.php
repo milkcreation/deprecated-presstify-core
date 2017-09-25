@@ -69,21 +69,89 @@ abstract class Factory
     protected $tFyAppFiltersArgs = [];
 
     /**
-     * CONTROLEURS
+     * EVENEMENTS
+     */
+    /**
+     * Lancement à l'initialisation de la classe
+     */
+    public function tFyAppOnInit() { }
+
+    /**
+     * Ajout d'une action
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     *
+     * @return null|callable \add_action()
+     */
+    final public function tFyAppAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    {
+        if (!$class_method) :
+            $class_method = $tag;
+        endif;
+
+        if (!method_exists($this, $class_method)) :
+            return;
+        endif;
+
+        $MethodChecker = new \ReflectionMethod($this, $class_method);
+
+        if ($MethodChecker->isStatic()) :
+            $function_to_add = [get_called_class(), $class_method];
+        else :
+            $function_to_add = [$this, $class_method];
+        endif;
+
+        return \add_action($tag, $function_to_add, $priority, $accepted_args);
+    }
+
+    /**
+     * Ajout d'un filtre
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer.
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     *
+     * @return null|callable \add_filter()
+     */
+    final public function tFyAppAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    {
+        if (!$class_method) :
+            $class_method = $tag;
+        endif;
+
+        if (!method_exists($this, $class_method)) :
+            return;
+        endif;
+
+        $MethodChecker = new \ReflectionMethod($this, $class_method);
+
+        if ($MethodChecker->isStatic()) :
+            $function_to_add = [get_called_class(), $class_method];
+        else :
+            $function_to_add = [$this, $class_method];
+        endif;
+
+        return \add_filter($tag, $function_to_add, $priority, $accepted_args);
+    }
+
+    /**
+     * ATTRIBUTS
      */
     /**
      * Définition d'attributs de l'applicatif
      *
-     * @param $attrs
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param $attrs Liste des attributs à définir
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
      */
-    final public static function tFyAppAttrsSet($attrs, $classname = null)
+    final public static function tFyAppAttrsSetList($attrs, $classname = null)
     {
-        if (!$classname) :
-            $classname = get_called_class();
-        endif;
+        $classname = self::_tFyAppParseClassname($classname);
 
         return Apps::setAttrs($attrs, $classname);
     }
@@ -91,7 +159,7 @@ abstract class Factory
     /**
      * Récupération de la liste des attributs de l'applicatif
      *
-     * @param object|string classname
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array {
      *      Liste des attributs de configuration
@@ -133,23 +201,9 @@ abstract class Factory
      */
     final public static function tFyAppAttrs($classname = null)
     {
-        if (!$classname) :
-            $classname = get_called_class();
-        endif;
+        $classname = self::_tFyAppParseClassname($classname);
 
-        if (!Apps::is($classname)) :
-            // Déclaration de l'application
-            Apps::register($classname);
-
-            // Définition des attributs de l'application parente
-            Apps::setAppParent($classname);
-
-            // Définition des espaces de nom de surcharge
-            Apps::setAppOverrideNamespace($classname);
-
-            // Définition de la liste des chemins vers les repertoires de surcharge
-            Apps::setOverridePath($classname);
-        endif;
+        self::_tFyAppRegister($classname);
 
         return Apps::getAttrs($classname);
     }
@@ -158,9 +212,9 @@ abstract class Factory
      * Récupération d'un attribut de l'applicatif
      *
      * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|OverridePath
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return NULL|mixed
+     * @return null|mixed
      */
     final public static function tFyAppAttr($attr, $classname = null)
     {
@@ -174,9 +228,9 @@ abstract class Factory
     /**
      * Récupération du nom complet de la classe (Espace de nom inclus)
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return NULL|string
+     * @return null|string
      */
     final public static function tFyAppClassname($classname = null)
     {
@@ -186,9 +240,9 @@ abstract class Factory
     /**
      * Récupération du chemin absolu vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return NULL|string
+     * @return null|string
      */
     final public static function tFyAppDirname($classname = null)
     {
@@ -198,9 +252,9 @@ abstract class Factory
     /**
      * Récupération de l'url absolue vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return NULL|string
+     * @return null|string
      */
     final public static function tFyAppUrl($classname = null)
     {
@@ -210,9 +264,9 @@ abstract class Factory
     /**
      * Récupération du chemin relatif vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return NULL|string
+     * @return null|string
      */
     final public static function tFyAppRel($classname = null)
     {
@@ -222,7 +276,7 @@ abstract class Factory
     /**
      * Récupération des chemins vers le repertoire des assets (stockage des ressources de type feuilles de styles CSS, scripts JS, images, SVG)
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array {
      *      Attributs du repertoire de surchage des ressources de l'application (là où récupérer les feuilles de styles CSS, le scripts JS, les images, les SVG)
@@ -288,10 +342,13 @@ abstract class Factory
     }
 
     /**
+     * CONFIGURATION
+     */
+    /**
      * Récupération des attributs de configuration par défaut de l'app
      *
-     * @param NULL|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|mixed
      */
@@ -309,9 +366,9 @@ abstract class Factory
     /**
      * Récupération d'attributs de configuration de l'applicatif
      *
-     * @param NULL|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
+     * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
      * @param void|mixed $default Valeur par défaut de retour
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return mixed
      */
@@ -329,27 +386,43 @@ abstract class Factory
     }
 
     /**
-     * Définition d'un attribut de configuration de l'applicatif
+     * Définition de la liste des attributs de configuration de l'application
      *
-     * @param string $name Qualification de l'attribut de configuration
-     * @param mixed $value Valeur de l'attribut de configuration
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param mixed $attrs Liste des attributs de configuration
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
      */
-    final public static function tFyAppConfigSet($name, $value, $classname = null)
+    final public static function tFyAppConfigSetAttrs($attrs, $classname = null)
     {
-        if (!$classname) :
-            $classname = get_called_class();
-        endif;
+        $classname = self::_tFyAppParseClassname($classname);
+
+        return Apps::setConfigAttrs($attrs, $classname);
+    }
+
+    /**
+     * Définition d'un attribut de configuration de l'applicatif
+     *
+     * @param string $name Qualification de l'attribut de configuration
+     * @param null|mixed $value Valeur de l'attribut de configuration
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return bool
+     */
+    final public static function tFyAppConfigSetAttr($name, $value = null, $classname = null)
+    {
+        $classname = self::_tFyAppParseClassname($classname);
 
         return Apps::setConfigAttr($name, $value, $classname);
     }
 
     /**
+     * SURCHARGES
+     */
+    /**
      * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array {
      *      @var array $app {
@@ -378,12 +451,121 @@ abstract class Factory
     }
 
     /**
+     * SURCHAGES - Controleurs
+     */
+    /**
+     * Récupération d'une classe de surcharge
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param array $path Liste des chemins à parcourir
+     *
+     * @return null|string
+     */
+    final public static function tFyAppGetOverrideClass($classname = null, $path = [])
+    {
+        $classname = self::_tFyAppParseClassname($classname);
+
+        if (empty($path)) :
+            $path = self::tFyAppOverrideClassPath($classname);
+        endif;
+
+        foreach ((array)$path as $override) :
+            if (class_exists($override) && is_subclass_of($override, $classname)) :
+                $classname = $override;
+                break;
+            endif;
+        endforeach;
+
+        if (class_exists($classname)) :
+            return $classname;
+        endif;
+    }
+
+    /**
+     * Chargement d'une classe de surcharge
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param array $path Liste des chemins à parcourir
+     * @param mixed $passed_args Argument passé au moment de l'instantiaction de la class
+     *
+     * @return null|object
+     */
+    public static function tFyAppLoadOverrideClass($classname = null, $path = [], $passed_args = '')
+    {
+        if (!$classname = self::tFyAppGetOverrideClass($classname, $path)) :
+            if (!empty($passed_args)) :
+                // @todo
+                return new $classname(compact('passed_args'));
+            else :
+                return new $classname;
+            endif;
+        endif;
+    }
+
+    /**
+     * Récupération de la liste des chemins de surcharge d'une classe
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return string[]
+     */
+    public static function tFyAppOverrideClassPath($classname = null)
+    {
+        $classname = self::_tFyAppParseClassname($classname);
+
+        $path = [];
+        foreach ((array)self::tFyAppOverrideClassNamespaceList($classname) as $namespace) :
+            $namespace = ltrim($namespace, '\\');
+            $path[]    = $namespace . "\\" . preg_replace("/^tiFy\\\/", "", ltrim($classname, '\\'));
+        endforeach;
+
+        return $path;
+    }
+
+    /**
+     * Récupération de la liste des espaces de nom de surcharge
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return string[]
+     */
+    public static function tFyAppOverrideClassNamespaceList($classname = null)
+    {
+        $classname = self::_tFyAppParseClassname($classname);
+
+        $namespaces = array();
+
+        if (($app = tiFy::getConfig('app')) && !empty($app['namespace'])) :
+            $namespaces[] = $app['namespace'];
+        endif;
+
+        foreach ((array)Apps::querySet() as $_classname => $attrs) :
+            if($_classname === $classname) :
+                continue;
+            endif;
+            $namespaces[] = "{$attrs['Namespace']}\\App";
+        endforeach;
+
+        foreach ((array)Apps::queryPlugins() as $_classname => $attrs) :
+            if($_classname === $classname) :
+                continue;
+            endif;
+            $namespaces[] = "tiFy\\Plugins\\" . $attrs['Id'] . "\\App";
+        endforeach;
+
+        return $namespaces;
+    }
+
+    /**
+     * SURCHAGES - Gabarits
+     */
+    /**
      * Chargement d'un gabarit d'affichage
      *
      * @param string $slug Identification du template ou chemin relatif .
      * @param string $name Modifieur de template.
      * @param mixed $args Liste des arguments passés en variable dans le template
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'applicatif
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
      *
      * @see get_template_part()
      *
@@ -391,13 +573,7 @@ abstract class Factory
      */
     final public static function tFyAppGetTemplatePart($slug, $name = null, $args = [], $classname = null)
     {
-        // Récupération du nom de la classe d'affilitation
-        if (is_object($classname)) :
-            $classname = get_class($classname);
-        endif;
-        if (! $classname) :
-            $classname = get_called_class();
-        endif;
+        $classname = self::_tFyAppParseClassname($classname);
 
         // Définition de la liste des templates
         $templates = [];
@@ -415,16 +591,16 @@ abstract class Factory
 
     /**
      * Récupération d'un gabarit d'affichage
+     *
+     * @param $template
+     * @param $templates
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return string
      */
-    public static function tFyAppQueryTemplate($template, $templates = array(), $classname = null)
+    final public static function tFyAppQueryTemplate($template, $templates = array(), $classname = null)
     {
-        // Récupération du nom de la classe d'affilitation
-        if (is_object($classname)) :
-            $classname = get_class($classname);
-        endif;
-        if (!$classname) :
-            $classname = get_called_class();
-        endif;
+        $classname = self::_tFyAppParseClassname($classname);
 
         // Récupération de la liste des chemin de gabarit
         $OverridePath = self::tFyAppOverridePath($classname);
@@ -439,22 +615,23 @@ abstract class Factory
         if (!\is_wp_error($OverridePath['theme_templates']['error'])) :
             foreach ((array)$templates as $template_name) :
                 // Bypass
-                if (!$template_name)
+                if (!$template_name) :
                     continue;
-
+                endif;
                 $template_file = $OverridePath['theme_templates']['path'] . '/' . $template_name;
 
                 // Bypass - le fichier n'existe pas physiquement
-                if (! file_exists($template_file))
+                if (! file_exists($template_file)) :
                     continue;
+                endif;
 
                 $located = $template_file;
                 break;
             endforeach;
         endif;
 
-        // Cas particulier à traiter - App déclaré dans le répertoire de surcharge des apps du thème
-        if(!$located && preg_match('#^'. preg_quote(get_template_directory() . '/app', '/') .'#', self::tFyAppDirname($classname))) :
+        // Cas particulier à traiter - App déclarée dans le répertoire de surcharge des apps du thème
+        if (!$located && preg_match('#^'. preg_quote(get_template_directory() . '/app', '/') .'#', self::tFyAppDirname($classname))) :
             $subdir = preg_replace('#^'. preg_quote(get_template_directory() . '/app/', '/') .'#', '', self::tFyAppDirname($classname));
 
             reset($templates);
@@ -473,10 +650,10 @@ abstract class Factory
             endforeach;
         endif;
 
-
-        // Récupération du gabarit original depuis l'application
+        // Récupération du gabarit original depuis le repertoire de stockage de l'application
         if (! $located) :
             reset($templates);
+
             // Récupération du gabarit depuis le thème
             foreach ((array)$templates as $template_name) :
                 // Bypass
@@ -493,7 +670,31 @@ abstract class Factory
             endforeach;
         endif;
 
-        if (! $located ) :
+        // Récupération du gabarit de surcharge depuis le thème
+        if (!$located && !\is_wp_error($OverridePath['parent_templates']['error'])) :
+            reset($templates);
+
+            foreach ((array)$templates as $template_name) :
+                // Bypass
+                if (!$template_name) :
+                    continue;
+                endif;
+                $template_file = $OverridePath['parent_templates']['path'] . '/' . $template_name;
+
+                // Bypass - le fichier n'existe pas physiquement
+                if (! file_exists($template_file)) :
+                    continue;
+                endif;
+
+                $located = $template_file;
+                break;
+            endforeach;
+        endif;
+
+        // Récupération du gabarit depuis la racine du repertoire de stockage des gabarits du thème
+        if (! $located) :
+            reset($templates);
+
             foreach ($templates as $template_name) :
                 if (file_exists(get_template_directory() . '/templates/' . $template_name)) :
                     $located = get_template_directory() . '/templates/' . $template_name;
@@ -511,7 +712,7 @@ abstract class Factory
     /**
      *
      */
-    public static function tFyAppTemplateLoad($__template_file, $args = [])
+    final public static function tFyAppTemplateLoad($__template_file, $args = [])
     {
         if(isset($args[$__template_file])) :
             unset($args[$__template_file]);
@@ -522,12 +723,63 @@ abstract class Factory
     }
 
     /**
+     * CONTROLEURS
+     */
+    /**
+     * Traitement du nom de la classe
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return string
+     */
+    final protected static function _tFyAppParseClassname($classname = null)
+    {
+        if (!$classname) :
+            $classname = get_called_class();
+        endif;
+
+        if (is_object($classname)) :
+            $classname = get_class($classname);
+        endif;
+
+        return $classname;
+    }
+
+    /**
+     * Déclaration si nécessaire de l'application
+     *
+     * @param string $classname Nom de la classe de l'application
+     *
+     * @return void
+     */
+    final protected static function _tFyAppRegister($classname)
+    {
+        if (Apps::is($classname)) :
+            return;
+        endif;
+
+        // Déclaration de l'application
+        Apps::register($classname);
+
+        // Définition des attributs de l'application parente
+        Apps::setParent($classname);
+
+        // Définition des espaces de nom de surcharge
+        Apps::setOverrideNamespace($classname);
+
+        // Définition de la liste des chemins vers les repertoires de surcharge
+        Apps::setOverridePath($classname);
+    }
+
+    /**
      * CONSTRUCTEUR
      *
      * @return void
      */
     public function __construct()
     {
+        $this->tFyAppOnInit();
+
         $this->__OldConstruct();
 
         // Définition des actions à déclencher

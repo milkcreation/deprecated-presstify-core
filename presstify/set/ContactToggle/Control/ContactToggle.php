@@ -98,27 +98,27 @@ class ContactToggle extends \tiFy\Core\Control\Factory
     
         return $output;
     }
-    
+
     /**
      * Récupération ajax des données
      */
     public function ajax()
     {
-        check_ajax_referer( 'tiFySetCoreControl_ContactToggle' );
-       
-        $data = $this->response( $_POST['query_args'] );    
-        if( ! is_wp_error( $data ) ) :
-            wp_send_json_success( $data );
+        check_ajax_referer('tiFySetCoreControl_ContactToggle');
+
+        $data = $this->response($_POST['query_args']);
+        if (!is_wp_error($data)) :
+            wp_send_json_success($data);
         else :
-            wp_send_json_error( $data->get_error_messages() );
+            wp_send_json_error($data->get_error_messages());
         endif;
     }
-    
+
     /**
      * Réponse
      */
-    public function response( $query_args = array() )
+    public function response($query_args = [])
     {
-        return get_option( 'admin_email' );
+        return get_option('admin_email');
     }
 }

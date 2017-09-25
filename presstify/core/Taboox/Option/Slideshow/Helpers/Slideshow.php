@@ -91,16 +91,17 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
                 'progressbar' => false,
             ],
         ];
+        $args = (array)$args;
 
         // Traitement des options
         $name = isset($args['name']) ? $args['name'] : $defaults['name'];
-        if ( ! isset($args['options']) && ($db = get_option($name,
-                false)) && isset($db['options'])) {
+
+        if (!isset($args['options']) && ($db = get_option($name, false)) && isset($db['options'])) :
             $args['options'] = $db['options'];
-        }
+        endif;
 
         foreach ((array)$defaults['options'] as $k => $v) :
-            if ( ! isset($args['options'][$k])) {
+            if (!isset($args['options'][$k])) {
                 $args['options'][$k] = $v;
             }
         endforeach;

@@ -104,6 +104,11 @@ abstract class Importer
     private $Success = false;
 
     /**
+     * Interruption de l'execution
+     */
+    private $Stop = false;
+
+    /**
      * CONSTRUCTEUR
      */
     public function __construct()
@@ -129,62 +134,81 @@ abstract class Importer
         // Instanciation de la classe d'import
         $import = new static();
 
-        // Traitement des attributs d'import
-        $import->_parseAttrs($attrs);
+        while(!$import->Stop) :
+            // Traitement des attributs d'import
+            $import->_parseAttrs($attrs);
+            if ($import->Stop) break;
 
-        // Traitement des données d'entrées brutes
-        $import->_parseInput($input);
+            // Traitement des données d'entrées brutes
+            $import->_parseInput($input);
+            if ($import->Stop) break;
 
-        // Définition des données
-        $import->_setValues();
+            // Définition des données
+            $import->_setValues();
+            if ($import->Stop) break;
 
-        // Evénement pré-insertion global
-        $import->before_insert($import->getInsertId());
+            // Evénement pré-insertion global
+            $import->before_insert($import->getInsertId());
+            if ($import->Stop) break;
 
-        // Filtrage des données principales
-        $import->_filterValues('data');
+            // Filtrage des données principales
+            $import->_filterValues('data');
+            if ($import->Stop) break;
 
-        // Vérification d'intégrité des données principales
-        $import->_checkValues('data');
+            // Vérification d'intégrité des données principales
+            $import->_checkValues('data');
+            if ($import->Stop) break;
 
-        // Evénement pré-insertion des données principales
-        $import->before_insert_datas($import->getInsertId());
+            // Evénement pré-insertion des données principales
+            $import->before_insert_datas($import->getInsertId());
+            if ($import->Stop) break;
 
-        // Import des données principales
-        $import->insert_datas($import->getDataList(), $import->getInsertId());
+            // Import des données principales
+            $import->insert_datas($import->getDataList(), $import->getInsertId());
+            if ($import->Stop) break;
 
-        // Evénement post-insertion des données principales
-        $import->after_insert_datas($import->getInsertId());
+            // Evénement post-insertion des données principales
+            $import->after_insert_datas($import->getInsertId());
+            if ($import->Stop) break;
 
-        if ($insert_id = $import->getInsertId()) :
-            foreach (['meta', 'tax', 'opt'] as $type) :
-                if(!$import->hasType($type)) :
-                    continue;
-                endif;
-                $Type = ucfirst($type);
+            if ($insert_id = $import->getInsertId()) :
+                foreach (['meta', 'tax', 'opt'] as $type) :
+                    if(!$import->hasType($type)) :
+                        continue;
+                    endif;
+                    $Type = ucfirst($type);
 
-                // Filtrage des données par type
-                $import->_filterValues($type);
+                    // Filtrage des données par type
+                    $import->_filterValues($type);
+                    if ($import->Stop) break2;
 
-                // Vérification d'intégrité des données par type
-                $import->_checkValues($type);
+                    // Vérification d'intégrité des données par type
+                    $import->_checkValues($type);
+                    if ($import->Stop) break2;
 
-                // Evénement pré-insertion des données par type
-                call_user_func([$import, "before_insert_{$type}s"], $insert_id);
+                    // Evénement pré-insertion des données par type
+                    call_user_func([$import, "before_insert_{$type}s"], $insert_id);
+                    if ($import->Stop) break2;
 
-                // Import des données par type
-                $list = call_user_func([$import, "get{$Type}List"]);
-                foreach ($list as $key => $value) :
-                    call_user_func([$import, "insert_{$type}"], $key, $value, $insert_id);
+                    // Import des données par type
+                    $list = call_user_func([$import, "get{$Type}List"]);
+                    foreach ($list as $key => $value) :
+                        call_user_func([$import, "insert_{$type}"], $key, $value, $insert_id);
+                        if ($import->Stop) break3;
+                    endforeach;
+
+                    // Evénement post-insertion des données principales
+                    call_user_func([$import, "after_insert_{$type}s"], $insert_id);
+                    if ($import->Stop) break2;
                 endforeach;
+            endif;
 
-                // Evénement post-insertion des données principales
-                call_user_func([$import, "after_insert_{$type}s"], $insert_id);
-            endforeach;
-        endif;
+            // Evénement post-insertion global
+            $import->after_insert($import->getInsertId());
+            if ($import->Stop) break;
 
-        // Evénement post-insertion global
-        $import->after_insert($import->getInsertId());
+            $import->setStop();
+        endwhile;
 
         return $import->getResponse();
     }
@@ -325,13 +349,13 @@ abstract class Importer
             return;
         endif;
 
-        ${$type} = $this->Setted[$type];
+        ${$type} = $this->Filtered[$type];
 
-        foreach (${$type} as $key => &$value) :
-            $value = call_user_func([$this, "check_{$type}s"], $value, $key, $insert_id);
+        foreach (${$type} as $key => $value) :
+            call_user_func([$this, "check_{$type}s"], $value, $key, $insert_id);
 
             if (method_exists($this, "check_{$type}_{$key}")) :
-                $value = call_user_func([$this, "check_{$type}_{$key}"], $value, $insert_id);
+                call_user_func([$this, "check_{$type}_{$key}"], $value, $insert_id);
             endif;
         endforeach;
     }
@@ -594,6 +618,14 @@ abstract class Importer
     final public function getOpt($option_name, $default = '')
     {
         return $this->get($option_name, $default, 'opt');
+    }
+
+    /**
+     * Définition de l'interruption de l'import
+     */
+    final public function setStop()
+    {
+        $this->Stop =  true;
     }
 
     /**

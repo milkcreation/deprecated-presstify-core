@@ -25,7 +25,6 @@ class tiFyDb extends \tiFy\Lib\Importer\Importer
     public function __construct()
     {
         parent::__construct();
-        $this->initDb();
     }
 
     /**
@@ -38,8 +37,10 @@ class tiFyDb extends \tiFy\Lib\Importer\Importer
             return $this->Notices->addError(__('Aucune base de donnée d\'import n\'a été définie', 'tify'), 'tiFyInheritsImport_AnyDb');
         elseif (!$this->Db = Db::get($id)) :
             return $this->Notices->addError(__('La base de donnée de données fournie semble invalide', 'tify'), 'tiFyInheritsImport_InvalidDb');
-        endif;        
-    }    
+        endif;
+
+        return $attrs;
+    }
     
     /**
      * Définition de la base de données
@@ -52,13 +53,14 @@ class tiFyDb extends \tiFy\Lib\Importer\Importer
     /**
      * Insertion des données principales
      */
-    public function insert_datas($dbarr)
+    public function insert_datas($dbarr, $insert_id)
     {
         $insert_id = $this->Db->handle()->record($dbarr);
         if(!$insert_id) :
             $this->Notices->addError(__('Impossible d\'enregister l\'élément', 'tify'), 'tFyDbImportDatasRecordFailed');
             $this->setSuccess(false);
         else :
+            $this->Notices->addSuccess(__('L\'élement a été importé avec succès', 'tify'), 'tFyLibImportInsertDatasSuccess');
             $this->setInsertId($insert_id);
             $this->setSuccess(true);
         endif;

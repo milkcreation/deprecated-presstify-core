@@ -342,7 +342,7 @@ class SurveyForm extends \tiFy\Core\Taboox\Admin
 		$fields = \tify_meta_post_get( $post->ID, $this->name );
 		?>
 		<div class="FormFieldsManager">
-			<?php include( $this->Dirname.'/icons.svg' ); ?>
+			<?php include( self::tFyAppDirname() . '/icons.svg' ); ?>
 			<div class="FormFieldsManager-tools">
 				<?php $this->displayFieldTypesDropdown(); ?>
 			</div>

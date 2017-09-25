@@ -31,8 +31,8 @@ trait Old
      */
     public static function setConfig($index, $value)
     {
-        Deprecated::addFunction('self::setConfig', '1.0.371', 'self::tFyAppConfigSet');
-        return self::tFyAppConfigSet($index, $value);
+        Deprecated::addFunction('self::setConfig', '1.0.371', 'self::tFyAppConfigSetAttr');
+        return self::tFyAppConfigSetAttr($index, $value);
     }
     
     /** 

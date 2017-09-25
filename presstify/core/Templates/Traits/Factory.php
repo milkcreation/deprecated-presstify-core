@@ -78,10 +78,10 @@ trait Factory
             Apps::register($classname);
 
             // Définition des attributs de l'application parente
-            Apps::setAppParent($classname);
+            Apps::setParent($classname);
 
             // Définition des espaces de nom de surcharge
-            Apps::setAppOverrideNamespace($classname);
+            Apps::setOverrideNamespace($classname);
 
             // Définition de la liste des chemins vers les repertoires de surcharge
             Apps::setOverridePath($classname);
@@ -273,7 +273,7 @@ trait Factory
      *
      * @return bool
      */
-    final public static function tFyAppConfigSet($name, $value, $classname = null)
+    final public static function tFyAppConfigSetAttr($name, $value, $classname = null)
     {
         if (!$classname) :
             $classname = get_called_class();

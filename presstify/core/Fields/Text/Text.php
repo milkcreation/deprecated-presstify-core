@@ -22,8 +22,8 @@ class Text extends \tiFy\Core\Fields\Factory
         ++static::$Instance;
 
         $defaults = [
-            'id'                => 'tiFyCoreFieldsText-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFieldsText--' . static::$Instance,
+            'id'                => 'tiFyCoreFields-Text-' . static::$Instance,
+            'container_id'      => 'tiFyCoreFields-Text--' . static::$Instance,
             'container_class'   => '',
             'html_attrs'        => [],
             'name'              => '',
@@ -33,7 +33,7 @@ class Text extends \tiFy\Core\Fields\Factory
 
         $Field = new static($attrs);
 ?>
-<input type="text" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" />
+<input type="text" name="<?php echo $Field->getName();?>" class="tiFyCoreFields-Text<?php echo $Field->getContainerClass();?>" value="<?php echo $Field->getValue();?>" />
 <?php
     }
 }

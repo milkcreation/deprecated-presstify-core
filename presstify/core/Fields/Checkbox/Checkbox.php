@@ -22,8 +22,8 @@ class Checkbox extends \tiFy\Core\Fields\Factory
         ++static::$Instance;
 
         $defaults = [
-            'id'                => 'tiFyCoreFieldsCheckbox-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFieldsCheckbox--' . static::$Instance,
+            'id'                => 'tiFyCoreFields-Checkbox-' . static::$Instance,
+            'container_id'      => 'tiFyCoreFields-Checkbox--' . static::$Instance,
             'container_class'   => '',
             'html_attrs'        => [],
             'label'             => '',
@@ -35,7 +35,7 @@ class Checkbox extends \tiFy\Core\Fields\Factory
 
         $Field = new static($attrs);
 ?>
-<input type="checkbox" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" <?php checked($attrs['checked'] === $attrs['value']);?> id="<?php echo $Field->getContainerId();?>" class="tiFyCoreFieldsCheckbox<?php echo $Field->getContainerClass();?>" <?php echo $Field->getHtmlAttrs();?>/>
+<input type="checkbox" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" <?php checked($attrs['checked'] === $attrs['value']);?> id="<?php echo $Field->getContainerId();?>" class="tiFyCoreFields-Checkbox<?php echo $Field->getContainerClass();?>" <?php echo $Field->getHtmlAttrs();?>/>
 <?php if ($attrs['label']) : ?>
 <label for="<?php echo $Field->getContainerId();?>"><?php echo $attrs['label'];?></label>
 <?php endif;?>
