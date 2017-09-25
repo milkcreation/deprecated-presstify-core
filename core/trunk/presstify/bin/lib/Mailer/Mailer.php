@@ -351,7 +351,7 @@ class Mailer extends \tiFy\App\Factory
 	private function append_css(){
 		$output = "";
 		if( $this->reset_css )
-			$output .= "<style type=\"text/css\">". $this->line_break . file_get_contents( $this->Dirname .'/css/reset.emailology.org.css' ) . $this->line_break ."</style>";
+			$output .= "<style type=\"text/css\">". $this->line_break . file_get_contents( self::tFyAppDirname() . '/css/reset.emailology.org.css' ) . $this->line_break ."</style>";
 		if( ! empty( $this->css ) )
 			foreach( (array) $this->css as $filename )
 				if( file_exists( $filename ) )

@@ -13,14 +13,43 @@
 }
 .tiFyTemplatesImport-RowImportIcon{
     margin-top:10px;
-    font-size:22px;
+    font-size:18px;
     line-height:1;
 }
 .tiFyTemplatesImport-ExistItem{
     position:absolute;
     top:20px; left:50%;
-    margin-top:0px; margin-left:3px;
+    margin-top:0px; margin-left:-2px;
+    font-size:10px;
+}
+.tiFyTemplatesImport-Result {
+    position:absolute;
+    top:5px; right:5px;
     font-size:12px;
+    display:none;
+}
+.tiFyTemplatesImport-Result--success {
+    color:#46B450;
+}
+.tiFyTemplatesImport-Result--error {
+    color:#DC3232;
+}
+.tiFyTemplatesImport-Notices {
+    position:absolute;
+    top:0; right: 0;
+    z-index:5;
+    width:250px; margin-right:-250px;
+    padding:5px;
+
+    background-color:#FFF;
+    border:solid 1px #E4E4E4;
+
+    display:none;
+}
+.tiFyTemplatesImport-Notices > span {
+    display:block;
+    line-height:1.1;
+    font-size:11px;
 }
 
 .active .tiFyTemplatesImport-RowImportIcon {

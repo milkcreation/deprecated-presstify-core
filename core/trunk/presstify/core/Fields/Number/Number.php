@@ -39,8 +39,8 @@ class Number extends \tiFy\Core\Fields\Factory
         ++static::$Instance;
 
         $defaults = [
-            'id'                => 'tiFyCoreFieldsInputText-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFieldsInputText--' . static::$Instance,
+            'id'                => 'tiFyCoreFields-Number-' . static::$Instance,
+            'container_id'      => 'tiFyCoreFields-Number--' . static::$Instance,
             'container_class'   => '',
             'html_attrs'        => [],
             'name'              => '',
@@ -50,7 +50,7 @@ class Number extends \tiFy\Core\Fields\Factory
 
         $Field = new static($attrs);
 ?>
-<input type="number" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" <?php echo $Field->getHtmlAttrs(); ?>/>
+<input type="number" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" class="tiFyCoreFields-Number<?php echo $Field->getContainerClass();?>" <?php echo $Field->getHtmlAttrs(); ?>/>
 <?php
     }
 }

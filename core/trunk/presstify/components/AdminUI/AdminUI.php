@@ -51,7 +51,7 @@ class AdminUI extends \tiFy\Environment\Component
             else :
                 $value = self::tFyAppConfigDefault( $prop );
             endif;
-            self::tFyAppConfigSet( $prop, $value );
+            self::tFyAppConfigSetAttr($prop, $value);
         endforeach;
         
         if( self::tFyAppConfig( 'disable_post' ) ) :

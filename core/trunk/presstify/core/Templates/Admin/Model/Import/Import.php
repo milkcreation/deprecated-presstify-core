@@ -184,7 +184,12 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
         endif;
 
         if ($input_data = $this->getResponse()) :
-            $res = call_user_func($this->Importer . '::import', (array)current($input_data), (isset($_REQUEST['__import_options']) ? $_REQUEST['__import_options'] : []));
+            if (isset($_REQUEST['__import_options'])) :
+                parse_str($_REQUEST['__import_options'], $attrs);
+            else :
+                $attrs = [];
+            endif;
+            $res = call_user_func($this->Importer . '::import', (array)current($input_data), $attrs);
         else :
             $res = [
                 'insert_id' => 0,
@@ -205,7 +210,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
 
     /**
      * TRAITEMENT
-     */        
+     */
     /**
      * Vérification d'existance d'un élément
      * @param obj $item données de l'élément
@@ -338,6 +343,9 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
             "<span class=\"dashicons dashicons-admin-generic tiFyTemplatesImport-RowImportIcon\"></span>".
             "</a>";
         $output .= ( $this->item_exists( $item ) ) ? "<span class=\"dashicons dashicons-paperclip tiFyTemplatesImport-ExistItem\"></span>" : "";
+        $output .= "<span class=\"dashicons dashicons-yes tiFyTemplatesImport-Result tiFyTemplatesImport-Result--success\"></span>";
+        $output .= "<span class=\"dashicons dashicons-no tiFyTemplatesImport-Result tiFyTemplatesImport-Result--error\"></span>";
+        $output .= "<div class=\"tiFyTemplatesImport-Notices\"></div>";
 
         return $output;
     }

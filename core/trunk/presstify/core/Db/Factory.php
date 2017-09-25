@@ -95,6 +95,7 @@ class Factory
         'search',
         /** @todo deprecated alias s * */
         's',
+        'fields',
         'per_page',
         'paged',
         'order',
@@ -362,7 +363,11 @@ class Factory
         return ! empty($this->SearchColNames);
     }
 
-    /* = FONCTIONS DE RAPPELS = */
+    /**
+     * Moteur de requête SQL
+     *
+     * @return \wpdb
+     */
     public function sql()
     {
         return $this->SQLEngine;

@@ -42,7 +42,7 @@ class StdClass
         endforeach;
 
         foreach ((array) Apps::queryPlugins() as $classname => $attrs) :
-            $namespaces[] = "tiFy\\Plugins\\{$attrs['Id']}\\App";
+            $namespaces[] = "tiFy\\Plugins\\" . $attrs['Id'] ."\\App";
         endforeach;
 
         return $namespaces;
@@ -80,7 +80,7 @@ class StdClass
         endforeach;
 
         foreach ((array) Apps::queryPlugins() as $classname => $attrs) :
-            $namespaces[] = "tiFy\\Plugins\\{$attrs['Id']}\\App";
+            $namespaces[] = "tiFy\\Plugins\\" . $attrs['Id'] . "\\App";
         endforeach;
 
         return $namespaces;

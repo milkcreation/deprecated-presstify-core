@@ -1,47 +1,119 @@
-<?php 
+<?php
+
 namespace tiFy\App;
 
-use tiFy\Apps;
-
-abstract class Config
+abstract class Config extends Factory
 {
     /**
-     * CONSTRUCTEUR
+     * Liste des instances déclarées
      */
-    public function __construct($classname)
-    {
+    private static $Instance    = [];
 
-        if (!$attrs = Apps::getAttrs($classname)) :
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Initialisation et définition de la surchage de configuration
+     *
+     * @return array|mixed
+     */
+    final public static function _ini_set()
+    {
+        // Vérification d'existance d'une instance de la classe
+        if (in_array(get_called_class(), self::$Instance)) :
+            return;
+        else :
+            array_push(self::$Instance, get_called_class());
+        endif;
+
+        // Instanciation
+        $inst = new static();
+
+        // Bypass
+        if (!$parent = self::tFyAppAttr('Parent')) :
             return;
         endif;
 
-        $this->filter($attrs['Config'], $classname);
-    }
+        // Récupération des attributs de configuration courant
+        $config = self::getAttrs();
 
-    /**
-     * Récupération de la surchage de configuration
-     * 
-     * @param array $attrs Attributs de configuration initiaux
-     * 
-     * @return array|mixed
-     */   
-    final private function filter($attrs = [], $classname)
-    {
         // Traitement global des attributs de configuration
-        $attrs = (array) call_user_func( array( $this, 'sets' ), $attrs );
-        
+        $config = (array)call_user_func([$inst, 'sets'], $config);
+
         // Traitement par propriété des attributs de configuration
-        if( $matches = preg_grep( '/^set_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $key = preg_replace( '/^set_/', '', $method );
-                $default = isset( $attrs[$key] ) ? $attrs[$key] : '';
-                $attrs[$key] = call_user_func( array( $this, $method ), $default );
+        if ($matches = preg_grep('#^set_(.*)#', get_class_methods($inst))) :
+            foreach ($matches as $method) :
+                $key = preg_replace('#^set_#', '', $method);
+                $default = isset($config[$key]) ? $config[$key] : '';
+                $config[$key] = call_user_func([$inst, $method], $default);
             endforeach;
         endif;
 
-        Apps::setAttrs(['Config' => $attrs],$classname);
+        self::setAttrs($config);
     }
-    
+
+    /**
+     * Récupération de la liste des attributs
+     *
+     * @return mixed
+     */
+    final public static function getAttrs()
+    {
+        if (!$parent = self::tFyAppAttr('Parent')) :
+            return;
+        endif;
+
+        return self::tFyAppConfig(null, null, $parent);
+    }
+
+    /**
+     * Récupération d'un attribut de configuration
+     *
+     * @param string $name Nom de l'attribut de configuration
+     * @param void|mixed $default Valeur de retour par défaut
+     *
+     * @return null|mixed
+     */
+    final public static function getAttr($name, $default)
+    {
+        if (!$parent = self::tFyAppAttr('Parent')) :
+            return;
+        endif;
+
+        return self::tFyAppConfig($name, $default, $parent);
+    }
+
+    /**
+     * Définition de la liste des attributs de configuration
+     *
+     * @return bool
+     */
+    final public static function setAttrs($attrs)
+    {
+        if (!$parent = self::tFyAppAttr('Parent')) :
+            return;
+        endif;
+
+        return self::tFyAppConfigSetAttrs($attrs, $parent);
+    }
+
+    /**
+     * Définition d'un attribut de configuration
+     *
+     * @param string $name Nom de de l'attribut de configuration
+     * @param null|mixed $value Valeur de l'attribut de configuration
+     *
+     * @return bool
+     */
+    final public static function setAttr($name, $value = null)
+    {
+        if (!$parent = self::tFyAppAttr('Parent')) :
+            return;
+        endif;
+
+        return self::tFyAppConfigSetAttr($name, $value, $parent);
+    }
+
     /**
      * Définition globale des attributs de configuration
      * 

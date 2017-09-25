@@ -25,7 +25,7 @@ jQuery( document ).ready( function($){
     );
 
     var $table  = $( '.wp-list-table' ),
-        filters = {};
+        filters = {},
         o       = {
             // Activation de l'indicateur de chargement 
             processing:     true,
