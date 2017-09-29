@@ -32,8 +32,12 @@ class Fields extends \tiFy\App\Core
     }
 
     /**
+     * Appel d'un champ
+     *
      * @param $name
      * @param $arguments
+     *
+     * return null|callable
      */
     public static function __callStatic($name, $args)
     {

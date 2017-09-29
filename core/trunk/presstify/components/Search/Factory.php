@@ -1,8 +1,6 @@
 <?php
 namespace tiFy\Components\Search;
 
-use tiFy\Components\Search\Search;
-
 class Factory extends \tiFy\App\Factory
 {
     /**
@@ -32,10 +30,16 @@ class Factory extends \tiFy\App\Factory
     ];
 
     /**
-     * Instance de requête join des metas
+     * Instance de requête join des metadonnées
+     * @var array
+     */
+    private $JoinMeta                   = [];
+
+    /**
+     * Instance de requête join des taxonomies
      * @var string
      */
-    private $JoinMeta                   = 0;
+    private $JoinTax                    = 0;
 
     /**
      * DECLENCHEURS
@@ -109,16 +113,35 @@ class Factory extends \tiFy\App\Factory
     {
         global $wpdb;
 
-        // Extraction des conditions de requête
+        /**
+         * Extraction des conditions de requête
+         * @var string $where
+         * @var string $groupby
+         * @var string $join
+         * @var string $orderby
+         * @var string $distinct
+         * @var string $fields
+         * @var string $limits
+         */
         extract($clauses);
 
-        $distinct = "DISTINCT";
         $where .= $this->_parseSearch($this->QueryVars, $WP_Query);
 
-        if ($this->QueryVars['search_metas']) :
-            for($i=1; $i <= $this->JoinMeta; ++$i) :
-                $join .= " INNER JOIN {$wpdb->postmeta} as tfysmeta{$i} ON ({$wpdb->posts}.ID = tfysmeta{$i}.post_id)";
-            endfor;
+        if ($this->JoinMeta) :
+            foreach($this->JoinMeta as $i => $meta_key) :
+                $join .= " LEFT OUTER JOIN {$wpdb->postmeta} as tfys_meta{$i} ON ({$wpdb->posts}.ID = tfys_meta{$i}.post_id AND tfys_meta{$i}.meta_key = '{$meta_key}')";
+            endforeach;
+        endif;
+
+        if ($this->JoinTax) :
+            $i = 1;
+            $join .= " LEFT OUTER JOIN {$wpdb->term_relationships} AS tfys_tmr{$i} ON ({$wpdb->posts}.ID = tfys_tmr{$i}.object_id)";
+            $join .= " LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tfys_tmt{$i} ON (tfys_tmr{$i}.term_taxonomy_id = tfys_tmt{$i}.term_taxonomy_id  AND tfys_tmt{$i}.taxonomy = 'tify_search_tag')";
+            $join .= " LEFT OUTER JOIN {$wpdb->terms} AS tfys_tms{$i} ON (tfys_tmt{$i}.term_id = tfys_tms{$i}.term_id)";
+        endif;
+
+        if ($this->QueryVars['search_metas'] || $this->QueryVars['search_tags']) :
+            $groupby = "{$wpdb->posts}.ID";
         endif;
 
         // Empêche l'execution multiple du filtre
@@ -214,23 +237,28 @@ class Factory extends \tiFy\App\Factory
              * Limitation de la recherche aux champs principaux définis
              */
             foreach ($q['search_fields'] as $search_field) :
-                $search_parts[] = "({$wpdb->posts}.{$search_field} $like_op %s)";
+                $search_parts[] = "({$wpdb->posts}.{$search_field} {$like_op} %s)";
                 $search_parts_args[] = $like;
             endforeach;
 
             /**
-             * Limitation de la recherche aux champs principaux définis
+             * Recherche parmis les metadonnées définies
              */
-            foreach ($q['search_metas'] as $search_meta) :
-                if (!$this->JoinMeta) :
-                    $this->JoinMeta++;
-                elseif($andor_op === 'AND') :
-                    $this->JoinMeta++;
-                endif;
+            foreach ($q['search_metas'] as $i => $search_meta) :
+                $this->JoinMeta[$i] = $search_meta;
 
-                $search_parts[] = "(tfysmeta{$this->JoinMeta}.meta_key = '{$search_meta}' AND tfysmeta{$this->JoinMeta}.meta_value $like_op %s)";
+                $search_parts[] = "(tfys_meta{$i}.meta_value {$like_op} %s)";
                 $search_parts_args[] = $like;
             endforeach;
+
+            /**
+             * Recherche parmis les mots-clefs de recherche
+             */
+            if ($q['search_tags']) :
+                $this->JoinTax = 1;
+                $search_parts[] = "(tfys_tms{$this->JoinTax}.name {$like_op} %s)";
+                $search_parts_args[] = $like;
+            endif;
 
             if ($search_parts) :
                 $_search_parts = implode(" {$andor_op} ", $search_parts);

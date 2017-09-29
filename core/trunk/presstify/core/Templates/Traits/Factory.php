@@ -15,13 +15,13 @@ trait Factory
      *
      * @return bool
      */
-    final public static function tFyAppAttrsSet($attrs, $classname = null)
+    final public static function tFyAppAttrSetList($attrs, $classname = null)
     {
         if (!$classname) :
             $classname = get_called_class();
         endif;
 
-        return Apps::setAttrs($attrs, $classname);
+        return Apps::setAttrList($attrs, $classname);
     }
 
     /**
@@ -67,7 +67,7 @@ trait Factory
      *      }
      * }
      */
-    final public static function tFyAppAttrs($classname = null)
+    final public static function tFyAppAttrList($classname = null)
     {
         if (!$classname) :
             $classname = get_called_class();
@@ -87,7 +87,7 @@ trait Factory
             Apps::setOverridePath($classname);
         endif;
 
-        return Apps::getAttrs($classname);
+        return Apps::getAttrList($classname);
     }
 
     /**
@@ -100,7 +100,7 @@ trait Factory
      */
     final public static function tFyAppAttr($attr, $classname = null)
     {
-        $attrs = self::tFyAppAttrs($classname);
+        $attrs = self::tFyAppAttrList($classname);
 
         if (isset($attrs[$attr])) :
             return $attrs[$attr];

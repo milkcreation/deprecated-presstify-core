@@ -1,5 +1,3 @@
-var tify_taboox_slideshow_media_frame;
-
 jQuery(document).ready(function ($) {
     //
     var editoroptions_normal = {
@@ -157,28 +155,5 @@ jQuery(document).ready(function ($) {
             orderItem(container);
         },
         handle: ".tify_handle_sort"
-    });
-
-    // Selection de l'image représentative
-    $(document).on('click', '.tiFyTabooxSlideshowInputField-thumbnailSelect', function (e) {
-        e.preventDefault();
-
-        var $container = $(this);
-
-        var index = $container.data('index'),
-            name = $container.data('name');
-
-        tify_taboox_slideshow_media_frame = wp.media.frames.file_frame = wp.media({
-            title: $container.data('uploader_title'),
-            editing: true,
-            multiple: false
-        });
-
-        tify_taboox_slideshow_media_frame.on('select', function () {
-            attachment = tify_taboox_slideshow_media_frame.state().get('selection').first().toJSON();
-            $container.html('<img src="' + attachment.sizes['thumbnail'].url + '" /><input type="hidden" name="' + name + '[' + index + '][attachment_id]" value="' + attachment.id + '" />');
-        });
-
-        tify_taboox_slideshow_media_frame.open();
     });
 });

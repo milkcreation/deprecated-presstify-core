@@ -86,7 +86,7 @@ abstract class Factory
      *
      * @return null|callable \add_action()
      */
-    final public function tFyAppAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    final public function tFyAppActionAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
     {
         if (!$class_method) :
             $class_method = $tag;
@@ -117,7 +117,7 @@ abstract class Factory
      *
      * @return null|callable \add_filter()
      */
-    final public function tFyAppAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    final public function tFyAppFilterAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
     {
         if (!$class_method) :
             $class_method = $tag;
@@ -149,11 +149,11 @@ abstract class Factory
      *
      * @return bool
      */
-    final public static function tFyAppAttrsSetList($attrs, $classname = null)
+    final public static function tFyAppAttrSetList($attrs, $classname = null)
     {
         $classname = self::_tFyAppParseClassname($classname);
 
-        return Apps::setAttrs($attrs, $classname);
+        return Apps::setAttrList($attrs, $classname);
     }
 
     /**
@@ -199,13 +199,13 @@ abstract class Factory
      *      }
      * }
      */
-    final public static function tFyAppAttrs($classname = null)
+    final public static function tFyAppAttrList($classname = null)
     {
         $classname = self::_tFyAppParseClassname($classname);
 
         self::_tFyAppRegister($classname);
 
-        return Apps::getAttrs($classname);
+        return Apps::getAttrList($classname);
     }
 
     /**
@@ -218,7 +218,7 @@ abstract class Factory
      */
     final public static function tFyAppAttr($attr, $classname = null)
     {
-        $attrs = self::tFyAppAttrs($classname);
+        $attrs = self::tFyAppAttrList($classname);
 
         if (isset($attrs[$attr])) :
             return $attrs[$attr];
@@ -271,6 +271,18 @@ abstract class Factory
     final public static function tFyAppRel($classname = null)
     {
         return self::tFyAppAttr('Rel', $classname);
+    }
+
+    /**
+     * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
+     *
+     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return array
+     */
+    final public static function tFyAppOverridePath($classname = null)
+    {
+        return self::tFyAppAttr('OverridePath', $classname);
     }
 
     /**
@@ -393,11 +405,11 @@ abstract class Factory
      *
      * @return bool
      */
-    final public static function tFyAppConfigSetAttrs($attrs, $classname = null)
+    final public static function tFyAppConfigSetAttrList($attrs, $classname = null)
     {
         $classname = self::_tFyAppParseClassname($classname);
 
-        return Apps::setConfigAttrs($attrs, $classname);
+        return Apps::setConfigAttrList($attrs, $classname);
     }
 
     /**
@@ -419,37 +431,6 @@ abstract class Factory
     /**
      * SURCHARGES
      */
-    /**
-     * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
-     *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
-     *
-     * @return array {
-     *      @var array $app {
-     *          Attributs du repertoire des gabarits de l'application
-     *
-     *          @var string $url Url vers le repertoire des gabarits
-     *          @var string $path Chemin absolu vers le repertoire des gabarits
-     *          @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
-     *          @var string $baseurl Url vers le repertoire racine
-     *          @var string $basedir Chemin absolu vers le repertoire
-     *      }
-     *      @var array $theme {
-     *         Attributs du repertoire des gabarits de surcharge du theme actif
-     *
-     *         @var string $url Url vers le repertoire des gabarits
-     *         @var string $path Chemin absolu vers le repertoire des gabarits
-     *         @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
-     *         @var string $baseurl Url vers le repertoire racine
-     *         @var string $basedir Chemin absolu vers le repertoire
-     *      }
-     * }
-     */
-    final public static function tFyAppOverridePath($classname = null)
-    {
-        return self::tFyAppAttr('OverridePath', $classname);
-    }
-
     /**
      * SURCHAGES - Controleurs
      */
@@ -698,6 +679,20 @@ abstract class Factory
             foreach ($templates as $template_name) :
                 if (file_exists(get_template_directory() . '/templates/' . $template_name)) :
                     $located = get_template_directory() . '/templates/' . $template_name;
+                    break;
+                elseif (file_exists($template_name)) :
+                    $located = $template_name;
+                    break;
+                endif;
+            endforeach;
+        endif;
+
+        if (! $located) :
+            reset($templates);
+
+            foreach ($templates as $template_name) :
+                if (file_exists(get_template_directory() . '/' . $template_name)) :
+                    $located = get_template_directory() . '/' . $template_name;
                     break;
                 elseif (file_exists($template_name)) :
                     $located = $template_name;

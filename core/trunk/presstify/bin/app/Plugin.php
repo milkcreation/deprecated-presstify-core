@@ -29,7 +29,7 @@ abstract class Plugin extends \tiFy\App\Factory
     public static function getData($data = null)
     {
         $classname = get_called_class();
-        $attrs = self::tFyAppAttrs($classname);
+        $attrs = self::tFyAppAttrList($classname);
         
         if (! static::$PluginData[$classname]) :
             static::$PluginData[$classname] = \get_plugin_data($attrs['Filename']);

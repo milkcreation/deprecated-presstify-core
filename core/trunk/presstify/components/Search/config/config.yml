@@ -1,20 +1,8 @@
-# Recherche globale de Wordpress
+# Modification de la requête globale de Wordpress
 global:
-  # Liste des types de post parmis lequels lancer la recherche
-  # @var string|array
-  post_type:          'any'
-
-  # Nombre de post affichés par page de résultat de recherche
-  # @var int
-  post_per_page:      20
-
-  # Statut de publication
-  # @var string|array
-  post_status:        ['publish', 'private']
-
   # Liste des champs utilisés pour la recherche
   # @var string[]
-  search_fields:      ['post_title']
+  search_fields:      ['post_title', 'post_excerpt', 'post_content']
 
   # Liste de métadonnées utilisées pour la recherche
   # @var string[]
@@ -28,31 +16,19 @@ global:
   # @var bool
   sentence:           true
 
-  # Activation de la recherche selon le (les) terme exact de la séquence
+  # Activation de la recherche selon le (les) terme(s) exact(s) de la séquence
+  # @var bool
   exact:              false
 
-defaults:
-  # Type de post du recherche
-  post_type:          'any'
-  
-  # Nombre d'éléments affichés par section
-  posts_per_section:  4  
-  
-  # Champs de recherche principaux
-  fields:             ['post_title','post_excerpt','post_content']
-  
-sections:
-  # Exemple :  
-  ## Identification de la section
-  # identifiant-de-test:
-    ## type de post de la section dans la page de résultat de recherche
-    # post_type:      'page'
-    
-    ## Champs de recherche
-    # fields:         ['post_title','post_content'] 
+  # Arguments de requête Wordpress
+  # @see https://codex.wordpress.org/Class_Reference/WP_Query
+  # Limite la recherche à un ou plusieurs types de post
+  # post_type:        ['page', 'post]
+  #
+  # Limiter le nombre de post par page dans les resultats de recherche
+  # posts_per_page:   20
+  # ...
 
-    ## Champs de recherche par clef de métadonnée
-    # postmeta:       ['data', '_reference']  
-    
-    ## Activation de la recherche par mots-clefs
-    # tags:           true
+# Liste des types de posts pour lesquels les mots clefs de recherche sont actifs. Peut être une chaîne de caractères séparées par des virgules.
+# @var string|array
+search_tags_post_types:  []

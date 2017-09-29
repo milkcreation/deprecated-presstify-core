@@ -22,7 +22,9 @@ abstract class Importer
      *      @var string $opt Options
      * }
      */
-    protected $Types = ['data'];
+    protected $Types = [
+        'data'
+    ];
 
     /**
      * Cartographie des données principales
@@ -323,7 +325,7 @@ abstract class Importer
             return;
         endif;
 
-        ${$type} = $this->Setted[$type];
+        ${$type} = $this->getSetList($type);
 
         foreach (${$type} as $key => &$value) :
             $value = call_user_func([$this, "filter_{$type}s"], $value, $key, $insert_id);

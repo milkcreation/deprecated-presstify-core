@@ -1,6 +1,9 @@
 <?php
 namespace tiFy\Core\Taboox\Option\Slideshow\Admin;
 
+use tiFy\Core\Control\Suggest\Suggest;
+use tiFy\Core\Control\MediaImage\MediaImage;
+
 class Slideshow extends \tiFy\Core\Taboox\Option\Admin
 {
     /**
@@ -79,8 +82,8 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
         wp_register_script( 'jQuery-tinyMCE', '//cdn.tinymce.com/4/jquery.tinymce.min.js', array( 'jquery', 'tinyMCE-editor' ), true );
         
         wp_enqueue_media();
-        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::tFyAppUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-switch', 'tify_control-suggest', 'tify_control-touch_time' ), '160222' );
-        wp_enqueue_script( 'tiFyTabooxOptionSlideshowAdmin',self::tFyAppUrl( get_class() ) .'/Slideshow.js', array( 'jQuery-tinyMCE', 'tify_control-suggest', 'tify_control-touch_time', 'jquery-ui-sortable' ), '160222', true );
+        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::tFyAppUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-switch', 'tify_control-suggest', 'tify_control-media_image', 'tify_control-touch_time' ), '160222' );
+        wp_enqueue_script( 'tiFyTabooxOptionSlideshowAdmin',self::tFyAppUrl( get_class() ) .'/Slideshow.js', array( 'jQuery-tinyMCE', 'tify_control-suggest', 'tify_control-media_image', 'tify_control-touch_time', 'jquery-ui-sortable' ), '160222', true );
         wp_localize_script( 
             'tiFyTabooxOptionSlideshowAdmin', 
             'tiFyTabooxOptionSlideshowAdmin',
@@ -107,15 +110,15 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
                 $suggest_args = ( is_array( $this->args['suggest'] ) ) ? $this->args['suggest'] : array();                
                 $suggest_args = wp_parse_args(
                     $suggest_args,
-                    array(
-                        'class'             => 'tify_taboox_slideshow-suggest',
-                        'placeholder'       => __( 'Rechercher parmi les contenus du site', 'tify' ),
-                        'elements'          => array( 'ico', 'title', 'type', 'status', 'id' ),
-                        'query_args'        => array( 'post_type' => 'any', 'posts_per_page' => -1 ),
-                        'attrs'             => array( 'data-duplicate' => $this->args['duplicate'] )
-                    )
-                );                
-                tify_control_suggest( $suggest_args );
+                    [
+                        'class'       => 'tify_taboox_slideshow-suggest',
+                        'placeholder' => __('Rechercher parmi les contenus du site', 'tify'),
+                        'elements'    => ['ico', 'title', 'type', 'status', 'id'],
+                        'query_args'  => ['post_type' => 'any', 'posts_per_page' => -1],
+                        'attrs'       => ['data-duplicate' => $this->args['duplicate']]
+                    ]
+                );
+                Suggest::display($suggest_args);
                 ?>
                 </div>
             <?php endif; ?>
@@ -161,49 +164,54 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
      */
     private function item_render( $slide, $index = 0 )
     {
-        if( ! $index )
+        if(!$index) :
             $index = uniqid();
-        
-        $defaults = array(
-            'post_id'           => 0,
-            'title'             => '',
-            'caption'           => '',
-            'attachment_id'     => 0,
-            'clickable'         => 0,
-            'url'               => '',
-            'planning'          => array(
-                'from'             => 0,
-                'start'            => '',
-                'to'                => 0,
-                'end'               => '',
-            )
-        );        
-        $slide = wp_parse_args( $slide, $defaults );
-        $name = "{$this->args['name']}[slide]";
-        
-        
-        // Récupération de l'image d'illustration
-        if( $image = wp_get_attachment_image_src( $slide['attachment_id'], 'slide' ) ) :
-            $attachment_id = $slide['attachment_id'];
-        elseif( ( $attachment_id = get_post_thumbnail_id( $slide['post_id'] ) ) && ( $image = wp_get_attachment_image_src( $attachment_id, 'slide' ) ) ) :
         endif;
 
-        $_thumb = $attachment_id ? wp_get_attachment_image( $attachment_id ) : false;
+        $defaults = [
+            'post_id'       => 0,
+            'title'         => '',
+            'caption'       => '',
+            'attachment_id' => 0,
+            'clickable'     => 0,
+            'url'           => '',
+            'planning'      => [
+                'from'  => 0,
+                'start' => '',
+                'to'    => 0,
+                'end'   => '',
+            ]
+        ];
+        $slide = wp_parse_args( $slide, $defaults );
+        $name = "{$this->args['name']}[slide]";
+
+        // Récupération de l'image d'illustration
+        if ($image = wp_get_attachment_image_src($slide['attachment_id'], 'slide')) :
+            $attachment_id = $slide['attachment_id'];
+        elseif (($attachment_id = get_post_thumbnail_id($slide['post_id'])) && ($image = wp_get_attachment_image_src($attachment_id, 'slide'))) :
+        endif;
 
         $output  = "";
         $output .= "\n<li class=\"tiFyTabooxSlideshowList-item\">";        
         
-        // Champs de saisie        
+        // Champs de saisie
         $output .= "\n<div class=\"tiFyTabooxSlideshowList-inputFields\">";
-        $output .= "\n\t<div class=\"col col-left\">";        
+        $output .= "\n\t<div class=\"col col-left\">";
         /// Image d'illustration
         $output .= "\n\t\t<div class=\"tiFyTabooxSlideshowInputField-thumbnail\">";
-        $output .= "\n\t\t\t<a href=\"#\" class=\"tiFyTabooxSlideshowInputField-thumbnailSelect\" data-name=\"{$name}\" data-index=\"{$index}\" data-uploader_title=\"".__( 'Illustration de la vignette du diaporama', 'tify' )."\">";
-        if( $_thumb ) :
-            $output .= $_thumb;
-            $output .= "\n\t\t<input type=\"hidden\" name=\"{$name}[{$index}][attachment_id]\" value=\"".$attachment_id."\" />";
-        endif;
-        $output .= "\n\t\t\t</a>";
+        $output .= MediaImage::display(
+            [
+                'name'      => "{$name}[{$index}][attachment_id]",
+                'value'     => $attachment_id,
+                'default'   => get_post_thumbnail_id($slide['post_id']),
+                'size'      => 'thumbnail',
+                'size_info' => false,
+                'echo'      => false,
+                'width'     => 150,
+                'height'    => 150
+            ]
+        );
+
         $output .= "\n\t\t</div>";
         $output .= "\n\t</div>";
         
@@ -233,10 +241,14 @@ class Slideshow extends \tiFy\Core\Taboox\Option\Admin
         $output .= "\n\t<div class=\"tiFyTabooxSlideshowItem-helpers\">";
         /// Ordre d'affichage
         $output .= "\n\t\t<div class=\"tiFyTabooxSlideshowItemHelper-order\"><input type=\"text\" name=\"{$name}[{$index}][order]\" class=\"tiFyTabooxSlideshowItemHelper-orderInput\" value=\"".$slide['order']."\" readonly/></div>";
-        /// Poignée de trie        
+        /// Poignée de trie
         $output .= "\n\t\t<a href=\"\" class=\"tiFyTabooxSlideshowItemHelper-sort tify_handle_sort dashicons dashicons-sort\"></a>";
         /// Bouton de suppression
-        $output .= "\n\t\t<a href=\"\" class=\"tiFyTabooxSlideshowItemHelper-remove tify_button_remove remove\"></a>";        
+        $output .= "\n\t\t<a href=\"\" class=\"tiFyTabooxSlideshowItemHelper-remove tify_button_remove remove\"></a>";
+
+        /// Infromations
+        $output .= "\n\t\t<span class=\"tiFyTabooxSlideshow-ItemHelper tiFyTabooxSlideshow-ItemHelper--informations\">" . ($slide['post_id'] ? __('Contenu du site', 'tify') : __('Vignette personnalisée', 'tify')) ."</span>";
+
         $output .= "\n\t\t</div>";
         
         $output .="\n</li>";

@@ -10,10 +10,13 @@
         },
         _create:            function() {
             this.el = this.element;
+
             // Comportement à l'initialisation
-            $('.tiFyControlAccordionMenu-item.active').each(function(){
-                var height = $('> .tiFyControlAccordionMenu-items', $(this)).prop('scrollHeight');
-                $('> .tiFyControlAccordionMenu-items', $(this)).css('max-height', height);
+            $('.tiFyControlAccordionMenu-items:has(> .tiFyControlAccordionMenu-item.active)', this.el).each(function(){
+                $(this).css('max-height', '100%');
+                $('> .tiFyControlAccordionMenu-item.active > .tiFyControlAccordionMenu-items', this).each(function(){
+                    $(this).css('max-height', '100%');
+                });
             });
 
             // Comportement au click

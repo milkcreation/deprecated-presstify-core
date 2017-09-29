@@ -32,7 +32,7 @@ class User extends \tiFy\Lib\Importer\Importer
     /**
      * Type de données prises en charge
      */
-    protected $DataType         = [
+    protected $Types         = [
         'data',
         'meta',
         'opt'
@@ -46,8 +46,8 @@ class User extends \tiFy\Lib\Importer\Importer
         parent::__construct();
         
         // Désactivation de l'expédition de mail aux utilisateurs
-        add_filter( 'send_password_change_email', '__return_false', 99, 3 );
-        add_filter( 'send_email_change_email', '__return_false', 99, 3 );
+        add_filter('send_password_change_email', '__return_false', 99, 3);
+        add_filter('send_email_change_email', '__return_false', 99, 3);
     }
        
     /**
@@ -90,7 +90,7 @@ class User extends \tiFy\Lib\Importer\Importer
      */
     public function filter_data_user_pass($value)
     {
-        if($this->getSet('ID', 0) && $value) :
+        if($this->getSet('ID', 0, 'data') && $value) :
             return \wp_hash_password($value);
         endif;
     }

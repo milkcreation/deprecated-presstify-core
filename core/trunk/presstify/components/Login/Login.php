@@ -65,7 +65,7 @@ final class Login extends \tiFy\Environment\Component
             return $user;
 
         if( ! array_intersect( $user->roles, (array) $this->_getCurrent()->getRoles() ) ) :
-            $user = new \WP_Error( 'role_not_allowed' );        
+            $user = new \WP_Error( 'role_not_allowed' );
         endif;
         
         if( $user ) :

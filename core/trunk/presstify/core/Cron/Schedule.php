@@ -45,7 +45,7 @@ class Schedule
     /**
      * Activation de la journalisation
      */
-    protected $Log          = array();
+    protected $Log          = [];
     
     /**
      * Classe de rappel de journalisation
@@ -162,17 +162,19 @@ class Schedule
     {
         // Désactivation de la limitation d'exécution PHP
         set_time_limit(0);
-        
-        // Initialisation de la journalisation
-        $output = $this->Log['format'];
-        $formatter = new LineFormatter( $output );
-        $stream = new RotatingFileHandler(WP_CONTENT_DIR . '/uploads/tFyLogs/'. $this->Log['name'] .'.log', $this->Log['rotate']);
-        $stream->setFormatter( $formatter );
-        $this->Logger = new Logger( $this->getId() );
-        $this->Logger->pushHandler( $stream );
-        
+
+        if (!empty($this->Log)) :
+            // Initialisation de la journalisation
+            $output = $this->Log['format'];
+            $formatter = new LineFormatter($output);
+            $stream = new RotatingFileHandler(WP_CONTENT_DIR . '/uploads/tFyLogs/' . $this->Log['name'] . '.log', $this->Log['rotate']);
+            $stream->setFormatter($formatter);
+            $this->Logger = new Logger($this->getId());
+            $this->Logger->pushHandler($stream);
+        endif;
+
         // Vérrouillage
-        
+
         // Rapport
         // @todo
         /*\add_option( 
@@ -189,12 +191,13 @@ class Schedule
             ),
             HOUR_IN_SECONDS
         );*/
-        
-        return call_user_func_array( array( $this, 'task'), func_get_args() );
+
+        return call_user_func_array([$this, 'task'], func_get_args());
     }
 
     /**
      * Tache planifiée
+     * @see https://%site_url%/?tFyCronDoing=%$this->Id%
      */
     public function task()
     {

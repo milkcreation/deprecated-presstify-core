@@ -6,48 +6,6 @@ use tiFy\Core\CustomType\CustomType;
 class Search extends \tiFy\App\Component
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
-     */
-    protected $tFyAppActions                = [
-        'init'
-    ];
-
-    /**
-     * Ordre de priorité d'exécution des actions
-     * @var array
-     */
-    protected $tFyAppActionsPriority        = [
-        'init'              => 20
-    ];
-    
-    /**
-     * Liste des Filtres à déclencher
-     * @var string[]
-     */
-    protected $tFyAppFilters                = [
-        'query_vars',
-        //'search_template'
-    ];
-    
-    /**
-     * Ordre de priorité d'exécution des filtres
-     * @var array
-     */
-    protected $tFyAppFiltersPriority        = [
-        'query_vars'        => 99
-    ];
-
-    /**
-     * Nombre d'arguments autorisés
-     * @var array
-     */
-    protected $tFyAppFiltersArgs            = [
-        'search_template'   => 3
-    ];
-
-    /**
      * Attributs de la configuration de recherche global
      * @var mixed
      */
@@ -57,7 +15,7 @@ class Search extends \tiFy\App\Component
      * Types de post pour lequels les mots-clés de recherche sont activés
      * @var
      */
-    private static $TagPostTypes            = [];
+    private static $TagsPostTypes           = [];
 
     /**
      * Listes des classe de rappel des requêtes de recherche
@@ -66,20 +24,57 @@ class Search extends \tiFy\App\Component
     private static $Factory                 = [];
 
     /**
-     * CONSTRUCTEUR
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        add_action('pre_get_posts', [$this,'pre_get_posts'], 0);
-    }
-    
-    /**
      * DECLENCHEURS
      */
+    /**
+     * Initialisation global
+     */
+    final public function init()
+    {
+        // Définition de la recherche globale
+        if ($global_attrs = self::tFyAppConfig('global')) :
+            self::register('global', $global_attrs);
+        endif;
+
+        do_action('tify_search_register');
+
+        if ($st_pt = self::tFyAppConfig('search_tags_post_types')) :
+            if (is_string($st_pt)) :
+                $st_pt = array_map('trim', explode(',', $st_pt));
+            endif;
+            if(in_array('any', $st_pt)) :
+                self::$TagsPostTypes = array_keys(get_post_types(['exclude_from_search' => false]));
+            else :
+                self::$TagsPostTypes = $st_pt;
+            endif;
+            if(!empty(self::$TagsPostTypes)) :
+                CustomType::createTaxonomy(
+                    'tify_search_tag',
+                    [
+                        'singular'      => __('mot-clef de recherche', 'tify'),
+                        'plural'        => __('mots-clefs de recherche', 'tify'),
+                        'object_type'   => self::$TagsPostTypes
+                    ]
+                );
+            endif;
+        endif;
+    }
+
+    /**
+     * Personnalisation des variables de requête
+     *
+     * @param array $aVars Liste des variables de requête
+     *
+     * @return array
+     */
+    final public static function query_vars($aVars)
+    {
+        $aVars[] = '_tfysearch';
+        // $aVars[] = '_s';
+
+        return $aVars;
+    }
+
     /**
      * Pré-modifications de requête
      * Appelé après la création de l'object variable de requête mais avant que la requête courante ne soit lancée.
@@ -89,7 +84,7 @@ class Search extends \tiFy\App\Component
      *
      * @return void
      */
-    final public function pre_get_posts(&$WP_Query)
+    final public static function pre_get_posts(&$WP_Query)
     {
         // Bypass
         if ($_tfysearch = $WP_Query->get('_tfysearch', '')) :
@@ -108,77 +103,23 @@ class Search extends \tiFy\App\Component
         $WP_Query->set('_tfysearch', '_global');
 
         // Empêche l'execution multiple du filtre
-        \remove_filter(current_filter(), __METHOD__, 10);
-    }
-
-    /**
-     * Initialisation global
-     */
-    final public function init()
-    {
-        // Définition de la recherche globale
-        if ($global_attrs = self::tFyAppConfig('global')) :
-            self::register('global', $global_attrs);
-        endif;
-
-        do_action('tify_search_register');
-
-        // Traitement des mots clefs de recherche
-        // @todo
-        /*foreach (self::$Section as $id => $attrs) :
-            if (! isset($attrs['tags'])) :
-                continue;
-            endif;
-
-            $post_types = isset($attrs['post_type']) ? $attrs['post_type'] : 'any';
-            
-            if ($post_types === 'any') :
-                $post_types = array_keys(get_post_types(array('exclude_from_search' => false)));
-            else :
-                $post_types = (array)$post_types;
-            endif;
-
-            foreach ($post_types as $post_type) :
-                array_push(self::$TagPostTypes, $post_type);
-            endforeach;
-        endforeach;
-
-        if (self::$TagPostTypes) :
-            CustomType::createTaxonomy(
-                'tify_search_tag',
-                [
-                    'singular'      => __('mot-clef de recherche', 'tify'),
-                    'plural'        => __('mots-clefs de recherche', 'tify'),
-                    'object_type'   => self::$TagPostType
-                ]
-            );
-        endif;
-        */
-    }
-    
-    /**
-     * Personnalisation des variables de requête
-     */
-    final public function query_vars( $aVars ) 
-    {
-        $aVars[] = '_tfysearch';
-        // $aVars[] = '_s';
-
-        return $aVars;
+        \remove_filter(current_filter(), __METHOD__, 0);
     }
 
     /**
      * Gabarit d'affichage des résultats de recherche
+     * @todo
      */
-    public function search_template($template, $type, $templates)
+    final public function search_template($template, $type, $templates)
     {
-        add_action('template_include', [$this, 'template_include'], 99);
+        return $template;
+        $this->tFyAppActionAdd('template_include', null, 99);
     }
 
     /**
-     *
+     * @todo
      */
-    public function template_include($template)
+    final public static  function template_include($template)
     {
         return self::tFyAppQueryTemplate('search.php');
     }
@@ -187,11 +128,29 @@ class Search extends \tiFy\App\Component
      * CONTROLEURS
      */
     /**
-     * Déclaration
+     * Initialisation
+     */
+    public function tFyAppOnInit()
+    {
+        // Définition des actions
+        self::tFyAppActionAdd('pre_get_posts', null, 0);
+        self::tFyAppActionAdd('init', null, 20);
+
+        // Définition des filtres
+        self::tFyAppFilterAdd('query_vars', null, 99);
+        self::tFyAppFilterAdd('search_template', null, 10, 3);
+    }
+
+    /**
+     * Déclaration de requête
+     *
+     * @var string $id Identifiant de qualification unique de la requête
+     * @var array $attrs Attributs de configuration de la requête
+     *
+     * @return null|\tiFy\Components\Search\Factory
      */
     public static function register($id, $attrs = [])
     {
-
         // L'utilisation est reservé par le système
         if ($id === 'global') :
             $id = '_global';
@@ -208,7 +167,11 @@ class Search extends \tiFy\App\Component
     }
 
     /**
-     * Récupération
+     * Récupération de requête
+     *
+     * @var string $id Identifiant de qualification unique de la requête
+     *
+     * @return null|\tiFy\Components\Search\Factory
      */
     final public static function get($id)
     {
