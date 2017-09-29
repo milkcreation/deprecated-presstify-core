@@ -14,18 +14,10 @@ class tiFyDb extends \tiFy\Lib\Importer\Importer
     /**
      * Type de données prises en charge
      */
-    protected $DataType     = [
+    protected $Types        = [
         'data',
         'meta'
     ];
-    
-    /**
-     * CONSTRUCTEUR
-     */
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
      * Traitement des attributs d'import

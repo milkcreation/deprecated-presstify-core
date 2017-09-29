@@ -35,7 +35,7 @@ abstract class Config extends Factory
         endif;
 
         // Récupération des attributs de configuration courant
-        $config = self::getAttrs();
+        $config = self::getAttrList();
 
         // Traitement global des attributs de configuration
         $config = (array)call_user_func([$inst, 'sets'], $config);
@@ -49,7 +49,7 @@ abstract class Config extends Factory
             endforeach;
         endif;
 
-        self::setAttrs($config);
+        self::setAttrList($config);
     }
 
     /**
@@ -57,7 +57,7 @@ abstract class Config extends Factory
      *
      * @return mixed
      */
-    final public static function getAttrs()
+    final public static function getAttrList()
     {
         if (!$parent = self::tFyAppAttr('Parent')) :
             return;
@@ -88,13 +88,13 @@ abstract class Config extends Factory
      *
      * @return bool
      */
-    final public static function setAttrs($attrs)
+    final public static function setAttrList($attrs)
     {
         if (!$parent = self::tFyAppAttr('Parent')) :
             return;
         endif;
 
-        return self::tFyAppConfigSetAttrs($attrs, $parent);
+        return self::tFyAppConfigSetAttrList($attrs, $parent);
     }
 
     /**

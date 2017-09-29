@@ -16,7 +16,7 @@ class Control extends \tiFy\App\Core
         parent::__construct();
 
         foreach(glob(self::tFyAppDirname() .'/*/', GLOB_ONLYDIR) as $filename) :
-            $basename     = basename( $filename );
+            $basename     = basename($filename);
             $ClassName    = "tiFy\\Core\\Control\\{$basename}\\{$basename}";
          
             self::register($ClassName);
@@ -48,7 +48,5 @@ class Control extends \tiFy\App\Core
         if(! empty($Instance->ID) && ! isset(self::$Factory[$Instance->ID])) :
             self::$Factory[$Instance->ID] = $Instance;
         endif;
-
-
     }
 }

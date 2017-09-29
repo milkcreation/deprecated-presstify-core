@@ -92,30 +92,30 @@ Créer un fichier Config.php dans le dossier app d'un plugin, d'un set ou du the
 
 ```php
 <?php
-namespace App\Core\Cron
+namespace App\Core\Cron;
 
 class Config extends \tiFy\App\Config
 {
-    public function set_%task_id%($attrs = array())
+    public function set_%task_id%()
     {
-        // Identifiant unique d'accorche de la tâche planifiée
-        $attrs['hook'] = '',
-        // Intitulé de la tâche planifiée
-        $attrs['title'] = '',
-        // Description de la tâche planifiée
-        $attrs['desc'] = '',
-        // Date d'exécution de la tâche planifiée
-        $attrs['timestamp'] = '',
-        // Fréquence d'exécution de la tâche planifiée
-        $attrs['recurrence'] = 'daily',
-        // Arguments passés dans la tâche planifiée
-        $attrs['args'] = array(),
-        // Chemins de classe de surcharge
-        $attrs['path'] = array(),
-        // Attributs de journalisation des données
-        $attrs['log'] = true
-        
-        return $attrs;
+        return [
+            // Identifiant unique d'accorche de la tâche planifiée
+            'hook'          => '',
+            // Intitulé de la tâche planifiée
+            'title'         => '',
+            // Description de la tâche planifiée
+            'desc'          => '',
+            // Date d'exécution de la tâche planifiée
+            'timestamp'     => '',
+            // Fréquence d'exécution de la tâche planifiée
+            'recurrence'    => 'daily',
+            // Arguments passés dans la tâche planifiée
+            'args'          => [],
+            // Chemins de classe de surcharge
+            'path'          => [],
+            // Attributs de journalisation des données
+            'log'           => true
+        ];
     }
 }
 ?>

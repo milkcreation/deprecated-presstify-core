@@ -75,6 +75,7 @@ class MediaImage extends \tiFy\Core\Control\Factory
             'width'                     => 1920,
             'height'                    => 360,
             'size'                      => 'large',
+            'size_info'                 => true,
             'inner_html'                => '',
             'media_library_title'       => __( 'Personnalisation de l\'image', 'tify' ),
             'media_library_button'      => __( 'Utiliser cette image', 'tify' ),
@@ -103,8 +104,11 @@ class MediaImage extends \tiFy\Core\Control\Factory
         $output .= ">\n";
         if( $image_editable )
             $output .= "\t\t<i class=\"tify_control_media_image-add_ico\"></i>\n";
-        $output .= "\t</a>\n";    
-        $output .= "\t<span class=\"tify_control_media_image-size\">". sprintf( __( '%dpx / %dpx', 'tify' ), $width, $height ) ."</span>\n";
+        $output .= "\t</a>\n";
+        if ($size_info) :
+            $_size_info_txt = (is_string($size_info)) ? $size_info : sprintf(__('%dpx / %dpx', 'tify'), $width, $height);
+            $output .= "\t<span class=\"tify_control_media_image-size\">{$_size_info_txt}</span>\n";
+        endif;
         if( $inner_html )
             $output .= "\t<div class=\"tify_control_media_image-inner_html\">". $inner_html ."</div>\n";
         

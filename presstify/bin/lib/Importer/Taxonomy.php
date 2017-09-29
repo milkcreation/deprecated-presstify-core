@@ -28,9 +28,9 @@ class Taxonomy extends \tiFy\Lib\Importer\Importer
     /**
      * Type de données prises en charge
      */
-    protected $DataType     = [
+    protected $Types        = [
         'data',
-        'metadata'
+        'meta'
     ];
     
     /**
@@ -71,15 +71,12 @@ class Taxonomy extends \tiFy\Lib\Importer\Importer
         if(\is_wp_error($term)) :
             $this->Notices->addError($term->get_error_message(), $term->get_error_code(), $term->get_error_data());
             $this->setSuccess(false);
-            $term_id = 0;
         else :
             $term_id = $term['term_id'];
             $this->Notices->addSuccess(__('La catégorie a été importé avec succès', 'tify'), 'tFyLibImportInsertDatasSuccess');
             $this->setInsertId($term_id);
             $this->setSuccess(true);
         endif;
-
-        return $term_id;
     }
     
     /**

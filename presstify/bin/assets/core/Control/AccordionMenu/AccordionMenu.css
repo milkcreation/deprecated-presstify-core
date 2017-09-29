@@ -100,7 +100,7 @@
     -ms-transition:         max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
     -o-transition:          max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
     -webkit-transition:     max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
-    transition:             max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0); 
-    
-    max-height:0; 
+    transition:             max-height 400ms cubic-bezier(0.42, 0, 1.0, 1.0);
+
+    max-height:0;
 }

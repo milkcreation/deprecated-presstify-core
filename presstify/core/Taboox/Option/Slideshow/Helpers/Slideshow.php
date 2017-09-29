@@ -154,8 +154,12 @@ class Slideshow extends \tiFy\Core\Taboox\Helpers
 
         foreach ((array)$slide as $i => $s) :
             if (empty($s['attachment_id'])) :
-                unset($slide[$i]);
-                continue;
+                if ($s['post_id'] && ($thumbnail_id = get_post_thumbnail_id($s['post_id']))) :
+                    $s['attachment_id'] = $thumbnail_id;
+                else :
+                    unset($slide[$i]);
+                    continue;
+                endif;
             endif;
 
             if (in_array('planning', $args['attrs'])) :

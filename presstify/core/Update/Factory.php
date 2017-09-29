@@ -154,13 +154,15 @@ class Factory
      */
     final public function current_screen($current_screen)
     {
-        if (! $this->hasAvailable())
+        if (! $this->hasAvailable()) :
             return;
-        if (! empty($this->AdminNotice['screen_id']) && ($this->AdminNotice['screen_id'] !== $current_screen->id))
+        endif;
+        if (! empty($this->AdminNotice['screen_id']) && ($this->AdminNotice['screen_id'] !== $current_screen->id)) :
             return;
+        endif;
         
         $update = $this->Id;
-        add_action('admin_notices', function () use ($upgrade) {
+        add_action('admin_notices', function () use ($update) {
 ?>
 <div class="notice notice-info">
     <p><?php printf( $this->AdminNotice['message'], "<a href=\"". esc_attr( add_query_arg( 'tFyUp', $update, admin_url() ) ) ."\">". __( 'Mettre à jour', 'tify' ) ."</a>" ); ?></p>
@@ -250,8 +252,9 @@ class Factory
         
         foreach ((array) $this->getList() as $version) :
             $_version = $this->formatVersion($version);
-            if (version_compare($this->current(), $_version, '>='))
+            if (version_compare($this->current(), $_version, '>=')):
                 continue;
+            endif;
             array_push($this->Availables, $version);
         endforeach;
         

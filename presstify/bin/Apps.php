@@ -486,7 +486,7 @@ final class Apps
      *      @var null|string $ChildClassname Espace de nom enfant (Dans le cas où l'application ferait partie d'un composant natif ou dynamique ou d'une extension ou d'un jeu de fonctionnalité)
      *  }
      */
-    public static function getAttrs($classname)
+    public static function getAttrList($classname)
     {
         if (is_object($classname)) :
             $classname = get_class($classname);
@@ -508,7 +508,7 @@ final class Apps
      */
     public static function getAttr($name, $default = '', $classname)
     {
-        if (!$attrs = self::getAttrs($classname)) :
+        if (!$attrs = self::getAttrList($classname)) :
             return $default;
         endif;
 
@@ -527,7 +527,7 @@ final class Apps
      * 
      * @return bool
      */
-    public static function setAttrs($attrs = array(), $classname)
+    public static function setAttrList($attrs = array(), $classname)
     {
         if (is_object($classname)) :
             $classname = get_class($classname);
@@ -551,7 +551,7 @@ final class Apps
      *
      * @return bool
      */
-    public static function setConfigAttrs($attrs, $classname)
+    public static function setConfigAttrList($attrs, $classname)
     {
         if (is_object($classname)) :
             $classname = get_class($classname);
@@ -1011,24 +1011,24 @@ final class Apps
      */
     public static function setParent($classname)
     {
-        $attrs = self::getAttrs($classname);
+        $attrs = self::getAttrList($classname);
 
         if ($attrs['Type'] !== 'Customs') :
             return;
         endif;
-        if (!$ParentAttrs = self::_smartAppParentAttrs($attrs['ClassName'])) :
+        if (!$ParentAttrList = self::_smartAppParentAttrList($attrs['ClassName'])) :
             return;
         endif;
 
-        if(! preg_match('#' . preg_quote($ParentAttrs['OverrideNamespace'], '\\') .'\\\(.*)#', $attrs['Namespace'], $matches) || ! isset($matches[1]) ) :
+        if(! preg_match('#' . preg_quote($ParentAttrList['OverrideNamespace'], '\\') .'\\\(.*)#', $attrs['Namespace'], $matches) || ! isset($matches[1]) ) :
             return;
         endif;
 
-        $Parent = $ParentAttrs['ClassName'];
+        $Parent = $ParentAttrList['ClassName'];
         $ChildNamespace = $matches[1];
-        $OverrideNamespace = $ParentAttrs['OverrideNamespace'] . '\\'. $ChildNamespace;
+        $OverrideNamespace = $ParentAttrList['OverrideNamespace'] . '\\'. $ChildNamespace;
 
-        self::setAttrs(compact('OverrideNamespace', 'Parent', 'ChildNamespace'), $attrs['ClassName']);
+        self::setAttrList(compact('OverrideNamespace', 'Parent', 'ChildNamespace'), $attrs['ClassName']);
     }
 
     /**
@@ -1038,7 +1038,7 @@ final class Apps
      *
      * @return false|array
      */
-    private static function _smartAppParentAttrs($classname)
+    private static function _smartAppParentAttrList($classname)
     {
         if (is_object($classname)) :
             $classname = get_class($classname);
@@ -1080,7 +1080,7 @@ final class Apps
      */
     public static function setOverrideNamespace($classname)
     {
-        $attrs = self::getAttrs($classname);
+        $attrs = self::getAttrList($classname);
 
         switch($attrs['Type']) :
             case 'Set' :
@@ -1092,7 +1092,7 @@ final class Apps
                 $OverrideNamespace = preg_replace('#^\\\?tiFy\\\#', '', $attrs['Namespace']);
                 break;
         endswitch;
-        self::setAttrs(compact('OverrideNamespace'), $classname);
+        self::setAttrList(compact('OverrideNamespace'), $classname);
     }
 
     /**
@@ -1104,7 +1104,7 @@ final class Apps
      */
     public static function setOverridePath($classname)
     {
-        $attrs = self::getAttrs($classname);
+        $attrs = self::getAttrList($classname);
 
         if (in_array($attrs['Type'], ['Set', 'Plugins'])) :
             // Attributs du repertoire de surchage des applications connexes (là où l'application peut surcharger les controleurs des autres applications).
@@ -1211,16 +1211,16 @@ final class Apps
             'error'   => false
         ];
 
-        if (($parent = $attrs['Parent']) && ($ParentAttrs = self::getAttrs($parent))) :
+        if (($parent = $attrs['Parent']) && ($ParentAttrList = self::getAttrList($parent))) :
             $subdir  = \wp_normalize_path($attrs['ChildNamespace']);
             $_subdir = $subdir ? '/' . $subdir : '';
 
             $OverridePath['parent_templates'] = [
-                'path'    => $ParentAttrs['Dirname'] . "{$_subdir}/templates",
-                'url'     => $ParentAttrs['Url'] . "{$_subdir}/templates",
+                'path'    => $ParentAttrList['Dirname'] . "{$_subdir}/templates",
+                'url'     => $ParentAttrList['Url'] . "{$_subdir}/templates",
                 'subdir'  => "{$subdir}/templates",
-                'basedir' => $ParentAttrs['Dirname'],
-                'baseurl' => $ParentAttrs['Url'],
+                'basedir' => $ParentAttrList['Dirname'],
+                'baseurl' => $ParentAttrList['Url'],
                 'error'   => false
             ];
         else :
@@ -1236,6 +1236,6 @@ final class Apps
             ];
         endif;
 
-        self::setAttrs(compact('OverridePath'), $classname);
+        self::setAttrList(compact('OverridePath'), $classname);
     }
 }
