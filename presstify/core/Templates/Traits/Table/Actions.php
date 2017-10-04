@@ -3,59 +3,70 @@ namespace tiFy\Core\Templates\Traits\Table;
 
 trait Actions
 {
-    /** == Véfification d'existance d'un action == **/
-    public function hasRowAction( $action )
+    /**
+     * Vérification d'existance d'un action
+     */
+    public function hasRowAction($action)
     {
-        return isset( $this->RowActions[$action] );
+        return isset($this->RowActions[$action]);
     }
-    
-    /** == Récupération des actions sur un élément == **/
-    public function get_row_actions( $item, $actions, $always_visible = false )
+
+    /**
+     * Récupération des actions sur un élément
+     */
+    public function get_row_actions($item, $actions, $always_visible = false)
     {
-        return $this->row_actions( $this->item_row_actions( $item, $actions ), $always_visible );
+        return $this->row_actions($this->item_row_actions($item, $actions), $always_visible);
     }
-    
-    /** == Récupération des actions sur un élément == **/
-    public function item_row_actions( $item, $actions = array() )
-    {        
-        $row_actions = array();
+
+    /**
+     * Récupération des actions sur un élément
+     */
+    public function item_row_actions($item, $actions = [])
+    {
+        $row_actions = [];
+
         foreach ((array)$actions as $action => $attrs) :
-            if (is_int($action))
+            if (is_int($action)) :
                 $action = $attrs;
-            if (! isset($this->RowActions[$action]))
+                $attrs = [];
+            endif;
+            if (!isset($this->RowActions[$action])) :
                 continue;
+            endif;
             if (is_string($this->RowActions[$action])) :
                 $row_actions[$action] = $this->RowActions[$action];
             else :
-                $args = $this->row_action_item_parse_args( $item, $action, $attrs);
-                $row_actions[$action] = $this->row_action_link( $action, $args );
+                $attrs = \wp_parse_args($attrs, $this->RowActions[$action]);
+                $args = $this->row_action_item_parse_args($item, $action, $attrs);
+                $row_actions[$action] = $this->row_action_link($action, $args);
             endif;
-        endforeach;        
+        endforeach;
 
-        return $row_actions;        
-    } 
-    
+        return $row_actions;
+    }
+
     /** == Traitement des attributs d'un lien d'action sur un élément == **/
-    public function row_action_item_parse_args( $item, $action, $args = array() )
-    {        
+    public function row_action_item_parse_args($item, $action, $args = [])
+    {
         // Récupération des attributs des actions par défaut
-        $defaults = $this->defaults_row_actions( $item );
-        if( isset( $defaults[$action] ) ) :
-            $args = wp_parse_args( $args, $defaults[$action] );
+        $defaults = $this->defaults_row_actions($item);
+        if (isset($defaults[$action])) :
+            $args = wp_parse_args($args, $defaults[$action]);
         endif;
-        
-        if( ! isset( $args['base_uri'] ) ) :
+
+        if (!isset($args['base_uri'])) :
             $args['base_uri'] = $this->BaseUri;
         endif;
 
-        if( ( $index = $this->getParam( 'ItemIndex' ) ) && ! isset( $args['query_args'][$index] ) && isset( $item->{$index} ) ) :
+        if (($index = $this->getParam('ItemIndex')) && !isset($args['query_args'][$index]) && isset($item->{$index})) :
             $args['query_args'][$index] = $item->{$index};
         endif;
-        
-        if( isset( $args['nonce'] ) && is_bool( $args['nonce'] ) && ( $args['nonce'] === true ) ) :
-            $args['nonce'] = $this->get_item_nonce_action( $action, true, $item );
+
+        if (isset($args['nonce']) && is_bool($args['nonce']) && ($args['nonce'] === true)) :
+            $args['nonce'] = $this->get_item_nonce_action($action, true, $item);
         endif;
-        
+
         return $args;
     }
     

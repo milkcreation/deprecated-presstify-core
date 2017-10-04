@@ -21,10 +21,13 @@ class Cron extends \tiFy\Environment\Core
 
     // Sur le serveur
     // $ crontab -e
-    // $ */5 * * * * curl -I https://%site_url%/wp-cron.php?doing_wp_cron > /dev/null 2>&1
+    // $ */1 * * * * curl -I http(s)://%site_url%/wp-cron.php?doing_wp_cron > /dev/null 2>&1
+
+    // Test de la tâche planifiée
+    // http(s)://%site_url%/?tFyCronDoing=%task_id%
 
     /**
-     * Listes des tâches planifiées
+     * Listes des attributs de configuration des tâches planifiées
      * @var array
      */
     private static $Schedules = [];
@@ -56,8 +59,9 @@ class Cron extends \tiFy\Environment\Core
         if (!isset($_REQUEST['tFyCronDoing'])) :
             return;
         endif;
+
         if ($schedule = self::get($_REQUEST['tFyCronDoing'])) :
-            call_user_func_array([$schedule, '_handle'], $schedule->getArgs());
+            call_user_func_array($schedule['handle'], $schedule['args']);
             exit;
         endif;
     }
@@ -82,8 +86,12 @@ class Cron extends \tiFy\Environment\Core
     /**
      * Déclaration
      */
-    public static function register($id, $attrs = [])
+    final public static function register($id, $attrs = [])
     {
+        if (isset(self::$Schedules[$id])) :
+            return;
+        endif;
+
         $defaults = [
             // Intitulé de la tâche planifiée
             'title'         => $id,
@@ -95,8 +103,8 @@ class Cron extends \tiFy\Environment\Core
             'recurrence'    => 'daily',
             // Arguments passés dans la tâche planifiée
             'args'          => [],
-            // Chemins de classe de surcharge
-            'path'          => [],
+            // Execution du traitement de la tâche planifiée
+            'handle'        => '',
             // Attributs de journalisation des données
             'log'           => true,
             // Désenregistrement
@@ -144,35 +152,40 @@ class Cron extends \tiFy\Environment\Core
         endif;
 
         // Traitement de la classe de surcharge
-        if (is_string($attrs['path'])) :
-            $attrs['path'] = (array)$attrs['path'];
+        if (!$attrs['handle']) :
+            $classname = self::getOverride("\\tiFy\\Core\\Cron\\Schedule", self::getOverrideNamespace() . "\\Core\\Cron\\" . self::sanitizeControllerName($id));
+            $attrs['handle'] = $classname . '::_handle';
         endif;
-        $attrs['path'][] = self::getOverrideNamespace() . "\\Core\\Cron\\" . self::sanitizeControllerName($id);
 
         // Traitement de la journalisation
         if ($attrs['log']) :
             $logdef = [
-                'format' => "%datetime% %level_name% \"%message%\" %context% %extra%\n",
-                'rotate' => 10,
-                'name'   => $id
+                'format'    => "%datetime% %level_name% \"%message%\" %context% %extra%\n",
+                'rotate'    => 10,
+                'name'      => $id,
+                'basedir'   => WP_CONTENT_DIR . '/uploads/log'
             ];
-            $attrs['log'] = !is_array($attrs['log']) ? $logdef : wp_parse_args($attrs['log'], $logdef);
+            $attrs['log'] = !is_array($attrs['log']) ? $logdef : \wp_parse_args($attrs['log'], $logdef);
         endif;
 
-        // Instanciation de la classe de programmation
-        $ScheduleClassName = self::getOverride("\\tiFy\\Core\\Cron\\Schedule", $attrs['path']);
-        self::$Schedules[$id] = new $ScheduleClassName($attrs);
+        // Passage des attributs de configuration en tant qu'argument de la tâche planifiée
+        array_push($attrs['args'], $attrs);
 
         // Ajustement de la récurrence
         if (($schedule = wp_get_schedule($attrs['hook'])) && ($schedule !== $attrs['recurrence'])) :
             self::unregister($id);
+        elseif($attrs['unregister']) :
+            self::unregister($id);
         endif;
+
+        // Définition des attributs de configuration
+        self::$Schedules[$id] = $attrs;
 
         if (!wp_get_schedule($attrs['hook'])) :
             wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], $attrs['args']);
         endif;
 
-        add_action($attrs['hook'], [self::$Schedules[$id], '_handle']);
+        add_action($attrs['hook'], $attrs['handle']);
 
         return self::$Schedules[$id];
     }
@@ -180,30 +193,33 @@ class Cron extends \tiFy\Environment\Core
     /**
      * Désenregistrement
      */
-    public static function unregister($id)
+    final public static function unregister($id)
     {
         if (!$schedule = self::get($id)) :
             return;
         endif;
 
-        wp_clear_scheduled_hook($schedule->getHook());
+        wp_clear_scheduled_hook($schedule['hook']);
+        unset(self::$Schedules[$id]);
     }
-
 
     /**
      * Récupération de la liste des tâches planifiées déclarées
      * @return array
      */
-    public static function getList()
+    final public static function getList()
     {
         return self::$Schedules;
     }
 
     /**
      * Récupération d'une tâche planifiée déclarée
-     * @return object
+     *
+     * @param string $id Identifiant unique de qualification de la tâche planifiée
+     *
+     * @return array
      */
-    public static function get($id)
+    final public static function get($id)
     {
         if (isset(self::$Schedules[$id])) :
             return self::$Schedules[$id];
