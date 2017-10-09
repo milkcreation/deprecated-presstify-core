@@ -17,7 +17,7 @@ class AdminUI extends \tiFy\App\Component
      * Liste des actions à déclencher
      * @var callable[]
      */
-    protected $tFyAppActions                  = [
+    protected $tFyAppActions                  = array(
         'init',
         'widgets_init',
         'admin_menu',
@@ -25,7 +25,7 @@ class AdminUI extends \tiFy\App\Component
         'admin_bar_menu',
         'admin_footer_text',
         'wp_before_admin_bar_render'
-    ];
+    );
 
     /**
      * Ordre de priorité d'exécution des actions

@@ -44,7 +44,7 @@ abstract class Form
     protected $PageTitle = null;
 
     /// Cartographie des paramètres
-    protected $ParamsMap = array(
+    protected $ParamsMap = [
         'BaseUri',
         'ListBaseUri',
         'Plural',
@@ -53,8 +53,9 @@ abstract class Form
         'Fields',
         'QueryArgs',
         'NewItem',
+        'ItemDefaults',
         'PageTitle'
-    );
+    ];
 
     // Élément à éditer
     protected $item = null;
@@ -118,6 +119,12 @@ abstract class Form
     public function set_add_new_item()
     {
         return true;
+    }
+
+    /** == Données par défaut d'un utilisateur == **/
+    public function set_item_defaults()
+    {
+        return [];
     }
 
     /** == Définition du titre de la page == **/
@@ -327,7 +334,7 @@ abstract class Form
     /** == Création d'un élément par défaut == **/
     protected function get_default_item_to_edit()
     {
-        return $this->db()->handle()->create(wp_parse_args($this->item_defaults, array($this->db()->Primary => 0)));
+        return $this->db()->handle()->create(wp_parse_args($this->ItemDefaults, array($this->db()->Primary => 0)));
     }
 
     /* = CONTROLEUR = */

@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Components\HookArchive;	
+namespace tiFy\Components\HookArchive;
 
 final class HookArchive extends \tiFy\App\Component
 {

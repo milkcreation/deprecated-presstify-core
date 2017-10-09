@@ -7,30 +7,30 @@ class Db extends \tiFy\App\Core
      * Liste des actions à déclencher
      * @var array
      */
-    protected $tFyAppActions                = array(
+    protected $tFyAppActions = [
         'init'
-    );
-    
+    ];
+
     /**
      * Ordre de priorité d'exécution des actions
      * @var array
      */
-    protected $tFyAppActionsPriority    = array(
-        'init'                => 9
-    );
-    
+    protected $tFyAppActionsPriority = [
+        'init' => 9
+    ];
+
     /**
-     * Liste des bases déclarées
-     * @var \tiFy\Core\Db\Query[] An array of tiFyCoreDbQuery objects.
+     * Liste des tables de bases de données déclarées
+     * @var \tiFy\Core\Db\Factory[]
      */
-    private static $Factories    = array();
-    
+    private static $Factories = [];
+
     /**
      * Classe de rappel
      * @var unknown
      */
-    public static $Query         = null;
-    
+    public static $Query = null;
+
     /**
      * CONSTRUCTEUR
      */
@@ -51,7 +51,7 @@ class Db extends \tiFy\App\Core
      */
     final public function init()
     {
-        do_action( 'tify_db_register' );
+        do_action('tify_db_register');
     }
     
     /**
@@ -60,39 +60,41 @@ class Db extends \tiFy\App\Core
     /**
      * Déclaration
      *
-     * {@inheritdoc}
-     * @see \tiFy\Core\Db\Factory::__construct()
+     * @param string $id Identifiant unique de qualification de la table de base de données
+     * @param array $attrs Attributs de configuration de la base de données
      *
      * @return \tiFy\Core\Db\Factory
      */
-    public static function register($id, $attrs = array())
+    public static function register($id, $attrs = [])
     {
-        if(isset($attrs['cb'] ) ) :
-            self::$Factories[$id] = new $attrs['cb']( $id, $attrs );
+        if (isset($attrs['cb'])) :
+            self::$Factories[$id] = new $attrs['cb']($id, $attrs);
         else :
             self::$Factories[$id] = new Factory($id, $attrs);
         endif;
-        
-        if( self::$Factories[$id] instanceof Factory )
+
+        if (self::$Factories[$id] instanceof Factory) :
             return self::$Factories[$id];
+        endif;
     }
-    
+
     /**
      * Vérification d'existance
      */
-    public static function has( $id )
+    public static function has($id)
     {
-        return isset( self::$Factories[$id] );
+        return isset(self::$Factories[$id]);
     }
-    
+
     /**
      * Récupération
      *
      * @return null|\tiFy\Core\Db\Factory
      */
-    public static function get( $id )
+    public static function get($id)
     {
-        if( isset( self::$Factories[$id] ) )
+        if (isset(self::$Factories[$id])) :
             return self::$Factories[$id];
+        endif;
     }
 }

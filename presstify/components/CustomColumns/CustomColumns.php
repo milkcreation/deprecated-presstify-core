@@ -3,7 +3,6 @@ namespace tiFy\Components\CustomColumns;
 
 class CustomColumns extends \tiFy\App\Component
 {
-    
     /**
      * Liste des actions à déclencher
      * @var string[]
