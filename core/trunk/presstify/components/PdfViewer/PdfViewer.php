@@ -3,7 +3,7 @@ namespace tiFy\Components\PdfViewer;
 
 use tiFy\Lib\Modal\Modal as tiFyModal;
 
-class PdfViewer extends \tiFy\Environment\Component
+class PdfViewer extends \tiFy\App\Component
 {
 	/**
 	 * Liste des Actions à déclencher

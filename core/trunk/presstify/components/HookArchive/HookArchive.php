@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\HookArchive;	
 
-use tiFy\Environment\Component;
-
-final class HookArchive extends Component
+final class HookArchive extends \tiFy\App\Component
 {
 	/* = ARGUMENTS = */
 	/** == ACTIONS == **/

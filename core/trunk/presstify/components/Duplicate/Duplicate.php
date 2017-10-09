@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\Duplicate;
 
-final class Duplicate extends \tiFy\Environment\Component
+final class Duplicate extends \tiFy\App\Component
 {
     /* = ARGUMENTS = */
     // Type de post

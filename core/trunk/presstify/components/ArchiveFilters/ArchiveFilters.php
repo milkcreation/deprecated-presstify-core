@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\ArchiveFilters;
 
-class ArchiveFilters extends \tiFy\Environment\Component
+class ArchiveFilters extends \tiFy\App\Component
 {
     /**
      * Liste des actions à déclencher

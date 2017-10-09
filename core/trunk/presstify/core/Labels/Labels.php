@@ -1,35 +1,38 @@
 <?php
 namespace tiFy\Core\Labels;
 
-use tiFy\Environment\Core;
-
-class Labels extends Core
+class Labels extends \tiFy\App\Core
 {
-	/* = ARGUMENTS = */
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'init',
-	);
-	
-	// Ordres de priorité d'exécution des actions
-	protected $tFyAppActionsPriority	= array(
-		'init'				=> 9
-	);
-	
-	public static $Factories	= array();
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		parent::__construct();		
+    /**
+     * Liste des classes de rappel des intitulès
+     * @var \tiFy\Core\Labels\Factory[]
+     */
+    public static $Factories	= [];
 
-		foreach( (array) self::tFyAppConfig() as $id => $args ) :
-			self::Register( $id, $args );
-		endforeach;		
-	}
-	
-	/* = DECLENCHEURS = */
-	/** == Initialisation globale == **/
+    /**
+     *  CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des actions de déclenchement
+        self::tFyAppActionAdd('init', null, 9);
+
+        // Déclaration
+        foreach ((array)self::tFyAppConfig() as $id => $args) :
+            self::Register($id, $args);
+        endforeach;
+    }
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     */
 	final public function init()
 	{		
 		do_action( 'tify_labels_register' );

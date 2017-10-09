@@ -4,7 +4,7 @@
  */
 namespace tiFy\Components\Developper;
 
-class Developper extends \tiFy\Environment\Core
+class Developper extends \tiFy\App\Core
 {
     /**
      * CONSTRUCTEUR

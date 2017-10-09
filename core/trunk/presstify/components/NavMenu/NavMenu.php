@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\NavMenu;
 
-class NavMenu extends \tiFy\Environment\Component
+class NavMenu extends \tiFy\App\Component
 {
     /**
      * Classe de rappel d'affichage des menus déclarés

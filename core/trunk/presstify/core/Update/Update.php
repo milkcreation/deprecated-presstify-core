@@ -11,7 +11,7 @@
  */
 namespace tiFy\Core\Update;
 
-class Update extends \tiFy\Environment\Core
+class Update extends \tiFy\App\Core
 {
     /**
      * Liste des actions à déclencher

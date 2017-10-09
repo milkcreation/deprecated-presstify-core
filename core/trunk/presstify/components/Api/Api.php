@@ -11,7 +11,7 @@
  */
 namespace tiFy\Components\Api;
 
-class Api extends \tiFy\Environment\Component
+class Api extends \tiFy\App\Component
 {
     /**
      * Liste des api autorisées

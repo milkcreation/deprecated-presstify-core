@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\CustomType;
 
-class CustomType extends \tiFy\Environment\Core
+class CustomType extends \tiFy\App\Core
 {
     /**
      * Liste des arguments de déclaration des taxonomies personnalisées

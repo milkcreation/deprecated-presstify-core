@@ -11,7 +11,7 @@
  */
 namespace tiFy\Components\Breadcrumb;
 
-class Breadcrumb extends \tiFy\Environment\Component
+class Breadcrumb extends \tiFy\App\Component
 {
     /**
      * Liste des actions à déclencher

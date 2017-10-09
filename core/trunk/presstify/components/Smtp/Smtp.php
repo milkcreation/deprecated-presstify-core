@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\Smtp;
 
-class Smtp extends \tiFy\Environment\Component
+class Smtp extends \tiFy\App\Component
 {
     /* = ARGUMENTS = */
     // Liste des actions à déclencher

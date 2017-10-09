@@ -23,39 +23,35 @@ class Handle{
 		else
 			return $this->create( $data );
 	}
+	
+	/** == Création d'un nouvel élément == **/
+	final public function create( $data = array() )
+	{
+		// Extraction des metadonnées	
+		if( isset( $data['item_meta'] ) ) :
+			$metas = $data['item_meta'];
+			unset( $data['item_meta'] );
+		else :
+			$metas = false;
+		endif;				 
+		
+		// Formatage des données	
+		$data = $this->Db->parse()->validate( $data );			
+		$data = array_map( 'maybe_serialize', $data );
+		
+		// Enregistrement de l'élément en base de données
+		$this->Db->sql()->insert( $this->Db->Name, $data );		
+		$id = $this->Db->sql()->insert_id;
+		
+		// Enregistrement des metadonnées de l'élément en base
+		if( is_array( $metas ) && $this->Db->hasMeta() )
+			foreach( (array) $metas as $meta_key => $meta_value )
+				$this->Db->meta()->update( $id, $meta_key, $meta_value );			
 
-    /**
-     * Création d'un nouvel élément
-     */
-    final public function create($data = [])
-    {
-        // Extraction des metadonnées
-        if (isset($data['item_meta'])) :
-            $metas = $data['item_meta'];
-            unset($data['item_meta']);
-        else :
-            $metas = false;
-        endif;
-
-        // Formatage des données
-        $data = $this->Db->parse()->validate($data);
-        $data = array_map('maybe_serialize', $data);
-
-        // Enregistrement de l'élément en base de données
-        $this->Db->sql()->insert($this->Db->Name, $data);
-        $id = $this->Db->sql()->insert_id;
-
-        // Enregistrement des metadonnées de l'élément en base
-        if (is_array($metas) && $this->Db->hasMeta()) :
-            foreach ((array)$metas as $meta_key => $meta_value) :
-                $this->Db->meta()->update($id, $meta_key, $meta_value);
-            endforeach;
-        endif;
-
-        return $id;
-    }
-
-    /** == Mise à jour d'un élément == **/
+		return $id;
+	}	
+	
+	/** == Mise à jour d'un élément == **/
 	final public function update( $id, $data = array() )
 	{
 		// Extraction des metadonnées	
