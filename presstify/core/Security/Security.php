@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Security;
 
-class Security extends \tiFy\Environment\Core
+class Security extends \tiFy\App\Core
 {
     /* = CONSTRUCTEUR = */
     public function __construct()

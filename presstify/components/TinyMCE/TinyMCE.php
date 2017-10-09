@@ -1,10 +1,7 @@
 <?php
 namespace tiFy\Components\TinyMCE;
 
-use tiFy\Environment\Component;
-
-/** @Autoload */
-class TinyMCE extends Component
+class TinyMCE extends \tiFy\App\Component
 {
 	/* = ARGUMENTS = */
 	/** == FILTRES == **/

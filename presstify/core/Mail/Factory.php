@@ -5,119 +5,66 @@ use \tiFy\Lib\Mailer\MailerNew;
 
 class Factory extends \tiFy\App\Factory
 {
-    /**
-     * Destinataire(s)
-     * @var string|array
-     */
-    public $To = [];
-
-    /**
-     * Expéditeur
-     * @var string|array
-     */
-    public $From = [];
-
-    /**
-     * Destinataire de la réponse au mail
-     * @var array
-     */
-    public $ReplyTo = [];
-
-    /**
-     * Destinataires de copie carbone
-     * @var array
-     */
-    public $Cc = [];
-
-    /**
-     * Destinataires de copie cachée
-     * @var array
-     */
-    public $Bcc = [];
-
-    /**
-     * Sujet
-     * @var string
-     */
-    public $Subject = '';
-
-    /**
-     * Message
-     * @var string
-     */
-    public $Message = '';
-
-    /**
-     * Entête du message
-     * @var string
-     */
-    public $MessageHeader = '';
-
-    /**
-     * Pied de page du message
-     * @var string
-     */
-    public $MessageFooter = '';
-
-    /**
-     * Variables d'environnement
-     * @var array
-     */
-    public $MergeTags = [];
-
-    /**
-     * Format des variables d'environnements
-     * @var string
-     */
-    public $MergeTagsFormat = '\*\|(.*?)\|\*';
-
-    /**
-     * Personnalisation des styles CSS
-     * @var string
-     */
-    public $CustomCSS = '';
-
-    /**
-     * Format d'expédition du message (html ou plain ou multi)
-     * @var string
-     */
-    public $ContentType = 'multi';
-
-    /**
-     * Encodage des caractères du message
-     * @var string
-     */
-    public $Charset = 'UTF-8';
-
-    /**
-     * CONSTRUCTEUR
-     *
-     * @param array $params Liste des paramètres de configuration du mail
-     *
-     * @return void
-     */
-    public function __construct($params = [])
-    {
-        // Traitement des paramètres d'envoi de l'email
-        $this->setParams($params);
+    /* = ARGUMENTS = */
+    /// Destinataires
+    public $To                      = array();
+    
+    /// Expediteur
+    public $From                    = array();
+    
+    /// Destinataire de réponse
+    public $ReplyTo                 = array();
+    
+    /// Destinataires de copie carbone
+    public $Cc                      = array();
+    
+    /// Destinataires de copie cachée
+    public $Bcc                     = array();    
+    
+    // Sujet
+    public $Subject                 = '';
+    
+    // Message
+    public $Message                 = '';
+    
+    // Entête du message
+    public $MessageHeader           = '';
+    
+    // Pied de page du message 
+    public $MessageFooter           = '';
+    
+    // Variables d'environnement
+    public $MergeTags               = array();
+    
+    // Format des variables d'environnements
+    public $MergeTagsFormat         = '\*\|(.*?)\|\*';
+    
+    // Personnalisation des styles CSS
+    public $CustomCSS               = '';
+    
+    // Format d'expédition du message (html ou plain ou multi)
+    public $ContentType             = 'multi';
+  
+    // Encodage des caractères du message
+    public $Charset                 = 'UTF-8';
+            
+    /* = CONSTRUCTEUR = */
+    public function __construct( $params = array() )
+    {        
+        // Traitement des paramètres d'envoi de l'email        
+        $this->setParams( $params );
     }
-
-    /**
-     * CONTROLEURS
-     */
-    /**
-     * Définition des paramètres
-     */
-    final public function setParams($params = [])
-    {
-        foreach ((array)$params as $param => $value) :
-            $this->setParam($param, $value);
+    
+    /* = CONTROLEURS = */    
+    /** == Définition des paramètres == **/
+    final public function setParams( $params = array() )
+    {          
+        foreach( (array) $params as $param => $value ) :
+            $this->setParam( $param, $value );
         endforeach;
     }
-
-    /**
-     * Définition d'un paramètre
-     */
+    
+    /** == Définition d'un paramètre == **/
     final public function setParam( $param, $value )
     {
         $param = MailerNew::sanitizeName( $param );
@@ -125,10 +72,8 @@ class Factory extends \tiFy\App\Factory
             $this->{$param} = $value;  
         endif;
     }
-
-    /**
-     * Récupération des paramètres
-     */
+            
+    /** == Récupération des paramètres == **/
     final public function getParams()
     {
         $params = array();
@@ -138,10 +83,8 @@ class Factory extends \tiFy\App\Factory
         
         return $params;
     }
-
-    /**
-     * Récupération d'un paramètre
-     */
+    
+    /** == Récupération d'un paramètre == **/
     final public function getParam( $param )
     {
         $param = MailerNew::sanitizeName( $param );
@@ -154,21 +97,17 @@ class Factory extends \tiFy\App\Factory
             return $this->{$param};
         endif;      
     }
-
-    /**
-     * Envoi de l'email
-     */
+    
+    /** == Envoi de l'email == **/
     final public function send()
     {        
-        return MailerNew::send($this->getParams());
+        return MailerNew::send( $this->getParams() );
     }
-
-    /**
-     * Prévisualisation de l'email
-     */
-    final public function preview()
+    
+    /** == Envoi de l'email == **/
+    final public function debug()
     {        
-        echo MailerNew::preview($this->getParams());
+        echo MailerNew::debug( $this->getParams() );
         exit;
     }
 }

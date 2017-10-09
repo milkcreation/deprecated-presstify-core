@@ -22,7 +22,7 @@
 
 namespace tiFy\Components\Sidebar;
 
-class Sidebar extends \tiFy\Environment\Component
+class Sidebar extends \tiFy\App\Component
 {   
     /**
      * Liste des actions à déclencher

@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns;
 
-class CustomColumns extends \tiFy\Environment\Component
+class CustomColumns extends \tiFy\App\Component
 {
     
     /**

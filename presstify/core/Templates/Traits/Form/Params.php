@@ -134,15 +134,9 @@ trait Params
 	public function initParamNewItem()
 	{
 		$this->NewItem = (bool) $this->set_add_new_item();
-	}
-
-    /** == Initialisation du paramétre des données par défaut d'un utilisateur == **/
-    public function initParamItemDefaults()
-    {
-        $this->ItemDefaults = (array)$this->set_item_defaults();
-    }
-
-    /** == Attributs par défaut de l'élément == **/
+	}	
+	
+	/** == Attributs par défaut de l'élément == **/
 	public function initParamDefaultItemArgs()
 	{
 		$defaults = array( $this->db()->getPrimary() => 0 );

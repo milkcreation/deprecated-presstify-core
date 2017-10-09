@@ -1,10 +1,9 @@
 <?php 
 namespace tiFy\Components\Search;
 
-use tiFy\Environment\Component;
 use tiFy\Core\CustomType\CustomType;
 
-class Search extends Component
+class Search extends \tiFy\App\Component
 {
     /**
      * Liste des actions à déclencher

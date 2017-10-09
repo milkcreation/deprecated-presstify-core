@@ -183,9 +183,9 @@ class Factory
         /// Définition de nom de la table de metadonnées en base
         $this->setMeta($meta);
 
-        if ($install) :
+        if ($install) {
             new Make($this);
-        endif;
+        }
     }
 
     /* = PARAMETRAGE = */

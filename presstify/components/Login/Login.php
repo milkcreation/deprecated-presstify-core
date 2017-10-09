@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\Login;
 
-final class Login extends \tiFy\Environment\Component
+final class Login extends \tiFy\App\Component
 {
     /* = ARGUMENTS = */
     // Liste des Actions à déclencher

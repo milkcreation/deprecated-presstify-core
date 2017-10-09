@@ -1,9 +1,7 @@
 <?php
 namespace tiFy\Components\Pagination;
 
-use tiFy\Environment\Component;
-
-class Pagination extends Component
+class Pagination extends \tiFy\App\Component
 {
 	/* = ARGUMENTS = */
 	// Liste des actions à déclencher

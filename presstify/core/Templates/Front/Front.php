@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Front;
 
-class Front extends \tiFy\Environment\Core
+class Front extends \tiFy\App\Core
 {
     /**
      * 

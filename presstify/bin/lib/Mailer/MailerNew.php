@@ -18,11 +18,9 @@
  * LISTE DE MERGE TAGS
  * http://kb.mailchimp.com/merge-tags/all-the-merge-tags-cheat-sheet#Merge-tags-for-list-and-account-information
  **/
-
+ 
 namespace tiFy\Lib\Mailer;
-
-use tiFy\Core\Mail\Queue;
-
+    
 class MailerNew
 {
     /* = ARGUMENTS = */
@@ -132,7 +130,7 @@ class MailerNew
     /** == Récupération des paramètres == **/
     public static function getParams()
     {
-        $params = [];
+        $params = array();
         
         foreach( self::getAllowedParams() as $param ) :
             $params[$param] = self::${$param};
@@ -154,7 +152,7 @@ class MailerNew
     }
     
     /** == Traitement des arguments == **/
-    public static function setParams($params = [])
+    public static function setParams( $params = array() )
     {
         // Cartographie des paramètres
         $_params = array();
@@ -591,15 +589,13 @@ class MailerNew
         
         return compact( 'to', 'subject', 'message', 'headers', 'attachments' );       
     }
-
-    /**
-     * Prévisualisation du mail
-     */
-    public static function preview($params = [])
+        
+    /** == Prévisualisation du mail == **/
+    public static function preview( $params = array() )
     {
-        self::setParams($params);
+        self::setParams( $params );
         $mailer = self::setMailer();
-        $mailer->preSend();
+        $mailer->preSend();        
                 
         $output  =  "";
         $output .=  "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">";
@@ -662,42 +658,16 @@ class MailerNew
         
         return $output;
     }
-
-    /**
-     * Mise en file du mail
-     *
-     * @param array $params Paramètres de configuration du mail
-     * @param array $sending Date de programmation d'expédition du mail. Par defaut, envoi immédiat.
-     * @param array $extras Données complémentaires
-     *
-     * @return null|int
-     */
-    public static function queue($params = [], $sending = '', $extras = [])
+    
+    /** == Envoi du message == **/
+    public static function send( $params )
     {
-        self::setParams($params);
+        self::setParams( $params );
         $mailer = self::setMailer();
-        $mailer->preSend();
-
-        return Queue::add(self::getParams(), $sending, $extras);
-    }
-
-    /**
-     * Envoi du message
-     *
-     * @param array $params Paramètres de configuration du mail
-     *
-     * @return void
-     */
-    public static function send($params = [])
-    {
-        self::setParams($params);
-        $mailer = self::setMailer();
-        try {
-            return $mailer->Send();
-        } catch (phpmailerException $e) {
-            wp_die($e->getMessage(), __('Erreur lors de l\'expedition du message', 'tify'), 500);
-
-            return false;
+        try{
+            $mailer->Send();
+        } catch ( phpmailerException $e ) {
+            wp_die( $e->getMessage(), __( 'Erreur lors de l\'expedition du message', 'tify' ), 500 );
         }
     }
 }

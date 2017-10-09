@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Templates;
 
-final class Templates extends \tiFy\Environment\Core
+final class Templates extends \tiFy\App\Core
 {
     /**
      * Liste des actions à déclencher
