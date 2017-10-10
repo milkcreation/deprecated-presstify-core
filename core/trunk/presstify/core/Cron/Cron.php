@@ -20,7 +20,7 @@ class Cron extends \tiFy\App\Core
 
     // Sur le serveur
     // $ crontab -e
-    // $ */1 * * * * curl -I http(s)://%site_url%/wp-cron.php?doing_wp_cron > /dev/null 2>&1
+    // $ * * * * * curl -I http(s)://%site_url%/wp-cron.php?doing_wp_cron > /dev/null 2>&1
 
     // Test de la tâche planifiée
     // http(s)://%site_url%/?tFyCronDoing=%task_id%
@@ -120,7 +120,7 @@ class Cron extends \tiFy\App\Core
         $attrs['hook'] = 'tFyCron_' . $id;
 
         // Traitement de la récurrence
-        $recurrences = wp_get_schedules();
+        $recurrences = \wp_get_schedules();
         if (is_string($attrs['recurrence']) && ! isset($recurrences[$attrs['recurrence']])) :
             $attrs['recurrence'] = 'daily';
         elseif(is_array($attrs['recurrence'])) :
@@ -168,10 +168,12 @@ class Cron extends \tiFy\App\Core
         endif;
 
         // Passage des attributs de configuration en tant qu'argument de la tâche planifiée
-        array_push($attrs['args'], $attrs);
+        $_attrs = $attrs;
+        unset($_attrs['args']);
+        array_push($attrs['args'], $_attrs);
 
         // Ajustement de la récurrence
-        if (($schedule = wp_get_schedule($attrs['hook'])) && ($schedule !== $attrs['recurrence'])) :
+        if (($schedule = \wp_get_schedule($attrs['hook'], $attrs['args'])) && ($schedule !== $attrs['recurrence'])) :
             self::unregister($id);
         elseif($attrs['unregister']) :
             self::unregister($id);
@@ -180,11 +182,11 @@ class Cron extends \tiFy\App\Core
         // Définition des attributs de configuration
         self::$Schedules[$id] = $attrs;
 
-        if (!wp_get_schedule($attrs['hook'])) :
-            wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], $attrs['args']);
+        if (!\wp_get_schedule($attrs['hook'], $attrs['args'])) :
+            \wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], $attrs['args']);
         endif;
 
-        add_action($attrs['hook'], $attrs['handle']);
+        \add_action($attrs['hook'], $attrs['handle']);
 
         return self::$Schedules[$id];
     }

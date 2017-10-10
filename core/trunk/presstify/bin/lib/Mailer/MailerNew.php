@@ -431,7 +431,7 @@ class MailerNew
     }
     
     /** == Traitement des pièces jointes == **/
-    public static function parseAttachment( $attachment )
+    public static function parseAttachment($attachment)
     {
         $defaults = array(
             'path'          => '',
@@ -440,7 +440,14 @@ class MailerNew
             'type'          => '',
             'disposition'   => 'attachment'
         );
-        return wp_parse_args( $attachment, $defaults );
+
+        if (is_string($attachment)) :
+            $attachment = [
+                'path'          => $attachment
+            ];
+        endif;
+
+        return \wp_parse_args($attachment, $defaults);
     }
     
     /** == Formatage d'un contact == **/
