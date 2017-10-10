@@ -12,6 +12,8 @@
  */
 namespace tiFy\Core\Cron;
 
+use tiFy\Core\Templates\Templates;
+
 class Cron extends \tiFy\App\Core
 {
     // Configurer la tâche cron
@@ -37,7 +39,7 @@ class Cron extends \tiFy\App\Core
     /**
      * Initialisation globale
      */
-    public function init()
+    public static function init()
     {
         // Enregistrement de tâche planifiée
         do_action('tify_cron_register');
@@ -66,6 +68,26 @@ class Cron extends \tiFy\App\Core
     }
 
     /**
+     * Déclaration de templates
+     */
+    public static function tify_templates_register()
+    {
+        Templates::register(
+            'tFyCoreCronList',
+            [
+                'cb'            => 'tiFy\Core\Cron\Admin\ViewList',
+                'admin_menu'    => [
+                    'menu_slug'     => 'tFyCoreCronList',
+                    'parent_slug'   => 'tools.php',
+                    'page_title'    => __('Gestion des tâches planifiées', 'tify'),
+                    'menu_title'    => __('Tâches planifiées', 'tify')
+                ]
+            ],
+            'admin'
+        );
+    }
+
+    /**
      * CONTROLEURS
      */
     /**
@@ -75,6 +97,7 @@ class Cron extends \tiFy\App\Core
     {
         // Définition des actions
         $this->tFyAppActionAdd('init');
+        $this->tFyAppActionAdd('tify_templates_register');
 
         // Déclaration des tâches planifiées configurées
         foreach ((array)self::tFyAppConfig() as $schedule_id => $schedules_attrs) :
@@ -118,6 +141,9 @@ class Cron extends \tiFy\App\Core
 
         // Identifiant unique d'accorche de la tâche planifiée
         $attrs['hook'] = 'tFyCron_' . $id;
+
+        // Date GMT d'exécution de la tâche
+        $attrs['timestamp'] = get_gmt_from_date(date('Y-m-d H:i:s', $attrs['timestamp']), 'U');
 
         // Traitement de la récurrence
         $recurrences = \wp_get_schedules();
@@ -172,6 +198,9 @@ class Cron extends \tiFy\App\Core
         unset($_attrs['args']);
         array_push($attrs['args'], $_attrs);
 
+        // Définition des attributs de configuration
+        self::$Schedules[$id] = $attrs;
+
         // Ajustement de la récurrence
         if (($schedule = \wp_get_schedule($attrs['hook'], $attrs['args'])) && ($schedule !== $attrs['recurrence'])) :
             self::unregister($id);
@@ -179,11 +208,9 @@ class Cron extends \tiFy\App\Core
             self::unregister($id);
         endif;
 
-        // Définition des attributs de configuration
-        self::$Schedules[$id] = $attrs;
-
         if (!\wp_get_schedule($attrs['hook'], $attrs['args'])) :
             \wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], $attrs['args']);
+            self::$Schedules[$id] = $attrs;
         endif;
 
         \add_action($attrs['hook'], $attrs['handle']);
@@ -196,11 +223,22 @@ class Cron extends \tiFy\App\Core
      */
     final public static function unregister($id)
     {
+        if (!$crons = _get_cron_array()) :
+            return;
+        endif;
         if (!$schedule = self::get($id)) :
             return;
         endif;
 
-        wp_clear_scheduled_hook($schedule['hook']);
+        foreach ($crons as $timestamp => $cron) :
+            if (!isset($cron[$schedule['hook']])) :
+                continue;
+            endif;
+            foreach ($cron[$schedule['hook']] as $key => $attrs) :
+                \wp_clear_scheduled_hook($schedule['hook'], $attrs['args']);
+            endforeach;
+        endforeach;
+
         unset(self::$Schedules[$id]);
     }
 
