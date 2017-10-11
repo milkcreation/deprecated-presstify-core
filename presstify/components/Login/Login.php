@@ -37,14 +37,16 @@ final class Login extends \tiFy\App\Component
     final public function init()
     {
         // Bypass
-        if( empty( $_REQUEST['tiFyLogin-formID'] ) )
-            return;        
-        if( ! $this->_setCurrent( $_REQUEST['tiFyLogin-formID'] ) )
+        if (empty($_REQUEST['tiFyLogin-formID'])) :
             return;
-                
-        $action = isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : 'login';
-        
-        switch( $action ) :    
+        endif;
+        if (!$this->_setCurrent($_REQUEST['tiFyLogin-formID'])) :
+            return;
+        endif;
+
+        $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : 'login';
+
+        switch ($action) :
             default :
             case 'login' :
                 $this->_signon();
@@ -59,20 +61,19 @@ final class Login extends \tiFy\App\Component
     final public function authenticate( $user = null, $username, $password )
     {
         // Bypass
-        if( ! $this->_getCurrent() )
+        if (!$this->_getCurrent()) :
             return $user;
-        if( ! $user || is_wp_error( $user ) )
-            return $user;
+        endif;
 
-        if( ! array_intersect( $user->roles, (array) $this->_getCurrent()->getRoles() ) ) :
-            $user = new \WP_Error( 'role_not_allowed' );
+        if (!is_wp_error($user) && !array_intersect($user->roles, (array)$this->_getCurrent()->getRoles())) :
+            $user = new \WP_Error('role_not_allowed');
         endif;
-        
-        if( $user ) :
-            $user = call_user_func( array( $this->_getCurrent(), 'checkAuthenticate' ), $user, $username, $password );
+
+        if ($user) :
+            $user = call_user_func([$this->_getCurrent(), 'checkAuthenticate'], $user, $username, $password);
         endif;
-              
-        return $user;            
+
+        return $user;
     }
     
     /* = CONTROLEURS = */
@@ -141,7 +142,7 @@ final class Login extends \tiFy\App\Component
         else :
             $redirect_to = admin_url();
         endif;
-        
+
         $reauth = empty( $_REQUEST['reauth'] ) ? false : true;    
         $user = wp_signon( '', $secure_cookie );
 
@@ -155,7 +156,7 @@ final class Login extends \tiFy\App\Component
                     __( 'https://codex.wordpress.org/Cookies' ) ) );
             endif;
         endif;
-                
+
         if ( ! is_wp_error( $user ) && ! $reauth ) :
             wp_safe_redirect( $redirect_to );
             exit();

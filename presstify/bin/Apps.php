@@ -715,22 +715,11 @@ final class Apps
         endforeach;
 
         add_action('after_setup_theme', [$this, 'after_setup_theme'], 0);
-
-        //add_action('init', [$this, 'init'], 99);
     }
 
     /**
      * DECLENCHEURS
      */
-    /**
-     * DEBUG
-     */
-    final public function init()
-    {
-        var_dump(self::$Registered);
-        exit;
-    }
-
     /**
      * Après l'initialisation du thème
      */
