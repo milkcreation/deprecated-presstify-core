@@ -120,7 +120,7 @@ class Cron extends \tiFy\App\Core
             // Description de la tâche planifiée
             'desc'          => '',
             // Date d'exécution de la tâche planifiée
-            'timestamp'     => mktime(date('H') - 1, 0, 0, date('m'), date('d'), date('Y')),
+            'timestamp'     => date('U', mktime(2, 0, 0, 3, 3, 1975)),
             // Fréquence d'exécution de la tâche planifiée
             'recurrence'    => 'daily',
             // Arguments passés dans la tâche planifiée

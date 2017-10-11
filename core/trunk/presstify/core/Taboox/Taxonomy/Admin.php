@@ -8,8 +8,13 @@ abstract class Admin extends \tiFy\Core\Taboox\Admin
      */
     /**
      * Formulaire de saisie
+     *
+     * @param \WP_Term $term
+     * @param string $taxonomy
+     *
+     * @return void
      */
-    public function form( $term, $taxonomy )
+    public function form($term, $taxonomy)
     {
 
     }
