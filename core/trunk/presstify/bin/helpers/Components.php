@@ -5,7 +5,7 @@ namespace
     /** == Déclaration dynamique d'un composant == **/
     function tify_component_register($component)
     {
-        add_action( "tify_component_register", function() use ($component)
+        add_action( "tify_components_register", function() use ($component)
         {
             return tiFy\Components::register($component);
         });
