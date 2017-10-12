@@ -58,7 +58,7 @@ class TaxonomySelect extends \tiFy\Core\Taboox\Admin
 				'get' 		=> 'all' 
 			) 
 		);
-		
+
 		if( is_wp_error( $taxonomies ) )
 			return;
 		

@@ -6,35 +6,41 @@ namespace tiFy\Core\Forms\Addons\AjaxSubmit;
 
 class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
 {
-    /* = CONSTRUCTEUR = */
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
     public function __construct()
     {        
         // Définition de l'identifiant
         $this->ID = 'ajax_submit';
         
         // Définition des fonctions de callback
-        $this->callbacks = array(
-            'handle_redirect'           => array( 'function' => array( $this, 'cb_handle_redirect' ), 'order' => 99 ),
-            'form_after_display'        => array( $this, 'cb_form_after_display' )
-        );
+        $this->callbacks = [
+            'handle_redirect'           => ['function' => [$this, 'cb_handle_redirect'], 'order' => 99],
+            'form_after_display'        => [$this, 'cb_form_after_display']
+        ];
         
-        add_action( 'wp_ajax_tify_forms_ajax_submit', array( $this, 'wp_ajax' ) );
-        add_action( 'wp_ajax_nopriv_tify_forms_ajax_submit', array( $this, 'wp_ajax' ) );
-        
+        add_action('wp_ajax_tify_forms_ajax_submit', [$this, 'wp_ajax']);
+        add_action('wp_ajax_nopriv_tify_forms_ajax_submit', [$this, 'wp_ajax']);
+
         parent::__construct();
     }
-    
-    /* = CALLBACKS = */
+
+    /**
+     * DECLENCHEURS
+     */
     /** == Court-circuitage de la redirection après traitement == **/
-    public function cb_handle_redirect( &$redirect )
+    public function cb_handle_redirect(&$redirect)
     {
         $redirect = false;
     }    
     
     /** == Mise en queue du script de tratiement dans le footer == **/
     /* = @todo Limiter le nombre d'instance à 1 execution par formulaire =*/
-    public function cb_form_after_display( $form )
-    {    
+    public function cb_form_after_display($form)
+    {
         if( defined( 'DOING_AJAX' ) )
             return;
         
@@ -68,7 +74,7 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
                 };
 
             jQuery( document ).ready( function($){
-                // Définition des variables        
+                // Définition des variables
                 var ID          = '<?php echo $ID;?>',
                     $wrapper    = $( '#tiFyForm-'+ ID );
                                 
@@ -116,7 +122,7 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
                             $wrapper.trigger( 'tify_forms.ajax_submit.response', resp, ID );                                 
                         },
                         complete        : function(){
-                            $wrapper.trigger( 'tify_forms.ajax_submit.after', ID );  
+                            $wrapper.trigger( 'tify_forms.ajax_submit.after', ID );
                         }                    
                     });        
                     
@@ -131,6 +137,7 @@ class AjaxSubmit extends \tiFy\Core\Forms\Addons\Factory
     /* = Traitement ajax = */
     final public function wp_ajax()
     {
+        remove_filter(current_filter(), __METHOD__);
         do_action( 'tify_form_loaded' );
         
         $data = array( 'html' => $this->form()->display() );
