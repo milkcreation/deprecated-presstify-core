@@ -74,9 +74,9 @@ class HookSelector extends Admin
     					'get' => 'all'
 					)
 				);
-				
+
 				$args = $this->args;
-				
+
 				$args['exists'] = array();
 				
 				foreach( (array) $this->args['hooks'] as $n => $hook ) :

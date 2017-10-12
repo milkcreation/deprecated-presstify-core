@@ -80,7 +80,7 @@ class Recaptcha extends \tiFy\Core\Forms\FieldTypes\Factory
             
         if ( ! $resp->isSuccess() )                   
             $errors[] = array( 
-                'message'    => __( "La saisie de la protection antispam est incorrect", 'tify' ),
+                'message'    => __( "La saisie de la protection antispam est incorrecte.", 'tify' ),
                 'type'       => 'field',
                 'slug'       => $field->getSlug(),
                 'order'      => $field->getOrder()

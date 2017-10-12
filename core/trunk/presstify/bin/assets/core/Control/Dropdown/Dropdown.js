@@ -66,7 +66,7 @@ jQuery( document ).ready( function($){
 			$( picker.append ).append( $clone );
 		}
 			
-		var offset = getOffset( picker, $(this) );	
+		var offset = getOffset( picker, $(this) );
 		$picker.css( offset ).toggleClass('active');
 		$picker.outerWidth( $closest.outerWidth() );
 		$closest.toggleClass('active');
@@ -85,10 +85,10 @@ jQuery( document ).ready( function($){
         var viewWidth 	= $append.outerWidth() + $append.scrollLeft();
         var viewHeight	= $append.outerHeight() + $append.scrollTop();
         var offset 		= input.offset();
-        
+
         offset.top 	+= inputHeight /*+ parseInt( input.closest('[data-tify_control="dropdown"]').css( "border-top-width" ) )*/;
         offset.left -= parseInt( input.closest('[data-tify_control="dropdown"]').css( "border-left-width" ) );
-        
+
         offset.left -=
             Math.min(offset.left, (offset.left + dpWidth > viewWidth && viewWidth > dpWidth) ?
             Math.abs( offset.left + dpWidth - viewWidth ) : 0 );
