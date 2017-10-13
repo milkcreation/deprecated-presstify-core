@@ -297,4 +297,28 @@ namespace
     {
         return tiFy\Core\Templates\Templates::$Current;
     }
+
+    // --------------------------------------------------------------------------------------------------------------------------
+    /* = ROUTER = */
+    /**
+     * Déclaration d'une route
+     *
+     * @uses \tiFy\Core\Router\Router::register()
+     * @return \tiFy\Core\Router\Factory
+     */
+    function tify_router_register($id, $attrs = [])
+    {
+        return tiFy\Core\Router\Router::register($id, $attrs = []);
+    }
+
+    /**
+     * Récupération de l'identifiant du contenu accroché à une route
+     *
+     * @uses \tiFy\Core\Router\Router::get()
+     * @return int
+     */
+    function tify_router_get_selected($id)
+    {
+        return tiFy\Core\Router\Router::get($id)->getSelected();
+    }
 }
