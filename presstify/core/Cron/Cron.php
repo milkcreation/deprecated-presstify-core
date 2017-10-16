@@ -44,25 +44,13 @@ class Cron extends \tiFy\App\Core
         // Enregistrement de tâche planifiée
         do_action('tify_cron_register');
 
-        // Nettoyage des anciennes valeurs de cron
-        if (! get_option('tFyCron_sanitize', '')) :
-            foreach ((array)_get_cron_array() as $timestamp => $cron) :
-                foreach ($cron as $hook => $attrs) :
-                    if (preg_match('#tiFyCoreCron--#', $hook)) :
-                        wp_clear_scheduled_hook($hook);
-                    endif;
-                endforeach;
-            endforeach;
-            add_option('tFyCron_sanitize', '1.2.427');
-        endif;
-
         // Exécution d'une tâche à la volée (test)
         if (!isset($_REQUEST['tFyCronDoing'])) :
             return;
         endif;
-
+        exit;
         if ($schedule = self::get($_REQUEST['tFyCronDoing'])) :
-            call_user_func_array($schedule['handle'], $schedule['args']);
+            do_action_ref_array($schedule['hook'], [$schedule]);
             exit;
         endif;
     }
@@ -120,21 +108,29 @@ class Cron extends \tiFy\App\Core
             // Description de la tâche planifiée
             'desc'          => '',
             // Date d'exécution de la tâche planifiée
-            'timestamp'     => date('U', mktime(2, 0, 0, 3, 3, 1975)),
+            'timestamp'     => date('U', mktime(2, 0, 0, 5, 27, 2003)),
             // Fréquence d'exécution de la tâche planifiée
             'recurrence'    => 'daily',
-            // Arguments passés dans la tâche planifiée
-            'args'          => [],
             // Execution du traitement de la tâche planifiée
             'handle'        => '',
             // Attributs de journalisation des données
             'log'           => true,
+            // Attributs complémentaires passés en argument de la tâche planifiée
+            'args'          => [],
             // Désenregistrement
             'unregister'    => false
         ];
 
         // Traitement des attributs de configuration
         $attrs = wp_parse_args($attrs, $defaults);
+
+        // Activaction/Désactivation du désenregistrement
+        if ($attrs['unregister']) :
+            $unregister = true;
+        else :
+            $unregister = false;
+        endif;
+        unset($attrs['unregister']);
 
         // Identifiant unique
         $attrs['id'] = $id;
@@ -193,23 +189,19 @@ class Cron extends \tiFy\App\Core
             $attrs['log'] = !is_array($attrs['log']) ? $logdef : \wp_parse_args($attrs['log'], $logdef);
         endif;
 
-        // Passage des attributs de configuration en tant qu'argument de la tâche planifiée
-        $_attrs = $attrs;
-        unset($_attrs['args']);
-        array_push($attrs['args'], $_attrs);
-
         // Définition des attributs de configuration
         self::$Schedules[$id] = $attrs;
 
         // Ajustement de la récurrence
-        if (($schedule = \wp_get_schedule($attrs['hook'], $attrs['args'])) && ($schedule !== $attrs['recurrence'])) :
+        if (($schedule = \wp_get_schedule($attrs['hook'], [$attrs])) && ($schedule !== $attrs['recurrence'])) :
             self::unregister($id);
-        elseif($attrs['unregister']) :
+        elseif($unregister) :
             self::unregister($id);
         endif;
 
-        if (!\wp_get_schedule($attrs['hook'], $attrs['args'])) :
-            \wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], $attrs['args']);
+
+        if (!\wp_get_schedule($attrs['hook'], [$attrs])) :
+            \wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], [$attrs]);
             self::$Schedules[$id] = $attrs;
         endif;
 
@@ -235,7 +227,7 @@ class Cron extends \tiFy\App\Core
                 continue;
             endif;
             foreach ($cron[$schedule['hook']] as $key => $attrs) :
-                \wp_clear_scheduled_hook($schedule['hook'], $attrs['args']);
+                \wp_unschedule_event($timestamp, $schedule['hook'], $attrs['args']);
             endforeach;
         endforeach;
 

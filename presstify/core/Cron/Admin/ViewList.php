@@ -17,7 +17,7 @@ class ViewList extends \tiFy\Core\Templates\Admin\Model\Custom
         <li style="margin:0 0 20px;">
             <h3 style="margin:0 0 5px;"><?php echo $attrs['title'];?></h3>
             <div><em><?php echo $attrs['desc'];?></em></div>
-            <?php if ($next_timestamp = wp_next_scheduled($attrs['hook'], $attrs['args'])) :?>
+            <?php if ($next_timestamp = wp_next_scheduled($attrs['hook'], [$attrs])) :?>
             <div><?php printf( __('<b>Prochaine exécution de la tâche :</b> %s', 'tify'), mysql2date(sprintf(__('%s à %s', 'tify'), get_option('date_format'), get_option('time_format')), get_date_from_gmt(date('Y-m-d H:i:s', $next_timestamp), 'Y-m-d H:i:s')), true);?></div>
             <?php endif;?>
         </li>

@@ -29,10 +29,9 @@ class Cron extends \tiFy\Core\Cron\Schedule
         ) :
             foreach ($emails as $e) :
                 $params = unserialize(base64_decode($e->mq_params));
-                if (MailerNew::send($params)) :
-                    Queue::getDb()->handle()->delete_by_id($e->mq_id);
-                    $this->getLogger()->notice(__('Email expédié avec succès', 'tify'), $params);
-                endif;
+                Queue::getDb()->handle()->delete_by_id($e->mq_id);
+                MailerNew::send($params);
+                $this->getLogger()->notice(__('Email expédié avec succès', 'tify'), $params);
             endforeach;
         endif;
     }

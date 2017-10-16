@@ -8,7 +8,7 @@
  *      @var string $post_status
  *      @var int $max
  * }
- * @var $query Requête de récupération des éléments
+ * @var $wp_query Requête de récupération des éléments
  */
 ?>
 

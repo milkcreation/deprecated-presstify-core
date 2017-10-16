@@ -1,5 +1,4 @@
 <?php
-
 namespace tiFy\App;
 
 abstract class Config extends Factory
