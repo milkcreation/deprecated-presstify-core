@@ -159,6 +159,9 @@ class Schedule
         $stream = new RotatingFileHandler($attrs['basedir'] . '/' . $attrs['name'] . '.log', $attrs['rotate']);
         $stream->setFormatter($formatter);
         $this->Logger = new Logger($this->getId());
+        if ($timezone = get_option('timezone_string')) :
+            $this->Logger->setTimezone(new \DateTimeZone($timezone));
+        endif;
         $this->Logger->pushHandler($stream);
     }
 
@@ -193,19 +196,21 @@ class Schedule
      */
     final public static function _handle()
     {
-        $args = func_get_args();
-        $schedule_attrs = end($args);
-
         // Instanciation de la classe
-        $Inst = new static($schedule_attrs);
+        $Inst = new static(func_get_arg(0));
 
         // Désactivation de la limitation d'exécution PHP
         set_time_limit(0);
 
-        // Vérrouillage
+        /**
+         * Verrouillage
+         * @todo
+         */
 
-        // Rapport
-        // @todo
+        /**
+         * Rapport
+         * @todo
+         */
         /*\add_option( 
             'tFy_cronrep-'. $Inst->getId(),
             array( 
@@ -221,7 +226,7 @@ class Schedule
             HOUR_IN_SECONDS
         );*/
 
-        return call_user_func_array([$Inst, 'handle'], func_get_args());
+        return call_user_func([$Inst, 'handle']);
     }
 
     /**

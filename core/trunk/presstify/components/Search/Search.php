@@ -70,7 +70,6 @@ class Search extends \tiFy\App\Component
     final public static function query_vars($aVars)
     {
         $aVars[] = '_tfysearch';
-        // $aVars[] = '_s';
 
         return $aVars;
     }

@@ -39,7 +39,7 @@ class Factory extends \tiFy\App\Factory
      * Instance de requête join des taxonomies
      * @var string
      */
-    private $JoinTax                    = 0;
+    private $JoinTax                    = [];
 
     /**
      * DECLENCHEURS
@@ -64,19 +64,26 @@ class Factory extends \tiFy\App\Factory
         endif;
 
         // Définition du terme de recherche
-        if(empty($this->Attrs['s'])) :
-            $this->Attrs['s'] =  $WP_Query->get('s', '');
+        if(!$this->getAttr('s')) :
+            $this->Attrs[0]['s'] =  $WP_Query->get('s', '');
         endif;
 
-        // Traitement des variables de requêtes
-        $this->QueryVars = $this->_parseQueryVars($this->Attrs, $WP_Query);
+        // Initialisation du paramètre de recherche global parmis tous les types de post (exclusion de recherche omise)
+        if ($this->hasGroup()) :
+            $post_types = array_keys(get_post_types());
+            $this->Attrs[0]['post_type'] = $post_types;
+            $WP_Query->set('post_type', $post_types);
+        endif;
+
+        // Traitement des arguments de requête
+        $WP_Query->query_vars = $this->_parseQueryVars(0, $WP_Query);
 
         // Filtrages des conditions de requêtes
-        add_filter('posts_search', [$this, 'posts_search'], 10, 2);
-        add_filter('posts_clauses', [$this, 'posts_clauses'], 10, 2);
+        self::tFyAppFilterAdd('posts_search', null, 10, 2);
+        self::tFyAppFilterAdd('posts_clauses', null, 10, 2);
 
-        // Empêche l'execution multiple du filtre
-        \remove_filter(current_filter(), __METHOD__, 10);
+        // Empêcher l'execution multiple du filtre
+        \remove_filter(current_filter(), [$this, current_filter()], 10);
     }
 
     /**
@@ -84,8 +91,8 @@ class Factory extends \tiFy\App\Factory
      */
     final public function posts_search($search, $WP_Query)
     {
-        // Empêche l'execution multiple du filtre
-        \remove_filter(current_filter(), __METHOD__, 10);
+        // Empêcher l'execution multiple du filtre
+        \remove_filter(current_filter(), [$this, current_filter()], 10);
 
         // Suppression des conditions de recherche originales
         return '';
@@ -105,11 +112,170 @@ class Factory extends \tiFy\App\Factory
      *      @var string $fields
      *      @var string $limits
      * }
-     * @param \WP_Query
+     * @param WP_Query $WP_Query
      *
      * @return array
      */
-    final public function posts_clauses($clauses, $WP_Query)
+    final public function posts_clauses($clauses, &$WP_Query)
+    {
+        global $wpdb;
+
+        if (!$groups_attrs = $this->getGroupsAttrList()) :
+            $attrs = $this->getAttrList();
+
+            // Traitement des variables de requêtes
+            $clauses = $this->_filterClauses($clauses, 0, $WP_Query);
+        else :
+            $group_clauses = []; $group_query = [];
+
+            foreach ($groups_attrs as $i => $group_attrs) :
+                // Traitement des arguments de requête
+                $this->_parseQueryVars($i, $WP_Query);
+
+                // Traitement des variables de requêtes
+                $gc = $this->_filterClauses($clauses, $i, $WP_Query);
+                $group_clauses[] = $gc;
+
+                if (!empty($gc['groupby'])) :
+                    $gc['groupby'] = 'GROUP BY ' . $gc['groupby'];
+                endif;
+                if (!empty($gc['orderby'])) :
+                    $gc['orderby'] = 'ORDER BY ' . $gc['orderby'];
+                endif;
+
+                // Préparation de la requête
+                $group_query[] = "({$wpdb->posts}.ID IN (SELECT * FROM(SELECT {$gc['distinct']} {$wpdb->posts}.ID FROM {$wpdb->posts} {$gc['join']} WHERE 1=1 {$gc['where']} {$gc['groupby']} {$gc['orderby']} {$gc['limits']}) as tFySearchGroupQuery{$i}) AND @tFySearchGroup:=if({$wpdb->posts}.ID, {$i}, 0))";
+            endforeach;
+
+            /*
+             * DEBUG
+            $wpdb->query("SET @tFySearchGroup:=0;");
+            $query = "SELECT {$wpdb->posts}.*, @tFySearchGroup as tFySearchGroup FROM {$wpdb->posts} WHERE 1";
+            $query .= " AND (". join(" OR ", $group_query) . ")";
+            $r = $wpdb->get_results($query);
+            var_dump($r);
+            */
+
+            /**
+             * Extraction des conditions de requête
+             * @var string $where
+             * @var string $groupby
+             * @var string $join
+             * @var string $orderby
+             * @var string $distinct
+             * @var string $fields
+             * @var string $limits
+             */
+            extract($clauses);
+
+            $where = " AND (". join(" OR ", $group_query) . ")";
+            $groupby = "";
+            $join = "";
+            $orderby = "@tFySearchGroup ASC";
+            $distinct = "";
+            $fields .= ", @tFySearchGroup as tFySearchGroup";
+            $limits = "";
+
+            $clauses = compact(array_keys($clauses));
+
+            // Filtre de pré-requête des contenus - Définition de la variable MySQL de qualification du groupe
+            self::tFyAppFilterAdd('posts_pre_query', null, 10, 2);
+        endif;
+
+        // Empêcher l'execution multiple du filtre
+        \remove_filter(current_filter(), [$this, current_filter()], 10);
+
+        return $clauses;
+    }
+
+    /**
+     * Pré requête de récupération des contenus
+     *
+     * @param \WP_Post[] $posts
+     * @param WP_Query $WP_Query
+     *
+     * @return null|\WP_Post[]
+     */
+    public function posts_pre_query($posts = null, &$WP_Query)
+    {
+        global $wpdb;
+
+        // Définition de la variable MySQL de qualification du groupe
+        $wpdb->query("SET @tFySearchGroup:=0;");
+
+        // Empêcher l'execution multiple du filtre
+        \remove_filter(current_filter(), [$this, current_filter()], 10);
+
+        return $posts;
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Pré-Traitement des variables de requêtes
+     *
+     * @param int $group Index d'identification du groupe
+     * @param \WP_Query $WP_Query
+     *
+     * @return $mixed
+     */
+    private function _parseQueryVars($group = 0, $WP_Query)
+    {
+        // Récuperation des attributs de configuration
+        if (! $attrs = $this->getAttrList($group)) :
+            $attrs = [];
+        endif;
+        $QueryVars = [];
+
+        // Traitement des variables dédiées
+        foreach ($attrs as $key => $value) :
+            if (!in_array($key, self::$DedicatedQueryVars)) :
+                continue;
+            endif;
+            $QueryVars[$key] = $value;
+        endforeach;
+
+        $defaults = [
+            'search_fields'     => ['post_title','post_excerpt','post_content'],
+            'search_metas'      => [],
+            'search_tags'       => false
+        ];
+        $QueryVars = \wp_parse_args($QueryVars, $defaults);
+
+        /**
+         * Traitement des variables natives de WP_Query
+         * @see \WP_Query::fill_query_vars()
+         */
+        foreach ($WP_Query->fill_query_vars($attrs) as $k => $v) :
+            if (!isset($attrs[$k])) :
+                continue;
+            endif;
+            $QueryVars[$k] = $v;
+        endforeach;
+        $QueryVars = \wp_parse_args($QueryVars, $WP_Query->query_vars);
+
+        return $this->QueryVars[$group] = $QueryVars;
+    }
+
+    /**
+     * Filtrage des conditions de requête
+     *
+     * @param array $clauses {
+     *  Liste des conditions de requête
+     *
+     *  @var string $where
+     *  @var string $groupby
+     *  @var string $join
+     *  @var string $orderby
+     *  @var string $distinct
+     *  @var string $fields
+     *  @var string $limits
+     * }
+     * @param int $group Index d'identification du groupe
+     * @param $WP_Query
+     */
+    private function _filterClauses($clauses, $group = 0, $WP_Query)
     {
         global $wpdb;
 
@@ -125,44 +291,39 @@ class Factory extends \tiFy\App\Factory
          */
         extract($clauses);
 
-        $where .= $this->_parseSearch($this->QueryVars, $WP_Query);
+        $where .= $this->_parseSearch($this->QueryVars[$group], $group, $WP_Query);
 
-        if ($this->JoinMeta) :
-            foreach($this->JoinMeta as $i => $meta_key) :
-                $join .= " LEFT OUTER JOIN {$wpdb->postmeta} as tfys_meta{$i} ON ({$wpdb->posts}.ID = tfys_meta{$i}.post_id AND tfys_meta{$i}.meta_key = '{$meta_key}')";
+        if (! empty($this->JoinMeta[$group])) :
+            foreach($this->JoinMeta[$group] as $i => $meta_key) :
+                $join .= " LEFT OUTER JOIN {$wpdb->postmeta} as tfys_meta_g{$group}i{$i} ON ({$wpdb->posts}.ID = tfys_meta_g{$group}i{$i}.post_id AND tfys_meta_g{$group}i{$i}.meta_key = '{$meta_key}')";
             endforeach;
         endif;
 
-        if ($this->JoinTax) :
+        if (! empty($this->JoinTax[$group])) :
             $i = 1;
-            $join .= " LEFT OUTER JOIN {$wpdb->term_relationships} AS tfys_tmr{$i} ON ({$wpdb->posts}.ID = tfys_tmr{$i}.object_id)";
-            $join .= " LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tfys_tmt{$i} ON (tfys_tmr{$i}.term_taxonomy_id = tfys_tmt{$i}.term_taxonomy_id  AND tfys_tmt{$i}.taxonomy = 'tify_search_tag')";
-            $join .= " LEFT OUTER JOIN {$wpdb->terms} AS tfys_tms{$i} ON (tfys_tmt{$i}.term_id = tfys_tms{$i}.term_id)";
+            $join .= " LEFT OUTER JOIN {$wpdb->term_relationships} AS tfys_tmr_g{$group}i{$i} ON ({$wpdb->posts}.ID = tfys_tmr_g{$group}i{$i}.object_id)";
+            $join .= " LEFT OUTER JOIN {$wpdb->term_taxonomy} AS tfys_tmt_g{$group}i{$i} ON (tfys_tmr_g{$group}i{$i}.term_taxonomy_id = tfys_tmt_g{$group}i{$i}.term_taxonomy_id  AND tfys_tmt_g{$group}i{$i}.taxonomy = 'tify_search_tag')";
+            $join .= " LEFT OUTER JOIN {$wpdb->terms} AS tfys_tms_g{$group}i{$i} ON (tfys_tmt_g{$group}i{$i}.term_id = tfys_tms_g{$group}i{$i}.term_id)";
         endif;
 
-        if ($this->QueryVars['search_metas'] || $this->QueryVars['search_tags']) :
+        if ($this->QueryVars[$group]['search_metas'] || $this->QueryVars[$group]['search_tags']) :
             $groupby = "{$wpdb->posts}.ID";
         endif;
-
-        // Empêche l'execution multiple du filtre
-        \remove_filter(current_filter(), __METHOD__, 10);
 
         return compact(array_keys($clauses));
     }
 
     /**
-     * CONTROLEURS
-     */
-    /**
      * Traitement de la requête de recherche
      * @see \WP_Query::parse_search()
      *
      * @param array $q Variables de requête
-     * @pram \WP_Query $WP_Query Instance de la classe de requête de Wordpress
+     * @param int $group Index d'identification du groupe
+     * @param \WP_Query $WP_Query Instance de la classe de requête de Wordpress
      *
      * @return string
      */
-    private function _parseSearch(&$q, $WP_Query)
+    private function _parseSearch(&$q, $group = 0, $WP_Query)
     {
         global $wpdb;
 
@@ -245,9 +406,9 @@ class Factory extends \tiFy\App\Factory
              * Recherche parmis les metadonnées définies
              */
             foreach ($q['search_metas'] as $i => $search_meta) :
-                $this->JoinMeta[$i] = $search_meta;
+                $this->JoinMeta[$group][$i] = $search_meta;
 
-                $search_parts[] = "(tfys_meta{$i}.meta_value {$like_op} %s)";
+                $search_parts[] = "(tfys_meta_g{$group}i{$i}.meta_value {$like_op} %s)";
                 $search_parts_args[] = $like;
             endforeach;
 
@@ -255,8 +416,8 @@ class Factory extends \tiFy\App\Factory
              * Recherche parmis les mots-clefs de recherche
              */
             if ($q['search_tags']) :
-                $this->JoinTax = 1;
-                $search_parts[] = "(tfys_tms{$this->JoinTax}.name {$like_op} %s)";
+                $this->JoinTax[$group] = 1;
+                $search_parts[] = "(tfys_tms_g{$group}i{$this->JoinTax}.name {$like_op} %s)";
                 $search_parts_args[] = $like;
             endif;
 
@@ -273,7 +434,10 @@ class Factory extends \tiFy\App\Factory
         endforeach;
 
         if (! empty($search)) :
-            $search = " AND ({$search}) ";
+            $search = " AND ({$search})";
+            if ($search_post_types = $this->_parseSearchPostTypes($q, $group, $WP_Query)) :
+                $search .= $search_post_types;
+            endif;
             if (! is_user_logged_in() ) :
                 $search .= " AND ({$wpdb->posts}.post_password = '') ";
             endif;
@@ -283,45 +447,39 @@ class Factory extends \tiFy\App\Factory
     }
 
     /**
-     * Pré-Traitement des variables de requêtes
+     * Traitement des types de post de la requête de recherche
      *
-     * @param mixed $attrs
-     * @param \WP_Query $WP_Query
+     * @param array $q Variables de requête
+     * @param int $group Index d'identification du groupe
+     * @param \WP_Query $WP_Query Instance de la classe de requête de Wordpress
      *
-     * @return $mixed
+     * @return string
      */
-    private function _parseQueryVars($attrs = [], &$WP_Query)
+    private function _parseSearchPostTypes(&$q, $group = 0, $WP_Query)
     {
-        $QueryVars = [];
+        global $wpdb;
 
-        // Traitement des variables dédiées
-        foreach ($attrs as $key => $value) :
-            if (!in_array($key, self::$DedicatedQueryVars)) :
-                continue;
+        $where = "";
+        $post_type = (isset($q['post_type'])) ?  $q['post_type'] : 'any';
+
+        if ($post_type === $WP_Query->get('post_type')) :
+            return $where;
+        endif;
+
+        if ('any' == $post_type) :
+            $in_search_post_types = get_post_types(['exclude_from_search' => false]);
+            if (empty($in_search_post_types)) :
+                $where .= " AND 1=0 ";
+            else :
+                $where .= " AND {$wpdb->posts}.post_type IN ('" . join("', '", array_map('esc_sql', $in_search_post_types)) . "')";
             endif;
-            $QueryVars[$key] = $value;
-        endforeach;
+        elseif (!empty($post_type) && is_array($post_type)) :
+            $where .= " AND {$wpdb->posts}.post_type IN ('" . join("', '", esc_sql($post_type)) . "')";
+        else :
+            $where .= $wpdb->prepare(" AND {$wpdb->posts}.post_type = %s", $post_type);
+        endif;
 
-        $defaults = [
-            'search_fields'     => ['post_title','post_excerpt','post_content'],
-            'search_metas'      => [],
-            'search_tags'       => false
-        ];
-        $QueryVars = \wp_parse_args($QueryVars, $defaults);
-
-        /**
-         * Traitement des variables natives de WP_Query
-         * @see \WP_Query::fill_query_vars()
-         */
-        foreach ($WP_Query->fill_query_vars($attrs) as $k => $v) :
-            if (!isset($attrs[$k])) :
-                continue;
-            endif;
-            $QueryVars[$k] = $v;
-        endforeach;
-        $WP_Query->query_vars = \wp_parse_args($QueryVars, $WP_Query->query_vars);
-
-        return $WP_Query->query_vars;
+        return $where;
     }
 
     /**
@@ -336,8 +494,22 @@ class Factory extends \tiFy\App\Factory
         // Instanciation de la classe
         $instance = new static();
         $instance->Id = $id;
-        $instance->Attrs = $attrs;
 
+        // Traitement des attributs de configuration
+        $groups_attrs = false;
+        if (isset($attrs['groups'])) :
+            $groups_attrs = $attrs['groups'];
+            unset($attrs['groups']);
+        endif;
+        $instance->Attrs[0] = $attrs;
+
+        if ($groups_attrs) :
+            foreach ($groups_attrs as $i => $group_attrs) :
+                $instance->Attrs[$i+1] = $group_attrs;
+            endforeach;
+        endif;
+
+        // Déclaration d'événement de déclenchement
         add_action('pre_get_posts', [$instance, 'pre_get_posts'], 99);
 
         return $instance;
@@ -353,4 +525,66 @@ class Factory extends \tiFy\App\Factory
         return $this->Id;
     }
 
+    /**
+     * Récupération de la liste des attributs
+     *
+     * @param int $group Groupe des attributs
+     *
+     * @return null|array
+     */
+    final public function getAttrList($group = 0)
+    {
+        if (isset($this->Attrs[$group])) :
+            return $this->Attrs[$group];
+        endif;
+    }
+
+    /**
+     * Récupération d'un attribut
+     *
+     * @param string $name
+     * @param mixed $default Valeur par défaut de l'attribut
+     * @param int $group Groupe de l'attribut
+     *
+     * @return array
+     */
+    final public function getAttr($name, $default = '', $group = 0)
+    {
+        if (!$attrs = $this->getAttrList($group)) :
+            return $default;
+        endif;
+
+        if (isset($attrs[$name])) :
+            return $attrs[$name];
+        endif;
+
+        return $default;
+    }
+
+    /**
+     * Vérification d'existance de resultat de recherche groupés
+     *
+     * @return bool
+     */
+    final public function hasGroup()
+    {
+        return count($this->Attrs) > 1;
+    }
+
+    /**
+     * Récupération de la liste des attributs des groupes
+     *
+     * @return null|array
+     */
+    final public function getGroupsAttrList()
+    {
+        if (!$this->hasGroup()) :
+            return;
+        endif;
+
+        $attrs = $this->Attrs;
+        unset($attrs[0]);
+
+        return $attrs;
+    }
 }

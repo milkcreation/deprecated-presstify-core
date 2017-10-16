@@ -6,158 +6,190 @@ namespace tiFy\Core\Forms\Addons\User;
 
 class User extends \tiFy\Core\Forms\Addons\Factory
 {
-    /* = ARGUMENTS = */
-    // Configuration
-    /// Identifiant
+    /**
+     * Identifiant unique de qualification de l'addon
+     * @var string
+     */
     public $ID = 'user';
-    
-    /// Définition des options de formulaire par défaut
-    public $default_form_options = array(
-        'roles'            => array()
-    );
-    
-    // Définition des options de champ de formulaire par défaut
-    // Champs natif : user_login (requis) | role | first_name | last_name | nickname | display_name | user_email (requis) | user_url | description | user_pass 
-    public $default_field_options = array(                     
-        'userdata'        => false,                                      
-    );
-    
-    // Paramètres
-    /// Liste des roles autorisés
-    private $Roles                = array();
-    
+
+    /**
+     * Liste des options (paramètres) par défaut du formulaire
+     * @var array
+     */
+    public $default_form_options = [
+        'roles' => []
+    ];
+
+    /**
+     * Liste des options (paramètres) par défaut des champs de formulaire
+     * Liste des champs natifs : user_login (requis)|role|first_name|last_name|nickname|display_name|user_email (requis)|user_url|description|user_pass
+     * @var array
+     */
+    public $default_field_options = [
+        'userdata' => false,
+    ];
+
+    /**
+     * Liste des rôles concernés
+     * @var array
+     */
+    private $Roles = [];
+
     /// Identifiant de l'utilisateur
     protected $UserID             = 0;
     
     /// Page d'édition du profil utilisateur
     private $isProfile            = false;
-    
-    /* = CONTROLEUR = */
+
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
     public function __construct()
-    {    
+    {
         // Définition des fonctions de callback
-        $this->callbacks = array(
-            'form_set_current'        => array( $this, 'cb_form_set_current' ),
-            'handle_check_field'    => array( $this, 'cb_handle_check_field' ),
-            'handle_submit_request'    => array( $this, 'cb_handle_submit_request' )                        
-        );
-        
+        $this->callbacks = [
+            'form_set_current'      => [$this, 'cb_form_set_current'],
+            'handle_check_field'    => [$this, 'cb_handle_check_field'],
+            'handle_submit_request' => [$this, 'cb_handle_submit_request']
+        ];
+
         parent::__construct();
-        
+
         // Définition de l'id de l'utilisateur à éditer
-        $this->UserID             = get_current_user_id();
-        $this->isProfile         = $this->getUserID() ? true : false;
+        $this->UserID = get_current_user_id();
+        $this->isProfile = $this->getUserID() ? true : false;
     }
 
-    /* = COURT-CIRCUITAGE = */    
-    /** == Initialisation du formulaire == **/
-    public function cb_form_set_current( $Form )
+    /**
+     * COURT-CIRCUITAGE
+     */
+    /**
+     * Initialisation du formulaire
+     *
+     * @param \tiFy\Core\Forms\Form\Form $Form
+     *
+     * @return void
+     */
+    public function cb_form_set_current($Form)
     {
         // Mise à jour des rôles
-        foreach( $this->getRoles() as $name => $attrs ) :
+        foreach ($this->getRoles() as $name => $attrs) :
             // Création du rôle
-            if( ! $role = get_role( $name ) ) :
-                $role = add_role( $name, $attrs['display_name'] );
+            if (!$role = get_role($name)) :
+                $role = add_role($name, $attrs['display_name']);
             endif;
-            
+
             // Mise à jour des habilitations
-            if( isset( $attrs['capabilities'] ) ) :
-                foreach( (array) $attrs['capabilities'] as $cap => $grant ) :
-                    if( ! isset( $role->capabilities[$cap] ) ||  ( $role->capabilities[$cap] != $grant ) ) :    
-                        $role->add_cap( $cap, $grant );
+            if (isset($attrs['capabilities'])) :
+                foreach ((array)$attrs['capabilities'] as $cap => $grant) :
+                    if (!isset($role->capabilities[$cap]) || ($role->capabilities[$cap] != $grant)) :
+                        $role->add_cap($cap, $grant);
                     endif;
                 endforeach;
-            endif;        
+            endif;
         endforeach;
-        
+
         // Modification des attributs de champs
-        foreach( $this->fields() as $field ) :
+        foreach ($this->fields() as $field) :
             // Bypass
-            if( ! $userdata = $this->getFieldAttr( $field, 'userdata', false  ) )
+            if (!$userdata = $this->getFieldAttr($field, 'userdata', false)) {
                 continue;
-            if( $userdata === 'user_pass' ) :
-                $field->setAttr( 'onpaste', 'off' );
-                $field->setAttr( 'autocomplete', 'off' );
-            endif;    
+            }
+            if ($userdata === 'user_pass') :
+                $field->setAttr('onpaste', 'off');
+                $field->setAttr('autocomplete', 'off');
+            endif;
         endforeach;
-    }                    
-                            
-    /** == Vérification d'intégrité d'un champ == **/
-    public function cb_handle_check_field( &$errors, $field )
+    }
+
+    /**
+     * Vérification d'intégrité d'un champ
+     *
+     * @param array $errors
+     * @param \tiFy\Core\Forms\Form\Field $field
+     */
+    public function cb_handle_check_field(&$errors, $field)
     {
         // Bypass
-        if( ! $userdata = $this->getFieldAttr( $field, 'userdata', false  ) )
+        if (!$userdata = $this->getFieldAttr($field, 'userdata', false)) :
             return;
-        
-        if( ! $this->isNativeUserData( $userdata ) )
+        endif;
+
+        if (!$this->isNativeUserData($userdata)) :
             return;
-        
-        if( ! in_array( $userdata, array( 'user_login', 'user_email', 'role' ) ) )
+        endif;
+
+        if (!in_array($userdata, ['user_login', 'user_email', 'role'])) :
             return;
-        
-        switch( $userdata ) :
+        endif;
+
+        switch ($userdata) :
             /// Identifiant de connexion
             case 'user_login' :
-                if( ! $this->isProfile() && get_user_by( 'login', $field->getValue() ) ) :
-                    $errors[] = __( 'Cet identifiant est déjà utilisé par un autre utilisateur', 'tify' );
+                if (!$this->isProfile() && get_user_by('login', $field->getValue())) :
+                    $errors[] = __('Cet identifiant est déjà utilisé par un autre utilisateur', 'tify');
                 endif;
-                
-                if( is_multisite() ) :                    
+
+                if (is_multisite()) :
                     // Lettres et/ou chiffres uniquement
                     $user_name = $field->getValue();
                     $orig_username = $user_name;
-                    $user_name = preg_replace( '/\s+/', '', sanitize_user( $user_name, true ) );        
-                    if ( $user_name != $orig_username || preg_match( '/[^a-z0-9]/', $user_name ) ) :
-                        $_errors[] =  __( 'L\'identifiant de connexion ne devrait contenir que des lettres minuscules (a-z) et des chiffres', 'tify' );
+                    $user_name = preg_replace('/\s+/', '', sanitize_user($user_name, true));
+                    if ($user_name != $orig_username || preg_match('/[^a-z0-9]/', $user_name)) :
+                        $_errors[] = __('L\'identifiant de connexion ne devrait contenir que des lettres minuscules (a-z) et des chiffres',
+                            'tify');
                     endif;
-                    
+
                     // Identifiant réservés
-                    $illegal_names = get_site_option( 'illegal_names' );
-                    if ( ! is_array( $illegal_names ) ) :
-                        $illegal_names = array(  'www', 'web', 'root', 'admin', 'main', 'invite', 'administrator' );
-                        add_site_option( 'illegal_names', $illegal_names );
+                    $illegal_names = get_site_option('illegal_names');
+                    if (!is_array($illegal_names)) :
+                        $illegal_names = ['www', 'web', 'root', 'admin', 'main', 'invite', 'administrator'];
+                        add_site_option('illegal_names', $illegal_names);
                     endif;
-                    if ( in_array( $user_name, $illegal_names ) ) :
-                        $_errors[] =  __( 'Désolé, cet identifiant de connexion n\'est pas permis', 'tify' );
+                    if (in_array($user_name, $illegal_names)) :
+                        $_errors[] = __('Désolé, cet identifiant de connexion n\'est pas permis', 'tify');
                     endif;
-                    
+
                     // Identifiant réservés personnalisés
-                    $illegal_logins = (array) apply_filters( 'illegal_user_logins', array() );            
-                    if ( in_array( strtolower( $user_name ), array_map( 'strtolower', $illegal_logins ) ) ) :
-                        $_errors[] =  __( 'Désolé, cet identifiant de connexion n\'est pas permis', 'tify' );
+                    $illegal_logins = (array)apply_filters('illegal_user_logins', []);
+                    if (in_array(strtolower($user_name), array_map('strtolower', $illegal_logins))) :
+                        $_errors[] = __('Désolé, cet identifiant de connexion n\'est pas permis', 'tify');
                     endif;
-                    
+
                     // Longueur minimale
-                    if ( strlen( $user_name ) < 4 )
-                        $_errors[] =  __( 'L\'identifiant de connexion doit contenir au moins 4 caractères', 'tify' );
-                    
+                    if (strlen($user_name) < 4)
+                        $_errors[] = __('L\'identifiant de connexion doit contenir au moins 4 caractères', 'tify');
+
                     // Longueur maximale
-                    if ( strlen( $user_name ) > 60 )
-                        $_errors[] =  __( 'L\'identifiant de connexion ne doit pas contenir plus de 60 caractères', 'tify' );
-                    
+                    if (strlen($user_name) > 60)
+                        $_errors[] = __('L\'identifiant de connexion ne doit pas contenir plus de 60 caractères',
+                            'tify');
+
                     // Lettres obligatoire
-                    if ( preg_match( '/^[0-9]*$/', $user_name ) )
-                        $_errors[] = __( 'L\'identifiant de connexion doit aussi contenir des lettres', 'tify' );
+                    if (preg_match('/^[0-9]*$/', $user_name))
+                        $_errors[] = __('L\'identifiant de connexion doit aussi contenir des lettres', 'tify');
                 endif;
-                            
+
                 break;
             /// Email
             case 'user_email' :
-                if( ! $this->isProfile() && get_user_by( 'email', $field->getValue() ) ) :
-                    $errors[] = __( 'Cet email est déjà utilisé par un autre utilisateur', 'tify' );
+                if (!$this->isProfile() && get_user_by('email', $field->getValue())) :
+                    $errors[] = __('Cet email est déjà utilisé par un autre utilisateur', 'tify');
                 endif;
-                
+
                 break;
             /// Role    
             case 'role' :
-                if( ! $this->hasRole( $field->getValue() ) ) :
-                    $_errors[] = __( 'L\'attribution de ce rôle n\'est pas autorisée.', 'tify' );
+                if (!$this->hasRole($field->getValue())) :
+                    $_errors[] = __('L\'attribution de ce rôle n\'est pas autorisée.', 'tify');
                 endif;
-                
-                break;                
+
+                break;
         endswitch;
     }
-    
+
     /** == Traitement du formulaire == **/
     public function cb_handle_submit_request( $handle )
     {
@@ -330,20 +362,19 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     /** == Vérifie si une donnée utilisateur native == **/
     final protected function isNativeUserData( $userdata )
     {
-        return in_array( 
-            $userdata,
-            array( 
-                'user_login', 
-                'role', 
-                'first_name', 
-                'last_name', 
-                'nickname', 
-                'display_name', 
-                'user_email', 
-                'user_url', 
+        return in_array($userdata,
+            [
+                'user_login',
+                'role',
+                'first_name',
+                'last_name',
+                'nickname',
+                'display_name',
+                'user_email',
+                'user_url',
                 'description',
-                'user_pass' 
-            )
+                'user_pass'
+            ]
         );
     }
 }
