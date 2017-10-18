@@ -1,24 +1,24 @@
 # Modification de la requête globale de Wordpress
-global:
+#global:
   # Liste des champs utilisés pour la recherche
   # @var string[]
-  search_fields:      ['post_title', 'post_excerpt', 'post_content']
+  #search_fields:      ['post_title', 'post_excerpt', 'post_content']
 
   # Liste de métadonnées utilisées pour la recherche
   # @var string[]
-  search_metas:       []
+  #search_metas:       []
 
   # Activation de la recherche par mots-clef
   # @var bool
-  search_tags:        false
+  #search_tags:        false
 
   # Activation de la recherche de la séquence complète ou sur chacun des mots constituant la séquences
   # @var bool
-  sentence:           true
+  #sentence:           true
 
   # Activation de la recherche selon le (les) terme(s) exact(s) de la séquence
   # @var bool
-  exact:              false
+  #exact:              false
 
   # Arguments de requête Wordpress
   # @see https://codex.wordpress.org/Class_Reference/WP_Query
