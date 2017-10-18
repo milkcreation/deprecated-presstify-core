@@ -563,7 +563,7 @@ abstract class Factory
         endif;
         $templates[] = "{$slug}.php";
 
-        if (! $_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname)) :
+        if (!$_template_file = self::tFyAppQueryTemplate(current($templates), $templates, $classname)) :
             return;
         endif;
 
@@ -619,15 +619,18 @@ abstract class Factory
             // Récupération du gabarit depuis le thème
             foreach ((array)$templates as $template_name) :
                 // Bypass
-                if (! $template_name)
+                if (!$template_name) :
                     continue;
+                endif;
 
                 $template_file = get_template_directory() . "/templates/{$subdir}/{$template_name}";
                 // Bypass - le fichier n'existe pas physiquement
-                if (! file_exists($template_file))
+                if (!file_exists($template_file)) :
                     continue;
+                endif;
 
                 $located = $template_file;
+                break;
             endforeach;
         endif;
 
@@ -638,16 +641,18 @@ abstract class Factory
             // Récupération du gabarit depuis le thème
             foreach ((array)$templates as $template_name) :
                 // Bypass
-                if (! $template_name)
+                if (!$template_name) :
                     continue;
-
+                endif;
                 $template_file = self::tFyAppDirname($classname) . '/templates/' . $template_name;
 
                 // Bypass - le fichier n'existe pas physiquement
-                if (! file_exists($template_file))
+                if (!file_exists($template_file)) :
                     continue;
+                endif;
 
                 $located = $template_file;
+                break;
             endforeach;
         endif;
 

@@ -6,14 +6,8 @@ use tiFy\Core\CustomType\CustomType;
 class Search extends \tiFy\App\Component
 {
     /**
-     * Attributs de la configuration de recherche global
-     * @var mixed
-     */
-    private static $GlobalSearchAttrs       = [];
-
-    /**
      * Types de post pour lequels les mots-clés de recherche sont activés
-     * @var
+     * @var string[]
      */
     private static $TagsPostTypes           = [];
 
@@ -70,6 +64,7 @@ class Search extends \tiFy\App\Component
     final public static function query_vars($aVars)
     {
         $aVars[] = '_tfysearch';
+        $aVars[] = '_s';
 
         return $aVars;
     }
@@ -138,6 +133,8 @@ class Search extends \tiFy\App\Component
         // Définition des filtres
         self::tFyAppFilterAdd('query_vars', null, 99);
         self::tFyAppFilterAdd('search_template', null, 10, 3);
+
+        require self::tFyAppDirname() . '/Helpers.php';
     }
 
     /**
