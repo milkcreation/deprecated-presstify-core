@@ -80,18 +80,32 @@ final class Login extends \tiFy\App\Component
     /** == Déclaration d'un formulaire d'authentification == **/
     public static function register( $id, $callback = null, $attrs = array() )
     {
-        if( isset( self::$Factories[$id] ) ) 
+        if( isset( self::$Factories[$id] ) )
             return;
-        
+
         if( $callback )
             $path[] = $callback; 
         $path[] = "\\". self::getOverrideNamespace() . "\\Login\\". self::sanitizeControllerName( $id );    
             
         $callback = self::getOverride( '\\tiFy\\Components\\Login\\Factory', $path );   
-        
+
         return self::$Factories[$id] = new $callback( $id, $attrs = array() );
     }
-    
+
+    /**
+     * Récupération d'un formulaire d'authentification
+     *
+     * @param $id string Identifiant du formulaire
+     *
+     * @return mixed
+     */
+    public static function get($id)
+    {
+        if (isset( self::$Factories[$id])) :
+            return self::$Factories[$id];
+        endif;
+    }
+
     /** == Définition du formulaire d'authentification courant == **/
     private function _setCurrent( $id )
     {
