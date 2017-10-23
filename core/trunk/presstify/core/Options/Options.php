@@ -77,15 +77,18 @@ class Options extends \tiFy\App\Core
     {        
         // Traitement des paramètres
         /// Déclaration des sections de boîtes à onglets
-        foreach ((array) self::tFyAppConfig('nodes') as $node_id => $args) :
-            // Rétrocompatibilité
-            if (is_int($node_id) && isset($args['id'])):
-            else :
-                $args['id'] = $node_id;
-            endif;
-            
-            $this->registerNode($args);
-        endforeach;
+        ///
+        if ($nodes = self::tFyAppConfig('nodes')) :
+            foreach ((array) self::tFyAppConfig('nodes') as $node_id => $args) :
+                // Rétrocompatibilité
+                if (is_int($node_id) && isset($args['id'])):
+                else :
+                    $args['id'] = $node_id;
+                endif;
+
+                $this->registerNode($args);
+            endforeach;
+        endif;
 
         // Configuration
         $this->page_title       = __('Réglages des options du thème', 'tify');
