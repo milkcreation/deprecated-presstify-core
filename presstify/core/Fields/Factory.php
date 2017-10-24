@@ -99,7 +99,7 @@ class Factory extends \tiFy\App\Factory
 
         $attrs = [];
         foreach ((array)$this->AllowedHtmlAttrs as $name) :
-            if (!isset($html_attrs[$name])) :
+            if ((!isset($html_attrs[$name])) || (empty($html_attrs[$name]) && ($html_attrs[$name] !== '0'))) :
                 continue;
             endif;
             $attrs[]= $name . "=" . $html_attrs[$name];
@@ -109,6 +109,7 @@ class Factory extends \tiFy\App\Factory
             return implode(' ', $attrs);
         endif;
     }
+
 
     /**
      *
