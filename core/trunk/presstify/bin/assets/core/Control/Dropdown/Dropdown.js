@@ -77,7 +77,7 @@ jQuery( document ).ready( function($){
 	function getOffset( picker, input ) 
 	{
 		var $picker 	=  $( '#'+ picker.id );
-        var extraY 		= ( $('body').hasClass('wp-admin') ) ? /*$( '#wpadminbar' ).outerHeight()*/ 0 : 0;
+        var extraY 		= ( $('body').hasClass('admin-bar') ) ? $( '#wpadminbar' ).outerHeight() : 0;
         var dpWidth 	= $picker.outerWidth();
         var dpHeight	= $picker.outerHeight();
         var inputHeight = input.outerHeight();

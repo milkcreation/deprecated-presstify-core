@@ -1,4 +1,4 @@
-jQuery(document).ready(function () {
+jQuery(document).ready(function ($) {
     $('.tiFyCoreFieldsSpinner-input').each(function() {
         $(this).spinner({
             icons: {

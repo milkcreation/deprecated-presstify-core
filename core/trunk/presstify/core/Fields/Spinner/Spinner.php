@@ -24,6 +24,7 @@ class Spinner extends \tiFy\Core\Fields\Factory
         'formtarget',
         'width',
         'height',
+        'inputmode',
         'list',
         'multiple',
         'readonly',
