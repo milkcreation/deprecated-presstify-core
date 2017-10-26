@@ -8,7 +8,7 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Export\Export
 {
     /* = ARGUMENTS = */
     // Liste des formulaires actifs 
-    private $Forms          = array();
+    private $Forms          = [];
 
     // Formulaire courant
     private $Form           = null;
@@ -19,9 +19,11 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Export\Export
         parent::__construct();
 
         // Liste des formulaires actifs
-        $forms = Addons::activeForms( 'record' );
-
+        $forms = Addons::activeForms('record');
         foreach( $forms as $id => $form ) :
+            if (!$form->getAddonAttr('record', 'export', false)) :
+                continue;
+            endif;
             $this->Forms[$form->getID()] = $form;
         endforeach;
 
