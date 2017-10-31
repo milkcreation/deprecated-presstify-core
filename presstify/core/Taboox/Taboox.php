@@ -62,7 +62,7 @@ class Taboox extends \tiFy\App\Core
         endif;
 
         foreach (self::tFyAppConfig() as $object => $hooknames) :
-            if (!in_array($object, ['post', 'taxonomy', 'user', 'option'])) :
+            if (!in_array($object, ['post', 'post_type', 'taxonomy', 'option'])) :
                 continue;
             endif;
 
@@ -232,8 +232,10 @@ class Taboox extends \tiFy\App\Core
             $attrs['object'] = $attrs;
         endif;
 
-        if (!isset($attrs['object']) || !in_array($attrs['object'], ['post', 'taxonomy', 'option', 'user'])) :
-            $attrs['object'] = 'post';
+        if (!isset($attrs['object']) || !in_array($attrs['object'], ['post', 'post_type', 'taxonomy', 'option', 'user'])) :
+            $attrs['object'] = 'post_type';
+        elseif ($attrs['object'] === 'post') :
+            $attrs['object'] = 'post_type';
         endif;
 
         self::$Boxes[$hookname] = new Box($hookname, $attrs);
@@ -263,6 +265,10 @@ class Taboox extends \tiFy\App\Core
      */
     final public static function registerNode($hookname, $attrs = [])
     {
+        if (isset($attrs['object']) &&  ($attrs['object'] === 'post')) :
+            $attrs['object'] = 'post_type';
+        endif;
+
         return self::$Nodes[$hookname][] = new Node($hookname, $attrs);
     }
 
