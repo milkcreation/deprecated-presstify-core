@@ -45,7 +45,7 @@ namespace
     /** == Déclaration d'une colonne personnalisée == **/
     function tify_custom_columns_register( $cb, $args = array(), $env, $type )
     {
-        return tiFy\Components\CustomColumns\CustomColumns::Register( $cb, $args, $env, $type );
+        return tiFy\Components\CustomColumns\CustomColumns::register( $cb, $args, $env, $type );
     }
     
     // --------------------------------------------------------------------------------------------------------------------------

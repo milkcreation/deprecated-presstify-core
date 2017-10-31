@@ -7,10 +7,15 @@ namespace tiFy\Components\NavMenu;
 class Nodes extends \tiFy\Lib\Nodes\Base
 {
     /**
-     * Attribut "content" d'un greffon de terme lié à une taxonomie
+     * Attribut de contenu d'un greffon
+     *
+     * @param mixed $attrs Liste des attributs de configuration du greffon
+     * @param $extras Liste des arguments globaux complémentaires
+     *
+     * @return string
      */
-    public function node_content($node, $args = [])
+    public function node_content($attrs, $extras = [])
     {
-        return isset($node['content']) ? $node['content'] : '';
+        return isset($attrs['content']) ? $attrs['content'] : '';
     }
 }

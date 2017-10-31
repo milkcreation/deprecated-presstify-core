@@ -1,78 +1,59 @@
-/**
- * @see https://learn.jquery.com/plugins/stateful-plugins-with-widget-factory/
- * @see https://api.jqueryui.com/jquery.widget
- * 
- * @see https://tympanus.net/Development/MultiLevelPushMenu/
- */
-!(function($){
-    $.widget('tify.tiFyControlCurtainMenu', {
-        options: {
+jQuery(document).ready(function ($) {
+    /**
+     * Sauvegarde de l'onglet courant
+     */
+    $(document).on('click', '[data-tify_control="tabs"] li:not(.active) > a[data-toggle="tab"]', function (e) {
+        var key = $(this).data('key');
 
-        },
-        _create:            function() {
-            this.el = this.element;
-            this.level = 0;
-            this.levels = $('.tiFyControlCurtainMenu-panel', this.el);
-            this.levelBacks = $('[data-toggle="curtain_menu-back"]', this.el);
-            
-            this.levels.each(function() {
-                var level = $(this).parents('.tiFyControlCurtainMenu-panel').length+1;
-                $(this).attr('data-level', level);
-            });
-            
-            this.menuItems = $( 'li', this.el );
-            this._initEvents();
-        },
-        _initEvents :       function() {
-            self = this;
-            
-            this.menuItems.each(function(i,j) {
-                var subLevel = $('> .tiFyControlCurtainMenu-panel', j);
-                if(subLevel.length) {
-                    $('> a', j).on('click', function(e) {
-                        e.preventDefault();
-                        var level = $(this).closest('.tiFyControlCurtainMenu-panel').attr('data-level');
-                        if(self.level <= level) {
-                            e.stopPropagation();
-                            self._openMenu(subLevel);
-                        }
-                    });
-                }
-            });
-            
-            this.levelBacks.each(function(i,j) {
-                var curLevel = $(j).closest('.tiFyControlCurtainMenu-panel');
-                if(curLevel.length) {
-                    $(j).on('click', function(e) {
-                        e.preventDefault();
-                        
-                        var level = curLevel.attr('data-level');
-                        if( self.level <= level ) {
-                            e.stopPropagation();
-                            self._closeMenu(curLevel);
-                        }
-                    });
-                }
-            }); 
-        },
-        _openMenu :         function(subLevel) {
-            ++this.level;
-            subLevel.addClass('tiFyControlCurtainMenu-panel--open');
-            var parentLevel = subLevel.closest('li').closest('.tiFyControlCurtainMenu-panel');
-            if(parentLevel.length){
-                parentLevel.addClass('tiFyControlCurtainMenu-panel--pushed').scrollTop(0);
+        $.ajax({
+            'url':      tify_ajaxurl,
+            'type' :    'POST',
+            'data' :    {
+                action :        'tiFyControlTabs',
+                key :           key,
+                _ajax_nonce :   tiFyControlTabs._ajax_nonce
             }
-
-        },
-        _closeMenu : function(curLevel) {
-            --this.level;            
-            curLevel.removeClass('tiFyControlCurtainMenu-panel--open');
-            var parentLevel = curLevel.closest('li').closest('.tiFyControlCurtainMenu-panel');
-            if(parentLevel.length){
-                parentLevel.removeClass('tiFyControlCurtainMenu-panel--pushed')
-            }
-        }
+        });
     });
-    
-    $( '[data-tify_control="curtain_menu"]' ).tiFyControlCurtainMenu();
-})(jQuery);
+
+    var
+    // Affichage recursif des onglets enfants
+    tabShowRecursiveChild = function($tab)
+    {
+        var id = $tab.attr('href'),
+            $tabs = ($tab.closest('[data-tify_control="tabs"]')),
+            $child = $(id +'.tab-pane .nav li:first-child:not(.active) > a[data-toggle="tab"]', $tabs);
+
+        if ($child.length) {
+            $child.tab('show');
+            tabShowRecursiveChild($child);
+        }
+    },
+        // Affichage recursif des onglets parents
+    tabShowRecursiveParent = function($tab)
+    {
+        var $tabs = ($tab.closest('[data-tify_control="tabs"]')),
+            parent_id = $tab.closest('.tab-pane').attr('id'),
+            $parent = $('.nav > li:not(.active) > a[data-toggle="tab"][href="#' + parent_id + '"]', $tabs);
+
+        if ($parent.length) {
+            $parent.tab('show');
+            tabShowRecursiveParent($parent);
+        }
+    }
+
+    /**
+     * Affichage de l'onglet courant
+     */
+    if ($('a[data-toggle="tab"].current', '[data-tify_control="tabs"]').length) {
+        var $current = $('a[data-toggle="tab"].current', '[data-tify_control="tabs"]');
+
+        $current.tab('show');
+        tabShowRecursiveChild($current);
+        tabShowRecursiveParent($current);
+    } else {
+        var $current = $('[data-tify_control="tabs"] > .nav li:first-child > a[data-toggle="tab"]');
+        $current.tab('show');
+        tabShowRecursiveChild($current);
+    }
+});

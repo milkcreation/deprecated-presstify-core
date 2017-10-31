@@ -5,17 +5,19 @@ abstract class Base
 {
     /**
      * Liste de éléments
+     * @var array
      */
-    protected $Items        = array();
+    protected $Items        = [];
 
     /**
      * Liste des attributs par défaut d'un élément
+     * @var array
      */
-    protected $ItemDefaults = array(
+    protected $ItemDefaults = [
         'class'         => '',
         'parent'        => '',
         'content'       => ''
-    );
+    ];
 
     /**
      * Element courant
@@ -24,7 +26,7 @@ abstract class Base
     protected $Current      = null;
 
     /**
-     * Niveau de départ de l'intentation
+     * Niveau de départ de l'indentation
      */
     protected $StartIndent  = "";
 
@@ -32,6 +34,12 @@ abstract class Base
      * Attributs de configuration
      */
     protected $Attrs        = [];
+
+    /**
+     * Ordonnancement
+     * @var bool|string (append|prepend)
+     */
+    protected $Sort         = 'append';
 
     /**
      * CONTROLEURS
@@ -42,7 +50,7 @@ abstract class Base
     final public function setItems($items = array())
     {
         foreach ($items as $item) :
-            $this->Items[$item['id']] = \wp_parse_args($item, $this->ItemDefaults);
+            $this->Items[] = \wp_parse_args($item, $this->ItemDefaults);
         endforeach;
 
         return $this->Items;
@@ -50,11 +58,16 @@ abstract class Base
     
     /**
      * Récupération d'un élément de menu
+     *
+     * @return array
      */
     final public function getItem($id)
     {
-        if (isset($this->Items[$id]))
-            return $this->Items[$id];
+        $key = array_search($id, array_column($this->Items, 'id'));
+
+        if (($key!== false) && isset($this->Items[$key])) :
+            return $this->Items[$key];
+        endif;
     }
     
     /**
@@ -93,6 +106,8 @@ abstract class Base
     
     /**
      * Récupération de l'indentation
+     *
+     * @return string
      */
     final public function getIndent($depth = 0)
     {
@@ -117,19 +132,22 @@ abstract class Base
      * @param array $items
      * @param int $depth
      * @param string $parent
-     * @
      *
      * @return string
      */
     public function walk($items = [], $depth = 0, $parent = '')
     {
         $output = "";
-       
+
+        // Ordonnancement des éléments
+        $sorted = $this->sort($items, $depth, $parent);
+
         // Contenus des onglets
         $opened = false;
-        foreach ($items as $item) :
-            if ($parent !== $item['parent'])
+        foreach ($sorted as $item) :
+            if ($parent !== $item['parent']) :
                 continue;
+            endif;
 
             if (! $opened) :
                 $output .= $this->start_content_items($item, $depth, $parent);
@@ -149,6 +167,70 @@ abstract class Base
         endif;
         
         return $output;
+    }
+
+    /**
+     * Ordonnancement
+     *
+     * @param array $items
+     * @param int $depth
+     * @param string $parent
+     *
+     * @return array
+     */
+    public function sort($items = [], $depth = 0, $parent = '')
+    {
+        $positions = [];
+
+        // Extraction des données de position des éléments courants
+        foreach ($items as $k => $item) :
+            if ($parent !== $item['parent']) :
+                continue;
+            endif;
+            $positions[$k] = isset($item['position']) ? $item['position'] : null;
+        endforeach;
+
+        // Bypass - Aucun élément à traiter
+        if (empty($positions)) :
+            return [];
+        endif;
+
+        // Récupération des informations de position
+        $max = max($positions); $min = ($positions); $count = count($positions); $i = 1;
+        $sorted = [];
+
+        //
+        foreach ($positions as $k => $position) :
+            if (is_null($position)) :
+                switch ($this->Sort) :
+                    default :
+                    case 'append' :
+                        $position = $max++;
+                        break;
+                    case 'prepend' :
+                        $position = $min++ - $count;
+                        break;
+                endswitch;
+            endif;
+
+            if (isset($sorted[$position])) :
+                switch ($this->Sort) :
+                    default :
+                    case 'append' :
+                        $position = (float)$position . "." . $i++;
+                        break;
+                    case 'prepend' :
+                        $position = (float)($position - 1) . "." . (99999 - ($count + $i++));
+                        break;
+                endswitch;
+            endif;
+
+            $sorted[$position] = $items[$k];
+        endforeach;
+
+        ksort($sorted);
+
+        return $sorted;
     }
     
     /**
