@@ -54,18 +54,17 @@ class Display extends \tiFy\App\Factory
         // Déclaration des événements de déclenchement
         switch($this->getBox()->getObject()) :
             case 'post_type' :
-            case 'post' :
                 if ($this->getHookname() === 'page') :
-                    add_action('edit_page_form', [$this, 'render']);
+                    self::tFyAppActionAdd('edit_page_form', 'render');
                 else :
-                    add_action('edit_form_advanced', [$this, 'render']);
+                    self::tFyAppActionAdd('edit_form_advanced', 'render');
                 endif;
                 break;
             case 'option' :
                 add_settings_section($this->getId(), null, [$this, 'render'], $this->getBox()->getAttr('page'));
                 break;
             case 'taxonomy' :
-                add_action($this->getScreen()->taxonomy . '_edit_form', [$this, 'render'], 10, 2 );
+                self::tFyAppActionAdd($this->getScreen()->taxonomy . '_edit_form', 'render', 10, 2);
                 break;
         endswitch;
         self::tFyAppActionAdd('admin_enqueue_scripts');

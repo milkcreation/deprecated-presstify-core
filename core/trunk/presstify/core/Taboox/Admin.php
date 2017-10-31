@@ -1,24 +1,28 @@
 <?php
 namespace tiFy\Core\Taboox;
 
-class Admin extends \tiFy\Core\Taboox\Factory
+class Admin extends \tiFy\App\Factory
 {
     /**
-     * ID l'écran courant d'affichage du formulaire
-     * @var \WP_Screen::$id;
+     * Instance de l'objet
      */
-    protected $ScreenID;
+    private static $ObjInst = null;
 
     /**
-     * Paramètres
-     * @todo depreciation
-     *
-     * @var unknown $screen
-     * @var unknown $page
-     * @var unknown $env
-     * @var array $args
+     * Liste des attributs de configuration
+     * @var array
      */
-    public $screen, $page, $env, $args = [];
+    private $Attrs          = [];
+
+    /**
+     * @deprecated
+     */
+    public $page            = null;
+
+    /**
+     * @deprecated
+     */
+    public $args            = [];
 
     /**
      * DECLENCHEURS
@@ -71,11 +75,53 @@ class Admin extends \tiFy\Core\Taboox\Factory
     /**
      *
      */
+    final public static function _init($attrs = [])
+    {
+        if (!self::$ObjInst) :
+            self::$ObjInst = new static;
+        endif;
+
+        $Inst = self::$ObjInst;
+        $Inst->Attrs = $attrs;
+
+        return $Inst;
+    }
+
+    /**
+     * Récupération de la liste de attributs de configuration
+     *
+     * @return array
+     */
+    final public function getAttrList()
+    {
+        return $this->Attrs;
+    }
+
+    /**
+     * Récupération d'un attribut de configuration
+     *
+     * @param string $name Nom de l'attribut de configuration
+     * @param mixed $default Valeur de retour par défaut
+     *
+     * @return mixed
+     */
+    final public function getAttr($name, $default = '')
+    {
+        if (!isset($this->Attrs[$name])) :
+            return $default;
+        endif;
+
+        return $this->Attrs[$name];
+    }
+
+    /**
+     *
+     */
     final public function _content()
     {
         if (($content_cb = $this->getAttr('content_cb')) && is_callable($content_cb)) :
             call_user_func_array($content_cb, func_get_args());
-        elseif (is_callable([$this, 'form'])) :
+        elseif (method_exists($this, 'form') && is_callable([$this, 'form'])) :
             call_user_func_array([$this, 'form'], func_get_args());
         else :
             _e('Pas de données à afficher', 'tify');

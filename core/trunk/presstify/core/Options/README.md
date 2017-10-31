@@ -54,7 +54,7 @@ use tiFy\Core;
 add_action('tify_core_register', 'my_tify_core_register');
 function my_tify_core_register()
 {
-    return Components::register(
+    return Core::register(
         'Options',
         [
             // @var string $hookname Identifiant de qualification de la page d'accroche d'affichage.

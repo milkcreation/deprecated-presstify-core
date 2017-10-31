@@ -24,18 +24,28 @@ class Node extends \tiFy\Core\Taboox\Factory
      */
     public function init()
     {
-        $cb = $this->getAttr('cb', '\tiFy\Core\Taboox\Admin');
+        $cb = $this->getAttr('cb');
+        if (empty($cb)) :
+            $cb = '\tiFy\Core\Taboox\Admin';
+        endif;
         $args = $this->getAttr('args');
 
         // Classe de rappel
         if (is_string($cb) && class_exists($cb)) :
             $this->AdminUi = new $cb($args);
 
+            /**
+             * @todo
+             */
+            if ($this->AdminUi instanceof \tiFy\Core\Taboox\Admin) :
+                $this->AdminUi->args = $args;
+            endif;
+
         // Méthode ou fonction de rappel
         elseif (is_callable($cb)) :
             $args['content_cb'] = $cb;
             $admin_ui = '\tiFy\Core\Taboox\Admin';
-            $this->AdminUi = new $admin_ui($args);
+            $this->AdminUi = $admin_ui::_init($args);
         endif;
 
         /**
@@ -122,7 +132,7 @@ class Node extends \tiFy\Core\Taboox\Factory
         $defaults = [
             'id'            => null,
             'title'         => '',
-            'cb'            => \__return_null(),
+            'cb'            => '',
             'args'          => [],
             'parent'        => 0,
             'cap'           => 'manage_options',
