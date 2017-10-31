@@ -4,7 +4,7 @@ namespace tiFy\Core\Control\Dropdown;
 class Dropdown extends \tiFy\Core\Control\Factory
 {
     /* = ARGUMENTS = */    
-    // Identifiant de la classe        
+    // Identifiant de la classe
     protected $ID = 'dropdown';
     
     // Instance Courante

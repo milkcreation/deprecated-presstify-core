@@ -17,7 +17,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
      * @param array $node Attributs du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Données complémentaires (ex: selected)
+     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
      *
      * @return string
      */
@@ -32,7 +32,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
      * @param array $node Attributs du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Données complémentaires (ex: selected)
+     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
      *
      * @return string
      */
@@ -47,7 +47,7 @@ class Nodes extends \tiFy\Lib\Nodes\Base
      * @param array $node Attributs du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Données complémentaires (ex: selected)
+     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
      *
      * @return string
      */

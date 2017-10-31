@@ -48,11 +48,11 @@ class CustomType extends \tiFy\App\Core
      * Déclaration des taxonomies personnalisées
      */
     final public function register_taxonomy()
-    {        
-        do_action( 'tify_custom_taxonomy_register' );
+    {
+        do_action('tify_custom_taxonomy_register');
 
-        foreach( (array) self::$Taxonomies as $taxonomy => $attrs ) :
-            self::createTaxonomy( $taxonomy, $attrs );
+        foreach ((array)self::$Taxonomies as $taxonomy => $attrs) :
+            self::createTaxonomy($taxonomy, $attrs);
         endforeach;
     }
 
@@ -61,10 +61,10 @@ class CustomType extends \tiFy\App\Core
      */
     final public function register_post_type()
     {
-        do_action( 'tify_custom_post_type_register' );
+        do_action('tify_custom_post_type_register');
 
-        foreach( (array) self::$PostTypes as $post_type => $attrs ) :
-           self::createPostType( $post_type, $attrs );
+        foreach ((array)self::$PostTypes as $post_type => $attrs) :
+            self::createPostType($post_type, $attrs);
         endforeach;
     }
     
@@ -129,25 +129,27 @@ class CustomType extends \tiFy\App\Core
     /**
      * Déclaration de taxonomie personnalisée
      */
-    public static function registerTaxonomy( $taxonomy, $args )
+    public static function registerTaxonomy($taxonomy, $args = [])
     {
-        if( ! isset( self::$Taxonomies[$taxonomy] ) )
-            self::$Taxonomies[$taxonomy] = $args;
+        if (!isset(self::$Taxonomies[$taxonomy])) :
+            return self::$Taxonomies[$taxonomy] = $args;
+        endif;
     }
-    
+
     /**
      * Déclaration de type de post personnalisé
      */
-    public static function registerPostType( $post_type, $args )
+    public static function registerPostType($post_type, $args = [])
     {
-        if( ! isset( self::$PostTypes[$post_type] ) )
-            self::$PostTypes[$post_type] = $args;
+        if (!isset(self::$PostTypes[$post_type])) :
+            return self::$PostTypes[$post_type] = $args;
+        endif;
     }
     
     /**
      * Création de la taxonomie personnalisée
      */
-    public static function createTaxonomy( $taxonomy, $args )
+    public static function createTaxonomy($taxonomy, $args = [])
     {
         // Déclaration des taxonomies non enregistrés
         if( ! isset( self::$Taxonomies[$taxonomy] ) )
@@ -176,7 +178,7 @@ class CustomType extends \tiFy\App\Core
     /**
      * Création du type de post personnalisé
      */
-    public static function createPostType( $post_type, $args )
+    public static function createPostType($post_type, $args = [])
     {
         // Déclaration des types de post non enregistrés
         if( ! isset( self::$PostTypes[$post_type] ) )

@@ -7,20 +7,28 @@ namespace tiFy\Core\Control\SlickCarousel;
 class Nodes extends \tiFy\Lib\Nodes\Base
 {    
     /**
-     * 
-     * @return string
-     */
-    private function node_parent()
-    {
-        return '';
-    }
-    
-    /**
+     * Attribut parent d'un greffon
+     *
+     * @param mixed $attrs Liste des attributs de configuration du greffon
+     * @param array $args Liste des arguments généraux
      *
      * @return string
      */
-    public function node_content($node)
+    final public function node_parent($attrs, $args = [])
     {
-        return isset($node['content']) ? $node['content'] : '';
+        return '';
+    }
+
+    /**
+     * Attribut de contenu d'un greffon
+     *
+     * @param mixed $attrs Liste des attributs de configuration du greffon
+     * @param array $args Liste des arguments généraux
+     *
+     * @return string
+     */
+    public function node_content($attrs, $args = [])
+    {
+        return isset($attrs['content']) ? $attrs['content'] : '';
     }
 }

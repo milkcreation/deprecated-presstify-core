@@ -14,6 +14,100 @@ abstract class Base
     public $MethodsMapOrder = [];
 
     /**
+     * GREFFONS PERSONNALISES
+     */
+    /**
+     * Récupération de greffons personnalisés
+     *
+     * @param array $nodes Liste des greffons
+     * @param array $extras Liste des arguments globaux complémentaires
+     *
+     * @return array
+     */
+    final public function customs($nodes = [], $extras = [])
+    {
+        $ids = [];
+        foreach ((array)$nodes as $node) :
+            if (!isset($node['id']))
+                continue;
+            if (!in_array($node['id'], $ids)) :
+                array_push($ids, $node['id']);
+            endif;
+        endforeach;
+
+        if ($methods = preg_grep('/^(.*)_node/', get_class_methods($this))) :
+            foreach ($methods as $method) :
+                preg_match('/^(.*)_node/', $method, $matches);
+                if (!isset($matches[1]) || in_array($matches[1], ['term', 'post']) || in_array($matches[1], $ids)) :
+                    continue;
+                endif;
+                array_push($ids, $matches[1]);
+                $nodes[] = ['id' => $matches[1]];
+            endforeach;
+        endif;
+
+        array_walk($nodes, [$this, 'parseCustom'], $extras);
+
+        return $nodes;
+    }
+
+    /**
+     * Traitement des attributs d'un greffon personnalisé
+     *
+     * @param array $attrs Liste des attributs de configuration du greffon
+     * @param int $key Clé d'index du greffon
+     * @param array $extras Liste des arguments globaux complémentaires
+     *
+     * @return array
+     */
+    final public function parseCustom(&$attrs, $key, $args = [])
+    {
+        $_attrs = [];
+
+        $_attrs['id'] = isset($attrs['id']) ? esc_attr($attrs['id']) : uniqid();
+        $_attrs['parent'] = isset($attrs['parent']) ? esc_attr($attrs['parent']) : '';
+
+        if ($matches = preg_grep('/^node_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $attr = preg_replace('/^node_/', '', $method);
+                $_attrs[$attr] = call_user_func([$this, 'node_' . $attr], $attrs, $args);
+            endforeach;
+        endif;
+
+        if ($matches = preg_grep('/^' . $_attrs['id'] . '_node_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $attr = preg_replace('/^' . $_attrs['id'] . '_node_/', '', $method);
+                $_attrs[$attr] = call_user_func([$this, $_attrs['id'] . '_node_' . $attr], $attrs, $args);
+            endforeach;
+        endif;
+
+        $attrs = \wp_parse_args($_attrs, $attrs);
+    }
+
+    /**
+     * GREFFONS DE TERME DE TAXONOMY
+     */
+    /**
+     * Récupération de greffons depuis une liste de termes lié à une taxonomie
+     *
+     * @param array $query_args Argument de requête de récupération des termes de taxonomie
+     * @see get_terms()
+     * @param array $extras Données complémentaires passées en argument (ex: selected)
+     *
+     * @return array
+     */
+    final public function terms($query_args = [], $extras = [])
+    {
+        $terms = get_terms($query_args);
+
+        $this->setTermMethodMap();
+
+        array_walk($terms, [$this, 'parseTerm'], compact('query_args', 'extras'));
+
+        return $terms;
+    }
+
+    /**
      * Définition de la liste des méthodes de surchage des greffons issue des termes d'un taxonomie
      *
      * @return array
@@ -46,90 +140,6 @@ abstract class Base
         else :
             $this->MethodsMap = $methods;
         endif;
-    }
-
-    /**
-     * Récupération de greffons personnalisés
-     */
-    final public function customs($nodes = array(), $args = array())
-    {
-        $ids = array();
-        foreach( (array) $nodes as $node ) :
-            if( ! isset( $node['id'] ) )
-                continue;
-            if( ! in_array( $node['id'], $ids ) ) :
-                array_push( $ids, $node['id'] );
-            endif;
-        endforeach;
-        
-        if( $methods = preg_grep( '/^(.*)_node/', get_class_methods( $this ) ) ) :
-            foreach( $methods as $method ) :
-                preg_match( '/^(.*)_node/', $method, $matches );
-                if( ! isset( $matches[1] ) || in_array( $matches[1], array( 'term', 'post') ) || in_array( $matches[1], $ids ) ) :
-                    continue;
-                endif;
-                array_push( $ids, $matches[1] );
-                $nodes[] = array( 'id' => $matches[1] );
-            endforeach;
-        endif;
-
-        array_walk(
-            $nodes,
-            array( $this, 'parseCustom' ),
-            $args
-        );
-
-        return $nodes;
-    }    
-    
-    /**
-     * Traitement des attributs d'un greffon personnalisé 
-     */
-    final public function parseCustom(&$node, $key, $args)
-    {
-        $_node = array();
-        
-        $_node['id'] = isset( $node['id'] ) ? esc_attr( $node['id'] ) : uniqid(); 
-        $_node['parent'] = isset( $node['parent'] ) ? esc_attr( $node['parent'] ) : ''; 
-        
-        if( $matches = preg_grep( '/^node_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $attr = preg_replace( '/^node_/', '', $method );
-                $_node[$attr] = call_user_func( array( $this, 'node_'. $attr ), $node, $args ); 
-            endforeach;
-        endif;
-        
-        if( $matches = preg_grep( '/^'. $_node['id'] .'_node_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $attr = preg_replace( '/^'. $_node['id'] .'_node_/', '', $method );
-                $_node[$attr] = call_user_func( array( $this, $_node['id'] .'_node_'. $attr ), $node, $args ); 
-            endforeach;
-        endif;
-                
-        $node = \wp_parse_args($_node, $node);
-    }
-    
-    /**
-     * Récupération de greffons depuis une liste de termes lié à une taxonomie
-     *
-     * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @see get_terms()
-     * @param array $extras Données complémentaires passées en argument (ex: selected)
-     *
-     * @return array
-     */
-    final public function terms($query_args = [], $extras = [])
-    {
-        $terms = get_terms($query_args);
-
-        $this->setTermMethodMap();
-
-        array_walk(
-            $terms,
-            [$this, 'parseTerm'],
-            compact('query_args', 'extras')
-        );
-        return $terms;
     }
     
     /**
