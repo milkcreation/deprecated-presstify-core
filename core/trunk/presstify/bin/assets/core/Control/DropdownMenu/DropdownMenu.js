@@ -1,12 +1,12 @@
 jQuery( document ).ready( function($){
-	$( 'html, body' ).click( function(e){		
+	$( 'html, body' ).click( function(e){
 		if( ! $( e.target ).closest( '[data-tify_control="dropdown_menu-picker"].active' ).length && ! $( e.target ).closest( '[data-tify_control="dropdown_menu"].active' ).length )
 			$( '[data-tify_control="dropdown_menu-picker"].active, [data-tify_control="dropdown_menu"].active' ).each( function(){
 				$(this).removeClass( 'active' );
 			});
 	});
-	
-	$( document ).on( 'click', '[data-tify_control="dropdown_menu"]:not(.disabled)', function(e) 
+
+	$( document ).on( 'click', '[data-tify_control="dropdown_menu"]:not(.disabled)', function(e)
 	{
 		e.stopPropagation();
 		
@@ -29,14 +29,16 @@ jQuery( document ).ready( function($){
 		$picker.css( offset ).toggleClass('active');
 		$picker.outerWidth( $closest.outerWidth() );
 		$closest.toggleClass('active');
-		
+
+        $closest.trigger('tify_control.dropdown_menu.change');
+
 		return false;
 	});
 	
 	function getOffset( picker, input ) 
 	{
 		var $picker 	=  $( '#'+ picker.id );
-        var extraY 		= ( $('body').hasClass('wp-admin') ) ? /*$( '#wpadminbar' ).outerHeight()*/ 0 : 0;
+        var extraY 		= ( $('body').hasClass('admin-bar') ) ? $( '#wpadminbar' ).outerHeight() : 0;
         var dpWidth 	= $picker.outerWidth();
         var dpHeight	= $picker.outerHeight();
         var inputHeight = input.outerHeight();

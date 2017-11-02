@@ -104,7 +104,7 @@ class Dropdown extends \tiFy\Core\Control\Factory
         elseif( ! $selected ) :
           $selected = current( $choices );
         endif;
-        
+
         // Selecteur de traitement
         $output  = "";
         $output .= "\t<select id=\"{$handler['id']}\" name=\"{$name}\" class=\"tify_control_dropdown-handler". ( $handler['class'] ? ' '. $handler['class'] : '' ) ."\" data-tify_control=\"dropdown-handler\" data-selector=\"#{$id}\" data-picker=\"#{$picker['id']}\"". ( $disabled ? " disabled=\"disabled\"" : "" ) .">";
