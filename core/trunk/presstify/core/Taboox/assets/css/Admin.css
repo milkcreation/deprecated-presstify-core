@@ -360,14 +360,10 @@
     *border-bottom-color: #FFF;
 }
 
-.tiFyTaboox-WrapperContent .tab-content {
-    width: calc(100% - 154px);
-}
-
 .tiFyTaboox-WrapperContent .tab-content > .tab-pane {
     position: relative;
     z-index: 2;
-    margin-left: -4px;
+    margin-right: 4px; margin-left: -4px;
     padding: 10px 10px 30px;
 
     background-color: #FFF;
