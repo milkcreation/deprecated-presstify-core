@@ -12,8 +12,8 @@ class DropdownMenu extends Factory
 	/* = INITIALISATION DE WORDPRESS = */
 	final public function init()
 	{
-		wp_register_style( 'tify_control-dropdown_menu', self::tFyAppUrl() . "/DropdownMenu.css", array( ), '160913' );
-		wp_register_script('tify_control-dropdown_menu', self::tFyAppUrl() . "/DropdownMenu.js", array( 'jquery' ), '160913', true );
+		wp_register_style( 'tify_control-dropdown_menu', self::tFyAppAssetsUrl('DropdownMenu.css', get_class()), array( ), '160913' );
+		wp_register_script('tify_control-dropdown_menu', self::tFyAppAssetsUrl('DropdownMenu.js', get_class()), array( 'jquery' ), '160913', true );
 	}
 			
 	/* = Déclaration des scripts = */
@@ -59,7 +59,7 @@ class DropdownMenu extends Factory
 		);
 		
 		$output  = "";
-		$output .= "<div id=\"{$id}\" class=\"{$class}\" data-tify_control=\"dropdown_menu\" data-picker=\"". htmlentities( json_encode( $picker ), ENT_QUOTES, 'UTF-8') ."\">\n";	
+		$output .= "<div id=\"{$id}\" class=\"tify_control_dropdown_menu {$class}\" data-tify_control=\"dropdown_menu\" data-picker=\"". htmlentities( json_encode( $picker ), ENT_QUOTES, 'UTF-8') ."\">\n";
 		$output .= "\t<span class=\"selected\">";
 		$output .= isset( $links[$selected] ) ? strip_tags( $links[$selected] ) : $show_option_none;
 		$output .= "</span>\n";
