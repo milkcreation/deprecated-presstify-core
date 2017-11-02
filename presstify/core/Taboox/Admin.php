@@ -4,11 +4,6 @@ namespace tiFy\Core\Taboox;
 class Admin extends \tiFy\App\Factory
 {
     /**
-     * Instance de l'objet
-     */
-    private static $ObjInst = null;
-
-    /**
      * Liste des attributs de configuration
      * @var array
      */
@@ -77,12 +72,8 @@ class Admin extends \tiFy\App\Factory
      */
     final public static function _init($attrs = [])
     {
-        if (!self::$ObjInst) :
-            self::$ObjInst = new static;
-        endif;
-
-        $Inst = self::$ObjInst;
-        $Inst->Attrs = $attrs;
+        $Inst = new static;
+        $Inst->args = $Inst->Attrs = $attrs;
 
         return $Inst;
     }

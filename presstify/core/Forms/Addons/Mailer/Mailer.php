@@ -45,6 +45,9 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      *          @see \tiFy\Lib\Mailer\MailerNew
      *      }
      *      @param string $option_name_prefix Prefixe du nom d'enregistrement des options d'expédition de mail
+     *      @param array $option_names {
+     *          Liste des noms d'enregistement des options
+     *      }
      *      @param string|array $template {
      *              Chemin relatif du theme courant vers le gabarit du mail
      *
@@ -61,6 +64,12 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         ],
         'notification'          => [],
         'option_name_prefix'    => '',
+        'option_names'          => [
+            'confirmation'          => '',
+            'notification'          => '',
+            'sender'                => '',
+            'recipients'            => ''
+        ],
         'template'              => []
     ];
     
@@ -97,7 +106,14 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
             $defaults = [
                 'form_id'               => $this->form()->getId(),
                 'confirmation'          => true,
-                'notification'          => true
+                'notification'          => true,
+                'option_name_prefix'    => '',
+                'option_names'          => [
+                    'confirmation'          => '',
+                    'notification'          => '',
+                    'sender'                => '',
+                    'recipients'            => ''
+                ]
             ];
             $args = \wp_parse_args($admin, $defaults);
 

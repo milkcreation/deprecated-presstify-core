@@ -19,6 +19,12 @@ class Taboox extends \tiFy\App\Core
     private static $Nodes                = [];
 
     /**
+     * Identifiant d'accroche de la page d'affichage courante
+     * @var string
+     */
+    protected static $Hookname         = null;
+
+    /**
      * Liste des identifiants d'accroche déclarés
      * @var array
      */
@@ -82,7 +88,9 @@ class Taboox extends \tiFy\App\Core
 
                 if (!empty($args['nodes'])):
                     foreach ((array)$args['nodes'] as $id => $attrs) :
-                        $attrs['id'] = $id;
+                        if (!isset($attrs['id'])) :
+                            $attrs['id'] = $id;
+                        endif;
                         $attrs['object'] = $object;
                         $attrs['object_type'] = $object_type;
 
@@ -160,16 +168,16 @@ class Taboox extends \tiFy\App\Core
             return;
         endif;
 
-        $hookname = $current_screen->id;
+        self::$Hookname = $current_screen->id;
 
-        if (!($box = self::getBox($hookname)) || !($nodes = self::getNodeList($hookname))) :
+        if (!($box = self::getBox(self::$Hookname)) || !($nodes = self::getNodeList(self::$Hookname))) :
             return;
         endif;
 
         // Définition des attributs de configuration de la classe d'affichage
         $attrs = [
             'screen'       => $current_screen,
-            'hookname'     => $hookname,
+            'hookname'     => self::$Hookname,
             'box'          => $box,
             'nodes'        => $nodes
         ];
@@ -178,11 +186,9 @@ class Taboox extends \tiFy\App\Core
         self::$Display = new Display($attrs);
 
         // Déclenchement de l'événement de chargement de l'écran courant des greffons.
-        if($nodes = self::getNodeList()) :
-            foreach ($nodes as $hookname => $node_ids) :
-                foreach ($node_ids as $node_id => $node) :
-                    $node->current_screen($current_screen);
-                endforeach;
+        if($nodes = self::getNodeList(self::$Hookname)) :
+            foreach ($nodes as $node) :
+                $node->current_screen($current_screen);
             endforeach;
         endif;
 
@@ -198,11 +204,9 @@ class Taboox extends \tiFy\App\Core
     final public function admin_enqueue_scripts()
     {
         // Déclenchement de l'événement de mise en file des scripts de l'interface d'administration des greffons.
-        if($nodes = self::getNodeList()) :
-            foreach ($nodes as $hookname => $node_ids) :
-                foreach ($node_ids as $node_id => $node) :
-                    $node->admin_enqueue_scripts();
-                endforeach;
+        if($nodes = self::getNodeList(self::$Hookname)) :
+            foreach ($nodes as $node) :
+                $node->admin_enqueue_scripts();
             endforeach;
         endif;
     }

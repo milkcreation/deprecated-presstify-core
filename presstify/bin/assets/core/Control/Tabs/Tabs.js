@@ -45,6 +45,10 @@ jQuery(document).ready(function ($) {
     /**
      * Affichage de l'onglet courant
      */
+    $('[data-tify_control="tabs"] > .nav > li:not(:has(a[data-toggle="tab"].current)) > a[data-toggle="tab"]').each(function() {
+        tabShowRecursiveChild($(this));
+    });
+
     if ($('a[data-toggle="tab"].current', '[data-tify_control="tabs"]').length) {
         var $current = $('a[data-toggle="tab"].current', '[data-tify_control="tabs"]');
 
@@ -52,8 +56,10 @@ jQuery(document).ready(function ($) {
         tabShowRecursiveChild($current);
         tabShowRecursiveParent($current);
     } else {
-        var $current = $('[data-tify_control="tabs"] > .nav li:first-child > a[data-toggle="tab"]');
+        var $current = $('[data-tify_control="tabs"] > .nav > li:first-child > a[data-toggle="tab"]');
+        $current.addClass('current');
         $current.tab('show');
         tabShowRecursiveChild($current);
     }
+
 });

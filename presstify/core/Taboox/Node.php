@@ -32,28 +32,21 @@ class Node extends \tiFy\Core\Taboox\Factory
 
         // Classe de rappel
         if (is_string($cb) && class_exists($cb)) :
-            $this->AdminUi = new $cb($args);
-
-            /**
-             * @todo
-             */
-            if ($this->AdminUi instanceof \tiFy\Core\Taboox\Admin) :
-                $this->AdminUi->args = $args;
-            endif;
-
+            $admin_ui = $cb;
         // Méthode ou fonction de rappel
         elseif (is_callable($cb)) :
             $args['content_cb'] = $cb;
             $admin_ui = '\tiFy\Core\Taboox\Admin';
-            $this->AdminUi = $admin_ui::_init($args);
         endif;
+        $this->AdminUi = $admin_ui::_init($args);
 
         /**
-        $AdminFormClass->ScreenID        = $hookname;
-        $AdminFormClass->page             = self::$Boxes[$hookname]['page'];
-        $AdminFormClass->env            = self::$Boxes[$hookname]['env'];
-        $AdminFormClass->args             = $node['args'];
-        */
+         * @deprecated
+         */
+        if (!$box = Taboox::getBox($this->getHookname())) :
+        else :
+            $this->AdminUi->page = $box->getAttr('page');
+        endif;
 
         if (is_callable([$this->AdminUi, 'init'])) :
             call_user_func([$this->AdminUi, 'init']);
@@ -132,7 +125,7 @@ class Node extends \tiFy\Core\Taboox\Factory
         $defaults = [
             'id'            => null,
             'title'         => '',
-            'cb'            => '',
+            'cb'            => '__return_false',
             'args'          => [],
             'parent'        => 0,
             'cap'           => 'manage_options',
