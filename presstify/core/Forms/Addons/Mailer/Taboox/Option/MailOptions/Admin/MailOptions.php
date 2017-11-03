@@ -30,9 +30,9 @@ class MailOptions extends \tiFy\Core\Taboox\Option\Admin
             return;
         endif;
 
-        $this->OptionNamePrefix = $form->getForm()->getAddonAttr('mailer', 'option_name_prefix', $this->args['form_id']);
+        $this->OptionNamePrefix = $form->getForm()->getAddonAttr('mailer', 'option_name_prefix', 'tiFyFormMailer_'. $this->args['form_id']);
 
-        $option_names = $form->getForm()->getAddonAttr('mailer', 'option_names', $this->args['form_id']);
+        $option_names = $form->getForm()->getAddonAttr('mailer', 'option_names', []);
         foreach (['confirmation', 'sender', 'notification', 'recipients'] as $option) :
             $this->OptionNames[$option] = !empty($option_names[$option]) ? $option_names[$option] : $this->OptionNamePrefix . '-' . $option;
         endforeach;

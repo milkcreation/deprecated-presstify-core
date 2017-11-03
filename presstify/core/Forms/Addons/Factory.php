@@ -39,8 +39,7 @@ class Factory extends \tiFy\App\Factory
         $this->Form = $form;
 
         // Définition des attributs de formulaire
-        $this->FormAttrs = Helpers::parseArgs($attrs,
-            $this->default_form_options);
+        $this->FormAttrs = Helpers::parseArgs($attrs, $this->default_form_options);
 
         // Définition des fonctions de court-circuitage
         foreach ((array)$this->callbacks as $hookname => $args) :
