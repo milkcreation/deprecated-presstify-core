@@ -52,7 +52,7 @@ class Display extends \tiFy\App\Factory
         $this->Nodes = $attrs['nodes'];
 
         // Déclaration des événements de déclenchement
-        switch($this->getBox()->getObject()) :
+        switch($this->getBox()->getObjectType()) :
             case 'post_type' :
                 if ($this->getHookname() === 'page') :
                     self::tFyAppActionAdd('edit_page_form', 'render');
@@ -60,11 +60,15 @@ class Display extends \tiFy\App\Factory
                     self::tFyAppActionAdd('edit_form_advanced', 'render');
                 endif;
                 break;
-            case 'option' :
-                add_settings_section($this->getId(), null, [$this, 'render'], $this->getBox()->getAttr('page'));
+            case 'options' :
+                add_settings_section($this->getId(), null, [$this, 'render'], $this->getBox()->getObjectName());
                 break;
             case 'taxonomy' :
                 self::tFyAppActionAdd($this->getScreen()->taxonomy . '_edit_form', 'render', 10, 2);
+                break;
+            case 'user' :
+                self::tFyAppActionAdd('show_user_profile', 'render');
+                self::tFyAppActionAdd('edit_user_profile', 'render');
                 break;
         endswitch;
         self::tFyAppActionAdd('admin_enqueue_scripts');

@@ -68,7 +68,7 @@ class Admin extends \tiFy\App\Factory
      * CONTROLEURS
      */
     /**
-     *
+     * Initialisation de la classe
      */
     final public static function _init($attrs = [])
     {

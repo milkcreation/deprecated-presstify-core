@@ -47,16 +47,6 @@ class Factory extends \tiFy\App\Factory
     }
 
     /**
-     * Identifiant d'accroche de la page d'affichage
-     *
-     * @return string
-     */
-    final public function getHookname()
-    {
-        return $this->Hookname;
-    }
-
-    /**
      * Récupération de la liste de attributs de configuration
      *
      * @return array
@@ -84,6 +74,16 @@ class Factory extends \tiFy\App\Factory
     }
 
     /**
+     * Identifiant d'accroche de la page d'affichage
+     *
+     * @return string
+     */
+    final public function getHookname()
+    {
+        return $this->Hookname;
+    }
+
+    /**
      * Récupération de l'identifiant de qualification
      *
      * @return string
@@ -94,22 +94,22 @@ class Factory extends \tiFy\App\Factory
     }
 
     /**
-     * Récupération de l'object de la page d'affichage
-     *
-     * @return string
-     */
-    final public function getObject()
-    {
-        return $this->getAttr('object');
-    }
-
-    /**
      * Récupération de l'object_type de la page d'affichage
      *
-     * @return string
+     * @return string (post_type|taxonomy|options|user)
      */
     final public function getObjectType()
     {
         return $this->getAttr('object_type');
+    }
+
+    /**
+     * Récupération de l'object_name de la page d'affichage
+     *
+     * @return string (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|user)
+     */
+    final public function getObjectName()
+    {
+        return $this->getAttr('object_name');
     }
 }

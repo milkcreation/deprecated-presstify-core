@@ -9,8 +9,11 @@ class Box extends \tiFy\Core\Taboox\Factory
     /**
      * Traitement des arguments de configuration
      *
-     * @param array $attrs Liste des attributs de configuration
+     * @param array $attrs {
+     *      Liste des attributs de configuration
      *
+     *
+     * }
      * @return array
      */
     protected function parseAttrs($attrs = [])
@@ -18,10 +21,15 @@ class Box extends \tiFy\Core\Taboox\Factory
         $defaults = [
             'id'            => null,
             'title'         => '',
-            'page'          => '',
-            'object'        => null,
-            'object_type'   => null
+            'object_type'   => null,
+            'object_name'   => null
         ];
+
+        // Rétrocompatibilité
+        if (isset($attrs['page'])) :
+            $attrs['object_name'] = $attrs['page'];
+        endif;
+
         return \wp_parse_args($attrs, $defaults);
     }
 }

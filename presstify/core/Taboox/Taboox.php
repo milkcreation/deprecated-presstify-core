@@ -67,22 +67,44 @@ class Taboox extends \tiFy\App\Core
             return;
         endif;
 
-        foreach (self::tFyAppConfig() as $object => $hooknames) :
-            if (!in_array($object, ['post', 'post_type', 'taxonomy', 'option'])) :
+        foreach (self::tFyAppConfig() as $object_type => $hooknames) :
+            if (!in_array($object_type, ['post_type', 'taxonomy', 'options', 'user', /** Rétrocompatibilité : post + option */'post', 'option'])) :
                 continue;
             endif;
 
             foreach ($hooknames as $hookname => $args) :
-                $object_type = $hookname;
+                $object_name = $hookname;
 
-                if ($object === 'taxonomy') :
+                if ($object_type === 'taxonomy') :
                     $hookname = 'edit-' . $hookname;
+                elseif (in_array($object_type, ['options', 'option'])) :
+                    switch($hookname) :
+                        default :
+                            $hookname = 'settings_page_' . $hookname;
+                            break;
+                        case 'general' :
+                        case 'writing' :
+                        case 'reading' :
+                        case 'media' :
+                        case 'permalink' :
+                            $hookname = 'options-' . $hookname;
+                            break;
+                    endswitch;
+                elseif ($object_type === 'user') :
+                    switch($hookname) :
+                        default :
+                        case 'edit' :
+                            $hookname = 'user-edit';
+                            break;
+                        case 'profile' :
+                            $hookname = 'profile';
+                            break;
+                    endswitch;
                 endif;
 
                 if (!empty($args['box'])) :
-                    $args['box']['object'] = $object;
                     $args['box']['object_type'] = $object_type;
-
+                    $args['box']['object_name'] = $object_name;
                     self::registerBox($hookname, $args['box']);
                 endif;
 
@@ -91,8 +113,8 @@ class Taboox extends \tiFy\App\Core
                         if (!isset($attrs['id'])) :
                             $attrs['id'] = $id;
                         endif;
-                        $attrs['object'] = $object;
                         $attrs['object_type'] = $object_type;
+                        $attrs['object_name'] = $object_name;
 
                         self::registerNode($hookname, $attrs);
                     endforeach;
@@ -116,6 +138,8 @@ class Taboox extends \tiFy\App\Core
 
         // Déclaration des helpers
         do_action('tify_taboox_register_helpers');
+
+        require_once( ABSPATH . 'wp-admin/includes/plugin.php');
 
         // Déclenchement de l'événement d'initialisation globale des greffons.
         if($nodes = self::getNodeList()) :
@@ -228,18 +252,22 @@ class Taboox extends \tiFy\App\Core
     {
         // Rétro-compatibilité
         if (func_num_args() === 3) :
-            $object = func_get_arg(1);
+            $object_type = func_get_arg(1);
             $attrs = func_get_arg(2);
-            $attrs['object'] =  $object;
+            $attrs['object_type'] =  $object_type;
         elseif(is_string($attrs)) :
-            $attrs = [];
-            $attrs['object'] = $attrs;
+            $_attrs = [];
+            $_attrs['object_type'] = $attrs;
+            $attrs = $_attrs;
         endif;
 
-        if (!isset($attrs['object']) || !in_array($attrs['object'], ['post', 'post_type', 'taxonomy', 'option', 'user'])) :
-            $attrs['object'] = 'post_type';
-        elseif ($attrs['object'] === 'post') :
-            $attrs['object'] = 'post_type';
+        if (!isset($attrs['object_type']) || !in_array($attrs['object_type'], ['post_type', 'taxonomy', 'options', 'user', /** Rétrocompatibilité : post + option */'post', 'option'])) :
+            $attrs['object_type'] = 'post_type';
+        // Rétrocompatibilité : post + option
+        elseif ($attrs['object_type'] === 'post') :
+            $attrs['object_type'] = 'post_type';
+        elseif ($attrs['object_type'] === 'option') :
+            $attrs['object_type'] = 'options';
         endif;
 
         self::$Boxes[$hookname] = new Box($hookname, $attrs);
@@ -260,8 +288,8 @@ class Taboox extends \tiFy\App\Core
      *      @var string $cap Habilitation d'accès au greffon.
      *      @var bool $show Affichage/Masquage du greffon.
      *      @var int $position Ordre d'affichage du greffon.
-     *      @var string $object post_type|taxonomy|user|option
-     *      @var string $object_type
+     *      @var string $object_type post_type|taxonomy|user|options
+     *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
      *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
      * }
      * 
@@ -269,8 +297,8 @@ class Taboox extends \tiFy\App\Core
      */
     final public static function registerNode($hookname, $attrs = [])
     {
-        if (isset($attrs['object']) &&  ($attrs['object'] === 'post')) :
-            $attrs['object'] = 'post_type';
+        if (isset($attrs['object_type']) &&  ($attrs['object_type'] === 'post')) :
+            $attrs['object_type'] = 'post_type';
         endif;
 
         return self::$Nodes[$hookname][] = new Node($hookname, $attrs);

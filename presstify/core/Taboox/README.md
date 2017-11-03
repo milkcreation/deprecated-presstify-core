@@ -11,10 +11,62 @@ Créer un fichier de configuration yml dans votre dossier de configuration.
 /config/core/Taboox.yml
 
 ```yml
-# @var string $object Objet Wordpress (post_type|taxonomy|option)
+# @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
 post_type :
-    
-
+    # @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+    # post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+    page :
+        # @var array $box Attributs de configuration de la boîte à onglets
+        box :
+            # @var string $id Identifiant unique de qualification de la boîte à onglets
+            id :    '%%my_page_id%%'
+            # @var string $title Intitulé de la boîte à onglets
+            title : <?php _e('Réglages des options de page', 'tify');?>
+        # @var array $nodes Liste indexé de greffons
+        nodes :
+            - 
+# @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+taxonomy :
+    # @var string $object_name Identifiant de qualification du type d'objet Wordpress
+    # post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+    category :
+        # @var array $box Attributs de configuration de la boîte à onglets
+        box :
+            # @var string $id Identifiant unique de qualification de la boîte à onglets
+            id :    '%%my_category_id%%'
+            # @var string $title Intitulé de la boîte à onglets
+            title : <?php _e('Réglages des options de la catégorie', 'tify');?>
+        # @var array $nodes Liste indexé de greffons
+        nodes :
+            - 
+# @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+options :
+    # @var string $object_name Identifiant de qualification du type d'objet Wordpress
+    # post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+    tify_options :
+        # @var array $box Attributs de configuration de la boîte à onglets
+        box :
+            # @var string $id Identifiant unique de qualification de la boîte à onglets
+            id :    '%%my_tify_options_id%%'
+            # @var string $title Intitulé de la boîte à onglets
+            title : <?php _e('Réglages des options du site', 'tify');?>
+        # @var array $nodes Liste indexé de greffons
+        nodes :
+            - 
+# @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+user :
+    # @var string $object_name Identifiant de qualification du type d'objet Wordpress
+    # post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+    edit :
+        # @var array $box Attributs de configuration de la boîte à onglets
+        box :
+            # @var string $id Identifiant unique de qualification de la boîte à onglets
+            id :    '%%my_user_id%%'
+            # @var string $title Intitulé de la boîte à onglets
+            title : <?php _e('Réglages des options utilisateur', 'tify');?>
+        # @var array $nodes Liste indexé de greffons
+        nodes :
+            - 
 ```
 
 ### METHODE 2 | Intégrateur/Développeur - priorité moyenne
@@ -30,37 +82,236 @@ add_action('tify_core_register', 'my_tify_core_register');
 function my_tify_core_register()
 {
     return Core::register(
-        'Options',
+        'Taboox',
         [
-            // @var string $hookname Identifiant de qualification de la page d'accroche d'affichage.
-            'hookname'      => 'settings_page_tify_options',
-            
-            // @var string $menu_slug Identifiant de qualification du menu.
-            'menu_slug'     => 'tify_options',
-            
-            // @var string $cap Habilitation d'accès
-            'cap'           => 'manage_options',
-            
-            // @var string $page_title Intitulé de la page
-            'page_title'    => "<?php _e('Options du thème', 'tify'); ?>",
-            
-            // @var string $menu_title
-            'menu_title'    => "<?php bloginfo('name'); ?>",
-            
-            // @var array $admin_page Attributs de configuration de la page des options
-            'admin_page'    => [],
-            
-            // @var array $admin_bar Attributs de configuration de la barre d'administration
-            'admin_bar'     => [],
-            
-            // @var array $box Attributs de configuration de la boite à onglet
-            'box'           => [],
-            
-            // @var array $nodes Liste des greffons
-            'nodes'         => [],
-            
-            // @var string $render Style d'affichage de la page (standard|metaboxes|@todo méthode personnalisée|@todo function personnalisée).
-            'render'        => 'standard'
+            // @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+            'post_type'   => [
+                // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+                // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+                'page'      => [
+                    /**
+                     * @var array $box {
+                     *      Attributs de configuration de la boîte à onglets
+                     * 
+                     *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                     *      @var string $title Intitulé de la boîte à onglets
+                     * }
+                     */
+                    'box'       => [
+                        'id'        => '%%my_page_id%%',
+                        'title'     => __('Réglages des options de page', 'tify'),
+                    ],
+                    // @var array[] $nodes Liste indexé de greffons
+                    'nodes'     => [
+                        /**
+                         * @var array $attrs {
+                         *      Liste des attributs de configuration d'un greffon 
+                         * 
+                         *      @var string $id Identifiant du greffon.
+                         *      @var string $title Titre du greffon.
+                         *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                         *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                         *      @var string $parent Identifiant du greffon parent.
+                         *      @var string $cap Habilitation d'accès au greffon.
+                         *      @var bool $show Affichage/Masquage du greffon.
+                         *      @var int $position Ordre d'affichage du greffon.
+                         *      @var string $object_type post_type|taxonomy|user|options
+                         *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                         *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                         * }
+                         */
+                        [
+                            'id'        => '%%my_page_node_parent_id%%',
+                            'title'     => __('greffon parent', 'tify'),
+                            'cap'       => 'edit_posts',
+                            'show'      => true,
+                            'position'  => 1 
+                        ],
+                        [
+                            'id'        => '%%my_page_node_enfant_id%%',
+                            'parent'    => '%%my_page_node_parent_id%%',
+                            'title'     => __('greffon enfant', 'tify'),
+                            'cb'        => '',
+                            'args'      => [],
+                            'cap'       => 'edit_posts',
+                            'show'      => true,
+                            'position'  => 1,
+                            'helpers'   => []   
+                        ]
+                    ]
+                ] 
+            ],
+            // @var string $object_type type d'objet Wordpress (post_type|taxonomy|option|user)
+            'taxonomy'   => [
+                // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+                // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+                'category'      => [
+                    /**
+                     * @var array $box {
+                     *      Attributs de configuration de la boîte à onglets
+                     * 
+                     *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                     *      @var string $title Intitulé de la boîte à onglets
+                     * }
+                     */
+                    'box'       => [
+                        'id'        => '%%my_category_id%%',
+                        'title'     => __('Réglages des options de la catégorie', 'tify'),
+                    ],
+                    // @var array[] $nodes Liste indexé de greffons
+                    'nodes'     => [
+                        /**
+                         * @var array $attrs {
+                         *      Liste des attributs de configuration d'un greffon 
+                         * 
+                         *      @var string $id Identifiant du greffon.
+                         *      @var string $title Titre du greffon.
+                         *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                         *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                         *      @var string $parent Identifiant du greffon parent.
+                         *      @var string $cap Habilitation d'accès au greffon.
+                         *      @var bool $show Affichage/Masquage du greffon.
+                         *      @var int $position Ordre d'affichage du greffon.
+                         *      @var string $object_type post_type|taxonomy|user|options
+                         *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                         *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                         * }
+                         */
+                        [
+                            'id'        => '%%my_category_node_parent_id%%',
+                            'title'     => __('greffon parent', 'tify'),
+                            'cap'       => 'edit_posts',
+                            'show'      => true,
+                            'position'  => 1 
+                        ],
+                        [
+                            'id'        => '%%my_category_node_enfant_id%%',
+                            'parent'    => '%%my_category_node_parent_id%%',
+                            'title'     => __('greffon enfant', 'tify'),
+                            'cb'        => '',
+                            'args'      => [],
+                            'cap'       => 'edit_posts',
+                            'show'      => true,
+                            'position'  => 1,
+                            'helpers'   => []   
+                        ]
+                    ]
+                ] 
+            ],
+            // @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+            'options'   => [
+                // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+                // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+                'tify_options'      => [
+                    /**
+                     * @var array $box {
+                     *      Attributs de configuration de la boîte à onglets
+                     * 
+                     *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                     *      @var string $title Intitulé de la boîte à onglets
+                     * }
+                     */
+                    'box'       => [
+                        'id'        => '%%my_tify_options_id%%',
+                        'title'     => __('Réglages des options du site', 'tify'),
+                    ],
+                    // @var array[] $nodes Liste indexé de greffons
+                    'nodes'     => [
+                        /**
+                         * @var array $attrs {
+                         *      Liste des attributs de configuration d'un greffon 
+                         * 
+                         *      @var string $id Identifiant du greffon.
+                         *      @var string $title Titre du greffon.
+                         *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                         *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                         *      @var string $parent Identifiant du greffon parent.
+                         *      @var string $cap Habilitation d'accès au greffon.
+                         *      @var bool $show Affichage/Masquage du greffon.
+                         *      @var int $position Ordre d'affichage du greffon.
+                         *      @var string $object_type post_type|taxonomy|user|options
+                         *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                         *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                         * }
+                         */
+                        [
+                            'id'        => '%%my_tify_options_node_parent_id%%',
+                            'title'     => __('greffon parent', 'tify'),
+                            'cap'       => 'manage_options',
+                            'show'      => true,
+                            'position'  => 1 
+                        ],
+                        [
+                            'id'        => '%%my_tify_options_node_enfant_id%%',
+                            'parent'    => '%%my_tify_options_node_parent_id%%',
+                            'title'     => __('greffon enfant', 'tify'),
+                            'cb'        => '',
+                            'args'      => [],
+                            'cap'       => 'manage_options',
+                            'show'      => true,
+                            'position'  => 1,
+                            'helpers'   => []   
+                        ]
+                    ]
+                ] 
+            ],
+            // @var string $object_type type d'objet Wordpress (post_type|taxonomy|options|user)
+            'user'   => [
+                // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+                // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+                'edit'      => [
+                    /**
+                     * @var array $box {
+                     *      Attributs de configuration de la boîte à onglets
+                     * 
+                     *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                     *      @var string $title Intitulé de la boîte à onglets
+                     * }
+                     */
+                    'box'       => [
+                        'id'        => '%%my_user_id%%',
+                        'title'     => __('Réglages des options utilisateur', 'tify'),
+                    ],
+                    // @var array[] $nodes Liste indexé de greffons
+                    'nodes'     => [
+                        /**
+                         * @var array $attrs {
+                         *      Liste des attributs de configuration d'un greffon 
+                         * 
+                         *      @var string $id Identifiant du greffon.
+                         *      @var string $title Titre du greffon.
+                         *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                         *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                         *      @var string $parent Identifiant du greffon parent.
+                         *      @var string $cap Habilitation d'accès au greffon.
+                         *      @var bool $show Affichage/Masquage du greffon.
+                         *      @var int $position Ordre d'affichage du greffon.
+                         *      @var string $object_type post_type|taxonomy|user|options
+                         *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                         *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                         * }
+                         */
+                        [
+                            'id'        => '%%my_user_node_parent_id%%',
+                            'title'     => __('greffon parent', 'tify'),
+                            'cap'       => 'edit_users',
+                            'show'      => true,
+                            'position'  => 1 
+                        ],
+                        [
+                            'id'        => '%%my_user_node_enfant_id%%',
+                            'parent'    => '%%my_user_node_parent_id%%',
+                            'title'     => __('greffon enfant', 'tify'),
+                            'cb'        => '',
+                            'args'      => [],
+                            'cap'       => 'edit_users',
+                            'show'      => true,
+                            'position'  => 1,
+                            'helpers'   => []   
+                        ]
+                    ]
+                ] 
+            ]
         ]
     );
 }
@@ -70,87 +321,366 @@ function my_tify_core_register()
 
 Surcharge de configuration "dynamique" PHP
 Créer un fichier Config.php dans le dossier core/Options de l'environnement de surcharge.
-/app/Core/Options/Config.php
+/app/Core/Taboox/Config.php
 
 ```php
 <?php
-namespace App\Core\Options;
+namespace App\Core\Taboox;
 
 class Config extends \tiFy\App\Config
 {
-    public function sets($attrs = [])
+    /**
+     * Définition de boites à onglets de types de post
+     * 
+     * @param array $attrs Liste des attributs de configuration existants
+     * 
+     * @return array
+     */
+    public function set_post_type($attrs = [])
     {
         return [
-           // @var string $hookname Identifiant de qualification de la page d'accroche d'affichage.
-           'hookname'      => 'settings_page_tify_options',
-           
-           // @var string $menu_slug Identifiant de qualification du menu.
-           'menu_slug'     => 'tify_options',
-           
-           // @var string $cap Habilitation d'accès
-           'cap'           => 'manage_options',
-           
-           // @var string $page_title Intitulé de la page
-           'page_title'    => "<?php _e('Options du thème', 'tify'); ?>",
-           
-           // @var string $menu_title
-           'menu_title'    => "<?php bloginfo('name'); ?>",
-           
-           // @var array $admin_page Attributs de configuration de la page des options
-           'admin_page'    => [],
-           
-           // @var array $admin_bar Attributs de configuration de la barre d'administration
-           'admin_bar'     => [],
-           
-           // @var array $box Attributs de configuration de la boite à onglet
-           'box'           => [],
-           
-           // @var array $nodes Liste des greffons
-           'nodes'         => [],
-           
-           // @var string $render Style d'affichage de la page (standard|metaboxes|@todo méthode personnalisée|@todo function personnalisée).
-           'render'        => 'standard'
+            // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+           // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+           'page'      => [
+                /**
+                 * @var array $box {
+                 *      Attributs de configuration de la boîte à onglets
+                 * 
+                 *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                 *      @var string $title Intitulé de la boîte à onglets
+                 * }
+                 */
+               'box'       => [
+                   'id'        => '%%my_page_id%%',
+                   'title'     => __('Réglages des options de page', 'tify'),
+               ],
+               // @var array[] $nodes Liste indexé de greffons
+               'nodes'     => [
+                   /**
+                    * @var array $attrs {
+                    *      Liste des attributs de configuration d'un greffon 
+                    * 
+                    *      @var string $id Identifiant du greffon.
+                    *      @var string $title Titre du greffon.
+                    *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                    *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                    *      @var string $parent Identifiant du greffon parent.
+                    *      @var string $cap Habilitation d'accès au greffon.
+                    *      @var bool $show Affichage/Masquage du greffon.
+                    *      @var int $position Ordre d'affichage du greffon.
+                    *      @var string $object_type post_type|taxonomy|user|options
+                    *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                    *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                    * }
+                    */
+                   [
+                       'id'        => '%%my_page_node_parent_id%%',
+                       'title'     => __('greffon parent', 'tify'),
+                       'cap'       => 'edit_posts',
+                       'show'      => true,
+                       'position'  => 1 
+                   ],
+                   [
+                       'id'        => '%%my_page_node_enfant_id%%',
+                       'parent'    => '%%my_page_node_parent_id%%',
+                       'title'     => __('greffon enfant', 'tify'),
+                       'cb'        => '',
+                       'args'      => [],
+                       'cap'       => 'edit_posts',
+                       'show'      => true,
+                       'position'  => 1,
+                       'helpers'   => []   
+                   ]
+               ]
+           ] 
        ];
     }
+    
+    /**
+     * Définition de boites à onglets de taxonomy
+     * 
+     * @param array $attrs Liste des attributs de configuration existants
+     * 
+     * @return array
+     */
+    public function set_taxonomy($attrs = [])
+    {
+        return [
+            // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+            // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+            'category'      => [
+                /**
+                 * @var array $box {
+                 *      Attributs de configuration de la boîte à onglets
+                 * 
+                 *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                 *      @var string $title Intitulé de la boîte à onglets
+                 * }
+                 */
+                'box'       => [
+                    'id'        => '%%my_category_id%%',
+                    'title'     => __('Réglages des options de la catégorie', 'tify'),
+                ],
+                // @var array[] $nodes Liste indexé de greffons
+                'nodes'     => [
+                    /**
+                     * @var array $attrs {
+                     *      Liste des attributs de configuration d'un greffon 
+                     * 
+                     *      @var string $id Identifiant du greffon.
+                     *      @var string $title Titre du greffon.
+                     *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                     *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                     *      @var string $parent Identifiant du greffon parent.
+                     *      @var string $cap Habilitation d'accès au greffon.
+                     *      @var bool $show Affichage/Masquage du greffon.
+                     *      @var int $position Ordre d'affichage du greffon.
+                     *      @var string $object_type post_type|taxonomy|user|options
+                     *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                     *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                     * }
+                     */
+                    [
+                        'id'        => '%%my_category_node_parent_id%%',
+                        'title'     => __('greffon parent', 'tify'),
+                        'cap'       => 'edit_posts',
+                        'show'      => true,
+                        'position'  => 1 
+                    ],
+                    [
+                        'id'        => '%%my_category_node_enfant_id%%',
+                        'parent'    => '%%my_category_node_parent_id%%',
+                        'title'     => __('greffon enfant', 'tify'),
+                        'cb'        => '',
+                        'args'      => [],
+                        'cap'       => 'edit_posts',
+                        'show'      => true,
+                        'position'  => 1,
+                        'helpers'   => []   
+                    ]
+                ]
+            ] 
+        ];
+    }
+    
+    /**
+     * Définition de boites à onglets d'options
+     * 
+     * @param array $attrs Liste des attributs de configuration existants
+     * 
+     * @return array
+     */
+    public function set_options($attrs = [])
+    {
+        return [
+            // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+            // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+            'tify_options'      => [
+                /**
+                 * @var array $box {
+                 *      Attributs de configuration de la boîte à onglets
+                 * 
+                 *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                 *      @var string $title Intitulé de la boîte à onglets
+                 * }
+                 */
+                'box'       => [
+                    'id'        => '%%my_tify_options_id%%',
+                    'title'     => __('Réglages des options du site', 'tify'),
+                ],
+                // @var array[] $nodes Liste indexé de greffons
+                'nodes'     => [
+                    /**
+                     * @var array $attrs {
+                     *      Liste des attributs de configuration d'un greffon 
+                     * 
+                     *      @var string $id Identifiant du greffon.
+                     *      @var string $title Titre du greffon.
+                     *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                     *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                     *      @var string $parent Identifiant du greffon parent.
+                     *      @var string $cap Habilitation d'accès au greffon.
+                     *      @var bool $show Affichage/Masquage du greffon.
+                     *      @var int $position Ordre d'affichage du greffon.
+                     *      @var string $object_type post_type|taxonomy|user|options
+                     *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                     *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                     * }
+                     */
+                    [
+                        'id'        => '%%my_tify_options_node_parent_id%%',
+                        'title'     => __('greffon parent', 'tify'),
+                        'cap'       => 'manage_options',
+                        'show'      => true,
+                        'position'  => 1 
+                    ],
+                    [
+                        'id'        => '%%my_tify_options_node_enfant_id%%',
+                        'parent'    => '%%my_tify_options_node_parent_id%%',
+                        'title'     => __('greffon enfant', 'tify'),
+                        'cb'        => '',
+                        'args'      => [],
+                        'cap'       => 'manage_options',
+                        'show'      => true,
+                        'position'  => 1,
+                        'helpers'   => []   
+                    ]
+                ]
+            ] 
+        ];
+    }
+    
+    /**
+     * Définition de boites à onglets d'utilisateur
+     * 
+     * @param array $attrs Liste des attributs de configuration existants
+     * 
+     * @return array
+     */
+    public function set_user($attrs = [])
+    {
+        return [
+            // @var string $object_name Identifiant de qualification du type d'objet Wordpress 
+            // post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile
+            'edit'      => [
+                /**
+                 * @var array $box {
+                 *      Attributs de configuration de la boîte à onglets
+                 * 
+                 *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+                 *      @var string $title Intitulé de la boîte à onglets
+                 * }
+                 */
+                'box'       => [
+                    'id'        => '%%my_user_id%%',
+                    'title'     => __('Réglages des options utilisateur', 'tify'),
+                ],
+                // @var array[] $nodes Liste indexé de greffons
+                'nodes'     => [
+                    /**
+                     * @var array $attrs {
+                     *      Liste des attributs de configuration d'un greffon 
+                     * 
+                     *      @var string $id Identifiant du greffon.
+                     *      @var string $title Titre du greffon.
+                     *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+                     *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+                     *      @var string $parent Identifiant du greffon parent.
+                     *      @var string $cap Habilitation d'accès au greffon.
+                     *      @var bool $show Affichage/Masquage du greffon.
+                     *      @var int $position Ordre d'affichage du greffon.
+                     *      @var string $object_type post_type|taxonomy|user|options
+                     *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+                     *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+                     * }
+                     */
+                    [
+                        'id'        => '%%my_user_node_parent_id%%',
+                        'title'     => __('greffon parent', 'tify'),
+                        'cap'       => 'edit_users',
+                        'show'      => true,
+                        'position'  => 1 
+                    ],
+                    [
+                        'id'        => '%%my_user_node_enfant_id%%',
+                        'parent'    => '%%my_user_node_parent_id%%',
+                        'title'     => __('greffon enfant', 'tify'),
+                        'cb'        => '',
+                        'args'      => [],
+                        'cap'       => 'edit_users',
+                        'show'      => true,
+                        'position'  => 1,
+                        'helpers'   => []   
+                    ]
+                ]
+            ] 
+        ];
+    }
+}
+```
+
+## Déclaration ponctuelle d'une boite à onglets
+
+Permet de déclarer une boîte à onglets. 
+
+```php
+<?php
+use tiFy\Core\Taboox\Taboox;
+
+add_action('tify_register_node', 'my_tify_register_node');
+function my_tify_register_node()
+{
+    Taboox::registerBox(
+        /**
+         * @var string $hookname
+         * @see \WP_Screen::$id|\get_current_screen()->id
+         */
+        'page',
+        /**
+         * @var array $attrs {
+         *      Attributs de configuration de la boîte à onglets
+         * 
+         *      @var string $id Identifiant unique de qualification de la boîte à onglets 
+         *      @var string $title Intitulé de la boîte à onglets
+         *      @var string $title Intitulé de la boîte à onglets
+         *      @var string $title Intitulé de la boîte à onglets
+         * }
+         */
+        [
+            'id'            => '%%my_page_box_id%%',
+            'title'         => __('Réglages des options de page', 'tify'),
+            'object_type'   => 'post_type',
+            'object_name'   => 'page'
+        ]
+    );
 }
 ```
 
 ## Déclaration ponctuelle d'un greffon
 
-Permet de déclarer une colonne personnalisée de manière ponctuelle depuis une fonction ou une méthode.
+Permet de déclarer un greffon de boîte à onglets. 
+Si la boîte à onglet d'accroche n'existe pas celle-ci sera créée automatiquement avec les attributs de configuration par défaut.
 
 ```php
 <?php
-use tiFy\Core\Options\Options;
+use tiFy\Core\Taboox\Taboox;
 
-add_action('tify_options_register_node', 'my_tify_options_register_node');
-function my_tify_options_register_node()
+add_action('tify_register_node', 'my_tify_register_node');
+function my_tify_register_node()
 {
-    Options::registerNode(
-        // Attributs de configuration du greffon
-        // @see tiFy\Core\Taboox\Taboox::registerNode
+    Taboox::registerNode(
+        /**
+         * @var string $hookname
+         * @see \WP_Screen::$id|\get_current_screen()->id
+         */
+        'page',
+        /**
+         * @var array $attrs {
+         *      Liste des attributs de configuration d'un greffon 
+         * 
+         *      @var string $id Identifiant du greffon.
+         *      @var string $title Titre du greffon.
+         *      @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
+         *      @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
+         *      @var string $parent Identifiant du greffon parent.
+         *      @var string $cap Habilitation d'accès au greffon.
+         *      @var bool $show Affichage/Masquage du greffon.
+         *      @var int $position Ordre d'affichage du greffon.
+         *      @var string $object_type post_type|taxonomy|user|options
+         *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|profile)
+         *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+         * }
+         */
         [
-           // @var string $id Identifiant du greffon.
-           'id'         => '%%node_id%%',
-           // @var string $title Titre du greffon.
-           'title'      => __('Mon greffon personnalisé', 'Theme'),
-           // @var string $cb Fonction ou méthode ou classe de rappel d'affichage du greffon.
-           
-           // @var mixed $args Liste des arguments passé à la fonction, la méthode ou la classe de rappel.
-           
-           // @var string $parent Identifiant du greffon parent.
-           
-           // @var string $cap Habilitation d'accès au greffon.
-           
-           // @var bool $show Affichage/Masquage du greffon.
-           
-           // @var int $position Ordre d'affichage du greffon.
-           
-           // @var string $object post_type|taxonomy|user|option
-           'object'     => 'option'
-           // @var string $object_type
-           
-           // @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
+            'id'        => '%%my_page_node_id%%',
+            'parent'    => '',
+            'title'     => __('greffon de page', 'tify'),
+            'cb'        => '',
+            'args'      => [],
+            'cap'       => 'edit_pages',
+            'show'      => true,
+            'position'  => 1,
+            'helpers'   => []   
         ]
     );
 }

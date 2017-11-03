@@ -32,7 +32,8 @@ class Deprecated
         // Anciennes core/Control
         tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control', 'Deprecated');
 
-        // Anciennes core/Control
+        // Anciennes core/Taboox
+        tiFy::classLoad('tiFy\Core\Taboox\Option', dirname(__FILE__) .'/app/core/Taboox/Option');
         tiFy::classLoad('tiFy\Core\Taboox\Post', dirname(__FILE__) .'/app/core/Taboox/Post');
     }
     
