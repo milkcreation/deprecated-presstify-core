@@ -263,9 +263,9 @@ class Options extends \tiFy\App\Core
     private function parseBox($attrs = [])
     {
         $defaults = [
-            'title'     => self::getAttr('page_title'),
-            'page'      => self::getAttr('menu_slug'),
-            'object'    => 'option'
+            'title'       => self::getAttr('page_title'),
+            'object_type' => 'option',
+            'object_name' => self::getAttr('menu_slug')
         ];
 
         return \wp_parse_args($attrs, $defaults);

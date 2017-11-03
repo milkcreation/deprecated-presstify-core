@@ -1,98 +1,96 @@
 <?php
+/**
+ * @see https://codex.wordpress.org/Roles_and_Capabilities
+ */
 namespace tiFy\Core\Roles;
 
-class Roles extends \tiFy\App\Factory
+class Roles extends \tiFy\App\Core
 {
-	/* = ARGUMENTS = */
-	// Habilitations
-	public $allowed_users = array();
-	public $cap = 'manage_tify';
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		add_action( 'init', array( $this, 'wp_init' ), 99 );				
-	}
-	
-	/* = ACTIONS ET FILTRES WORDPRESS = */
-	/** == Initialisation globale == **/
-	public function wp_init()
-	{
-		if( empty( $this->master->params['config']['allowed_users'] ) )
-			return;
+    /**
+     * Liste des classe de rappel d'un rôle déclaré
+     * @var \tiFy\Core\Roles\Factory[]
+     */
+    private static $Factory = [];
 
-		// Actions et Filtres Wordpress
-		$this->allowed_users = $this->master->params['config']['allowed_users'];	
-		add_action( 'admin_menu', array( $this, 'wp_admin_menu' ) );
-		add_filter( 'map_meta_cap', array( $this, 'wp_map_meta_cap' ), 99, 4 );		
-	}
-	
-	/** == Modification des habilitations == **/
-	public function wp_map_meta_cap( $caps, $cap, $user_id, $args )
-	{
-		$user = get_userdata( $user_id );
-		switch ( $cap ) :
-			default :
-				$caps = apply_filters( 'tify_map_meta_cap', $caps, $cap, $user_id, $args, $this );
-				break;
-			case 'activate_plugins' :	
-			case 'update_core' :	
-			case 'update_plugins' :
-			case 'update_themes' :
-			case 'install_plugins' :
-			case 'install_themes' :
-			case 'delete_plugins' :
-			case 'delete_themes' :						
-			case 'switch_themes':
-			case 'edit_plugins' :
-			case 'edit_themes' :
-				if( ! $user || ! in_array(  $user->user_login, $this->allowed_users ) )			
-					$caps = array( 'do_not_allow' );
-				break;
-			case $this->cap :				
-				if( $user && in_array(  $user->user_login, $this->allowed_users ) )
-					$caps = array( 'exist' );
-				else
-					$caps = array( 'do_not_allow' );
-				break;							
-		endswitch;	
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-		return $caps;
-	}
-	
-	/** == Menu d'administration == **/
-	final public function wp_admin_menu()
-	{ 		
-		if( $this->user_can() )
-			return;
-		
-		global $submenu;
-		
-		// Thèmes
-		remove_submenu_page( 'themes.php', 'themes.php' );		
-    	unset( $submenu['themes.php'][6] ); // Customize 
-    	
-    	// Outils		
-		remove_menu_page( 'tools.php' );
-		
-		// Options
-		remove_submenu_page( 'options-general.php', 'options-general.php' );
-		remove_submenu_page( 'options-general.php', 'options-writing.php' );
-		remove_submenu_page( 'options-general.php', 'options-reading.php' );
-		remove_submenu_page( 'options-general.php', 'options-media.php' );
-		remove_submenu_page( 'options-general.php', 'options-permalink.php' );				
-	}
-	
-	/* == CONTRÔLEUR == */
-	/** == Vérifie si un utilisateur est habilité pour PressTiFY == **/
-	final public function user_can( $user_id = 0 )
-	{
-		if( ! $user_id )
-			$user_id =  get_current_user_id();
+        if (self::tFyAppConfig()) :
+            foreach ((array)self::tFyAppConfig() as $id => $attrs) :
+                self::register($id, $attrs);
+            endforeach;
+        endif;
 
-		if( $userdata = get_userdata( $user_id ) )
-			return in_array( $userdata->user_login, $this->allowed_users );
-		
-		return false;
-	}	
+        // Définition des événements de déclenchement
+        $this->tFyAppActionAdd('init', 'init', 0);
+    }
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    final public function init()
+    {
+        do_action('tify_roles_register');
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Déclaration
+     *
+     * @param string $id Identifiant unique de qualification du role
+     * @param array $attrs {
+     *      Liste des attributs de configuration.
+     *
+     *      @param string $display_name Nom d'affichage.
+     *      @param string $desc Texte de description.
+     *      @param array $capabilities {
+     *          Liste des habilitations Tableau indexés des habilitations permises ou tableau dimensionné
+     *
+     *          @var string $cap Nom de l'habilitation => @var bool $grant privilege
+     *      }
+     * }
+     *
+     * @return \tiFy\Core\Roles\Factory
+     */
+    public static function register($id, $attrs = [])
+    {
+        return self::$Factory[$id] = new Factory($id, $attrs);
+    }
+
+    /**
+     * Récupération de la listes des objets route déclarés
+     *
+     * @return void|\tiFy\Core\Roles\Factory[]
+     */
+    public static function getList()
+    {
+        return self::$Factory;
+    }
+
+    /**
+     * Récupération d'un objet route déclaré
+     *
+     * @param string $id Ientifiant unique de qualification de la route
+     *
+     * @return null|\tiFy\Core\Roles\Factory
+     */
+    public static function get($id)
+    {
+        if (isset(self::$Factory[$id])) :
+            return self::$Factory[$id];
+        endif;
+    }
 }

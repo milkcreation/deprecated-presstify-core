@@ -45,7 +45,7 @@ class Node extends \tiFy\Core\Taboox\Factory
          */
         if (!$box = Taboox::getBox($this->getHookname())) :
         else :
-            $this->AdminUi->page = $box->getAttr('page');
+            $this->AdminUi->page = $box->getObjectName();
         endif;
 
         if (is_callable([$this->AdminUi, 'init'])) :
@@ -112,8 +112,8 @@ class Node extends \tiFy\Core\Taboox\Factory
      *      @var string $cap Habilitation d'accès au greffon.
      *      @var bool $show Affichage/Masquage du greffon.
      *      @var int $position Ordre d'affichage du greffon.
-     *      @var string $object post_type|taxonomy|user|option
-     *      @var string $object_type
+     *      @var string $object_type post_type|taxonomy|user|options
+     *      @var string $object_name (post_type: page|post|custom_post_type; taxonomy: category|tag|custom_taxonomy; options: general|writing|reading|medias|permalink|tify_options|custom_menu_slug; user: edit|user)
      *      @var string|string[] $helpers Liste des classes de rappel des méthodes d'aide à la saisie. Chaine de caractères séparés par de virgules|Tableau indexé.
      * }
      *
@@ -131,8 +131,8 @@ class Node extends \tiFy\Core\Taboox\Factory
             'cap'           => 'manage_options',
             'show'          => true,
             'position'      => 99,
-            'object'        => null,
             'object_type'   => null,
+            'object_name'   => null,
             'helpers'       => \__return_null()
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
@@ -155,10 +155,10 @@ class Node extends \tiFy\Core\Taboox\Factory
 
         // Auto-enregistrement de la boîte à onglets
         if (!$box = Taboox::getBox($hookname)) :
-            Taboox::registerBox($hookname, $attrs['object']);
+            Taboox::registerBox($hookname, ['object_type' => $attrs['object_type'], 'object_name' => $attrs['object_name']]);
         else :
-            $attrs['object'] = $box->getObject();
             $attrs['object_type'] = $box->getObjectType();
+            $attrs['object_name'] = $box->getObjectName();
         endif;
 
         // Traitement des classes de rappel des méthodes d'aide à la saisie
