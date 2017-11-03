@@ -36,7 +36,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      *          @param bool $confirmation Activation de l'interface d'administration de l'email de confirmation de reception à destination des utilisateurs
      *          @param bool $notification Activation de l'interface d'administration de l'email de notification à destination des administrateurs de site
      *      }
-            @param bool|array $confirmation {
+     *      @param bool|array $confirmation {
      *          Attributs de configuration d'expédition de l'email de confirmation de reception à destination des utilisateurs
      *          @see \tiFy\Lib\Mailer\MailerNew
      *      }
@@ -46,7 +46,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      *      }
      *      @param string $option_name_prefix Prefixe du nom d'enregistrement des options d'expédition de mail
      *      @param array $option_names {
-     *          Liste des noms d'enregistement des options
+     *          Cartographie d'enregistrement de options.
      *      }
      *      @param string|array $template {
      *              Chemin relatif du theme courant vers le gabarit du mail
@@ -55,10 +55,15 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      *              @param $name Modifieur de nom de gabarit
      *              @param $args Liste d'arguments complémentaires pass"s dans le gabarit
      *      }
+     *      @param bool|string $debug Affichage du mail au lieu de l'expédition (false|'confirmation'|'notification')
      * }
      */
     public $default_form_options = [
-        'admin'                 => true,
+        'admin'                 => [
+            'confirmation'          => true,
+            'notification'          => true,
+
+        ],
         'confirmation'          => [
             'to'                    => '%%email%%'
         ],
@@ -70,7 +75,8 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
             'sender'                => '',
             'recipients'            => ''
         ],
-        'template'              => []
+        'template'              => [],
+        'debug'                 => false
     ];
     
     /**
@@ -85,9 +91,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         ];
 
         // Définition des fonctions de court-circuitage
-        $this->callbacks = [
-            'handle_successfully' => [$this, 'cb_handle_successfully']
-        ];
+        $this->callbacks['handle_successfully'] = [$this, 'cb_handle_successfully'];
     }
 
     /**
@@ -98,6 +102,9 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
      */
     public function afterInit()
     {
+        if ($this->getFormAttr('debug')) :
+            $this->form()->callbacks()->setAddons('handle_submit_request', $this->getID(), [$this, 'cb_handle_submit_request']);
+        endif;
         $id = @ sanitize_html_class(base64_encode($this->form()->getUID()));
 
         // Bypass
@@ -129,27 +136,66 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         endif;
 
         // Définition du prefixe du nom de l'option d'enregistrement en base de données
-        if(! $this->getFormAttr('option_name_prefix'))
+        if(! $this->getFormAttr('option_name_prefix')) :
             $this->setFormAttr('option_name_prefix', 'tiFyFormMailer_'. $id);
+        endif;
         $option_name_prefix = $this->getFormAttr('option_name_prefix');
+
+        $option_names = $this->getFormAttr('option_names', []);
+        foreach (['confirmation', 'sender', 'notification', 'recipients'] as $option) :
+            $option_names[$option] = !empty($option_names[$option]) ? $option_names[$option] : $option_name_prefix . '-' . $option;
+        endforeach;
 
         // Définition des attributs de l'email de confirmation
         $confirmation = $this->getFormAttr('confirmation');
-        if (get_option($option_name_prefix . '-confirmation') === 'off') :
+        if (get_option($option_names['confirmation']) === 'off') :
             $this->setFormAttr('confirmation', false);
-        elseif( $from = get_option($option_name_prefix . '-sender')) :
+        elseif( $from = get_option($option_names['sender'])) :
             $confirmation['from'] = $from;
             $this->setFormAttr('confirmation', $confirmation);
         endif;
 
         // Définition des attributs de l'email de notification
         $notification = $this->getFormAttr('notification');
-        if (get_option($option_name_prefix . '-notification') === 'off') :
+        if (get_option($option_names['notification']) === 'off') :
             $this->setFormAttr('notification', false);
-        elseif ($to = get_option($option_name_prefix . '-recipients')) :
+        elseif ($to = get_option($option_names['recipients'])) :
             $notification['to'] = $to;
             $this->setFormAttr('notification', $notification);
         endif;
+    }
+
+    /**
+     * Avant la soumission
+     */
+    public function cb_handle_submit_request($handle)
+    {
+        switch($this->getFormAttr('debug')) :
+            default:
+            case 'confirmation' :
+                // Expédition du message de confirmation
+                if ($options = $this->getFormAttr('confirmation')) :
+                    $options = $this->parseOptions($options, 'confirmation');
+
+                    echo MailerNew::preview($options);
+
+                else :
+                    _e('Email de confirmation non configuré', 'tify');
+                endif;
+                break;
+            case 'notification' :
+                // Expédition du message de notification
+                if ($options = $this->getFormAttr('notification')) :
+                    $options = $this->parseOptions($options, 'notification');
+
+                    echo MailerNew::preview($options);
+                    exit;
+                else :
+                    _e('Email de notification non configuré', 'tify');
+                endif;
+                break;
+        endswitch;
+        exit;
     }
 
     /**
@@ -196,6 +242,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
         if(empty($options['message'])) :
             $subject = $options['subject'];
 
+            $form = $this->form();
             $fields = array();
             foreach ((array) $this->form()->fields() as $field ) :
                 if( ! $this->getFieldAttr( $field, 'show', false ) ||
@@ -207,7 +254,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
 
                 $fields[$field->getSlug()] =  [
                     'label'     => $field->getLabel(),
-                    'value'     => $field->getValue()
+                    'value'     => $field->getDisplayValue()
                 ];
             endforeach;
 
@@ -228,7 +275,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
             endif;
 
             ob_start();
-            self::tFyAppGetTemplatePart($slug, $name, compact('context', 'subject', 'fields'));
+            self::tFyAppGetTemplatePart($slug, $name, compact('context', 'subject', 'fields', 'form'));
             $options['message'] = ob_get_clean();
         endif;
 
