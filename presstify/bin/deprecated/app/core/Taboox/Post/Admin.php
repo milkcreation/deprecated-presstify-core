@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\Taboox\Post;
 
+use tiFy\Deprecated\Deprecated;
+
 abstract class Admin extends \tiFy\Core\Taboox\PostType\Admin
 {
     /**

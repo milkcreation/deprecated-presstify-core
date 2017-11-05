@@ -3,7 +3,7 @@ namespace tiFy\Core\Router\Taboox\Admin;
 
 use tiFy\Core\Router\Router;
 
-class ContentHook extends \tiFy\Core\Taboox\Option\Admin
+class ContentHook extends \tiFy\Core\Taboox\Options\Admin
 {
     /**
      * DECLENCHEURS

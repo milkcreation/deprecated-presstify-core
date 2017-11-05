@@ -4,7 +4,7 @@ namespace tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin;
 use tiFy\Core\Forms\Forms;
 use tiFy\Core\Control\Switcher\Switcher;
 
-class MailOptions extends \tiFy\Core\Taboox\Option\Admin
+class MailOptions extends \tiFy\Core\Taboox\Options\Admin
 {
     /**
      * Prefixe du nom d'enregistrement des options en base de données
