@@ -46,8 +46,12 @@ abstract class Base
      */
     /**
      * Définition et traitement des éléments
+     *
+     * @param array[] $items Liste des attributs de configuration des éléments
+     *
+     * @return void|array
      */
-    final public function setItems($items = array())
+    final public function setItemList($items = array())
     {
         foreach ($items as $item) :
             $this->Items[] = \wp_parse_args($item, $this->ItemDefaults);
@@ -55,9 +59,21 @@ abstract class Base
 
         return $this->Items;
     }
-    
+
     /**
-     * Récupération d'un élément de menu
+     * Récupération de la liste des éléments
+     *
+     * @return array
+     */
+    final public function getItemList()
+    {
+        return $this->Items;
+    }
+
+    /**
+     * Récupération d'un élément
+     *
+     * @param string $id Identifiant de qualification de l'élément
      *
      * @return array
      */
@@ -75,8 +91,9 @@ abstract class Base
      */
     final public function getItemAttr($id, $attr = 'id', $defaults = '')
     {
-        if (! $attrs = $this->getItem($id))
+        if (! $attrs = $this->getItem($id)) :
             return $defaults;
+        endif;
         
         if (isset($attrs[$attr])) :
             return $attrs[$attr];
@@ -86,22 +103,55 @@ abstract class Base
     }
 
     /**
-     * Récupération de la classe HTML d'un élément de menu
+     * Définition de l'élément courant
+     *
+     * @param string $id Identifiant de qualification de l'élément
+     *
+     * @return string
      */
-    public function getItemClass($item = null, $depth = 0, $parent = '')
+    final public function setItemCurrent($id)
     {
-        // Bypass
-        if(!$item)
-            return '';
+        $this->Current = $id;
+    }
 
-        $classes = [];
-        $classes[] = 'tiFyWalker-contentItem';
-        $classes[] = "tiFyWalker-contentItem--depth{$depth}";
-        if(! empty($item['class'])) :
-            $classes[] = $item['class'];
+    /**
+     * Vérification si l'élément est courant
+     *
+     * @param string $id Identifiant de qualification de l'élément
+     *
+     * @return bool
+     */
+    final public function isItemCurrent($id)
+    {
+        if (!is_null($this->Current)) :
+            return ($this->Current === $id);
+        else :
+            return $this->getItemAttr($id, 'current', false);
         endif;
+    }
 
-        return implode(' ', $classes);
+    /**
+     * Vérification si l'élément a un parent
+     *
+     * @param string $id Identifiant de qualification de l'élément courant
+     *
+     * @return bool
+     */
+    final public function hasItemParent($id)
+    {
+        return $this->getItemAttr($id, 'parent', false) ? true : false;
+    }
+
+    /**
+     * Vérification si l'élément a au moins un enfant
+     *
+     * @param string $id Identifiant de qualification de l'élément courant
+     *
+     * @return bool
+     */
+    final public function hasItemChild($id)
+    {
+        return array_search($id, array_column($this->Items, 'parent'));
     }
     
     /**
@@ -115,12 +165,69 @@ abstract class Base
     }
 
     /**
+     * Ouverture d'une liste de contenu d'éléments
+     */
+    final protected function start_content_items($item = null, $depth = 0, $parent = '')
+    {
+        return is_callable($item && array($this, 'start_content_items_'. $item['id'])) ?
+            call_user_func(array($this, 'start_content_items_'. $item['id']), $item, $depth, $parent) :
+            call_user_func(array($this, 'default_start_content_items'), $item, $depth, $parent);
+    }
+
+    /**
+     * Fermeture d'une liste de contenu d'éléments
+     */
+    final protected function end_content_items($item = null, $depth = 0, $parent = '')
+    {
+        return is_callable($item && array( $this, 'end_content_items_'. $item['id'])) ?
+            call_user_func(array($this, 'end_content_items_'. $item['id']), $item, $depth, $parent) :
+            call_user_func(array($this, 'default_end_content_items'), $item, $depth, $parent);
+    }
+
+    /**
+     * Ouverture d'un contenu d'élement
+     */
+    final protected function start_content_item($item, $depth = 0, $parent = '')
+    {
+        return is_callable(array( $this, 'start_content_item_'. $item['id'])) ?
+            call_user_func(array( $this, 'start_content_item_'. $item['id']), $item, $depth, $parent) :
+            call_user_func(array( $this, 'default_start_content_item'), $item, $depth, $parent);
+    }
+
+    /**
+     * Fermeture d'un contenu d'élement
+     */
+    final protected function end_content_item($item, $depth = 0, $parent = '')
+    {
+        return is_callable(array($this, 'end_content_item_'. $item['id'])) ?
+            call_user_func(array($this, 'end_content_item_'. $item['id']), $item, $depth, $parent) :
+            call_user_func(array($this, 'default_end_content_item'), $item, $depth, $parent);
+    }
+
+    /**
+     * Rendu d'un contenu d'élément
+     */
+    final protected function content_item($item, $depth, $parent)
+    {
+        return is_callable(array($this, 'content_item'. $item['id'])) ?
+            call_user_func(array($this, 'content_item'. $item['id']), $item, $depth, $parent) :
+            call_user_func(array($this, 'default_content_item'), $item, $depth, $parent);
+    }
+
+    /**
+     * SURCHARGE
+     */
+    /**
+     * Affichage de la sortie
      *
+     * @param array $items Liste de éléments
+     *
+     * @return string
      */
     public static function output($items = null, $attrs = [])
     {
         $instance = new static;
-        $items = $items ? $instance->setItems($items) : $instance->Items;
+        $items = $items ? $instance->setItemList($items) : $instance->Items;
         $instance->Attrs = $attrs;
 
         return $instance->walk($items, 0, '');
@@ -232,57 +339,26 @@ abstract class Base
 
         return $sorted;
     }
-    
+
     /**
-     * Ouverture d'une liste de contenu d'éléments
+     * Récupération de la classe HTML d'un élément de menu
      */
-    final protected function start_content_items($item = null, $depth = 0, $parent = '')
+    public function getItemClass($item = null, $depth = 0, $parent = '')
     {
-        return is_callable($item && array($this, 'start_content_items_'. $item['id'])) ?
-            call_user_func(array($this, 'start_content_items_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_start_content_items'), $item, $depth, $parent);
+        // Bypass
+        if(!$item)
+            return '';
+
+        $classes = [];
+        $classes[] = 'tiFyWalker-contentItem';
+        $classes[] = "tiFyWalker-contentItem--depth{$depth}";
+        if(! empty($item['class'])) :
+            $classes[] = $item['class'];
+        endif;
+
+        return implode(' ', $classes);
     }
-    
-    /**
-     * Fermeture d'une liste de contenu d'éléments
-     */
-    final protected function end_content_items($item = null, $depth = 0, $parent = '')
-    {
-        return is_callable($item && array( $this, 'end_content_items_'. $item['id'])) ?
-            call_user_func(array($this, 'end_content_items_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_end_content_items'), $item, $depth, $parent);
-    }
-    
-    /**
-     * Ouverture d'un contenu d'élement
-     */
-    final protected function start_content_item($item, $depth = 0, $parent = '')
-    {
-        return is_callable(array( $this, 'start_content_item_'. $item['id'])) ?
-            call_user_func(array( $this, 'start_content_item_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array( $this, 'default_start_content_item'), $item, $depth, $parent);
-    }
-    
-    /**
-     * Fermeture d'un contenu d'élement
-     */
-    final protected function end_content_item($item, $depth = 0, $parent = '')
-    {
-        return is_callable(array($this, 'end_content_item_'. $item['id'])) ?
-            call_user_func(array($this, 'end_content_item_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_end_content_item'), $item, $depth, $parent);
-    }
-    
-    /**
-     * Rendu d'un contenu d'élément
-     */
-    final protected function content_item($item, $depth, $parent)
-    {
-        return is_callable(array($this, 'content_item'. $item['id'])) ?
-            call_user_func(array($this, 'content_item'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_content_item'), $item, $depth, $parent);
-    }    
-    
+
     /**
      * Ouverture par défaut d'une liste de contenus d'éléments
      */
