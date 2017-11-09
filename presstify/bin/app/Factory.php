@@ -73,6 +73,8 @@ abstract class Factory
      */
     /**
      * Lancement à l'initialisation de la classe
+     *
+     * @return void
      */
     public function tFyAppOnInit() { }
 

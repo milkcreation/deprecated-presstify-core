@@ -4,8 +4,6 @@
  */
 namespace tiFy\Core\Control\Tabs;
 
-use \Defuse\Crypto\Crypto;
-
 class Tabs extends \tiFy\Core\Control\Factory
 {
     /**
@@ -69,14 +67,9 @@ class Tabs extends \tiFy\Core\Control\Factory
         endif;
 
         $key = $_POST['key'];
-        try {
-            $raw_key = Crypto::decryptWithPassword($key, $_POST['_ajax_nonce']);
-            $raw_key = maybe_unserialize($raw_key);
-        } catch( \Defuse\Crypto\Exception\CryptoException $e ) {
-            $raw_key = false;
-        }
+        $raw_key = base64_decode($key);
 
-        if (!$raw_key) :
+        if (!$raw_key = maybe_unserialize($raw_key)) :
             wp_die(0);
         else :
             $raw_key = maybe_unserialize($raw_key);

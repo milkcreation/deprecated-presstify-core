@@ -199,7 +199,6 @@ class Cron extends \tiFy\App\Core
             self::unregister($id);
         endif;
 
-
         if (!\wp_get_schedule($attrs['hook'], [$attrs])) :
             \wp_schedule_event($attrs['timestamp'], $attrs['recurrence'], $attrs['hook'], [$attrs]);
             self::$Schedules[$id] = $attrs;

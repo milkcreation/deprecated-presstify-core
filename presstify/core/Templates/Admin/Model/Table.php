@@ -317,14 +317,14 @@ jQuery(document).ready( function($){
     /** == Récupération de l'élément à traité == **/
     public function current_item() 
     {
-        if ( isset( $_REQUEST[$this->ItemIndex] ) ) :
-            if( is_array( $_REQUEST[$this->ItemIndex] ) ) :
-                return array_map('intval', $_REQUEST[$this->ItemIndex] );
+        if (isset($_REQUEST[$this->ItemIndex])) :
+            if (is_array($_REQUEST[$this->ItemIndex])) :
+                return array_map('intval', $_REQUEST[$this->ItemIndex]);
             else :
-                return array( (int) $_REQUEST[$this->ItemIndex] );
+                return [(int)$_REQUEST[$this->ItemIndex]];
             endif;
         endif;
-        
+
         return 0;
     }
         
