@@ -72,20 +72,25 @@ class CustomType extends \tiFy\App\Core
      * Déclaration des taxonomies par type de post
      */
     final public function register_taxonomy_for_object_type()
-    {        
-        foreach( (array) self::$Taxonomies as $taxonomy => $args ) :            
-            if( ! isset( $args['object_type'] ) )
-                continue;                  
-            $post_types = ! is_string( $args['object_type'] ) ? $args['object_type'] : array_map( 'trim', explode( ',', $args['object_type'] ) );
-            
-            foreach( $post_types as $post_type ) :
-                \register_taxonomy_for_object_type( $taxonomy, $post_type );
+    {
+        if (!empty(self::$Taxonomies)) :
+            foreach (self::$Taxonomies as $taxonomy => $args) :
+                if (!isset($args['object_type'])) :
+                    continue;
+                endif;
+                $post_types = !is_string($args['object_type']) ? $args['object_type'] : array_map('trim', explode(',', $args['object_type']));
+
+                foreach ($post_types as $post_type) :
+                    \register_taxonomy_for_object_type($taxonomy, $post_type);
+                endforeach;
             endforeach;
-        endforeach;
-        
+        endif;
+
         foreach( (array) self::$PostTypes as $post_type => $args ) :
             if( ! isset( $args['taxonomies'] ) )
-                continue;        
+                continue;
+
+            exit;
             $taxonomies = ! is_string( $args['taxonomies'] ) ? $args['taxonomies'] : array_map( 'trim', explode( ',', $args['taxonomies'] ) );
             
             foreach( $taxonomies as $taxonomy ) :
@@ -152,10 +157,11 @@ class CustomType extends \tiFy\App\Core
     public static function createTaxonomy($taxonomy, $args = [])
     {
         // Déclaration des taxonomies non enregistrés
-        if( ! isset( self::$Taxonomies[$taxonomy] ) )
+        if (!isset(self::$Taxonomies[$taxonomy])) :
             self::$Taxonomies[$taxonomy] = $args;
+        endif;
         
-        $args = self::parseTaxonomyAttrs( $taxonomy, $args );        
+        $args = self::parseTaxonomyAttrs( $taxonomy, $args );
                 
         $allowed_args = array(
             'label', 'labels', 'public', 'show_ui', 'show_in_menu', 'show_in_nav_menus', 'show_tagcloud' , 'show_in_quick_edit', 
@@ -170,7 +176,7 @@ class CustomType extends \tiFy\App\Core
         
         \register_taxonomy(
             $taxonomy,
-            array(),
+            [],
             $taxonomy_args
         );       
     }    

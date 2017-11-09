@@ -93,5 +93,7 @@ class User extends \tiFy\Lib\Importer\Importer
         if($this->getSet('ID', 0, 'data') && $value) :
             return \wp_hash_password($value);
         endif;
+
+        return $value;
     }
 }

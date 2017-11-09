@@ -112,6 +112,8 @@ abstract class Importer
 
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {

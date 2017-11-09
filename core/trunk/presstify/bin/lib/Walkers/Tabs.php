@@ -1,8 +1,6 @@
 <?php
 namespace tiFy\Lib\Walkers;
 
-use \Defuse\Crypto\Crypto;
-
 abstract class Tabs extends Base
 {
     /**
@@ -172,8 +170,8 @@ abstract class Tabs extends Base
         $output = "";
         $output .= $this->getIndent($depth) . "\t<li class=\"tiFyTabs-navItem tiFyTabs-navItem--depth{$depth}\" role=\"presentation\">\n";
 
-        $datas = \wp_parse_args($item, ['_screen_id' => $this->ScreenId]);
-        $key = Crypto::encryptWithPassword(serialize($datas), wp_create_nonce('tiFyControlTabs'));
+        $key_datas = ['id' => $item['id'], '_screen_id' => $this->ScreenId];
+        $key = base64_encode(serialize($key_datas));
         $current = ($this->Current === $item['id']) ? true : false;
 
         $output .= $this->getIndent($depth) . "\t\t<a href=\"#{$item['id']}\"" . ($current ? ' class="current"' : '') . " aria-controls=\"{$item['id']}\" role=\"tab\" data-toggle=\"tab\" data-key=\"{$key}\">\n";

@@ -21,8 +21,9 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         // Empêche l'execution si un processus est actif
-        if (process)
+        if (process) {
             return;
+        }
 
         // Active le processus d'import
         process = true;

@@ -60,16 +60,7 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      */
     public function set_options_fields()
     {
-        return [
-            [
-                'label' => __('Le fichier d\'import comporte une entête', 'tify'),
-                'type'  => 'checkbox',
-                'attrs' => [
-                    'name'      => 'has_header',
-                    'value'     => 'on'
-                ]
-            ]
-        ];
+        return [];
     }
     
     /**
@@ -217,21 +208,23 @@ class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTabl
      * 
      * @return bool false l'élément n'existe pas en base | true l'élément existe en base
      */
-    public function item_exists( $item )
+    public function item_exists($item)
     {
-        if( ! $this->ItemIndex )
+        if (!$this->ItemIndex) :
             return false;
-        
-        if( isset( $this->ImportMap[$this->ItemIndex] ) ) : 
-            $index = $this->ImportMap[$this->ItemIndex];    
+        endif;
+
+        if (isset($this->ImportMap[$this->ItemIndex])) :
+            $index = $this->ImportMap[$this->ItemIndex];
         else :
             $index = $this->ItemIndex;
         endif;
-            
-        if( ! isset( $item->{$index} ) )
+
+        if (!isset($item->{$index})) :
             return false;
-        
-        return $this->db()->select()->has( $this->ItemIndex, $item->{$item->{$index}} );
+        endif;
+
+        return $this->db()->select()->has($this->ItemIndex, $item->{$item->{$index}});
     }
     
     /**
