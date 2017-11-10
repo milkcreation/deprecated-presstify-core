@@ -844,6 +844,10 @@ abstract class Importer
 
     /**
      * Evénement post-insertion des données principales
+     *
+     * @param int $insert_id Identifiant de qualification de l'élément enregistré
+     *
+     * @return void
      */
     public function after_insert_datas($insert_id)
     {

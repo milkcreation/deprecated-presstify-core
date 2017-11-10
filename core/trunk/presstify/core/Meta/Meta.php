@@ -3,12 +3,21 @@ namespace tiFy\Core\Meta;
 
 class Meta
 {
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		new Post;
-		new Term;
-		new User;
-		new UserOption;
-	}
+    /**
+     * Liste des classe de rappel
+     */
+    public static $Factory  = [];
+
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $Factory['post'] = new Post;
+        $Factory['term'] = new Term;
+        $Factory['user'] = new User;
+        $Factory['user_option'] = new UserOption;
+    }
 }
