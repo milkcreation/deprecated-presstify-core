@@ -172,13 +172,13 @@ namespace
     /** == Déclaration d'une metadonnée de post == **/
     function tify_meta_post_register( $post_type, $meta_key, $single = false, $sanitize_callback = 'wp_unslash' )
     {
-        return tiFy\Core\Meta\Post::Register( $post_type, $meta_key, $single, $sanitize_callback );    
+        return tiFy\Core\Meta\Post::register( $post_type, $meta_key, $single, $sanitize_callback );
     }
     
     /** == Récupération de métadonnée en mode avancée (gestion de l'ordre) == **/
     function tify_meta_post_get( $post_id, $meta_key )
     {
-        return tiFy\Core\Meta\Post::Get( $post_id, $meta_key );    
+        return tiFy\Core\Meta\Post::get( $post_id, $meta_key );
     }
     
     /** == TERM == **/

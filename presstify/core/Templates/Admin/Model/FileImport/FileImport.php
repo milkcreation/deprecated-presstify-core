@@ -28,6 +28,12 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     protected $UploadDir        = '';
 
     /**
+     * Activation du déboguage de l'import
+     * @var bool|int (false: désactivé, true: activé sur le premier élément, int: numéro de ligne de l'élément à traité)
+     */
+    protected $ImportDebug      = false;
+
+    /**
      * PARAMETRAGE
      */    
     /** 
@@ -38,7 +44,7 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
     public function set_params_map()
     {
         $params = parent::set_params_map();
-        array_push($params, 'Filename', 'FileColumns', 'Uploadable', 'UploadDir');
+        array_push($params, 'Filename', 'FileColumns', 'Uploadable', 'UploadDir', 'ImportDebug');
         
         return $params;
     }
@@ -191,12 +197,20 @@ class FileImport extends \tiFy\Core\Templates\Admin\Model\Import\Import
      */
     public function _current_screen($current_screen = null)
     {
-        //$_REQUEST['_import_row_index'] = 0;
-        
+        if ($this->ImportDebug !== false) :
+            $row_import = ($this->ImportDebug === true) ? 0 : (int) $this->ImportDebug;
+        endif;
+
+        if (isset($row_import)) :
+            $_REQUEST['_import_row_index'] = $row_import;
+        endif;
+
         parent::_current_screen($current_screen);
         
         // DEBUG - Tester la fonctionnalité d'import > Décommenter $_REQUEST['_import_row_index'] et commenter le return (ligne suivante)
-        return;
+        if (!isset($row_import)) :
+            return;
+        endif;
 
         if (!$this->Importer) :
             return;
