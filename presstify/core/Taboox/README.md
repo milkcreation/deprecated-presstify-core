@@ -607,8 +607,8 @@ Permet de déclarer une boîte à onglets.
 <?php
 use tiFy\Core\Taboox\Taboox;
 
-add_action('tify_register_node', 'my_tify_register_node');
-function my_tify_register_node()
+add_action('tify_taboox_register_box', 'my_tify_taboox_register_box');
+function my_tify_taboox_register_box()
 {
     Taboox::registerBox(
         /**
@@ -645,8 +645,8 @@ Si la boîte à onglet d'accroche n'existe pas celle-ci sera créée automatique
 <?php
 use tiFy\Core\Taboox\Taboox;
 
-add_action('tify_register_node', 'my_tify_register_node');
-function my_tify_register_node()
+add_action('tify_taboox_register_node', 'my_tify_taboox_register_node');
+function my_tify_taboox_register_node()
 {
     Taboox::registerNode(
         /**

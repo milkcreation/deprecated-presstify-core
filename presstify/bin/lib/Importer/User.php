@@ -40,6 +40,8 @@ class User extends \tiFy\Lib\Importer\Importer
 
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -49,9 +51,43 @@ class User extends \tiFy\Lib\Importer\Importer
         add_filter('send_password_change_email', '__return_false', 99, 3);
         add_filter('send_email_change_email', '__return_false', 99, 3);
     }
-       
+
     /**
-     * Insertion des données principales
+     * Filtrage de la valeur du mot de passe
+     */
+    public function filter_data_user_pass($value)
+    {
+        if($this->getSet('ID', 0, 'data') && $value) :
+            return \wp_hash_password($value);
+        endif;
+
+        return $value;
+    }
+
+    /**
+     * Filtrage du role utilisateur
+     *
+     * @return void|string
+     */
+    public function filter_data_role($value)
+    {
+        global $wp_roles;
+
+        if (empty($value) || !$wp_roles->is_role($value)) :
+            $this->Notices->addError(__('Le rôle utilisateur d\'affectation n\'existe pas', 'tify'), 'tiFyLibImporterUser-RoleUnavailable');
+            return $this->setStop();
+        endif;
+
+        return $value;
+    }
+
+    /**
+     * Insertion des données principales de l'utilisateur
+     *
+     * @param $userdata Données utilisateur à enregistrer
+     * @param $userdata Identifiant de qualification de l'utilisateur existant en base de données
+     *
+     * @return int
      */
     public function insert_datas($userdata, $user_id)
     {
@@ -83,17 +119,5 @@ class User extends \tiFy\Lib\Importer\Importer
     public function insert_option($option_name, $newvalue, $user_id)
     {
         return \update_user_option($user_id, $option_name, $newvalue);
-    }
-    
-    /**
-     * Filtrage de la valeur du mot de passe
-     */
-    public function filter_data_user_pass($value)
-    {
-        if($this->getSet('ID', 0, 'data') && $value) :
-            return \wp_hash_password($value);
-        endif;
-
-        return $value;
     }
 }
