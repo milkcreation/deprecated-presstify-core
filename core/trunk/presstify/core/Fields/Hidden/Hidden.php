@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Fields\Text;
+namespace tiFy\Core\Fields\Hidden;
 
-class Text extends \tiFy\Core\Fields\Factory
+class Hidden extends \tiFy\Core\Fields\Factory
 {
     /**
      * Instance
@@ -22,8 +22,8 @@ class Text extends \tiFy\Core\Fields\Factory
         ++static::$Instance;
 
         $defaults = [
-            'id'                => 'tiFyCoreFields-Text-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFields-text--' . static::$Instance,
+            'id'                => 'tiFyCoreFields-Hidden-' . static::$Instance,
+            'container_id'      => 'tiFyCoreFields-hidden--' . static::$Instance,
             'container_class'   => '',
             'html_attrs'        => [],
             'name'              => '',
@@ -33,7 +33,7 @@ class Text extends \tiFy\Core\Fields\Factory
 
         $Field = new static($attrs);
 ?>
-<input type="text" name="<?php echo $Field->getName();?>" class="tiFyCoreFields-Text<?php echo $Field->getContainerClass();?>" value="<?php echo $Field->getValue();?>" />
+<input type="hidden" name="<?php echo $Field->getName();?>" class="tiFyCoreFields-Text<?php echo $Field->getContainerClass();?>" value="<?php echo $Field->getValue();?>" />
 <?php
     }
 }

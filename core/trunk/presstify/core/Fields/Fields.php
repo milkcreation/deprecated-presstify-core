@@ -48,6 +48,10 @@ class Fields extends \tiFy\App\Core
 
         $echo = isset($args[1]) ? $args[1] : true;
 
+        if (!isset($args[0])) :
+            $args[0] = [];
+        endif;
+
         if ($echo) :
             call_user_func("tiFy\\Core\\Fields\\$FieldName\\$FieldName::display", $args[0]);
         else :

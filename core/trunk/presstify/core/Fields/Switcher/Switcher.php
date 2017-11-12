@@ -55,8 +55,8 @@ class Switcher extends \tiFy\Core\Fields\Factory
         self::$Instance++;
 
         $defaults = [
-            'id'                => 'tiFyCoreFieldsSwitcher-' . self::$Instance,
-            'container_id'      => 'tiFyCoreFieldsSwitcher--' . self::$Instance,
+            'id'                => 'tiFyCoreFields-Switcher-' . self::$Instance,
+            'container_id'      => 'tiFyCoreFields-switcher--' . self::$Instance,
             'container_class'   => '',
             'name'              => '',
             'checked'           => null,

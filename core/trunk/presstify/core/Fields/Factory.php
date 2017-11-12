@@ -89,17 +89,17 @@ class Factory extends \tiFy\App\Factory
      */
     final public function getHtmlAttrs()
     {
-        if (! $this->AllowedHtmlAttrs) :
+        if (!$this->AllowedHtmlAttrs) :
             return;
         endif;
 
-        if(! $html_attrs = $this->getAttr('html_attrs')) :
+        if (!$html_attrs = $this->getAttr('html_attrs')) :
             return;
         endif;
 
         $attrs = [];
         foreach ((array)$this->AllowedHtmlAttrs as $name) :
-            if ((!isset($html_attrs[$name])) || (empty($html_attrs[$name]) && ($html_attrs[$name] !== '0'))) :
+            if ((!isset($html_attrs[$name])) /*|| (empty($html_attrs[$name]) && ($html_attrs[$name] !== '0'))*/) :
                 continue;
             endif;
             $attrs[]= $name . "=" . $html_attrs[$name];

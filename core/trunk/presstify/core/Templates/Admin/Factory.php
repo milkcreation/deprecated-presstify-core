@@ -54,7 +54,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         if( preg_match( '/\\\/', $callback ) ) :
             $className = self::getOverride( $callback );
         elseif( in_array( $callback, self::$Models ) ) :
-            $className = "\\tiFy\\Core\\Templates\\". ucfirst( $this->getContext() ) ."\\Model\\{$callback}\\{$callback}";
+            $className = "\\tiFy\\Core\\Templates\\". ucfirst($this->getContext()) ."\\Model\\{$callback}\\{$callback}";
         endif;
 
         if( ! $className || ! class_exists( $className ) )
@@ -64,7 +64,7 @@ class Factory extends \tiFy\Core\Templates\Factory
         $this->setModel( $className );
         
         // Instanciation du template
-        $this->Template = new $className( $this->getAttr( 'args', null ) );
+        $this->Template = new $className( $this->getAttr('args', null ) );
 
         // Création des méthodes dynamiques
         $factory = $this;
