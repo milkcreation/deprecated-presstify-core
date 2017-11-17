@@ -12,14 +12,14 @@ final class Apps
     /**
      * Attributs de configuration
      */
-    private static $Config              = array(
-        'Core'          => array(),
-        'Components'    => array(),
-        'Plugins'       => array(),
-        'Set'           => array(),
-        'Schema'        => array()
-    );
-    
+    private static $Config = [
+        'Core'       => [],
+        'Components' => [],
+        'Plugins'    => [],
+        'Set'        => [],
+        'Schema'     => []
+    ];
+
     /**
      * Liste des applicatifs déclarés
      * 
@@ -97,7 +97,7 @@ final class Apps
      *      }
      * }
      */
-    public static $Registered          = array();
+    public static $Registered = [];
 
     /**
      * CONTROLEURS
@@ -110,8 +110,8 @@ final class Apps
      * @param array $attrs {
      *      Attributs de paramétrage de l'applicatif
      *      
-     *      @type string $Id Identifiant qualificatif de l'applicatif
-     *      @type array $Config Attributs de configuration
+     *      @var string $Id Identifiant qualificatif de l'applicatif
+     *      @var array $Config Attributs de configuration
      * }
      * 
      * @return null|array {
