@@ -493,10 +493,16 @@ class Media
             // Récupération du chemin vers le fichier
             $exist_path = get_attached_file($exist_id);
 
-            // Bypass - Test de correspondance entre le fichier à important et l'existant
-            if ($name !== basename($exist_path))
+            // Récupération du nom du fichier existant avec son extension
+            if (!$exist_filename = pathinfo($exist_path, PATHINFO_BASENAME)) :
                 continue;
-            
+            endif;
+
+            // Bypass - Test de correspondance entre le fichier à important et l'existant
+            if ("{$name}.{$finfo['ext']}" !== $exist_filename) :
+                continue;
+            endif;
+
             $attachment_id = $exist_id;
             
             // Récupération des métadonnées wordpress du fichier existant
