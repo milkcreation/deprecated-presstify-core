@@ -812,6 +812,10 @@ abstract class Importer
 
     /**
      * Evénement pré-insertion global
+     *
+     * @param int $insert_id Identifiant de qualification de l'élément enregistré
+     *
+     * @return void
      */
     public function before_insert($insert_id)
     {
@@ -820,6 +824,10 @@ abstract class Importer
 
     /**
      * Evénement post-insertion global
+     *
+     * @param int $insert_id Identifiant de qualification de l'élément enregistré
+     *
+     * @return void
      */
     public function after_insert($insert_id)
     {

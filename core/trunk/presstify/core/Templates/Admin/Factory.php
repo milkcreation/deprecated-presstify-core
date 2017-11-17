@@ -47,8 +47,9 @@ class Factory extends \tiFy\Core\Templates\Factory
     final public function init()
     {
         // Bypass
-        if( ! $callback = $this->getAttr( 'cb' ) )
+        if( ! $callback = $this->getAttr( 'cb' ) ) :
             return;
+        endif;
 
         $className = false;
         if( preg_match( '/\\\/', $callback ) ) :

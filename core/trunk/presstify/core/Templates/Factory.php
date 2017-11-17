@@ -145,7 +145,7 @@ abstract class Factory extends \tiFy\App\Factory
      */
     final public function getModel()
     {
-        return $this->Model;    
+        return $this->Model;
     }
     
     /**

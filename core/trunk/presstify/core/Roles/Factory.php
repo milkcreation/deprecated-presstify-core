@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Roles;
 
-use tiFy\Core\Templates\Templates;
+use tiFy\Core\Ui\Ui;
 
 class Factory extends \tiFy\App\Factory
 {
@@ -46,7 +46,7 @@ class Factory extends \tiFy\App\Factory
 
         // Définition des événements de déclenchement
         $this->tFyAppActionAdd('init', 'init', 1);
-        $this->tFyAppActionAdd('tify_templates_register');
+        $this->tFyAppActionAdd('tify_ui_register');
     }
 
     /**
@@ -78,8 +78,10 @@ class Factory extends \tiFy\App\Factory
 
     /**
      * Déclaration d'interfaces utilisateur d'administration
+     *
+     * @return void
      */
-    public function tify_templates_register()
+    public function tify_ui_register()
     {
         if (!$admin_ui = $this->getAttr('admin_ui', false)) :
             return;
@@ -87,22 +89,19 @@ class Factory extends \tiFy\App\Factory
 
         $admin_ui = $this->parseAdminUi($admin_ui);
 
-        Templates::register(
+        Ui::registerAdmin(
             'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
-            $admin_ui['global'],
-            'admin'
+            $admin_ui['global']
         );
 
-        Templates::register(
+        Ui::registerAdmin(
             'tiFyCoreRole-AdminUiUserList--' . $this->getId(),
             $admin_ui['list'],
             'admin'
         );
-
-        Templates::register(
+        Ui::registerAdmin(
             'tiFyCoreRole-AdminUiUserEdit--' . $this->getId(),
-            $admin_ui['edit'],
-            'admin'
+            $admin_ui['edit']
         );
     }
 
@@ -202,29 +201,31 @@ class Factory extends \tiFy\App\Factory
                 ]
             ],
             'list'      =>  [
-                'cb'            => 'tiFy\Core\Roles\Templates\Admin\UserList',
+                'cb'            => 'UserList',
                 'admin_menu'    => [
                     'menu_slug'     => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
                     'parent_slug'   => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
                     'menu_title'    => __('Tous les utilisateurs', 'tify'),
                     'position'      => 1
                 ],
-                'args'          => [
+                'params'          => [
                     'roles'         => [$this->getId()]
-                ]
+                ],
+                'handle'          => ['edit' => 'tiFyCoreRole-AdminUiUserEdit--' . $this->getId()]
             ],
             'edit'      =>  [
-                'cb'            => 'tiFy\Core\Roles\Templates\Admin\UserEdit',
+                'cb'            => 'UserEdit',
                 'admin_menu'    => [
                     'menu_slug'     => 'tiFyCoreRole-AdminUiUserEdit--' . $this->getId(),
                     'parent_slug'   => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
                     'menu_title'    => __('Ajouter', 'tify'),
                     'position'      => 2
                 ],
-                'args'          => [
+                'params'          => [
                     'roles'         => [$this->getId()]
 
-                ]
+                ],
+                'handle'          => ['list' => 'tiFyCoreRole-AdminUiUserList--' . $this->getId()]
             ]
         ];
         if (is_bool($attrs)) :
@@ -238,6 +239,7 @@ class Factory extends \tiFy\App\Factory
                 if (isset($attrs[$ui]['admin_menu'])) :
                     $attrs[$ui]['admin_menu'] = \wp_parse_args($attrs[$ui]['admin_menu'], $defaults[$ui]['admin_menu']);
                 endif;
+                $attrs[$ui] = \wp_parse_args($attrs[$ui], $defaults[$ui]);
             endif;
         endforeach;
 

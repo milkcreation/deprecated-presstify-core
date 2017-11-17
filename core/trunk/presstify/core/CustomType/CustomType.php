@@ -15,6 +15,8 @@ class CustomType extends \tiFy\App\Core
 
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -231,31 +233,31 @@ class CustomType extends \tiFy\App\Core
         if( ! isset( $args['labels'] ) )
             $args['labels'] = array();    
         $labels = new \tiFy\Core\Labels\Factory( wp_parse_args( $args['labels'], array( 'singular' => $singular, 'plural' => $plural, 'gender' => $gender ) ) );
-        $args['labels'] = $labels->Get();
-        
-        $defaults['public']                 = true;
-        $defaults['show_ui']                 = true;
-        $defaults['show_in_menu']             = true;
-        $defaults['show_in_nav_menus']         = false;
-        $defaults['show_tagcloud']             = false;
-        $defaults['show_in_quick_edit']     = false;
-        $defaults['meta_box_cb']             = null;
-        $defaults['show_admin_column']         = true;
-        $defaults['description']             = '';
-        $defaults['hierarchical']             = false;
+        $args['labels'] = $labels->get();
+
+        $defaults['public'] = true;
+        $defaults['show_ui'] = true;
+        $defaults['show_in_menu'] = true;
+        $defaults['show_in_nav_menus'] = false;
+        $defaults['show_tagcloud'] = false;
+        $defaults['show_in_quick_edit'] = false;
+        $defaults['meta_box_cb'] = null;
+        $defaults['show_admin_column'] = true;
+        $defaults['description'] = '';
+        $defaults['hierarchical'] = false;
         //$defaults['update_count_callback'] = '';
-        $defaults['query_var']                 = true;
-        $defaults['rewrite']                 = array(
-            'slug'             => $taxonomy, 
-            'with_front'    => false, 
-            'hierarchical'     => false        
-        );
+        $defaults['query_var'] = true;
+        $defaults['rewrite'] = [
+            'slug'         => $taxonomy,
+            'with_front'   => false,
+            'hierarchical' => false
+        ];
         //$defaults['capabilities'] = '';
-        $defaults['sort']     = true;
-        
-        return wp_parse_args( $args, $defaults );
+        $defaults['sort'] = true;
+
+        return wp_parse_args($args, $defaults);
     }
-    
+
     /**
      * Traitement des arguments par défaut de type de post personnalisé
      */
@@ -276,47 +278,46 @@ class CustomType extends \tiFy\App\Core
         
         if( ! isset( $args['labels'] ) )
             $args['labels'] = array();    
-        
-        $labels = new \tiFy\Core\Labels\Factory( wp_parse_args( $args['labels'], array( 'singular' => $singular, 'plural' => $plural, 'gender' => $gender ) ) );
-        
-        $args['labels'] = $labels->Get();
-        
+
+        $labels = new \tiFy\Core\Labels\Factory(\wp_parse_args($args['labels'], ['singular' => $singular, 'plural' => $plural, 'gender' => $gender]));
+        $args['labels'] = $labels->get();
+
         // Définition des arguments du type de post
         /// Description
         $defaults['description'] = '';
-        
+
         /// Autres arguments
-        $defaults['public']                 = true;
-        $defaults['exclude_from_search']    = false;
-        $defaults['publicly_queryable']     = true;
-        $defaults['show_ui']                 = true;
-        $defaults['show_in_nav_menus']        = true;
-        $defaults['show_in_menu']             = true;
-        $defaults['show_in_admin_bar']        = true;
-        $defaults['menu_position']             = null;
-        $defaults['menu_icon']                 = false;
-        $defaults['capability_type']         = 'page';
+        $defaults['public'] = true;
+        $defaults['exclude_from_search'] = false;
+        $defaults['publicly_queryable'] = true;
+        $defaults['show_ui'] = true;
+        $defaults['show_in_nav_menus'] = true;
+        $defaults['show_in_menu'] = true;
+        $defaults['show_in_admin_bar'] = true;
+        $defaults['menu_position'] = null;
+        $defaults['menu_icon'] = false;
+        $defaults['capability_type'] = 'page';
         //$args['capabilities']            = array();
-        $defaults['map_meta_cap']            = null;
-        $defaults['hierarchical']             = false;
-        $defaults['supports']                 = array( 'title', 'editor', 'thumbnail' );
-        $defaults['register_meta_box_cb']    = '';
-        $defaults['taxonomies']                = array();
-        $defaults['has_archive']             = true;
-        $defaults['permalink_epmask']        = EP_PERMALINK;
-        $defaults['rewrite']                 = array( 
-            'slug'             => $post_type, 
-            'with_front'    => false, 
-            'feeds'         => true, 
-            'pages'         => true,
-            'ep_mask'        => EP_PERMALINK
-        );            
-        $defaults['query_var']                 = true;
-        $defaults['can_export']                = true;
-        $defaults['show_in_rest']            = true;
-        $defaults['rest_base']                = $post_type;
-        $defaults['rest_controller_class']    = 'WP_REST_Posts_Controller';        
-                        
-        return wp_parse_args( $args, $defaults );
+        $defaults['map_meta_cap'] = null;
+        $defaults['hierarchical'] = false;
+        $defaults['supports'] = ['title', 'editor', 'thumbnail'];
+        $defaults['register_meta_box_cb'] = '';
+        $defaults['taxonomies'] = [];
+        $defaults['has_archive'] = true;
+        $defaults['permalink_epmask'] = EP_PERMALINK;
+        $defaults['rewrite'] = [
+            'slug'       => $post_type,
+            'with_front' => false,
+            'feeds'      => true,
+            'pages'      => true,
+            'ep_mask'    => EP_PERMALINK
+        ];
+        $defaults['query_var'] = true;
+        $defaults['can_export'] = true;
+        $defaults['show_in_rest'] = true;
+        $defaults['rest_base'] = $post_type;
+        $defaults['rest_controller_class'] = 'WP_REST_Posts_Controller';
+
+        return wp_parse_args($args, $defaults);
     }
 }

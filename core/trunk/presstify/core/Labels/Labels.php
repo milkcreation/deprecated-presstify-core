@@ -3,47 +3,71 @@ namespace tiFy\Core\Labels;
 
 class Labels extends \tiFy\App\Core
 {
-	/* = ARGUMENTS = */
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'init',
-	);
-	
-	// Ordres de priorité d'exécution des actions
-	protected $tFyAppActionsPriority	= array(
-		'init'				=> 9
-	);
-	
-	public static $Factories	= array();
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct()
-	{
-		parent::__construct();		
+    /**
+     * Liste des classes de rappel
+     * @var \tiFy\Core\Labels\Factory[]
+     */
+    public static $Factory = [];
 
-		foreach( (array) self::tFyAppConfig() as $id => $args ) :
-			self::Register( $id, $args );
-		endforeach;		
-	}
-	
-	/* = DECLENCHEURS = */
-	/** == Initialisation globale == **/
-	final public function init()
-	{		
-		do_action( 'tify_labels_register' );
-	}
-	
-	/* = CONTRÔLEURS = */
-	/** == Déclaration == **/
-	public static function Register( $id, $args = array() )
-	{
-		return self::$Factories[$id] = new Factory( $args );		
-	}
-	
-	/** == Récupération == **/
-	public static function Get( $id )
-	{
-		if( isset( self::$Factories[$id] ) )
-			return self::$Factories[$id];
-	}
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        if ($labels = self::tFyAppConfig()) :
+            foreach ($labels as $id => $attrs) :
+                self::register($id, $attrs);
+            endforeach;
+        endif;
+
+        // Déclaration des événements de déclenchement
+        $this->tFyAppActionAdd('init', null, 9);
+    }
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    final public function init()
+    {
+        do_action('tify_labels_register');
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Déclaration d'intitulés
+     *
+     * @param $id Identifiant de qualification unique
+     * @param array $attrs Attribut de configuration
+     *
+     * @return \tiFy\Core\Labels\Factory
+     */
+    public static function register($id, $attrs = [])
+    {
+        return self::$Factory[$id] = new Factory($id, $attrs);
+    }
+
+    /**
+     * Récupération des intitulés
+     *
+     * @param $id Identifiant de qualification
+     *
+     * @return null|\tiFy\Core\Labels\Factory
+     */
+    public static function get($id)
+    {
+        if (isset(self::$Factory[$id])) :
+            return self::$Factory[$id];
+        endif;
+    }
 }
