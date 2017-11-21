@@ -110,7 +110,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
                     foreach( $attrs as $iattr => $vattr )
                         $output .= " {$iattr}=\"{$vattr}\"";
                 $output .= ">". $value ."</textarea>\n";
-                $output .= "\t<span id=\"tify_control_text_remaining-feedback-{$instance}\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
+                $output .= "\t<span id=\"" . str_replace('#', '', $feedback_area) . "\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
                 break;
             case 'input' :                    
                 $output .= "\t<input id=\"{$id}\" data-tify_control=\"text_remaining\" data-feedback_area=\"{$feedback_area}\"";
@@ -122,7 +122,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
                     foreach( $attrs as $iattr => $vattr )
                         $output .= " {$iattr}=\"{$vattr}\"";
                 $output .= " value=\"". $value ."\">\n";
-                $output .= "\t<span id=\"tify_control_text_remaining-feedback-{$instance}\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
+                $output .= "\t<span id=\"" . str_replace('#', '', $feedback_area) . "\" class=\"feedback_area\" data-max-length=\"{$length}\" data-length=\"". strlen( $value ) ."\"></span>\n";
                 break;
         endswitch;
         $output .= "</div>\n";
