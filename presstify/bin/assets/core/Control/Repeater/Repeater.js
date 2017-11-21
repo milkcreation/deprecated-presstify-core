@@ -45,7 +45,7 @@ jQuery(document).ready(function($) {
         .disableSelection();
     
     // Suppression d'un élément
-    $(document).on('click.tify.control.repeater.remove', '[data-tify_control="repeater"] .tiFyControlRepeater-Item .tify_button_remove', function(e) {
+    $(document).on('click.tify.control.repeater.remove', '[data-tify_control="repeater"] .tiFyControlRepeater-Item > .tify_button_remove', function(e) {
         e.preventDefault();
         $(this).closest('.tiFyControlRepeater-Item').fadeOut( function(){
             $(this).remove();            
