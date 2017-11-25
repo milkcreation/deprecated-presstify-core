@@ -12,10 +12,9 @@ trait Params
         'singular',
         'plural',
         'page_title',
-        'capability',
         'notices',
-        'statuses',
-        'item_index',
+        'capability',
+        'item_index_name',
         'query_args'
     ];
 
@@ -285,18 +284,6 @@ trait Params
     }
 
     /**
-     * Définition de l'habilitation d'accès à l'édition d'un élément
-     *
-     * @param string $capability Habilitation d'accès à l'édition d'un élément définie en paramètre
-     *
-     * @return string
-     */
-    public function set_param_capability($capability = '')
-    {
-        return $capability;
-    }
-
-    /**
      * Définition de la liste des messages de notification.
      *
      * @param array $notices Liste des messages de notification définis en paramètre
@@ -309,27 +296,27 @@ trait Params
     }
 
     /**
-     * Définition de la liste des statuts.
+     * Définition de l'habilitation d'accès à l'édition d'un élément
      *
-     * @param array $statuses Liste des statuts définis en paramètre
+     * @param string $capability Habilitation d'accès à l'édition d'un élément définie en paramètre
      *
-     * @return array
+     * @return string
      */
-    public function set_param_statuses($statuses = [])
+    public function set_param_capability($capability = '')
     {
-        return $statuses;
+        return $capability;
     }
 
     /**
      * Définition de la qualification de l'index de récupération d'un élément
      *
-     * @param string $item_index Qualification de l'index de récupération d'un élément défini en paramètre
+     * @param string $item_index_name Qualification de l'index de récupération d'un élément défini en paramètre
      *
-     * @return $string
+     * @return string
      */
-    public function set_param_item_index($item_index = '')
+    public function set_param_item_index_name($item_index_name = '')
     {
-        return $item_index;
+        return $item_index_name;
     }
 
     /**
@@ -434,7 +421,16 @@ trait Params
     public function init_param_notices($notices = [])
     {
         if($notices) :
-            $notices = $this->parseNotices($notices);
+            $_notices = [];
+            foreach ($notices as $id => $attrs) :
+                if (is_int($id)) :
+                    $id = (string) $attrs;
+                    $attrs = [];
+                endif;
+                $_notices[$id] = $attrs;
+            endforeach;
+
+            $notices = $_notices;
         endif;
 
         return $notices;
@@ -443,16 +439,16 @@ trait Params
     /**
      * Initialisation de la qualification de l'index de récupération d'un élément
      *
-     * @param string $item_index Qualification de l'index de récupération d'un élément existante
+     * @param string $item_index_name Qualification de l'index de récupération d'un élément existante
      *
-     * @return $string
+     * @return string
      */
-    public function init_param_item_index($item_index = [])
+    public function init_param_item_index_name($item_index_name = [])
     {
-        if(!$item_index && ($db = $this->getDb())) :
-            $item_index = $db->getPrimary();
+        if(!$item_index_name && ($db = $this->getDb())) :
+            $item_index_name = $db->getPrimary();
         endif;
 
-        return $item_index;
+        return $item_index_name;
     }
 }

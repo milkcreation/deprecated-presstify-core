@@ -1,10 +1,9 @@
 jQuery(document).ready(function ($) {
-    $('.tiFyCoreFieldsSpinner-input').each(function() {
-        $(this).spinner({
-            icons: {
-                down: 'dashicons dashicons-arrow-down-alt2',
-                up: 'dashicons dashicons-arrow-up-alt2'
-            }
-        });
+    $('.tiFyCoreFields-Spinner').each(function() {
+        var options = JSON.parse(
+            decodeURIComponent($(this).data('options'))
+        );
+
+        $(this).spinner(options);
     });
 });

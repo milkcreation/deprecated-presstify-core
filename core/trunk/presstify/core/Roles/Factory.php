@@ -201,7 +201,7 @@ class Factory extends \tiFy\App\Factory
                 ]
             ],
             'list'      =>  [
-                'cb'            => 'UserList',
+                'cb'            => 'UserListTable',
                 'admin_menu'    => [
                     'menu_slug'     => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
                     'parent_slug'   => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),
@@ -214,7 +214,7 @@ class Factory extends \tiFy\App\Factory
                 'handle'          => ['edit' => 'tiFyCoreRole-AdminUiUserEdit--' . $this->getId()]
             ],
             'edit'      =>  [
-                'cb'            => 'UserEdit',
+                'cb'            => 'UserEditForm',
                 'admin_menu'    => [
                     'menu_slug'     => 'tiFyCoreRole-AdminUiUserEdit--' . $this->getId(),
                     'parent_slug'   => 'tiFyCoreRole-AdminUiUsers--' . $this->getId(),

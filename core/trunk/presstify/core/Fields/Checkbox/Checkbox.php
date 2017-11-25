@@ -4,41 +4,53 @@ namespace tiFy\Core\Fields\Checkbox;
 class Checkbox extends \tiFy\Core\Fields\Factory
 {
     /**
-     * Instance
-     * @var int
+     * Vérification de selection de la case à cocher
+     *
+     * @return bool
      */
-    protected static $Instance = 0;
+    public function isChecked()
+    {
+        return $this->getAttr('checked') === $this->getHtmlAttrs('value');
+    }
 
     /**
      * Affichage
      *
-     * @param array $attrs
-     * @param bool $echo
+     * @param string $id Identifiant de qualification du champ
+     * @param array $args {
+     *      Liste des attributs de configuration du champ
      *
-     * return string
+     *      @param string $before Contenu placé avant le champ
+     *      @param string $after Contenu placé après le champ
+     *      @param array $attrs {
+     *          Liste des attributs de balise
+
+     *      }
+     * }
+     *
+     * @return string
      */
-    public static function display($attrs = [])
+    public static function display($id = null, $args = [])
     {
-        ++static::$Instance;
+        static::$Instance++;
 
         $defaults = [
-            'id'                => 'tiFyCoreFields-Checkbox-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFields-Checkbox--' . static::$Instance,
-            'container_class'   => '',
-            'html_attrs'        => [],
-            'label'             => '',
-            'name'              => '',
-            'value'             => '',
+            'before'  => '',
+            'after'   => '',
+            'attrs'        => [
+                'id'    => 'tiFyCoreFields-Checkbox--' . static::$Instance
+            ],
             'checked'           => null
         ];
-        $attrs = \wp_parse_args($attrs, $defaults);
+        $args = \wp_parse_args($args, $defaults);
 
-        $Field = new static($attrs);
-?>
-<input type="checkbox" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" <?php checked($attrs['checked'] === $attrs['value']);?> id="<?php echo $Field->getContainerId();?>" class="tiFyCoreFields-Checkbox<?php echo $Field->getContainerClass();?>" <?php echo $Field->getHtmlAttrs();?>/>
-<?php if ($attrs['label']) : ?>
-<label for="<?php echo $Field->getContainerId();?>"><?php echo $attrs['label'];?></label>
-<?php endif;?>
-<?php
+        // Instanciation
+        $field = new static($id, $args);
+        $field->setHtmlAttr('type', 'checkbox');
+        if ($field->isChecked()) :
+            $field->setHtmlAttr('checked', 'checked');
+        endif;
+
+        ?><?php $field->before(); ?><input <?php $field->htmlAttrs(); ?>/><?php $field->after(); ?><?php
     }
 }

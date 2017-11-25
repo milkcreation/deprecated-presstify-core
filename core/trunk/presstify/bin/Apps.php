@@ -228,6 +228,9 @@ final class Apps
             //Espace de nom enfant
             $ChildNamespace = null;
         else :
+            /**
+             * @var mixed $Config Attributs de configuration actifs
+             */
             extract(self::$Registered[$classname]);
             $Config = wp_parse_args($config_attrs, $Config);
         endif;
@@ -631,13 +634,13 @@ final class Apps
     /**
      * Traitement du fichier de configuration
      * 
-     * @param unknown $filename
+     * @param string $filename
      * 
      * @return mixed|NULL|\Symfony\Component\Yaml\Tag\TaggedValue|string|\stdClass|NULL[]|\Symfony\Component\Yaml\Tag\TaggedValue[]|string[]|unknown[]|mixed[]
      */
-    public static function parseFile( $filename )
+    public static function parseFile($filename)
     {
-        $output = Yaml::parse( file_get_contents( $filename ) );
+        $output = Yaml::parse(file_get_contents($filename));
 
         return $output;
     }

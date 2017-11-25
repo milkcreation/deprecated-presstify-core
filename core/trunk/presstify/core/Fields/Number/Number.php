@@ -4,53 +4,57 @@ namespace tiFy\Core\Fields\Number;
 class Number extends \tiFy\Core\Fields\Factory
 {
     /**
-     * Instance
-     * @var int
-     */
-    protected static $Instance = 0;
-
-    /**
      * Liste des attributs HTML autorisés
+     * @see https://www.w3schools.com/html/html_form_input_types.asp
      * @var array
      */
     protected $AllowedHtmlAttrs = [
-        'readonly',
         'disabled',
-        'max',
+        'max', /** HTML5 */
         'maxlength',
-        'min',
-        'pattern',
+        'min', /** HTML5 */
+        'pattern', /** HTML5 */
         'readonly',
-        'required',
+        'required', /** HTML5 */
         'size',
-        'step'
+        'step',
+        'value'
     ];
 
     /**
      * Affichage
      *
-     * @param array $attrs
-     * @param bool $echo
+     * @param string $id Identifiant de qualification du champ
+     * @param array $args {
+     *      Liste des attributs de configuration du champ
      *
-     * return string
+     *      @param string $before Contenu placé avant le champ
+     *      @param string $after Contenu placé après le champ
+     *      @param array $attrs {
+     *          Liste des attributs de balise
+     *
+     *      }
+     * }
+     *
+     * @return string
      */
-    public static function display($attrs = [])
+    public static function display($id = null, $args = [])
     {
-        ++static::$Instance;
+        static::$Instance++;
 
         $defaults = [
-            'id'                => 'tiFyCoreFields-Number-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFields-Number--' . static::$Instance,
-            'container_class'   => '',
-            'html_attrs'        => [],
-            'name'              => '',
-            'value'             => ''
+            'before'       => '',
+            'after'        => '',
+            'attrs'        => [
+                'id'    => 'tiFyCoreFields-Number--' . static::$Instance
+            ]
         ];
-        $attrs = \wp_parse_args($attrs, $defaults);
+        $args = \wp_parse_args($args, $defaults);
 
-        $Field = new static($attrs);
-?>
-<input type="number" name="<?php echo $Field->getName();?>" value="<?php echo $Field->getValue();?>" class="tiFyCoreFields-Number<?php echo $Field->getContainerClass();?>" <?php echo $Field->getHtmlAttrs(); ?>/>
-<?php
+        // Instanciation
+        $field = new static($id, $args);
+        $field->setHtmlAttr('type', 'number');
+
+        ?><?php $field->before(); ?><input <?php $field->htmlAttrs(); ?>/><?php $field->after(); ?><?php
     }
 }

@@ -518,7 +518,7 @@ abstract class Table
     }
     
     /** == == **/
-    protected function row_actions( $actions, $always_visible = false ) 
+    protected function row_actions( $actions, $always_visible = false)
     {
         $action_count = count( $actions );
         $i = 0;

@@ -1,36 +1,43 @@
-.tiFyCoreFieldsSpinner {
+.tiFyCoreFields-SpinnerContainer {
     position: relative;
     display: inline-block;
     padding-right: 20px;
 }
-.tiFyCoreFieldsSpinner .ui-icon {
+
+.tiFyCoreFields-SpinnerContainer .ui-icon {
     font-size: 0;
     width: 15px;
     height: 15px;
     vertical-align: baseline;
 }
-.tiFyCoreFieldsSpinner .ui-icon::before {
+
+.tiFyCoreFields-SpinnerContainer .ui-icon::before {
     font-size: 15px;
     color: #3498DB;
 }
-.tiFyCoreFieldsSpinner .ui-spinner-button {
+
+.tiFyCoreFields-SpinnerContainer .ui-spinner-button {
     position: absolute;
     right: 0;
     display: inline-block;
     vertical-align: baseline;
     line-height: 0;
 }
-.tiFyCoreFieldsSpinner .ui-button-text {
+
+.tiFyCoreFields-SpinnerContainer .ui-button-text {
     display: inline-block;
     line-height: 0;
 }
-.tiFyCoreFieldsSpinner .ui-spinner-up {
+
+.tiFyCoreFields-SpinnerContainer .ui-spinner-up {
     top: 0;
 }
-.tiFyCoreFieldsSpinner .ui-spinner-down {
+
+.tiFyCoreFields-SpinnerContainer .ui-spinner-down {
     bottom: 0;
 }
-.tiFyCoreFieldsSpinner-input {
+
+.tiFyCoreFields-Spinner {
     font-size: 14px;
     width: 50px;
     height: 30px;
@@ -46,5 +53,5 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    -webkit-tap-highlight-color:transparent;
+    -webkit-tap-highlight-color: transparent;
 }

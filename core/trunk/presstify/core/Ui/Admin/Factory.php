@@ -6,14 +6,25 @@ use tiFy\Core\Ui\Ui;
 class Factory extends \tiFy\Core\Ui\Factory
 {
     /**
-     * Liste des noms de modèle de gabarits prédéfinis
-     * @var string[]
+     * Liste des attributs de configuration des gabarits parents
+     * @var array
      */
-    protected $Templates = [
-        'Form',
-        'Table',
-        'UserEdit',
-        'UserList'
+    protected $Parents = [
+        'EditForm' => [
+
+        ],
+        'ListTable' => [
+
+        ],
+        'PostListTable' => [
+            'db'    => 'posts'
+        ],
+        'UserEditForm' => [
+            'db'    => 'users'
+        ],
+        'UserListTable' => [
+            'db'    => 'users'
+        ],
     ];
 
     /**
@@ -62,6 +73,7 @@ class Factory extends \tiFy\Core\Ui\Factory
 
         // Déclaration de la liste des événements à declencher
         $this->tFyAppActionAdd('admin_enqueue_scripts');
+        $this->tFyAppActionAdd('admin_notices');
 
         // Déclenchement de l'événenement d'affichage de l'écran courant dans le gabarit
         if ($template = $this->getTemplate()) :
@@ -79,6 +91,19 @@ class Factory extends \tiFy\Core\Ui\Factory
         // Déclenchement de l'événenement de mise en file des scripts de l'interface d'administration dans le gabarit
         if ($template = $this->getTemplate()) :
             $template->admin_enqueue_scripts();
+        endif;
+    }
+
+    /**
+     * Affichage des notifications de l'interface d'administration
+     *
+     * return void|string
+     */
+    public function admin_notices()
+    {
+        // Déclenchement de l'événenement de mise en file des scripts de l'interface d'administration dans le gabarit
+        if ($template = $this->getTemplate()) :
+            $template->admin_notices();
         endif;
     }
 
@@ -125,7 +150,7 @@ class Factory extends \tiFy\Core\Ui\Factory
 
             // Définition des intitulés de menu par défaut
             $labels = $attrs['labels'];
-            switch ($this->getModel()) :
+            switch ($this->getParentId()) :
                 default :
                     $defaults['menu_title'] = $labels->get('menu_name');
                     break;

@@ -61,8 +61,8 @@ class Query extends \WP_Query
     final public function loadFromParentObj($WP_Query)
     {
         $objValues = get_object_vars($WP_Query);
-        foreach($objValues AS $key=>$value) :
-            $this->$key = $value;
+        foreach($objValues AS $key => $value) :
+            $this->{$key} = $value;
         endforeach;
     }
 

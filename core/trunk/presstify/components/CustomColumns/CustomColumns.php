@@ -22,7 +22,6 @@ class CustomColumns extends \tiFy\App\Component
         // Déclaration des événements de déclenchement
         $this->tFyAppActionAdd('admin_init', null, 99);
         $this->tFyAppActionAdd('current_screen');
-
     }
 
     /**
@@ -34,7 +33,7 @@ class CustomColumns extends \tiFy\App\Component
     public function admin_init()
     {
         // Récupération des colonnes personnalisées déclarées dans les fichiers de configuration
-        foreach (['post_type', 'taxonomy'] as $object) :
+        foreach (['post_type', 'taxonomy', 'custom'] as $object) :
             if(!self::tFyAppConfig($object)) :
                 continue;
             endif;
@@ -53,7 +52,7 @@ class CustomColumns extends \tiFy\App\Component
         do_action('tify_custom_columns_register');
 
         // Instanciation des colonnes personnalisées déclarées
-        foreach (['post_type', 'taxonomy'] as $env) :
+        foreach (['post_type', 'taxonomy', 'custom'] as $env) :
             if (!isset(self::$Factory[$env])) :
                 continue;
             endif;
@@ -135,6 +134,10 @@ class CustomColumns extends \tiFy\App\Component
             case 'taxonomy' :
                 $classname = '\tiFy\Components\CustomColumns\Taxonomy';
                 $Object = 'Taxonomy';
+                break;
+            case 'custom' :
+                $classname = '\tiFy\Components\CustomColumns\Custom';
+                $Object = 'Custom';
                 break;
         endswitch;
 
