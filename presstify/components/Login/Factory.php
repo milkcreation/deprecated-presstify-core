@@ -36,9 +36,11 @@ class Factory extends \tiFy\App\FactoryConstructor
                 break;
             case 'login' :
                 $this->tFyAppFilterAdd('authenticate', 'authenticate', 50, 3);
-                $this->_signon();
+                $this->tFyAppActionAdd('wp_login', 'on_login_success', 10, 2);
+                $this->_login();
                 break;
             case 'logout' :
+                $this->tFyAppActionAdd('wp_logout', 'on_logout_success');
                 $this->_logout();
                 break;
         endswitch;
@@ -48,33 +50,17 @@ class Factory extends \tiFy\App\FactoryConstructor
      * DECLENCHEURS
      */
     /**
-     * Vérification des droits d'authentification d'un utilisateur
-     *
-     * @param \WP_User $user
-     * @param string $username Identifiant de l'utilisateur passé en argument de la requête d'authentification
-     * @param string $password Mot de passe en clair passé en argument de la requête d'authentification
-     *
-     * @return \WP_Error|\WP_User
-     */
-    public function authenticate($user, $username, $password)
-    {
-        if (!is_wp_error($user) && ($roles = $this->getRoles()) && !array_intersect($user->roles, $this->getRoles())) :
-            $user = new \WP_Error('role_not_allowed');
-        endif;
-
-        return $user;
-    }
-
-    /**
      * CONTROLEURS
      */
     /**
-     * Authentification
+     * Procédure de connection
      *
      * @return void
      */
-    private function _signon()
+    private function _login()
     {
+        check_admin_referer('tiFyLogin-in-' . $this->getId());
+
         $secure_cookie = '';
 
         if (!empty($_POST['log']) && !force_ssl_admin()) :
@@ -111,8 +97,6 @@ class Factory extends \tiFy\App\FactoryConstructor
             endif;
         endif;
 
-        $this->onLogin();
-
         if (!is_wp_error($user) && !$reauth) :
             $redirect_url = '';
             if (!empty($_REQUEST['redirect_to'])) :
@@ -135,7 +119,7 @@ class Factory extends \tiFy\App\FactoryConstructor
     }
 
     /**
-     * Déconnection
+     * Procédure de déconnection
      *
      * @return void
      */
@@ -146,8 +130,6 @@ class Factory extends \tiFy\App\FactoryConstructor
         $user = wp_get_current_user();
 
         wp_logout();
-
-        $this->onLogout();
 
         $redirect_url = '';
         if (!empty($_REQUEST['redirect_to'])) :
@@ -387,21 +369,42 @@ class Factory extends \tiFy\App\FactoryConstructor
      * SURCHAGE
      */
     /**
-     * Action lancée au moment de la connection
+     * Vérification des droits d'authentification d'un utilisateur
+     *
+     * @param \WP_User $user
+     * @param string $username Identifiant de l'utilisateur passé en argument de la requête d'authentification
+     * @param string $password Mot de passe en clair passé en argument de la requête d'authentification
+     *
+     * @return \WP_Error|\WP_User
+     */
+    public function authenticate($user, $username, $password)
+    {
+        if (!is_wp_error($user) && ($roles = $this->getRoles()) && !array_intersect($user->roles, $this->getRoles())) :
+            $user = new \WP_Error('role_not_allowed');
+        endif;
+
+        return $user;
+    }
+
+    /**
+     * Action lancée en cas de succès de connection
+     *
+     * @param string  $user_login Identifiant de connection
+     * @param \WP_User $user Object WP_User de l'utilisateur connecté
      *
      * @return void
      */
-    public function onLogin()
+    public function on_login_success($user_login, $user)
     {
         return;
     }
 
     /**
-     * Action lancée au moment de la déconnection
+     * Action lancée en cas de succès de deconnection
      *
      * @return void
      */
-    public function onLogout()
+    public function on_logout_success()
     {
         return;
     }
@@ -596,6 +599,7 @@ class Factory extends \tiFy\App\FactoryConstructor
 
         // Champs cachés requis
         $output .= Fields::Hidden(['attrs' => ['name' => 'tiFyLogin', 'value' => $this->getId()]], false);
+        $output .= Fields::Hidden(['attrs' => ['name' => '_wpnonce', 'value' => \wp_create_nonce('tiFyLogin-in-' . $this->getId())]], false);
 
         // Champs cachés
         $output .= $this->hidden_fields();
@@ -616,7 +620,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         $output .= $this->login_form_field_submit();
         
         // Pied du formulaire
-        $output .= $this->login_form_after();
+        $output .= $this->login_form_footer();
         
         // Fermeture du formulaire
         $output .= "</form>";
