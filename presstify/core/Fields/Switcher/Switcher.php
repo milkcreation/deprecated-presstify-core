@@ -6,17 +6,12 @@
  * @see http://bashooka.com/coding/pure-css-toggle-switches/
  * @see https://proto.io/freebies/onoff/
  */ 
-
 namespace tiFy\Core\Fields\Switcher;
+
+use tiFy\Core\Fields\Fields;
 
 class Switcher extends \tiFy\Core\Fields\Factory
 {
-    /**
-     * Instance
-     * @var int
-     */
-    protected static $Instance = 0;
-
     /**
      * DECLENCHEURS
      */
@@ -27,8 +22,8 @@ class Switcher extends \tiFy\Core\Fields\Factory
      */
     final public static function init()
     {
-        wp_register_style('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.css', get_class()), array( ), '150310');
-        wp_register_script('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.js', get_class()), array( 'jquery' ), 170724);
+        wp_register_style('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.css', get_class()), [], 170724);
+        wp_register_script('tiFyCoreFieldsSwitcher', self::tFyAppAssetsUrl('Switcher.js', get_class()), ['jquery'], 170724);
     }
 
     /**
@@ -48,41 +43,89 @@ class Switcher extends \tiFy\Core\Fields\Factory
     /**
      * Affichage
      *
+     * @param string $id Identifiant de qualification du champ
+     * @param array $args {
+     *      Liste des attributs de configuration du champ
+     *
+     * }
+     *
      * @return string
      */
-    public static function display($attrs = [])
+    public static function display($id = null, $args = [])
     {
-        self::$Instance++;
+        static::$Instance++;
 
         $defaults = [
-            'id'                => 'tiFyCoreFields-Switcher-' . self::$Instance,
-            'container_id'      => 'tiFyCoreFields-switcher--' . self::$Instance,
+            'before'  => '',
+            'after'   => '',
+            'container_id'      => 'tiFyCoreFields-Switcher--' . self::$Instance,
             'container_class'   => '',
             'name'              => '',
             'checked'           => null,
             'default'           => 'on',
-            'label_on'          => _x( 'Oui', 'tiFyCoreFieldsSwitcher', 'tify' ),
-            'label_off'         => _x( 'Non', 'tiFyCoreFieldsSwitcher', 'tify' ),
+            'label_on'          => _x('Oui', 'tiFyCoreFieldsSwitcher', 'tify' ),
+            'label_off'         => _x('Non', 'tiFyCoreFieldsSwitcher', 'tify' ),
             'value_on'          => 'on',
             'value_off'         => 'off'
         ];
-        $attrs = \wp_parse_args($attrs, $defaults);
+        $args = \wp_parse_args($args, $defaults);
 
-        if(is_null($attrs['checked'])) :
-            $attrs['checked'] = $attrs['default'];
-        endif;
+        // Instanciation
+        $field = new static($id, $args);
 
-        $Field = new static($attrs);
-?>
-<div id="<?php echo $Field->getContainerId();?>" class="tiFyCoreFieldsSwitcher<?php echo $Field->getContainerClass();?>">
+?><?php $field->before(); ?>
+<div id="<?php echo $field->getAttr('container_id');?>" class="tiFyCoreFieldsSwitcher<?php echo $field->getAttr('container_class');?>">
     <div class="tiFyCoreFieldsSwitcher-wrapper">
-        <input type="radio" id="<?php echo $Field->getId(); ?>-on" class="tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--on" name="<?php echo $Field->getName(); ?>" value="<?php echo $Field->getAttr('value_on'); ?>" autocomplete="off" <?php checked(($Field->getAttr('value_on') === $Field->getAttr('checked')), true, true); ?>>
-        <label for="<?php echo $Field->getId(); ?>-on" class="tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--on"><?php echo $Field->getAttr('label_on'); ?></label>
-        <input type="radio" id="<?php echo $Field->getId(); ?>-off" class="tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--off" name="<?php echo $Field->getName(); ?>" value="<?php echo $Field->getAttr('value_off'); ?>" autocomplete="off" <?php checked(($Field->getAttr('value_off') === $Field->getAttr('checked')), true, true); ?>>
-        <label for="<?php echo $Field->getId(); ?>-off" class="tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--off"><?php echo $Field->getAttr('label_off'); ?></label>
+        <?php
+            Fields::Radio(
+                [
+                    'after' => Fields::Label(
+                        [
+                            'content' => $field->getAttr('label_on'),
+                            'attrs' => [
+                                'for' => $field->getId() . '--on',
+                                'class' => 'tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--on'
+                            ]
+                        ],
+                        false
+                    ),
+                    'attrs' => [
+                        'id'    => $field->getId() . '--on',
+                        'class' => 'tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--on',
+                        'value' => $field->getAttr('value_on'),
+                    ],
+                    'checked' => $field->getAttr('checked')
+                ],
+                false
+            );
+        ?>
+        <?php
+            Fields::Radio(
+                [
+                    'after' => Fields::Label(
+                        [
+                            'content' => $field->getAttr('label_off'),
+                            'attrs' => [
+                                'for' => $field->getId() . '--off',
+                                'class' => 'tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--off'
+                            ]
+                        ],
+                        false
+                    ),
+                    'attrs' => [
+                        'id'    => $field->getId() . '--off',
+                        'class' => 'tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--off',
+                        'value' => $field->getAttr('value_off'),
+                    ],
+                    'checked' => $field->getAttr('checked')
+                ],
+                false
+            );
+        ?>
         <span class="tiFyCoreFieldsSwitcher-handler"></span>
     </div>
 </div>
+<?php $field->after(); ?>
 <?php
     }
 }

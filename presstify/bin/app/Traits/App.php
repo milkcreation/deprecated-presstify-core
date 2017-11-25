@@ -85,7 +85,7 @@ trait App
      * Définition d'attributs de l'applicatif
      *
      * @param $attrs Liste des attributs à définir
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
      */
@@ -99,7 +99,7 @@ trait App
     /**
      * Récupération de la liste des attributs de l'applicatif
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array {
      *      Liste des attributs de configuration
@@ -152,7 +152,7 @@ trait App
      * Récupération d'un attribut de l'applicatif
      *
      * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|OverridePath
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|mixed
      */
@@ -168,7 +168,7 @@ trait App
     /**
      * Récupération du nom complet de la classe (Espace de nom inclus)
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|string
      */
@@ -178,9 +178,33 @@ trait App
     }
 
     /**
+     * Récupération du nom cours de la classe (hors espace de nom)
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public static function tFyAppShortname($classname = null)
+    {
+        return self::tFyAppAttr('ShortName', $classname);
+    }
+
+    /**
+     * Récupération de l'espace de nom
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public static function tFyAppNamespace($classname = null)
+    {
+        return self::tFyAppAttr('Namespace', $classname);
+    }
+
+    /**
      * Récupération du chemin absolu vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|string
      */
@@ -192,7 +216,7 @@ trait App
     /**
      * Récupération de l'url absolue vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|string
      */
@@ -204,7 +228,7 @@ trait App
     /**
      * Récupération du chemin relatif vers le repertoire racine de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|string
      */
@@ -216,7 +240,7 @@ trait App
     /**
      * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array
      */
@@ -228,7 +252,7 @@ trait App
     /**
      * Récupération des chemins vers le repertoire des assets (stockage des ressources de type feuilles de styles CSS, scripts JS, images, SVG)
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return array {
      *      Attributs du repertoire de surchage des ressources de l'application (là où récupérer les feuilles de styles CSS, le scripts JS, les images, les SVG)
@@ -301,7 +325,7 @@ trait App
      * Récupération des attributs de configuration par défaut de l'app
      *
      * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|mixed
      */
@@ -321,7 +345,7 @@ trait App
      *
      * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
      * @param void|mixed $default Valeur par défaut de retour
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return mixed
      */
@@ -342,7 +366,7 @@ trait App
      * Définition de la liste des attributs de configuration de l'application
      *
      * @param mixed $attrs Liste des attributs de configuration
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
      */
@@ -358,7 +382,7 @@ trait App
      *
      * @param string $name Qualification de l'attribut de configuration
      * @param null|mixed $value Valeur de l'attribut de configuration
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
      */
@@ -378,7 +402,7 @@ trait App
     /**
      * Récupération d'une classe de surcharge
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      * @param array $path Liste des chemins à parcourir
      *
      * @return null|string
@@ -406,7 +430,7 @@ trait App
     /**
      * Chargement d'une classe de surcharge
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      * @param array $path Liste des chemins à parcourir
      * @param mixed $passed_args Argument passé au moment de l'instantiaction de la class
      *
@@ -427,7 +451,7 @@ trait App
     /**
      * Récupération de la liste des chemins de surcharge d'une classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return string[]
      */
@@ -447,7 +471,7 @@ trait App
     /**
      * Récupération de la liste des espaces de nom de surcharge
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return string[]
      */
@@ -487,7 +511,7 @@ trait App
      * @param string $slug Identification du template ou chemin relatif .
      * @param string $name Modifieur de template.
      * @param mixed $args Liste des arguments passés en variable dans le template
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @see get_template_part()
      *
@@ -516,7 +540,7 @@ trait App
      *
      * @param $template
      * @param $templates
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return string
      */
@@ -669,7 +693,7 @@ trait App
     /**
      * Traitement du nom de la classe
      *
-     * @param object|string classname Instance (objet) ou Nom de la classe de l'application
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return string
      */
@@ -710,5 +734,28 @@ trait App
 
         // Définition de la liste des chemins vers les repertoires de surcharge
         Apps::setOverridePath($classname);
+    }
+
+    /**
+     * Récupère les arguments d'une classe externe pour ventiler les arguments de l'application (experimental)
+     * @see https://stackoverflow.com/questions/119281/how-do-you-copy-a-php-object-into-a-different-object-type
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return void
+     */
+    final public function tFyAppCloneObjVars($classname)
+    {
+        if (is_object($classname)) :
+            $objVars = get_object_vars($classname);
+        elseif(class_exists($classname)) :
+            $objVars = get_class_vars($classname);
+        else :
+            return;
+        endif;
+
+        foreach($objVars AS $key => $value) :
+            $this->{$key} = $value;
+        endforeach;
     }
 }

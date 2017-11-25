@@ -1,444 +1,943 @@
 <?php
 namespace tiFy\Components\Login;
 
-class Factory
+use tiFy\Core\Fields\Fields;
+use tiFy\Core\Control\Notices\Notices;
+use Symfony\Component\HttpFoundation\Request;
+
+class Factory extends \tiFy\App\FactoryConstructor
 {
-    /* = ARGUMENTS = */
-    // Instance
-    private static $Instance;
+    use \tiFy\Lib\Notices\Traits\Notices;
 
-    // Identifiant
-    protected $id                       = null;
-    
-    // Liste des erreurs courantes
-    protected $Errors                   = null;
-    
-    /* = PARAMETRES = */
-    // Identifiant du formulaire
-    protected $FormID                   = null;
-    
-    // Url de redirection
-    protected $RedirectUrl              = null;
-    
-    // Intitulé du champs de saisie de l'identifiant
-    protected $LabelUsername            = '';
-    
-    // Intitulé du champs de saisie du mot de passe
-    protected $LabelPassword            = '';
-    
-    // Intitulé de la selection de mémorisation des informations de connection
-    protected $LabelRemember            = '';
-    
-    // Intitulé du bouton de soumission de l'authentification
-    protected $LabelSubmitLogin         = '';
-    
-    // Texte d'aide du champs de saisie de l'identifiant
-    protected $PlaceholderUsername      = '';
-    
-    // Texte d'aide du champs de saisie du mot de passe
-    protected $PlaceholderPassword      = '';
-    
-    // Identifiant HTML de la zone de saisie de l'identifiant
-    protected $IdUsername               = null;
-    
-    // Identifiant HTML de la zone de saisie du mot de passe
-    protected $IdPassword               = null;
-    
-    // Identifiant HTML de la zone de selection de mémorisation des informations de connection
-    protected $IdRemember               = null;
-    
-    // Identifiant HTML de la zone de soumission de l'authentification
-    protected $IdSubmitLogin            = null;
-    
-    // Activation de la zone de selection de mémorisation des informations de connection
-    protected $RememberActive           = true;
-    
-    // Valeur de l'identifiant de connection
-    protected $ValueUsername            = '';
-    
-    // Valeur de la selection de mémorisation des informations de connection
-    protected $ValueRemember            = false;
-    
-    // Liste des rôles autorisés a se connecter
-    protected $AllowedRoles             = array( 'subscriber' );
-    
-    // Cartographie des messages d'erreurs
-    protected $ErrorsMap                = array();
-                
-    // Liste des paramètres pouvant être définie
-    protected static $settableParams    = array(
-        'FormID',
-        'RedirectUrl',  
-        'LabelUsername', 'LabelPassword', 'LabelRemember', 'LabelSubmitLogin', 
-        'PlaceholderUsername', 'PlaceholderPassword',
-        'IdUsername', 'IdPassword', 'IdRemember', 'IdSubmitLogin',
-        'RememberActive',
-        'ValueUsername', 'ValueRemember',
-        'AllowedRoles',
-        'ErrorsMap'
-    );
-    
-    /* = CONSTRUCTEUR = */
-    public function __construct( $id = null, $config = array() )
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct($id, $attrs = [])
     {
-        self::$Instance++;
-        
-        $this->id = ( ! empty( $id ) ) ? $id : ( is_subclass_of( $this, __CLASS__ ) ? get_class( $this ) :  get_class( $this ) .'-'. self::$Instance );
-        
-        // Définition des paramètres par défaut
-        // Identifiant du formulaire
-        $this->FormID                       = 'tiFyLoginForm--'. self::$Instance;
-        // Url de redirection
-        $this->RedirectUrl                  = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'];
-        // Intitulé du champs de saisie de l'identifiant
-        $this->LabelUsername                = __( 'Identifiant', 'tify' );
-        // Intitulé du champs de saisie du mot de passe
-        $this->LabelPassword                = __( 'Mot de passe', 'tify' );
-        // Intitulé de la selection de mémorisation des informations de connection
-        $this->LabelRemember                = __( 'Se souvenir de moi', 'tify' );
-        // Intitulé du bouton de soumission de l'authentification
-        $this->LabelSubmitLogin             = __( 'Connexion', 'tify' );
-        // Texte d'aide du champs de saisie de l'identifiant
-        $this->PlaceholderUsername          = __( 'Identifiant', 'tify' );
-        // Texte d'aide du champs de saisie du mot de passe
-        $this->PlaceholderPassword          = __( 'Mot de passe', 'tify' );
-        // Identifiant HTML de la zone de saisie de l'identifiant
-        $this->IdUsername                   = 'tify_login-username';
-        // Identifiant HTML de la zone de saisie du mot de passe
-        $this->IdPassword                   = 'tify_login-password';
-        // Identifiant HTML de la zone de selection de mémorisation des informations de connection
-        $this->IdRemember                   = 'tify_login-rememberme';
-        // Identifiant HTML de la zone de soumission de l'authentification
-        $this->IdSubmitLogin                = 'tify_login-submit_button';
-        // Activation de la zone de selection de mémorisation des informations de connection
-        $this->RememberActive               = true;
-        // Valeur de l'identifiant de connection
-        $this->ValueUsername                = '';
-        // Valeur de la selection de mémorisation des informations de connection
-        $this->ValueRemember                = false;        
-        // Liste des rôles habilités à se connecter depuis cette interface
-        $this->AllowedRoles                 = array( 'subscriber' );
-        // Nombre de tentative de connection @todo
-        $this->Attempt                      = -1;    
-        
-        // Définition de la cartographie des message d'erreurs
-        $this->_setErrorsMap();
-    }
+        parent::__construct($id, $attrs);
 
-    /* = PARAMETRAGE = */
-    /** == Définition d'un paramètre == **/
-    final public function setParam( $param, $value )
-    {
+        // Classe de traitement des requête
+        $request = Request::createFromGlobals();
+
         // Bypass
-        if( ! in_array( $param, static::$settableParams ) )
+        if (!$tify_login = $request->get('tiFyLogin', false)) :
             return;
-        
-        $this->{$param} = $value;
-    }
-    
-    /** == Traitement des arguments du formulaire d'authentification == **/
-    final protected function _loginFormParseArgs( $args = array() )
-    {
-        $defaults = array(
-            'form_id'                   => $this->getParam( 'FormID' ),
-            'redirect'                  => $this->getParam( 'RedirectUrl' ),            
-            'label_username'            => $this->getParam( 'LabelUsername' ),
-            'label_password'            => $this->getParam( 'LabelPassword' ),
-            'placeholder_username'      => $this->getParam( 'PlaceholderUsername' ),
-            'placeholder_password'      => $this->getParam( 'PlaceholderPassword' ),
-            'label_remember'            => $this->getParam( 'LabelRemember' ),
-            'label_log_in'              => $this->getParam( 'LabelSubmitLogin' ),
-            'id_username'               => $this->getParam( 'IdUsername' ),
-            'id_password'               => $this->getParam( 'IdPassword' ),
-            'id_remember'               => $this->getParam( 'IdRemember' ),
-            'id_submit'                 => $this->getParam( 'IdSubmitLogin' ),
-            'remember'                  => $this->getParam( 'RememberActive' ),
-            'value_username'            => $this->getParam( 'ValueUsername' ),
-            'value_remember'            => $this->getParam( 'ValueRemember' )
-        );
-
-        return wp_parse_args( $args, apply_filters( 'tify_login_form_defaults', $defaults, $this ) );
-    }
-
-    /** == Définition de la catographie des message d'erreurs == **/
-    final protected function _setErrorsMap()
-    {
-        $defaults = array(
-            'empty_password'        => __( 'Veuillez renseigner le mot de passe', 'tify' ),
-            'authentication_failed'    => __( 'Les idenfiants de connexion fournis sont invalides.', 'tify' ),
-            'role_not_allowed'        => __( 'Votre utilisateur n\'est pas autorisé à se connecter depuis cette interface.' , 'tify' )
-        );
-        $this->ErrorsMap = wp_parse_args( $this->ErrorsMap, $defaults );
-    }
-    
-    /* = CONTROLEURS */
-    /** == Récupération de l'ID == **/
-    final public function getID()
-    {
-        return $this->id;
-    }
-    
-    /** == Récupération d'un paramètre == **/
-    final public function getParam( $param, $default = '' )
-    {
-        // Bypass
-        if( ! in_array( $param, static::$settableParams ) )
-            return $default;
-        
-        if( method_exists( $this, 'getParam'.$param ) ) :
-            return call_user_func( array( $this, 'getParam'. $param ), $default );
-        elseif( isset( $this->{$param} ) ) :
-            return $this->{$param};
-        else :
-            return $default;
         endif;
-    }
-        
-    /** == Récupération de la liste des rôles == **/
-    final public function getRoles()
-    {
-        return (array) $this->getParam( 'AllowedRoles' );
-    }
 
-    /** == Définition des erreurs == **/
-    final public function setErrors( $errors )
-    {
-        $this->Errors = $errors;
-    }
-    
-    /** == Récupération des erreurs == **/
-    final public function getErrors()
-    {
-        return $this->Errors;
-    }
-    
-    /** == Liste des erreurs == **/
-    final protected function displayErrors()
-    {
-        $code = $this->getErrors()->get_error_code();
-
-        if( isset( $this->ErrorsMap[$code] ) ) :
-            return $this->ErrorsMap[$code];
-        elseif( $message = $this->getErrors()->get_error_message() ) :
-            return $message;
-        else :
-            return __( 'Erreur lors de la tentative d\'authentification', 'tify' );
+        if ($tify_login !== $this->getId()) :
+            return;
         endif;
+
+        $action = $request->get('action', 'login');
+        switch ($action) :
+            default :
+                break;
+            case 'login' :
+                $this->tFyAppFilterAdd('authenticate', 'authenticate', 50, 3);
+                $this->_signon();
+                break;
+            case 'logout' :
+                $this->_logout();
+                break;
+        endswitch;
     }
-    
-    /* = SURCHARGE = */
-    /** == Vérification des droits d'authentification d'un utilisateur == **/
-    public function checkAuthenticate( $user, $username, $password )
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Vérification des droits d'authentification d'un utilisateur
+     *
+     * @param \WP_User $user
+     * @param string $username Identifiant de l'utilisateur passé en argument de la requête d'authentification
+     * @param string $password Mot de passe en clair passé en argument de la requête d'authentification
+     *
+     * @return \WP_Error|\WP_User
+     */
+    public function authenticate($user, $username, $password)
     {
+        if (!is_wp_error($user) && ($roles = $this->getRoles()) && !array_intersect($user->roles, $this->getRoles())) :
+            $user = new \WP_Error('role_not_allowed');
+        endif;
+
         return $user;
     }
-    
-    /* = AFFICHAGE = */
-    /** == == **/
-    public function display( $args = array(), $echo = false )
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Authentification
+     *
+     * @return void
+     */
+    private function _signon()
     {
-        $output  = "";
-        $output .= $this->errors();
-        $output .= $this->form( $args = array() );
-        
-        if( $echo )
-            echo $output;
-    
-        return $output;
+        $secure_cookie = '';
+
+        if (!empty($_POST['log']) && !force_ssl_admin()) :
+            $user_name = \sanitize_user($_POST['log']);
+            if ($user = get_user_by('login', $user_name)) :
+                if (get_user_option('use_ssl', $user->ID)) :
+                    $secure_cookie = true;
+                    force_ssl_admin(true);
+                endif;
+            endif;
+        endif;
+
+        $reauth = empty($_REQUEST['reauth']) ? false : true;
+        $user = \wp_signon([], $secure_cookie);
+
+        if (empty($_COOKIE[LOGGED_IN_COOKIE])) :
+            if (headers_sent()) :
+                $user = new \WP_Error(
+                    'test_cookie',
+                    sprintf(
+                        __('<strong>ERROR</strong>: Cookies are blocked due to unexpected output. For help, please see <a href="%1$s">this documentation</a> or try the <a href="%2$s">support forums</a>.'),
+                        __('https://codex.wordpress.org/Cookies' ),
+                        __('https://wordpress.org/support/')
+                    )
+                );
+            elseif (isset($_POST['testcookie']) && empty($_COOKIE[TEST_COOKIE])) :
+                $user = new \WP_Error(
+                    'test_cookie',
+                    sprintf(
+                        __('<strong>ERROR</strong>: Cookies are blocked or not supported by your browser. You must <a href="%s">enable cookies</a> to use WordPress.'),
+                        __('https://codex.wordpress.org/Cookies')
+                    )
+                );
+            endif;
+        endif;
+
+        $this->onLogin();
+
+        if (!is_wp_error($user) && !$reauth) :
+            $redirect_url = '';
+            if (!empty($_REQUEST['redirect_to'])) :
+                $redirect_url = $_REQUEST['redirect_to'];
+            endif;
+
+            if ($redirect_url = $this->get_login_form_redirect($redirect_url, $user)) :
+                if ($secure_cookie && false !== strpos($redirect_url, 'wp-admin')) :
+                    $redirect_url = preg_replace('|^http://|', 'https://', $redirect_url);
+                endif;
+            else :
+                $redirect_url = admin_url();
+            endif;
+
+            wp_safe_redirect($redirect_url);
+            exit;
+        else :
+            $this->_setErrors($user);
+        endif;
     }
-        
-    /** == Formulaire == **/
-    public function form( $args = array() )
+
+    /**
+     * Déconnection
+     *
+     * @return void
+     */
+    private function _logout()
     {
-        // Définition des attributs        
-        $args                       = $this->_loginFormParseArgs( $args );
-        
-        $login_form_top             = apply_filters( 'tify_login_form_top',         $this->formTop( $args ),         $args, $this );
-        $login_form_content         = apply_filters( 'tify_login_form_content',        $this->formContent( $args ),     $args, $this );
-        $login_form_remember        = apply_filters( 'tify_login_form_remember',    $this->formRemember( $args ),     $args, $this );
-        $login_form_middle          = apply_filters( 'tify_login_form_middle',         $this->formMiddle( $args ),     $args, $this );
-        $login_form_bottom          = apply_filters( 'tify_login_form_bottom',         $this->formBottom( $args ),     $args, $this );
-        $login_form_submit          = apply_filters( 'tify_login_form_submit',         $this->formSubmit( $args ),     $args, $this );
+        check_admin_referer('tiFyLogin-out-' . $this->getId());
+
+        $user = wp_get_current_user();
+
+        wp_logout();
+
+        $this->onLogout();
+
+        $redirect_url = '';
+        if (!empty($_REQUEST['redirect_to'])) :
+            $redirect_url = $_REQUEST['redirect_to'];
+        endif;
+
+        if ($redirect_url = $this->get_logout_redirect($redirect_url, $user)) :
+        else :
+            $redirect_url = remove_query_arg(['action', '_wpnonce', 'tiFyLogin'], set_url_scheme('//' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']));
+        endif;
+
+        $redirect_url = add_query_arg('loggedout', true, $redirect_url);
+
+        wp_safe_redirect($redirect_url);
+        exit;
+    }
+
+    /**
+     * Définition des erreurs de soumission aux formulaires
+     *
+     * @param string|array|\WP_Error $errors Liste des erreurs
+     *
+     * @return void
+     */
+    private function _setErrors($errors)
+    {
+        $errors_map = $this->getAttr('errors_map', []);
+
+        if (is_wp_error($errors)) :
+            if ($errors->get_error_codes()) :
+                foreach ($errors->get_error_codes() as $code) :
+                    if (isset($errors_map[$code])) :
+                        $this->addNotice('error', $code, $errors_map[$code]);
+                        continue;
+                    endif;
+
+                    if(!$messages = $errors->get_error_messages()) :
+                        $this->addNotice('error', $code);
+                    endif;
+                    foreach($messages as $message) :
+                        $this->addNotice('error', $code, $message);
+                    endforeach;
+                endforeach;
+            else :
+                $this->addNotice('error');
+            endif;
+        elseif(is_array($errors)) :
+            foreach($errors as $code => $message) :
+                if (isset($errors_map[$code])) :
+                    $this->addNotice('error', $code, $errors_map[$code]);
+                else :
+                    $this->addNotice('error', $code, $message);
+                endif;
+            endforeach;
+        else :
+            $this->addNotice('error', '', (string)$errors);
+        endif;
+    }
+
+    /**
+     * Traitement des attributs de configuration
+     *
+     * @param array $attrs Liste des attributs de configuration
+     *
+     * @return array
+     */
+    final public function parseAttrs($attrs = [])
+    {
+        // Définition des attributs de configuration par défaut
+        $defaults = [
+            'login_form'    => [
+                'id'       => 'tiFyLogin-Form--' . $this->getId(),
+                'fields'   => ['username', 'password', 'remember', 'submit']
+            ],
+            'logout_link'   => [],
+            'lost_password_link' => [],
+            'roles'         => ['subscriber'],
+            'redirect_url'  => (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'],
+            'attempt'       => -1,
+            'errors_map'    => []
+        ];
+        $attrs = \wp_parse_args($attrs, $defaults);
+
+        if (!empty($attrs['login_form'])) :
+            if (!empty($attrs['login_form']['fields'])) :
+                // Traitement des attributs de configuration des champs de formulaire
+                $fields = [];
+                foreach ($attrs['login_form']['fields'] as $field_name => $field_attrs) :
+                    if (is_int($field_name )) :
+                        $field_name = (string)$field_attrs;
+                        $field_attrs = [];
+                    endif;
+                    if (!in_array($field_name, ['username', 'password', 'remember', 'submit'])) :
+                        continue;
+                    endif;
+                    $fields[$field_name] = call_user_func([$this, "parse_login_form_field_{$field_name}_attrs"], $field_attrs);
+                endforeach;
+                $attrs['login_form']['fields'] = $fields;
+            endif;
+        endif;
+
+        // Traitement des attributs de configuration du lien de deconnexion
+        $attrs['logout_link'] = $this->parse_logout_link_attrs($attrs['logout_link']);
+
+        // Traitement des attributs de configuration de l'interface de mot de passe oublié
+        $attrs['lost_password_link'] = $this->parse_lostpassword_attrs($attrs['lost_password_link']);
+
+        // Traitement des attributs de la cartographie des messages d'erreurs
+        $attrs['errors_map'] = $this->parse_errors_map($attrs['errors_map']);
+
+        return $attrs;
+    }
+
+    /**
+     * Récupération de la liste des attributs de configuration d'un champ du formulaire d'authentification
+     *
+     * @param string $field_name Identifiant de quaalification du champ
+     *
+     * @return array
+     */
+    final public function getFieldAttrs($field_name)
+    {
+        if (!in_array($field_name, ['username', 'password', 'remember', 'submit'])) :
+            return;
+        endif;
+
+        if (!$login_form = $this->getAttr('login_form')) :
+            return;
+        endif;
+
+        if (!isset($login_form['fields'])) :
+            return;
+        endif;
+
+        $form_fields = $login_form['fields'];
+
+        if (isset($form_fields[$field_name])) :
+            return $form_fields[$field_name];
+        endif;
+    }
+
+    /**
+     * Récupération de la liste des erreurs de soumission aux formulaires
+     *
+     * @return array
+     */
+    final public function getErrors()
+    {
+        $errors = [];
+
+        if (!$messages = $this->getNoticeMessages('error')) :
+            return $errors;
+        endif;
+
+        foreach ($messages as $message) :
+            if ($message) :
+                $errors[] = $message;
+            else :
+                $errors = [];
+                $errors[] = __('Erreur lors de la tentative d\'authentification', 'tify');
+                break;
+            endif;
+        endforeach;
+
+        return $errors;
+    }
+
+    /**
+     * Récupération de la liste des rôles autorisés à se connecter depuis l'interface de login
+     *
+     * @return array
+     */
+    final public function getRoles()
+    {
+        return $this->getAttr('roles');
+    }
+
+    /**
+     * Vérifie si un gabarit est valide
+     *
+     * @param string $template Identifiant de qualification (méthode) d'affichage de gabarit
+     *
+     * @return bool
+     */
+    final public function isTemplate($template)
+    {
+        return in_array($template, ['login_form', 'lostpassword_link', 'logout_link']);
+    }
+
+    /**
+     * Récupération de l'url de déconnection
+     *
+     * @param string $redirect_url Url de redirection personnalisée
+     *
+     * @return string
+     */
+    final public function get_logout_url($redirect_url = '')
+    {
+        $args = [];
+        if($redirect_url) :
+            $args['redirect_to'] = $redirect_url;
+        endif;
+        $args['action'] = 'logout';
+        $args['tiFyLogin'] = $this->getId();
+
+        $logout_url = add_query_arg($args, $this->getAttr('redirect_url', site_url('wp-login.php', 'login')));
+        $logout_url = wp_nonce_url($logout_url, 'tiFyLogin-out-' . $this->getId());
+
+        return $logout_url;
+    }
+
+    /**
+     * Affichage d'un gabarit
+     *
+     * @param string $template login_form|
+     * @param array $attrs
+     * @param bool $echo
+     *
+     * @return string
+     */
+    final public function display($template = 'login_form', $attrs = [], $echo = true)
+    {
+        if (!$this->isTemplate($template)) :
+            return;
+        endif;
+
+        $output = call_user_func([$this, $template], $attrs);
+
+        if ($echo) :
+            echo $output;
+        else :
+            return $output;
+        endif;
+    }
+
+    /**
+     * SURCHAGE
+     */
+    /**
+     * Action lancée au moment de la connection
+     *
+     * @return void
+     */
+    public function onLogin()
+    {
+        return;
+    }
+
+    /**
+     * Action lancée au moment de la déconnection
+     *
+     * @return void
+     */
+    public function onLogout()
+    {
+        return;
+    }
+
+    /**
+     * Traitement des attributs de configuration du champ Identifiant
+     *
+     * @param array $attrs {
+     *      Liste des attributs de configuration du champ Identifiant
+     *      @see \tiFy\Core\Fields\Text\Text
+     * }
+     *
+     * @return array
+     */
+    public function parse_login_form_field_username_attrs($attrs = [])
+    {
+        $defaults = [
+            'label'         => __('Identifiant', 'tify'),
+            'attrs'    => [
+                'id'            => 'tiFyLogin-FormFieldUsername--' . $this->getId(),
+                'placeholder'   => __('Renseignez votre identifiant', 'tify'),
+                'size'          => 20
+            ]
+        ];
+        $attrs = \wp_parse_args($attrs, $defaults);
+
+        $attrs['attrs']['name'] = 'log';
+
+        return $attrs;
+    }
+
+    /**
+     * Traitement des attributs de configuration du champ Mot de passe
+     *
+     * @param array $attrs {
+     *      Liste des attributs de configuration du champ Mot de passe
+     *      @see \tiFy\Core\Fields\Password\Password
+     * }
+     *
+     * @return array
+     */
+    public function parse_login_form_field_password_attrs($attrs = [])
+    {
+        $defaults = [
+            'label'             => __('Mot de passe', 'tify'),
+            'attrs'    => [
+                'id'            => 'tiFyLogin-FormFieldPassword--' . $this->getId(),
+                'placeholder'   => __('Renseignez votre mot de passe', 'tify')
+            ]
+        ];
+        $attrs = \wp_parse_args($attrs, $defaults);
+
+        $attrs['attrs']['name'] = 'pwd';
+
+        return $attrs;
+    }
+
+    /**
+     * Traitement des attributs de configuration du champ Se souvenir de moi
+     *
+     * @param array $attrs {
+     *      Liste des attributs de configuration du champ Se souvenir de moi
+     *      @see \tiFy\Core\Fields\Checkbox\Checkbox
+     * }
+     *
+     * @return array
+     */
+    public function parse_login_form_field_remember_attrs($attrs = [])
+    {
+        $defaults = [
+            'label'         => __('Se souvenir de moi', 'tify'),
+            'attrs'         => [
+                'id' => 'tiFyLogin-FormFieldRemember--' . $this->getId(),
+                'value'         => 0
+            ]
+        ];
+        $attrs = \wp_parse_args($attrs, $defaults);
+
+        $attrs['attrs']['name'] = 'remember';
+
+        return $attrs;
+    }
+
+    /**
+     * Traitement des attributs de configuration du champ bouton de soumission
+     *
+     * @param array $attrs {
+     *      Liste des attributs de configuration du champ bouton de soumission
+     *      @see \tiFy\Core\Fields\Submit\Submit
+     * }
+     *
+     * @return array
+     */
+    public function parse_login_form_field_submit_attrs($attrs = [])
+    {
+        $defaults = [
+            'attrs' => [
+                'id'    => 'tiFyLogin-FormFieldSubmit--' . $this->getId(),
+                'value' => __('Se connecter', 'tify')
+            ]
+        ];
+        $attrs = \wp_parse_args($attrs, $defaults);
+
+        $attrs['attrs']['name'] = 'submit';
+
+        return $attrs;
+    }
+
+    /**
+     * Traitement des attributs de configuration du lien de déconnection
+     *
+     * @param array $attrs {
+     *      Liste des attributs de cartographie des messages d'erreurs
+     * }
+     *
+     * @return array
+     */
+    public function parse_logout_link_attrs($attrs = [])
+    {
+        $defaults = [
+            'redirect'   => '',
+            'text'       => __('Déconnection', 'tify'),
+            'class'      => 'tiFyLogin-LogoutLink',
+            'title'      => __('se déconnecter', 'tify'),
+        ];
+
+        return \wp_parse_args($attrs, $defaults);
+    }
+
+    /**
+     * Traitement des attributs de mot de passe oublié
+     *
+     * @param array $attrs {
+     *      Liste des attributs de cartographie des messages d'erreurs
+     * }
+     *
+     * @return array
+     */
+    public function parse_lostpassword_attrs($attrs = [])
+    {
+        $defaults = [
+            'redirect' => '',
+            'label'    => __('Mot de passe oublié', 'tify')
+        ];
+
+        return \wp_parse_args($attrs, $defaults);
+    }
+
+    /**
+     * Traitement des attributs de cartographie des messages d'erreurs
+     *
+     * @param array $attrs {
+     *      Liste des attributs de cartographie des messages d'erreurs
+     * }
+     *
+     * @return array
+     */
+    public function parse_errors_map($attrs = [])
+    {
+        $defaults = [
+            'empty_username'        => __('le champ de l’identifiant est vide.', 'tify'),
+            'empty_password'        => __('Veuillez renseigner le mot de passe.', 'tify'),
+            'invalid_username'      => __('Nom d’utilisateur non valide.', 'tify'),
+            'incorrect_password'    => __('Ce mot de passe ne correspond pas à l’identifiant fourni.', 'tify'),
+            'authentication_failed' => __('Les idenfiants de connexion fournis sont invalides.', 'tify'),
+            'role_not_allowed'      => __('Votre utilisateur n\'est pas autorisé à se connecter depuis cette interface.', 'tify')
+        ];
+        return \wp_parse_args($attrs, $defaults);
+    }
+
+    /**
+     * Affichage du formulaire d'authentification
+     *
+     * @param array $attrs Attributs de configuration personnalisés
+     *
+     * @return string
+     */
+    public function login_form()
+    {
+        $attrs = $this->getAttr('login_form');
+        $form_name = isset($attrs['name']) ? $attrs['name'] : "tiFyLogin-Form--" . $this->getId();
+        $form_id = isset($attrs['id']) ? $attrs['id'] : "tiFyLogin-Form--" . $this->getId();
+        $form_class = isset($attrs['class']) ? $attrs['class'] : "tiFyLogin-Form";
 
         $output  = "";
-        
-        // Ouverture du formulaire
-        $output .= "<form name=\"{$args['form_id']}\" id=\"{$args['form_id']}\" class=\"tiFyLogin-Form\" action=\"\" method=\"post\">";
-        
-        // Requis
-        $output .= $this->hidden_fields( $args );
-        
+
         // Pré-affichage du formulaire
-        $output .= $login_form_top;
+        $output .= $this->login_form_before();
+
+        // Ouverture du formulaire
+        $output .= "<form name=\"{$form_name}\" id=\"{$form_id}\" class=\"{$form_class}\" action=\"\" method=\"post\">";
+
+        // Champs cachés requis
+        $output .= Fields::Hidden(['attrs' => ['name' => 'tiFyLogin', 'value' => $this->getId()]], false);
+
+        // Champs cachés
+        $output .= $this->hidden_fields();
         
-        // Contenu filtré
-        $output .=    $login_form_content;
+        // Entête du formulaire
+        $output .= $this->login_form_header();
         
-        // Affichage central
-        $output .= $login_form_middle;
+        // Corps du formulaire (champs de saisie)
+        $output .= $this->login_form_fields();
+        
+        // Champs de formulaire additionnels
+        $output .= $this->login_form_additionnal_fields();
         
         // Mémorisation des informations de connection
-        $output .= $login_form_remember;
+        $output .= $this->login_form_field_remember();
         
         // Bouton de soumission filtré
-        $output .=    $login_form_submit;
+        $output .= $this->login_form_field_submit();
         
-        // Post-affichage du formulaire
-        $output .=    $login_form_bottom;
+        // Pied du formulaire
+        $output .= $this->login_form_after();
         
         // Fermeture du formulaire
         $output .= "</form>";
-        
-        // Sortie filtrée 
-        return apply_filters( 'tify_login_display', $output, $args, $this );
+
+        // post-affichage du formulaire
+        $output .= $this->login_form_after();
+
+        return $output;
     }
-        
-    /** == Pré-affichage == **/
-    public function formTop( $args )
+
+    /**
+     * Pré-affichage du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_before()
     {
-        if( ! $this->getErrors() )
+        return  '';
+    }
+
+    /**
+     * Post-affichage du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_after()
+    {
+        return  '';
+    }
+
+    /**
+     * Affichage des champs cachés (requis)
+     *
+     * @return string
+     */
+    public function hidden_fields()
+    {
+        return '';
+    }
+
+    /**
+     * Affichage de l'entête du formulaire
+     *
+     * @return string
+     */
+    public function login_form_header()
+    {
+        return $this->login_form_errors();
+    }
+
+    /**
+     * Affichage des informations
+     *
+     * @return string
+     */
+    public function login_form_infos()
+    {
+        if(!$infos = $this->getNoticeMessages('info')) :
             return '';
-        
-        return $this->formErrors();
+        endif;
+
+        if (count($infos)>1) :
+            $text = "<ol>";
+            foreach ($infos as $message) :
+                $text .= "<li>{$message}</li>";
+            endforeach;
+            $text .= "</ol>";
+        else :
+            $text = reset($infos);
+        endif;
+
+        return Notices::display(
+            [
+                'class' => "tiFyLogin-FormPart tiFyLogin-FormInfos",
+                'text'  => $text,
+                'type'  => 'info'
+            ],
+            false
+        );
     }
-    
-    /** == Contenu == **/
-    public function formContent( $args )
+
+    /**
+     * Affichage des notification d'erreurs de soumission au formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_errors()
     {
-        return     "<p class=\"tiFyLogin-Part tiFyLogin-Field tiFyLogin-Username\">".
-                    "<label for=\"". esc_attr( $args['id_username'] ) ."\" class=\"tiFyLogin-Label tiFyLogin-UsernameLabel\">".
-                        esc_html( $args['label_username'] ).
-                    "</label>".
-                    "<input type=\"text\"".
-                        " name=\"log\"".
-                        " id=\"". esc_attr( $args['id_username'] ) . "\"".
-                        " class=\"input tiFyLogin-Input tiFyLogin-Input--text tiFyLogin-UsernameInput\"".
-                        " value=\"". esc_attr( $args['value_username'] ) ."\"".
-                        " placeholder=\"". esc_html( $args['placeholder_username'] ) ."\"".
-                        " size=\"20\"".
-                    "/>".
-                "</p>".
-                "<p class=\"tiFyLogin-Part tiFyLogin-Field tiFyLogin-Password\">".
-                    "<label for=\"". esc_attr( $args['id_password'] ) ."\" class=\"tiFyLogin-Label tiFyLogin-PasswordLabel\">".
-                        esc_html( $args['label_password'] ).
-                    "</label>".
-                    "<input type=\"password\"".
-                        " name=\"pwd\"".
-                        " id=\"". esc_attr( $args['id_password'] ) . "\"".
-                        " class=\"input tiFyLogin-Input tiFyLogin-Input--text tiFyLogin-PasswordInput\"".
-                        " value=\"\"".
-                        " placeholder=\"". esc_html( $args['placeholder_password'] ) ."\"".
-                        " size=\"20\"".
-                    "/>".
-                "</p>";
+        if(!$errors = $this->getErrors()) :
+            return '';
+        endif;
+
+        if (count($errors)>1) :
+            $text = "<ol>";
+            foreach ($errors as $message) :
+                $text .= "<li>{$message}</li>";
+            endforeach;
+            $text .= "</ol>";
+        else :
+            $text = reset($errors);
+        endif;
+
+        return Notices::display(
+            [
+                'class' => "tiFyLogin-FormPart tiFyLogin-FormErrors",
+                'text'  => $text,
+                'type'  => 'error'
+            ],
+            false
+        );
     }
-    
-    
-    /** == Affichage central == **/
-    public function formMiddle( $args )
+
+    /**
+     * Affichage du corps du formulaire
+     *
+     * @return string
+     */
+    public function login_form_fields()
+    {
+        $output = "";
+
+        foreach (['username', 'password'] as $field_name) :
+            $output .= call_user_func([$this, "login_form_field_{$field_name}"]);
+        endforeach;
+
+        return $output;
+    }
+
+    /**
+     * Affichage du champ "Identifiant" du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_field_username()
+    {
+        if(!$attrs = $this->getFieldAttrs('username', false)) :
+            return '';
+        endif;
+
+        $output  = "";
+        $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--username\">";
+
+        if ($attrs['label']) :
+            $label = [];
+            $label['content'] = $attrs['label'];
+            $label['attrs'] = [];
+            if (isset($attrs['attrs']['id'])) :
+                $label['attrs']['for'] = $attrs['attrs']['id'];
+            endif;
+            $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--username';
+            $output .= Fields::Label($label, false);
+        endif;
+
+        $output .= Fields::Text($attrs, false);
+        $output .= "</p>";
+
+        return $output;
+    }
+
+    /**
+     * Affichage du champ "Mot de passe" du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_field_password()
+    {
+        if(!$attrs = $this->getFieldAttrs('password', false)) :
+            return '';
+        endif;
+
+        $output  = "";
+        $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--password\">";
+
+        if ($attrs['label']) :
+            $label = [];
+            $label['content'] = $attrs['label'];
+            $label['attrs'] = [];
+            if (isset($attrs['attrs']['id'])) :
+                $label['attrs']['for'] = $attrs['attrs']['id'];
+            endif;
+            $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--password';
+            $output .= Fields::Label($label, false);
+        endif;
+
+        $output .= Fields::Password($attrs, false);
+        $output .= "</p>";
+
+        return $output;
+    }
+
+    /**
+     * Affichage du champ "Se souvenir de moi" du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_field_remember()
+    {
+        if(!$attrs = $this->getFieldAttrs('remember', false)) :
+            return '';
+        endif;
+
+        $output  = "";
+        $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--remember\">";
+
+        $output .= Fields::Checkbox($attrs, false);
+
+        if ($attrs['label']) :
+            $label = [];
+            $label['content'] = $attrs['label'];
+            $label['attrs'] = [];
+            if (isset($attrs['attrs']['id'])) :
+                $label['attrs']['for'] = $attrs['attrs']['id'];
+            endif;
+            $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--remember';
+            $output .= Fields::Label($label, false);
+        endif;
+
+        $output .= "</p>";
+
+        return $output;
+    }
+
+    /**
+     * Affichage du champ "Bouton de soumission" du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_field_submit()
+    {
+        if(!$attrs = $this->getFieldAttrs('submit', false)) :
+            return '';
+        endif;
+
+        $output  = "";
+        $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--submit\">";
+        $output .= Fields::Submit($attrs, false);
+        $output .= "</p>";
+
+        return $output;
+    }
+
+    /**
+     * Affichage des champs additionnels du formulaire d'authentification
+     *
+     * @return string
+     */
+    public function login_form_additionnal_fields()
     {
         return '';
     }
-    
-    /** == Mémorisation des informations de connection == **/
-    public function formRemember( $args )
-    {
-        if( ! $args['remember']  )
-            return;
-        
-        return    "<p class=\"tiFyLogin-Part tiFyLogin-Field tiFyLogin-Remember\">".
-                    "<input name=\"rememberme\"".
-                        " type=\"checkbox\"".
-                        " id=\"". esc_attr( $args['id_remember'] ) . "\"".
-                        " class=\"input tiFyLogin-Input tiFyLogin-Input--checkbox tiFyLogin-RememberInput\"".
-                        " value=\"forever\"".
-                        ( $args['value_remember'] ? " checked=\"checked\"" : "" ).
-                    " />".
-                    "<label for=\"". esc_attr( $args['id_remember'] ) ."\" class=\"tiFyLogin-Label tiFyLogin-RememberLabel\">".
-                        esc_html( $args['label_remember'] ).
-                    "</label>".
-                "</p>";
-    }
-    
-    /** == Post-affichage == **/
-    public function formBottom( $args )
+
+    /**
+     * Affichage du pied de formulaire
+     *
+     * @return string
+     */
+    public function login_form_footer()
     {
         return '';
     }
-    
-    /** == Bouton de soumission == **/
-    public function formSubmit( $args )
+
+    /**
+     * Affichage du lien vers l'interface de récupération de mot de passe oublié
+     *
+     * @return string
+     */
+    public function lostpassword_link()
     {
-        return     "<p class=\"tiFyLogin-Part tiFyLogin-Handler tiFyLogin-Submit\">".
-                    "<input type=\"submit\"".
-                        " name=\"tify_login-submit\"".
-                        " id=\"". esc_attr( $args['id_submit'] ) ."\"".
-                        " class=\"input tiFyLogin-Input tiFyLogin-Input--submit tiFyLogin-SubmitInput\"".
-                        " value=\"". esc_attr( $args['label_log_in'] ) ."\"".
-                    " />".
-                "</p>";
-    }
-        
-    /** == Champs cachés == **/
-    public function hidden_fields( $args = array() )
-    {
-        return     "<input type=\"hidden\" name=\"tiFyLogin-formID\" value=\"{$this->id}\">".
-                "<input type=\"hidden\" name=\"redirect_to\" value=\"". esc_url( $args['redirect'] ) ."\" />";
+        $attrs = $this->getAttr('lostpassword');
+
+        $output =   "<a href=\"" . \wp_lostpassword_url($attrs['redirect']) ."\"" .
+                    " title=\"" . __( 'Récupération de mot de passe perdu', 'tify' ) . "\"" .
+                    " class=\"tiFyLogin-LostPasswordLink\">" .
+                        $attrs['text'] .
+                    "</a>";
+
+        return $output;
     }
 
-    /** == Erreurs de formulaire == **/
-    public function formErrors()
+    /**
+     * Affichage du lien de déconnection
+     *
+     * @param array $custom_attrs Liste des attributs de personnalisation
+     *
+     * @return string
+     */
+    public function logout_link($custom_attrs = [])
     {
-        return tify_control_notices( array( 'class' => "tiFyLogin-Part tiFyLogin-Errors", 'text' => $this->displayErrors() ), false );
+        $attrs = \wp_parse_args($custom_attrs, $this->getAttr('logout_link', []));
+        $url = $this->get_logout_url($attrs['redirect']);
+
+        return "<a href=\"{$url}\" title=\"{$attrs['title']}\" class=\"{$attrs['class']}\">{$attrs['text']}</a>";
     }
 
-    /** == Lien de récupération de mot de passe oublié == **/
-    public function lostpassword_link( $args = array() )
+    /**
+     * Récupération de l'url de redirection du formulaire d'authentification
+     *
+     * @param string $redirect_url Url de redirection personnalisée
+     * @param \WP_User $user Utilisateur courant
+     *
+     * @return string
+     */
+    public function get_login_form_redirect($redirect_url = '', $user)
     {
-        $defaults = array(
-            'redirect'     =>  $this->getParam( 'RedirectUrl' ),
-            'text'        => __( 'Mot de passe oublié', 'tify' )
-        );
-        $args = wp_parse_args( $args, $defaults );
+        if (!$redirect_url) :
+            $redirect_url = $this->getAttr('redirect_url', admin_url());
+        endif;
 
-        $output =     "<a href=\"". wp_lostpassword_url( $args['redirect'] ) ."\"".
-                " title=\"". __( 'Récupération de mot de passe perdu', 'tify' ) ."\"".
-                " class=\"tiFyLogin-LostPasswordLink\">".
-                $args['text'].
-                "</a>";
-
-        return apply_filters( 'tify_login_lostpassword_link', $output, $args, $this );
+        return $redirect_url;
     }
 
-    /** == Lien de déconnection == **/
-    public function logout_link( $args = array() )
+    /**
+     * Récupération de l'url de redirection du formulaire d'authentification
+     *
+     * @param string $redirect_url Url de redirection personnalisée
+     * @param \WP_User $user Utilisateur courant
+     *
+     * @return string
+     */
+    public function get_logout_redirect($redirect_url = '', $user)
     {
-        $defaults = array(
-            'redirect'     => add_query_arg( 'loggedout', 'true', $this->getParam( 'RedirectUrl' ) ),
-            'text'        => __( 'Se déconnecter', 'tify' ),
-            'class'        => ''
-        );
-        $args = wp_parse_args( $args, $defaults );
-
-        $output  =     "<a href=\"". $this->logout_url( array( 'redirect' => $args['redirect'] ) ) ."\"".
-                " title=\"". __( 'Déconnection', 'tify' ) ."\"".
-                " class=\"tify_login-logout_link {$args['class']}\">".
-                $args['text'].
-                "</a>";
-
-        return apply_filters( 'tify_login_logout_link', $output, $args, $this );
-    }
-    
-    /** == Url de déconnection == **/
-    public function logout_url( $args = array() )
-    {
-        $defaults = array(
-            'redirect'     => add_query_arg( 'loggedout', 'true', $this->getParam( 'RedirectUrl' ) ),
-        );
-        $args = wp_parse_args( $args, $defaults );
-
-        $output = add_query_arg( 'tiFyLogin-formID', $this->id, wp_logout_url( $args['redirect'] ) );
-
-        return apply_filters( 'tify_login_logout_url', $output, $args, $this );
+        return $redirect_url;
     }
 }

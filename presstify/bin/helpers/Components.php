@@ -144,35 +144,65 @@ namespace
     }
     
     // --------------------------------------------------------------------------------------------------------------------------
-    /* = LOGIN = */
-    /** == Affichage d'un élément de template == **/
-    function tify_login_register( $id, $callback, $attrs = array() )
+    /**
+     * LOGIN
+     */
+    /**
+     * Déclaration
+     * @deprecated \tiFy\Components\Login\README.md
+     *
+     * @param string $id Identifiant de qualification de l'interface d'authentification
+     * @param string $callback Classe de rappel de l'interface d'authentification
+     * @param array $attrs Attributs de configuration de l'interface d'authentification
+     *
+     * @return \tiFy\Components\Login\Factory
+     */
+    function tify_login_register($id, $callback, $attrs = [])
     {
-        return tiFy\Components\Login\Login::register( $id, $callback, $attrs );
+        return tiFy\Components\Login\Login::register($id, $callback, $attrs);
     }
-    
-    /** == Affichage d'un élément de template == **/
-    function tify_login_display( $id, $args = array(), $echo = true )
+
+    /**
+     * Affichage du formulaire d'authentification
+     *
+     * @param string $id Identifiant de qualification de l'interface d'authentification
+     * @param array $attrs Attributs de configuration personnalisés
+     * @param bool $echo Activation de l'affichage de la valeur de retour
+     *
+     * @return string
+     */
+    function tify_login_form($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'display', $args, $echo );
+        return tiFy\Components\Login\Login::display( $id, 'login_form', $attrs, $echo);
     }
-    
-    /** == Affichage du formulaire d'authentification == **/
-    function tify_login_form( $id, $args = array() )
+
+    /**
+     * Affichage des erreurs de traitement du formulaire d'authentification
+     *
+     * @param string $id Identifiant de qualification de l'interface d'authentification
+     * @param array $attrs Attributs de configuration personnalisés
+     * @param bool $echo Activation de l'affichage de la valeur de retour
+     *
+     * @return string
+     */
+    function tify_login_form_errors($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'form', $args );
+        return tiFy\Components\Login\Login::display( $id, 'login_form_errors', $attrs, $echo);
     }
-    
+
+    /**
+     * Affichage du lien de déconnection
+     *
+     * @param string $id Identifiant de qualification de l'interface d'authentification
+     * @param array $attrs Attributs de configuration personnalisés
+     * @param bool $echo Activation de l'affichage de la valeur de retour
+     *
+     * @return string
+     */
     /** == Affichage des erreurs de traitement de formulaire == **/
-    function tify_login_errors( $id, $args = array() )
+    function tify_login_logout_link($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'errors', $args );
-    }
-    
-    /** == Affichage des erreurs de traitement de formulaire == **/
-    function tify_login_logout_link( $id, $args = array() )
-    {
-        return tiFy\Components\Login\Login::display( $id, 'logout_link', $args );
+        return tiFy\Components\Login\Login::display( $id, 'logout_link', $attrs, $echo);
     }
     
     // --------------------------------------------------------------------------------------------------------------------------

@@ -39,16 +39,28 @@ class Factory extends \tiFy\App\Factory
             $defaults = \wp_parse_args((array)call_user_func([$this, 'getDefaults']), $defaults);
         endif;
         $this->Attrs = \wp_parse_args($attrs, $defaults);
-        
-        // Initialisation de la vue courante
-        $this->tFyAppFilterAdd("manage_edit-{$attrs['object_type']}_columns", '_header');
-    
-        switch ($attrs['object']) :
+
+        $object_type = $this->getAttr('object_type');
+        switch ($this->getAttr('object')) :
             case 'post_type' :
-                $this->tFyAppActionAdd("manage_{$attrs['object_type']}_posts_custom_column", '_content', 25, 2);
+                // Initialisation de la vue courante
+                $this->tFyAppFilterAdd("manage_edit-{$object_type}_columns", '_header');
+
+                $this->tFyAppActionAdd("manage_{$object_type}_posts_custom_column", '_content', 25, 2);
                 break;
+
             case 'taxonomy' :
-                $this->tFyAppFilterAdd("manage_{$attrs['object_type']}_custom_column", '_content', 25, 3);
+                // Initialisation de la vue courante
+                $this->tFyAppFilterAdd("manage_edit-{$object_type}_columns", '_header');
+
+                $this->tFyAppFilterAdd("manage_{$object_type}_custom_column", '_content', 25, 3);
+                break;
+
+            case 'custom' :
+                // Initialisation de la vue courante
+                $this->tFyAppFilterAdd("manage_{$object_type}_columns", '_header');
+
+                $this->tFyAppFilterAdd("manage_{$object_type}_custom_column", '_content', 25, 3);
                 break;
         endswitch;
     }
@@ -177,21 +189,30 @@ class Factory extends \tiFy\App\Factory
     final public function _content()
     {
         switch ($this->getAttr('object')) :
-            case 'post_type':
-                $column_name = func_get_arg( 0 );
+            case 'post_type' :
+                $column_name = func_get_arg(0);
                 // Bypass
                 if ($column_name !== $this->getAttr('column')) :
                     return;
                 endif;
                 break;
-            case 'taxonomy':
-                $output         = func_get_arg( 0 );
-                $column_name    = func_get_arg( 1 );
+            case 'taxonomy' :
+                $output         = func_get_arg(0);
+                $column_name    = func_get_arg(1);
                 // Bypass
                 if ($column_name !== $this->getAttr('column')) :
                     return $output;
                 endif;
-            break;
+                break;
+
+            case 'custom' :
+                $output         = func_get_arg(0);
+                $column_name    = func_get_arg(1);
+                // Bypass
+                if ($column_name !== $this->getAttr('column')) :
+                    return $output;
+                endif;
+                break;
         endswitch;
 
         if (($content_cb = $this->getAttr('content_cb')) && is_callable($content_cb)) :

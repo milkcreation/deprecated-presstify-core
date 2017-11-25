@@ -13,16 +13,22 @@ class Factory extends \tiFy\App
     protected $Id = null;
 
     /**
-     * Liste des noms de modèle de gabarits prédéfinis
-     * @var string[]
-     */
-    protected $Templates = [];
-
-    /**
      * Classe de rappel d'affichage du gabarit
      * @var object
      */
     protected $Template = null;
+
+    /**
+     * Liste des attributs de configuration des gabarits parent
+     * @var array
+     */
+    protected $Parents = [];
+
+    /**
+     * Identifiant de qualification du gabarit parent courant
+     * @var null|string
+     */
+    protected $ParentId = null;
 
     /**
      * Liste des attributs de configuration
@@ -84,23 +90,31 @@ class Factory extends \tiFy\App
      */
     public function parseAttrs($attrs = [])
     {
+        // Définition de la classe de rappel d'affichage du gabarit
+        $cb = !empty($attrs['cb']) ? $attrs['cb'] : null;
+        if (empty($cb)) :
+        elseif (in_array($cb, $this->getParentIds())) :
+            $cb = self::tFyAppAttr('Namespace', get_class($this)) . "\\Templates\\{$cb}\\{$cb}";
+        endif;
+        $attrs['cb'] = $cb;
+
+        // Récupération du gabarit parent
+        if (class_exists($attrs['cb'])) :
+            $this->ParentId = $this->queryParentId($attrs['cb']);
+        endif;
+
         // Définition de la classe de rappel de la base de données
         if (!isset($attrs['db'])) :
             $db = '';
         else :
             $db = $attrs['db'];
         endif;
-
         if ($db === false) :
         elseif ($db instanceof \tiFy\Core\Db\Factory) :
         elseif (is_string($db) && ($_db = Db::get($db))) :
             $attrs['db'] = $_db;
-        else :
-            switch($this->getModel()) :
-                default :
-                    $attrs['db'] = Db::get('posts');
-                    break;
-            endswitch;
+        elseif ($db = $this->getParentAttr('db')) :
+            $attrs['db'] = Db::get($db);
         endif;
 
         // Définition de la classe de rappel des intitulés
@@ -110,21 +124,11 @@ class Factory extends \tiFy\App
             $attrs['labels'] = $_labels;
         elseif (is_array($labels)) :
             $attrs['labels'] = Labels::register('_UiLabels-' . $this->getId(), $attrs['labels']);
+        elseif ($label = $this->getParentAttr('label')) :
+            $attrs['labels'] = Labels::get($label);
         else :
-            switch($this->getModel()) :
-                default :
-                    $attrs['labels'] = Labels::register('_UiLabels-' . $this->getId());
-                    break;
-            endswitch;
+            $attrs['labels'] = Labels::register('_UiLabels-' . $this->getId());
         endif;
-
-        // Définition de la classe de rappel d'affichage du gabarit
-        $cb = !empty($attrs['cb']) ? $attrs['cb'] : null;
-        if (empty($cb)) :
-        elseif (in_array($cb, $this->Templates)) :
-            $cb = self::tFyAppAttr('Namespace', get_class($this)) . "\\Templates\\{$cb}\\{$cb}";
-        endif;
-        $attrs['cb'] = $cb;
 
         return $attrs;
     }
@@ -180,6 +184,106 @@ class Factory extends \tiFy\App
     }
 
     /**
+     * Récupération de la liste des attributs de configuration des gabarits parent
+     *
+     * @return array
+     */
+    final public function getParentList()
+    {
+        return $this->Parents;
+    }
+
+    /**
+     * Récupération des attributs de configuration d'un garabit parent
+     *
+     * @param string $parent_id Identifiant de qualification du parent
+     *
+     * @return array
+     */
+    final public function getParentAttrList($parent_id)
+    {
+        if (!$parents = $this->getParentList()) :
+            return [];
+        endif;
+
+        if(isset($parents[$parent_id])) :
+            return $parents[$parent_id];
+        endif;
+
+        return [];
+    }
+
+    /**
+     * Récupération de la liste des identifiants de qualification des gabarits parents
+     *
+     * @return string[]
+     */
+    final public function getParentIds()
+    {
+        return array_keys($this->Parents);
+    }
+
+    /**
+     * Récupération de l'identifiant de qualification du gabarit parent courant
+     *
+     * @return object
+     */
+    final public function getParentId()
+    {
+        return $this->ParentId;
+    }
+
+    /**
+     * Récupération d'un attribut du gabarit parent courant
+     *
+     * @param string $name Identifiant de qualification de l'attribut
+     * @param mixed $default Valeur de retour par défaut
+     *
+     * @return mixed
+     */
+    final public function getParentAttr($name, $default = '')
+    {
+        if (!$parent_id = $this->getParentId()) :
+            return $default;
+        endif;
+
+        if (!$parent_attrs = $this->getParentAttrList($parent_id)) :
+            return $default;
+        endif;
+
+        if (isset($parent_attrs[$name])) :
+            return $parent_attrs[$name];
+        endif;
+
+        return $default;
+    }
+
+    /**
+     * Rcupération de l'identifiant de qualification d'un gabarit parent
+     *
+     * @param obj|string $classname
+     *
+     * @return string
+     */
+    final public function queryParentId($classname)
+    {
+        $current_id = (new \ReflectionClass($classname))->getShortName();
+        if (in_array($current_id, $this->getParentIds())) :
+            return $current_id;
+        endif;
+
+        if (!$parent_class = get_parent_class($classname)):
+            return false;
+        endif;
+
+        if (!preg_match("#". preg_quote(self::tFyAppAttr('Namespace'), '\\') ."#", $parent_class)) :
+            return false;
+        endif;
+
+        return $this->queryParentId($parent_class);
+    }
+
+    /**
      * Récupération de la classe de rappel du gabarit
      *
      * @return null|object
@@ -210,16 +314,6 @@ class Factory extends \tiFy\App
     final public function getLabel($label, $default = '')
     {
         return $this->getAttr('labels')->get($label, $default);
-    }
-
-    /**
-     * Récupération de la classe de rappel du modèle de base utilisé pour le gabarit
-     *
-     * @return object
-     */
-    final public function getModel()
-    {
-        return false;
     }
 
     /**

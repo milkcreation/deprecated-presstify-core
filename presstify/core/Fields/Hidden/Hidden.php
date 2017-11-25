@@ -4,36 +4,39 @@ namespace tiFy\Core\Fields\Hidden;
 class Hidden extends \tiFy\Core\Fields\Factory
 {
     /**
-     * Instance
-     * @var int
-     */
-    protected static $Instance = 0;
-
-    /**
      * Affichage
      *
-     * @param array $attrs
-     * @param bool $echo
+     * @param string $id Identifiant de qualification du champ
+     * @param array $args {
+     *      Liste des attributs de configuration du champ
      *
-     * return string
+     *      @param string $before Contenu placé avant le champ
+     *      @param string $after Contenu placé après le champ
+     *      @param array $attrs {
+     *          Liste des attributs de balise
+     *
+     *      }
+     * }
+     *
+     * @return string
      */
-    public static function display($attrs = [])
+    public static function display($id = null, $args = [])
     {
-        ++static::$Instance;
+        static::$Instance++;
 
         $defaults = [
-            'id'                => 'tiFyCoreFields-Hidden-' . static::$Instance,
-            'container_id'      => 'tiFyCoreFields-hidden--' . static::$Instance,
-            'container_class'   => '',
-            'html_attrs'        => [],
-            'name'              => '',
-            'value'             => ''
+            'before'       => '',
+            'after'        => '',
+            'attrs'        => [
+                'id'    => 'tiFyCoreFields-Hidden--' . static::$Instance
+            ]
         ];
-        $attrs = \wp_parse_args($attrs, $defaults);
+        $args = \wp_parse_args($args, $defaults);
 
-        $Field = new static($attrs);
-?>
-<input type="hidden" name="<?php echo $Field->getName();?>" class="tiFyCoreFields-Text<?php echo $Field->getContainerClass();?>" value="<?php echo $Field->getValue();?>" />
-<?php
+        // Instanciation
+        $field = new static($id, $args);
+        $field->setHtmlAttr('type', 'hidden');
+
+        ?><?php $field->before(); ?><input <?php $field->htmlAttrs(); ?>/><?php $field->after(); ?><?php
     }
 }

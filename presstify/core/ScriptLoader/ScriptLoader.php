@@ -676,6 +676,16 @@ class ScriptLoader extends \tiFy\App\Factory
             'version'       => '2.0.5',
             'in_footer'     => true 
         );
+
+        // Url Parser
+        self::$JsLib['url']                  = array(
+            'src'           => array(
+                'local'         => tiFy::$AbsUrl . '/bin/assets/vendor/url.min.js',
+            ),
+            'deps'          => ['jquery'],
+            'version'       => '2.5.2',
+            'in_footer'     => true
+        );
     }
     
     /**

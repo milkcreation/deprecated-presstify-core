@@ -4,16 +4,6 @@ namespace tiFy\Core\Ui\Admin\Traits;
 trait Events
 {
     /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public function init()
-    {
-
-    }
-
-    /**
      * Initialisation de l'interface d'administration
      *
      * @return void
@@ -43,5 +33,17 @@ trait Events
     public function admin_enqueue_scripts()
     {
 
+    }
+
+    /**
+     * Affichage des notifications de l'interface d'administration
+     *
+     * return void|string
+     */
+    public function admin_notices()
+    {
+        if ($notice = $this->getNotice()) :
+?><div class="notice notice-<?php echo $notice['notice'];?><?php echo $notice['dismissible'] ? ' is-dismissible':'';?>"><p><?php echo $notice['message'] ?></p></div><?php
+        endif;
     }
 }

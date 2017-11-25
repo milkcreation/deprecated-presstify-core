@@ -6,7 +6,7 @@ trait Notices
 	/* == Notifications prédéfinies == **/
 	public static function defaultsNotices()
 	{
-		//notice : error (admin) danger(front), warning, success, info (par defaut )		
+		//notice : error (admin) danger(front), warning, success, info (par defaut )
 		return array(
 			'activated' 				=> array(
 				'message'			=> __( 'L\'élément a été activé avec succès.', 'tify' ),
@@ -52,18 +52,18 @@ trait Notices
 			)
 		);
 	}
-	
+
 	/*** === Traitement de la cartographie des notifications === ***/
 	public static function parseNotices( $notices = array() )
-	{	
-		// Attributs par défaut 
-		$defaults = array( 
-			'message' 		=> '', 
-			'query_arg' 	=> 'message', 
-			'notice' 		=> 'info', 
-			'dismissible' 	=> false 
+	{
+		// Attributs par défaut
+		$defaults = array(
+			'message' 		=> '',
+			'query_arg' 	=> 'message',
+			'notice' 		=> 'info',
+			'dismissible' 	=> false
 		);
-		
+
 		// Traitement des vues personnalisées
 		foreach( $notices as $id => &$attrs ) :
 			if( is_string( $attrs ) ) :
@@ -71,7 +71,7 @@ trait Notices
 			endif;
 			$attrs = wp_parse_args( $attrs, $defaults );
 		endforeach;
-		
+
 		return wp_parse_args( $notices, self::defaultsNotices() );
 	}
 }
