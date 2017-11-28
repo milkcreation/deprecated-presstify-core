@@ -1,28 +1,30 @@
 <?php
 namespace tiFy\Core\Db;
 
-class Handle{
+class Handle
+{
     /**
      * @var Factory
      */
-	protected	$Db;
-	
-	/* = CONSTRUCTEUR = */	
-	public function __construct( Factory $Db )
-	{
-		$this->Db = $Db;
-	}
-	
-	/** == Création d'un élément == **/
-	final public function record( $data = array() )
-	{
-		$primary_key = $this->Db->Primary;	
-			
-		if( ! empty( $data[$primary_key] ) && $this->Db->select()->count( array( $primary_key => $data[$primary_key] ) ) )
-			return $this->update( $data[$primary_key], $data );			
-		else
-			return $this->create( $data );
-	}
+    protected $Db;
+
+    /* = CONSTRUCTEUR = */
+    public function __construct(Factory $Db)
+    {
+        $this->Db = $Db;
+    }
+
+    /** == Création d'un élément == **/
+    final public function record($data = [])
+    {
+        $primary_key = $this->Db->Primary;
+
+        if (!empty($data[$primary_key]) && $this->Db->select()->count([$primary_key => $data[$primary_key]])) {
+            return $this->update($data[$primary_key], $data);
+        } else {
+            return $this->create($data);
+        }
+    }
 
     /**
      * Création d'un nouvel élément
@@ -56,40 +58,51 @@ class Handle{
     }
 
     /** == Mise à jour d'un élément == **/
-	final public function update( $id, $data = array() )
-	{
-		// Extraction des metadonnées	
-		if( isset( $data['item_meta'] ) ) :
-			$metas = $data['item_meta'];
-			unset( $data['item_meta'] );
-		else :
-			$metas = false;
-		endif;				 
-		
-		// Formatage des données	
-		$data = $this->Db->parse()->validate( $data );			
-		$data = array_map( 'maybe_serialize', $data );
-		
-		$this->Db->sql()->update( $this->Db->Name, $data, array( $this->Db->Primary => $id ) );
-		
-		// Enregistrement des metadonnées de l'élément en base
-		if( is_array( $metas ) && $this->Db->hasMeta() )
-			foreach( (array) $metas as $meta_key => $meta_value )
-				$this->Db->meta()->update( $id, $meta_key, $meta_value );
-		
-		return $id;
-	}
-		
-	/** == Suppression d'un élément son id == **/
-	public function delete_by_id( $id )
-	{
-		return $this->Db->sql()->delete( $this->Db->Name, array( $this->Db->Primary => $id ), '%d' );
-	}
-	
-	/** == Valeur de la prochaine clé primaire == **/
-	public function next()
-	{		
-		if( $last_insert_id = $this->Db->sql()->query( "SELECT LAST_INSERT_ID() FROM {$this->wpdb_table}" ) )
-			return ++$last_insert_id;
-	}
+    final public function update($id, $data = [])
+    {
+        // Extraction des metadonnées
+        if (isset($data['item_meta'])) :
+            $metas = $data['item_meta'];
+            unset($data['item_meta']);
+        else :
+            $metas = false;
+        endif;
+
+        // Formatage des données
+        $data = $this->Db->parse()->validate($data);
+        $data = array_map('maybe_serialize', $data);
+
+        $this->Db->sql()->update($this->Db->Name, $data, [$this->Db->Primary => $id]);
+
+        // Enregistrement des metadonnées de l'élément en base
+        if (is_array($metas) && $this->Db->hasMeta()) {
+            foreach ((array)$metas as $meta_key => $meta_value) {
+                $this->Db->meta()->update($id, $meta_key, $meta_value);
+            }
+        }
+
+        return $id;
+    }
+
+    /** == Suppression d'un élément son id == **/
+    public function delete_by_id($id)
+    {
+        return $this->Db->sql()->delete($this->Db->Name, [$this->Db->Primary => $id], '%d');
+    }
+
+    /**
+     *
+     */
+    public function replace($data = [], $format = null)
+    {
+        return $this->Db->sql()->replace($this->Db->Name, $data, $format);
+    }
+
+    /** == Valeur de la prochaine clé primaire == **/
+    public function next()
+    {
+        if ($last_insert_id = $this->Db->sql()->query("SELECT LAST_INSERT_ID() FROM {$this->wpdb_table}")) {
+            return ++$last_insert_id;
+        }
+    }
 }

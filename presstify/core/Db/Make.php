@@ -4,24 +4,30 @@ namespace tiFy\Core\Db;
 class Make
 {
     /**
-     * Classe de rappel de la table de base de données
+     * Classe de rappel du constructeur de la table de base de données
      * @var \tiFy\Core\Db\Factory
      */
     protected $Db;
 
     /**
+     * Indicateur d'initialisation
+     * @var bool
+     */
+    private $Init = false;
+
+    /**
      * CONSTRUCTEUR
      *
-     * @param Factory $Db
+     * @param \tiFy\Core\Db\Factory $Db Classe de rappel du constructeur de la table de base de données
      *
      * @return void
      */
-    public function __construct(Factory $Db)
+    public function __construct(\tiFy\Core\Db\Factory $Db)
     {
         $this->Db = $Db;
 
-        if (!did_action('init')) :
-            add_action('init', [$this, 'init'], 99);
+        if (did_action('init')) :
+            add_action('init', [$this, 'init'], 100);
         else :
             $this->init();
         endif;
@@ -31,36 +37,68 @@ class Make
      * DECLENCHEURS
      */
     /**
-     * Inititalisation globale
+     * Initialisation globale
+     *
+     * @return void
      */
     final public function init()
     {
-        $name = $this->Db->Name;
-        $primary_key = $this->Db->Primary;
+        $this->install();
+    }
 
-        // Bypass
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    final public function install()
+    {
+        // Activation de l'indicateur d'initialisation
+        if ($this->Init) :
+            return;
+        else :
+            $this->Init = true;
+        endif;
+
+        $name = $this->Db->getName();
+        $primary_key = $this->Db->getPrimary();
+
+        // Bypass - La table de base de données existe
         if ($current_version = get_option('tify_db_' . $name, 0)) :
             return;
         endif;
 
-        // Création des tables
-        /// Encodage
-        $charset_collate = $this->Db->sql()->get_charset_collate();
+        // Récupération de l'encodage collate des tables
+        $charset_collate = $this->getCharsetCollate();
 
-        /// Création de la table principale.
-        $create_ddl = "CREATE TABLE {$name} ( ";
+        // Requête de création de la table principale
+        $create_ddl = "CREATE TABLE {$name} (";
+
+        // Requêtes de création des colonnes de la table principale
         $_create_ddl = [];
-        foreach ((array)$this->Db->ColNames as $col_name) {
-            $_create_ddl[] = $this->create_dll($col_name);
-        }
+        if ($names = $this->getDb()->getColNames()) :
+            foreach ($names as $name) :
+                $_create_ddl[] = $this->createColumn($name);
+            endforeach;
+        endif;
+
         $create_ddl .= implode(', ', $_create_ddl);
-        $create_ddl .= ", PRIMARY KEY ( {$primary_key} )";
-        $create_ddl .= $this->create_dll_keys();
-        $create_ddl .= " ) $charset_collate;";
 
-        $this->maybe_create_table($name, $create_ddl);
+        $create_ddl .= $this->createKeys();
+        if ($primary_key) :
+            $create_ddl .= ", PRIMARY KEY ({$primary_key})";
+        endif;
+        $create_ddl .= ") $charset_collate;";
 
-        /// Création de la table des metadonnées
+        // Création de la table principale
+        if (!$result = $this->maybe_create_table($name, $create_ddl)) :
+            return;
+        endif;
+
+        // Création de la table des metadonnées
         if ($this->Db->MetaType) :
             $table_name = $this->Db->meta()->getTableName();
             $join_col = $this->Db->meta()->getJoinCol();
@@ -78,21 +116,41 @@ class Make
             $this->maybe_create_table($table_name, $create_ddl);
         endif;
 
-        update_option('tify_db_' . $name, $this->Db->Version);
+        if ($result) :
+            update_option('tify_db_' . $name, $this->Db->Version);
+        endif;
     }
 
     /**
-     * CONTROLEURS
+     * Récupération de la classe de rappel du constructeur de la table de base de données
+     *
+     * @return \tiFy\Core\Db\Factory
      */
+    final public function getDb()
+    {
+        return $this->Db;
+    }
+
     /**
+     * Récupération de l'encodage de collation
+     *
+     * @return string
+     */
+    public function getCharsetCollate()
+    {
+        return $this->getDb()->sql()->get_charset_collate();
+    }
+
+    /**
+     * Requête de création d'une colone
+     *
      * @param $col_name
      *
-     * @return string|void
+     * @return string
      */
-    private function create_dll($col_name)
+    private function createColumn($name)
     {
-        $primary_key = $this->Db->Primary;
-        $types_allowed = [
+        $allowed_types = [
             // Numériques
             'tinyint',
             'smallint',
@@ -127,8 +185,8 @@ class Make
             'longblob',
             'enum',
             'set'
-            //
         ];
+
         $defaults = [
             'type'           => false,
             'size'           => false,
@@ -136,43 +194,60 @@ class Make
             'auto_increment' => false,
             'default'        => false
         ];
-        $attrs = $this->Db->getColAttrs($col_name);
-        $attrs = wp_parse_args($attrs, $defaults);
+
+        if (!$attrs = $this->getDb()->getColAttrs($name)) :
+            $attrs = [];
+        endif;
+        $_attrs = wp_parse_args($attrs, $defaults);
 
         /**
          * @var string $type
-         * @var int $size
-         * @var bool $unsigned
-         * @var bool $auto_increment
+         * @var int $size Taille
+         * @var bool $unsigned Limitation aux valeurs de nombres positifs
+         * @var bool $auto_increment Activation de l'auto-incrémentation
+         * @var null|bool $default Valeur par défaut
          */
-        extract($attrs, EXTR_SKIP);
+        extract($_attrs, EXTR_SKIP);
 
-        // Formatage du type
+        // Type de colonne (requis)
         $type = strtolower($type);
-        if (!in_array($type, $types_allowed)) {
-            return;
-        }
+        if (!in_array($type, $allowed_types)) :
+            return '';
+        endif;
+
+        // Colonne de clé primaire
+        $is_primary = $this->getDb()->isPrimary($name);
 
         $create_ddl = "";
-        $create_ddl .= "{$col_name} {$type}";
+        $create_ddl .= "{$name} {$type}";
 
+        // Taille
         if ($size) :
             $create_ddl .= "({$size})";
         endif;
 
-        if ($unsigned || ($col_name === $primary_key)) :
+        // Limitation aux valeurs de nombres positifs
+        if ($is_primary && !isset($attrs['unsigned'])) :
+            $unsigned = true;
+        endif;
+        if ($unsigned) :
             $create_ddl .= " UNSIGNED";
         endif;
 
-        if ($auto_increment || ($col_name === $primary_key)) :
+        // Incrémentation automatique
+        if ($is_primary && !isset($attrs['auto_increment'])) :
+            $auto_increment = true;
+        endif;
+        if ($auto_increment) :
             $create_ddl .= " AUTO_INCREMENT";
         endif;
 
+        // Valeur par défaut
         if (!is_null($default)) :
             if (is_numeric($default)) :
-                $create_ddl .= " DEFAULT " . $default . " NOT NULL";
+                $create_ddl .= " DEFAULT {$default} NOT NULL";
             elseif (is_string($default)) :
-                $create_ddl .= " DEFAULT '" . $default . "' NOT NULL";
+                $create_ddl .= " DEFAULT '{$default}' NOT NULL";
             else :
                 $create_ddl .= " NOT NULL";
             endif;
@@ -183,23 +258,56 @@ class Make
         return $create_ddl;
     }
 
-    /** == Création des clefs d'index == **/
-    private function create_dll_keys()
+    /**
+     * Création des clefs d'index
+     *
+     * @return string
+     */
+    private function createKeys()
     {
-        $create_dll_keys = [];
-        foreach ((array)$this->Db->IndexKeys as $key_name => $key_value) :
-            if (is_string($key_value)) :
-                $key_value = [$key_value];
-            endif;
-            $key_value = array_map([$this->Db, 'isCol'], $key_value);
+        if (!$index_keys = $this->getDb()->getIndexKeys()) :
+            return '';
+        endif;
 
-            $key_value = implode(', ', $key_value);
-            array_push($create_dll_keys, "KEY {$key_name} ({$key_value})");
+        $create_ddl = [];
+        foreach ($index_keys as $name => $attrs) :
+            $cols = []; $type = '';
+
+            // Traitement des attributs de configuration des clés d'index
+            if (is_string($attrs)) :
+                $cols = array_map('trim', explode(',', $attrs));
+            elseif(is_array($attrs)) :
+                if (isset($attrs['cols'])) :
+                    if (is_string($attrs['cols'])) :
+                        $cols = array_map('trim', explode(',', $attrs['cols']));
+                    else :
+                        $cols = $attrs['cols'];
+                    endif;
+                endif;
+                if (isset($attrs['type']) && in_array($attrs['type'], ['UNIQUE', 'SPATIAL', 'FULLTEXT'])) :
+                    $type = $attrs['type'] . ' ';
+                endif;
+            endif;
+
+            $cols = array_map([$this->getDb(), 'isCol'], $cols);
+
+            if (empty($cols)) :
+                continue;
+            endif;
+
+            if (is_int($name)) :
+                $name = join('_', $cols);
+            endif;
+
+            $_cols = implode(', ', $cols);
+            array_push($create_ddl, "{$type}KEY {$name} ({$_cols})");
         endforeach;
 
-        if (!empty($create_dll_keys)) :
-            return ", " . implode(', ', $create_dll_keys);
+        if (!empty($create_ddl)) :
+            return ", " . implode(', ', $create_ddl);
         endif;
+
+        return "";
     }
 
     /* = HELPERS = */

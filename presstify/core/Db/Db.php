@@ -4,22 +4,6 @@ namespace tiFy\Core\Db;
 class Db extends \tiFy\App\Core
 {
     /**
-     * Liste des actions à déclencher
-     * @var array
-     */
-    protected $tFyAppActions = [
-        'init'
-    ];
-
-    /**
-     * Ordre de priorité d'exécution des actions
-     * @var array
-     */
-    protected $tFyAppActionsPriority = [
-        'init' => 9
-    ];
-
-    /**
      * Liste des tables de bases de données déclarées
      * @var \tiFy\Core\Db\Factory[]
      */
@@ -39,8 +23,11 @@ class Db extends \tiFy\App\Core
         parent::__construct();
                 
         foreach( (array) self::tFyAppConfig() as $id => $args ) :
-            self::register( $id, $args );
+            self::register($id, $args);
         endforeach;
+
+        // Définition des éléments de déclenchement
+        $this->tFyAppActionAdd('init', null, 9);
     }
     
     /**
