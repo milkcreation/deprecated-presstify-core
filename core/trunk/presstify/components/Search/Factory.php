@@ -100,8 +100,8 @@ class Factory extends \tiFy\App\Factory
         $this->WP_Query->query_vars = $this->_parseQueryVars(0);
 
         // Filtrages des conditions de requêtes
-        self::tFyAppFilterAdd('posts_search', null, 10, 2);
-        self::tFyAppFilterAdd('posts_clauses', null, 10, 2);
+        add_filter('posts_search', [$this, 'posts_search'], 10, 2);
+        add_filter('posts_clauses', [$this, 'posts_clauses'], 10, 2);
 
         // Empêcher l'execution multiple du filtre
         \remove_filter(current_filter(), [$this, current_filter()], 10);
@@ -115,7 +115,7 @@ class Factory extends \tiFy\App\Factory
      *
      * @return string
      */
-    final public function posts_search($search, &$WP_Query)
+    final public function posts_search($search, $WP_Query)
     {
         // Empêcher l'execution multiple du filtre
         \remove_filter(current_filter(), [$this, current_filter()], 10);
@@ -142,7 +142,7 @@ class Factory extends \tiFy\App\Factory
      *
      * @return array
      */
-    final public function posts_clauses($clauses, &$WP_Query)
+    final public function posts_clauses($clauses, $WP_Query)
     {
         global $wpdb;
 
@@ -217,12 +217,12 @@ class Factory extends \tiFy\App\Factory
             $clauses = compact(array_keys($clauses));
 
             // Filtre de pré-requête des contenus - Définition de la variable MySQL de qualification du groupe
-            self::tFyAppFilterAdd('posts_pre_query', null, 10, 2);
+            add_filter('posts_pre_query', [$this, 'posts_pre_query'], 10, 2);
         endif;
 
         // Déclaration des événements de débug
-        self::tFyAppFilterAdd('posts_request', null, 10, 2);
-        self::tFyAppFilterAdd('the_posts', null, 10, 2);
+        add_filter('posts_request', [$this, 'posts_request'], 10, 2);
+        add_filter('the_posts', [$this, 'the_posts'], 10, 2);
 
         // Empêcher l'execution multiple du filtre
         \remove_filter(current_filter(), [$this, current_filter()], 10);
@@ -238,7 +238,7 @@ class Factory extends \tiFy\App\Factory
      *
      * @return null|\WP_Post[]
      */
-    public function posts_request($request, &$WP_Query)
+    public function posts_request($request, $WP_Query)
     {
         //var_dump($request);
         //exit;
@@ -257,7 +257,7 @@ class Factory extends \tiFy\App\Factory
      *
      * @return null|\WP_Post[]
      */
-    public function posts_pre_query($posts = null, &$WP_Query)
+    public function posts_pre_query($posts = null, $WP_Query)
     {
         global $wpdb;
 
@@ -278,11 +278,8 @@ class Factory extends \tiFy\App\Factory
      *
      * @return null|\WP_Post[]
      */
-    public function the_posts($posts, &$WP_Query)
+    public function the_posts($posts, $WP_Query)
     {
-        //var_dump($posts);
-        //exit;
-
         // Empêcher l'execution multiple du filtre
         \remove_filter(current_filter(), [$this, current_filter()], 10);
 

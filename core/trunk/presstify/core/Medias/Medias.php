@@ -1,7 +1,7 @@
 <?php
-namespace tiFy\Core\Media;
+namespace tiFy\Core\Medias;
 
-class Media
+class Medias extends \tiFy\App\Core
 {
     /**
      * CONSTRUCTEUR
@@ -10,9 +10,12 @@ class Media
      */
     public function __construct()
     {
-        add_filter('wp_get_attachment_url', array($this, 'wp_get_attachment_url'), 10, 2);
-        add_filter('get_attached_file', array($this, 'get_attached_file'), 10, 2);
-        add_filter('wp_calculate_image_srcset', array($this, 'wp_calculate_image_srcset'), 10, 5);
+        parent::__construct();
+
+        // Déclaration des événements de déclenchement
+        $this->tFyAppFilterAdd('wp_get_attachment_url', null, 10, 2);
+        $this->tFyAppFilterAdd('get_attached_file', null, 10, 2);
+        $this->tFyAppFilterAdd('wp_calculate_image_srcset', null, 10, 5);
     }
         
     /**
@@ -62,13 +65,15 @@ class Media
     public function get_attached_file($file, $attachment_id)
     {
         // Bypass
-        if (! $metadata = \get_post_meta($attachment_id, '_wp_attachment_metadata', true))
+        if (!$metadata = \get_post_meta($attachment_id, '_wp_attachment_metadata', true)) :
             return $file;
-        if (! isset($metadata['upload_dir']))
+        endif;
+        if (!isset($metadata['upload_dir'])) :
             return $file;
+        endif;
         
         $file = get_post_meta($attachment_id, '_wp_attached_file', true );
-        $file = $metadata['upload_dir']['basedir'] . "/$file"; 
+        $file = "{$metadata['upload_dir']['basedir']}/{$file}";
         
         return $file;
     }
@@ -88,12 +93,14 @@ class Media
     public function wp_calculate_image_srcset($sources, $size_array, $image_src, $image_meta, $attachment_id)
     {
         // Bypass
-        if (! $metadata = \get_post_meta($attachment_id, '_wp_attachment_metadata', true))
+        if (!$metadata = \get_post_meta($attachment_id, '_wp_attachment_metadata', true)) :
             return $sources;
-        if (! isset($metadata['upload_dir']))
+        endif;
+        if (!isset($metadata['upload_dir'])) :
             return $sources;
+        endif;
         
-        foreach($sources as &$attrs):
+        foreach($sources as &$attrs) :
             $attrs['url'] = $metadata['upload_dir']['url'] . '/' . basename($attrs['url']);
         endforeach; 
         
