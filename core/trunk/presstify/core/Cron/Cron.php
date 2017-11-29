@@ -48,7 +48,7 @@ class Cron extends \tiFy\App\Core
         if (!isset($_REQUEST['tFyCronDoing'])) :
             return;
         endif;
-        exit;
+
         if ($schedule = self::get($_REQUEST['tFyCronDoing'])) :
             do_action_ref_array($schedule['hook'], [$schedule]);
             exit;

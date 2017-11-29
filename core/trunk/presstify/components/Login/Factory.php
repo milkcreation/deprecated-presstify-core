@@ -235,7 +235,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         $attrs['logout_link'] = $this->parse_logout_link_attrs($attrs['logout_link']);
 
         // Traitement des attributs de configuration de l'interface de mot de passe oublié
-        $attrs['lost_password_link'] = $this->parse_lostpassword_attrs($attrs['lost_password_link']);
+        $attrs['lost_password_link'] = $this->parse_lostpassword_link_attrs($attrs['lost_password_link']);
 
         // Traitement des attributs de la cartographie des messages d'erreurs
         $attrs['errors_map'] = $this->parse_errors_map($attrs['errors_map']);
@@ -543,11 +543,11 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return array
      */
-    public function parse_lostpassword_attrs($attrs = [])
+    public function parse_lostpassword_link_attrs($attrs = [])
     {
         $defaults = [
             'redirect' => '',
-            'label'    => __('Mot de passe oublié', 'tify')
+            'text'     => __('Mot de passe oublié', 'tify')
         ];
 
         return \wp_parse_args($attrs, $defaults);
@@ -879,7 +879,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      */
     public function login_form_footer()
     {
-        return '';
+        return $this->lostpassword_link();
     }
 
     /**
@@ -889,7 +889,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      */
     public function lostpassword_link()
     {
-        $attrs = $this->getAttr('lostpassword');
+        $attrs = $this->getAttr('lost_password_link');
 
         $output =   "<a href=\"" . \wp_lostpassword_url($attrs['redirect']) ."\"" .
                     " title=\"" . __( 'Récupération de mot de passe perdu', 'tify' ) . "\"" .

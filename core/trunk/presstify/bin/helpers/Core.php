@@ -282,8 +282,12 @@ namespace
     /** == Affichage de la boîte à onglet de l'écran courant == **/
     function tify_taboox_display()
     {
-        if( $screen = tiFy\Core\Taboox\Taboox::$Screen )
-            return call_user_func_array( array( $screen, 'box_render' ), func_get_args() );
+        if (!$display = tiFy\Core\Taboox\Taboox::display()) :
+            echo 'Rien à voir';
+            return;
+        endif;
+
+        echo $display->render(func_get_args());
     }
     
     // --------------------------------------------------------------------------------------------------------------------------

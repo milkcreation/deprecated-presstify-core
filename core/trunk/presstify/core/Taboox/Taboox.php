@@ -31,6 +31,12 @@ class Taboox extends \tiFy\App\Core
     private static $Hooknames           = [];
 
     /**
+     * Liste des translation d'identifiants d'accroche déclarés
+     * @var array
+     */
+    private static $HooknameMap           = [];
+
+    /**
      * Classe de rappel d'affichage
      * @var \tiFy\Core\Taboox\Display
      */
@@ -139,8 +145,6 @@ class Taboox extends \tiFy\App\Core
         // Déclaration des helpers
         do_action('tify_taboox_register_helpers');
 
-        require_once( ABSPATH . 'wp-admin/includes/plugin.php');
-
         // Déclenchement de l'événement d'initialisation globale des greffons.
         if($nodes = self::getNodeList()) :
             foreach ($nodes as $hookname => $node_ids) :
@@ -157,16 +161,19 @@ class Taboox extends \tiFy\App\Core
     final public function admin_init()
     {
         // Déclaration des translations des pages d'accroche
-        /*
-         foreach( (array) self::$HooknameMap as $hookname ) :
-            if( !  preg_match( '/::/', $hookname ) )
-                continue;
-            @list( $menu_slug, $parent_slug ) = preg_split( '/::/', $hookname, 2 );
+        if ($hooknames = self::$Hooknames) :
+            require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+            foreach ($hooknames as $hookname) :
+                if(!preg_match('/::/', $hookname)) :
+                    continue;
+                endif;
+
+                @list($menu_slug, $parent_slug) = preg_split('/::/', $hookname, 2);
                 
-            $screen_id = get_plugin_page_hookname( $menu_slug, $parent_slug );
-            self::$ScreenHooknameMap[$screen_id] = $hookname;
-        endforeach;
-        */
+                $map = \get_plugin_page_hookname($menu_slug, $parent_slug);
+                self::$HooknameMap[$map] = $hookname;
+            endforeach;
+        endif;
 
         // Déclenchement de l'événement d'initialisation de l'interface d'administration des greffons.
         if($nodes = self::getNodeList()) :
@@ -192,7 +199,7 @@ class Taboox extends \tiFy\App\Core
             return;
         endif;
 
-        self::$Hookname = $current_screen->id;
+        self::$Hookname = isset(self::$HooknameMap[$current_screen->id]) ? self::$HooknameMap[$current_screen->id] : $current_screen->id;
 
         if (!($box = self::getBox(self::$Hookname)) || !($nodes = self::getNodeList(self::$Hookname))) :
             return;
@@ -353,7 +360,13 @@ class Taboox extends \tiFy\App\Core
      */
     final public static function isHookname($hookname)
     {
-        return in_array($hookname, self::$Hooknames);
+        if (in_array($hookname, self::$Hooknames)) :
+            return true;
+        elseif(isset(self::$HooknameMap[$hookname])) :
+            return true;
+        endif;
+
+        return false;
     }
 
     /**
@@ -368,5 +381,15 @@ class Taboox extends \tiFy\App\Core
         if (!self::isHookname($hookname)) :
             array_push(self::$Hooknames, $hookname);
         endif;
+    }
+
+    /**
+     * Récupération de la classe de rappel d'affichage
+     *
+     * @return \tiFy\Core\Taboox\Display\Display
+     */
+    final public static function display()
+    {
+        return self::$Display;
     }
 }

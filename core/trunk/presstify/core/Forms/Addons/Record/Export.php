@@ -90,4 +90,40 @@ class Export extends \tiFy\Core\Templates\Admin\Model\Export\Export
         
         return join( ', ', $values );        
     }
+
+    /** == Traitement des arguments de requête == **/
+    public function parse_query_args()
+    {
+        // Récupération des arguments
+        $per_page   = $this->get_items_per_page( $this->db()->Name, $this->PerPage );
+        $paged      = $this->get_pagenum();
+
+        // Arguments par défaut
+        $query_args = array(
+            'per_page'      => $per_page,
+            'paged'         => $paged,
+            'order'         => 'DESC',
+            'orderby'       => $this->db()->Primary,
+        );
+
+        // Exclusions des formulaires ne supportant pas l'export
+        $form_ids = [];
+        foreach ($this->Forms as $id => $form) :
+            $form_ids[] = $id;
+        endforeach;
+        if ($form_ids) :
+            $query_args['form_id'] = $form_ids;
+        endif;
+
+        // Traitement des arguments
+        foreach( (array) $_REQUEST as $key => $value ) :
+            if( method_exists( $this, 'parse_query_arg_' . $key ) ) :
+                call_user_func_array( array( $this, 'parse_query_arg_' . $key ), array( &$query_args, $value ) );
+            elseif( $this->db()->isCol( $key ) ) :
+                $query_args[$key] = $value;
+            endif;
+        endforeach;
+
+        return wp_parse_args( $this->QueryArgs, $query_args );
+    }
 }

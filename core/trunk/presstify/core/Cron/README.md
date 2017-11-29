@@ -167,12 +167,16 @@ Ouvrir le fichier de log depuis une console
 $ tail -f /wp-content/uploads/tFyLogs/%task_id%-%Y-%m-%d.log
 ```
 
+### TEST
+
+https://port01.tigreblanc.fr/sedea-pro.fr/?tFyCronDoing=%task_id%
+
 ### EXECUTION 
 
 Lancer l'exécution de la tâche depuis une autre console
  
 ```bash
-$ curl https://port01.tigreblanc.fr/sedea-pro.fr/wp-cron.php?tFy_doing_cron=%task_id%
+$ curl https://port01.tigreblanc.fr/sedea-pro.fr/?tFyCronDoing=%task_id%
 ```
 
 
