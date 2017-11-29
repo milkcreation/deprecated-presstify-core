@@ -360,6 +360,25 @@
     *border-bottom-color: #FFF;
 }
 
+.tiFyTaboox-WrapperContent .nav-pills {
+    padding:10px;
+    background-color: #FFF;
+}
+
+.tiFyTaboox-WrapperContent .nav-pills .tiFyTabs-navItem > a {
+    background-color: #FFF;
+    border-radius: 0;
+    border-width: 0px 0px 4px 0px;
+}
+
+.tiFyTaboox-WrapperContent .nav-pills .tiFyTabs-navItem.active > a,
+.tiFyTaboox-WrapperContent .nav-pills .tiFyTabs-navItem.active > a:hover {
+    background-color: #FFF;
+    color:#555;
+    border-width: 0px 0px 4px 0px;
+    border-color: transparent transparent #0974A8 transparent;
+}
+
 .tiFyTaboox-WrapperContent .tab-content > .tab-pane {
     position: relative;
     z-index: 2;

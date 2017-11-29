@@ -2,7 +2,7 @@
 namespace tiFy\Components\HookArchive\Taboox\Post\TermSelector\Admin;
 
 use tiFy\Core\Taboox\Admin;
-use tiFy\Core\Taboox\Post\TaxonomySelect\Admin\TaxonomySelect;
+use tiFy\Core\Taboox\PostType\TaxonomySelect\Admin\TaxonomySelect;
 
 
 /* = Formulaire de saisie = */
