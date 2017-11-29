@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\TabooxEditUser;
 
+use tiFy\Core\Taboox\Taboox;
+
 class TabooxEditUser extends \tiFy\Core\Templates\Admin\Model\EditUser\EditUser
 {					
 	/* = ARGUMENTS = */
@@ -35,12 +37,11 @@ class TabooxEditUser extends \tiFy\Core\Templates\Admin\Model\EditUser\EditUser
 		$parent_slug 	= $this->getConfig( '_parent_slug' );
 		$this->Hookname = $this->MenuSlug .'::'. $parent_slug;
 
-		tify_taboox_register_box( 
-			$this->Hookname,
-			'user',
-			array(
+        Taboox::registerBox(
+            $this->Hookname,
+			[
 				'title'	=> __( 'Réglages des données utilisateur', 'tify' )
-			)
+			]
 		);
 	}
 	
@@ -61,7 +62,10 @@ class TabooxEditUser extends \tiFy\Core\Templates\Admin\Model\EditUser\EditUser
 			if( method_exists( $this, "section_{$id}" ) )
 				$args['cb'] = array( $this, 'section_'. $id );
 
-			tify_taboox_register_node( $this->Hookname, $args );
+            Taboox::registerNode(
+                $this->Hookname,
+                $args
+            );
 		endforeach;
 	}
 	
