@@ -89,6 +89,19 @@ namespace
         return tiFy\Core\Upload\Upload::Url( $file, $query_vars );
     }
 
+    /**
+     * Url de téléchargement d'un fichier média
+     *
+     * @param string|int $file Chemin relatif|Chemin absolue|Url|Identifiant d'un fichier de la médiathèque
+     * @param array $additional_query_vars Arguments de requête complémentaires
+     *
+     * @return string
+     */
+    function tify_medias_download_url($media, $query_vars = [])
+    {
+        return tiFy\Core\Medias\Download::url($media, $query_vars);
+    }
+
     // --------------------------------------------------------------------------------------------------------------------------
     /* = FORMS = */
     /** == Affichage d'un formulaire == **/

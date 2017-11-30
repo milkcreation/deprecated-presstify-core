@@ -170,9 +170,9 @@ class MailerNew
         foreach( array( 'From', 'To', 'ReplyTo', 'Cc', 'Bcc' ) as $param ) :
             if( empty( self::${$param} ) )
                 continue; 
-            self::${$param} = self::parseContact( self::${$param} );
+            self::${$param} = self::parseContact(self::${$param});
         endforeach;
-        
+
         // Traitement des pièces jointes
         if( ! empty( self::$Attachments ) ) :
             foreach( self::$Attachments as $n => $attachment ) :
@@ -180,7 +180,7 @@ class MailerNew
             endforeach;
         endif;
         
-        // Définition de l'éxpéditeur requis
+        // Définition de l'expéditeur (requis)
         if( empty( self::$From ) ) :
              self::$From = array( self::getAdminContact() );    
         endif;
@@ -260,12 +260,12 @@ class MailerNew
         endif;
         
         /// Copie cachée
-        if( ! empty( self::$Cc ) ) :
+        if( ! empty( self::$Bcc ) ) :
             foreach( self::$Bcc as $contact ) :
-                $phpmailer->addBCC( $contact['email'], $contact['name'] );          
+                $phpmailer->addBCC( $contact['email'], $contact['name'] );
             endforeach;
         endif;  
-        
+
         // Pièces jointes
         if( ! empty( self::$Attachments ) ) :
             foreach( self::$Attachments as $attachment ) :
@@ -626,13 +626,70 @@ class MailerNew
         $output .=                      "</tr>";
         
         $headers = explode( $mailer->LE, $mailer->createHeader() );
-        foreach(  $headers as $value ) :
+        foreach ($headers as $value) :
             $output .=                  "<tr>";
             $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
-            $output .=                          htmlspecialchars( $value );
+            $output .=                          htmlspecialchars($value);
             $output .=                      "</td>";
-            $output .=                  "</tr>";            
+            $output .=                  "</tr>";
         endforeach;
+
+        // To
+        if ($Adresses = $mailer->getToAddresses()) :
+            $output .=                  "<tr>";
+            $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
+            $output .=                          "To: ";
+            $adress = [];
+            foreach($Adresses as $Adress) :
+                $adress[] = isset($Adress[1]) ? htmlspecialchars("{$Adress[1]} <{$Adress[0]}>") : "{$Adress[0]}";
+            endforeach;
+            $output .=                          join(', ', $adress);
+            $output .=                      "</td>";
+            $output .=                  "</tr>";
+        endif;
+
+        // CC
+        if ($Adresses = $mailer->getCcAddresses()) :
+            $output .=                  "<tr>";
+            $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
+            $output .=                          "Cc: ";
+            $adress = [];
+            foreach($Adresses as $Adress) :
+                $adress[] = isset($Adress[1]) ? htmlspecialchars("{$Adress[1]} <{$Adress[0]}>") : "{$Adress[0]}";
+            endforeach;
+            $output .=                          join(', ', $adress);
+            $output .=                      "</td>";
+            $output .=                  "</tr>";
+        endif;
+
+        // BCC
+        if ($Adresses = $mailer->getBccAddresses()) :
+            $output .=                  "<tr>";
+            $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
+            $output .=                          "Bcc: ";
+            $adress = [];
+            foreach($Adresses as $Adress) :
+                $adress[] = isset($Adress[1]) ? htmlspecialchars("{$Adress[1]} <{$Adress[0]}>") : "{$Adress[0]}";
+            endforeach;
+            $output .=                          join(', ', $adress);
+            $output .=                      "</td>";
+            $output .=                  "</tr>";
+        endif;
+
+        // ReplyTo
+        if ($Adresses = $mailer->getReplyToAddresses()) :
+            $output .=                  "<tr>";
+            $output .=                      "<td style=\"line-height:1.1em;padding:3px 10px;color:#000;font-size:13px\">";
+            $output .=                          "ReplyTo: ";
+            $adress = [];
+            foreach($Adresses as $Adress) :
+                $adress[] = isset($Adress[1]) ? htmlspecialchars("{$Adress[1]} <{$Adress[0]}>") : "{$Adress[0]}";
+            endforeach;
+            $output .=                          join(', ', $adress);
+            $output .=                      "</td>";
+            $output .=                  "</tr>";
+        endif;
+
         $output .=                  "</tbody>";
         $output .=              "</table>";            
                         

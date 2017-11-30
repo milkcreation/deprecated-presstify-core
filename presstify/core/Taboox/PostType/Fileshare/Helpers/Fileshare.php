@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\Taboox\PostType\Fileshare\Helpers;
 
+use tiFy\Core\Medias\Upload;
+
 class Fileshare extends \tiFy\Core\Taboox\Helpers
 {
 	/* = ARGUMENTS = */
@@ -65,7 +67,7 @@ class Fileshare extends \tiFy\Core\Taboox\Helpers
 				$thumb_url = $thumb_url[0];
 			
 			$output .= "\t\t<li class=\"tiFyTabooxFileshare-item\">";
-			$output .= "\t\t\t<a href=\"" . tify_upload_url( $file_id ) . "\" class=\"tiFyTabooxFileshare-itemUploadLink\"  title=\"" . __( 'Télécharger le fichier', 'tify' ) ."\">\n";
+			$output .= "\t\t\t<a href=\"" . Upload::url($file_id) . "\" class=\"tiFyTabooxFileshare-itemUploadLink\"  title=\"" . __( 'Télécharger le fichier', 'tify' ) ."\">\n";
 			
 			// Icone
 			if( $thumb_url ) :

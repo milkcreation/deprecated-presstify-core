@@ -76,7 +76,7 @@ class Repeater extends \tiFy\Core\Control\Factory
             'ajax_action'           => 'tify_control_repeater_item',
             // Agent de sécurisation de la requête ajax
             'ajax_nonce'            => wp_create_nonce( 'tiFyControlRepeater' ),
-            // Fonction de rappel d'affichage d'un élément
+            // Fonction de rappel d'affichage d'un élément (méthode statique ou fonction)
             'item_cb'               => '',
             // Intitulé du bouton d'ajout d'une interface d'édition
             'add_button_txt'        => __( 'Ajouter', 'tify' ),
@@ -131,11 +131,9 @@ class Repeater extends \tiFy\Core\Control\Factory
     /**
      * Champs d'édition d'un élément
      */
-    public static function item( $index, $value, $attrs = array() )
+    public static function item($index, $value, $attrs = [])
     {
-?>
-<input type="text" name="<?php echo $attrs['name'];?>[<?php echo $index;?>]" value="<?php echo $value;?>" class="widefat"/>
-<?php
+?><input type="text" name="<?php echo $attrs['name'];?>[<?php echo $index;?>]" value="<?php echo $value;?>" class="widefat"/><?php
     }
     
     /**
@@ -168,7 +166,7 @@ class Repeater extends \tiFy\Core\Control\Factory
         
         ob_start();
         if( ! empty( $_POST['attrs']['item_cb'] ) ) :
-            call_user_func(wp_unslash( $_POST['attrs']['item_cb'] ), $index, $value, $attrs);
+            call_user_func(\wp_unslash($_POST['attrs']['item_cb']), $index, $value, $attrs);
         else :
             static::item( $index, $value, $attrs );
         endif;

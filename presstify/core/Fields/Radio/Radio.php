@@ -10,7 +10,7 @@ class Radio extends \tiFy\Core\Fields\Factory
      */
     public function isChecked()
     {
-        return $this->getAttr('checked') === $this->getHtmlAttrs('value');
+        return $this->getAttr('checked') === $this->getHtmlAttr('value');
     }
 
     /**
@@ -47,6 +47,7 @@ class Radio extends \tiFy\Core\Fields\Factory
         // Instanciation
         $field = new static($id, $args);
         $field->setHtmlAttr('type', 'radio');
+
         if ($field->isChecked()) :
             $field->setHtmlAttr('checked', 'checked');
         endif;

@@ -1,4 +1,4 @@
-.tiFyCoreFieldsSwitcher {
+.tiFyCoreFields-Switcher {
     background: #FFF;
     padding:2px;
     -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -6,19 +6,19 @@
     display:inline-block;
     vertical-align:middle;
 }
-.tiFyCoreFieldsSwitcher-wrapper::before,
-.tiFyCoreFieldsSwitcher-wrapper::after {
+.tiFyCoreFields-SwitcherWrapper::before,
+.tiFyCoreFields-SwitcherWrapper::after {
     display:table;
     content:"";
 }
-.tiFyCoreFieldsSwitcher-wrapper::after {
+.tiFyCoreFields-SwitcherWrapper::after {
     clear:both;
 }
-.tiFyCoreFieldsSwitcher-wrapper {
+.tiFyCoreFields-SwitcherWrapper {
     position: relative;
     width: 80px; height:20px;
 }
-.tiFyCoreFieldsSwitcher-label {
+.tiFyCoreFields-SwitcherLabel {
     position: relative;
     z-index: 2;
     float: left;
@@ -31,15 +31,15 @@
     text-align: center;
     cursor: pointer;
 }
-.tiFyCoreFieldsSwitcher-label:active {
+.tiFyCoreFields-SwitcherLabel:active {
     font-weight: bold;
 }
-.tiFyCoreFieldsSwitcher .tiFyCoreFieldsSwitcher-input{
+.tiFyCoreFields-Switcher .tiFyCoreFields-SwitcherRadio{
     display: none;
 }
-.tiFyCoreFieldsSwitcher-handler {
+.tiFyCoreFields-SwitcherHandler {
     position: absolute;
-    top:0px; bottom:0px; left:0px; right:auto;
+    top:0; right:auto; bottom:0; left:0;
     display: block;     
     width: 50%;
     background: #0074A2;
@@ -50,17 +50,17 @@
     transition:             transform 0.15s ease-out;
     z-index: 1; 
 }
-.tiFyCoreFieldsSwitcher-input--on:checked + .tiFyCoreFieldsSwitcher-label--on ~ .tiFyCoreFieldsSwitcher-handler {
+.tiFyCoreFields-SwitcherRadio--on:checked + .tiFyCoreFields-SwitcherLabel--on ~ .tiFyCoreFields-SwitcherHandler {
     background: #0074A2;
 }
-.tiFyCoreFieldsSwitcher-input--off:checked + .tiFyCoreFieldsSwitcher-label--off ~ .tiFyCoreFieldsSwitcher-handler {
+.tiFyCoreFields-SwitcherRadio--off:checked + .tiFyCoreFields-SwitcherLabel--off ~ .tiFyCoreFields-SwitcherHandler {
     -webkit-transform:     translateX(100%);
     -ms-transform:         translateX(100%);
     transform:             translateX(100%);
     background: #AAA;
 }
-.tiFyCoreFieldsSwitcher-input--on:checked + .tiFyCoreFieldsSwitcher-label--on,
-.tiFyCoreFieldsSwitcher-input--off:checked + .tiFyCoreFieldsSwitcher-label--off {
+.tiFyCoreFields-SwitcherRadio--on:checked + .tiFyCoreFields-SwitcherLabel--on,
+.tiFyCoreFields-SwitcherRadio--off:checked + .tiFyCoreFields-SwitcherLabel--off {
     font-weight: bold;
     color: #FFF;
     cursor:default;

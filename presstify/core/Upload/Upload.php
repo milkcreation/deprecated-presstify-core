@@ -24,7 +24,6 @@ class Upload extends \tiFy\App
         $this->tFyAppActionAdd('template_redirect');
         $this->tFyAppActionAdd('tify_upload_register');
         $this->tFyAppFilterAdd('query_vars');
-        $this->tFyAppFilterAdd('media_row_actions', null, 99, 3);
     }
 
     /**
@@ -43,23 +42,6 @@ class Upload extends \tiFy\App
         $vars[] = 'file_upload_media';
 
         return $vars;
-    }
-
-    /**
-     * Définition d'actions en ligne dans la liste des médias de l'interface d'administration en vue table
-     *
-     * @param array $actions Liste des actions existantes
-     * @param \WP_Post $post Object post WP
-     * @param $detached
-     *
-     * @return array
-     */
-    final public function media_row_actions($actions, $post, $detached)
-    {
-        // actions en ligne de téléchargement dans la liste des médias de l'interface d'administration en vue table
-        $actions['download'] = "<a href=\"" . \wp_nonce_url(self::Url($post->ID), 'tify_upload-f:' . $post->ID . '-u:' . get_current_user_id()) . "\">" . __('Télécharger', 'tify') . "</a>";
-
-        return $actions;
     }
 
     /**

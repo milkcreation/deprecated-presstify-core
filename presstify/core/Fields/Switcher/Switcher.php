@@ -74,8 +74,8 @@ class Switcher extends \tiFy\Core\Fields\Factory
         $field = new static($id, $args);
 
 ?><?php $field->before(); ?>
-<div id="<?php echo $field->getAttr('container_id');?>" class="tiFyCoreFieldsSwitcher<?php echo $field->getAttr('container_class');?>">
-    <div class="tiFyCoreFieldsSwitcher-wrapper">
+<div id="<?php echo $field->getAttr('container_id');?>" class="tiFyCoreFields-Switcher<?php echo $field->getAttr('container_class');?>">
+    <div class="tiFyCoreFields-SwitcherWrapper">
         <?php
             Fields::Radio(
                 [
@@ -84,19 +84,21 @@ class Switcher extends \tiFy\Core\Fields\Factory
                             'content' => $field->getAttr('label_on'),
                             'attrs' => [
                                 'for' => $field->getId() . '--on',
-                                'class' => 'tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--on'
+                                'class' => 'tiFyCoreFields-SwitcherLabel tiFyCoreFields-SwitcherLabel--on'
                             ]
                         ],
                         false
                     ),
                     'attrs' => [
                         'id'    => $field->getId() . '--on',
-                        'class' => 'tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--on',
+                        'class' => 'tiFyCoreFields-SwitcherRadio tiFyCoreFields-SwitcherRadio--on',
+                        'name'  => $field->getHtmlAttr('name'),
                         'value' => $field->getAttr('value_on'),
+                        'autocomplete' => 'off'
                     ],
                     'checked' => $field->getAttr('checked')
                 ],
-                false
+                true
             );
         ?>
         <?php
@@ -107,22 +109,24 @@ class Switcher extends \tiFy\Core\Fields\Factory
                             'content' => $field->getAttr('label_off'),
                             'attrs' => [
                                 'for' => $field->getId() . '--off',
-                                'class' => 'tiFyCoreFieldsSwitcher-label tiFyCoreFieldsSwitcher-label--off'
+                                'class' => 'tiFyCoreFields-SwitcherLabel tiFyCoreFields-SwitcherLabel--off'
                             ]
                         ],
                         false
                     ),
                     'attrs' => [
                         'id'    => $field->getId() . '--off',
-                        'class' => 'tiFyCoreFieldsSwitcher-input tiFyCoreFieldsSwitcher-input--off',
+                        'class' => 'tiFyCoreFields-SwitcherRadio tiFyCoreFields-SwitcherRadio--off',
+                        'name'  => $field->getHtmlAttr('name'),
                         'value' => $field->getAttr('value_off'),
+                        'autocomplete' => 'off'
                     ],
                     'checked' => $field->getAttr('checked')
                 ],
-                false
+                true
             );
         ?>
-        <span class="tiFyCoreFieldsSwitcher-handler"></span>
+        <span class="tiFyCoreFields-SwitcherHandler"></span>
     </div>
 </div>
 <?php $field->after(); ?>
