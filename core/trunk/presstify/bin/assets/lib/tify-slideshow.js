@@ -62,6 +62,8 @@
             resize: true,
             /// Nombre d'éléments par page
             bypage: 1,
+            /// Autorise le glissement pour passer d'un slide à l'autre
+            draggable: true,
 
             // Callback
             before: function (dir, target, self) {
@@ -197,7 +199,9 @@
                 }
 
                 //
-                self._drag();
+                if (self.o.draggable) {
+                    self._drag();
+                }
 
                 // Navigation suivant/précédent
                 self._nav();

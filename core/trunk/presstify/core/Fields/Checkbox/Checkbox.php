@@ -10,7 +10,7 @@ class Checkbox extends \tiFy\Core\Fields\Factory
      */
     public function isChecked()
     {
-        return $this->getAttr('checked') === $this->getHtmlAttrs('value');
+        return $this->getAttr('checked') === $this->getHtmlAttr('value');
     }
 
     /**

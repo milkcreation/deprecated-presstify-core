@@ -130,12 +130,12 @@ class Slider extends \tiFy\Core\Control\Factory
         
         $slides = static::parseSlides( $slides );
         $options = static::parseOptions( $options ); 
-        
+
         $output  = "";
         $output .= "<div id=\"{$id}\" class=\"tiFyControl-slider". ( $class ? ' '.$class : '' )."\" data-tify_control=\"slider\"";
         foreach( $options as $k => $v ) :
             // @see mu-plugins/presstify/assets/lib/tify-slideshow.js
-            if( ! in_array( $k, array( 'interval', 'pause', 'transition', 'speed', 'easing' , 'resize', 'bypage' ) ) )
+            if( ! in_array( $k, array( 'interval', 'pause', 'transition', 'speed', 'easing' , 'resize', 'bypage', 'draggable' ) ) )
                 continue;
             $output .= " data-{$k}=\"{$v}\"";                
         endforeach;

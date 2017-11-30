@@ -52,7 +52,7 @@ class Fields extends \tiFy\App\Core
      *
      * return null|callable
      */
-    public static function __callStatic($field_name, $args)
+    final public static function __callStatic($field_name, $args)
     {
         $FieldName = ucfirst($field_name);
         if (!in_array($FieldName, static::$Registered)) :
@@ -73,5 +73,18 @@ class Fields extends \tiFy\App\Core
         else :
             return call_user_func_array("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::content", compact('id', 'attrs'));
         endif;
+    }
+
+    /**
+     *
+     */
+    final public static function enqueue_scripts($field_name)
+    {
+        $FieldName = ucfirst($field_name);
+        if (!in_array($FieldName, static::$Registered)) :
+            return;
+        endif;
+
+        call_user_func("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::enqueue_scripts");
     }
 }

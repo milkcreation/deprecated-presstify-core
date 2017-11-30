@@ -12,6 +12,9 @@ class Medias extends \tiFy\App\Core
     {
         parent::__construct();
 
+        // Chargement des controleurs
+        new Download;
+
         // Déclaration des événements de déclenchement
         $this->tFyAppFilterAdd('wp_get_attachment_url', null, 10, 2);
         $this->tFyAppFilterAdd('get_attached_file', null, 10, 2);

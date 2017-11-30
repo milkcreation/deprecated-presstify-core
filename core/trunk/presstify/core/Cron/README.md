@@ -9,13 +9,13 @@ Créer un fichier de configuration yml dans votre dossier de configuration.
 /config/core/Cron.yml
 
 ```yml
-%task_id%:
+my_custom_task:
   # Identifiant unique d'accorche de la tâche planifiée (optionnel)
-  # default : tiFyCoreCron--[task_id]
+  # default : tiFyCoreCron--my_custom_task
   hook:         ''
   
   # Intitulé de la tâche planifiée (recommandé)
-  # default : [task_id]
+  # default : my_custom_task
   title:        ''
   
   # Description de la tâche planifiée (recommandé)
@@ -38,7 +38,7 @@ Créer un fichier de configuration yml dans votre dossier de configuration.
   # Activation de la journalisation (optionnel)
   log:
     ## Nom du fichier
-    name:       [task_id]
+    name:       my_custom_task
     ## Format du fichier de log
     format:     ''
     ## Rotation de fichier
@@ -59,8 +59,8 @@ function my_tify_core_register()
 {
     return Core::register(
         'Cron',
-        array(
-            '%task_id%'        => array(
+        [
+            'my_custom_task' => [
                 // Identifiant unique d'accorche de la tâche planifiée
                 'hook'          => '',
                 // Intitulé de la tâche planifiée
@@ -72,13 +72,13 @@ function my_tify_core_register()
                 // Fréquence d'exécution de la tâche planifiée
                 'recurrence'    => 'daily',
                 // Arguments passés dans la tâche planifiée
-                'args'          => array(),
+                'args'          => [],
                 // Chemins de classe de surcharge
-                'path'          => array(),
+                'path'          => [],
                 // Attributs de journalisation des données
                 'log'           => true
-            )
-        )
+            ]
+        ]
     );
 }
 ?>
@@ -96,7 +96,7 @@ namespace App\Core\Cron;
 
 class Config extends \tiFy\App\Config
 {
-    public function set_%task_id%()
+    public function my_custom_task()
     {
         return [
             // Identifiant unique d'accorche de la tâche planifiée
@@ -133,8 +133,8 @@ add_action( 'tify_cron_register', 'my_tify_cron_register' );
 function my_tify_cron_register()
 {
     return Cron::register(
-        '%task_id%', 
-        array(
+        'my_custom_task', 
+        [
             // Identifiant unique d'accorche de la tâche planifiée
             'hook'          => '',
             // Intitulé de la tâche planifiée
@@ -146,37 +146,54 @@ function my_tify_cron_register()
             // Fréquence d'exécution de la tâche planifiée
             'recurrence'    => 'daily',
             // Arguments passés dans la tâche planifiée
-            'args'          => array(),
+            'args'          => [],
             // Chemins de classe de surcharge
-            'path'          => array(),
+            'path'          => [],
             // Attributs de journalisation des données
             'log'           => true
-        )
+        ]
     );
 }
 ?>
 ```
+## Mise en place de la tâche planifier
+
+Modifier le fichier de configuration wp-config.php pour désactiver la tâche cron Web
+
+```php
+/** CRON **/
+define('DISABLE_WP_CRON', true);
+```
+
+Editer les tâches planifiées du serveur ... 
+
+```bash
+$ sudo crontab -e
+```
+... et ajouter la tâche suivante (passage toutes les minutes)
+
+```bash
+* * * * * curl -I [url_du_site]/wp-cron.php?doing_wp_cron > /dev/null 2>&1
+```
 
 ## Test de la tâche en mode console
 
-### MONITORING
+### Tester depuis un navigateur
 
-Ouvrir le fichier de log depuis une console
+[url_du_site]/?tFyCronDoing=my_custom_task
 
-```bash
-$ tail -f /wp-content/uploads/tFyLogs/%task_id%-%Y-%m-%d.log
-```
-
-### TEST
-
-https://port01.tigreblanc.fr/sedea-pro.fr/?tFyCronDoing=%task_id%
-
-### EXECUTION 
+### Tester depuis une console
 
 Lancer l'exécution de la tâche depuis une autre console
  
 ```bash
-$ curl https://port01.tigreblanc.fr/sedea-pro.fr/?tFyCronDoing=%task_id%
+$ curl [url_du_site]/?tFyCronDoing=my_custom_task
 ```
 
+### Monitoring de la tâche d'import
 
+Ouvrir le fichier de log depuis une console
+
+```bash
+$ tail -f /wp-content/uploads/tFyLogs/my_custom_task-%Y-%m-%d.log
+```

@@ -10,7 +10,12 @@ class Select extends \tiFy\Core\Fields\Factory
      */
     public function isSelected()
     {
-        return in_array($this->getHtmlAttrs('value'), $this->getAttr('selected'));
+        $selected = $this->getAttr('selected');
+        if (is_string($selected)) :
+            $selected = array_map('trim', explode(',', $selected));
+        endif;
+
+        return in_array($this->getHtmlAttr('value'), $selected);
     }
 
     /**
