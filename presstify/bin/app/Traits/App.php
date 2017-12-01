@@ -23,28 +23,89 @@ trait App
      * @param string $class_method Méthode de la classe à executer
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|callable \add_action()
      */
-    final public function tFyAppActionAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    final public function tFyAppAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
         if (!$class_method) :
             $class_method = $tag;
         endif;
 
-        if (!method_exists($this, $class_method)) :
+        if (!$classname) :
+            if ((new \ReflectionMethod($this, $class_method))->isStatic()) :
+                $classname = get_called_class();
+            else :
+                $classname = $this;
+            endif;
+        endif;
+
+        if (!method_exists($classname, $class_method)) :
             return;
         endif;
 
-        $MethodChecker = new \ReflectionMethod($this, $class_method);
-
-        if ($MethodChecker->isStatic()) :
-            $function_to_add = [get_called_class(), $class_method];
+        if (is_object($classname)) :
+            $function_to_add = [$classname, $class_method];
         else :
-            $function_to_add = [$this, $class_method];
+            $function_to_add = [$classname, $class_method];
         endif;
 
         return \add_action($tag, $function_to_add, $priority, $accepted_args);
+    }
+
+    /**
+     * Ajout d'une action
+     * @deprecated
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_action()
+     */
+    final public function tFyAppActionAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    {
+        return self::tFyAppAddAction($tag, $class_method, $priority, $accepted_args);
+    }
+
+    /**
+     * Ajout d'un filtre
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer.
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     *
+     * @return null|callable \add_filter()
+     */
+    final public function tFyAppAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    {
+        if (!$class_method) :
+            $class_method = $tag;
+        endif;
+
+        if (!$classname) :
+            if ((new \ReflectionMethod($this, $class_method))->isStatic()) :
+                $classname = get_called_class();
+            else :
+                $classname = $this;
+            endif;
+        endif;
+
+        if (!method_exists($classname, $class_method)) :
+            return;
+        endif;
+
+        if (is_object($classname)) :
+            $function_to_add = [$classname, $class_method];
+        else :
+            $function_to_add = [$classname, $class_method];
+        endif;
+
+        return \add_filter($tag, $function_to_add, $priority, $accepted_args);
     }
 
     /**
@@ -59,23 +120,7 @@ trait App
      */
     final public function tFyAppFilterAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
     {
-        if (!$class_method) :
-            $class_method = $tag;
-        endif;
-
-        if (!method_exists($this, $class_method)) :
-            return;
-        endif;
-
-        $MethodChecker = new \ReflectionMethod($this, $class_method);
-
-        if ($MethodChecker->isStatic()) :
-            $function_to_add = [get_called_class(), $class_method];
-        else :
-            $function_to_add = [$this, $class_method];
-        endif;
-
-        return \add_filter($tag, $function_to_add, $priority, $accepted_args);
+        return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args);
     }
 
     /**

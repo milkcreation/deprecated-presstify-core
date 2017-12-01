@@ -266,8 +266,9 @@ class Sidebar extends \tiFy\App\Component
      */
     public static function display()
     {
-        $Nodes = self::loadOverride( '\tiFy\Components\Sidebar\Nodes' );
-        $items = $Nodes->customs( self::$Nodes );
+        $Nodes = self::loadOverride('\tiFy\Components\Sidebar\Nodes');
+
+        $items = $Nodes->customs(self::$Nodes);
 
         $output  = "";
         $output .= "<div class=\"tiFySidebar tiFySidebar--". self::tFyAppConfig( 'pos' ) ."\" data-pos=\"". self::tFyAppConfig( 'pos' ) ."\">";

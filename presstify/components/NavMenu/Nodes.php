@@ -7,68 +7,71 @@ namespace tiFy\Components\NavMenu;
 class Nodes extends \tiFy\Lib\Nodes\Base
 {
     /**
+     * GREFFONS PERSONNALISES
+     */
+    /**
      * Attribut de titre d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_title($attrs, $extras = [])
+    public function custom_node_title(&$node, $extras = [])
     {
-        return isset($attrs['title']) ? $attrs['title'] : '';
+        return isset($node['title']) ? $node['title'] : '';
     }
 
     /**
      * Attribut de lien d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_href($attrs, $extras = [])
+    public function custom_node_href(&$node, $extras = [])
     {
-        return isset($attrs['href']) ? $attrs['href'] : '';
+        return isset($node['href']) ? $node['href'] : '';
     }
 
     /**
      * Attribut d'icône d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_icon($attrs, $extras = [])
+    public function custom_node_icon(&$node, $extras = [])
     {
-        return isset($attrs['icon']) ? $attrs['icon'] : '';
+        return isset($node['icon']) ? $node['icon'] : '';
     }
 
     /**
      * Attribut de contenu d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_content($attrs, $extras = [])
+    public function custom_node_content(&$node, $extras = [])
     {
-        if (isset($attrs['content'])) :
-            return $attrs['content'];
+        if (isset($node['content'])) :
+            return $node['content'];
         endif;
 
         $content = "";
-        if (!empty($attrs['href'])) :
-            $content .= "<a href=\"{$attrs['href']}\" title=\"{$attrs['title']}\">";
+        if (!empty($node['href'])) :
+            $content .= "<a href=\"{$node['href']}\" title=\"{$node['title']}\">";
         endif;
-        if (!empty($attrs['icon'])) :
-            $content .= "<i class=\"{$attrs['icon']}\"></i>";
+        if (!empty($node['icon'])) :
+            $content .= "<i class=\"{$node['icon']}\"></i>";
         endif;
 
-        $content .= $attrs['title'];
-        if (!empty($attrs['href'])) :
+        $content .= $node['title'];
+        if (!empty($node['href'])) :
             $content .= "</a>";
         endif;
 
@@ -78,16 +81,16 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut d'élément courant d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_current($attrs, $extras = [])
+    public function custom_node_current(&$node, $extras = [])
     {
         $current_url = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
         $current_url = preg_replace('#\?.*#', '', $current_url);
 
-        return (!empty($attrs['href']) && ($current_url === $attrs['href']));
+        return (!empty($node['href']) && ($current_url === $node['href']));
     }
 }

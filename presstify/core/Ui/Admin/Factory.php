@@ -10,11 +10,17 @@ class Factory extends \tiFy\Core\Ui\Factory
      * @var array
      */
     protected $Parents = [
+        'Browser' => [
+
+        ],
         'EditForm' => [
 
         ],
         'ListTable' => [
 
+        ],
+        'PostEditForm' => [
+            'db'    => 'posts'
         ],
         'PostListTable' => [
             'db'    => 'posts'
@@ -24,7 +30,7 @@ class Factory extends \tiFy\Core\Ui\Factory
         ],
         'UserListTable' => [
             'db'    => 'users'
-        ],
+        ]
     ];
 
     /**
