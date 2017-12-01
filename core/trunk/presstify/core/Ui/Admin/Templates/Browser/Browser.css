@@ -1,0 +1,100 @@
+.Browser {
+    position: relative;
+}
+
+.BrowserMenu {
+    position: absolute;
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: 0;
+    width: 300px;
+
+    background-color: #FFF;
+}
+
+.BrowserFolderContent {
+    position: relative;
+    padding: 10px;
+    margin-left: 300px;
+    min-height: 600px;
+
+    background-color: #FFF;
+}
+
+.BrowserFolderContent.load::after {
+    position: absolute;
+    content: "";
+    top:0; right:0; bottom:0; left:0;
+    background-color:rgba(255,255,255,0.5);
+    z-index:1;
+}
+
+.BrowserFolderContent > * {
+    box-sizing: border-box;
+}
+
+.BrowserFolderContent-items::before,
+.BrowserFolderContent-items::after {
+    display: table;
+    content: "";
+}
+
+.BrowserFolderContent-items::after {
+    clear: both;
+}
+
+.BrowserFolderContent-items {
+    margin: 0;
+    padding: 0;
+}
+
+.BrowserFolderContent-item {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.BrowserFolderContent-itemLink {
+    position: relative;
+    text-decoration: none;
+}
+
+/**
+ * VUE GRILLE
+ */
+.Browser--grid .BrowserFolderContent-items {
+    margin: 0 -10px;
+}
+
+.Browser--grid .BrowserFolderContent-item {
+    float: left;
+    padding: 10px;
+}
+
+.Browser--grid .BrowserFolderContent-itemLink {
+    display: block;
+    width: 200px;
+    height: 200px;
+
+    border: solid 1px #E4E4E4;
+    text-align:center;
+}
+.Browser--grid .BrowserFolderContent-itemIcon {
+    display:block;
+    margin: 10px auto;
+    width:150px;
+    height:150px;
+}
+.Browser--grid .BrowserFolderContent-itemIcon--glyphicon {
+    font-size:150px;
+    line-height:1;
+}
+
+.Browser--grid .BrowserFolderContent-itemIcon--image {
+    position:relative;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size :cover;
+    background-color:#E4E4E4;
+}

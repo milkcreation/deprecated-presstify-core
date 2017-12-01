@@ -9,12 +9,12 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut parent d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param array $args Liste des arguments généraux
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    final public function node_parent($attrs, $args = [])
+    final public function custom_node_parent(&$node, $extras = [])
     {
         return '';
     }
@@ -22,13 +22,13 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut de contenu d'un greffon
      *
-     * @param mixed $attrs Liste des attributs de configuration du greffon
-     * @param array $args Liste des arguments généraux
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_content($attrs, $args = [])
+    public function custom_node_content(&$node, $extras = [])
     {
-        return isset($attrs['content']) ? $attrs['content'] : '';
+        return isset($node['content']) ? $node['content'] : '';
     }
 }

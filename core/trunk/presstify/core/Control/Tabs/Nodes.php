@@ -9,52 +9,52 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut parent d'un greffon
      *
-     * @param $attrs Attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_parent($attrs, $extras = [])
+    public function custom_node_parent(&$node, $extras = [])
     {
-        return !empty($attrs['parent']) ? $attrs['parent'] : '';
+        return !empty($node['parent']) ? $node['parent'] : '';
     }
 
     /**
      * Attribut position d'un greffon
      *
-     * @param $attrs Attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_position($attrs, $extras = [])
+    public function custom_node_position(&$node, $extras = [])
     {
-        return (isset($attrs['position']) && is_numeric($attrs['position'])) ? (int)$attrs['position'] : null;
+        return (isset($node['position']) && is_numeric($node['position'])) ? (int)$node['position'] : null;
     }
 
     /**
      * Attribut titre d'un greffon
      *
-     * @param $attrs Attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_title($attrs, $extras = [])
+    public function custom_node_title(&$node, $extras = [])
     {
-        return isset($attrs['title']) ? $attrs['title'] : '';
+        return isset($node['title']) ? $node['title'] : '';
     }
 
     /**
      * Attribut contenu d'un greffon
      *
-     * @param $attrs Attributs de configuration du greffon
-     * @param $extras Liste des arguments globaux complémentaires
+     * @param array $node Liste des attributs de configuration du greffon
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
-    public function node_content($attrs, $extras = [])
+    public function custom_node_content(&$node, $extras = [])
     {
-        return isset($attrs['content']) ? $attrs['content'] : '';
+        return isset($node['content']) ? $node['content'] : '';
     }
 }

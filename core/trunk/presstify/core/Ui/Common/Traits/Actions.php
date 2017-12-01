@@ -7,6 +7,43 @@ trait Actions
      * CONTROLEURS
      */
     /**
+     * Vérification des habilitations d'accès de l'utilisateur à l'interface
+     *
+     * @return void
+     */
+    public function check_user_can()
+    {
+        if (!current_user_can($this->getParam('capability'))) :
+            wp_die(__('Vous n\'êtes pas autorisé à accéder à cette interface.', 'tify'));
+        endif;
+    }
+
+    /**
+     * Exécution des actions
+     *
+     * @return void
+     */
+    protected function process_actions()
+    {
+        if (defined('DOING_AJAX') && (DOING_AJAX === true)) :
+            return;
+        endif;
+
+        if (method_exists($this, 'process_action_' . $this->current_action())) :
+            call_user_func([$this, 'process_action_' . $this->current_action()]);
+        elseif ($this->getRequestQueryVar('_wp_http_referer')) :
+            \wp_redirect(
+                \remove_query_arg(
+                    ['_wp_http_referer', '_wpnonce'],
+                    wp_unslash($_SERVER['REQUEST_URI'])
+                )
+            );
+            exit;
+        endif;
+    }
+
+
+    /**
      * Récupération de l'action courante a éxecuter
      *
      * @return string

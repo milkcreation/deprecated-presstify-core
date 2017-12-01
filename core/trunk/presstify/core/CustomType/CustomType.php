@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\CustomType;
 
+use \tiFy\Core\Labels\Labels;
+
 class CustomType extends \tiFy\App\Core
 {
     /**
@@ -214,27 +216,47 @@ class CustomType extends \tiFy\App\Core
     }
     
     /**
-     * Traitements des arguments par défaut de taxonomie personnalisée
+     * Traitement des arguments par défaut de taxonomie personnalisée
+     *
+     * @param string $taxonomy Identifiant de qualification de la taxonomie
+     * @param array $attrs Liste des attributs de configuration personnalisés
+     *
+     * @return array
      */
-    private static function parseTaxonomyAttrs( $taxonomy, $args = array() )
+    private static function parseTaxonomyAttrs($taxonomy, $args = [])
     {
         // Traitement des arguments généraux
-        $label      = _x( $taxonomy, 'taxonomy general name', 'tify' );
-        $plural     = _x( $taxonomy, 'taxonomy plural name', 'tify' );
-        $singular   = _x( $taxonomy, 'taxonomy singular name', 'tify' );
-        $gender     = false; 
-        foreach( array( 'gender', 'label', 'plural', 'singular' ) as $attr ) :
-            if ( isset( $args[$attr] ) ) :
+        $label = _x($taxonomy, 'taxonomy general name', 'tify');
+        $plural = _x($taxonomy, 'taxonomy plural name', 'tify');
+        $singular = _x($taxonomy, 'taxonomy singular name', 'tify');
+        $gender = false;
+
+        foreach (['gender', 'label', 'plural', 'singular'] as $attr) :
+            if (isset($args[$attr])) :
                 ${$attr} = $args[$attr];
-                unset( $args[$attr] );
+                unset($args[$attr]);
             endif;
         endforeach;
-        
-        if( ! isset( $args['labels'] ) )
-            $args['labels'] = array();    
-        $labels = new \tiFy\Core\Labels\Factory( wp_parse_args( $args['labels'], array( 'singular' => $singular, 'plural' => $plural, 'gender' => $gender ) ) );
+
+        // Traitements des intitulés
+        if (!isset($args['labels'])) :
+            $args['labels'] = [];
+        endif;
+
+        $labels = Labels::register(
+            '_tiFyCustomType-Taxonomy--' . $taxonomy,
+            \wp_parse_args(
+                $args['labels'],
+                [
+                    'singular' => $singular,
+                    'plural' => $plural,
+                    'gender' => $gender
+                ]
+            )
+        );
         $args['labels'] = $labels->get();
 
+        // Définition des valeurs par défaut
         $defaults['public'] = true;
         $defaults['show_ui'] = true;
         $defaults['show_in_menu'] = true;
@@ -255,31 +277,47 @@ class CustomType extends \tiFy\App\Core
         //$defaults['capabilities'] = '';
         $defaults['sort'] = true;
 
-        return wp_parse_args($args, $defaults);
+        return \wp_parse_args($args, $defaults);
     }
 
     /**
      * Traitement des arguments par défaut de type de post personnalisé
+     *
+     * @param string $taxonomy Identifiant de qualification de la taxonomie
+     * @param array $attrs Liste des attributs de configuration personnalisés
+     *
+     * @return array
      */
     private static function parsePostTypeAttrs( $post_type, $args = array() )
     {
         // Traitement des arguments généraux
-        /// Intitulés
-        $label      = _x( $post_type, 'post type general name', 'tify' );
-        $plural     = _x( $post_type, 'post type plural name', 'tify' );
-        $singular   = _x( $post_type, 'post type singular name', 'tify' );
-        $gender     = false; 
-        foreach( array( 'gender', 'label', 'plural', 'singular' ) as $attr ) :
-            if ( isset( $args[$attr] ) ) :
+        $label = _x($post_type, 'post type general name', 'tify');
+        $plural = _x($post_type, 'post type plural name', 'tify');
+        $singular = _x($post_type, 'post type singular name', 'tify');
+        $gender = false;
+        foreach (['gender', 'label', 'plural', 'singular'] as $attr) :
+            if (isset($args[$attr])) :
                 ${$attr} = $args[$attr];
-                unset( $args[$attr] );
+                unset($args[$attr]);
             endif;
         endforeach;
-        
-        if( ! isset( $args['labels'] ) )
-            $args['labels'] = array();    
 
-        $labels = new \tiFy\Core\Labels\Factory(\wp_parse_args($args['labels'], ['singular' => $singular, 'plural' => $plural, 'gender' => $gender]));
+        // Traitements des intitulés
+        if (!isset($args['labels'])) :
+            $args['labels'] = [];
+        endif;
+
+        $labels = Labels::register(
+            '_tiFyCustomType-Post--' . $post_type,
+            \wp_parse_args(
+                $args['labels'],
+                [
+                    'singular' => $singular,
+                    'plural' => $plural,
+                    'gender' => $gender
+                ]
+            )
+        );
         $args['labels'] = $labels->get();
 
         // Définition des arguments du type de post
@@ -318,6 +356,6 @@ class CustomType extends \tiFy\App\Core
         $defaults['rest_base'] = $post_type;
         $defaults['rest_controller_class'] = 'WP_REST_Posts_Controller';
 
-        return wp_parse_args($args, $defaults);
+        return \wp_parse_args($args, $defaults);
     }
 }

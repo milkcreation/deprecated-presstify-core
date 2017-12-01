@@ -101,6 +101,9 @@ final class Ui extends \tiFy\App\Core
      *      Attributs de configuration
      *
      *      @param string $cb Nom complet de la classe de rappel du gabarit
+     *      @param array $params {
+     *          Liste des paramètres
+     *      }
      *      @param string $db Identifiant de base de données. posts par défaut
      *      @param \tiFy\Core\Labels\Factory|string|array $labels Identifiant des intitulés (Instance de la classe Labels ou identifiant de la classe ou liste des intitulés)
      *      @param bool|array $admin_menu {

@@ -7,17 +7,18 @@ namespace tiFy\Core\Control\AccordionMenu;
 class Nodes extends \tiFy\Lib\Nodes\Base
 {
     /**
-     * Ordre d'éxecution des méthodes de surchage des greffons
+     * Définition des méthodes de surchage des greffons par ordre d'exectution
+     * @var string[]
      */
-    public $MethodsMapOrder = ['parent', 'has_children', 'link', 'content', 'class'];
+    public $MethodsMap = ['parent', 'has_children', 'link', 'content', 'class'];
 
     /**
      * Attribut "link" du greffon de terme lié à une taxonomie
      *
-     * @param array $node Attributs du greffon
+     * @param array $node Liste des attributs de configuration du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
@@ -29,10 +30,10 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut "content" du greffon de terme lié à une taxonomie
      *
-     * @param array $node Attributs du greffon
+     * @param array $node Liste des attributs de configuration du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */
@@ -44,10 +45,10 @@ class Nodes extends \tiFy\Lib\Nodes\Base
     /**
      * Attribut "class" du greffon de terme lié à une taxonomie
      *
-     * @param array $node Attributs du greffon
+     * @param array $node Liste des attributs de configuration du greffon
      * @param obj $term Attributs du terme courant
      * @param array $query_args Argument de requête de récupération des termes de taxonomie
-     * @param array $extras Liste des arguments globaux complémentaires (ex: selected)
+     * @param array $extras Liste des arguments de configuration globaux
      *
      * @return string
      */

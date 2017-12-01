@@ -24,17 +24,17 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      */
     final public function init()
     {
-        wp_register_style( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.css', get_class()), array( ), 170704 );
-        wp_register_script( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.js', get_class()), array( 'jquery-ui-widget' ), 170704, true );
+        \wp_register_style( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.css', get_class()), array( ), 170704 );
+        \wp_register_script( 'tify_control-curtain_menu', self::tFyAppAssetsUrl('CurtainMenu.js', get_class()), array( 'jquery-ui-widget' ), 170704, true );
     }
     
     /**
      * Mise en file des scripts
      */
-    final public function enqueue_scripts()
+    final public static function enqueue_scripts()
     {
-        wp_enqueue_style( 'tify_control-curtain_menu' );
-        wp_enqueue_script( 'tify_control-curtain_menu' );
+        \wp_enqueue_style('tify_control-curtain_menu');
+        \wp_enqueue_script('tify_control-curtain_menu');
     }
     
     /**
@@ -65,7 +65,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         );
         $attrs = wp_parse_args($attrs, $defaults);
         extract( $attrs );
-        
+
         if( count($nodes) === 2 ) :
             $type = $nodes[0];
             $query_args = $nodes[1];
@@ -74,13 +74,15 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
             $query_args = array();
         endif;
         
-        $Nodes = self::loadOverride( '\tiFy\Core\Control\CurtainMenu\Nodes' );
+        $Nodes = self::loadOverride('\tiFy\Core\Control\CurtainMenu\Nodes');
+
         switch( $type ) :
             case 'terms' :
                 $nodes = $Nodes->terms($query_args,['selected' => $selected]);
             break;
             default:
             case 'custom' :
+                $nodes = $Nodes->customs($nodes,['selected' => $selected]);
                 break;
         endswitch;
 
