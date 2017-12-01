@@ -41,7 +41,7 @@ class Suggest extends \tiFy\Core\Control\Factory
     /**
      * Mise en file des scripts
      */
-    final public function enqueue_scripts()
+    final public static function enqueue_scripts()
     {
         wp_enqueue_style( 'tify_control-suggest' );
         wp_enqueue_script( 'tify_control-suggest' );
