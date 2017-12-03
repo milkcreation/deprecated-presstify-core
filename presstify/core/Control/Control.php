@@ -43,7 +43,9 @@ class Control extends \tiFy\App\Core
     {
         // Auto-chargement de l'initialisation globale des contrôleurs d'affichage
         foreach (self::$Factory as $Name => $factory) :
-            call_user_func([$factory, 'init']);
+            $classname = get_class($factory);
+
+            call_user_func("{$classname}::init");
         endforeach;
     }
         
@@ -99,7 +101,9 @@ class Control extends \tiFy\App\Core
             $attrs = $args[0];
         endif;
 
-        return call_user_func_array([self::$Factory[$name], 'display'], compact('attrs', 'echo'));
+        $classname = get_class(self::$Factory[$name]);
+
+        return call_user_func_array("{$classname}::display", compact('attrs', 'echo'));
     }
 
     /**
@@ -117,6 +121,8 @@ class Control extends \tiFy\App\Core
 
         $args = array_slice(func_get_args(), 1);
 
-        return call_user_func_array([self::$Factory[$name], 'enqueue_scripts'], $args);
+        $classname = get_class(self::$Factory[$name]);
+
+        return call_user_func_array("{$classname}::enqueue_scripts", $args);
     }
 }

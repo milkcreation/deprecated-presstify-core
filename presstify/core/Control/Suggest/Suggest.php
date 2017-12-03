@@ -183,11 +183,8 @@ class Suggest extends \tiFy\Core\Control\Factory
      * @param string $echo
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = [
             // Identification du controleur

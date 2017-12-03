@@ -64,7 +64,7 @@ class Slider extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    public static function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-slider');
         \wp_enqueue_script('tify_control-slider');
@@ -81,11 +81,8 @@ class Slider extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = [
             'id'      => 'tiFyControl-slider' . self::$Instance,

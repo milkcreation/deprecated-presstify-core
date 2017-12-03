@@ -63,11 +63,8 @@ class SpinKit extends \tiFy\Core\Control\Factory
      * @param array $attrs Attr
      * @return stringBrowserFolderContent-itemIcon
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = [
             'container_id' => 'tiFyCoreControl-Spinner--' . self::$Instance,

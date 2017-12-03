@@ -66,7 +66,7 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    public static function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-touch_time');
         \wp_enqueue_script('tify_control-touch_time');
@@ -83,12 +83,9 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
         global $wp_locale;
-
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
 
         // Traitement des attributs de configuration
         $defaults = [
