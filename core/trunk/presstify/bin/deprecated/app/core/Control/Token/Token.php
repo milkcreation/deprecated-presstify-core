@@ -15,28 +15,34 @@ class Token extends Factory
 	// Instance Courante
 	static $Instance = 0;
 
+	public function __construct()
+    {
+        parent::__construct();
+
+        add_action( 'wp_ajax_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );
+        add_action( 'wp_ajax_nopriv_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );
+        add_action( 'wp_ajax_tify_control_token_unmask', array( $this, 'AjaxUnMask' ) );
+        add_action( 'wp_ajax_tify_control_token_encrypt', array( $this, 'AjaxEncrypt' ) );
+        add_action( 'wp_ajax_nopriv_tify_control_token_encrypt', array( $this, 'AjaxEncrypt' ) );
+    }
+
+
 	/* = INITIALISATION DE WORDPRESS = */
-	final public function init()
+	public static function init()
 	{
 		wp_register_style( 'tify_control-token', self::tFyAppUrl() . '/Token.css', array( 'dashicons' ), '141212' );
 		wp_register_script( 'tify_control-token', self::tFyAppUrl() . '/Token.js', array( 'jquery' ), '141212', true );
-		
-		add_action( 'wp_ajax_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );
-		add_action( 'wp_ajax_nopriv_tify_control_token_keygen', array( $this, 'AjaxKeyGen' ) );
-		add_action( 'wp_ajax_tify_control_token_unmask', array( $this, 'AjaxUnMask' ) );
-		add_action( 'wp_ajax_tify_control_token_encrypt', array( $this, 'AjaxEncrypt' ) );
-		add_action( 'wp_ajax_nopriv_tify_control_token_encrypt', array( $this, 'AjaxEncrypt' ) );
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
-	final public function enqueue_scripts()
+	public static function enqueue_scripts()
 	{
 		wp_enqueue_style( 'tify_control-token' );
 		wp_enqueue_script( 'tify_control-token' );
 	}
 		
 	/* = AFFICHAGE = */
-	public static function display( $args = array() )
+	public static function display( $args = array(), $echo = true )
 	{
 		self::$Instance++;
 		

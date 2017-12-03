@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Ui\Admin\Templates\Browser;
 
-use tiFy\Core\Control\CurtainMenu\CurtainMenu;
+use tiFy\Core\Control\Control;
 
 class Browser
 {
@@ -115,8 +115,8 @@ class Browser
      */
     public function admin_enqueue_scripts()
     {
-        CurtainMenu::enqueue_scripts();
-
+        Control::enqueue_scripts('curtain_menu');
+        Control::enqueue_scripts('spinkit');
         \wp_enqueue_style('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.css', [], 171201);
         \wp_enqueue_script('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.js', ['jquery'], 171201);
     }
@@ -126,10 +126,13 @@ class Browser
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
 
-        echo $this->get_folder_content($_POST['folder']);
+        echo $this->getFolderContent($_POST['folder']);
         die(0);
     }
 
+    /**
+     *
+     */
     final public function ajaxGetImagePreview()
     {
         $filename = $_POST['filename'];
@@ -152,7 +155,7 @@ class Browser
      */
     public function prepare_items() 
     {
-        $this->get_menu_nodes();
+
     }
 
     /**
@@ -160,7 +163,7 @@ class Browser
      * @param null $parent
      * @param int $depth
      */
-    public function get_menu_nodes($dir = null, $parent = null, $depth = 0)
+    public function getNavMenuNodes($dir = null, $parent = null, $depth = 0)
     {
         if ($depth >= 4) :
             return;
@@ -172,6 +175,7 @@ class Browser
 
         $dir = rtrim($dir, '/');
 
+        $nav_menu_nodes = [];
         foreach(glob($dir . "/*") as $filename) :
             if (!is_dir($filename)) :
                 continue;
@@ -187,24 +191,59 @@ class Browser
                 $attrs['parent'] = dirname($filename);
             endif;
 
-            $this->menu_nodes[] = $attrs;
-            $this->get_menu_nodes($filename, $dir, $depth+1);
+            $nav_menu_nodes[] = $attrs;
+
+            if ($childs = $this->getNavMenuNodes($filename, $dir, $depth+1)) :
+                foreach ($childs as $child) :
+                    array_push($nav_menu_nodes, $child);
+                endforeach;
+            endif;
         endforeach;
+
+        return $nav_menu_nodes;
     }
 
     /**
+     * Récupération de la liste des fichiers d'un répertoire
+     *
      * @param string $dir
      */
-    public function get_folder_content($dir = null)
+    public function getFolderContent($dir = null)
     {
+        // Traitement du repertoire
         if (!$dir) :
             $dir = $this->getParam('dir');
         endif;
-
         $dir = rtrim($dir, '/');
 
+        // Récupération de la liste des fichiers
+        $filenames = glob($dir . "/*");
+
         $output = "";
-        if ($filenames = glob($dir . "/*")) :
+
+        // Indicateur de chargement
+        $output .= "<div class=\"BrowserFolderContent-Spinner\">";
+        $output .= Control::spinkit([], false);
+        $output .= "</div>";
+
+        // Affichage du fil d'ariane
+        $output .= $this->getBreadcrumb($dir);
+
+        // Affichage de la liste des fichers du répertoire
+        $output .= "<ul class=\"BrowserFolderContent-items\">";
+
+        // Lien de retour au repertoire parent
+        if (!$this->getParam('chroot') || ($dir !== rtrim($this->getParam('dir'), '/'))) :
+            $output .= "<li class=\"BrowserFolderContent-item\">";
+            $output .= "<a href=\"#\" data-target=\"" . dirname($dir) . "\" class=\"BrowserFolderContent-itemLink BrowserFolderContent-itemLink--dir\">";
+            $output .= '..';
+            $output .= "</a>";
+            $output .= "</li>";
+        endif;
+
+        // Traitement des fichiers
+        if ($filenames) :
+            // Trie de la liste des fichiers
             usort($filenames, function ($a, $b) {
                 $aIsDir = is_dir($a);
                 $bIsDir = is_dir($b);
@@ -215,16 +254,6 @@ class Browser
                 elseif (!$aIsDir && $bIsDir)
                     return 1; // $b is dir, should be before $a
             });
-
-            $output .= "<ul class=\"BrowserFolderContent-items\">";
-
-            if (!$this->getParam('chroot') || ($dir !== rtrim($this->getParam('dir'), '/'))) :
-                $output .= "<li class=\"BrowserFolderContent-item\">";
-                $output .= "<a href=\"#\" data-target=\"" . dirname($dir) . "\" class=\"BrowserFolderContent-itemLink BrowserFolderContent-itemLink--dir\">";
-                $output .= '..';
-                $output .= "</a>";
-                $output .= "</li>";
-            endif;
 
             foreach($filenames as $filename) :
                 $is_dir = false;
@@ -248,7 +277,7 @@ class Browser
 
                         case 'image' :
                             // @see https://www.alsacreations.com/article/lire/1439-data-uri-schema.html
-                            $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--image\"/></span>";
+                            $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--image\"><div class=\"BrowserFolderContent-itemIconSpinner\">" . Control::spinkit(['type' => 'three-bounce'], false) . "</div></span>";
                             break;
 
                         default :
@@ -264,11 +293,61 @@ class Browser
                 $output .= "</a>";
                 $output .= "</li>";
             endforeach;
-            $output .= "</ul>";
         endif;
+        $output .= "</ul>";
 
         return $output;
     }
+
+    /**
+     *
+     */
+    public function getBreadcrumb($dir = null)
+    {
+        // Racine
+        $root = $this->getParam('dir');
+        $root = rtrim($root, '/');
+
+        // Répertoire courant
+        if (!$dir) :
+            $dir = $root;
+        endif;
+        $dir = rtrim($dir, '/');
+
+        $items = preg_replace("#{$root}/#", '', "{$dir}/");
+
+        $path = $root;
+
+        $output = "";
+        $output .= "<ol class=\"BrowserBreadcrumb\">";
+
+        $output .= "<li class=\"BrowserBreadcrumb-item\">";
+        $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserBreadcrumb-itemLink\">";
+        $output .= "<span class=\"dashicons dashicons-admin-home\"></span>";
+        $output .= "</a>";
+        $output .= "</li>";
+
+        if($items) :
+            foreach(explode('/', $items) as $item) :
+                if (empty($item)) :
+                    continue;
+                endif;
+
+                $path .= "/". $item;
+                $output .= "<li class=\"BrowserBreadcrumb-item\">";
+                if ($path !== $dir):
+                    $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserBreadcrumb-itemLink\">{$item}</a>";
+                else :
+                    $output .= $item;
+                endif;
+                $output .= "</li>";
+            endforeach;
+        endif;
+        $output .= "</ol>";
+
+        return $output;
+    }
+
 
     /**
      * Affichage de la page
@@ -283,18 +362,19 @@ class Browser
         <?php echo $this->getParam('page_title');?>
     </h2>
     <div class="Browser Browser--grid">
-        <div class="BrowserMenu">
+        <div class="BrowserNavMenu">
         <?php
-            CurtainMenu::display(
-                [
-                    'nodes' => $this->menu_nodes,
-                    'theme' => 'light'
-                ]
-            )
+        Control::curtain_menu(
+            [
+                'nodes' => $this->getNavMenuNodes(),
+                'theme' => 'light'
+            ]
+        );
         ?>
         </div>
-        <div class="BrowserFolderContent" style="">
-            <?php echo $this->get_folder_content(); ?>
+        <div class="BrowserFolderContent">
+            <?php echo $this->getFolderContent(); ?>
+
         </div>
     </div>
 </div>

@@ -203,9 +203,7 @@ class Permalink extends \tiFy\App\Factory
 		else :
 			$permalink = $_permalink;
 		endif;	
-		
-		
-		
+
 		return $permalink;
 	}
 	

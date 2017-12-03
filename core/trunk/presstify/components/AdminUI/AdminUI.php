@@ -1,12 +1,12 @@
 <?php
 /**
  * @name AdminUI
- * @package PresstiFy
+ * @desc Personnalisation de l'interface d'administration de Wordpress
+ * @package presstiFy
  * @subpackage Components
  * @namespace tiFy\Components\AdminUI
- * @desc Configuration de l'interface d'administration de Wordpress
- * @author Jordy Manner
- * @copyright Tigre Blanc Digital
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
  * @version 1.2.369
  */
 namespace tiFy\Components\AdminUI; 
