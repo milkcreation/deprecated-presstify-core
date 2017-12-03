@@ -2,7 +2,6 @@
 namespace tiFy\Core\Ui\Admin\Templates\Browser;
 
 use tiFy\Core\Control\Control;
-use tiFy\Core\Control\SpinKit\SpinKit;
 
 class Browser
 {
