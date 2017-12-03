@@ -98,6 +98,6 @@ class Fields extends \tiFy\App\Core
 
         $args = array_slice(func_get_args(), 1);
 
-        call_user_func_array("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::enqueue_scripts");
+        return call_user_func_array("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::enqueue_scripts", $args);
     }
 }
