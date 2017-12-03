@@ -62,7 +62,6 @@ trait App
      * @param string $class_method Méthode de la classe à executer
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
-     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|callable \add_action()
      */
@@ -78,6 +77,7 @@ trait App
      * @param string $class_method Méthode de la classe à executer.
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|callable \add_filter()
      */
@@ -121,6 +121,23 @@ trait App
     final public function tFyAppFilterAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
     {
         return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args);
+    }
+
+    /**
+     * Ajout d'une fonction d'aide à la saisie
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $method Méthode de la classe à executer
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_filter()
+     */
+    final public function tFyAppAddHelper($tag, $method = '', $classname = null)
+    {
+        if ($tag && ! \function_exists($tag)) :
+            $classname = self::_tFyAppParseClassname($classname);
+            eval('function ' . $tag . '() { return call_user_func_array("' . $classname . '::' . $method . '", func_get_args()); }');
+        endif;
     }
 
     /**
@@ -483,9 +500,8 @@ trait App
      */
     public static function tFyAppLoadOverrideClass($classname = null, $path = [], $passed_args = '')
     {
-        if (!$classname = self::tFyAppGetOverrideClass($classname, $path)) :
+        if ($classname = self::tFyAppGetOverrideClass($classname, $path)) :
             if (!empty($passed_args)) :
-                // @todo
                 return new $classname(compact('passed_args'));
             else :
                 return new $classname;

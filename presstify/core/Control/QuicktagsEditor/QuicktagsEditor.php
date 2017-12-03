@@ -1,35 +1,92 @@
 <?php
+/**
+ * @name QuicktagsEditor
+ * @desc Controleur d'affichage d'éditeur de quicktags
+ * @package presstiFy
+ * @namespace tiFy\Core\Control\QuicktagsEditor
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.502
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
+
 namespace tiFy\Core\Control\QuicktagsEditor;
 
-use tiFy\Core\Control\Factory;
+/**
+ * @Overrideable \App\Core\Control\QuicktagsEditor\QuicktagsEditor
+ *
+ * <?php
+ * namespace \App\Core\Control\QuicktagsEditor
+ *
+ * class QuicktagsEditor extends \tiFy\Core\Control\QuicktagsEditor\QuicktagsEditor
+ * {
+ *
+ * }
+ */
 
-class QuicktagsEditor extends Factory
+class QuicktagsEditor extends \tiFy\Core\Control\Factory
 {
-	/* = ARGUMENTS = */	
-	// Identifiant de la classe		
+    /**
+     * Identifiant de la classe
+     * @var string
+     */
 	protected $ID = 'quicktags_editor';
-	
-	private static $Instance;
-	
-	/* = INITIALISATION DE WORDPRESS = */
-	final public function init()
-	{
-		wp_register_style( 'tify_control-quicktags_editor', self::tFyAppUrl() . "/quicktags_editor.css", array( 'font-awesome' ), '141212' );
-		wp_register_script( 'tify_control-quicktags_editor', self::tFyAppUrl() . "/quicktags_editor.js", array( 'jquery', 'quicktags' ), '141212', true );
-	}
-	
-	/* = MISE EN FILE DES SCRIPTS = */
-	public function enqueue_scripts()
-	{
-		wp_enqueue_style( 'tify_control-quicktags_editor' );
-		wp_enqueue_script( 'tify_control-quicktags_editor' );	
-	}
-		
-	/* = AFFICHAGE = */
-	public static function display( $args = array(), $echo = true )
-	{		
-		self::$Instance ++;
 
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    public static function init()
+	{
+        \wp_register_style(
+            'tify_control-quicktags_editor',
+            self::tFyAppAssetsUrl('QuicktagsEditor.css', get_class()),
+            ['font-awesome'],
+            141212
+        );
+        \wp_register_script(
+            'tify_control-quicktags_editor',
+            self::tFyAppAssetsUrl('QuicktagsEditor.js', get_class()),
+            ['jquery', 'quicktags'],
+            141212,
+            true
+        );
+    }
+
+    /**
+     * Mise en file des scripts
+     *
+     * @return void
+     */
+    public static function enqueue_scripts()
+	{
+        \wp_enqueue_style('tify_control-quicktags_editor');
+        \wp_enqueue_script('tify_control-quicktags_editor');
+	}
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Affichage
+     *
+     * @param array $attrs Liste des attributs de configuration
+     * @param bool $echo Activation de l'affichage
+     *
+     * @return string
+     */
+	public static function display( $attrs = array(), $echo = true )
+	{
+        // Incrémentation du nombre d'instance
+        self::$Instance++;
+
+        // Traitement des attributs de configuration
 		$defaults = array(
 			'id'				=> 'tify_control_quicktags_editor-'. self::$Instance,
 			'class'				=> '',
@@ -73,24 +130,24 @@ class QuicktagsEditor extends Factory
 			 */ 
 			'add_buttons'		=> array( )
 		);
-		$args = wp_parse_args( $args, $defaults );
+		$attrs = wp_parse_args( $attrs, $defaults );
 		
 		// Traitement des boutons natifs
-		if( is_null( $args['buttons'] ) ) :
-			$args['buttons'] = ' ';
-		elseif( ! empty( $args['buttons'] ) && is_array( $args['buttons'] ) ) :
-			if( $args['editor'] === 'input' )
-				$args['buttons'] = array_diff(  $args['buttons'], array( 'fullscreen', 'li', 'img', 'ol', 'block', 'more', 'ul' ) );
+		if( is_null( $attrs['buttons'] ) ) :
+			$attrs['buttons'] = ' ';
+		elseif( ! empty( $attrs['buttons'] ) && is_array( $attrs['buttons'] ) ) :
+			if( $attrs['editor'] === 'input' )
+				$attrs['buttons'] = array_diff(  $attrs['buttons'], array( 'fullscreen', 'li', 'img', 'ol', 'block', 'more', 'ul' ) );
 			
-			$args['buttons'] = implode( ',', $args['buttons'] );
+			$attrs['buttons'] = implode( ',', $attrs['buttons'] );
 		endif;
 		
 		// Traitement des boutons personnalisés
-		/*if( ! empty( $args['add_buttons'] ) && is_array( $args['add_buttons'] ) ) :
-			foreach( $args['add_buttons'] as $param ) 
+		/*if( ! empty( $attrs['add_buttons'] ) && is_array( $attrs['add_buttons'] ) ) :
+			foreach( $attrs['add_buttons'] as $param ) 
 		endif;*/
 		
-		extract( $args );
+		extract( $attrs );
 		
 		$output  = "";
 		$output .= "<div id=\"tify_control_quicktags_editor-wrapper-". self::$Instance ."\" class=\"tify_control_quicktags_editor-wrapper\">\n";
@@ -100,25 +157,25 @@ class QuicktagsEditor extends Factory
 			$output .= "\t<input id=\"{$id}\" name=\"{$name}\" class=\"tify_control_quicktags_editor\" value=\"{$value}\"/>\n";
 		$output .= "</div>\n";
 		
-		$args['instance'] = self::$Instance;
+		$attrs['instance'] = self::$Instance;
 		
 		add_action( 
 			( is_admin() ? 'admin_print_footer_scripts' : 'wp_footer' ),
-			function() use ( $args ){
+			function() use ( $attrs ){
 				if ( ! wp_script_is( 'quicktags' ) ) return;
 				?><script type="text/javascript">/* <![CDATA[ */
-				var tify_QtagsEd<?php echo $args['instance'];?> = quicktags({ 
-					id 		: '<?php echo $args['id'];?>',
-					buttons : '<?php echo $args['buttons'];?>'
+				var tify_QtagsEd<?php echo $attrs['instance'];?> = quicktags({ 
+					id 		: '<?php echo $attrs['id'];?>',
+					buttons : '<?php echo $attrs['buttons'];?>'
 				});
 
-				<?php if( ! empty( $args['add_buttons'] ) ) :?>
-					<?php foreach( $args['add_buttons'] as $i => $param ) :?>
-						QTags.addButton( '<?php echo $param[0];?>', '<?php echo $param[1];?>', '<?php echo $param[2];?>', '<?php echo $param[3];?>', '<?php echo $param[4];?>', '<?php echo $param[5];?>', '<?php echo $param[6];?>', tify_QtagsEd<?php echo $args['instance'];?>.id );
+				<?php if( ! empty( $attrs['add_buttons'] ) ) :?>
+					<?php foreach( $attrs['add_buttons'] as $i => $param ) :?>
+						QTags.addButton( '<?php echo $param[0];?>', '<?php echo $param[1];?>', '<?php echo $param[2];?>', '<?php echo $param[3];?>', '<?php echo $param[4];?>', '<?php echo $param[5];?>', '<?php echo $param[6];?>', tify_QtagsEd<?php echo $attrs['instance'];?>.id );
 					<?php endforeach;?>				
 				<?php endif;
 				/*jQuery.each( edButtons, function( u, v ){
-					if( ( v !== undefined ) && ( v.instance === tify_QtagsEd<?php echo $args['id'];?>.id ) )
+					if( ( v !== undefined ) && ( v.instance === tify_QtagsEd<?php echo $attrs['id'];?>.id ) )
 						console.log( v );
 				});*/ ?>
 				/* ]]> */</script><?php
@@ -144,9 +201,10 @@ class QuicktagsEditor extends Factory
 			99
 		);
 		
-		if( $echo )
+		if( $echo ) :
 			echo $output;
-		else
+		else :
 			return $output;
+		endif;
 	}
 }

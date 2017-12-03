@@ -2,38 +2,93 @@
 
 namespace tiFy\Core\Control;
 
-abstract class Factory extends \tiFy\App\Factory
+abstract class Factory extends \tiFy\App
 {
-
     /**
-     * Intitulés des prefixes des fonctions
+     * Instance
+     * @var int
      */
-    protected $Prefix = 'tify_control';
+    protected static $Instance = 0;
 
     /**
-     * Identifiant des fonctions
+     * Identifiant de la classe
+     * @var string
      */
     protected $ID = '';
 
     /**
-     * Liste des actions à déclencher
+     * CONSTRUCTEUR
+     *
+     * @return void
      */
-    protected $tFyAppActions = [
-        'init',
-    ];
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration de la fonction d'aide à la saisie
+        self::tFyAppAddHelper('tify_control_'. $this->ID, 'display');
+    }
 
     /**
-     * Liste des arguments pouvant être récupérés
+     * Permission de récupération d'attributs de configuration
+     *
+     * @return null|string
      */
-    protected $GetAttrs = ['ID'];
+    public function __get($name)
+    {
+        if ($name === 'ID') :
+            return $this->ID;
+        endif;
+    }
 
     /**
-     * Liste des methodes à translater en Helpers
+     * Permission de test d'existance d'attributs de configuration
+     *
+     * @return null|string
      */
-    protected $Helpers = ['display'];
+    public function __isset($name)
+    {
+        if ($name === 'ID') :
+            return $this->ID;
+        endif;
+    }
 
     /**
-     * Liste de la cartographie des nom de fonction des Helpers
+     * DECLENCHEURS
      */
-    protected $HelpersMap = ['display' => ''];
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    public static function init()
+    {
+
+    }
+
+    /**
+     * Mise en file des scripts
+     *
+     * @return void
+     */
+    public static function enqueue_scripts()
+    {
+
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Affichage
+     *
+     * @param array $attrs Liste des attributs de configuration
+     * @param bool $echo Activation de l'affichage
+     *
+     * @return string
+     */
+    public static function display($attrs = [], $echo = true)
+    {
+
+    }
 }

@@ -1,119 +1,156 @@
 <?php
 /**
- * @Overrideable
+ * @name ImageLightbox
+ * @desc Controleur d'affichage de modale image
+ * @package presstiFy
+ * @namespace tiFy\Core\Control\ImageLightbox
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.502
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
  */
+
 namespace tiFy\Core\Control\ImageLightbox;
+
+/**
+ * @Overrideable \App\Core\Control\ImageLightbox\ImageLightbox
+ *
+ * <?php
+ * namespace \App\Core\Control\ImageLightbox
+ *
+ * class ImageLightbox extends \tiFy\Core\Control\ImageLightbox\ImageLightbox
+ * {
+ *
+ * }
+ */
 
 class ImageLightbox extends \tiFy\Core\Control\Factory
 {
     /**
      * Identifiant de la classe
+     * @var string
      */
     protected $ID = 'image_lightbox';
-    
-    /**
-     * Instance courante
-     */
-    protected static $Instance;    
-    
+
     /**
      * Groupes
      */
-    protected static $Group         = array();
-    
+    protected static $Group = [];
+
     /**
      * DECLENCHEURS
      */
     /**
      * Initialisation globale
+     *
+     * @return void
      */
-    final public function init()
+    public static function init()
     {
-        wp_register_script( 'tify_control-image_lightbox', self::tFyAppAssetsUrl('ImageLightbox.js', get_class()), array( 'tify-imagelightbox' ), 170724, true );
+        \wp_register_script(
+            'tify_control-image_lightbox',
+            self::tFyAppAssetsUrl('ImageLightbox.js', get_class()),
+            ['tify-imagelightbox'],
+            170724,
+            true
+        );
     }
-    
+
     /**
      * Mise en file des scripts
+     *
+     * @return void
      */
-    final public function enqueue_scripts()
+    public static function enqueue_scripts()
     {
-        wp_enqueue_style( 'tify-imagelightbox' );
-        wp_enqueue_script( 'tify_control-image_lightbox' );
+        \wp_enqueue_style('tify-imagelightbox');
+        \wp_enqueue_script('tify_control-image_lightbox');
     }
-       
+
     /**
      * CONTROLEURS
      */
     /**
      * Affichage
+     *
+     * @param array $attrs Liste des attributs de configuration
+     * @param bool $echo Activation de l'affichage
+     *
+     * @return string
      */
-    final public static function display( $args = array(), $echo = true )
+    public static function display($attrs = [], $echo = true)
     {
+        // Incrémentation du nombre d'instance
         self::$Instance++;
-        
-        $defaults = array(
+
+        // Traitement des attributs de configuration
+        $defaults = [
             // Marqueur d'identification unique
-            'id'                => 'tiFyControl-image_lightbox-'. self::$Instance,
+            'id'              => 'tiFyControl-image_lightbox-' . self::$Instance,
             // Id Html du conteneur
-            'container_id'      => 'tiFyControlImageLightbox--'. self::$Instance,
+            'container_id'    => 'tiFyControlImageLightbox--' . self::$Instance,
             // Classe Html du conteneur
-            'container_class'   => '',
+            'container_class' => '',
             // Groupe 
-            'group'             => '',            
+            'group'           => '',
             // Options
-            'options'           => array(),
+            'options'         => [],
             // Source de l'image
-            'src'               => '',
+            'src'             => '',
             // Liste des slides
-            'content'           => ''
-        );
-        $args = wp_parse_args( $args, $defaults );
-        extract( $args );
-        
+            'content'         => ''
+        ];
+        $attrs = wp_parse_args($attrs, $defaults);
+        extract($attrs);
+
         $options = wp_parse_args(
             $options,
-            array(
+            [
                 // Couleur du theme
-                'theme'                 => 'dark',
+                'theme'           => 'dark',
                 // Fond couleur
-                'overlay'               => true,
+                'overlay'         => true,
                 // Indicateur de chargement
-                'spinner'               => true,
+                'spinner'         => true,
                 // Bouton de fermeture
-                'close_button'          => true,
+                'close_button'    => true,
                 // Légende (basé sur le alt de l'image)
-                'caption'               => true,
+                'caption'         => true,
                 // Flèche de navigation suivant/précédent
-                'navigation'            => true,
+                'navigation'      => true,
                 // Onglets de navigation
-                'tabs'                  => true,
+                'tabs'            => true,
                 // Control au clavier
-                'keyboard'              => true,
+                'keyboard'        => true,
                 // Fermeture au clic sur le fond
-                'overlay_close'         => true,
+                'overlay_close'   => true,
                 // Vitesse de défilement
-                'animation_speed'       => 250
-            )
-        );        
-        
-        if( !$content && !is_null( $content ) )
-            $content = "<img src=\"{$src}\" alt=\"". basename( $src ) ."\">";
-        
-        $output  = "";
-        $output .= "<a href=\"{$src}\" id=\"{$container_id}\" class=\"tiFyControlImageLightbox". ( $container_class ? ' '. $container_class : '' ) ."\" data-tify_control=\"image_lightbox\" data-options=\"". htmlentities( json_encode( $options ) ) ."\" data-group=\"{$group}\">\n";
+                'animation_speed' => 250
+            ]
+        );
+
+        if (!$content && !is_null($content)) {
+            $content = "<img src=\"{$src}\" alt=\"" . basename($src) . "\">";
+        }
+
+        $output = "";
+        $output .= "<a href=\"{$src}\" id=\"{$container_id}\" class=\"tiFyControlImageLightbox" . ($container_class ? ' ' . $container_class : '') . "\" data-tify_control=\"image_lightbox\" data-options=\"" . htmlentities(json_encode($options)) . "\" data-group=\"{$group}\">\n";
         $output .= $content;
         $output .= "</a>\n";
-        
-        if( $group && ! in_array( $group, self::$Group ) ) :
+
+        if ($group && !in_array($group, self::$Group)) :
             array_push(self::$Group, $group);
-            add_action( 'wp_footer', function() use ($group, $options){
-                echo "<input id=\"tiFyControlImageLightbox-groupOption--{$group}\" type=\"hidden\" value=\"". htmlentities( json_encode( $options ) ) ."\" />";
+            add_action('wp_footer', function () use ($group, $options) {
+                echo "<input id=\"tiFyControlImageLightbox-groupOption--{$group}\" type=\"hidden\" value=\"" . htmlentities(json_encode($options)) . "\" />";
             });
         endif;
-        
-        if( $echo )
-            echo $output;
 
-        return $output;
-    }     
+        if ($echo) :
+            echo $output;
+        else :
+            return $output;
+        endif;
+    }
 }

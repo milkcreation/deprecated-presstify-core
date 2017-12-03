@@ -13,7 +13,7 @@ class DynamicInputs extends Factory
 	protected $ID = 'dynamic_inputs';
 
 	/* = INITIALISATION DE WORDPRESS = */
-	final public function init()
+	public static function init()
 	{
 		wp_register_style( 'tify_control-dynamic_inputs', self::tFyAppUrl( get_class() ) ."/dynamic_inputs.css", array( ), '150525' );
 		wp_register_script( 'tify_control-dynamic_inputs', self::tFyAppUrl( get_class() ) ."/dynamic_inputs.js", array( 'jquery' ), '150525', true );
@@ -21,14 +21,14 @@ class DynamicInputs extends Factory
 	}
 	
 	/* = MISE EN FILE DES SCRIPTS = */
-	final public function enqueue_scripts()
+	public static function enqueue_scripts()
 	{
 		wp_enqueue_style( 'tify_control-dynamic_inputs' );
 		wp_enqueue_script( 'tify_control-dynamic_inputs' );
 	}
 		
 	/* = AFFICHAGE = */
-	public static function display( $args = array() )
+	public static function display( $args = array(), $echo = true )
 	{
 		static $instance = 0;
 		$instance++;
@@ -42,8 +42,7 @@ class DynamicInputs extends Factory
 			'values_cb'			=> false,
 			'add_button_txt'	=> __( 'Ajouter', 'tify' ),
 			'default'			=> '',
-			'max'				=> -1,
-			'echo'				=> 1
+			'max'				=> -1
 		);
 		$args = wp_parse_args( $args, $defaults );
 

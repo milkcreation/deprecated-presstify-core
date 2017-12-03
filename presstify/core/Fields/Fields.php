@@ -10,6 +10,25 @@ class Fields extends \tiFy\App\Core
     private static $Registered = [];
 
     /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des champs
+        foreach (glob(self::tFyAppDirname() . '/*', GLOB_ONLYDIR) as $filename) :
+            $Name = basename($filename);
+            array_push(static::$Registered, $Name);
+        endforeach;
+
+        // Déclaration des événement de déclenchement
+        $this->tFyAppAddAction('init');
+    }
+
+    /**
      * DECLENCHEURS
      */
     /**
@@ -19,22 +38,10 @@ class Fields extends \tiFy\App\Core
      */
     public function init()
     {
-        foreach (glob(self::tFyAppDirname() . '/*', GLOB_ONLYDIR) as $filename) :
-            $FieldName = basename($filename);
-            array_push(static::$Registered, $FieldName);
-            call_user_func("tiFy\\Core\\Fields\\$FieldName\\$FieldName::init");
+        // Auto-chargement de l'initialisation globale des champs
+        foreach (static::$Registered as $Name) :
+            call_user_func("tiFy\\Core\\Fields\\$Name\\$Name::init");
         endforeach;
-    }
-
-    /**
-     * CONSTRUCTEUR
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        // Déclaration des événement de déclenchement
-        $this->tFyAppActionAdd('init');
     }
 
     /**
@@ -76,7 +83,11 @@ class Fields extends \tiFy\App\Core
     }
 
     /**
+     * Mise en file des scripts
      *
+     * @param string $name Identifiant de qualification du type de champ appelé (Text|Select|Submit ...)
+     *
+     * @return void
      */
     final public static function enqueue_scripts($field_name)
     {
@@ -85,6 +96,8 @@ class Fields extends \tiFy\App\Core
             return;
         endif;
 
-        call_user_func("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::enqueue_scripts");
+        $args = array_slice(func_get_args(), 1);
+
+        call_user_func_array("tiFy\\Core\\Fields\\{$FieldName}\\{$FieldName}::enqueue_scripts");
     }
 }

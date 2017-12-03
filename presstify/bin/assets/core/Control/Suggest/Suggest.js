@@ -62,7 +62,7 @@ jQuery(document).ready(function($) {
                     response: function( event, ui ) {                        
                         // $( 'autocompleteselector' ).on( "autocompletereponse", function( event, ui ) {} );
                     },
-                    search: function( event, ui ) {
+                    search: function( event, ui ) {                        
                         // $( 'autocompleteselector' ).on( "autocompletesearch", function( event, ui ) {} );
                     },
                     select: function( event, ui ){

@@ -1,63 +1,96 @@
 <?php
 /**
- * @Overrideable
+ * @name AccordionMenu
+ * @desc Controleur d'affichage de menu accordéon
+ * @package presstiFy
+ * @namespace tiFy\Core\Control\AccordionMenu
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.502
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
  */
+
 namespace tiFy\Core\Control\AccordionMenu;
+
+/**
+ * @Overrideable \App\Core\Control\AccordionMenu\AccordionMenu
+ *
+ * <?php
+ * namespace \App\Core\Control\AccordionMenu
+ *
+ * class AccordionMenu extends \tiFy\Core\Control\AccordionMenu\AccordionMenu
+ * {
+ *
+ * }
+ */
 
 class AccordionMenu extends \tiFy\Core\Control\Factory
 {
     /**
      * Identifiant de la classe
+     * @var string
      */
     protected $ID = 'accordion_menu';
-
-    /**
-     * Instance
-     */
-    protected static $Instance;
 
     /**
      * DECLENCHEURS
      */
     /**
-     * Initialisation de Wordpress
+     * Initialisation globale
+     *
+     * @return void
      */
-    final public function init()
+    public static function init()
     {
-        wp_register_style('tify_control-accordion_menu',
-            self::tFyAppAssetsUrl('AccordionMenu.css', get_class()), [],
-            170704);
-        wp_register_script('tify_control-accordion_menu',
+        // Déclaration des scripts
+        \wp_register_style(
+            'tify_control-accordion_menu',
+            self::tFyAppAssetsUrl('AccordionMenu.css', get_class()),
+            [],
+            170704
+        );
+        \wp_register_script(
+            'tify_control-accordion_menu',
             self::tFyAppAssetsUrl('AccordionMenu.js', get_class()),
-            ['jquery-ui-widget'], 170704, true);
+            ['jquery-ui-widget'],
+            170704,
+            true
+        );
     }
 
     /**
      * Mise en file des scripts
+     *
+     * @return void
      */
-    final public function enqueue_scripts()
+    public static function enqueue_scripts()
     {
-        wp_enqueue_style('tify_control-accordion_menu');
-        wp_enqueue_script('tify_control-accordion_menu');
+        \wp_enqueue_style('tify_control-accordion_menu');
+        \wp_enqueue_script('tify_control-accordion_menu');
     }
 
     /**
      * CONTROLEURS
      */
     /**
-     * Affichage du contrôleur
+     * Affichage
      *
-     * @param array $attrs
+     * @param array $attrs Liste des attributs de configuration
+     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
     public static function display($attrs = [], $echo = true)
     {
+        // Incrémentation du nombre d'instance
         self::$Instance++;
 
+        // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'                => 'tiFyControlAccordionMenu--' . self::$Instance,
+            'id'                => 'tiFyControlAccordionMenu-' . self::$Instance,
             // Id Html du conteneur
             'container_id'      => 'tiFyControlAccordionMenu--' . self::$Instance,
             // Classe Html du conteneur
@@ -80,7 +113,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
             $query_args = [];
         endif;
 
-        $Nodes = self::loadOverride('\tiFy\Core\Control\AccordionMenu\Nodes');
+        $Nodes = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\AccordionMenu\Nodes');
         switch ($type) :
             case 'terms' :
                 $nodes = $Nodes->terms($query_args,['selected' => $selected]);
@@ -93,7 +126,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         $output = "";
         $output .= "<div id=\"{$container_id}\" class=\"tiFyControlAccordionMenu tiFyControlAccordionMenu--{$theme}" . ($container_class ? ' ' . $container_class : '') . "\" data-tify_control=\"accordion_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlAccordionMenu-nav\">\n";
-        $Walker = self::loadOverride('tiFy\Core\Control\AccordionMenu\Walker');
+        $Walker = self::tFyAppLoadOverrideClass('tiFy\Core\Control\AccordionMenu\Walker');
         $output .= $Walker->output($nodes);
         $output .= "\t</nav>\n";
         $output .= "</div>\n";

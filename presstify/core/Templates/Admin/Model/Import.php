@@ -376,7 +376,7 @@ class Import extends \tiFy\App\Factory
 			
 			<?php $this->display_import_options();?>
 			<hr/>
-			<button type="submit" id="tify_adminview_import-import_button" class="button-primary"><span class="dashicons dashicons-migrate" style="vertical-align:middle"></span> <?php _e( 'Lancer l\'import', 'tify');?></a>
+			<button type="submit" id="tify_adminview_import-import_button" class="button-primary"><span class="dashicons dashicons-migrate" style="vertical-align:middle"></span> <?php _e( 'Lancer l\'import', 'tify');?></button>
 		</form>
 	<?php
 	}

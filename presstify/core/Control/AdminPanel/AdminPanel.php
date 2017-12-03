@@ -1,7 +1,21 @@
-<?php 
+<?php
+/**
+ * @name AdminPanel
+ * @desc Controleur d'affichage d'interface d'administration
+ * @package presstiFy
+ * @namespace tiFy\Core\Control\AdminPanel
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.502
+ *
+ * @author Julien Picard dit pitcho <julien@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
+
 namespace tiFy\Core\Control\AdminPanel;
 
 use \tiFy\Statics\Tools as tiFyStaticsTools;
+use \tiFy\Core\Control\Control;
 
 /**
  * @since 1.0.344 Première version du panneau d'administration
@@ -29,62 +43,191 @@ use \tiFy\Statics\Tools as tiFyStaticsTools;
  *                  )
  *              )
  *          )
- * @author pitcho
- *
  */
+
+/**
+ * @Overrideable \App\Core\Control\AdminPanel\AdminPanel
+ *
+ * <?php
+ * namespace \App\Core\Control\AdminPanel
+ *
+ * class AdminPanel extends \tiFy\Core\Control\AdminPanel\AdminPanel
+ * {
+ *
+ * }
+ */
+
 class AdminPanel extends \tiFy\Core\Control\Factory
 {
-	// 	
-	/**
-	 * Identifiant de la classe	
-	 * @var string
-	 */
+    /**
+     * Identifiant de la classe
+     * @var string
+     */
 	protected $ID = 'admin_panel';
-	
-	/**
-	 * Instance
-	 * @var int
-	 */
-	private static $Instance;
-	
-	/**
-	 * CONSTRUCTEUR
-	 */
-	public function __construct()
+
+    /**
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
+    public static function init()
 	{
-		parent::__construct();
-		
-		self::$Instance++;
+        // Déclaration des scripts
+		\wp_register_style(
+            'tify_control-admin_panel',
+            self::tFyAppAssetsUrl('AdminPanel.css', get_class()),
+            ['dashicons'],
+            170705
+        );
+		\wp_register_script(
+            'tify_control-admin_panel',
+            self::tFyAppAssetsUrl('AdminPanel.js', get_class()),
+            ['jquery', 'jquery-ui-widget'],
+            170705,
+            true
+        );
 	}
-	
-	/**
-	 * DÉCLENCHEURS
-	 */
-	/**
-	 * Initialisation de WordPress
-	 */
-	final public function init()
+
+    /**
+     * Mise en file des scripts
+     *
+     * @return void
+     */
+    public static function enqueue_scripts()
 	{
-		wp_register_style('tify_control-admin_panel', self::tFyAppAssetsUrl('AdminPanel.css', get_class()), array('dashicons'), 170705);
-		wp_register_script('tify_control-admin_panel', self::tFyAppAssetsUrl('AdminPanel.js', get_class()), array('jquery', 'jquery-ui-widget'), 170705);
-	}
-	
-	/**
-	 * Mise en file des scripts
-	 */
-	public function enqueue_scripts()
-	{	
-	    tify_control_enqueue('switch');
+        Control::enqueue_scripts('switch');
 		wp_enqueue_style('tify_control-admin_panel');
 		wp_enqueue_script('tify_control-admin_panel');
 	}	
 	
 	/**
-	 * MÉTHODES
+	 * CONTROLEURS
 	 */
+    /**
+     * Affichage du contrôleur
+     * @param array $args Arguments du contrôleur
+     * @param string $echo Affchage ou retour de fonction
+     * @return string Code d'affichage du contrôleur
+     */
+    public static function display( $args = array(), $echo = true )
+    {
+        // Incrémentation du nombre d'instance
+        self::$Instance++;
+
+        // Traitement des attributs de configuration
+        $defaults = array(
+            'id'       => 'tiFyControl-adminPanel--'.self::$Instance,
+            'class'    => '',
+            'toggle'   => '',
+            'opened'   => false,
+            'attrs'    => array(),
+            'controls' => array(
+                'save'     => __('Enregistrer', 'tify'),
+                'remove'   => false
+            ),
+            'header'   => array(
+                'title'    => __("Panneau d'administration", 'tify'),
+                'icon'     => false
+            ),
+            'nodes'    => array()
+        );
+
+        $args = tiFyStaticsTools::parseArgsRecursive( $args, $defaults );
+        extract( $args );
+
+        $output = "";
+
+        /**
+         * Bouton de bascule
+         */
+        if(!$toggle) :
+            $toggle = "tiFyControl-adminPanel--".self::$Instance;
+            $output .= "<button type=\"button\" class=\"open\" id=\"{$toggle}\"></button>";
+            $toggle = '#'.$toggle;
+        elseif( preg_match( '/^[^#.]([\w.-]+)/', $toggle ) ):
+            $toggle = '#'.$toggle;
+        endif;
+        $opened = $opened ? 'tiFyControl-adminPanel--opened' : null;
+        $output .= "<div class=\"tiFyControl-adminPanel {$opened} {$class}\" id=\"{$id}\" data-toggle=\"{$toggle}\"";
+        if (!empty($attrs)) :
+            foreach ($attrs as $k => $v) :
+                $output .= "data-{$k}=\"{$v}\"";
+            endforeach;
+        endif;
+        $output .= ">\n";
+        $output .= "\t<ul class=\"tiFyControl-adminPanelControls\">\n";
+        $output .= "\t\t<li class=\"tiFyControl-adminPanelControlsItem tiFyControl-adminPanelControlsItem--cancel\">\n";
+        $output .= "\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelControlsItemCancel dashicons dashicons-no-alt\"></button>\n";
+        $output .= "\t\t</li>\n";
+        $output .= "\t\t<li class=\"tiFyControl-adminPanelControlsItem tiFyControl-adminPanelControlsItem--save\">\n";
+        if($controls['remove']) :
+            $output .= "\t\t\t<a href=\"#\" class=\"tiFyControl-adminPanelControlsItemButton tiFyControl-adminPanelControlsItemButton--remove\">\n";
+            $output .= $controls['remove'];
+            $output .= "\t\t\t</a>\n";
+        endif;
+        if($controls['save']) :
+            $output .= "\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelControlsItemButton tiFyControl-adminPanelControlsItemButton--save button button-primary\">\n";
+            $output .= $controls['save'];
+            $output .= "\t\t\t</button>\n";
+        endif;
+        $output .= "\t\t\t\t<span class=\"tiFyControl-adminPanelControlsItemSpinner spinner\"></span>";
+        $output .= "\t\t</li>\n";
+        $output .= "\t</ul>\n";
+        $output .= "\t<div class=\"tiFyControl-adminPanelWrap\">\n";
+        $output .= "\t\t<div class=\"tiFyControl-adminPanelHeader\">\n";
+        if($header['icon']) :
+            $output .= "\t\t\t<span class=\"tiFyControl-adminPanelHeaderIcon\">{$header['icon']}</span>\n";
+        endif;
+        $output .= "\t\t\t<span class=\"tiFyControl-adminPanelHeaderTitle\">{$header['title']}</span>\n";
+        $output .= "\t\t</div>\n";
+
+        /**
+         * Noeuds
+         */
+        if(!empty($nodes)) :
+            $output .= "\t\t<ul class=\"tiFyControl-adminPanelItems\">\n";
+            foreach( $nodes as $node ) :
+                $node = self::parseNode($node);
+                if(!$node['title'])
+                    continue;
+                $output .= "\t\t\t<li class=\"tiFyControl-adminPanelItem\">\n";
+                $output .= "\t\t\t\t<h3 class=\"tiFyControl-adminPanelItemTitle tiFyControl-adminPanelItemSlide\">{$node['title']}</h3>\n";
+                $output .= "\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanel\">\n";
+                $output .= "\n\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanelHeader\">";
+                $output .= "\n\t\t\t\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelItemPanelBack dashicons dashicons-arrow-left-alt2\"></button>";
+                $output .= "\n\t\t\t\t\t\t\t<span class=\"tiFyControl-adminPanelItemPanelTitle\">".__( 'Personnalisation', 'tify' )."</span>";
+                $output .= "\n\t\t\t\t\t\t\t<span class=\"tiFyControl-adminPanelItemPanelSubtitle\">{$node['title']}</span>";
+                $output .= "\n\t\t\t\t\t</div>";
+                $output .= "\n\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanelContent\">";
+                if(!empty($node['fields'])):
+                    $fields = self::parseFields($node['fields']);
+                    foreach($fields as $field) :
+                        $output .= self::displayField($field);
+                    endforeach;
+                endif;
+                $output .= "\n\t\t\t\t\t</div>";
+                $output .= "\t\t\t\t\t</div>\n";
+                $output .= "\t\t\t</li>\n";
+            endforeach;
+            $output .= "\t\t</ul>\n";
+        endif;
+
+        $output .= "\t</div>\n";
+        $output .= "</div>";
+
+        if( $echo )
+            echo $output;
+
+        return $output;
+    }
+
 	/**
 	 * Traitement des arguments d'un noeud
 	 * @param array $node Noeud
+     *
 	 * @return array Noeud traité
 	 */
 	private static function parseNode($node = array())
@@ -373,119 +516,5 @@ class AdminPanel extends \tiFy\Core\Control\Factory
 	    $output .= "</div>";
 	    
 	    return $output;
-	}
-	
-	/**
-	 * Affichage du contrôleur
-	 * @param array $args Arguments du contrôleur
-	 * @param string $echo Affchage ou retour de fonction
-	 * @return string Code d'affichage du contrôleur
-	 */
-	public static function display( $args = array(), $echo = true )
-	{	
-	    $defaults = array(
-	        'id'       => 'tiFyControl-adminPanel--'.self::$Instance,
-	        'class'    => '',
-	        'toggle'   => '',
-	        'opened'   => false,
-	        'attrs'    => array(),
-	        'controls' => array(
-	            'save'     => __('Enregistrer', 'tify'),
-	            'remove'   => false
-	        ),
-	        'header'   => array(
-	            'title'    => __("Panneau d'administration", 'tify'),
-	            'icon'     => false
-	        ),
-	        'nodes'    => array()
-	    );
-	    
-	    $args = tiFyStaticsTools::parseArgsRecursive( $args, $defaults );
-		extract( $args );
-		
-		$output = "";
-		
-		/**
-		 * Bouton de bascule
-		 */
-		if(!$toggle) :
-		    $toggle = "tiFyControl-adminPanel--".self::$Instance;
-		    $output .= "<button type=\"button\" class=\"open\" id=\"{$toggle}\"></button>";
-		    $toggle = '#'.$toggle;
-		elseif( preg_match( '/^[^#.]([\w.-]+)/', $toggle ) ):
-	        $toggle = '#'.$toggle;
-		endif;
-		$opened = $opened ? 'tiFyControl-adminPanel--opened' : null;
-	    $output .= "<div class=\"tiFyControl-adminPanel {$opened} {$class}\" id=\"{$id}\" data-toggle=\"{$toggle}\"";
-	    if (!empty($attrs)) :
-    	    foreach ($attrs as $k => $v) :
-                $output .= "data-{$k}=\"{$v}\"";	    
-    	    endforeach;
-	    endif;
-	    $output .= ">\n";
-		$output .= "\t<ul class=\"tiFyControl-adminPanelControls\">\n";
-		$output .= "\t\t<li class=\"tiFyControl-adminPanelControlsItem tiFyControl-adminPanelControlsItem--cancel\">\n";
-		$output .= "\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelControlsItemCancel dashicons dashicons-no-alt\"></button>\n";
-		$output .= "\t\t</li>\n";
-	    $output .= "\t\t<li class=\"tiFyControl-adminPanelControlsItem tiFyControl-adminPanelControlsItem--save\">\n";
-	    if($controls['remove']) :
-    		$output .= "\t\t\t<a href=\"#\" class=\"tiFyControl-adminPanelControlsItemButton tiFyControl-adminPanelControlsItemButton--remove\">\n";
-    		$output .= $controls['remove'];
-    		$output .= "\t\t\t</a>\n";
-	    endif;
-	    if($controls['save']) :
-    		$output .= "\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelControlsItemButton tiFyControl-adminPanelControlsItemButton--save button button-primary\">\n";
-    		$output .= $controls['save'];
-    		$output .= "\t\t\t</button>\n";
-	    endif;
-	    $output .= "\t\t\t\t<span class=\"tiFyControl-adminPanelControlsItemSpinner spinner\"></span>";
-		$output .= "\t\t</li>\n";
-		$output .= "\t</ul>\n";
-		$output .= "\t<div class=\"tiFyControl-adminPanelWrap\">\n";
-		$output .= "\t\t<div class=\"tiFyControl-adminPanelHeader\">\n";
-		if($header['icon']) :
-		    $output .= "\t\t\t<span class=\"tiFyControl-adminPanelHeaderIcon\">{$header['icon']}</span>\n";
-		endif;
-		$output .= "\t\t\t<span class=\"tiFyControl-adminPanelHeaderTitle\">{$header['title']}</span>\n";
-		$output .= "\t\t</div>\n";
-		
-		/**
-		 * Noeuds
-		 */
-		if(!empty($nodes)) :
-    		$output .= "\t\t<ul class=\"tiFyControl-adminPanelItems\">\n";
-		    foreach( $nodes as $node ) :
-		        $node = self::parseNode($node);
-		        if(!$node['title'])
-		            continue;
-		        $output .= "\t\t\t<li class=\"tiFyControl-adminPanelItem\">\n";
-		        $output .= "\t\t\t\t<h3 class=\"tiFyControl-adminPanelItemTitle tiFyControl-adminPanelItemSlide\">{$node['title']}</h3>\n";
-		        $output .= "\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanel\">\n";
-		        $output .= "\n\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanelHeader\">";
-        		$output .= "\n\t\t\t\t\t\t<button type=\"button\" class=\"tiFyControl-adminPanelItemPanelBack dashicons dashicons-arrow-left-alt2\"></button>";
-        		$output .= "\n\t\t\t\t\t\t\t<span class=\"tiFyControl-adminPanelItemPanelTitle\">".__( 'Personnalisation', 'tify' )."</span>";
-        		$output .= "\n\t\t\t\t\t\t\t<span class=\"tiFyControl-adminPanelItemPanelSubtitle\">{$node['title']}</span>";
-        		$output .= "\n\t\t\t\t\t</div>";
-        		$output .= "\n\t\t\t\t\t<div class=\"tiFyControl-adminPanelItemPanelContent\">";
-        		if(!empty($node['fields'])):
-        		     $fields = self::parseFields($node['fields']);
-        		     foreach($fields as $field) :
-        		         $output .= self::displayField($field);
-        		     endforeach;
-        		endif;
-        		$output .= "\n\t\t\t\t\t</div>";
-		        $output .= "\t\t\t\t\t</div>\n";
-		        $output .= "\t\t\t</li>\n";
-		    endforeach;
-    		$output .= "\t\t</ul>\n";
-		endif;
-		
-		$output .= "\t</div>\n";
-		$output .= "</div>";
-		
-		if( $echo )
-			echo $output;
-			
-		return $output;
 	}
 }

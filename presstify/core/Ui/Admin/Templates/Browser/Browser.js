@@ -1,14 +1,32 @@
 jQuery(document).ready(function ($) {
-    $(document).on('dblclick', '.BrowserFolderContent-itemLink', function (e) {
-        e.preventDefault();
+    var $folderContent = $('.BrowserFolderContent');
 
-        //style=\"background-image:url(data:image/{$mime_type};base64,{});\"
+    var previewImages = function() {
+        $('.BrowserFolderContent-itemLink:has(.BrowserFolderContent-itemIcon--image)').each(function () {
+            var filename = $(this).data('target');
+            var $item = $('.BrowserFolderContent-itemIcon--image', this);
 
-        var $closest = $(this).closest('.BrowserFolderContent');
+            $item.addClass('load');
 
-        if ($(this).hasClass('BrowserFolderContent-itemLink--dir')) {
-            var folder = $(this).data('target');
-            $closest.addClass('load');
+            $.ajax({
+                url: tify_ajaxurl,
+                async: true,
+                data: {
+                    action: 'tiFyCoreUiAdminTemplatesBrowser-getImagePreview',
+                    filename: filename
+                },
+                type: 'POST'
+            })
+                .done(function (resp) {
+                    $item.html('<img src="data:image/' + resp.mime_type + ';base64,' + resp.data + '"/>');
+                })
+                .then(function(){
+                    $item.removeClass('load');
+                });
+        });
+    },
+        getFolderContent = function(folder) {
+            $folderContent.addClass('load');
 
             $.post(
                 tify_ajaxurl,
@@ -17,30 +35,28 @@ jQuery(document).ready(function ($) {
                     folder: folder
                 }
             )
-                .done(function(resp) {
-                    $closest.html(resp);
-                })
-                .then(function(){
-                    $closest.removeClass('load');
-                });
-        }
+            .done(function(resp) {
+                $folderContent.html(resp);
+                previewImages();
+            })
+            .then(function(){
+                $folderContent.removeClass('load');
+            });
+    };
+
+    // Navigation du fil d'ariane
+    $(document).on('click', '.BrowserBreadcrumb-itemLink', function (e) {
+        e.preventDefault();
+
+        getFolderContent($(this).data('target'));
     });
 
-    $('.BrowserFolderContent-itemLink:has(.BrowserFolderContent-itemIcon--image)').each(function(){
-        var filename = $(this).data('target');
-        var $item = $('.BrowserFolderContent-itemIcon--image', this);
+    // Navigation
+    $(document).on('dblclick', '.BrowserFolderContent-itemLink', function (e) {
+        e.preventDefault();
 
-        $.ajax({
-            url: tify_ajaxurl,
-            async: true,
-            data: {
-                action: 'tiFyCoreUiAdminTemplatesBrowser-getImagePreview',
-                filename: filename
-            },
-            type: 'POST'
-        })
-            .done(function(resp) {
-                $item.css('background-image', 'url(data:image/'+resp.mime_type+';base64,'+resp.data+')');
-            });
+        if ($(this).hasClass('BrowserFolderContent-itemLink--dir')) {
+            getFolderContent($(this).data('target'));
+        }
     });
 });

@@ -1,44 +1,90 @@
 <?php
 /**
- * @Overrideable
+ * @name Tabs
+ * @desc Controleur d'affichage de boite à onglet
+ * @package presstiFy
+ * @namespace tiFy\Core\Control\Tabs
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.502
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
  */
+
 namespace tiFy\Core\Control\Tabs;
+
+/**
+ * @Overrideable \App\Core\Control\Tabs\Tabs
+ *
+ * <?php
+ * namespace \App\Core\Control\Tabs
+ *
+ * class Tabs extends \tiFy\Core\Control\Tabs\Tabs
+ * {
+ *
+ * }
+ */
 
 class Tabs extends \tiFy\Core\Control\Factory
 {
     /**
      * Identifiant de la classe
+     * @var string
      */
     protected $ID = 'tabs';
 
     /**
-     * Instance
+     * CONSTRUCTEUR
+     *
+     * @return void
      */
-    protected static $Instance;
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des Actions Ajax
+        $this->tFyAppAddAction(
+            'wp_ajax_tiFyControlTabs',
+            'wp_ajax'
+        );
+        $this->tFyAppAddAction(
+            'wp_ajax_nopriv_tiFyControlTabs',
+            'wp_ajax'
+        );
+    }
 
     /**
      * DECLENCHEURS
      */
     /**
-     * Initialisation de Wordpress
+     * Initialisation globale
      *
      * @return void
      */
-    final public function init()
+    public static function init()
     {
-        wp_register_style('tify_control-tabs', self::tFyAppAssetsUrl('Tabs.css', get_class()), [], 170704);
-        wp_register_script('tify_control-tabs', self::tFyAppAssetsUrl('Tabs.js', get_class()), ['jquery-ui-widget'], 170704, true);
-        wp_localize_script(
+        // Déclaration des scripts
+        \wp_register_style(
+            'tify_control-tabs',
+            self::tFyAppAssetsUrl('Tabs.css', get_class()),
+            [],
+            170704
+        );
+        \wp_register_script(
+            'tify_control-tabs',
+            self::tFyAppAssetsUrl('Tabs.js', get_class()),
+            ['jquery-ui-widget'],
+            170704,
+            true
+        );
+        \wp_localize_script(
             'tify_control-tabs',
             'tiFyControlTabs',
             [
-                '_ajax_nonce'   => wp_create_nonce('tiFyControlTabs')
+                '_ajax_nonce' => wp_create_nonce('tiFyControlTabs')
             ]
         );
-
-        // Actions ajax
-        self::tFyAppActionAdd('wp_ajax_tiFyControlTabs', 'wp_ajax');
-        self::tFyAppActionAdd('wp_ajax_nopriv_tiFyControlTabs', 'wp_ajax');
     }
 
     /**
@@ -46,18 +92,18 @@ class Tabs extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public function enqueue_scripts()
+    public static function enqueue_scripts()
     {
-        wp_enqueue_style('tify_control-tabs');
-        wp_enqueue_script('tify_control-tabs');
+        \wp_enqueue_style('tify_control-tabs');
+        \wp_enqueue_script('tify_control-tabs');
     }
 
     /**
-     * Action Ajax
+     * Mise à jour de l'onglet courant via Ajax
      *
-     * @return string
+     * @return \wp_send_json
      */
-    final public function wp_ajax()
+    public static function wp_ajax()
     {
         check_ajax_referer('tiFyControlTabs');
 
@@ -84,26 +130,19 @@ class Tabs extends \tiFy\Core\Control\Factory
      * CONTROLEURS
      */
     /**
-     * Affichage du contrôleur
+     * Affichage
      *
-     * @param array $attrs
+     * @param array $attrs Liste des attributs de configuration
+     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
     public static function display($attrs = [], $echo = true)
     {
+        // Incrémentation du nombre d'instance
         self::$Instance++;
 
-        /**
-         * @var string $id Identifiant de qualification du controleur
-         * @var string $container_id ID HTML du conteneur
-         * @var string $container_class Classes HTML du conteneur
-         * @var array $nodes {
-         *      Liste des greffons
-         *
-         *
-         * }
-         */
+        // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
             'id'              => 'tiFyControlTabs--' . self::$Instance,
@@ -115,12 +154,19 @@ class Tabs extends \tiFy\Core\Control\Factory
             'nodes'           => []
         ];
         $attrs = wp_parse_args($attrs, $defaults);
+
+        /**
+         * @var string $id Identifiant de qualification du controleur
+         * @var string $container_id ID HTML du conteneur
+         * @var string $container_class Classes HTML du conteneur
+         * @var array[] $nodes Liste des greffons et leurs attributs
+         */
         extract($attrs);
 
         /**
          * @var \tiFy\Core\Control\Tabs\Nodes $Nodes
          */
-        $Nodes = self::loadOverride('\tiFy\Core\Control\Tabs\Nodes');
+        $Nodes = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\Tabs\Nodes');
         $nodes = $Nodes->customs($nodes);
 
         $output = "";
@@ -129,14 +175,14 @@ class Tabs extends \tiFy\Core\Control\Factory
         /**
          * @var \tiFy\Core\Control\Tabs\Walker $Walker
          */
-        $Walker = self::loadOverride('\tiFy\Core\Control\Tabs\Walker');
+        $Walker = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\Tabs\Walker');
         $output .= $Walker::output($nodes);
         $output .= "</div>\n";
 
-        if ($echo) {
+        if ($echo) :
             echo $output;
-        }
-
-        return $output;
+        else :
+            return $output;
+        endif;
     }
 }

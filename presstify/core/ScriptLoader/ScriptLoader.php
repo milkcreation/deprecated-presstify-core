@@ -224,115 +224,124 @@ class ScriptLoader extends \tiFy\App\Factory
                 'media'        => 'all' 
             ),       
             
-            // SpinKit
+            // SpinKit - All
             'spinkit'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/spinkit.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Rotating Plane
+            // SpinKit - Rotating Plane
             'spinkit-rotating-plane'    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/1-rotating-plane.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/1-rotating-plane.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Fading Circle
-            'spinkit-fading-circle'        => array(
-                'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/10-fading-circle.min.css'
-                ),
-                'deps'        => array(),
-                'version'    => '1.2.2',
-                'media'        => 'all' 
-            ),
-            /// Folding Cube
-            'spinkit-folding-cube'        => array(
-                'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/11-folding-cube.min.css'
-                ),
-                'deps'        => array(),
-                'version'    => '1.2.2',
-                'media'        => 'all' 
-            ),
-            /// Double Bounce
+            // SpinKit - Double Bounce
             'spinkit-double-bounce'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/2-double-bounce.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/2-double-bounce.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Wave
+            // SpinKit - Wave
             'spinkit-wave'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/3-wave.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/3-wave.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Wandering Cubes
+            // SpinKit - Wandering Cubes
             'spinkit-wandering-cubes'        => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/4-wandering-cubes.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/4-wandering-cubes.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Pulse
+            // SpinKit - Pulse
             'spinkit-pulse'                    => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/5-pulse.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/5-pulse.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Chasing Dots
+            // SpinKit - Pulse
+            'spinkit-spinner-pulse'                    => array(
+                'src'        => array(
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/5-pulse.min.css'
+                ),
+                'deps'        => array(),
+                'version'    => '1.2.5',
+                'media'        => 'all'
+            ),
+            // SpinKit - Chasing Dots
             'spinkit-chasing-dots'            => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/6-chasing-dots.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/6-chasing-dots.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Three bounce
+            // SpinKit - Three bounce
             'spinkit-three-bounce'            => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/7-three-bounce.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/7-three-bounce.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Circle
+            // SpinKit - Circle
             'spinkit-circle'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/8-circle.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/8-circle.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            /// Cube Grid
+            // SpinKit - Cube Grid
             'spinkit-cube-grid'                => array(
                 'src'        => array(
-                    'local'        => tiFy::$AbsUrl . '/bin/assets/vendor/spinkit/9-cube-grid.min.css'
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/9-cube-grid.min.css'
                 ),
                 'deps'        => array(),
-                'version'    => '1.2.2',
+                'version'    => '1.2.5',
                 'media'        => 'all' 
-            ),    
-            
+            ),
+            // SpinKit - Fading Circle
+            'spinkit-fading-circle'        => array(
+                'src'        => array(
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/10-fading-circle.min.css'
+                ),
+                'deps'        => array(),
+                'version'    => '1.2.5',
+                'media'        => 'all'
+            ),
+            // SpinKit - Folding Cube
+            'spinkit-folding-cube'        => array(
+                'src'        => array(
+                    'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/11-folding-cube.min.css'
+                ),
+                'deps'        => array(),
+                'version'    => '1.2.5',
+                'media'        => 'all'
+            ),
+
             // ThreeSixty Slider
             'threesixty'                    => array(
                 'src'        => array(
