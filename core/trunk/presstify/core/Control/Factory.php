@@ -54,6 +54,21 @@ abstract class Factory extends \tiFy\App
     }
 
     /**
+     * Appel des méthodes statiques et déclenchement d'événements
+     *
+     * @return static
+     */
+    final public static function __callStatic($name, $arguments)
+    {
+        if ($name === 'display') :
+            // Incrémentation du nombre d'instance
+            static::$Instance++;
+        endif;
+
+        return call_user_func_array("static::$name", $arguments);
+    }
+
+    /**
      * DECLENCHEURS
      */
     /**
@@ -87,7 +102,7 @@ abstract class Factory extends \tiFy\App
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
 
     }

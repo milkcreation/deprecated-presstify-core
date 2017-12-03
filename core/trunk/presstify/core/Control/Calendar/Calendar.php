@@ -117,11 +117,8 @@ class Calendar extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = [
             'id'       => 'tiFyCalendar--' . self::$Instance,

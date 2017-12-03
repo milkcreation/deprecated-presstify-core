@@ -2,6 +2,7 @@
 namespace tiFy\Core\Ui\Admin\Templates\Browser;
 
 use tiFy\Core\Control\Control;
+use tiFy\Core\Control\SpinKit\SpinKit;
 
 class Browser
 {
@@ -223,7 +224,7 @@ class Browser
 
         // Indicateur de chargement
         $output .= "<div class=\"BrowserFolderContent-Spinner\">";
-        $output .= Control::spinkit([], false);
+        $output .= Control::spinkit(['type' => 'spinner-pulse'], false);
         $output .= "</div>";
 
         // Affichage du fil d'ariane

@@ -42,7 +42,7 @@ class Notices extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function init()
+    public static function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -65,7 +65,7 @@ class Notices extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    public static function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-notices');
         \wp_enqueue_script('tify_control-notices');
@@ -82,11 +82,8 @@ class Notices extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected static function display($attrs = [], $echo = true)
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = [
             'text'        => '',

@@ -112,11 +112,8 @@ class AdminPanel extends \tiFy\Core\Control\Factory
      * @param string $echo Affchage ou retour de fonction
      * @return string Code d'affichage du contrôleur
      */
-    public static function display( $args = array(), $echo = true )
+    protected static function display( $args = array(), $echo = true )
     {
-        // Incrémentation du nombre d'instance
-        self::$Instance++;
-
         // Traitement des attributs de configuration
         $defaults = array(
             'id'       => 'tiFyControl-adminPanel--'.self::$Instance,
