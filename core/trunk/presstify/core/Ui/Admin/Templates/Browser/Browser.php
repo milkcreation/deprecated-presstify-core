@@ -137,15 +137,15 @@ class Browser
     {
         $filename = $_POST['filename'];
 
-        $mime_type = \mime_content_type($filename);
-        $base64 = \base64_encode(file_get_contents($filename));
+        if (!$rel = preg_replace("#^". preg_quote(ABSPATH, '/') ."#", '', $filename)) :
+            $mime_type = \mime_content_type($filename);
+            $data = \base64_encode(file_get_contents($filename));
+            $src = "data:image/{$mime_type};base64,{$data}";
+        else :
+            $src = \site_url($rel);
+        endif;
 
-        wp_send_json(
-            [
-                'mime_type' => $mime_type,
-                'data' => $base64
-            ]
-        );
+        wp_send_json(compact('src'));
     }
 
     /**
@@ -221,21 +221,23 @@ class Browser
 
         $output = "";
 
-        // Indicateur de chargement
-        $output .= "<div class=\"BrowserFolderContent-Spinner\">";
-        $output .= Control::spinkit(['type' => 'spinner-pulse'], false);
-        $output .= "</div>";
+        $output .= "<div class=\"BrowserFolder-Content\">";
 
         // Affichage du fil d'ariane
         $output .= $this->getBreadcrumb($dir);
 
+        // Indicateur de chargement
+        $output .= "<div class=\"BrowserFolder-Spinner\">";
+        $output .= Control::spinkit(['type' => 'spinner-pulse'], false);
+        $output .= "</div>";
+
         // Affichage de la liste des fichers du répertoire
-        $output .= "<ul class=\"BrowserFolderContent-items\">";
+        $output .= "<ul class=\"BrowserFolder-Files\">";
 
         // Lien de retour au repertoire parent
         if (!$this->getParam('chroot') || ($dir !== rtrim($this->getParam('dir'), '/'))) :
-            $output .= "<li class=\"BrowserFolderContent-item\">";
-            $output .= "<a href=\"#\" data-target=\"" . dirname($dir) . "\" class=\"BrowserFolderContent-itemLink BrowserFolderContent-itemLink--dir\">";
+            $output .= "<li class=\"BrowserFolder-File\">";
+            $output .= "<a href=\"#\" data-target=\"" . dirname($dir) . "\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--dir\">";
             $output .= '..';
             $output .= "</a>";
             $output .= "</li>";
@@ -259,7 +261,7 @@ class Browser
                 $is_dir = false;
                 if (is_dir($filename)) :
                     $is_dir = true;
-                    $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--folder BrowserFolderContent-itemIcon--glyphicon dashicons dashicons-category\"></span>";
+                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
                 else :
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
                     $type = wp_ext2type($ext);
@@ -272,29 +274,30 @@ class Browser
                         case 'spreadsheet' :
                         case 'text' :
                         case 'video' :
-                            $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--{$type} BrowserFolderContent-itemIcon--glyphicon dashicons dashicons-media-{$type}\"></span>";
+                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-{$type}\"></span>";
                             break;
 
                         case 'image' :
                             // @see https://www.alsacreations.com/article/lire/1439-data-uri-schema.html
-                            $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--image\"><div class=\"BrowserFolderContent-itemIconSpinner\">" . Control::spinkit(['type' => 'three-bounce'], false) . "</div></span>";
+                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--image\"><div class=\"BrowserFolder-FileIconSpinner\">" . Control::spinkit(['type' => 'three-bounce'], false) . "</div></span>";
                             break;
 
                         default :
-                            $icon = "<span class=\"BrowserFolderContent-itemIcon BrowserFolderContent-itemIcon--default BrowserFolderContent-itemIcon--glyphicon dashicons dashicons-media-default\"></span>";
+                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--default BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-default\"></span>";
                             break;
                     endswitch;
                 endif;
 
-                $output .= "<li class=\"BrowserFolderContent-item\">";
-                $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolderContent-itemLink BrowserFolderContent-itemLink--" . ($is_dir ? 'dir' : 'file') . "\">";
+                $output .= "<li class=\"BrowserFolder-File\">";
+                $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
                 $output .= $icon;
-                $output .= "<span class=\"BrowserFolderContent-itemName\">" . basename($filename) . "</span>";
+                $output .= "<span class=\"BrowserFolder-FileName\">" . basename($filename) . "</span>";
                 $output .= "</a>";
                 $output .= "</li>";
             endforeach;
         endif;
         $output .= "</ul>";
+        $output .= "</div>";
 
         return $output;
     }
@@ -319,10 +322,10 @@ class Browser
         $path = $root;
 
         $output = "";
-        $output .= "<ol class=\"BrowserBreadcrumb\">";
+        $output .= "<ol class=\"BrowserFolder-Breadcrumb\">";
 
-        $output .= "<li class=\"BrowserBreadcrumb-item\">";
-        $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserBreadcrumb-itemLink\">";
+        $output .= "<li class=\"BrowserFolder-BreadcrumbPart\">";
+        $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserFolder-BreadcrumbPartLink BrowserFolder-BreadcrumbPartLink--home\">";
         $output .= "<span class=\"dashicons dashicons-admin-home\"></span>";
         $output .= "</a>";
         $output .= "</li>";
@@ -334,9 +337,9 @@ class Browser
                 endif;
 
                 $path .= "/". $item;
-                $output .= "<li class=\"BrowserBreadcrumb-item\">";
+                $output .= "<li class=\"BrowserFolder-BreadcrumbPart\">";
                 if ($path !== $dir):
-                    $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserBreadcrumb-itemLink\">{$item}</a>";
+                    $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserFolder-BreadcrumbPartLink\">{$item}</a>";
                 else :
                     $output .= $item;
                 endif;
@@ -362,17 +365,23 @@ class Browser
         <?php echo $this->getParam('page_title');?>
     </h2>
     <div class="Browser Browser--grid">
-        <div class="BrowserNavMenu">
-        <?php
-        Control::curtain_menu(
-            [
-                'nodes' => $this->getNavMenuNodes(),
-                'theme' => 'light'
-            ]
-        );
-        ?>
+        <div class="BrowserNav">
+            <div class="BrowserNav-Menu">
+            <?php
+            /*
+             Control::curtain_menu(
+                [
+                    'nodes' => $this->getNavMenuNodes(),
+                    'theme' => 'light'
+                ]
+            );
+            */
+            ?>
+            </div>
+            <div class="BrowserNav-Edit">
+            </div>
         </div>
-        <div class="BrowserFolderContent">
+        <div class="BrowserFolder">
             <?php echo $this->getFolderContent(); ?>
 
         </div>
