@@ -1,59 +1,35 @@
 .Browser {
     position: relative;
+    height: 800px;
+
+    background-color: #FFF;
 }
 
 /**
- * MENU DE NAVIGATION
+ * NAVIGATION
  */
-.BrowserNavMenu {
+.BrowserNav {
     position: absolute;
     top: 0;
     right: auto;
     bottom: 0;
     left: 0;
     width: 300px;
-
-    background-color: #FFF;
 }
 
 /**
- * FIL D'ARIANE
+ * REPERTOIRE COURANT
  */
-.BrowserBreadcrumb {
-    margin: 0 0 10px 0;
-    padding: 5px 0;
-    border-bottom:solid 1px #E4E4E4;
-}
-
-.BrowserBreadcrumb-item {
-    display: inline-block;
-    font-size:18px;
-    line-height:18px;
-    margin-right:2px;
-}
-
-.BrowserBreadcrumb-item + .BrowserBreadcrumb-item::before {
-    padding: 0 1px;
-    content: "/\00a0";
-}
-
-.BrowserBreadcrumb-itemLink {
-    text-decoration:none;
-}
-
-/**
- * CONTENU DU REPERTOIRE
- */
-.BrowserFolderContent {
-    position: relative;
+.BrowserFolder {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 300px;
     padding: 10px;
-    margin-left: 300px;
-    min-height: 600px;
-
-    background-color: #FFF;
 }
 
-.BrowserFolderContent.load::after {
+.BrowserFolder.load::after {
     position: absolute;
     content: "";
     top: 0;
@@ -64,7 +40,10 @@
     z-index: 1;
 }
 
-.BrowserFolderContent-Spinner {
+/**
+ * Indicateur de chargement
+ */
+.BrowserFolder-Spinner {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -79,52 +58,88 @@
     display: none;
 }
 
-.BrowserFolderContent.load .BrowserFolderContent-Spinner {
+.BrowserFolder.load .BrowserFolder-Spinner {
     display: inherit;
 }
 
-.BrowserFolderContent > * {
+/**
+ * Fil d'Arianne
+ */
+.BrowserFolder-Breadcrumb {
+    margin: 0 0 10px 0;
+    padding: 5px 0;
+    border-bottom: solid 1px #E4E4E4;
+}
+
+.BrowserFolder-BreadcrumbPart {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 18px;
+    margin-right: 2px;
+}
+
+.BrowserFolder-BreadcrumbPart + .BrowserFolder-BreadcrumbPart::before {
+    padding: 0 1px;
+    content: "/\00a0";
+}
+
+.BrowserFolder-BreadcrumbPartLink {
+    text-decoration: none;
+}
+
+/**
+ * Liste des fichier
+ */
+.BrowserFolder-Content {
+    position: relative;
+}
+
+.BrowserFolder-Files > * {
     box-sizing: border-box;
 }
 
-.BrowserFolderContent-items::before,
-.BrowserFolderContent-items::after {
+.BrowserFolder-Files::before,
+.BrowserFolder-Files::after {
     display: table;
     content: "";
 }
 
-.BrowserFolderContent-items::after {
+.BrowserFolder-Files::after {
     clear: both;
 }
 
-.BrowserFolderContent-items {
+.BrowserFolder-Files {
     margin: 0;
     padding: 0;
 }
 
-.BrowserFolderContent-item {
+.BrowserFolder-File {
     display: block;
     margin: 0;
     padding: 0;
 }
 
-.BrowserFolderContent-itemLink {
+.BrowserFolder-FileLink {
     position: relative;
     text-decoration: none;
 }
 
-.BrowserFolderContent-itemIcon--image {
+.BrowserFolder-File.selected .BrowserFolder-FileLink {
+    background-color:#F4F4F4;
+}
+
+.BrowserFolder-FileIcon--image {
     position: relative;
     display: block;
     background-color: #E4E4E4;
     overflow: hidden;
 }
 
-.BrowserFolderContent-itemIcon--image > img {
+.BrowserFolder-FileIcon--image > img {
     object-fit: cover;
 }
 
-.BrowserFolderContent-itemIconSpinner {
+.BrowserFolder-FileIconSpinner {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -138,23 +153,23 @@
     z-index: 2;
 }
 
-.BrowserFolderContent-itemIcon.load .BrowserFolderContent-itemIconSpinner {
+.BrowserFolder-FileIcon.load .BrowserFolder-FileIconSpinner {
     display: inherit;
 }
 
 /**
  * VUE GRILLE
  */
-.Browser--grid .BrowserFolderContent-items {
+.Browser--grid .BrowserFolder-Files {
     margin: 0 -10px;
 }
 
-.Browser--grid .BrowserFolderContent-item {
+.Browser--grid .BrowserFolder-File {
     float: left;
     padding: 10px;
 }
 
-.Browser--grid .BrowserFolderContent-itemLink {
+.Browser--grid .BrowserFolder-FileLink {
     display: block;
     width: 200px;
     height: 200px;
@@ -163,24 +178,24 @@
     text-align: center;
 }
 
-.Browser--grid .BrowserFolderContent-itemIcon {
+.Browser--grid .BrowserFolder-FileIcon {
     display: block;
     margin: 10px auto;
     width: 150px;
     height: 150px;
 }
 
-.Browser--grid .BrowserFolderContent-itemIcon--glyphicon {
+.Browser--grid .BrowserFolder-FileIcon--glyphicon {
     font-size: 150px;
     line-height: 1;
 }
 
-.Browser--grid .BrowserFolderContent-itemIcon--image > img {
+.Browser--grid .BrowserFolder-FileIcon--image > img {
     width: 150px;
     height: 150px;
 }
 
-.Browser--grid .BrowserFolderContent-itemName {
+.Browser--grid .BrowserFolder-FileName {
     position: absolute;
     left: 0;
     bottom: 0;

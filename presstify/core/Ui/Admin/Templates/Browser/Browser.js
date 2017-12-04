@@ -1,10 +1,10 @@
 jQuery(document).ready(function ($) {
-    var $folderContent = $('.BrowserFolderContent');
+    var $folder = $('.BrowserFolder');
 
     var previewImages = function() {
-        $('.BrowserFolderContent-itemLink:has(.BrowserFolderContent-itemIcon--image)').each(function () {
+        $('.BrowserFolder-FileLink:has(.BrowserFolder-FileIcon--image)').each(function () {
             var filename = $(this).data('target');
-            var $item = $('.BrowserFolderContent-itemIcon--image', this);
+            var $item = $('.BrowserFolder-FileIcon--image', this);
 
             $item.addClass('load');
 
@@ -18,7 +18,7 @@ jQuery(document).ready(function ($) {
                 type: 'POST'
             })
                 .done(function (resp) {
-                    $item.html('<img src="data:image/' + resp.mime_type + ';base64,' + resp.data + '"/>');
+                    $item.html('<img src="' + resp.src + '"/>');
                 })
                 .then(function(){
                     $item.removeClass('load');
@@ -26,7 +26,7 @@ jQuery(document).ready(function ($) {
         });
     },
         getFolderContent = function(folder) {
-            $folderContent.addClass('load');
+            $folder.addClass('load');
 
             $.post(
                 tify_ajaxurl,
@@ -36,27 +36,34 @@ jQuery(document).ready(function ($) {
                 }
             )
             .done(function(resp) {
-                $folderContent.html(resp);
+                $folder.html(resp);
                 previewImages();
             })
             .then(function(){
-                $folderContent.removeClass('load');
+                $folder.removeClass('load');
             });
     };
 
     // Navigation du fil d'ariane
-    $(document).on('click', '.BrowserBreadcrumb-itemLink', function (e) {
+    $(document).on('click', '.BrowserFolder-BreadcrumbPartLink', function (e) {
         e.preventDefault();
 
         getFolderContent($(this).data('target'));
     });
 
     // Navigation
-    $(document).on('dblclick', '.BrowserFolderContent-itemLink', function (e) {
+    $(document).on('dblclick', '.BrowserFolder-FileLink', function (e) {
         e.preventDefault();
 
-        if ($(this).hasClass('BrowserFolderContent-itemLink--dir')) {
+        if ($(this).hasClass('BrowserFolder-FileLink--dir')) {
             getFolderContent($(this).data('target'));
         }
+    });
+
+    // Selection
+    $(document).on('click', '.BrowserFolder-File:not(:has(.selected)) .BrowserFolder-FileLink', function (e) {
+        e.preventDefault();
+
+        $(this).closest('.BrowserFolder-File').addClass('selected').siblings().removeClass('selected');
     });
 });
