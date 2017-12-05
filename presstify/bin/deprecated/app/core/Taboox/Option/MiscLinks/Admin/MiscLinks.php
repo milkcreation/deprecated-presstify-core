@@ -14,6 +14,6 @@ class MiscLinks extends \tiFy\Core\Taboox\Options\MiscLinks\Admin\MiscLinks
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Option\MiscLinks\Admin\MiscLinks', '1.2.472', '\tiFy\Core\Taboox\Options\MiscLinks\Admin\MiscLinks');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Options\MiscLinks\Admin\MiscLinks', '1.2.472', '\tiFy\Core\Taboox\Options\MiscLinks\Admin\MiscLinks');
     }
 }

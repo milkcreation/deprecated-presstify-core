@@ -129,7 +129,7 @@ class Mailer extends \tiFy\Core\Forms\Addons\Factory
                 array(
                     'id'            => 'tiFyFormMailer_' . $id,
                     'title'         => $this->form()->getTitle(),
-                    'cb'            => self::getOverride('tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin\MailOptions'),
+                    'cb'            => self::getOverride('tiFy\Core\Forms\Addons\Mailer\Taboox\Options\MailOptions\Admin\MailOptions'),
                     'args'          => $args
                 )
             );

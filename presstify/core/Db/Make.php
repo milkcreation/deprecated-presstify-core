@@ -56,6 +56,10 @@ class Make
      */
     final public function install()
     {
+        if(defined('DOING_AJAX') && (DOING_AJAX === true)) :
+            return;
+        endif;
+
         // Activation de l'indicateur d'initialisation
         if ($this->Init) :
             return;
@@ -63,61 +67,63 @@ class Make
             $this->Init = true;
         endif;
 
-        $name = $this->Db->getName();
-        $primary_key = $this->Db->getPrimary();
-
-        // Bypass - La table de base de données existe
-        if ($current_version = get_option('tify_db_' . $name, 0)) :
-            return;
-        endif;
+        // Définition du nom de la table
+        $table_name = $this->Db->getName();
 
         // Récupération de l'encodage collate des tables
         $charset_collate = $this->getCharsetCollate();
 
-        // Requête de création de la table principale
-        $create_ddl = "CREATE TABLE {$name} (";
+        // Vérifie si la table de base de données existe
+        if (!get_option('tFyDb_' . $table_name, 0)) :
+            // Définition de la colonne de clé primaire
+            $primary_key = $this->Db->getPrimary();
 
-        // Requêtes de création des colonnes de la table principale
-        $_create_ddl = [];
-        if ($names = $this->getDb()->getColNames()) :
-            foreach ($names as $name) :
-                $_create_ddl[] = $this->createColumn($name);
-            endforeach;
-        endif;
+            // Requête de création de la table principale
+            $create_ddl = "CREATE TABLE {$table_name} (";
 
-        $create_ddl .= implode(', ', $_create_ddl);
+            // Requêtes de création des colonnes de la table principale
+            $_create_ddl = [];
+            if ($col_names = $this->getDb()->getColNames()) :
+                foreach ($col_names as $col_name) :
+                    $_create_ddl[] = $this->createColumn($col_name);
+                endforeach;
+            endif;
+            $create_ddl .= implode(', ', $_create_ddl);
 
-        $create_ddl .= $this->createKeys();
-        if ($primary_key) :
-            $create_ddl .= ", PRIMARY KEY ({$primary_key})";
-        endif;
-        $create_ddl .= ") $charset_collate;";
+            // Requêtes de création des clés d'index de la table principale
+            $create_ddl .= $this->createKeys();
+            if ($primary_key) :
+                $create_ddl .= ", PRIMARY KEY ({$primary_key})";
+            endif;
+            $create_ddl .= ") $charset_collate;";
 
-        // Création de la table principale
-        if (!$result = $this->maybe_create_table($name, $create_ddl)) :
-            return;
+            // Création de la table principale
+            if ($create = $this->maybeCreateTable($table_name, $create_ddl)) :
+                update_option('tFyDb_' . $table_name, 1);
+            endif;
         endif;
 
         // Création de la table des metadonnées
-        if ($this->Db->MetaType) :
+        if ($this->Db->hasMeta()) :
             $table_name = $this->Db->meta()->getTableName();
-            $join_col = $this->Db->meta()->getJoinCol();
+            if (!get_option('tFyDb_' . $table_name, 0)) :
+                $join_col = $this->Db->meta()->getJoinCol();
 
-            $create_ddl = "CREATE TABLE {$table_name} ( ";
-            $create_ddl .= "meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, ";
-            $create_ddl .= "{$join_col} bigint(20) unsigned NOT NULL DEFAULT '0', ";
-            $create_ddl .= "meta_key varchar(255) DEFAULT NULL, ";
-            $create_ddl .= "meta_value longtext";
-            $create_ddl .= ", PRIMARY KEY ( meta_id )";
-            $create_ddl .= ", KEY {$join_col} ( {$join_col} )";
-            $create_ddl .= ", KEY meta_key ( meta_key )";
-            $create_ddl .= " ) $charset_collate;";
+                $create_ddl = "CREATE TABLE {$table_name} ( ";
+                $create_ddl .= "meta_id bigint(20) unsigned NOT NULL AUTO_INCREMENT, ";
+                $create_ddl .= "{$join_col} bigint(20) unsigned NOT NULL DEFAULT '0', ";
+                $create_ddl .= "meta_key varchar(255) DEFAULT NULL, ";
+                $create_ddl .= "meta_value longtext";
+                $create_ddl .= ", PRIMARY KEY ( meta_id )";
+                $create_ddl .= ", KEY {$join_col} ( {$join_col} )";
+                $create_ddl .= ", KEY meta_key ( meta_key )";
+                $create_ddl .= " ) $charset_collate;";
 
-            $this->maybe_create_table($table_name, $create_ddl);
-        endif;
-
-        if ($result) :
-            update_option('tify_db_' . $name, $this->Db->Version);
+                // Création de la table principale
+                if ($create = $this->maybeCreateTable($table_name, $create_ddl)) :
+                    update_option('tFyDb_' . $table_name, 1);
+                endif;
+            endif;
         endif;
     }
 
@@ -310,20 +316,15 @@ class Make
         return "";
     }
 
-    /* = HELPERS = */
     /**
-     * Create database table, if it doesn't already exist.
+     * Création de la table si elle n'existe pas
      *
-     * @since 1.0.0
+     * @param string $table_name Nom de la table
+     * @param string $create_ddl Elément de requêtre de création de la table
      *
-     * @global wpdb $wpdb WordPress database abstraction object.
-     *
-     * @param string $table_name Database table name.
-     * @param string $create_ddl Create database table SQL.
-     *
-     * @return bool False on error, true if already exists or success.
+     * @return bool
      */
-    function maybe_create_table($table_name, $create_ddl)
+    function maybeCreateTable($table_name, $create_ddl)
     {
         foreach ($this->Db->sql()->get_col("SHOW TABLES", 0) as $table) :
             if ($table == $table_name) :

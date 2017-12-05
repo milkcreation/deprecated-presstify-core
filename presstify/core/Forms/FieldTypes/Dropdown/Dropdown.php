@@ -107,12 +107,7 @@ class Dropdown extends Factory
 					$output .= ">";
 				endif;
 				
-				if( $this->master->field_types->type_supports( 'choices', $field['type'] ) ) :					
-					if( $field['type'] =='dropdown' && $field['choice_all'] )
-						$output .= "<option value=\"". esc_attr( -1 ) ."\" ".selected( empty($field['value']), true, false ).">{$field['choice_all']}</option>";
-					if( $field['type'] =='dropdown' && $field['choice_none'] )
-						$output .= "<option value=\"". esc_attr( 0 ) ."\" ".selected( empty($field['value']), true, false ).">{$field['choice_none']}</option>";					
-
+				if( $this->master->field_types->type_supports( 'choices', $field['type'] ) ) :
 					// Lecture seule des cases à cocher et boutons radio
 					if( ( $field['type'] == 'checkbox' ) && $field['readonly'] ) :
 						if( empty( $field['value'] ) )

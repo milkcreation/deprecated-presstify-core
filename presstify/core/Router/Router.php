@@ -6,20 +6,15 @@ use tiFy\Core\Options\Options;
 class Router extends \tiFy\App\Core
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
-     */
-    protected $tFyAppActions = ['tify_options_register_node'];
-
-    /**
      * Liste des objets route déclarés
      * @var \tiFy\Core\Router\Factory[]
      */
-    private static $Registered          = [];
+    private static $Factory          = [];
 
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -30,6 +25,9 @@ class Router extends \tiFy\App\Core
         endforeach;
 
         do_action('tify_router_register');
+
+        // Déclaration des événements de déclenchement
+        $this->tFyAppAddAction('tify_options_register_node');
     }
 
     /**
@@ -40,8 +38,9 @@ class Router extends \tiFy\App\Core
      */
     public function tify_options_register_node()
     {
-        if (! self::$Registered)
+        if (!self::$Factory) :
             return;
+        endif;
 
         Options::registerNode(
             array(
@@ -82,7 +81,7 @@ class Router extends \tiFy\App\Core
      */
     public static function register($id, $attrs = [])
     {
-        return self::$Registered[$id] = new Factory($id, $attrs);
+        return self::$Factory[$id] = new Factory($id, $attrs);
     }
 
     /**
@@ -90,7 +89,7 @@ class Router extends \tiFy\App\Core
      */
     public static function getList()
     {
-        return self::$Registered;
+        return self::$Factory;
     }
 
     /**
@@ -102,7 +101,8 @@ class Router extends \tiFy\App\Core
      */
     public static function get($id)
     {
-        if (isset(self::$Registered[$id]))
-            return self::$Registered[$id];
+        if (isset(self::$Factory[$id])) :
+            return self::$Factory[$id];
+        endif;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Components\HookArchive\Taboox\Option\HookSelector\Admin;
+namespace tiFy\Components\HookArchive\Taboox\Options\HookSelector\Admin;
 
 use tiFy\Core\Taboox\Admin;
 

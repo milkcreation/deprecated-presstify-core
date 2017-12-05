@@ -40,7 +40,7 @@ class tiFyDropdown extends \tiFy\Core\Forms\FieldTypes\Factory
 		/// Arguments imposés
 		$args['id'] 				= $this->getInputID();
 		$args['class']				= join( ' ', $this->getInputClasses() );
-		$args['show_option_none'] 	= ( $show_option_none = $this->field()->getAttr( 'choice_none' ) ) ? $show_option_none : false;
+		$args['show_option_none'] 	= false;
 		$args['name']				= $this->field()->getDisplayName();
 		$args['selected']			= $this->field()->getValue();
 		$args['choices'] 			= $this->field()->getAttr( 'choices' );

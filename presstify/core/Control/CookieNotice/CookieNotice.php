@@ -14,6 +14,10 @@
 
 namespace tiFy\Core\Control\CookieNotice;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Cookie;
+
 /**
  * @Overrideable \App\Core\Control\CookieNotice\CookieNotice
  *
@@ -35,6 +39,12 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     protected $ID = 'cookie_notice';
 
     /**
+     * Requête globale
+     * @var \Symfony\Component\HttpFoundation\Request::createFromGlobals
+     */
+    private static $Request = null;
+
+    /**
      * CONSTRUCTEUR
      *
      * @return void
@@ -42,6 +52,11 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     public function __construct()
     {
         parent::__construct();
+
+        // Définition de la requête globale
+        if (!self::$Request) :
+            self::$Request = Request::createFromGlobals();
+        endif;
 
         // Actions ajax
         $this->tFyAppAddAction(
@@ -92,30 +107,20 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     {
         check_ajax_referer('tiFyControlCookieNotice');
 
+        // Récupération des arguments de création du cookie
         $cookie_name = $_POST['cookie_name'];
+        $cookie_hash = $_POST['cookie_hash'];
         $cookie_expire = $_POST['cookie_expire'];
-        $secure = ('https' === parse_url(home_url(), PHP_URL_SCHEME));
 
-        setcookie(
-            $cookie_name . COOKIEHASH,
-            true,
-            time() + $cookie_expire,
-            COOKIEPATH,
-            COOKIE_DOMAIN,
-            $secure,
-            true
-        );
-        if (COOKIEPATH != SITECOOKIEPATH) :
-            setcookie(
-                $cookie_name . COOKIEHASH,
-                true,
-                time() + $cookie_expire,
-                SITECOOKIEPATH,
-                COOKIE_DOMAIN,
-                $secure,
-                true
-            );
+        // Traitement du hashage
+        if (!$cookie_hash) :
+            $cookie_hash = '';
+        elseif ($cookie_hash == 'true') :
+            $cookie_hash = '_'. COOKIEHASH;
         endif;
+
+        $this->setCookie($cookie_name . $cookie_hash, $cookie_expire);
+
         wp_die(1);
     }
 
@@ -125,7 +130,17 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     /**
      * Affichage
      *
-     * @param array $attrs Liste des attributs de configuration
+     * @param array $attrs {
+     *      Liste des attributs de configuration
+     *
+     *      @param string $id Identifiant de qualification du contrôleur d'affichage
+     *      @param string $container_id ID HTML du conteneur de notification
+     *      @param string $container_class Classe HTML du conteneur de notification
+     *      @param string $cookie_name Nom de qualification du cookie
+     *      @param bool|string $cookie_hash Activation d'ajout d'un hashage dans le nom de qualification du cookie
+     *      @param int $cookie_expire Nombre de seconde avant expiration du cookie
+     *      @param string $text Texte de notification
+     * }
      * @param bool $echo Activation de l'affichage
      *
      * @return string
@@ -134,44 +149,46 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            // Identifier
             'id'              => 'tiFyControlCookieNotice-' . self::$Instance,
-            // ID HTML du conteneur
             'container_id'    => 'tiFyControlCookieNotice--' . self::$Instance,
-            // Classe HTML du conteneur
             'container_class' => '',
-            // 
             'cookie_name'     => '',
-            // Expiration du cookie - exprimée en sec. 1 heure (3600sec) par défaut
+            'cookie_hash'     => true,
             'cookie_expire'   => HOUR_IN_SECONDS,
-            // Contenu de la notification
-            'html'            => '',
+            'text'            => '',
         ];
         $attrs = wp_parse_args($attrs, $defaults);
+
+        /**
+         * @var string $id Identifiant de qualification du contrôleur d'affichage
+         * @var string $container_id ID HTML du conteneur de notification
+         * @var string $container_class Classe HTML du conteneur de notification
+         * @var string $cookie_name Nom de qualification du cookie
+         * @var bool|string $cookie_hash Activation d'ajout d'un hashage dans le nom de qualification du cookie
+         * @var int $cookie_expire Nombre de seconde avant expiration du cookie
+         * @var string $text Texte de notification
+         */
         extract($attrs);
 
+        // Définition du nom de qualification du cookie
+        if (!$cookie_name) :
+            $cookie_name = $id;
+        endif;
+
         // Traitement des arguments
-        /// Action de récupération via ajax
+        // Action de récupération via ajax
         $ajax_action = 'tiFyControlCookieNotice';
 
         /// Agent de sécurisation de la requête ajax
         $ajax_nonce = wp_create_nonce('tiFyControlCookieNotice');
 
-        // Nom du cookie
-        if (!$cookie_name) :
-            $cookie_name = $id . '_';
-        endif;
-
-        // Liste des arguments pour le traitement de la requête Ajax
-        $ajax_attrs = compact('ajax_action', 'ajax_nonce', 'cookie_name', 'cookie_expire');
-
         // Selecteur HTML
         $output = "";
-        $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCookieNotice" . ($container_class ? ' ' . $container_class : '') . "\" data-tify_control=\"cookie_notice\" data-attrs=\"" . htmlentities(json_encode($ajax_attrs)) . "\">\n";
-        if (!static::has($cookie_name)) :
-            $output .= $html ? $html : static::html($attrs);
+        if (!static::getCookie($cookie_name, $cookie_hash)) :
+            $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCookieNotice" . ($container_class ? " {$container_class}" : '') . "\" data-tify_control=\"cookie_notice\" data-options=\"" . rawurlencode(json_encode(compact('ajax_action', 'ajax_nonce', 'cookie_name', 'cookie_hash', 'cookie_expire'))) . "\">\n";
+            $output .= $text ? $text : call_user_func(__CLASS__ .'::html', $attrs);
+            $output .= "</div>\n";
         endif;
-        $output .= "</div>\n";
 
         if ($echo) :
             echo $output;
@@ -182,19 +199,98 @@ class CookieNotice extends \tiFy\Core\Control\Factory
 
     /**
      * Contenu de la notification
-     * Pour fonctionner un lien contenant l'attribut data-toggle est requis
+     * Lien de validation : <a href="#" data-cookie_notice="#<?php echo $container_id; ?>" data-handle="valid">Valider</a>
+     * Lien de fermeture : <a href="#" data-cookie_notice="#<?php echo $container_id; ?>" data-handle="close">Fermer</a>
+     *
+     * @param array $attrs Liste des attributs de configuration
+     *
+     * @return string
      */
     public static function html($attrs = [])
     {
-        return "<a class=\"tiFyControlCookieNotice\" href=\"#{$attrs['container_id']}\" data-toggle=\"fade\" title=\"" . __('Masquer l\'avertissement',
-                'tify') . "\">" . __('Ignorer l\'avertissement', 'tify') . "</a>";
+        return
+            "<a " .
+                "href=\"#{$attrs['container_id']}\" " .
+                "data-cookie_notice=\"#{$attrs['container_id']}\" " .
+                "data-handle=\"valid\" " .
+                "class=\"tiFyControlCookieNotice\" " .
+                "title=\"" . __('Masquer l\'avertissement','tify') . "\"" .
+            ">" .
+                __('Ignorer l\'avertissement', 'tify') .
+            "</a>";
+    }
+
+    /**
+     * Définition d'un cookie
+     *
+     * @var string $cookie_name Identification de qualification du cookie
+     * @var int $cookie_expire Nombre de secondes avant expiration du cookie
+     *
+     * @return void
+     */
+    private function setCookie($cookie_name, $cookie_expire)
+    {
+        // Activation de la sécurité du cookie
+        $secure = ('https' === parse_url(home_url(), PHP_URL_SCHEME));
+
+        $response = new Response();
+        $response->headers->setCookie(
+            new Cookie(
+                $cookie_name,
+                true,
+                time() + $cookie_expire,
+                COOKIEPATH,
+                COOKIE_DOMAIN,
+                $secure
+            )
+        );
+
+        if (COOKIEPATH != SITECOOKIEPATH) :
+            $response->headers->setCookie(
+                new Cookie(
+                    $cookie_name,
+                    true,
+                    time() + $cookie_expire,
+                    SITECOOKIEPATH,
+                    COOKIE_DOMAIN,
+                    $secure
+                )
+            );
+        endif;
+
+        $response->send();
+    }
+
+    /**
+     * Récupération d'un cookie
+     *
+     * @var string $cookie_name Identification de qualification du cookie
+     * @var bool|string $hash Ajout d'une chaine de hashage
+     *
+     * @return void
+     */
+    final public static function getCookie($cookie_name, $cookie_hash = true)
+    {
+        // Traitement du hashage
+        if (!$cookie_hash) :
+            $cookie_hash = '';
+        elseif ($cookie_hash == 'true') :
+            $cookie_hash = '_'. COOKIEHASH;
+        endif;
+
+        return (self::$Request)->cookies->get($cookie_name . $cookie_hash, false);
     }
 
     /**
      * Vérification d'existance du cookie
+     * @deprecated
+     *
+     * @var string $cookie_name Identification de qualification du cookie
+     *
+     * @return \tiFy\Core\Control\CookieNotice\CookieNotice::getCookie
      */
-    public static function has($cookie_name)
+    final public static function has($cookie_name)
     {
-        return !empty($_COOKIE[$cookie_name . COOKIEHASH]);
+        return self::getCookie($cookie_name);
     }
 }

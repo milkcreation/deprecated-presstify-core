@@ -137,11 +137,12 @@ class Browser
     {
         $filename = $_POST['filename'];
 
-        if (!$rel = preg_replace("#^". preg_quote(ABSPATH, '/') ."#", '', $filename)) :
+        if (!preg_match("#^". preg_quote(ABSPATH, '/') ."#", $filename)) :
             $mime_type = \mime_content_type($filename);
             $data = \base64_encode(file_get_contents($filename));
             $src = "data:image/{$mime_type};base64,{$data}";
         else :
+            $rel = preg_replace("#^". preg_quote(ABSPATH, '/') ."#", '', $filename);
             $src = \site_url($rel);
         endif;
 
@@ -221,10 +222,10 @@ class Browser
 
         $output = "";
 
-        $output .= "<div class=\"BrowserFolder-Content\">";
-
         // Affichage du fil d'ariane
         $output .= $this->getBreadcrumb($dir);
+
+        $output .= "<div class=\"BrowserFolder-Content\">";
 
         // Indicateur de chargement
         $output .= "<div class=\"BrowserFolder-Spinner\">";

@@ -14,6 +14,6 @@ abstract class Admin extends \tiFy\Core\Taboox\PostType\Admin
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Post\Admin', '1.2.472', '\tiFy\Core\Taboox\PostType\Admin');
+        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\Admin', '1.2.472', '\tiFy\Core\Taboox\PostType\Admin');
     }
 }

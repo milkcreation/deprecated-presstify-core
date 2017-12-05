@@ -12,6 +12,6 @@ class ContentHook extends \tiFy\Core\Taboox\Options\ContentHook\Helpers\ContentH
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Option\ContentHook\Helpers\ContentHook', '1.2.472', '\tiFy\Core\Taboox\Options\ContentHook\Helpers\ContentHook');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Options\ContentHook\Helpers\ContentHook', '1.2.472', '\tiFy\Core\Taboox\Options\ContentHook\Helpers\ContentHook');
     }
 }

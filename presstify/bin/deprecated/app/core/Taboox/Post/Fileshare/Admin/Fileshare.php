@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\Post\Fileshare\Admin;
+namespace tiFy\Core\Taboox\PostType\Fileshare\Admin;
 
 use tiFy\Deprecated\Deprecated;
 
@@ -14,6 +14,6 @@ class Fileshare extends \tiFy\Core\Taboox\PostType\Fileshare\Admin\Fileshare
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Post\Fileshare\Admin\Fileshare', '1.2.472', '\tiFy\Core\Taboox\PostType\Fileshare\Admin\Fileshare');
+        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\Fileshare\Admin\Fileshare', '1.2.472', '\tiFy\Core\Taboox\PostType\Fileshare\Admin\Fileshare');
     }
 }
