@@ -45,7 +45,7 @@ jQuery(document).ready(function ($) {
             })
             .always(function(){
                 $folder.removeClass('load');
-                previewImages();
+                //previewImages();
             });
     };
 

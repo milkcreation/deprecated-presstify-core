@@ -117,6 +117,7 @@ class Browser
     {
         Control::enqueue_scripts('curtain_menu');
         Control::enqueue_scripts('spinkit');
+        Control::enqueue_scripts('scroll_paginate');
         \wp_enqueue_style('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.css', [], 171201);
         \wp_enqueue_script('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.js', ['jquery'], 171201);
     }
@@ -217,11 +218,7 @@ class Browser
         endif;
         $dir = rtrim($dir, '/');
 
-        // Récupération de la liste des fichiers
-        $filenames = glob($dir . "/*");
-
         $output = "";
-
         // Affichage du fil d'ariane
         $output .= $this->getBreadcrumb($dir);
 
@@ -245,9 +242,9 @@ class Browser
         endif;
 
         // Traitement des fichiers
-        if ($filenames) :
+        if ($files = glob($dir . "/*")) :
             // Trie de la liste des fichiers
-            usort($filenames, function ($a, $b) {
+            usort($files, function ($a, $b) {
                 $aIsDir = is_dir($a);
                 $bIsDir = is_dir($b);
                 if ($aIsDir === $bIsDir)
@@ -258,10 +255,17 @@ class Browser
                     return 1; // $b is dir, should be before $a
             });
 
-            foreach($filenames as $filename) :
+            $total = count($files);
+            $per_page = 24;
+            $page = 1;
+            $offset = ($page-1)*$per_page;
+            $filtered = array_slice($files, $offset, $per_page);
+
+            foreach($filtered as $filename) :
                 $is_dir = false;
                 if (is_dir($filename)) :
                     $is_dir = true;
+                    $type = 'dir';
                     $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
                 else :
                     $ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -279,8 +283,7 @@ class Browser
                             break;
 
                         case 'image' :
-                            // @see https://www.alsacreations.com/article/lire/1439-data-uri-schema.html
-                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--image\"><div class=\"BrowserFolder-FileIconSpinner\">" . Control::spinkit(['type' => 'three-bounce'], false) . "</div></span>";
+                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--image BrowserFolder-FileIcon--glyphicon dashicons dashicons-format-image\"></span>" . Control::spinkit(['container_class' => 'BrowserFolder-FilePreviewSpinner', 'type' => 'three-bounce'], false);
                             break;
 
                         default :
@@ -291,7 +294,7 @@ class Browser
 
                 $output .= "<li class=\"BrowserFolder-File\">";
                 $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
-                $output .= $icon;
+                $output .= "<div class=\"BrowserFolder-FilePreview BrowserFolder-FilePreview--{$type}\">{$icon}</div>";
                 $output .= "<span class=\"BrowserFolder-FileName\">" . basename($filename) . "</span>";
                 $output .= "</a>";
                 $output .= "</li>";
@@ -299,6 +302,7 @@ class Browser
         endif;
         $output .= "</ul>";
         $output .= "</div>";
+        $output .= Control::scroll_paginate(['container_class' => 'BrowserFolder-Paginate'], false);
 
         return $output;
     }
@@ -325,7 +329,7 @@ class Browser
         $output = "";
         $output .= "<ol class=\"BrowserFolder-Breadcrumb\">";
 
-        $output .= "<li class=\"BrowserFolder-BreadcrumbPart\">";
+        $output .= "<li class=\"BrowserFolder-BreadcrumbPart BrowserFolder-BreadcrumbPart--root\">";
         $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserFolder-BreadcrumbPartLink BrowserFolder-BreadcrumbPartLink--home\">";
         $output .= "<span class=\"dashicons dashicons-admin-home\"></span>";
         $output .= "</a>";
@@ -384,7 +388,6 @@ class Browser
         </div>
         <div class="BrowserFolder">
             <?php echo $this->getFolderContent(); ?>
-
         </div>
     </div>
 </div>
