@@ -185,6 +185,8 @@ class Findposts extends \tiFy\Core\Control\Factory
      */
     protected static function display($attrs = [], $echo = true)
     {
+        static $init;
+
         // Traitement des attributs de configuration
         $defaults = [
             'id'          => 'tiFyControlFindposts-' . self::$Instance,
@@ -198,15 +200,19 @@ class Findposts extends \tiFy\Core\Control\Factory
             'query_args'  => [],
         ];
         $attrs = wp_parse_args($attrs, $defaults);
-        extract($attrs);
 
-        if (!self::$Instance++) :
-            $admin_footer = function () use ($ajax_action, $query_args) {
-                ?>
-                <div id="ajax-response"></div><?php static::modal($ajax_action, $query_args);
-            };
-            add_action('admin_footer', $admin_footer);
-        endif;
+        /**
+         * @var string $id Identifiant de qualification
+         * @var string $class Classe HTML du conteneur
+         * @var string $name Nom du champ d'enregistrement
+         * @var int $value ID de l'attachment.
+         * @var bool $readonly Activation de l'administrabilité du champs. Lecture seule par défaut.
+         * @var string $placeholder Texte d'aide à la saisie.
+         * @var array $attrs Attributs HTML du champ.
+         * @var string $ajax_action Action ajax de traitement de la requête.
+         * @var array $query_args Argument de requête @see \WP_Query
+         */
+        extract($attrs);
 
         $output = "";
         $output .= "<div class=\"tiFyControlFindposts {$class}\" data-tify_control=\"findposts\">\n";
@@ -223,6 +229,18 @@ class Findposts extends \tiFy\Core\Control\Factory
         endforeach;
         $output .= " autocomplete=\"off\"/><button onclick=\"findPosts.open( 'target', '#{$id}' ); return false;\"></button>";
         $output .= "</div>";
+
+        // Instanciation de la fenêtre modale de saisie
+        if (!$init++) :
+            $admin_footer =
+            add_action(
+                'admin_footer',
+                function () use ($ajax_action, $query_args) {
+                    echo "<div id=\"ajax-response\"></div>";
+                    static::modal($ajax_action, $query_args);
+                }
+            );
+        endif;
 
         if ($echo) :
             echo $output;

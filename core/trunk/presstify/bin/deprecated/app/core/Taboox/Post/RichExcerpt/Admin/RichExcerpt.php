@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\Post\RichExcerpt\Admin;
+namespace tiFy\Core\Taboox\PostType\RichExcerpt\Admin;
 
 use tiFy\Deprecated\Deprecated;
 
@@ -14,6 +14,6 @@ class RichExcerpt extends \tiFy\Core\Taboox\PostType\RichExcerpt\Admin\RichExcer
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Post\RichExcerpt\Admin\RichExcerpt', '1.2.472', '\tiFy\Core\Taboox\PostType\RichExcerpt\Admin\RichExcerpt');
+        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\RichExcerpt\Admin\RichExcerpt', '1.2.472', '\tiFy\Core\Taboox\PostType\RichExcerpt\Admin\RichExcerpt');
     }
 }

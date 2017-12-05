@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Components\HookArchive\Taboox\Post\TermSelector\Admin;
+namespace tiFy\Components\HookArchive\Taboox\PostType\TermSelector\Admin;
 
 use tiFy\Core\Taboox\Admin;
 use tiFy\Core\Taboox\PostType\TaxonomySelect\Admin\TaxonomySelect;

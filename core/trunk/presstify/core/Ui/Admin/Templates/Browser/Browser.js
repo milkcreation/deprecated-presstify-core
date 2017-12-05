@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
     var $folder = $('.BrowserFolder');
 
     var previewImages = function() {
-        $('.BrowserFolder-FileLink:has(.BrowserFolder-FileIcon--image)').each(function () {
+        $('.BrowserFolder-FileLink:has(.BrowserFolder-FileIcon--image:not(:has(img)))').each(function () {
             var filename = $(this).data('target');
             var $item = $('.BrowserFolder-FileIcon--image', this);
 
@@ -10,7 +10,8 @@ jQuery(document).ready(function ($) {
 
             $.ajax({
                 url: tify_ajaxurl,
-                async: true,
+                async: false,
+                cache: false,
                 data: {
                     action: 'tiFyCoreUiAdminTemplatesBrowser-getImagePreview',
                     filename: filename
@@ -28,19 +29,23 @@ jQuery(document).ready(function ($) {
         getFolderContent = function(folder) {
             $folder.addClass('load');
 
-            $.post(
-                tify_ajaxurl,
-                {
+            $.ajax({
+                url: tify_ajaxurl,
+                data :{
                     action: 'tiFyCoreUiAdminTemplatesBrowser-getFolderContent',
                     folder: folder
+                },
+                type: 'POST',
+                xhrFields:{
+                    id: 'getFolderContent'
                 }
-            )
+            })
             .done(function(resp) {
                 $folder.html(resp);
-                previewImages();
             })
-            .then(function(){
+            .always(function(){
                 $folder.removeClass('load');
+                previewImages();
             });
     };
 

@@ -12,7 +12,7 @@ class Facebook extends \Facebook\Facebook
      */
     public function __construct( array $config = [] )
     {
-        parent::__construct( $config );
+        parent::__construct($config);
     }
     
     /**
@@ -24,8 +24,6 @@ class Facebook extends \Facebook\Facebook
      */
     public static function tiFyApiInit( $attrs = array() )
     {
-        session_start();
-        
-        return new static( $attrs );
+        return new static($attrs);
     }
 }

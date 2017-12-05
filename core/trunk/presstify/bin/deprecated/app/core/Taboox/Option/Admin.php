@@ -14,6 +14,6 @@ abstract class Admin extends \tiFy\Core\Taboox\Options\Admin
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Option\Admin', '1.2.472', '\tiFy\Core\Taboox\Options\Admin');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Options\Admin', '1.2.472', '\tiFy\Core\Taboox\Options\Admin');
     }
 }

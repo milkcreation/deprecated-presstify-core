@@ -192,7 +192,7 @@ class Factory extends \tiFy\App\Factory
         $attrs = array(
             'id'         => 'tify_hookarchive-'. $this->Obj .'-'. $this->Archive,
             'parent'    => 'tify_hookarchive',
-            'cb'        => "\\tiFy\\Components\\HookArchive\\Taboox\\Option\\HookSelector\\Admin\\HookSelector",
+            'cb'        => "\\tiFy\\Components\\HookArchive\\Taboox\\Options\\HookSelector\\Admin\\HookSelector",
             'args'        => array( 'obj' => $this->Obj, 'archive' => $this->Archive, 'hooks' => $this->Hooks, 'options' => $this->Options )
         );
         

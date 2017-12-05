@@ -27,7 +27,7 @@ class Db extends \tiFy\App\Core
         endforeach;
 
         // Définition des éléments de déclenchement
-        $this->tFyAppActionAdd('init', null, 9);
+        $this->tFyAppAddAction('init', null, 9);
     }
     
     /**

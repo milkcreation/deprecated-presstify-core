@@ -289,7 +289,7 @@ namespace
     /** == Déclaration d'une section de boîte à onglets == **/
     function tify_taboox_register_node( $hookname, $args = array() )
     {
-        return tiFy\Core\Taboox\Taboox::registerNode( $hookname, $args );
+        return tiFy\Core\Taboox\Taboox::registerNode($hookname, $args);
     }
         
     /** == Affichage de la boîte à onglet de l'écran courant == **/

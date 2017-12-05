@@ -55,7 +55,7 @@ abstract class FactoryConstructor extends \tiFy\App
      *
      * @return string
      */
-    protected function getId()
+    public function getId()
     {
         return $this->Id;
     }
@@ -79,7 +79,7 @@ abstract class FactoryConstructor extends \tiFy\App
      *
      * @return bool
      */
-    protected function isAllowedAttr($name)
+    public function isAllowedAttr($name)
     {
         if (empty($this->AllowedAttrs)) :
             return true;
@@ -96,7 +96,7 @@ abstract class FactoryConstructor extends \tiFy\App
      *
      * @return bool
      */
-    protected function setAttr($name, $value)
+    public function setAttr($name, $value)
     {
         if (!$this->isAllowedAttr($name)) :
             return false;
@@ -112,7 +112,7 @@ abstract class FactoryConstructor extends \tiFy\App
      *
      * @return array
      */
-    protected function getAttrList()
+    public function getAttrList()
     {
         return $this->Attrs;
     }
@@ -125,7 +125,7 @@ abstract class FactoryConstructor extends \tiFy\App
      *
      * @return mixed
      */
-    protected function getAttr($name, $default = '')
+    public function getAttr($name, $default = '')
     {
         if (!isset($this->Attrs[$name])) :
             return $default;

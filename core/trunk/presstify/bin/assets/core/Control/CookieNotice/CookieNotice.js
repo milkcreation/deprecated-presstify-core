@@ -1,22 +1,46 @@
 jQuery(document).ready(function($) {
-    $(document).on('click', '[data-tify_control="cookie_notice"] [data-toggle]', function(e){
+    $(document).on('click', '[data-cookie_notice][data-handle]', function(e){
         e.preventDefault();
-        
-        $closest = $(this).closest('[data-tify_control="cookie_notice"]');
-        var attrs = $closest.data('attrs');
-        
-        $.post( 
-            tify_ajaxurl, 
-            {action: attrs['ajax_action'], _ajax_nonce: attrs['ajax_nonce'], cookie_name: attrs['cookie_name'], cookie_expire: attrs['cookie_expire']}, 
-            function(resp){
-                
-            }
-        )
-        .always(function(){
-            $closest.fadeOut(function(){
-                $(this).remove();
-            }); 
-        });
-         
+
+        // Définition du conteneur
+        if (!$($(this).data('cookie_notice')).length)
+        {
+            return;
+        } else {
+            var $closest = $($(this).data('cookie_notice'));
+        }
+
+        var o = JSON.parse(
+                decodeURIComponent($closest.data('options'))
+            ),
+            handle = $(this).data('handle');
+
+        switch(handle) {
+            case 'valid' :
+                $.post(
+                    tify_ajaxurl,
+                    {
+                        action: o.ajax_action,
+                        _ajax_nonce: o.ajax_nonce,
+                        cookie_name: o.cookie_name,
+                        cookie_hash: o.cookie_hash,
+                        cookie_expire: o.cookie_expire
+                    }
+                )
+                    .done(function(resp) {
+                        console.log(resp);
+                    })
+                    .always(function () {
+                        $closest.fadeOut(function () {
+                            $(this).remove();
+                        });
+                    });
+                break;
+            case 'close' :
+                $closest.fadeOut(function () {
+                    $(this).remove();
+                });
+                break;
+        }
     });
 });

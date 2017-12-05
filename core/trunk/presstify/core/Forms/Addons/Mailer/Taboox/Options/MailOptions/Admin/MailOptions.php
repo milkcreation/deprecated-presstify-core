@@ -1,9 +1,9 @@
 <?php
-namespace tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin;
+namespace tiFy\Core\Forms\Addons\Mailer\Taboox\Options\MailOptions\Admin;
 
 use tiFy\Core\Forms\Forms;
 use tiFy\Core\Fields\Fields;
-use tiFy\Core\Control\Repeater\Repeater;
+use tiFy\Core\Control\Control;
 
 class MailOptions extends \tiFy\Core\Taboox\Options\Admin
 {
@@ -48,10 +48,22 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
      */
     public function admin_init()
     {
-        \register_setting($this->page, $this->OptionNames['confirmation']);
-        \register_setting($this->page, $this->OptionNames['sender'], [$this, 'sanitize_sender']);
-        \register_setting($this->page, $this->OptionNames['notification']);
-        \register_setting($this->page, $this->OptionNames['recipients'], [$this, 'sanitize_recipients']);
+        \register_setting(
+            $this->page, $this->OptionNames['confirmation']
+        );
+        \register_setting(
+            $this->page, $this->OptionNames['sender'],
+            [$this, 'sanitize_sender']
+        );
+        \register_setting(
+            $this->page,
+            $this->OptionNames['notification']
+        );
+        \register_setting(
+            $this->page,
+            $this->OptionNames['recipients'],
+            [$this, 'sanitize_recipients']
+        );
     }
     
     /**
@@ -60,9 +72,9 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
     public function admin_enqueue_scripts()
     {
         Fields::enqueue_scripts('Switcher');
-        Repeater::enqueue_scripts();
+        Control::enqueue_scripts('repeater');
     }
-        
+
     /**
      * CONTROLEURS
      */
@@ -164,12 +176,12 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
         <hr>
 
         <?php
-            Repeater::display(
+            Control::repeater(
                 [
                     'add_button_txt' => __('Ajouter un destinataire', 'tify'),
                     'value'          => get_option($this->OptionNames['recipients']),
                     'name'           => $this->OptionNames['recipients'],
-                    'item_cb'        => 'tiFy\Core\Forms\Addons\Mailer\Taboox\Option\MailOptions\Admin\MailOptions::recipients_item_cb'
+                    'item_cb'        => get_called_class() . '::recipients_item_cb'
                 ]
             );
         ?>
@@ -197,22 +209,46 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
 ?>
 <table class="form-table">
     <tbody>
-        <tr>
-            <th scope="row"><?php _e('Email du destinataire (requis)', 'tify'); ?></th>
-            <td>
-                <div class="tify_input_email">
-                    <input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>][email]" value="<?php echo $value['email']; ?>" placeholder="<?php _e('Email de l\'expéditeur', 'tify'); ?>" size="40" autocomplete="off">
-                </div>
-            </td>
-        </tr>
-        <tr>
-            <th scope="row"><?php _e( 'Nom du destinataire (optionnel)', 'tify' );?></th>
-            <td>
-                <div class="tify_input_user">
-                    <input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>][name]" value="<?php echo $value['name']; ?>" placeholder="<?php _e('Nom de l\'expéditeur', 'tify'); ?>" size="40" autocomplete="off">
-                </div>
-            </td>
-        </tr>
+    <tr>
+        <th scope="row"><?php _e('Email du destinataire (requis)', 'tify'); ?></th>
+        <td>
+            <div class="tify_input_email">
+            <?php
+                Fields::Text(
+                    [
+                        'name'  => "{$attrs['name']}[{$index}][email]",
+                        'value' => $value['email'],
+                        'attrs' => [
+                            'placeholder'  => __('Email du destinataire', 'tify'),
+                            'size'         => 40,
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                );
+            ?>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th scope="row"><?php _e('Nom du destinataire (optionnel)', 'tify'); ?></th>
+        <td>
+            <div class="tify_input_user">
+            <?php
+                Fields::Text(
+                    [
+                        'name'  => "{$attrs['name']}[{$index}][name]",
+                        'value' => $value['name'],
+                        'attrs' => [
+                            'placeholder'  => __('Nom du destinataire', 'tify'),
+                            'size'         => 40,
+                            'autocomplete' => 'off'
+                        ]
+                    ]
+                );
+            ?>
+            </div>
+        </td>
+    </tr>
     </tbody>
 </table>
 <?php

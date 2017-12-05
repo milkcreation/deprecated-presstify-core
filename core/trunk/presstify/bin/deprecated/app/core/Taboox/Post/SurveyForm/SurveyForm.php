@@ -1,5 +1,5 @@
 <?php
-namespace Theme\tiFy\Core\Taboox\Post\SurveyForm;
+namespace Theme\tiFy\Core\Taboox\PostType\SurveyForm;
 
 use \tiFy\App\Factory;
 

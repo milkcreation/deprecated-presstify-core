@@ -53,14 +53,14 @@ class Field
 
         // Valeurs multiples    
         'choices'         => [],
-        'choice_none'     => '',
-        'choice_all'      => '',
 
         // Traitement
         /// Le champs est requis
         /// bool | string : Message d'erreur personnalisé | array( 'tagged' => true, 'check' => true, html5 => true, 'error' => 'message d'erreur perso' ); **/
         'required'        => false,
-        /// Tests d'intégrité    
+        // Définition de la valeur vide utilisée pour le test d'existance required
+        'value_none'           => '',
+        /// Tests d'intégrité
         /// string | array( 'function' => [function_name], 'args' => array( $arg1, $arg2, ... ), 'error' => 'message d'erreur personnalisé' ) | array( array( 'function' ... ), array( ... ) )
         'integrity_cb'    => false,
         ///
@@ -258,10 +258,9 @@ class Field
         $this->Form->call('field_get_value', [&$value, $this]);
 
         // Sécurisation des valeurs
-        if ( ! $raw) {
-            $value = is_array($value) ? array_map('esc_attr',
-                $value) : esc_attr($value);
-        }
+        if (! $raw) :
+            $value = is_array($value) ? array_map('esc_attr', $value) : esc_attr($value);
+        endif;
 
         return $value;
     }
@@ -270,6 +269,35 @@ class Field
     public function setValue($value)
     {
         $this->Value = $value;
+    }
+
+
+    /** == Vérification si la valeur est vide == **/
+    public function isValueNone()
+    {
+        $value = $this->getValue(true);
+        $none = $this->getAttr('value_none', '');
+        /*
+        if($this->getSlug() === 'service') :
+            var_dump($none);
+            exit;
+        endif;
+        */
+        if (is_array($value)) :
+            return in_array($none, $value);
+        else :
+            if(is_bool($none)) :
+                $value = (bool)$value;
+            elseif(is_int($none)) :
+                $value = (int)$value;
+            elseif(is_string($none)) :
+                $value = (string)$value;
+            endif;
+
+            return $value === $none;
+        endif;
+
+        return false;
     }
 
     /** == Récupération de la valeur du champ == **/

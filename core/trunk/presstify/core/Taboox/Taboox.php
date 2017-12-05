@@ -77,6 +77,9 @@ class Taboox extends \tiFy\App\Core
             if (!in_array($object_type, ['post_type', 'taxonomy', 'options', 'user', /** Rétrocompatibilité : post + option */'post', 'option'])) :
                 continue;
             endif;
+            if (!$hooknames || !is_array($hooknames)) :
+                continue;
+            endif;
 
             foreach ($hooknames as $hookname => $args) :
                 $object_name = $hookname;
@@ -224,7 +227,7 @@ class Taboox extends \tiFy\App\Core
         endif;
 
         // Déclaration de l'événement de mise en file des scripts de l'interface d'administration
-        $this->tFyAppActionAdd('admin_enqueue_scripts');
+        $this->tFyAppAddAction('admin_enqueue_scripts');
     }
 
     /**

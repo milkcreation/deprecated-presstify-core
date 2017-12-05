@@ -177,7 +177,7 @@ class Handle
             $field_errors = array();
             
             /// Champs requis    
-            if( $field->isRequired() && empty( $field->getValue() ) ) :
+            if( $field->isRequired() && $field->isValueNone()) :
                 $field_errors[] = array(
                     'message'   => sprintf( $field->getRequired( 'error' ) , $field->getLabel() ),
                     'type'      => 'field',

@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\Post\TextRemainingExcerpt\Admin;
+namespace tiFy\Core\Taboox\PostType\TextRemainingExcerpt\Admin;
 
 use tiFy\Deprecated\Deprecated;
 
@@ -14,6 +14,6 @@ class TextRemainingExcerpt extends \tiFy\Core\Taboox\PostType\TextRemainingExcer
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Post\TextRemainingExcerpt\Admin\TextRemainingExcerpt', '1.2.472', '\tiFy\Core\Taboox\PostType\TextRemainingExcerpt\Admin\TextRemainingExcerpt');
+        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\TextRemainingExcerpt\Admin\TextRemainingExcerpt', '1.2.472', '\tiFy\Core\Taboox\PostType\TextRemainingExcerpt\Admin\TextRemainingExcerpt');
     }
 }

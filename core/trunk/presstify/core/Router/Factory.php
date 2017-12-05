@@ -1,33 +1,8 @@
 <?php
 namespace tiFy\Core\Router;
 
-class Factory extends \tiFy\App\Factory
+class Factory extends \tiFy\App\FactoryConstructor
 {
-    /**
-     * Identifiant unique de qualification.
-     * @var string
-     */
-    protected $Id;
-
-    /**
-     * Attributs de configuration
-     * @var array {
-     *
-     * }
-     */
-    protected $Attrs            = [];
-
-    /**
-     * CONSTRUCTEUR
-     */
-    public function __construct($id, $attrs)
-    {
-        parent::__construct();
-
-        $this->Id = $id;
-        $this->Attrs = $this->parseAttrs($attrs);
-    }
-
     /**
      * CONTROLEURS
      */
@@ -68,32 +43,6 @@ class Factory extends \tiFy\App\Factory
         endif;
 
         return $attrs;
-    }
-
-    /**
-     * Récupération de la liste des attributs de configuration
-     *
-     * @return array
-     */
-    public function getAttrs()
-    {
-        return $this->Attrs;
-    }
-
-    /**
-     * Récupération d'un attribut de configuration
-     *
-     * @param string $name Identifiant qualifiant l'attribut de configuration à récupérer
-     * @param mixed $default Valeur par défaut de retour
-     *
-     * @return mixed
-     */
-    public function getAttr($name, $default = '')
-    {
-        if (! isset($this->Attrs[$name]))
-            return $default;
-
-        return $this->Attrs[$name];
     }
 
     /**
@@ -148,6 +97,21 @@ class Factory extends \tiFy\App\Factory
      */
     public function getSelected()
     {
-        return (int)$this->getAttr('selected');
+        return (int)$this->getAttr('selected', 0);
+    }
+
+    /**
+     * Vérifie si la contenu courant correspond à l'objet en relation
+     * @see \tiFy\Core\Router\Factory::getAttr()
+     *
+     * @return bool
+     */
+    public function isSelected($post = 0)
+    {
+        if (!$post = \get_post($post)) :
+            return false;
+        endif;
+
+        return ($this->getSelected() === $post->ID);
     }
 }
