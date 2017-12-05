@@ -67,19 +67,29 @@
  */
 .BrowserFolder-Breadcrumb {
     position: absolute;
-    top:0; right:0; left:0;
-    margin:0;
-    padding:10px 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    margin: 0;
+    height: 50px;
 
-    background-color:#FFF;
+    line-height:50px;
+    background-color: #FFF;
     border-bottom: solid 1px #E4E4E4;
 }
 
 .BrowserFolder-BreadcrumbPart {
     display: inline-block;
-    font-size: 18px;
-    line-height: 18px;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1;
     margin-right: 2px;
+}
+
+.BrowserFolder-BreadcrumbPart--root {
+    line-height: 1.4;
 }
 
 .BrowserFolder-BreadcrumbPart + .BrowserFolder-BreadcrumbPart::before {
@@ -92,12 +102,33 @@
 }
 
 /**
+ * Pagination
+ */
+.BrowserFolder-Paginate {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    height: 50px;
+
+    line-height: 50px;
+    text-align: center;
+    background-color: #FFF;
+    border-top: solid 1px #E4E4E4;
+}
+
+/**
  * Liste des fichier
  */
 .BrowserFolder-Content {
     position: absolute;
-    top:50px; right:0; bottom:0; left:0;
-    overflow:hidden;
+    top: 50px;
+    right: 0;
+    bottom: 50px;
+    left: 0;
+    padding: 5px;
+    overflow: hidden;
     overflow-y: auto;
 }
 
@@ -132,22 +163,21 @@
 }
 
 .BrowserFolder-File.selected .BrowserFolder-FileLink {
-    background-color:#F4F4F4;
+    background-color: #F4F4F4;
 }
 
-.BrowserFolder-FileIcon--image {
+.BrowserFolder-FilePreview {
     position: relative;
-    display: block;
-    background-color: #E4E4E4;
     overflow: hidden;
 }
 
-.BrowserFolder-FileIcon--image > img {
+.BrowserFolder-FilePreview > img {
     object-fit: cover;
 }
 
-.BrowserFolder-FileIconSpinner {
+.BrowserFolder-FilePreviewSpinner {
     position: absolute;
+    z-index: 2;
     top: 50%;
     left: 50%;
     width: 100px;
@@ -157,10 +187,10 @@
     -ms-transform: translate(-50%, -50%);
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
-    z-index: 2;
+    display: none;
 }
 
-.BrowserFolder-FileIcon.load .BrowserFolder-FileIconSpinner {
+.BrowserFolder-FilePreview.load .BrowserFolder-FilePreviewSpinner {
     display: inherit;
 }
 
@@ -185,7 +215,7 @@
     text-align: center;
 }
 
-.Browser--grid .BrowserFolder-FileIcon {
+.Browser--grid .BrowserFolder-FilePreview {
     display: block;
     margin: 10px auto;
     width: 150px;
@@ -193,6 +223,8 @@
 }
 
 .Browser--grid .BrowserFolder-FileIcon--glyphicon {
+    width: 150px;
+    height: 150px;
     font-size: 150px;
     line-height: 1;
 }
