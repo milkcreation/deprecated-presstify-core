@@ -11,9 +11,12 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
         parent::__construct($id, $attrs);
 
@@ -39,6 +42,9 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
         $this->setDefaultParam('create_new_item', false);
     }
 
+    /**
+     * CONTROLEURS
+     */
     /**
      * Vérification des habilitations d'accès de l'utilisateur à l'interface
      *

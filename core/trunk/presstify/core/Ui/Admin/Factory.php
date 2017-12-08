@@ -5,11 +5,23 @@ use tiFy\Core\Ui\Ui;
 
 class Factory extends \tiFy\Core\Ui\Factory
 {
+    // Paramètres
+    use \tiFy\Core\Ui\Admin\Traits\Params;
+
+    // Actions
+    use \tiFy\Core\Ui\Admin\Traits\Actions;
+
+    /**
+     * Ecran courant d'affichage de la page
+     * @var null|\WP_Screen
+     */
+    protected $Screen = null;
+
     /**
      * Liste des attributs de configuration des gabarits parents
      * @var array
      */
-    protected $Parents = [
+    protected static $Parents = [
         'Browser' => [
 
         ],
@@ -34,6 +46,20 @@ class Factory extends \tiFy\Core\Ui\Factory
     ];
 
     /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct($id, $attrs = [])
+    {
+        parent::__construct($id, $attrs);
+
+        // Définition des événements de déclenchement
+        $this->tFyAppAddAction('admin_init');
+        $this->tFyAppAddAction('current_screen', '_current_screen');
+    }
+
+    /**
      * DECLENCHEURS
      */
     /**
@@ -55,13 +81,22 @@ class Factory extends \tiFy\Core\Ui\Factory
             $hookname = false;
             $base_uri = false;
         endif;
+    }
 
-        // Déclenchement de l'événenement d'initialisation de l'interface d'administration dans le gabarit
-        if ($template = $this->getTemplate()) :
-            $template->setAttr('hookname', $hookname);
-            $template->setAttr('base_uri', $base_uri);
-            $template->admin_init();
+    /**
+     * Affichage de l'écran courant
+     *
+     * @param \WP_Screen $current_screen
+     *
+     * @return void
+     */
+    final public function _current_screen($current_screen)
+    {
+        if ($current_screen->id !== $this->getAttr('hookname')) :
+            return;
         endif;
+
+        $this->current_screen($current_screen);
     }
 
     /**
@@ -78,13 +113,17 @@ class Factory extends \tiFy\Core\Ui\Factory
         endif;
 
         // Déclaration de la liste des événements à declencher
-        $this->tFyAppActionAdd('admin_enqueue_scripts');
-        $this->tFyAppActionAdd('admin_notices');
+        $this->tFyAppAddAction('admin_enqueue_scripts');
+        $this->tFyAppAddAction('admin_notices');
 
-        // Déclenchement de l'événenement d'affichage de l'écran courant dans le gabarit
-        if ($template = $this->getTemplate()) :
-            $template->current_screen($current_screen);
-        endif;
+        // Définition de l'écran courant
+        $this->setScreen($current_screen);
+
+        // Initialisation des paramètres de configuration de la table
+        $this->initParams();
+
+        // Vérification de l'habilitation d'accès à l'interface
+        $this->check_user_can();
     }
 
     /**
@@ -94,10 +133,7 @@ class Factory extends \tiFy\Core\Ui\Factory
      */
     public function admin_enqueue_scripts()
     {
-        // Déclenchement de l'événenement de mise en file des scripts de l'interface d'administration dans le gabarit
-        if ($template = $this->getTemplate()) :
-            $template->admin_enqueue_scripts();
-        endif;
+
     }
 
     /**
@@ -107,25 +143,14 @@ class Factory extends \tiFy\Core\Ui\Factory
      */
     public function admin_notices()
     {
-        // Déclenchement de l'événenement de mise en file des scripts de l'interface d'administration dans le gabarit
-        if ($template = $this->getTemplate()) :
-            $template->admin_notices();
+        if ($notice = $this->getNotice()) :
+            ?><div class="notice notice-<?php echo $notice['notice'];?><?php echo $notice['dismissible'] ? ' is-dismissible':'';?>"><p><?php echo $notice['message'] ?></p></div><?php
         endif;
     }
 
     /**
      * CONTROLEURS
      */
-    /**
-     * Inititalisation
-     */
-    public function tFyAppOnInit()
-    {
-        // Déclaration de la liste des événements à declencher
-        $this->tFyAppActionAdd('admin_init');
-        $this->tFyAppActionAdd('current_screen');
-    }
-
     /**
      * Traitement des attributs de configuration
      *
@@ -181,6 +206,28 @@ class Factory extends \tiFy\Core\Ui\Factory
         endif;
 
         return $attrs;
+    }
+
+    /**
+     * Définition de l'écran courant
+     *
+     * @param string|WP_Screen
+     *
+     * @return void|WP_Screen
+     */
+    protected function setScreen($screen)
+    {
+        return $this->Screen = \convert_to_screen($screen);
+    }
+
+    /**
+     * Récupération de l'écran courant
+     *
+     * @return void|WP_Screen
+     */
+    protected function getScreen()
+    {
+        return $this->Screen;
     }
 
     /**

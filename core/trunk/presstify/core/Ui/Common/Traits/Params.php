@@ -117,7 +117,7 @@ trait Params
      */
     protected function setDefaultParam($name, $value)
     {
-        if (!in_array($name, $this->DefaultParams)) :
+        if (!isset($this->DefaultParams[$name])) :
             $this->DefaultParams[$name] = $value;
         endif;
     }

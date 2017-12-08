@@ -4,25 +4,25 @@ namespace tiFy\Core\Ui;
 use tiFy\Core\Labels\Labels;
 use tiFy\Core\Db\Db;
 
-class Factory extends \tiFy\App
+class Factory extends \tiFy\App\FactoryConstructor
 {
-    /**
-     * Identifiant de qualification
-     * @var string
-     */
-    protected $Id = null;
+    // Fonctions d'aide
+    use \tiFy\Core\Ui\Common\Traits\Helpers;
 
-    /**
-     * Classe de rappel d'affichage du gabarit
-     * @var object
-     */
-    protected $Template = null;
+    // Paramètres
+    use \tiFy\Core\Ui\Common\Traits\Params;
+
+    // Actions
+    use \tiFy\Core\Ui\Common\Traits\Actions;
+
+    // Notifications
+    use \tiFy\Core\Ui\Common\Traits\Notices;
 
     /**
      * Liste des attributs de configuration des gabarits parent
      * @var array
      */
-    protected $Parents = [];
+    protected static $Parents = [];
 
     /**
      * Identifiant de qualification du gabarit parent courant
@@ -31,51 +31,29 @@ class Factory extends \tiFy\App
     protected $ParentId = null;
 
     /**
-     * Liste des attributs de configuration
-     * @var array
-     */
-    protected $Attrs = [];
-
-    /**
      * CONSTRUCTEUR
      *
      * @return void
      */
     public function __construct($id, $attrs = [])
     {
-        parent::__construct();
-
-        $this->Id = $id;
-        $this->Attrs = $this->parseAttrs($attrs);
+        parent::__construct($id, $attrs);
 
         // Définition des événements de déclenchement
         $this->init();
     }
 
     /**
-     * DECLENCHEURS
+     * DECLENCHEUR
      */
     /**
-     * Initialisation globale
+     * Initialisation global
      *
      * @return void
      */
     public function init()
     {
-        if (!$cb = $this->getAttr('cb')) :
-            return;
-        endif;
-        if (!class_exists($cb)) :
-            return;
-        endif;
 
-        $id = $this->getId();
-        $attrs = $this->getAttrList();
-
-        $this->Template = new $cb($id, $attrs);
-
-        // Déclenchement de l'événenement d'initialisation globale dans le gabarit
-        $this->getTemplate()->init();
     }
 
     /**
@@ -88,16 +66,8 @@ class Factory extends \tiFy\App
      *
      * @return array
      */
-    public function parseAttrs($attrs = [])
+    protected function parseAttrs($attrs = [])
     {
-        // Définition de la classe de rappel d'affichage du gabarit
-        $cb = !empty($attrs['cb']) ? $attrs['cb'] : null;
-        if (empty($cb)) :
-        elseif (in_array($cb, $this->getParentIds())) :
-            $cb = self::tFyAppAttr('Namespace', get_class($this)) . "\\Templates\\{$cb}\\{$cb}";
-        endif;
-        $attrs['cb'] = $cb;
-
         // Récupération du gabarit parent
         if (class_exists($attrs['cb'])) :
             $this->ParentId = $this->queryParentId($attrs['cb']);
@@ -134,64 +104,25 @@ class Factory extends \tiFy\App
     }
 
     /**
-     * Déclaration ponctuelle d'attribut de configuration
-     *
-     * @param string $name Nom de qualification de l'attribut de configuration
-     * @param string $value Valeur de l'attribut de configuration
-     *
-     * @return void
-     */
-    final public function setAttr($name, $value)
-    {
-        $this->Attrs[$name] = $value;
-    }
-
-    /**
-     * Récupération de la liste des attributs de configuration
-     *
-     * @return array
-     */
-    final public function getAttrList()
-    {
-        return $this->Attrs;
-    }
-
-    /**
-     * Récupération d'un attribut de configuration
-     *
-     * @param string $name Identifiant de qualification de l'attribut
-     * @param mixed $default Valeur de retour par défaut
-     *
-     * @return mixed
-     */
-    final public function getAttr($name, $default = '')
-    {
-        if (!isset($this->Attrs[$name])) :
-            return $default;
-        endif;
-
-        return $this->Attrs[$name];
-    }
-
-    /**
-     * Récupération de l'identifiant de qualification
-     *
-     * @return string
-     */
-    final public function getId()
-    {
-        return $this->Id;
-    }
-
-    /**
      * Récupération de la liste des attributs de configuration des gabarits parent
      *
      * @return array
      */
-    final public function getParentList()
+    final public static function getParentList()
     {
-        return $this->Parents;
+        return static::$Parents;
     }
+
+    /**
+     * Récupération de la liste des identifiants de qualification des gabarits parents
+     *
+     * @return string[]
+     */
+    final public static function getParentIds()
+    {
+        return array_keys(static::getParentList());
+    }
+
 
     /**
      * Récupération des attributs de configuration d'un garabit parent
@@ -202,7 +133,7 @@ class Factory extends \tiFy\App
      */
     final public function getParentAttrList($parent_id)
     {
-        if (!$parents = $this->getParentList()) :
+        if (!$parents = static::getParentList()) :
             return [];
         endif;
 
@@ -211,16 +142,6 @@ class Factory extends \tiFy\App
         endif;
 
         return [];
-    }
-
-    /**
-     * Récupération de la liste des identifiants de qualification des gabarits parents
-     *
-     * @return string[]
-     */
-    final public function getParentIds()
-    {
-        return array_keys($this->Parents);
     }
 
     /**
@@ -247,7 +168,7 @@ class Factory extends \tiFy\App
             return $default;
         endif;
 
-        if (!$parent_attrs = $this->getParentAttrList($parent_id)) :
+        if (!$parent_attrs = static::getParentAttrList($parent_id)) :
             return $default;
         endif;
 
@@ -268,7 +189,7 @@ class Factory extends \tiFy\App
     final public function queryParentId($classname)
     {
         $current_id = (new \ReflectionClass($classname))->getShortName();
-        if (in_array($current_id, $this->getParentIds())) :
+        if (in_array($current_id, static::getParentIds())) :
             return $current_id;
         endif;
 
@@ -281,16 +202,6 @@ class Factory extends \tiFy\App
         endif;
 
         return $this->queryParentId($parent_class);
-    }
-
-    /**
-     * Récupération de la classe de rappel du gabarit
-     *
-     * @return null|object
-     */
-    final public function getTemplate()
-    {
-        return $this->Template;
     }
 
     /**
@@ -351,8 +262,6 @@ class Factory extends \tiFy\App
      */
     public function render()
     {
-        if ($this->Template) :
-            $this->Template->render();
-        endif;
+
     }
 }

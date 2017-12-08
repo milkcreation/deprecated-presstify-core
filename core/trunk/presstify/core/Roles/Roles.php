@@ -28,7 +28,7 @@ class Roles extends \tiFy\App\Core
         endif;
 
         // Définition des événements de déclenchement
-        $this->tFyAppActionAdd('init', 'init', 0);
+        $this->tFyAppAddAction('init', 'init', 0);
     }
 
     /**

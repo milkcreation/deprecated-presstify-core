@@ -1,6 +1,9 @@
 <?php
 namespace tiFy\Core\Ui;
 
+use \tiFy\Core\Ui\Admin\Factory as AdminFactory;
+use \tiFy\Core\Ui\User\Factory as UserFactory;
+
 final class Ui extends \tiFy\App\Core
 {
     /**
@@ -20,13 +23,10 @@ final class Ui extends \tiFy\App\Core
     public function __construct()
     {
         parent::__construct();
-        
-        // Instanciation des contrôleurs
-        //new Admin\Admin;
-        //new Front\Front;
 
-        $this->tFyAppActionAdd('init');
-        $this->tFyAppActionAdd('admin_menu');
+        // Définition des actions de déclenchement
+        $this->tFyAppAddAction('init');
+        $this->tFyAppAddAction('admin_menu');
     }    
     
     /**
@@ -125,7 +125,19 @@ final class Ui extends \tiFy\App\Core
      */
     final public static function registerAdmin($id, $attrs = [])
     {
-        return self::$Factory['admin'][$id] = new Admin\Factory($id, $attrs);
+        // Définition de la classe de rappel d'affichage du gabarit
+        $cb = !empty($attrs['cb']) ? $attrs['cb'] : '';
+        if (empty($cb)) :
+            $classname = $attrs['cb'] = 'tiFy\Core\Ui\Admin\Factory';
+        elseif (in_array($cb, AdminFactory::getParentIds())) :
+            $classname = $attrs['cb'] = "tiFy\\Core\\Ui\\Admin\\Templates\\{$cb}\\{$cb}";
+        elseif(class_exists($cb)) :
+            $classname = $attrs['cb'] = $cb;
+        else :
+            return;
+        endif;
+
+        return self::$Factory['admin'][$id] = new $classname($id, $attrs);
     }
 
     /**

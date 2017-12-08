@@ -17,6 +17,18 @@ abstract class Factory extends \tiFy\App
     protected $ID = '';
 
     /**
+     * Liste des fonctions d'aide à la saisie avec incrémentation automatique
+     * @var array
+     */
+    private static $InstanceHelpers = [];
+
+    /**
+     * Liste des methodes de la classe pouvant être appelées depuis la méthode tiFy\Core\Control\Control::call()
+     * @var string
+     */
+    private static $CallableMethods = [];
+
+    /**
      * CONSTRUCTEUR
      *
      * @return void
@@ -25,8 +37,20 @@ abstract class Factory extends \tiFy\App
     {
         parent::__construct();
 
-        // Déclaration de la fonction d'aide à la saisie
-        self::tFyAppAddHelper('tify_control_'. $this->ID, 'display');
+        // Instanciation de la liste des fonctions d'aide à la saisie
+        self::$InstanceHelpers[get_called_class()] = [];
+
+        // Instanciation de la liste des méthodes pouvant être appelées depuis la méthode tiFy\Core\Control\Control::call()
+        self::$CallableMethods[get_called_class()] = [];
+
+        // Déclaration de la fonction d'aide à la saisie d'affichage principal du controleur
+        $tag = 'tify_control_'. $this->ID;
+        $method = 'display';
+        self::$InstanceHelpers[get_called_class()][$tag] = $method;
+        self::tFyAppAddHelper($tag, $method);
+
+        // Déclaration de la fonction d'aide à la saisie de mise en file des scripts
+        self::tFyAppAddHelper('tify_control_'. $this->ID .'_enqueue_scripts', 'enqueue_scripts');
     }
 
     /**
@@ -56,15 +80,18 @@ abstract class Factory extends \tiFy\App
     /**
      * Appel des méthodes statiques et déclenchement d'événements
      *
-     * @return static
+     * @return null|static
      */
     final public static function __callStatic($name, $arguments)
     {
-        if ($name === 'display') :
+        if (in_array($name, self::$InstanceHelpers[get_called_class()])) :
             // Incrémentation du nombre d'instance
             static::$Instance++;
+        elseif (!in_array($name, self::$CallableMethods[get_called_class()])) :
+            return trigger_error(sprintf(__('La méthode %s du controleur d\'affichage ne peut être appelée de cette manière.', 'tify'), $name));
         endif;
 
+        // Appel de la méthode statique du contrôleur
         return call_user_func_array("static::$name", $arguments);
     }
 
@@ -105,5 +132,25 @@ abstract class Factory extends \tiFy\App
     protected static function display($attrs = [], $echo = true)
     {
 
+    }
+
+    /**
+     * Ajout d'une fonction d'aide à la saisie avec incrémentation d'instance automatique
+     *
+     * @param string $tag Nom de qualification de la fonction
+     * @param string $method Nom de qualification de la méthode du controleur
+     *
+     * @return void
+     */
+    final protected function addInstanceHelper($tag, $method)
+    {
+        if (isset(self::$InstanceHelpers[get_called_class()][$tag])) :
+            return;
+        endif;
+
+        self::$CallableMethods[get_called_class()][] = $method;
+
+        self::$InstanceHelpers[get_called_class()][$tag] = $method;
+        self::tFyAppAddHelper($tag, $method);
     }
 }

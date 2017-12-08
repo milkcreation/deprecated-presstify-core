@@ -42,6 +42,7 @@ jQuery(document).ready(function ($) {
             })
             .done(function(resp) {
                 $folder.html(resp);
+                tify_scroll_paginate('.tiFyCoreControl-ScrollPaginate', '.BrowserFolder-Files');
             })
             .always(function(){
                 $folder.removeClass('load');
@@ -54,6 +55,14 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         getFolderContent($(this).data('target'));
+    });
+
+    $(document).on('tify_control.scroll_paginate.loading', function(e){
+        $folder.addClass('load');
+    });
+
+    $(document).on('tify_control.scroll_paginate.loaded', function(e){
+        $folder.removeClass('load');
     });
 
     // Navigation

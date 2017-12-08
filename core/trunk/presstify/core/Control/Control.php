@@ -1,6 +1,8 @@
 <?php
 namespace tiFy\Core\Control;
 
+use tiFy\Deprecated\Deprecated;
+
 class Control extends \tiFy\App\Core
 {
     /**
@@ -8,6 +10,12 @@ class Control extends \tiFy\App\Core
      * @var \tiFy\Core\Control\Factory[]
      */ 
     public static $Factory = [];
+
+    /**
+     * Liste des controleurs natifs de presstiFy
+     * @var \tiFy\Core\Control\Factory[]
+     */
+    public static $Native = [];
 
     /**
      * CONSTRUCTEUR
@@ -19,9 +27,11 @@ class Control extends \tiFy\App\Core
         // Déclaration des controleurs d'affichage natifs
         foreach(glob(self::tFyAppDirname() .'/*/', GLOB_ONLYDIR) as $filename) :
             $Name = basename($filename);
-            $ClassName    = "tiFy\\Core\\Control\\{$Name}\\{$Name}";
-         
-            self::register($ClassName);
+
+            // Déclaration du controleur d'affichage natif
+            if($factory = self::register("tiFy\\Core\\Control\\{$Name}\\{$Name}")) :
+                self::$Native[$Name] = $factory;
+            endif;
         endforeach;
 
         // Déclaration des controleurs d'affichage personnalisés
@@ -29,6 +39,46 @@ class Control extends \tiFy\App\Core
 
         // Déclaration des événement de déclenchement
         $this->tFyAppAddAction('init');
+    }
+
+    /**
+     * APPELS DYNAMIQUES
+     */
+    /**
+     * Appel d'un controleur d'affichage natif
+     *
+     * @param string $name Identifiant de qualification du controleur d'affichage
+     * @param array $args {
+     *      Liste des attributs de configuration
+     *
+     *      @var array $attrs Attributs de configuration du champ
+     *      @var bool $echo Activation de l'affichage du champ
+     *
+     * @return null|callable
+     */
+    final public static function __callStatic($name, $args)
+    {
+        if (in_array($name, array_keys(self::$Factory))) :
+            Deprecated::addArgument($name, '1.2.502', sprintf(__('La possibilité d\'appeler un controleur d\'affichage en utilisant son ID est dépréciée. Pour les controleurs natifs vous devez utiliser le nom de la classe ou utilisez \tiFy\Core\Control::display(\'%s\');', 'tify'), $name));
+            $factory = self::$Factory[$name];
+        elseif (in_array($name, array_keys(self::$Native))) :
+            $factory = self::$Native[$name];
+        else :
+            return trigger_error(sprintf(__('le controleur d\'affichage %1$s n\'est pas un controleur natif de presstiFy, utilisez \tiFy\Core\Control::display(\'%1$s\');', 'tify'), $name));
+        endif;
+
+        $echo = isset($args[1]) ? $args[1] : true;
+
+        $id = null;
+        if (!isset($args[0])) :
+            $attrs = [];
+        else :
+            $attrs = $args[0];
+        endif;
+
+        $classname = get_class($factory);
+
+        return call_user_func_array("{$classname}::display", compact('attrs', 'echo'));
     }
 
     /**
@@ -57,7 +107,7 @@ class Control extends \tiFy\App\Core
      *
      * @param string $classname
      *
-     * @return void
+     * @return null|\tiFy\Core\Control\Factory
      */
     final public static function register($classname)
     {
@@ -70,59 +120,68 @@ class Control extends \tiFy\App\Core
         $Instance = self::loadOverride($classname);
 
         if(!empty($Instance->ID) && !isset(self::$Factory[$Instance->ID])) :
-            self::$Factory[$Instance->ID] = $Instance;
+            return self::$Factory[$Instance->ID] = $Instance;
         endif;
     }
 
     /**
-     * Appel d'un controleur d'affichage
+     * Affichage d'un controleur
      *
-     * @param string $name Identifiant de qualification du controleur d'affichage
-     * @param array $args {
-     *      Liste des attributs de configuration
+     * @param string $ID Identifiant de qualification du controleur d'affichage
      *
-     *      @var array $attrs Attributs de configuration du champ
-     *      @var bool $echo Activation de l'affichage du champ
-     *
-     * return null|callable
+     * @return static
      */
-    final public static function __callStatic($name, $args)
+    final public static function display($ID)
     {
-        if (!isset(self::$Factory[$name])) :
-            return;
-        endif;
-
-        $echo = isset($args[1]) ? $args[1] : true;
-
-        $id = null;
-        if (!isset($args[0])) :
-            $attrs = [];
-        else :
-            $attrs = $args[0];
-        endif;
-
-        $classname = get_class(self::$Factory[$name]);
-
-        return call_user_func_array("{$classname}::display", compact('attrs', 'echo'));
-    }
-
-    /**
-     * Mise en file des scripts
-     *
-     * @param string $name Identifiant de qualification du controleur d'affichage
-     *
-     * @return void
-     */
-    final public static function enqueue_scripts($name)
-    {
-        if (!isset(self::$Factory[$name])) :
-            return;
+        if (!isset(self::$Factory[$ID])) :
+            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
         endif;
 
         $args = array_slice(func_get_args(), 1);
 
-        $classname = get_class(self::$Factory[$name]);
+        $classname = get_class(self::$Factory[$ID]);
+
+        return call_user_func_array("{$classname}::display", $args);
+    }
+
+    /**
+     * Mise en file des scripts d'un controleur
+     *
+     * @param string $ID Identifiant de qualification du controleur d'affichage
+     *
+     * @return static
+     */
+    final public static function enqueue_scripts($ID)
+    {
+        if (!isset(self::$Factory[$ID])) :
+            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
+        endif;
+
+        $args = array_slice(func_get_args(), 1);
+
+        $classname = get_class(self::$Factory[$ID]);
 
         return call_user_func_array("{$classname}::enqueue_scripts", $args);
+    }
+
+    /**
+     * Appel d'une méthode helper de contrôleur
+     *
+     * @param string $ID Identifiant de qualification du controleur d'affichage
+     * @param string $méthod Nom de qualification de la méthode du controleur d'affichage
+     *
+     * @return static
+     */
+    final public static function call($ID, $method)
+    {
+        if (!isset(self::$Factory[$ID])) :
+            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
+        endif;
+
+        $args = array_slice(func_get_args(), 2);
+
+        $classname = get_class(self::$Factory[$ID]);
+
+        return call_user_func_array("{$classname}::{$method}", $args);
     }
 }

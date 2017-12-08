@@ -6,9 +6,12 @@ class PostListTable extends \tiFy\Core\Ui\Admin\Templates\ListTable\ListTable
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
         parent::__construct($id, $attrs);
 
@@ -54,6 +57,9 @@ class PostListTable extends \tiFy\Core\Ui\Admin\Templates\ListTable\ListTable
         );
     }
 
+    /**
+     * CONTROLEURS
+     */
     /**
      * Récupération de la liste des attributs de configuration du lien vers la vue filtrée affichant tous les éléments
      *

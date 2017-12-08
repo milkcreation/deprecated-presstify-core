@@ -60,11 +60,11 @@ class CookieNotice extends \tiFy\Core\Control\Factory
 
         // Actions ajax
         $this->tFyAppAddAction(
-            'wp_ajax_tiFyControlCookieNotice',
+            'wp_ajax_tiFyControl_CookieNotice',
             'wp_ajax'
         );
         $this->tFyAppAddAction(
-            'wp_ajax_nopriv_tiFyControlCookieNotice',
+            'wp_ajax_nopriv_tiFyControl_CookieNotice',
             'wp_ajax'
         );
     }
@@ -105,7 +105,7 @@ class CookieNotice extends \tiFy\Core\Control\Factory
      */
     public function wp_ajax()
     {
-        check_ajax_referer('tiFyControlCookieNotice');
+        check_ajax_referer('tiFyControl-CookieNotice');
 
         // Récupération des arguments de création du cookie
         $cookie_name = $_POST['cookie_name'];
@@ -149,8 +149,8 @@ class CookieNotice extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'              => 'tiFyControlCookieNotice-' . self::$Instance,
-            'container_id'    => 'tiFyControlCookieNotice--' . self::$Instance,
+            'id'              => 'tiFyControl-CookieNotice-' . self::$Instance,
+            'container_id'    => 'tiFyControl-CookieNotice--' . self::$Instance,
             'container_class' => '',
             'cookie_name'     => '',
             'cookie_hash'     => true,
@@ -177,16 +177,16 @@ class CookieNotice extends \tiFy\Core\Control\Factory
 
         // Traitement des arguments
         // Action de récupération via ajax
-        $ajax_action = 'tiFyControlCookieNotice';
+        $ajax_action = 'tiFyControl_CookieNotice';
 
         /// Agent de sécurisation de la requête ajax
-        $ajax_nonce = wp_create_nonce('tiFyControlCookieNotice');
+        $ajax_nonce = wp_create_nonce('tiFyControl-CookieNotice');
 
         // Selecteur HTML
         $output = "";
-        if (!static::getCookie($cookie_name, $cookie_hash)) :
-            $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCookieNotice" . ($container_class ? " {$container_class}" : '') . "\" data-tify_control=\"cookie_notice\" data-options=\"" . rawurlencode(json_encode(compact('ajax_action', 'ajax_nonce', 'cookie_name', 'cookie_hash', 'cookie_expire'))) . "\">\n";
-            $output .= $text ? $text : call_user_func(__CLASS__ .'::html', $attrs);
+        if (!self::getCookie($cookie_name, $cookie_hash)) :
+            $output .= "<div id=\"{$container_id}\" class=\"tiFyControl-CookieNotice" . ($container_class ? " {$container_class}" : '') . "\" data-tify_control=\"cookie_notice\" data-options=\"" . rawurlencode(json_encode(compact('ajax_action', 'ajax_nonce', 'cookie_name', 'cookie_hash', 'cookie_expire'))) . "\">\n";
+            $output .= $text ? $text : call_user_func(get_called_class() .'::text', $attrs);
             $output .= "</div>\n";
         endif;
 
@@ -201,19 +201,20 @@ class CookieNotice extends \tiFy\Core\Control\Factory
      * Contenu de la notification
      * Lien de validation : <a href="#" data-cookie_notice="#<?php echo $container_id; ?>" data-handle="valid">Valider</a>
      * Lien de fermeture : <a href="#" data-cookie_notice="#<?php echo $container_id; ?>" data-handle="close">Fermer</a>
+     * @Overridable
      *
      * @param array $attrs Liste des attributs de configuration
      *
      * @return string
      */
-    public static function html($attrs = [])
+    public static function text($attrs = [])
     {
         return
             "<a " .
                 "href=\"#{$attrs['container_id']}\" " .
                 "data-cookie_notice=\"#{$attrs['container_id']}\" " .
                 "data-handle=\"valid\" " .
-                "class=\"tiFyControlCookieNotice\" " .
+                "class=\"tiFyControl-CookieNoticeValidLink\" " .
                 "title=\"" . __('Masquer l\'avertissement','tify') . "\"" .
             ">" .
                 __('Ignorer l\'avertissement', 'tify') .
@@ -278,7 +279,7 @@ class CookieNotice extends \tiFy\Core\Control\Factory
             $cookie_hash = '_'. COOKIEHASH;
         endif;
 
-        return (self::$Request)->cookies->get($cookie_name . $cookie_hash, false);
+        return self::$Request->cookies->get($cookie_name . $cookie_hash, false);
     }
 
     /**
