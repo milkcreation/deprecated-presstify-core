@@ -15,6 +15,20 @@
 
 namespace tiFy\Core\Control\ScrollPaginate;
 
+use Symfony\Component\HttpFoundation\Request;
+
+/**
+ * @Overrideable \App\Core\Control\ScrollPaginate\ScrollPaginate
+ *
+ * <?php
+ * namespace \App\Core\Control\ScrollPaginate
+ *
+ * class ScrollPaginate extends \tiFy\Core\Control\ScrollPaginate\ScrollPaginate
+ * {
+ *
+ * }
+ */
+
 class ScrollPaginate extends \tiFy\Core\Control\Factory
 {
     /**
@@ -24,6 +38,12 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     protected $ID = 'scroll_paginate';
 
     /**
+     * Requête globale
+     * @var \Symfony\Component\HttpFoundation\Request::createFromGlobals
+     */
+    private static $Request = null;
+
+    /**
      * CONSTRUCTEUR
      *
      * @return void
@@ -31,6 +51,11 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     public function __construct()
     {
         parent::__construct();
+
+        // Définition de la requête globale
+        if (!self::$Request) :
+            self::$Request = Request::createFromGlobals();
+        endif;
 
         // Déclaration des Actions Ajax
         $this->tFyAppAddAction(
@@ -55,7 +80,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     {
         // Déclaration des scripts
         \wp_register_style(
-            'tify_control-repeater',
+            'tify_control-scroll_paginate',
             self::tFyAppAssetsUrl('ScrollPaginate.css', get_class()),
             [],
             171204
@@ -76,7 +101,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      */
     public static function enqueue_scripts()
     {
-        \wp_enqueue_style('ify_control-scroll_paginate');
+        \wp_enqueue_style('tify_control-scroll_paginate');
         \wp_enqueue_script('tify_control-scroll_paginate');
     }
 
@@ -89,10 +114,14 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     {
         check_ajax_referer('tiFyControl-ScrollPaginate');
 
-        wp_send_json('tata');
+        if ($options = self::$Request->request->get('options')) :
+            $options = wp_unslash($options);
+        endif;
+        $offset = self::$Request->request->get('offset');
 
+        $response = \call_user_func_array($options['query_items_cb'], compact('options', 'offset'));
 
-        exit;
+        wp_send_json($response);
     }
 
     /**
@@ -112,10 +141,11 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *      @param string $ajax_nonce Chaîne de sécurisation de l'action Ajax
      *      @param array $query_args Argument de requête de récupération des éléments
      *      @param array $per_page Nombre d'éléments par passe de récupération
-     *
+     *      @param string $target Identifiant de qualification du selecteur du DOM d'affichage de la liste des éléments
      *      @param string $before_item Chaine d'ouverture d'encapsulation d'un élément
      *      @param string $after_item Chaine de fermeture d'encapsulation d'un élément
-     *      @param string $item_cb Methode ou fonction de rappel d'affichage d'un élément
+     *      @param string $query_items_cb Methode ou fonction de rappel de récupération de la liste des éléments
+     *      @param string $item_display_cb Methode ou fonction de rappel d'affichage d'un élément
      * }
      * @param bool $echo Activation de l'affichage
      *
@@ -134,21 +164,37 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             'ajax_action'       => 'tify_control_scroll_paginate',
             'ajax_nonce'        => wp_create_nonce('tiFyControl-ScrollPaginate'),
             'query_args'        => $wp_query->query_vars,
-            'per_page'          => \get_query_var('posts_per_page', get_option('posts_per_page', 10)),
+            'per_page'          => 0,
             'target'            => '',
             'before_item'       => '<li>',
             'after_item'        => '</li>',
-            'query_cb'          => __CLASS__ . '::query',
-            'item_cb'           => __CLASS__ . '::item'
+            'query_items_cb'    => get_called_class() . '::queryItems',
+            'item_display_cb'   => get_called_class() . '::itemDisplay'
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
+        /**
+         * @var string $id Identifiant de qualification du controleur
+         * @var string $container_id ID HTML du controleur d'affichage
+         * @var string $container_class Classe HTML du controleur d'affichage
+         * @var string $text Texte du controleur d'affichage
+         * @var string $ajax_action Action Ajax de récupération des éléments
+         * @var string $ajax_nonce Chaîne de sécurisation de l'action Ajax
+         * @var array $query_args Argument de requête de récupération des éléments
+         * @var array $per_page Nombre d'éléments par passe de récupération
+         * @var string $target Identifiant de qualification du selecteur du DOM d'affichage de la liste des éléments
+         * @var string $before_item Chaine d'ouverture d'encapsulation d'un élément
+         * @var string $after_item Chaine de fermeture d'encapsulation d'un élément
+         * @var string $query_items_cb Methode ou fonction de rappel de récupération de la liste des éléments
+         * @var string $item_cb Methode ou fonction de rappel d'affichage d'un élément
+         */
+        extract($attrs);
 
         $output  = "";
-        $output .= "<a href=\"#{$attrs['container_id']}\"";
-        $output .= " id=\"{$attrs['container_id']}\"";
+        $output .= "<a href=\"#{$container_id}\"";
+        $output .= " id=\"{$container_id}\"";
         $output .= " class=\"tiFyCoreControl-ScrollPaginate" . ($attrs['container_class'] ? " {$attrs['container_class']}" : "") . "\"";
-        $output .= " data-options=\"" . rawurlencode(json_encode($attrs)) . "\">";
-        $output .= $attrs['text'];
+        $output .= " data-options=\"" . rawurlencode(json_encode(compact(array_keys($defaults)))) . "\">";
+        $output .= $text;
         $output .= "</a>";
 
         // Mise en file du script dynamique
@@ -157,7 +203,6 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             function () use ($attrs)
             {
             ?><script type="text/javascript">/* <![CDATA[ */
-                var tify_scroll_paginate_xhr;
                 jQuery(document).ready(function ($) {
                     var handler = '#<?php echo $attrs['container_id']; ?>', target = '<?php echo $attrs['target'];?>';
                     tify_scroll_paginate(handler, target);
@@ -177,55 +222,78 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     /**
      * Récupération de la liste des éléments
      *
-     * @return array|\WP_Query
+     * @return string
      */
-    public static function query($attrs = [])
+    public static function queryItems($options = [], $offset = 0)
     {
-        $defaults = [
+        /**
+         * @var string $id Identifiant de qualification du controleur
+         * @var string $container_id ID HTML du controleur d'affichage
+         * @var string $container_class Classe HTML du controleur d'affichage
+         * @var string $text Texte du controleur d'affichage
+         * @var string $ajax_action Action Ajax de récupération des éléments
+         * @var string $ajax_nonce Chaîne de sécurisation de l'action Ajax
+         * @var array $query_args Argument de requête de récupération des éléments
+         * @var array $per_page Nombre d'éléments par passe de récupération
+         * @var string $target Identifiant de qualification du selecteur du DOM d'affichage de la liste des éléments
+         * @var string $before_item Chaine d'ouverture d'encapsulation d'un élément
+         * @var string $after_item Chaine de fermeture d'encapsulation d'un élément
+         * @var string $query_items_cb Methode ou fonction de rappel de récupération de la liste des éléments
+         * @var string $item_display_cb Methode ou fonction de rappel d'affichage d'un élément
+         */
+        extract($options);
 
-        ];
-
-        $posts_per_page = (!empty($query_args['posts_per_page'])) ? $query_args['posts_per_page'] : $per_page;
-        if (!isset($query_args['post_status'])) {
-            $query_args['post_status'] = 'publish';
-        }
-        $query_post = new \WP_Query($query_args);
-        $is_complete = ((int)$query_post->found_posts <= $posts_per_page) ? 'ty_iscroll_complete' : '';
-
-        // Récupération des arguments
-        $query_args = $_POST['query_args'];
-        $before = stripslashes(html_entity_decode($_POST['before']));
-        $after = stripslashes(html_entity_decode($_POST['after']));
-        $template = $_POST['template'];
-
-        // Traitement des arguments
-        parse_str($_POST['query_args'], $query_args);
-        $query_args['posts_per_page'] = (!empty($query_args['posts_per_page'])) ? $query_args['posts_per_page'] : $_POST['per_page'];
-        $query_args['paged'] = ceil($_POST['from'] / $query_args['posts_per_page']) + 1;
-        if (!isset($query_args['post_status'])) {
-            $query_args['post_status'] = 'publish';
-        }
-
-        // Requête
-        $query_post = new \WP_Query;
-        $posts = $query_post->query($query_args);
-
-        $output = "";
-        if ($query_post->found_posts) :
-            while ($query_post->have_posts()) : $query_post->the_post();
-                $output .= $before;
-                ob_start();
-                get_template_part($template);
-                $output .= ob_get_clean();
-                $output .= $after;
-            endwhile;
-            if ($query_post->max_num_pages == $query_args['paged']) :
-                $output .= "<!-- tiFy_Infinite_Scroll_End -->";
+        // Définition du nombre d'éléments par passe
+        if (!$per_page) :
+            if(empty($query_args['post_per_page'])) :
+                $per_page = $query_args['post_per_page'];
+            elseif(!$per_page = get_option('posts_per_page', 10)) :
+                $per_page = 10;
             endif;
-        else :
-            $output .= "<!-- tiFy_Infinite_Scroll_End -->";
         endif;
 
-        echo $output;
+        // Traitement des arguments de requête WP_Query
+        // Définition du type de post par défaut
+        if (empty($query_args['post_type'])) :
+            $query_args['post_type'] = 'any';
+        endif;
+        // Définition du statut par défaut
+        if (empty($query_args['post_status'])) :
+            $query_args['post_status'] = 'publish';
+        endif;
+        // Définition de post par page
+        $query_args['post_per_page'] = $per_page;
+        // Définition de l'élément à partir duquel récupérer la liste des élements suivant
+        $query_args['offset'] = $offset;
+
+        // Lancement de la requête de récupération WP_Query
+        $query_post = new \WP_Query;
+        $items = $query_post->query($query_args);
+        $total = (int)$query_post->found_posts;
+        $complete = (($offset+$per_page) >= $total);
+
+        // Génération de l'affichage
+        $html = "";
+        if ($items) :
+            while ($query_post->have_posts()) : $query_post->the_post();
+                $html .= $before_item;
+                ob_start();
+                call_user_func($item_display_cb);
+                $html .= ob_get_clean();
+                $html .= $after_item;
+            endwhile;
+        endif;
+
+        return compact('html', 'complete');
+    }
+
+    /**
+     * Affichage d'un élément
+     *
+     * @return string
+     */
+    public static function itemDisplay()
+    {
+        return self::tFyAppGetTemplatePart('item');
     }
 }

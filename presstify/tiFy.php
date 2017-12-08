@@ -8,6 +8,8 @@
  */
 namespace tiFy;
 
+use \tiFy\Lib\File;
+
 final class tiFy
 {
     
@@ -34,8 +36,7 @@ final class tiFy
      * @var mixed
      */
     protected static $Config            = array();
-    
-    
+
     /**
      * Classe de chargement automatique
      */ 
@@ -77,14 +78,15 @@ final class tiFy
         new Libraries;
 
         // Chargement des librairies tierces
-        if (file_exists(tiFy::$AbsDir .'/vendor/autoload.php'))
+        if (file_exists(tiFy::$AbsDir .'/vendor/autoload.php')) :
             require_once tiFy::$AbsDir .'/vendor/autoload.php';
+        endif;
         
         // Instanciation des fonctions d'aides au développement
         self::classLoad('tiFy\Helpers', __DIR__ .'/helpers');
         
         // Définition de l'url absolue
-        self::$AbsUrl = \tiFy\Lib\File::getFilenameUrl(self::$AbsDir, self::$AbsPath);
+        self::$AbsUrl = File::getFilenameUrl(self::$AbsDir, self::$AbsPath);
 
         // Instanciation des composants natifs
         self::classLoad('tiFy\Core', __DIR__ . '/core');

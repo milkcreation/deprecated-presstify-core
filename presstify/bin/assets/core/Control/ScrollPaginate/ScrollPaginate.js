@@ -26,42 +26,37 @@ var tify_scroll_paginate_xhr, tify_scroll_paginate;
             // Définition des arguments
             var $handler = $(handler),
                 o = JSON.parse(decodeURIComponent($(this).data('options'))),
-                from = $('> *', $target).length;
+                offset = $('> *', $target).length;
 
-            $target.addClass('tiFyCoreControl-ScrollPaginateTarget--load');
-            $(handler).addClass('tiFyCoreControl-ScrollPaginateHandler--load');
+            $target.addClass('tiFyCoreControl-ScrollPaginateLoading tiFyCoreControl-ScrollPaginateLoading--target');
+            $(handler).addClass('tiFyCoreControl-ScrollPaginateLoading tiFyCoreControl-ScrollPaginateLoading--handler');
+
+            $target.trigger('tify_control.scroll_paginate.loading', $handler);
 
             tify_scroll_paginate_xhr = $.post(
                 tify_ajaxurl,
                 {
                     action: o.ajax_action,
                     _ajax_nonce: o.ajax_nonce,
-                    query_args: o.query_args,
-                    before: o.before,
-                    after: o.after,
-                    per_page: o.per_page,
-                    item_cb: o.item_cb,
-                    from: from
+                    options: o,
+                    offset: offset
                 }
             )
-                .done(function(resp){
-                    console.log(resp);
-                });
-
-                /*
-                    $target.removeClass('ty_iscroll_load');
-                    $(handler).removeClass('ty_iscroll_load');
-
-                    $target.append(resp);
-                    var complete = resp.match(/<!-- tiFy_Infinite_Scroll_End -->/);
-                    if (complete) {
-                        $target.addClass('ty_iscroll_complete');
-                        $(handler).addClass('ty_iscroll_complete');
+                .done(function(data, textStatus, jqXHR){
+                    $target.append(data.html);
+                    if (data.complete) {
+                        $target.addClass('tiFyCoreControl-ScrollPaginateComplete tiFyCoreControl-ScrollPaginateComplete--target');
+                        $handler.addClass('tiFyCoreControl-ScrollPaginateComplete tiFyCoreControl-ScrollPaginateComplete--handler');
                     }
-                    $target.trigger('ty_iscroll_loaded', $(handler));
-                    tify_infinite_scroll_xhr.abort();
-                    tify_infinite_scroll_xhr = undefined;
-                }*/
+                })
+                .then(function(data, textStatus, jqXHR ){
+                    $target.removeClass('tiFyCoreControl-ScrollPaginateLoading tiFyCoreControl-ScrollPaginateLoading--target');
+                    $handler.removeClass('tiFyCoreControl-ScrollPaginateLoading tiFyCoreControl-ScrollPaginateLoading--handler');
+
+                    $target.trigger('tify_control.scroll_paginate.loaded', $handler);
+                    //tify_scroll_paginate_xhr.abort();
+                    tify_scroll_paginate_xhr = undefined;
+                });
         });
     }
 

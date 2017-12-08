@@ -223,8 +223,8 @@ abstract class Table extends \WP_List_Table
     /** == Mise en file des scripts de l'interface d'administration == **/
     public function _admin_enqueue_scripts()
     {
-        wp_enqueue_script( 'jquery-ui-dialog' ); 
-        wp_enqueue_style( 'wp-jquery-ui-dialog' );
+        wp_enqueue_script('jquery-ui-dialog');
+        wp_enqueue_style( 'wp-jquery-ui-dialog');
     }    
     
     /** == == **/

@@ -9,11 +9,16 @@ class UserListTable extends \tiFy\Core\Ui\Admin\Templates\ListTable\ListTable
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
         parent::__construct($id, $attrs);
+
+
 
         // Définition de la liste des paramètres autorisés
         $this->setAllowedParamList(['roles']);
@@ -50,6 +55,9 @@ class UserListTable extends \tiFy\Core\Ui\Admin\Templates\ListTable\ListTable
         \wp_enqueue_style('tiFyCoreUiAdminTemplatesUserListTable', self::tFyAppAssetsUrl('UserListTable.css', get_class()), [], 171115);
     }
 
+    /**
+     * CONTROLEURS
+     */
     /**
      * Préparation de la liste des éléments à afficher
      *

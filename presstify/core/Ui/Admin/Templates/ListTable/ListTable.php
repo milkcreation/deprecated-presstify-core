@@ -1,43 +1,14 @@
 <?php
 namespace tiFy\Core\Ui\Admin\Templates\ListTable;
 
-/** 
- * @see https://codex.wordpress.org/Class_Reference/WP_List_Table
- */
-if(!class_exists('WP_List_Table')) :
-    require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
-endif;
-
-class ListTable extends \WP_List_Table
+class ListTable extends \tiFy\Core\Ui\Admin\Factory
 {
-    // Application TiFy
-    use \tiFy\App\Traits\App;
-
     // Gabarit commun
     use \tiFy\Core\Ui\Common\Traits\Templates\ListTable\ListTable;
-
-    // Fonctions d'aide
-    use \tiFy\Core\Ui\Common\Traits\Helpers;
-
-    // Attributs de configuration
-    use \tiFy\Core\Ui\Common\Traits\Attrs;
-    use \tiFy\Core\Ui\Admin\Traits\Attrs;
+    use \tiFy\Core\Ui\Common\Traits\Templates\ListTable\WpListTable;
 
     // Paramètres
-    use \tiFy\Core\Ui\Common\Traits\Params;
-    use \tiFy\Core\Ui\Admin\Traits\Params;
     use Traits\Params;
-
-    // Evénements
-    use \tiFy\Core\Ui\Common\Traits\Events;
-    use \tiFy\Core\Ui\Admin\Traits\Events;
-
-    // Actions
-    use \tiFy\Core\Ui\Common\Traits\Actions;
-    use \tiFy\Core\Ui\Admin\Traits\Actions;
-
-    // Notifications
-    use \tiFy\Core\Ui\Common\Traits\Notices;
 
     // Vues filtrées
     use Traits\Views;
@@ -51,19 +22,14 @@ class ListTable extends \WP_List_Table
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
-        // L'appel au constructeur parent est désactivé pour court-circuiter l'intialisation native de WP_List_Table
-        // @see \tiFy\Core\Ui\Admin\Templates\Table\Table::_wp_list_table_init()
-
-        // Déclaration de l'app tiFy
-        self::_tFyAppRegister($this);
-
-        //Définition des attributs de configuration
-        $this->setId($id);
-        $this->setAttrList($attrs);
+        parent::__construct($id, $attrs);
 
         // Définition de la liste des paramètres autorisés
         $this->setAllowedParamList(
@@ -89,52 +55,6 @@ class ListTable extends \WP_List_Table
     }
 
     /**
-     * Initialisation de la classe WP_List_Table
-     * @see \WP_List_Table::__construct()
-     *
-     * @param array $args {
-     *      Liste des attributs de configuration de la table
-     *
-     *      @param string $plural Intitulé de qualification de la liste des éléments
-     *      @param string $singular Intitulé de qualification d'un élément
-     *      @param bool $ajax Activation des fonctionnalités ajax de la table
-     *      @param string|WP_Screen $screen Identifiant de qualification ou objet de l'écran d'affichage de la table
-     * }
-     *
-     * @return void
-     */
-    final public function _wp_list_table_init($args = [])
-    {
-        parent::__construct(
-            \wp_parse_args(
-                $args,
-                [
-                    'plural'   => $this->getParam('plural'),
-                    'singular' => $this->getParam('singular'),
-                    'ajax'     => $this->getParam('ajax'),
-                    'screen'   => $this->getScreen()
-                ]
-            )
-        );
-    }
-
-    /**
-     * Initialisation  du titre de la page
-     *
-     * @param string $page_title Titre de la page défini en paramètre
-     *
-     * @return string
-     */
-    public function init_param_page_title($page_title = '')
-    {
-        if (!$page_title) :
-            $page_title = $this->getLabel('all_items', '');
-        endif;
-
-        return $page_title;
-    }
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -144,6 +64,8 @@ class ListTable extends \WP_List_Table
      */
     public function init()
     {
+        parent::init();
+
         // Pré-initialisation des paramètres
         $this->initParams(
             [
@@ -165,17 +87,17 @@ class ListTable extends \WP_List_Table
      */
     public function current_screen($current_screen)
     {
-        // Définition de l'écran courant
-        $this->setScreen($current_screen);
+        parent::current_screen($current_screen);
 
-        // Initialisation des paramètres de configuration de la table
-        $this->initParams();
-
-        // Vérification de l'habilitation d'accès à l'interface
-        $this->check_user_can();
-
-        // Initialisation de la classe de table native de Wordpress
-        $this->_wp_list_table_init();
+        // Initialisation de l'émulation de la classe de table native de Wordpress
+        $this->_wp_list_table_init(
+            [
+                'plural'   => $this->getParam('plural'),
+                'singular' => $this->getParam('singular'),
+                'ajax'     => $this->getParam('ajax'),
+                'screen'   => $this->getScreen()
+            ]
+        );
 
         // Activation de l'interface de gestion du nombre d'éléments par page
         $current_screen->add_option('per_page', ['option' => $this->getParam('per_page_option_name')]);
@@ -194,6 +116,8 @@ class ListTable extends \WP_List_Table
      */
     public function admin_enqueue_scripts()
     {
+        parent::admin_enqueue_scripts();
+
         if ($preview_item_mode = $this->getParam('preview_item_mode')) :
             wp_enqueue_script('tiFyCoreUiAdminTemplatesListTablePreviewItem', self::tFyAppAssetsUrl('ListTable-previewItem.js', get_class()), ['jquery', 'url'], 171118, true);
             wp_localize_script(
@@ -233,6 +157,25 @@ class ListTable extends \WP_List_Table
         $item = current($this->items);
         $this->preview_item($item);
         die();
+    }
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Initialisation  du titre de la page
+     *
+     * @param string $page_title Titre de la page défini en paramètre
+     *
+     * @return string
+     */
+    public function init_param_page_title($page_title = '')
+    {
+        if (!$page_title) :
+            $page_title = $this->getLabel('all_items', '');
+        endif;
+
+        return $page_title;
     }
 
     /**

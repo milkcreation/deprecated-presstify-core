@@ -1,35 +1,11 @@
 <?php
 namespace tiFy\Core\Ui\Admin\Templates\Browser;
 
+use tiFy\Core\Ui\Ui;
 use tiFy\Core\Control\Control;
 
-class Browser
+class Browser extends \tiFy\Core\Ui\Admin\Factory
 {
-    // Application TiFy
-    use \tiFy\App\Traits\App;
-
-    // Fonctions d'aide
-    use \tiFy\Core\Ui\Common\Traits\Helpers;
-
-    // Attributs de configuration
-    use \tiFy\Core\Ui\Common\Traits\Attrs;
-    use \tiFy\Core\Ui\Admin\Traits\Attrs;
-
-    // Paramètres
-    use \tiFy\Core\Ui\Common\Traits\Params;
-    use \tiFy\Core\Ui\Admin\Traits\Params;
-
-    // Evénements
-    use \tiFy\Core\Ui\Common\Traits\Events;
-    use \tiFy\Core\Ui\Admin\Traits\Events;
-
-    // Actions
-    use \tiFy\Core\Ui\Common\Traits\Actions;
-    use \tiFy\Core\Ui\Admin\Traits\Actions;
-
-    // Notifications
-    use \tiFy\Core\Ui\Common\Traits\Notices;
-
     /**
      * Liste des éléments de menu
      * @var object
@@ -39,22 +15,21 @@ class Browser
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
-        // Déclaration de l'app tiFy
-        self::_tFyAppRegister($this);
-
-        //Définition des attributs de configuration
-        $this->setId($id);
-        $this->setAttrList($attrs);
+        parent::__construct($id, $attrs);
 
         // Définition de la liste des paramètres autorisés
         $this->setAllowedParamList(
             [
                 'dir',
-                'chroot'
+                'chroot',
+                'per_page'
             ]
         );
 
@@ -67,22 +42,18 @@ class Browser
             'chroot',
             true
         );
+        $this->setDefaultParam(
+            'per_page',
+            20
+        );
+
+        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getFolderContent', 'ajaxGetFolderContent');
+        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getImagePreview', 'ajaxGetImagePreview');
     }
 
     /**
      * DECLENCHEURS
      */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public function init()
-    {
-        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getFolderContent', 'ajaxGetFolderContent');
-        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getImagePreview', 'ajaxGetImagePreview');
-    }
-
     /**
      * Affichage de l'écran courant
      *
@@ -92,6 +63,8 @@ class Browser
      */
     public function current_screen($current_screen)
     {
+        parent::current_screen($current_screen);
+
         // Définition de l'écran courant
         $this->setScreen($current_screen);
 
@@ -115,6 +88,8 @@ class Browser
      */
     public function admin_enqueue_scripts()
     {
+        parent::admin_enqueue_scripts();
+
         Control::enqueue_scripts('curtain_menu');
         Control::enqueue_scripts('spinkit');
         Control::enqueue_scripts('scroll_paginate');
@@ -122,6 +97,9 @@ class Browser
         \wp_enqueue_script('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.js', ['jquery'], 171201);
     }
 
+    /**
+     *
+     */
     final public function ajaxGetFolderContent()
     {
         // Initialisation des paramètres de configuration de la table
@@ -161,48 +139,54 @@ class Browser
     }
 
     /**
-     * @param $dir
-     * @param null $parent
-     * @param int $depth
+     *
      */
-    public function getNavMenuNodes($dir = null, $parent = null, $depth = 0)
+    public static function queryItems($options = [], $offset = 0)
     {
-        if ($depth >= 4) :
-            return;
+        /**
+         * @var string $id Identifiant de qualification du controleur
+         * @var string $container_id ID HTML du controleur d'affichage
+         * @var string $container_class Classe HTML du controleur d'affichage
+         * @var string $text Texte du controleur d'affichage
+         * @var string $ajax_action Action Ajax de récupération des éléments
+         * @var string $ajax_nonce Chaîne de sécurisation de l'action Ajax
+         * @var array $query_args Argument de requête de récupération des éléments
+         * @var array $per_page Nombre d'éléments par passe de récupération
+         * @var string $target Identifiant de qualification du selecteur du DOM d'affichage de la liste des éléments
+         * @var string $before_item Chaine d'ouverture d'encapsulation d'un élément
+         * @var string $after_item Chaine de fermeture d'encapsulation d'un élément
+         * @var string $query_items_cb Methode ou fonction de rappel de récupération de la liste des éléments
+         * @var string $item_display_cb Methode ou fonction de rappel d'affichage d'un élément
+         */
+        extract($options);
+
+        $inst = Ui::getAdmin('PixvertImport-media');
+        $inst->initParams();
+
+        $html = "";
+        $complete = true;
+        if ($files = glob($query_args['dir'] . "/*")) :
+            // Trie de la liste des fichiers en plaçant les dossier avant
+            usort($files, function ($a, $b) {
+                $aIsDir = is_dir($a);
+                $bIsDir = is_dir($b);
+                if ($aIsDir === $bIsDir) :
+                    return strnatcasecmp($a, $b);
+                elseif ($aIsDir && !$bIsDir) :
+                    return -1;
+                elseif (!$aIsDir && $bIsDir) :
+                    return 1;
+                endif;
+            });
+            $per_page = $inst->getParam('per_page');
+            $filtered = array_slice($files, $offset, $per_page);
+
+            foreach($filtered as $filename) :
+                $html .= self::getFileItem($filename);
+            endforeach;
         endif;
 
-        if (!$dir) :
-            $dir = $this->getParam('dir');
-        endif;
-
-        $dir = rtrim($dir, '/');
-
-        $nav_menu_nodes = [];
-        foreach(glob($dir . "/*") as $filename) :
-            if (!is_dir($filename)) :
-                continue;
-            endif;
-
-            $attrs['id'] = $filename;
-            $attrs['title'] = basename($filename);
-            $attrs['content'] = basename($filename);
-            $attrs['current'] = 0;
-            $attrs['is_ancestor'] = 0;
-            $attrs['has_children'] = 0;
-            if ($parent) :
-                $attrs['parent'] = dirname($filename);
-            endif;
-
-            $nav_menu_nodes[] = $attrs;
-
-            if ($childs = $this->getNavMenuNodes($filename, $dir, $depth+1)) :
-                foreach ($childs as $child) :
-                    array_push($nav_menu_nodes, $child);
-                endforeach;
-            endif;
-        endforeach;
-
-        return $nav_menu_nodes;
+        return compact('html', 'complete');
     }
 
     /**
@@ -226,7 +210,12 @@ class Browser
 
         // Indicateur de chargement
         $output .= "<div class=\"BrowserFolder-Spinner\">";
-        $output .= Control::spinkit(['type' => 'spinner-pulse'], false);
+        $output .= Control::Spinkit(
+            [
+                'type' => 'spinner-pulse'
+            ],
+            false
+        );
         $output .= "</div>";
 
         // Affichage de la liste des fichers du répertoire
@@ -255,57 +244,79 @@ class Browser
                     return 1; // $b is dir, should be before $a
             });
 
-            $total = count($files);
-            $per_page = 24;
-            $page = 1;
-            $offset = ($page-1)*$per_page;
+            $per_page = $this->getParam('per_page', 20);
+            $offset = 0;
             $filtered = array_slice($files, $offset, $per_page);
 
             foreach($filtered as $filename) :
-                $is_dir = false;
-                if (is_dir($filename)) :
-                    $is_dir = true;
-                    $type = 'dir';
-                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
-                else :
-                    $ext = pathinfo($filename, PATHINFO_EXTENSION);
-                    $type = wp_ext2type($ext);
-                    switch($type) :
-                        case 'archive' :
-                        case 'audio' :
-                        case 'code' :
-                        case 'document' :
-                        case 'interactive' :
-                        case 'spreadsheet' :
-                        case 'text' :
-                        case 'video' :
-                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-{$type}\"></span>";
-                            break;
-
-                        case 'image' :
-                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--image BrowserFolder-FileIcon--glyphicon dashicons dashicons-format-image\"></span>" . Control::spinkit(['container_class' => 'BrowserFolder-FilePreviewSpinner', 'type' => 'three-bounce'], false);
-                            break;
-
-                        default :
-                            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--default BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-default\"></span>";
-                            break;
-                    endswitch;
-                endif;
-
-                $output .= "<li class=\"BrowserFolder-File\">";
-                $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
-                $output .= "<div class=\"BrowserFolder-FilePreview BrowserFolder-FilePreview--{$type}\">{$icon}</div>";
-                $output .= "<span class=\"BrowserFolder-FileName\">" . basename($filename) . "</span>";
-                $output .= "</a>";
-                $output .= "</li>";
+                $output .= self::getFileItem($filename);
             endforeach;
         endif;
         $output .= "</ul>";
         $output .= "</div>";
-        $output .= Control::scroll_paginate(['container_class' => 'BrowserFolder-Paginate'], false);
+        $output .= Control::ScrollPaginate(
+            [
+                'container_class' => 'BrowserFolder-Paginate',
+                'target'          => '.BrowserFolder-Files',
+                'query_args'      => ['ui' => $this->getId(), 'dir' => $dir],
+                'query_items_cb'  => get_called_class() . '::queryItems'
+            ],
+            false
+        );
 
         return $output;
     }
+
+    /**
+     * Récupération de l'affichage d'un fichier
+     *
+     * @param string $filename
+     *
+     * @return string
+     */
+    public static function getFileItem($filename)
+    {
+        if (is_dir($filename)) :
+            $is_dir = true;
+            $type = 'dir';
+            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
+        else :
+            $is_dir = false;
+            $type = wp_ext2type(pathinfo($filename, PATHINFO_EXTENSION));
+
+            switch($type) :
+                case 'archive' :
+                case 'audio' :
+                case 'code' :
+                case 'document' :
+                case 'interactive' :
+                case 'spreadsheet' :
+                case 'text' :
+                case 'video' :
+                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-{$type}\"></span>";
+                    break;
+
+                case 'image' :
+                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-format-image\"></span>" . Control::Spinkit(['container_class' => 'BrowserFolder-FilePreviewSpinner', 'type' => 'three-bounce'], false);
+                    break;
+
+                default :
+                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--default BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-default\"></span>";
+                    break;
+            endswitch;
+        endif;
+
+        $output = "";
+        $output .= "<li class=\"BrowserFolder-File\">";
+        $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
+        $output .= "<div class=\"BrowserFolder-FilePreview BrowserFolder-FilePreview--{$type}\">{$icon}</div>";
+        $output .= "<span class=\"BrowserFolder-FileName\">" . basename($filename) . "</span>";
+        $output .= "</a>";
+        $output .= "</li>";
+
+        return $output;
+    }
+
 
     /**
      *
@@ -372,16 +383,7 @@ class Browser
     <div class="Browser Browser--grid">
         <div class="BrowserNav">
             <div class="BrowserNav-Menu">
-            <?php
-            /*
-             Control::curtain_menu(
-                [
-                    'nodes' => $this->getNavMenuNodes(),
-                    'theme' => 'light'
-                ]
-            );
-            */
-            ?>
+
             </div>
             <div class="BrowserNav-Edit">
             </div>

@@ -1,9 +1,9 @@
 <?php
 /**
- * @name SpinKit
+ * @name Spinkit
  * @desc Controleur d'affichage d'un indicateur de préchargement
  * @package presstiFy
- * @namespace tiFy\Core\Control\SpinKit
+ * @namespace tiFy\Core\Control\Spinkit
  * @version 1.1
  * @subpackage Core
  * @since 1.2.502
@@ -13,21 +13,21 @@
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Control\SpinKit;
+namespace tiFy\Core\Control\Spinkit;
 
 /**
- * @Overrideable \App\Core\Control\SpinKit\SpinKit
+ * @Overrideable \App\Core\Control\Spinkit\Spinkit
  *
  * <?php
- * namespace \App\Core\Control\SpinKit
+ * namespace \App\Core\Control\Spinkit
  *
- * class SpinKit extends \tiFy\Core\Control\SpinKit\SpinKit
+ * class Spinkit extends \tiFy\Core\Control\Spinkit\Spinkit
  * {
  *
  * }
  */
 
-class SpinKit extends \tiFy\Core\Control\Factory
+class Spinkit extends \tiFy\Core\Control\Factory
 {
     /**
      * Identifiant de la classe

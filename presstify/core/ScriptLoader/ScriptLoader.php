@@ -224,7 +224,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'media'        => 'all' 
             ),       
             
-            // SpinKit - All
+            // Spinkit - All
             'spinkit'                    => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinkit.min.css'
@@ -233,7 +233,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Rotating Plane
+            // Spinkit - Rotating Plane
             'spinkit-rotating-plane'    => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/1-rotating-plane.min.css'
@@ -242,7 +242,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Double Bounce
+            // Spinkit - Double Bounce
             'spinkit-double-bounce'        => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/2-double-bounce.min.css'
@@ -251,7 +251,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Wave
+            // Spinkit - Wave
             'spinkit-wave'                    => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/3-wave.min.css'
@@ -260,7 +260,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Wandering Cubes
+            // Spinkit - Wandering Cubes
             'spinkit-wandering-cubes'        => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/4-wandering-cubes.min.css'
@@ -269,7 +269,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Pulse
+            // Spinkit - Pulse
             'spinkit-pulse'                    => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/5-pulse.min.css'
@@ -278,7 +278,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Pulse
+            // Spinkit - Pulse
             'spinkit-spinner-pulse'                    => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/5-pulse.min.css'
@@ -287,7 +287,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all'
             ),
-            // SpinKit - Chasing Dots
+            // Spinkit - Chasing Dots
             'spinkit-chasing-dots'            => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/6-chasing-dots.min.css'
@@ -296,7 +296,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Three bounce
+            // Spinkit - Three bounce
             'spinkit-three-bounce'            => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/7-three-bounce.min.css'
@@ -305,7 +305,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Circle
+            // Spinkit - Circle
             'spinkit-circle'                => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/8-circle.min.css'
@@ -314,7 +314,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Cube Grid
+            // Spinkit - Cube Grid
             'spinkit-cube-grid'                => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/9-cube-grid.min.css'
@@ -323,7 +323,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all' 
             ),
-            // SpinKit - Fading Circle
+            // Spinkit - Fading Circle
             'spinkit-fading-circle'        => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/10-fading-circle.min.css'
@@ -332,7 +332,7 @@ class ScriptLoader extends \tiFy\App\Factory
                 'version'    => '1.2.5',
                 'media'        => 'all'
             ),
-            // SpinKit - Folding Cube
+            // Spinkit - Folding Cube
             'spinkit-folding-cube'        => array(
                 'src'        => array(
                     'cdn'        => '//cdnjs.cloudflare.com/ajax/libs/spinkit/1.2.5/spinners/11-folding-cube.min.css'

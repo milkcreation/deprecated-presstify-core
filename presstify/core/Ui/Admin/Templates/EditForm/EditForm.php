@@ -4,33 +4,10 @@ namespace tiFy\Core\Ui\Admin\Templates\EditForm;
 use tiFy\Apps;
 use tiFy\Core\Fields\Fields;
 
-class EditForm
+class EditForm extends \tiFy\Core\Ui\Admin\Factory
 {
-    // Application TiFy
-    use \tiFy\App\Traits\App;
-
-    // Attributs de configuration
-    use \tiFy\Core\Ui\Common\Traits\Attrs;
-    use \tiFy\Core\Ui\Admin\Traits\Attrs;
-
     // Paramètres
-    use \tiFy\Core\Ui\Common\Traits\Params;
-    use \tiFy\Core\Ui\Admin\Traits\Params;
     use Traits\Params;
-
-    // Evénements
-    use \tiFy\Core\Ui\Common\Traits\Events;
-    use \tiFy\Core\Ui\Admin\Traits\Events;
-
-    // Actions
-    use \tiFy\Core\Ui\Common\Traits\Actions;
-    use \tiFy\Core\Ui\Admin\Traits\Actions;
-
-    // Notifications
-    use \tiFy\Core\Ui\Common\Traits\Notices;
-
-    // Fonctions d'aide
-    use \tiFy\Core\Ui\Common\Traits\Helpers;
 
     /**
      * Liste des attributs de l'élément à éditer
@@ -41,16 +18,14 @@ class EditForm
     /**
      * CONSTRUCTEUR
      *
+     * @param string $id Identifiant de qualification
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct($id, $attrs)
+    public function __construct($id = null, $attrs = [])
     {
-        // Déclaration de l'app tiFy
-        self::_tFyAppRegister($this);
-
-        //Définition des attributs de configuration
-        $this->setId($id);
-        $this->setAttrList($attrs);
+        parent::__construct($id, $attrs);
 
         // Définition de la liste des paramètres autorisés
         $this->setAllowedParamList(
@@ -75,14 +50,7 @@ class EditForm
      */
     final public function current_screen($current_screen)
     {
-        // Définition de l'écran courant
-        $this->setScreen($current_screen);
-
-        // Initialisation des paramètres de configuration de la table
-        $this->initParams();
-
-        // Vérification de l'habilitation d'accès à l'interface
-        $this->check_user_can();
+        parent::current_screen($current_screen);
 
         // Création d'un nouvel élément
         if (!$item_index = $this->current_item_index()) :
