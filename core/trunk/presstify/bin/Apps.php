@@ -889,6 +889,7 @@ final class Apps
         if ($app = tiFy::getConfig('app')) :
             foreach (array('core', 'components', 'plugins', 'set') as $type) :
                 $Type = ucfirst($type);
+
                 foreach (glob($app['base_dir'] .'/'. $type .'/*/Config.php') as $filename):
                     $Id = basename(dirname($filename));
                     $overrideClass = "{$app['namespace']}\\{$Type}\\{$Id}\\Config";

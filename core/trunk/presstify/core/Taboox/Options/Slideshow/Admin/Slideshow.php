@@ -1,8 +1,7 @@
 <?php
 namespace tiFy\Core\Taboox\Options\Slideshow\Admin;
 
-use tiFy\Core\Control\Suggest\Suggest;
-use tiFy\Core\Control\MediaImage\MediaImage;
+use tiFy\Core\Control\Control;
 
 class Slideshow extends \tiFy\Core\Taboox\Options\Admin
 {
@@ -118,7 +117,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
                         'attrs'       => ['data-duplicate' => $this->args['duplicate']]
                     ]
                 );
-                Suggest::display($suggest_args);
+                Control::Suggest($suggest_args);
                 ?>
                 </div>
             <?php endif; ?>
@@ -199,7 +198,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
         $output .= "\n\t<div class=\"col col-left\">";
         /// Image d'illustration
         $output .= "\n\t\t<div class=\"tiFyTabooxSlideshowInputField-thumbnail\">";
-        $output .= MediaImage::display(
+        $output .= Control::MediaImage(
             [
                 'name'      => "{$name}[{$index}][attachment_id]",
                 'value'     => $attachment_id,
@@ -209,7 +208,8 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
                 'echo'      => false,
                 'width'     => 150,
                 'height'    => 150
-            ]
+            ],
+            false
         );
 
         $output .= "\n\t\t</div>";
