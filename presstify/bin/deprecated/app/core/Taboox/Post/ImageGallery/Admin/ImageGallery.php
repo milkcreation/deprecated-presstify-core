@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\ImageGallery\Admin;
+namespace tiFy\Core\Taboox\Post\ImageGallery\Admin;
 
 use tiFy\Deprecated\Deprecated;
 

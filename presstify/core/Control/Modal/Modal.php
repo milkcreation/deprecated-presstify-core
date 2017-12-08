@@ -242,7 +242,7 @@ class Modal extends \tiFy\Core\Control\Factory
         // Fenêtre de dialogue
         if ($in_footer) :
             $footer = function () use ($output) { echo $output; };
-            \add_action((!is_admin() ? 'wp_footer' : 'admin_footer'), $footer, self::$Instance);
+            \add_action((!is_admin() ? 'wp_footer' : 'admin_footer'), $footer);
         elseif ($echo) :
             echo $output;
         else :
@@ -284,7 +284,7 @@ class Modal extends \tiFy\Core\Control\Factory
             'container_attrs' => [],
             'container_tag'   => 'button',
             'text'            => __('Lancer', 'tify'),
-            'target'          => 'tiFyControl-Modal--' . self::$Instance,
+            'target'          => 'tiFyControl-Modal-' . self::$Instance,
             'modal'           => true
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
@@ -312,9 +312,13 @@ class Modal extends \tiFy\Core\Control\Factory
         $container_attrs['class'] = "tiFyControl-ModalTrigger" . ($container_class ? " {$container_class}" : '');
         $container_attrs['data-toggle'] = "tiFyControl-Modal";
         $container_attrs['data-target'] = isset($modal['id']) ? $modal['id'] : "{$target}";
+        if (($container_tag === 'a') && !isset($container_attrs['href'])) :
+            $container_attrs['href'] = "#{$container_id}";
+        endif;
         foreach ($container_attrs as $k => $v) :
             $output .= " {$k}=\"{$v}\"";
         endforeach;
+
         $output .= ">";
         $output .= $text;
         $output .= "</{$container_tag}>";
@@ -339,10 +343,8 @@ class Modal extends \tiFy\Core\Control\Factory
         if ($echo) :
             echo $output;
         else :
-            return $echo;
+            return $output;
         endif;
-
-        return $output;
     }
 
     /**

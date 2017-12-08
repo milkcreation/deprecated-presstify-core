@@ -148,7 +148,7 @@ class CookieLaw extends \tiFy\App\Set
         $text = ob_get_clean();
 
         // Affichage de la notification
-        Control::cookie_notice(
+        Control::CookieNotice(
             [
                 'id'              => 'tiFySet-CookieLaw',
                 'container_id'    => $container_id,

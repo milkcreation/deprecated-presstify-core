@@ -1,8 +1,6 @@
 <?php
 namespace tiFy\Core\Control;
 
-use tiFy\Deprecated\Deprecated;
-
 class Control extends \tiFy\App\Core
 {
     /**
@@ -59,12 +57,12 @@ class Control extends \tiFy\App\Core
     final public static function __callStatic($name, $args)
     {
         if (in_array($name, array_keys(self::$Factory))) :
-            Deprecated::addArgument($name, '1.2.502', sprintf(__('La possibilité d\'appeler un controleur d\'affichage en utilisant son ID est dépréciée. Pour les controleurs natifs vous devez utiliser le nom de la classe ou utilisez \tiFy\Core\Control::display(\'%s\');', 'tify'), $name));
+            trigger_error(sprintf(__('La possibilité d\'appeler un controleur d\'affichage en utilisant son ID est dépréciée. Pour les controleurs natifs vous devez utiliser le nom de la classe ou utilisez \tiFy\Core\Control::display(\'%s\');', 'tify'), $name));
             $factory = self::$Factory[$name];
         elseif (in_array($name, array_keys(self::$Native))) :
             $factory = self::$Native[$name];
         else :
-            return trigger_error(sprintf(__('le controleur d\'affichage %1$s n\'est pas un controleur natif de presstiFy, utilisez \tiFy\Core\Control::display(\'%1$s\');', 'tify'), $name));
+            return trigger_error(sprintf(__('le controleur d\'affichage %1$s n\'est pas un controleur natif de presstiFy, utilisez \tiFy\Core\Control\Control::display(\'%1$s\');', 'tify'), $name));
         endif;
 
         $echo = isset($args[1]) ? $args[1] : true;

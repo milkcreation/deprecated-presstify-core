@@ -98,7 +98,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                     Fields::Switcher(
                         [
                             'name'    => $this->OptionNames['confirmation'],
-                            'checked' => get_option($this->OptionNames['confirmation'], 'off')
+                            'checked' => ($notification = get_option($this->OptionNames['confirmation'], 'off')) ? $notification : 'off'
                         ]
                     );
                 ?>
@@ -164,7 +164,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                         Fields::Switcher(
                             [
                                 'name'    => $this->OptionNames['notification'],
-                                'checked' => get_option($this->OptionNames['notification'], 'off')
+                                'checked' => ($notification = get_option($this->OptionNames['notification'], 'off')) ? $notification : 'off'
                             ]
                         );
                     ?>
@@ -176,7 +176,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
         <hr>
 
         <?php
-            Control::repeater(
+            Control::Repeater(
                 [
                     'add_button_txt' => __('Ajouter un destinataire', 'tify'),
                     'value'          => get_option($this->OptionNames['recipients']),
