@@ -162,7 +162,7 @@ final class HookArchive extends \tiFy\App\Component
 	
 	/** == Initialisation de l'interface d'administration == **/
 	final public function current_screen( $current_screen )
-	{	    
+	{
 	    if( get_current_screen()->id !== 'settings_page_tify_options' )
 			return;
 		//if( $this->Admin && isset( $_GET['settings-updated'] ) ) :

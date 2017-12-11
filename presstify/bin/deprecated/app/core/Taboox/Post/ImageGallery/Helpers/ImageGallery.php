@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\ImageGallery\Helpers;
+namespace tiFy\Core\Taboox\Post\ImageGallery\Helpers;
 
 class ImageGallery extends \tiFy\Core\Taboox\PostType\ImageGallery\Helpers\ImageGallery
 {
@@ -12,6 +12,6 @@ class ImageGallery extends \tiFy\Core\Taboox\PostType\ImageGallery\Helpers\Image
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\ImageGallery\Helpers\ImageGallery', '1.2.472', '\tiFy\Core\Taboox\PostType\ImageGallery\Helpers\ImageGallery');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Post\ImageGallery\Helpers\ImageGallery', '1.2.472', '\tiFy\Core\Taboox\PostType\ImageGallery\Helpers\ImageGallery');
     }
 }

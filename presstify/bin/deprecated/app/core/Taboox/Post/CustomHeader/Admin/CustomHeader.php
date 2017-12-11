@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\CustomHeader\Admin;
+namespace tiFy\Core\Taboox\Post\CustomHeader\Admin;
 
 use tiFy\Deprecated\Deprecated;
 
@@ -14,6 +14,6 @@ class CustomHeader extends \tiFy\Core\Taboox\PostType\CustomHeader\Admin\CustomH
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\CustomHeader\Admin\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\PostType\CustomHeader\Admin\CustomHeader');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Post\CustomHeader\Admin\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\PostType\CustomHeader\Admin\CustomHeader');
     }
 }

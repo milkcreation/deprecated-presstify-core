@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\TextRemainingExcerpt\Admin;
+namespace tiFy\Core\Taboox\Post\TextRemainingExcerpt\Admin;
 
 use tiFy\Deprecated\Deprecated;
 

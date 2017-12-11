@@ -42,7 +42,6 @@ enqueue_scripts:    true
 #   @var string $class Classe HTML du greffon
 #   @var string $content Contenu du greffon
 #   @var int $position Position du greffon 
-#   @todo \tiFy\Lib\Nodes\Base ne gère pas encore la position
 # }
 nodes:
 ```
@@ -94,7 +93,6 @@ function my_tify_components_register()
              *      @var string $class Classe HTML du greffon
              *      @var string $content Contenu du greffon
              *      @var int $position Position du greffon 
-             *      @todo ATTENTION \tiFy\Lib\Nodes\Base ne gère pas encore la position
              * }
              */ 
             'nodes'         => []
@@ -159,7 +157,7 @@ class Config extends \tiFy\App\Config
              *   @var string $id Identifiant du greffon
              *   @var string $class Classe HTML du greffon
              *   @var string $content Contenu du greffon
-             *   @var int $position Position du greffon @todo ATTENTION \tiFy\Lib\Nodes\Base ne gère pas encore la position
+             *   @var int $position Position du greffon 
              * }
              */ 
             'nodes'         => []

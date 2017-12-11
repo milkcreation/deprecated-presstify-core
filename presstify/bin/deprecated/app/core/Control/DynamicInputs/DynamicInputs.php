@@ -105,9 +105,10 @@ class DynamicInputs extends Factory
 			
 		$output .= "</div>\n";
 		
-		if( $args['echo'] )
+		if($echo ) :
 			echo $output;
-		
-		return $output;
+		else :
+		    return $output;
+		endif;
 	}
 }

@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\CustomHeader\Helpers;
+namespace tiFy\Core\Taboox\Post\CustomHeader\Helpers;
 
 class CustomHeader extends \tiFy\Core\Taboox\PostType\CustomHeader\Helpers\CustomHeader
 {
@@ -12,6 +12,6 @@ class CustomHeader extends \tiFy\Core\Taboox\PostType\CustomHeader\Helpers\Custo
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\CustomHeader\Helpers\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\PostType\CustomHeader\Helpers\CustomHeader');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Post\CustomHeader\Helpers\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\PostType\CustomHeader\Helpers\CustomHeader');
     }
 }

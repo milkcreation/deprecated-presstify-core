@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\RelatedPosts\Helpers;
+namespace tiFy\Core\Taboox\Post\RelatedPosts\Helpers;
 
 class RelatedPosts extends \tiFy\Core\Taboox\PostType\RelatedPosts\Helpers\RelatedPosts
 {
@@ -12,6 +12,6 @@ class RelatedPosts extends \tiFy\Core\Taboox\PostType\RelatedPosts\Helpers\Relat
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\RelatedPosts\Helpers\RelatedPosts', '1.2.472', '\tiFy\Core\Taboox\PostType\RelatedPosts\Helpers\RelatedPosts');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Post\RelatedPosts\Helpers\RelatedPosts', '1.2.472', '\tiFy\Core\Taboox\PostType\RelatedPosts\Helpers\RelatedPosts');
     }
 }
