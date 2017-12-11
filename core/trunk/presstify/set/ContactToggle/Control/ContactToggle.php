@@ -99,29 +99,78 @@ class ContactToggle extends \tiFy\Core\Control\Factory
         check_ajax_referer('tiFySetContatToggleControl-Modal');
 
         // Définition des attributs
-        $attrs = $_POST['attrs'];
+        $attrs = \wp_unslash($_POST['attrs']);
+
+        /**
+         * @var string $id Identifiant de qualification du contrôleur d'affichage
+         * @var string $container_id ID HTML du conteneur de notification
+         * @var string $container_class Classe HTML du conteneur de notification
+         * @var array $container_attrs Attributs HTML du conteneur
+         * @var array $options Options d'affichage
+         * @var bool $animation Activation de l'animation
+         * @var string $dialog_size Taille d'affichage de la fenêtre de dialogue normal|lg|sm|full
+         * @var string|bool|callable $backdrop_close_button Affichage d'un bouton fermeture externe. Chaine de caractère à afficher ou booléen pour activer désactiver ou fonction/méthode d'affichage.
+         * @var string|bool|callable $header Affichage de l'entête de la fenêtre de dialogue. Chaine de caractère à afficher ou booléen pour activer désactiver ou fonction/méthode d'affichage.
+         * @var string|bool|callable $body Affichage du corps de la fenêtre de dialogue. Chaine de caractère à afficher ou booléen pour activer désactiver ou fonction/méthode d'affichage.
+         * @var string|bool|callable $footer Affichage du pied de la fenêtre de dialogue. Chaine de caractère à afficher ou booléen pour activer désactiver ou fonction/méthode d'affichage.
+         * @var bool $in_footer Ajout automatique de la fenêtre de dialogue dans le pied de page du site
+         */
+        extract($attrs);
+
+        // Traitement des valeurs booléen
+        foreach(['backdrop_close_button', 'header', 'body', 'footer'] as $bool) :
+            if (in_array(${$bool}, ['true', 'false'])) :
+                ${$bool} = filter_var(${$bool}, FILTER_VALIDATE_BOOLEAN);
+            endif;
+        endforeach;
+
+
+        $output = "";
+        // Bouton de fermeture externe
+        if ($backdrop_close_button) :
+            if (is_bool($backdrop_close_button) || is_callable($backdrop_close_button)) :
+                ob_start();
+                call_user_func(is_bool($backdrop_close_button) ? get_called_class() . '::backdropCloseButton' : $backdrop_close_button, $attrs);
+                $output .= ob_get_clean();
+            else :
+                $output .= $backdrop_close_button;
+            endif;
+        endif;
 
         // Entête de la fenêtre de dialogue
-        ob_start();
-        call_user_func(get_called_class() . '::header', $attrs);
-        $header = ob_get_clean();
+        if ($header) :
+            if (is_bool($header) || is_callable($header)) :
+                ob_start();
+                call_user_func(is_bool($header) ? get_called_class() . '::header' : $header, $attrs);
+                $header = ob_get_clean();
+            endif;
+        endif;
 
         // Corps de la fenêtre de dialogue
-        ob_start();
-        call_user_func(get_called_class() . '::body', $attrs);
-        $body = ob_get_clean();
+        if ($body) :
+            if (is_bool($body) || is_callable($body)) :
+                ob_start();
+                call_user_func(is_bool($body) ? get_called_class() . '::body' : $body, $attrs);
+                $body = ob_get_clean();
+            endif;
+        endif;
 
         // Pied de la fenêtre de dialogue
+        if ($footer) :
+            if (is_bool($footer) || is_callable($footer)) :
+                ob_start();
+                call_user_func(is_bool($footer) ? get_called_class() . '::footer' : $footer, $attrs);
+                $footer = ob_get_clean();
+            endif;
+        endif;
+
+        // Fenêtre de dialogue
+        $size = is_string($dialog_size) ? "modal-{$dialog_size}" : "modal-normal";
         ob_start();
-        call_user_func(get_called_class() . '::footer', $attrs);
-        $footer = ob_get_clean();
+        self::tFyAppGetTemplatePart('dialog', $id, compact('size', 'header', 'body', 'footer', 'attrs'));
+        $output .= ob_get_clean();
 
-        // Définifion de la taille de la fenêtre de dialogue
-        $size = is_string($attrs['dialog_size']) ? "modal-{$attrs['dialog_size']}" : "modal-normal";
-
-        // Affichage de la fenêtre de dialogue
-        self::tFyAppGetTemplatePart('dialog', $attrs['id'], compact('size', 'header', 'body', 'footer', 'attrs'));
-
+        echo $output;
         exit;
     }
 
@@ -174,18 +223,15 @@ class ContactToggle extends \tiFy\Core\Control\Factory
             'dialog_size' => 'normal',
 
             'backdrop_close_button' => true,
+            'header'                => true,
+            'body'                  => true,
+            'footer'                => true,
 
             'in_footer' => true
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
         $attrs['container_class'] = 'tiFySetContatToggleControl-Modal' . ($attrs['container_class'] ? " {$attrs['container_class']}" : '');
-
-        // Court-circutage des éléments d'affichage de la modale. Ces éléments seront chargés via ajax.
-        $attrs['header'] = false;
-        $attrs['body'] = false;
-        $attrs['footer'] = false;
-
         $attrs['container_attrs']['data-options'] = rawurlencode(
             json_encode(
                 [
@@ -195,6 +241,11 @@ class ContactToggle extends \tiFy\Core\Control\Factory
                 ]
             )
         );
+
+        // Court-circutage des éléments d'affichage de la modale. Ces éléments seront chargés via ajax.
+        $attrs['header'] = false;
+        $attrs['body'] = false;
+        $attrs['footer'] = false;
 
         return Control::Modal($attrs, $echo);
     }

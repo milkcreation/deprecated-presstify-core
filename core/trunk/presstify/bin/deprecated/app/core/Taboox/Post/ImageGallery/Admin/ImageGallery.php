@@ -14,6 +14,6 @@ class ImageGallery extends \tiFy\Core\Taboox\PostType\ImageGallery\Admin\ImageGa
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\PostType\ImageGallery\Admin\ImageGallery', '1.2.472', '\tiFy\Core\Taboox\PostType\ImageGallery\Admin\ImageGallery');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Post\ImageGallery\Admin\ImageGallery', '1.2.472', '\tiFy\Core\Taboox\PostType\ImageGallery\Admin\ImageGallery');
     }
 }

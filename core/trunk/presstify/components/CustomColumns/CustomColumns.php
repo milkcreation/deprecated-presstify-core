@@ -20,8 +20,8 @@ class CustomColumns extends \tiFy\App\Component
         parent::__construct();
 
         // Déclaration des événements de déclenchement
-        $this->tFyAppActionAdd('admin_init', null, 99);
-        $this->tFyAppActionAdd('current_screen');
+        $this->tFyAppAddAction('admin_init', null, 99);
+        $this->tFyAppAddAction('current_screen');
     }
 
     /**
