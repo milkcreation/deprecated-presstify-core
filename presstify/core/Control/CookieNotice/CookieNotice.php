@@ -155,7 +155,7 @@ class CookieNotice extends \tiFy\Core\Control\Factory
             'cookie_name'     => '',
             'cookie_hash'     => true,
             'cookie_expire'   => HOUR_IN_SECONDS,
-            'text'            => '',
+            'text'            => get_called_class() .'::text',
         ];
         $attrs = wp_parse_args($attrs, $defaults);
 
@@ -186,7 +186,7 @@ class CookieNotice extends \tiFy\Core\Control\Factory
         $output = "";
         if (!self::getCookie($cookie_name, $cookie_hash)) :
             $output .= "<div id=\"{$container_id}\" class=\"tiFyControl-CookieNotice" . ($container_class ? " {$container_class}" : '') . "\" data-tify_control=\"cookie_notice\" data-options=\"" . rawurlencode(json_encode(compact('ajax_action', 'ajax_nonce', 'cookie_name', 'cookie_hash', 'cookie_expire'))) . "\">\n";
-            $output .= $text ? $text : call_user_func(get_called_class() .'::text', $attrs);
+            $output .= is_callable($text) ? call_user_func($text, $attrs) : $text;
             $output .= "</div>\n";
         endif;
 
