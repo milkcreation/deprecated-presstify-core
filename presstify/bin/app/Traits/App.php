@@ -110,6 +110,7 @@ trait App
 
     /**
      * Ajout d'un filtre
+     * @deprecated
      *
      * @param string $tag Identification de l'accroche
      * @param string $class_method Méthode de la classe à executer.
