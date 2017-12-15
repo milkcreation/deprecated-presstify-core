@@ -35,12 +35,12 @@ class Factory extends \tiFy\App\FactoryConstructor
             default :
                 break;
             case 'login' :
-                $this->tFyAppFilterAdd('authenticate', 'authenticate', 50, 3);
-                $this->tFyAppActionAdd('wp_login', 'on_login_success', 10, 2);
+                $this->tFyAppAddFilter('authenticate', 'authenticate', 50, 3);
+                $this->tFyAppAddAction('wp_login', 'on_login_success', 10, 2);
                 $this->_login();
                 break;
             case 'logout' :
-                $this->tFyAppActionAdd('wp_logout', 'on_logout_success');
+                $this->tFyAppAddAction('wp_logout', 'on_logout_success');
                 $this->_logout();
                 break;
         endswitch;

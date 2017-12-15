@@ -4,6 +4,9 @@ namespace tiFy\Core\Ui\Admin\Templates\Browser;
 use tiFy\Core\Ui\Ui;
 use tiFy\Core\Control\Control;
 
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
+
 class Browser extends \tiFy\Core\Ui\Admin\Factory
 {
     /**
@@ -165,24 +168,12 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 
         $html = "";
         $complete = true;
-        if ($files = glob($query_args['dir'] . "/*")) :
-            // Trie de la liste des fichiers en plaçant les dossier avant
-            usort($files, function ($a, $b) {
-                $aIsDir = is_dir($a);
-                $bIsDir = is_dir($b);
-                if ($aIsDir === $bIsDir) :
-                    return strnatcasecmp($a, $b);
-                elseif ($aIsDir && !$bIsDir) :
-                    return -1;
-                elseif (!$aIsDir && $bIsDir) :
-                    return 1;
-                endif;
-            });
-            $per_page = $inst->getParam('per_page');
-            $filtered = array_slice($files, $offset, $per_page);
 
-            foreach($filtered as $filename) :
-                $html .= self::getFileItem($filename);
+        $dir = $query_args['dir'];
+        $per_page = $inst->getParam('per_page', 20);
+        if ($files = self::getFiles($dir, $offset, $per_page)) :
+            foreach($files as $file) :
+                $html .= $inst->getFileItem($file);
             endforeach;
         endif;
 
@@ -192,15 +183,29 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     /**
      * Récupération de la liste des fichiers d'un répertoire
      *
+     * @param string $dir Chemin complet vers le répertoire
+     * @param int $offset Numéro de fichier de démarrage
+     * @param int $per_page Nombre de fichier par page
+     *
+     * @return \Symfony\Component\Finder\SplFileInfo
+     */
+    public static function getFiles($dir, $offset, $per_page)
+    {
+        $finder = new Finder();
+        if ($finder->depth('== 0')->sortByName()->in($dir) ) :
+            return new \LimitIterator($finder->getIterator(), $offset, $per_page);
+        endif;
+    }
+
+    /**
+     * Récupération de la liste des fichiers d'un répertoire
+     *
      * @param string $dir
      */
-    public function getFolderContent($dir = null)
+    public function getFolderContent($target = null)
     {
         // Traitement du repertoire
-        if (!$dir) :
-            $dir = $this->getParam('dir');
-        endif;
-        $dir = rtrim($dir, '/');
+        $dir = !$target ? $this->getParam('dir') : $this->getParam('dir') . $target;
 
         $output = "";
         // Affichage du fil d'ariane
@@ -222,36 +227,24 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
         $output .= "<ul class=\"BrowserFolder-Files\">";
 
         // Lien de retour au repertoire parent
-        if (!$this->getParam('chroot') || ($dir !== rtrim($this->getParam('dir'), '/'))) :
+        if (!$this->getParam('chroot') || ($dir !== $this->getParam('dir'))) :
+            $fs = new Filesystem();
             $output .= "<li class=\"BrowserFolder-File\">";
-            $output .= "<a href=\"#\" data-target=\"" . dirname($dir) . "\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--dir\">";
+            $output .= "<a href=\"#\" data-target=\"" . $fs->makePathRelative(dirname($dir), $this->getParam('dir')) . "\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--dir\">";
             $output .= '..';
             $output .= "</a>";
             $output .= "</li>";
         endif;
 
         // Traitement des fichiers
-        if ($files = glob($dir . "/*")) :
-            // Trie de la liste des fichiers
-            usort($files, function ($a, $b) {
-                $aIsDir = is_dir($a);
-                $bIsDir = is_dir($b);
-                if ($aIsDir === $bIsDir)
-                    return strnatcasecmp($a, $b); // both are dirs or files
-                elseif ($aIsDir && !$bIsDir)
-                    return -1; // if $a is dir - it should be before $b
-                elseif (!$aIsDir && $bIsDir)
-                    return 1; // $b is dir, should be before $a
-            });
-
-            $per_page = $this->getParam('per_page', 20);
-            $offset = 0;
-            $filtered = array_slice($files, $offset, $per_page);
-
-            foreach($filtered as $filename) :
-                $output .= self::getFileItem($filename);
+        $offset = 0;
+        $per_page = $this->getParam('per_page', 20);
+        if ($files = self::getFiles($dir, $offset, $per_page)) :
+            foreach($files as $file) :
+                $output .= $this->getFileItem($file);
             endforeach;
         endif;
+
         $output .= "</ul>";
         $output .= "</div>";
         $output .= Control::ScrollPaginate(
@@ -270,19 +263,21 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     /**
      * Récupération de l'affichage d'un fichier
      *
-     * @param string $filename
+     * @param \Symfony\Component\Finder\SplFileInfo $file
      *
      * @return string
      */
-    public static function getFileItem($filename)
+    public function getFileItem($file)
     {
-        if (is_dir($filename)) :
+        $fs = new Filesystem();
+
+        if ($file->isDir()) :
             $is_dir = true;
             $type = 'dir';
             $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
         else :
             $is_dir = false;
-            $type = wp_ext2type(pathinfo($filename, PATHINFO_EXTENSION));
+            $type = \wp_ext2type($file->getExtension());
 
             switch($type) :
                 case 'archive' :
@@ -308,9 +303,9 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 
         $output = "";
         $output .= "<li class=\"BrowserFolder-File\">";
-        $output .= "<a href=\"#\" data-target=\"{$filename}\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
+        $output .= "<a href=\"#\" data-target=\"". $fs->makePathRelative($file->getRealPath(), $this->getParam('dir')) ."\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
         $output .= "<div class=\"BrowserFolder-FilePreview BrowserFolder-FilePreview--{$type}\">{$icon}</div>";
-        $output .= "<span class=\"BrowserFolder-FileName\">" . basename($filename) . "</span>";
+        $output .= "<span class=\"BrowserFolder-FileName\">" . $file->getRelativePathname() . "</span>";
         $output .= "</a>";
         $output .= "</li>";
 
@@ -367,6 +362,15 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
         return $output;
     }
 
+    /**
+     *
+     */
+    public static function getFileEdit($filename)
+    {
+        $fs = new Filesystem();
+
+
+    }
 
     /**
      * Affichage de la page
@@ -378,7 +382,7 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 ?>
 <div class="wrap">
     <h2>
-        <?php echo $this->getParam('page_title');?>
+        <?php echo $this->getParam('page_title'); ?>
     </h2>
     <div class="Browser Browser--grid">
         <div class="BrowserNav">
@@ -386,6 +390,7 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 
             </div>
             <div class="BrowserNav-Edit">
+                <?php //self::getFileEdit($this->getParam('dir')); ?>
             </div>
         </div>
         <div class="BrowserFolder">

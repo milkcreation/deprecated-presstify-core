@@ -16,8 +16,10 @@ final class Login extends \tiFy\App\Component
      */
     public function __construct()
     {
+        parent::__construct();
+
         // Déclaration des événenements de déclenchement
-        $this->tFyAppActionAdd('init');
+        $this->tFyAppAddAction('init');
     }
 
     /**
