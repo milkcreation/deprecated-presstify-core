@@ -6,9 +6,9 @@
 }
 
 /**
- * NAVIGATION
+ * BARRE LATERALE
  */
-.BrowserNav {
+.Browser-sidebar {
     position: absolute;
     top: 0;
     right: auto;
@@ -18,9 +18,9 @@
 }
 
 /**
- * REPERTOIRE COURANT
+ * CONTENU DU REPETOIRE COURANT
  */
-.BrowserFolder {
+.Browser-content {
     position: absolute;
     top: 0;
     right: 0;
@@ -29,7 +29,7 @@
     padding: 10px;
 }
 
-.BrowserFolder.load::after {
+.Browser-content.load::after {
     position: absolute;
     content: "";
     top: 0;
@@ -43,7 +43,7 @@
 /**
  * Indicateur de chargement
  */
-.BrowserFolder-Spinner {
+.Browser-contentLoader {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -58,14 +58,14 @@
     display: none;
 }
 
-.BrowserFolder.load .BrowserFolder-Spinner {
+.Browser-content.load .Browser-contentLoader {
     display: inherit;
 }
 
 /**
  * Fil d'Arianne
  */
-.BrowserFolder-Breadcrumb {
+.Browser-contentBreadcrumb {
     position: absolute;
     top: 0;
     right: 0;
@@ -74,12 +74,12 @@
     margin: 0;
     height: 50px;
 
-    line-height:50px;
+    line-height: 50px;
     background-color: #FFF;
     border-bottom: solid 1px #E4E4E4;
 }
 
-.BrowserFolder-BreadcrumbPart {
+.Browser-contentBreadcrumbPart {
     display: inline-block;
     margin: 0;
     padding: 0;
@@ -88,40 +88,23 @@
     margin-right: 2px;
 }
 
-.BrowserFolder-BreadcrumbPart--root {
+.Browser-contentBreadcrumbPart--root {
     line-height: 1.4;
 }
 
-.BrowserFolder-BreadcrumbPart + .BrowserFolder-BreadcrumbPart::before {
+.Browser-contentBreadcrumbPart + .Browser-contentBreadcrumbPart::before {
     padding: 0 1px;
     content: "/\00a0";
 }
 
-.BrowserFolder-BreadcrumbPartLink {
+.Browser-contentBreadcrumbPartLink {
     text-decoration: none;
 }
 
 /**
- * Pagination
+ * Zone de vue des fichiers du répertoire courant
  */
-.BrowserFolder-Paginate {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    height: 50px;
-
-    line-height: 50px;
-    text-align: center;
-    background-color: #FFF;
-    border-top: solid 1px #E4E4E4;
-}
-
-/**
- * Liste des fichier
- */
-.BrowserFolder-Content {
+.Browser-contentView {
     position: absolute;
     top: 50px;
     right: 0;
@@ -132,45 +115,50 @@
     overflow-y: auto;
 }
 
-.BrowserFolder-Files > * {
+/**
+ * Liste des fichiers
+ */
+.Browser-contentFileList > * {
     box-sizing: border-box;
 }
 
-.BrowserFolder-Files::before,
-.BrowserFolder-Files::after {
+.Browser-contentFileList::before,
+.Browser-contentFileList::after {
     display: table;
     content: "";
 }
 
-.BrowserFolder-Files::after {
+.Browser-contentFileList::after {
     clear: both;
 }
 
-.BrowserFolder-Files {
+.Browser-contentFileList {
     margin: 0;
     padding: 0;
 }
 
-.BrowserFolder-File {
+.Browser-contentFile {
     display: block;
     margin: 0;
     padding: 0;
 }
 
-.BrowserFolder-FileLink {
+.Browser-contentFileLink {
     position: relative;
     text-decoration: none;
 }
 
-.BrowserFolder-File.selected .BrowserFolder-FileLink {
+.Browser-contentFile.selected .Browser-contentFileLink {
     background-color: #F4F4F4;
 }
 
-.BrowserFolder-FilePreview {
+.Browser-contentFilePreview {
     position: relative;
     overflow: hidden;
 }
 
+/*
+ PREVISUALISATION IMAGE
 .BrowserFolder-FilePreview > img {
     object-fit: cover;
 }
@@ -194,19 +182,25 @@
     display: inherit;
 }
 
+.Browser-contentView--grid .BrowserFolder-FileIcon--image > img {
+    width: 150px;
+    height: 150px;
+}
+*/
+
 /**
- * VUE GRILLE
+ * Liste des fichiers -- vue grille
  */
-.Browser--grid .BrowserFolder-Files {
+.Browser-contentView--grid .Browser-contentFileList {
     margin: 0 -10px;
 }
 
-.Browser--grid .BrowserFolder-File {
+.Browser-contentView--grid .Browser-contentFile {
     float: left;
     padding: 10px;
 }
 
-.Browser--grid .BrowserFolder-FileLink {
+.Browser-contentView--grid .Browser-contentFileLink {
     display: block;
     width: 200px;
     height: 200px;
@@ -215,26 +209,21 @@
     text-align: center;
 }
 
-.Browser--grid .BrowserFolder-FilePreview {
+.Browser-contentView--grid .Browser-contentFilePreview {
     display: block;
     margin: 10px auto;
     width: 150px;
     height: 150px;
 }
 
-.Browser--grid .BrowserFolder-FileIcon--glyphicon {
+.Browser-contentView--grid .Browser-fileIcon {
     width: 150px;
     height: 150px;
     font-size: 150px;
     line-height: 1;
 }
 
-.Browser--grid .BrowserFolder-FileIcon--image > img {
-    width: 150px;
-    height: 150px;
-}
-
-.Browser--grid .BrowserFolder-FileName {
+.Browser-contentView--grid .Browser-contentFileName {
     position: absolute;
     left: 0;
     bottom: 0;
@@ -243,4 +232,21 @@
     padding: 5px;
 
     background-color: #FFF;
+}
+
+/**
+ * Pagination
+ */
+.Browser-contentPaginate {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    height: 50px;
+
+    line-height: 50px;
+    text-align: center;
+    background-color: #FFF;
+    border-top: solid 1px #E4E4E4;
 }

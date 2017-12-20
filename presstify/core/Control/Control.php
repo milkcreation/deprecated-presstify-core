@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Core\Control;
 
 class Control extends \tiFy\App\Core
@@ -31,9 +32,6 @@ class Control extends \tiFy\App\Core
                 self::$Native[$Name] = $factory;
             endif;
         endforeach;
-
-        // Déclaration des controleurs d'affichage personnalisés
-        do_action('tify_control_register');
 
         // Déclaration des événement de déclenchement
         $this->tFyAppAddAction('init');
@@ -89,6 +87,9 @@ class Control extends \tiFy\App\Core
      */
     public function init()
     {
+        // Déclaration des controleurs d'affichage personnalisés
+        do_action('tify_control_register');
+
         // Auto-chargement de l'initialisation globale des contrôleurs d'affichage
         foreach (self::$Factory as $Name => $factory) :
             $classname = get_class($factory);

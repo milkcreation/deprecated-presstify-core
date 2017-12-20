@@ -52,10 +52,10 @@ class Taboox extends \tiFy\App\Core
         parent::__construct();
 
         // Déclaration des événements de déclenchement
-        $this->tFyAppActionAdd('after_setup_tify', null, 11);
-        $this->tFyAppActionAdd('init', null, 25);
-        $this->tFyAppActionAdd('admin_init', null, 25);
-        $this->tFyAppActionAdd('current_screen');
+        $this->tFyAppAddAction('after_setup_tify', null, 11);
+        $this->tFyAppAddAction('init', null, 25);
+        $this->tFyAppAddAction('admin_init', null, 25);
+        $this->tFyAppAddAction('current_screen');
     }
     
     /**

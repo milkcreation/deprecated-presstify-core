@@ -23,9 +23,9 @@ class Factory extends \tiFy\App\Factory
      * @param array $attrs {
      *      Liste des attributs de configuration.
      *
-     *      @param string $display_name Nom d'affichage.
-     *      @param string $desc Texte de description.
-     *      @param array $capabilities {
+     *      @var string $display_name Nom d'affichage.
+     *      @var string $desc Texte de description.
+     *      @var array $capabilities {
      *          Liste des habilitations Tableau indexés des habilitations permises ou tableau dimensionné
      *
      *          @var string $cap Nom de l'habilitation => @var bool $grant privilege
@@ -45,8 +45,8 @@ class Factory extends \tiFy\App\Factory
         $this->Attrs = $this->parseAttrs($attrs);
 
         // Définition des événements de déclenchement
-        $this->tFyAppActionAdd('init', 'init', 1);
-        $this->tFyAppActionAdd('tify_ui_register');
+        $this->tFyAppAddAction('init', 'init', 1);
+        $this->tFyAppAddAction('tify_ui_register');
     }
 
     /**
@@ -114,9 +114,9 @@ class Factory extends \tiFy\App\Factory
      * @param array $attrs {
      *      Liste des attributs de configuration.
      *
-     *      @param string $display_name Nom d'affichage.
-     *      @param string $desc Texte de description.
-     *      @param array $capabilities {
+     *      @var string $display_name Nom d'affichage.
+     *      @var string $desc Texte de description.
+     *      @var array $capabilities {
      *          Liste des habilitations Tableau indexés des habilitations permises ou tableau dimensionné
      *
      *          @var string $cap Nom de l'habilitation => @var bool $grant privilege

@@ -282,6 +282,7 @@ class CustomType extends \tiFy\App\Core
 
     /**
      * Traitement des arguments par défaut de type de post personnalisé
+     * @see https://codex.wordpress.org/Function_Reference/register_post_type
      *
      * @param string $taxonomy Identifiant de qualification de la taxonomie
      * @param array $attrs Liste des attributs de configuration personnalisés
@@ -308,7 +309,7 @@ class CustomType extends \tiFy\App\Core
         endif;
 
         $labels = Labels::register(
-            '_tiFyCustomType-Post--' . $post_type,
+            '_tiFyCustomType-post--' . $post_type,
             \wp_parse_args(
                 $args['labels'],
                 [
@@ -356,6 +357,24 @@ class CustomType extends \tiFy\App\Core
         $defaults['rest_base'] = $post_type;
         $defaults['rest_controller_class'] = 'WP_REST_Posts_Controller';
 
-        return \wp_parse_args($args, $defaults);
+        $_args = \wp_parse_args($args, $defaults);
+
+        if (!isset($args['publicly_queryable'])) :
+            $_args['publicly_queryable'] = $_args['public'];
+        endif;
+        if (!isset($args['show_ui'])) :
+            $_args['show_ui'] = $_args['public'];
+        endif;
+        if (!isset($args['show_in_nav_menus'])) :
+            $_args['show_in_nav_menus'] = $_args['public'];
+        endif;
+        if (!isset($args['show_in_menu'])) :
+            $_args['show_in_menu'] = $_args['show_ui'];
+        endif;
+        if (!isset($args['show_in_admin_bar'])) :
+            $_args['show_in_admin_bar'] = $_args['show_in_menu'];
+        endif;
+
+        return $_args;
     }
 }

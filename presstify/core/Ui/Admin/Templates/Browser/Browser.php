@@ -3,17 +3,16 @@ namespace tiFy\Core\Ui\Admin\Templates\Browser;
 
 use tiFy\Core\Ui\Ui;
 use tiFy\Core\Control\Control;
-
-use Symfony\Component\Finder\Finder;
+use tiFy\Lib\Stream\Local\Filesystem as Stream;
 use Symfony\Component\Filesystem\Filesystem;
 
 class Browser extends \tiFy\Core\Ui\Admin\Factory
 {
     /**
-     * Liste des éléments de menu
-     * @var object
+     * Classe de rappel du système de fichier
+     * @return \tiFy\Lib\Stream\Local\Filesystem
      */
-    protected $menu_nodes = [];
+    protected $Stream = null;
 
     /**
      * CONSTRUCTEUR
@@ -30,7 +29,7 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
         // Définition de la liste des paramètres autorisés
         $this->setAllowedParamList(
             [
-                'dir',
+                'root',
                 'chroot',
                 'per_page'
             ]
@@ -38,7 +37,7 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 
         // Définition de la liste des paramètres par défaut
         $this->setDefaultParam(
-            'dir',
+            'root',
             WP_CONTENT_DIR . '/uploads'
         );
         $this->setDefaultParam(
@@ -47,10 +46,12 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
         );
         $this->setDefaultParam(
             'per_page',
-            20
+            -1
         );
 
-        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getFolderContent', 'ajaxGetFolderContent');
+        // Définition des événements de déclenchement
+        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getContent', 'ajaxGetContent');
+        $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getItemInfos', 'ajaxGetItemInfos');
         $this->tFyAppAddAction('wp_ajax_tiFyCoreUiAdminTemplatesBrowser-getImagePreview', 'ajaxGetImagePreview');
     }
 
@@ -68,20 +69,11 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     {
         parent::current_screen($current_screen);
 
-        // Définition de l'écran courant
-        $this->setScreen($current_screen);
-
-        // Initialisation des paramètres de configuration de la table
-        $this->initParams();
-
-        // Vérification de l'habilitation d'accès à l'interface
-        $this->check_user_can();
-
         // Exécution des actions
         $this->process_actions();
 
         // Préparation de la liste des éléments à afficher
-        $this->prepare_items();
+        //$this->prepare_items();
     }
 
     /**
@@ -93,29 +85,52 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     {
         parent::admin_enqueue_scripts();
 
+        // Controleurs
         Control::enqueue_scripts('curtain_menu');
         Control::enqueue_scripts('spinkit');
         Control::enqueue_scripts('scroll_paginate');
-        \wp_enqueue_style('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.css', [], 171201);
-        \wp_enqueue_script('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl() . '/Browser.js', ['jquery'], 171201);
+
+        // Action Ajax
+        \wp_enqueue_style('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl(get_class()) . '/Browser.css', [], 171201);
+        \wp_enqueue_script('tiFyCoreUiAdminTemplatesBrowser', self::tFyAppUrl(get_class()) . '/Browser.js', ['jquery'], 171201);
     }
 
     /**
+     * Récupération Ajax du contenu du répertoire
      *
+     * @return string
      */
-    final public function ajaxGetFolderContent()
+    public function ajaxGetContent()
     {
         // Initialisation des paramètres de configuration de la table
         $this->initParams();
 
-        echo $this->getFolderContent($_POST['folder']);
+        // Affichage du contenu du répertoire
+        echo $this->getContent($_POST['folder']);
         die(0);
     }
 
     /**
+     * Récupération Ajax des informations sur un élément
      *
+     * @return string
      */
-    final public function ajaxGetImagePreview()
+    public function ajaxGetItemInfos()
+    {
+        // Initialisation des paramètres de configuration de la table
+        $this->initParams();
+
+        // Affichage du contenu du répertoire
+        echo $this->getItemInfos($_POST['item']);
+        die(0);
+    }
+
+    /**
+     * Récupération Ajax de l'aperçu d'une image
+     *
+     * @return string
+     */
+    public function ajaxGetImagePreview()
     {
         $filename = $_POST['filename'];
 
@@ -132,19 +147,130 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     }
 
     /**
-     * Préparation de la liste des éléments à afficher
-     *
-     * @return void
+     * CONTROLEURS
      */
-    public function prepare_items() 
+    /**
+     * Récupération de la classe de rappel du système de fichier
+     *
+     * @return \tiFy\Lib\Stream\Local\Filesystem
+     */
+    public function getStream()
     {
+        if (!$this->Stream) :
+            $this->Stream = new Stream(
+                [
+                    'root'     => $this->getRoot() . func_get_arg(0)
+                ]
+            );
+        endif;
 
+        return $this->Stream;
     }
 
     /**
+     * Récupération du chemin vers le répertoire racine
      *
+     * @return string
      */
-    public static function queryItems($options = [], $offset = 0)
+    public function getRoot()
+    {
+        $root = $this->getParam('root', '');
+        $root = wp_normalize_path(untrailingslashit($root)) . '/';
+
+        return $root;
+    }
+
+    /**
+     * Récupération de la liste informations des fichiers/dossiers/liens pour un chemin donné
+     *
+     * @param string $path Chemin vers le répertoire à traiter
+     * @param int $offset Indice du premier élément à traiter
+     * @param int $per_page Nombre d'éléments à traiter
+     *
+     * @return \SplFileInfo
+     */
+    public function getFilesInfos($path = '/', $offset = 0, $per_page = -1)
+    {
+        // Récupération des infos fichier du repertoire
+        if ($filesinfos = $this->getStream($path)->listFilesInfos($path)) :
+            // Trie des éléments
+            // @todo Créer un itérateur de trie
+            // @see Symfony\Component\Finder\Iterator\SortableIterator
+            uasort($filesinfos, function ($a, $b) {
+                if ($a->isDir() && $b->isFile()) :
+                    return -1;
+                elseif ($a->isFile() && $b->isDir()) :
+                    return 1;
+                endif;
+
+                return strcmp($a->getRealpath(), $b->getRealpath());
+            });
+
+            return $filesinfos;
+        endif;
+    }
+
+    /**
+     * Récupération de la liste informations d'un fichier/dossier/lien d'un répertoire selon son chemin
+     *
+     * @param string $filename Chemin vers le fichier/dossier/lien
+     *
+     * @return \SplFileInfo
+     */
+    public function getFileInfos($filename)
+    {
+        return new \SplFileInfo($filename);
+    }
+
+    /**
+     * Récupération de l'icone représentatif d'un fichier
+     *
+     * @param \SplFileInfo $fileinfo
+     *
+     * @return string
+     */
+    public function getFileIcon($fileinfo)
+    {
+        if ($fileinfo->isDir()) :
+            $type = 'dir';
+            $icon = "<span class=\"Browser-fileIcon dashicons dashicons-category\"></span>";
+        else :
+            $type = \wp_ext2type($fileinfo->getExtension());
+
+            switch($type) :
+                case 'archive' :
+                case 'audio' :
+                case 'code' :
+                case 'document' :
+                case 'interactive' :
+                case 'spreadsheet' :
+                case 'text' :
+                case 'video' :
+                    $icon = "<span class=\"Browser-fileIcon dashicons dashicons-media-{$type}\"></span>";
+                    break;
+
+                case 'image' :
+                    $icon = "<span class=\"Browser-fileIcon dashicons dashicons-format-image\"></span>";
+                    break;
+
+                default :
+                    $icon = "<span class=\"Browser-fileIcon dashicons dashicons-media-default\"></span>";
+                    break;
+            endswitch;
+        endif;
+
+        return $icon;
+    }
+
+    /**
+     * Récupération de la liste des fichiers du repertoire courant selon la page d'affichage
+     *
+     * @param array $options
+     * @param int $offset
+     *
+     * @return array
+     */
+    public static function queryPaginateContentFiles($options = [], $offset = 0)
     {
         /**
          * @var string $id Identifiant de qualification du controleur
@@ -163,6 +289,9 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
          */
         extract($options);
 
+        /**
+         * @var static $inst
+         */
         $inst = Ui::getAdmin('PixvertImport-media');
         $inst->initParams();
 
@@ -171,9 +300,9 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
 
         $dir = $query_args['dir'];
         $per_page = $inst->getParam('per_page', 20);
-        if ($files = self::getFiles($dir, $offset, $per_page)) :
-            foreach($files as $file) :
-                $html .= $inst->getFileItem($file);
+        if ($filesinfos = $inst->getFilesInfos($dir, $offset, $per_page)) :
+            foreach($filesinfos as $fileinfos) :
+                $html .= $inst->getContentFile($fileinfos);
             endforeach;
         endif;
 
@@ -183,174 +312,80 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     /**
      * Récupération de la liste des fichiers d'un répertoire
      *
-     * @param string $dir Chemin complet vers le répertoire
-     * @param int $offset Numéro de fichier de démarrage
-     * @param int $per_page Nombre de fichier par page
-     *
-     * @return \Symfony\Component\Finder\SplFileInfo
-     */
-    public static function getFiles($dir, $offset, $per_page)
-    {
-        $finder = new Finder();
-        if ($finder->depth('== 0')->sortByName()->in($dir) ) :
-            return new \LimitIterator($finder->getIterator(), $offset, $per_page);
-        endif;
-    }
-
-    /**
-     * Récupération de la liste des fichiers d'un répertoire
-     *
-     * @param string $dir
-     */
-    public function getFolderContent($target = null)
-    {
-        // Traitement du repertoire
-        $dir = !$target ? $this->getParam('dir') : $this->getParam('dir') . $target;
-
-        $output = "";
-        // Affichage du fil d'ariane
-        $output .= $this->getBreadcrumb($dir);
-
-        $output .= "<div class=\"BrowserFolder-Content\">";
-
-        // Indicateur de chargement
-        $output .= "<div class=\"BrowserFolder-Spinner\">";
-        $output .= Control::Spinkit(
-            [
-                'type' => 'spinner-pulse'
-            ],
-            false
-        );
-        $output .= "</div>";
-
-        // Affichage de la liste des fichers du répertoire
-        $output .= "<ul class=\"BrowserFolder-Files\">";
-
-        // Lien de retour au repertoire parent
-        if (!$this->getParam('chroot') || ($dir !== $this->getParam('dir'))) :
-            $fs = new Filesystem();
-            $output .= "<li class=\"BrowserFolder-File\">";
-            $output .= "<a href=\"#\" data-target=\"" . $fs->makePathRelative(dirname($dir), $this->getParam('dir')) . "\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--dir\">";
-            $output .= '..';
-            $output .= "</a>";
-            $output .= "</li>";
-        endif;
-
-        // Traitement des fichiers
-        $offset = 0;
-        $per_page = $this->getParam('per_page', 20);
-        if ($files = self::getFiles($dir, $offset, $per_page)) :
-            foreach($files as $file) :
-                $output .= $this->getFileItem($file);
-            endforeach;
-        endif;
-
-        $output .= "</ul>";
-        $output .= "</div>";
-        $output .= Control::ScrollPaginate(
-            [
-                'container_class' => 'BrowserFolder-Paginate',
-                'target'          => '.BrowserFolder-Files',
-                'query_args'      => ['ui' => $this->getId(), 'dir' => $dir],
-                'query_items_cb'  => get_called_class() . '::queryItems'
-            ],
-            false
-        );
-
-        return $output;
-    }
-
-    /**
-     * Récupération de l'affichage d'un fichier
-     *
-     * @param \Symfony\Component\Finder\SplFileInfo $file
+     * @param string $rel Chemin relatif vers le repertoire courant
      *
      * @return string
      */
-    public function getFileItem($file)
+    public function getContent($rel = '/')
     {
-        $fs = new Filesystem();
-
-        if ($file->isDir()) :
-            $is_dir = true;
-            $type = 'dir';
-            $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--folder BrowserFolder-FileIcon--glyphicon dashicons dashicons-category\"></span>";
-        else :
-            $is_dir = false;
-            $type = \wp_ext2type($file->getExtension());
-
-            switch($type) :
-                case 'archive' :
-                case 'audio' :
-                case 'code' :
-                case 'document' :
-                case 'interactive' :
-                case 'spreadsheet' :
-                case 'text' :
-                case 'video' :
-                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-{$type}\"></span>";
-                    break;
-
-                case 'image' :
-                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--{$type} BrowserFolder-FileIcon--glyphicon dashicons dashicons-format-image\"></span>" . Control::Spinkit(['container_class' => 'BrowserFolder-FilePreviewSpinner', 'type' => 'three-bounce'], false);
-                    break;
-
-                default :
-                    $icon = "<span class=\"BrowserFolder-FileIcon BrowserFolder-FileIcon--default BrowserFolder-FileIcon--glyphicon dashicons dashicons-media-default\"></span>";
-                    break;
-            endswitch;
-        endif;
-
         $output = "";
-        $output .= "<li class=\"BrowserFolder-File\">";
-        $output .= "<a href=\"#\" data-target=\"". $fs->makePathRelative($file->getRealPath(), $this->getParam('dir')) ."\" class=\"BrowserFolder-FileLink BrowserFolder-FileLink--" . ($is_dir ? 'dir' : 'file') . "\">";
-        $output .= "<div class=\"BrowserFolder-FilePreview BrowserFolder-FilePreview--{$type}\">{$icon}</div>";
-        $output .= "<span class=\"BrowserFolder-FileName\">" . $file->getRelativePathname() . "</span>";
-        $output .= "</a>";
-        $output .= "</li>";
+
+        // Indicateur de chargement
+        $output .= $this->getContentLoader();
+
+        // Fil d'ariane
+        $output .= $this->getContentBreadcrumb($rel);
+
+        // Contenu du répertoire
+        $output .= "<div class=\"Browser-contentView Browser-contentView--grid\">";
+
+        // Liste des fichiers du répertoire courant
+        $output .= $this->getContentFileList($rel);
+
+        $output .= "</div>";
+
+        // Pagination
+        if ($this->getParam('per_page') > 0) :
+            $output = $this->getContentPagination($rel);
+        endif;
 
         return $output;
     }
 
+    /**
+     * Affichage de l'indicateur de chargement du repertoire courant
+     *
+     * @return string
+     */
+    public function getContentLoader()
+    {
+        $output  = "";
+        $output .= "<div class=\"Browser-contentLoader\">";
+        $output .= Control::Spinkit(['type' => 'spinner-pulse'], false);
+        $output .= "</div>";
+
+        return $output;
+    }
 
     /**
+     * Récupération du fil d'arianne
      *
+     * @param string $rel Chemin relatif vers le repertoire courant
+     *
+     * @return string
      */
-    public function getBreadcrumb($dir = null)
+    public function getContentBreadcrumb($rel = '/')
     {
-        // Racine
-        $root = $this->getParam('dir');
-        $root = rtrim($root, '/');
-
-        // Répertoire courant
-        if (!$dir) :
-            $dir = $root;
-        endif;
-        $dir = rtrim($dir, '/');
-
-        $items = preg_replace("#{$root}/#", '', "{$dir}/");
-
-        $path = $root;
-
         $output = "";
-        $output .= "<ol class=\"BrowserFolder-Breadcrumb\">";
-
-        $output .= "<li class=\"BrowserFolder-BreadcrumbPart BrowserFolder-BreadcrumbPart--root\">";
-        $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserFolder-BreadcrumbPartLink BrowserFolder-BreadcrumbPartLink--home\">";
+        $output .= "<ol class=\"Browser-contentBreadcrumb\">";
+        $output .= "<li class=\"Browser-contentBreadcrumbPart BrowserFolder-BreadcrumbPart--root\">";
+        $output .= "<a href=\"#\" data-target=\"/\" class=\"Browser-contentBreadcrumbPartLink\">";
         $output .= "<span class=\"dashicons dashicons-admin-home\"></span>";
         $output .= "</a>";
         $output .= "</li>";
 
-        if($items) :
-            foreach(explode('/', $items) as $item) :
-                if (empty($item)) :
+        if($rel !== '/') :
+            $target = '';
+            foreach(explode('/', $rel) as $item) :
+                if (empty($item) || ($item === '.')) :
                     continue;
                 endif;
 
-                $path .= "/". $item;
-                $output .= "<li class=\"BrowserFolder-BreadcrumbPart\">";
-                if ($path !== $dir):
-                    $output .= "<a href=\"#\" data-target=\"{$path}\" class=\"BrowserFolder-BreadcrumbPartLink\">{$item}</a>";
+                $target .= $item . '/';
+
+                $output .= "<li class=\"Browser-contentBreadcrumbPart\">";
+                if ($target !== $rel):
+                    $output .= "<a href=\"#\" data-target=\"{$target}\" class=\"Browser-contentBreadcrumbPartLink\">{$item}</a>";
                 else :
                     $output .= $item;
                 endif;
@@ -363,13 +398,116 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     }
 
     /**
+     * Affichage de la liste des fichers du répertoire courant
      *
+     * @param string $rel Chemin relatif vers le repertoire courant
+     *
+     * @return string
      */
-    public static function getFileEdit($filename)
+    public function getContentFileList($rel = '/')
+    {
+        $output = "";
+
+        $output .= "<ul class=\"Browser-contentFileList\">";
+
+        // Lien de retour au repertoire parent
+        if ($rel !== '/') :
+            $output .= "<li class=\"Browser-contentFile\">";
+            $output .= "<a href=\"#\" data-target=\"/\" class=\"Browser-contentFileLink Browser-contentFileLink--dir\">";
+            $output .= '..';
+            $output .= "</a>";
+            $output .= "</li>";
+        endif;
+
+        // Traitement des fichiers
+        $offset = 0; $per_page = $this->getParam('per_page');
+        if ($filesinfos = $this->getFilesInfos($rel, $offset, $per_page)) :
+            foreach($filesinfos as $fileinfos) :
+                $output .= $this->getContentFile($fileinfos);
+            endforeach;
+        endif;
+
+        $output .= "</ul>";
+
+        return $output;
+    }
+
+    /**
+     * Récupération de l'affichage d'un fichier
+     *
+     * @param \SplFileInfo $file
+     *
+     * @return string
+     */
+    public function getContentFile($file)
     {
         $fs = new Filesystem();
 
+        $output = "";
+        $output .= "<li class=\"Browser-contentFile\">";
+        $output .= "<a href=\"#\" data-target=\"" . $fs->makePathRelative($file->getRealPath(), $this->getRoot()) . "\" class=\"Browser-contentFileLink Browser-contentFileLink--" . ($file->isDir() ? 'dir' : 'file') . "\">";
+        $output .= "<div class=\"Browser-contentFilePreview\">". $this->getFileIcon($file) ."</div>";
+        $output .= "<span class=\"Browser-contentFileName\">" . $file->getBasename() . "</span>";
+        $output .= "</a>";
+        $output .= "</li>";
 
+        return $output;
+    }
+
+    /**
+     * Affichage de l'interface de navigation
+     *
+     * @param string $rel Chemin relatif vers le repertoire courant
+     *
+     * @return mixed
+     */
+    public function getContentPagination($rel = null)
+    {
+        return Control::ScrollPaginate(
+            [
+                'container_class' => 'Browser-contentPaginate',
+                'target'          => '.BrowserFolder-Files',
+                'query_args'      => [
+                    'ui'    => $this->getId(),
+                    'rel'   => $rel
+                ],
+                'query_items_cb'  => get_called_class() . '::queryPaginateContentFiles'
+            ],
+            false
+        );
+    }
+
+    /**
+     * Récupération des informations détaillées d'un élément (fichier|dossier|lien)
+     *
+     * @param string $rel_path Chemin relatif vers l'élément (fichier|dossier|lien)
+     *
+     * @return string
+     */
+    public function getItemInfos($rel_path = null)
+    {
+        // Définition du chemin absolu vers l'élément (fichier|dossier|lien)
+        if(in_array($rel_path, ['./', '.', '/'])) :
+            $rel_path = null;
+        endif;
+        $path = $rel_path ? $this->getRoot() . $rel_path : $this->getRoot();
+
+        if(!$fileinfos = $this->getFileInfos($path)) :
+            return;
+        endif;
+
+        $output  = "";
+        $output .= "<div class=\"Browser-itemInfos--preview\">". $this->getFileIcon($fileinfos) ."</div>";
+        $output .= "<ul class=\"Browser-itemInfosAttrList\">";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--name\"><label>nom : </label><span>" . $fileinfos->getBasename() . "</span></li>";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--type\"><label>type : </label><span>" . $fileinfos->getType() . "</span></li>";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--ext\"><label>extension : </label><span>" . $fileinfos->getExtension() . "</span></li>";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--size\"><label>taille : </label><span>" . $fileinfos->getSize() . "</span></li>";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--owner\"><label>propriétaire : </label><span>" . $fileinfos->getOwner() . "</span></li>";
+        $output .= "<li class=\"Browser-itemInfosAttr Browser-itemInfosAttr--group\"><label>groupe : </label><span>" . $fileinfos->getGroup() . "</span></li>";
+        $output .= "</ul>";
+
+        return $output;
     }
 
     /**
@@ -384,17 +522,14 @@ class Browser extends \tiFy\Core\Ui\Admin\Factory
     <h2>
         <?php echo $this->getParam('page_title'); ?>
     </h2>
-    <div class="Browser Browser--grid">
-        <div class="BrowserNav">
-            <div class="BrowserNav-Menu">
-
-            </div>
-            <div class="BrowserNav-Edit">
-                <?php //self::getFileEdit($this->getParam('dir')); ?>
+    <div class="Browser">
+        <div class="Browser-sidebar">
+            <div class="Browser-itemInfos">
+                <?php // echo $this->getItemInfos(); ?>
             </div>
         </div>
-        <div class="BrowserFolder">
-            <?php echo $this->getFolderContent(); ?>
+        <div class="Browser-content">
+            <?php echo $this->getContent(); ?>
         </div>
     </div>
 </div>

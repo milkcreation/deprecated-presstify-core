@@ -750,6 +750,49 @@ trait App
     }
 
     /**
+     * Appel d'une méthode de requête global
+     * @see https://symfony.com/doc/current/components/http_foundation.html
+     * @see http://api.symfony.com/4.0/Symfony/Component/HttpFoundation/ParameterBag.html
+     *
+     * @param string $method Nom de la méthode à appeler (all|keys|replace|add|get|set|has|remove|getAlpha|getAlnum|getBoolean|getDigits|getInt|filter)
+     * @param array $args Tableau associatif des arguments passés dans la méthode.
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public static function tFyAppCallRequestVar($method, $args = [], $type = '')
+    {
+        return tiFy::callGlobalRequestVar($method, $args, $type);
+    }
+
+    /**
+     * Vérification d'existance d'une variable de requête globale
+     *
+     * @param string $key Identifiant de qualification de l'argument de requête
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public static function tFyAppHasRequestVar($key, $type = '')
+    {
+        return self::tFyAppCallRequestVar('has', compact('key'), $type);
+    }
+
+    /**
+     * Récupération d'une variable de requête globale
+     *
+     * @param string $key Identifiant de qualification de l'argument de requête
+     * @param mixed $default Valeur de retour par défaut
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public static function tFyAppGetRequestVar($key, $default = '', $type = '')
+    {
+        return self::tFyAppCallRequestVar('get', compact('key', 'default'), $type);
+    }
+
+    /**
      * CONTROLEURS
      */
     /**
