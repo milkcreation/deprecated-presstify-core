@@ -28,6 +28,9 @@ class Factory extends \tiFy\Core\Ui\Factory
         'EditForm' => [
 
         ],
+        'FtpBrowser' => [
+
+        ],
         'ListTable' => [
 
         ],

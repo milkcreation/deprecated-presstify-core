@@ -32,6 +32,8 @@
         "google/apiclient": "^2.2",
         "dompdf/dompdf": "^0.8.0",
         "phpdocumentor/reflection-docblock": "^3.2.2",
-        "codeitnowin/barcode": "^2.1"
+        "codeitnowin/barcode": "^2.1",
+        "league/flysystem": "^1.0",
+        "league/event": "^2.1"
     }
 }

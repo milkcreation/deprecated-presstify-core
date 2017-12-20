@@ -3,7 +3,7 @@ namespace tiFy\Core\Templates\Admin\Model\Import;
 
 use tiFy\Core\Fields\Fields;
 
-class Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTable
+class   Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTable
 {                        
     /**
      * Classe de l'importateur de données

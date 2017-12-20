@@ -54,9 +54,9 @@ class Roles extends \tiFy\App\Core
      * @param array $attrs {
      *      Liste des attributs de configuration.
      *
-     *      @param string $display_name Nom d'affichage.
-     *      @param string $desc Texte de description.
-     *      @param array $capabilities {
+     *      @var string $display_name Nom d'affichage.
+     *      @var string $desc Texte de description.
+     *      @var array $capabilities {
      *          Liste des habilitations Tableau indexés des habilitations permises ou tableau dimensionné
      *
      *          @var string $cap Nom de l'habilitation => @var bool $grant privilege

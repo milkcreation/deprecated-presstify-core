@@ -1,60 +1,98 @@
 jQuery(document).ready(function ($) {
-    var $folder = $('.BrowserFolder');
+    var $content = $('.Browser-content'),
+        $infos = $('.Browser-itemInfos');
 
-    var previewImages = function() {
-        $('.BrowserFolder-FileLink:has(.BrowserFolder-FileIcon--image:not(:has(img)))').each(function () {
-            var filename = $(this).data('target');
-            var $item = $('.BrowserFolder-FileIcon--image', this);
-
-            $item.addClass('load');
-
+    var getContent = function(folder) {
+            $content.addClass('load');
+            console.log(folder);
             $.ajax({
                 url: tify_ajaxurl,
-                async: false,
-                cache: false,
-                data: {
-                    action: 'tiFyCoreUiAdminTemplatesBrowser-getImagePreview',
-                    filename: filename
+                data :{
+                    action: 'tiFyCoreUiAdminTemplatesBrowser-getContent',
+                    folder: folder
                 },
                 type: 'POST'
             })
-                .done(function (resp) {
-                    $item.html('<img src="' + resp.src + '"/>');
-                })
-                .then(function(){
-                    $item.removeClass('load');
-                });
-        });
-    },
-        getFolderContent = function(folder) {
-            $folder.addClass('load');
+            .done(function(resp) {
+                $content.html(resp);
+                $content.trigger('tify_ui.browser.content.loaded');
+            })
+            .always(function(){
+                $content.removeClass('load');
+            });
+        },
+        getItemInfos = function(item) {
+            $infos.addClass('load');
 
             $.ajax({
                 url: tify_ajaxurl,
                 data :{
-                    action: 'tiFyCoreUiAdminTemplatesBrowser-getFolderContent',
-                    folder: folder
+                    action: 'tiFyCoreUiAdminTemplatesBrowser-getItemInfos',
+                    item: item
                 },
-                type: 'POST',
-                xhrFields:{
-                    id: 'getFolderContent'
-                }
+                type: 'POST'
             })
-            .done(function(resp) {
-                $folder.html(resp);
-                tify_scroll_paginate('.tiFyCoreControl-ScrollPaginate', '.BrowserFolder-Files');
-            })
-            .always(function(){
-                $folder.removeClass('load');
-                //previewImages();
-            });
-    };
+                .done(function(resp) {
+                    $infos.html(resp);
+                })
+                .always(function(){
+                    $infos.removeClass('load');
+                });
+        },
+        previewImages = function() {
+            $('.Browser-contentFileLink:has(.BrowserFolder-FileIcon--image:not(:has(img)))').each(function () {
+                var filename = $(this).data('target');
+                var $item = $('.BrowserFolder-FileIcon--image', this);
 
+                $item.addClass('load');
+
+                $.ajax({
+                    url: tify_ajaxurl,
+                    async: false,
+                    cache: false,
+                    data: {
+                        action: 'tiFyCoreUiAdminTemplatesBrowser-getImagePreview',
+                        filename: filename
+                    },
+                    type: 'POST'
+                })
+                    .done(function (resp) {
+                        $item.html('<img src="' + resp.src + '"/>');
+                    })
+                    .then(function(){
+                        $item.removeClass('load');
+                    });
+            });
+        };
+
+    // Evènements
     // Navigation du fil d'ariane
-    $(document).on('click', '.BrowserFolder-BreadcrumbPartLink', function (e) {
+    $(document).on('click', '.Browser-contentBreadcrumbPartLink', function (e) {
         e.preventDefault();
 
-        getFolderContent($(this).data('target'));
+        getContent($(this).data('target'));
+    });
+
+    // Navigation dans un repértoire
+    $(document).on('dblclick', '.Browser-contentFileLink', function (e) {
+        e.preventDefault();
+
+        if ($(this).hasClass('Browser-contentFileLink--dir')) {
+            getContent($(this).data('target'));
+        }
+    });
+
+    // Selection d'un élément
+    $(document).on('click', '.Browser-contentFile:not(:has(.selected)) .Browser-contentFileLink', function (e) {
+        e.preventDefault();
+
+        $(this).closest('.Browser-contentFile').addClass('selected').siblings().removeClass('selected');
+        getItemInfos($(this).data('target'));
+    });
+
+    // Pagination
+    $(document).on('tify_ui.browser.content.loaded', function(e){
+        tify_scroll_paginate('.Browser-contentPaginate', '.Browser-contentFiles');
     });
 
     $(document).on('tify_control.scroll_paginate.loading', function(e){
@@ -63,21 +101,5 @@ jQuery(document).ready(function ($) {
 
     $(document).on('tify_control.scroll_paginate.loaded', function(e){
         $folder.removeClass('load');
-    });
-
-    // Navigation
-    $(document).on('dblclick', '.BrowserFolder-FileLink', function (e) {
-        e.preventDefault();
-
-        if ($(this).hasClass('BrowserFolder-FileLink--dir')) {
-            getFolderContent($(this).data('target'));
-        }
-    });
-
-    // Selection
-    $(document).on('click', '.BrowserFolder-File:not(:has(.selected)) .BrowserFolder-FileLink', function (e) {
-        e.preventDefault();
-
-        $(this).closest('.BrowserFolder-File').addClass('selected').siblings().removeClass('selected');
     });
 });

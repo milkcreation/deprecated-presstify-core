@@ -37,7 +37,7 @@ class Display extends \tiFy\App\Factory
 
     /**
      * CONSTRUCTEUR
-     *
+     *Action
      * @param array $attrs Attributs de configuration
      * @return void
      */
@@ -55,23 +55,23 @@ class Display extends \tiFy\App\Factory
         switch($this->getBox()->getObjectType()) :
             case 'post_type' :
                 if ($this->getHookname() === 'page') :
-                    self::tFyAppActionAdd('edit_page_form', 'render');
+                    self::tFyAppAddAction('edit_page_form', 'render');
                 else :
-                    self::tFyAppActionAdd('edit_form_advanced', 'render');
+                    self::tFyAppAddAction('edit_form_advanced', 'render');
                 endif;
                 break;
             case 'options' :
                 add_settings_section($this->getId(), null, [$this, 'render'], $this->getBox()->getObjectName());
                 break;
             case 'taxonomy' :
-                self::tFyAppActionAdd($this->getScreen()->taxonomy . '_edit_form', 'render', 10, 2);
+                self::tFyAppAddAction($this->getScreen()->taxonomy . '_edit_form', 'render', 10, 2);
                 break;
             case 'user' :
-                self::tFyAppActionAdd('show_user_profile', 'render');
-                self::tFyAppActionAdd('edit_user_profile', 'render');
+                self::tFyAppAddAction('show_user_profile', 'render');
+                self::tFyAppAddAction('edit_user_profile', 'render');
                 break;
         endswitch;
-        self::tFyAppActionAdd('admin_enqueue_scripts');
+        self::tFyAppAddAction('admin_enqueue_scripts');
     }
 
     /**
@@ -175,14 +175,27 @@ class Display extends \tiFy\App\Factory
      */
     public function render()
     {
+        // Définition des arguments passés dans la méthode
+        $args = func_num_args() ? func_get_args() : null;
+
         // Création de l'arborescence des onglets
-        $nodes = call_user_func_array([$this, 'initNodes'], (func_num_args() ? func_get_args() : null));
+        $nodes = call_user_func_array([$this, 'initNodes'], $args);
 
         $output = "";
         $output .= "<div id=\"tiFyTaboox-Container--" . $this->getId() . "\" class=\"tiFyTaboox-Container\">";
-        $output .= "\t<h3 class=\"hndle tiFyTaboox-ContainerTitle\">";
-        $output .= "\t\t<span>" . (($title = $this->Box->getAttr('title')) ? $title : __('Réglages', 'tify')) . "</span>";
-        $output .= "\t</h3>";
+
+        // Traitement de l'entête de la boîte de saisie
+        $output .= "\t<div class=\"hndle tiFyTaboox-ContainerHeader\">";
+        $title = $this->Box->getAttr('title', '');
+        if (is_callable($title)) :
+            ob_start();
+            call_user_func_array($title, $args);
+            $output .= ob_get_clean();
+        else :
+            $output .= "\t\t<h3 class=\"hndle\"><span>" . ($title ? $title : __('Réglages', 'tify')) . "</span></h3>";
+        endif;
+        $output .= "\t</div>";
+
         $output .= "\t<div id=\"tiFyTaboox-Wrapper--" . $this->getId() . "\" class=\"tiFyTaboox-Wrapper\">";
         $output .= "\t\t<div class=\"tiFyTaboox-WrapperBack\"></div>";
         $output .= "\t\t<div class=\"tiFyTaboox-WrapperContent\">";

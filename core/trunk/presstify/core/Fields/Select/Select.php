@@ -11,8 +11,8 @@ class Select extends \tiFy\Core\Fields\Factory
     public function isSelected($value)
     {
         $selected = $this->getAttr('selected');
-        if (is_string($selected)) :
-            $selected = array_map('trim', explode(',', $selected));
+        if (!is_array($selected)) :
+            $selected = array_map('trim', explode(',', (string)$selected));
         endif;
 
         return in_array($value, $selected);

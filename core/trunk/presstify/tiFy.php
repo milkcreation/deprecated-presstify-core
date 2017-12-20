@@ -9,6 +9,7 @@
 namespace tiFy;
 
 use \tiFy\Lib\File;
+use Symfony\Component\HttpFoundation\Request;
 
 final class tiFy
 {
@@ -30,6 +31,12 @@ final class tiFy
      * @var string
      */
     public static $AbsUrl;
+
+    /**
+     * Classe de rappel de la requête globale
+     * @var \Symfony\Component\HttpFoundation\Request
+     */
+    private static $GlobalRequest;
     
     /**
      * Attributs de configuration
@@ -139,6 +146,72 @@ final class tiFy
             if(class_exists($classname)) :
                 new $classname;
             endif;
+        endif;
+    }
+
+    /**
+     * Récupération de la classe de rappel de la requête global
+     *
+     * @return \Symfony\Component\HttpFoundation\Request
+     */
+    public static function getGlobalRequest()
+    {
+        if (!self::$GlobalRequest) :
+            self::$GlobalRequest = Request::createFromGlobals();
+        endif;
+
+        return self::$GlobalRequest;
+    }
+
+    /**
+     * Appel d'une méthode de requête global
+     * @see https://symfony.com/doc/current/components/http_foundation.html
+     * @see http://api.symfony.com/4.0/Symfony/Component/HttpFoundation/ParameterBag.html
+     *
+     * @param string $method Nom de la méthode à appeler (all|keys|replace|add|get|set|has|remove|getAlpha|getAlnum|getBoolean|getDigits|getInt|filter)
+     * @param array $args Tableau associatif des arguments passés dans la méthode.
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public static function callGlobalRequestVar($method, $args = [], $type = '')
+    {
+        if (!$request = self::getGlobalRequest()) :
+            return;
+        endif;
+
+        switch(strtolower($type)) :
+            default :
+                $object = $request;
+                break;
+            case 'post' :
+            case 'request' :
+                $object = $request->request;
+                break;
+            case 'get' :
+            case 'query' :
+                $object = $request->query;
+                break;
+            case 'cookie' :
+            case 'cookies' :
+                $object = $request->cookies;
+                break;
+            case 'files' :
+                $object = $request->files;
+                break;
+            case 'server' :
+                $object = $request->server;
+                break;
+            case 'headers' :
+                $object = $request->headers;
+                break;
+            case 'attributes' :
+                $object = $request->attributes;
+                break;
+        endswitch;
+
+        if (method_exists($object, $method)) :
+            return call_user_func_array([$object, $method], $args);
         endif;
     }
     

@@ -118,6 +118,18 @@ abstract class FactoryConstructor extends \tiFy\App
     }
 
     /**
+     * Vérification d'existance d'un attribut de configuration
+     *
+     * @param string $name Identifiant de qualification de l'attribut
+     *
+     * @return bool
+     */
+    public function issetAttr($name)
+    {
+        return isset($this->Attrs[$name]);
+    }
+
+    /**
      * Récupération d'un attribut de configuration
      *
      * @param string $name Identifiant de qualification de l'attribut
@@ -127,7 +139,7 @@ abstract class FactoryConstructor extends \tiFy\App
      */
     public function getAttr($name, $default = '')
     {
-        if (!isset($this->Attrs[$name])) :
+        if (!$this->issetAttr($name)) :
             return $default;
         endif;
 

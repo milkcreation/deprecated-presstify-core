@@ -4,7 +4,7 @@
  * 
  * @see https://tympanus.net/Development/MultiLevelPushMenu/
  */
-!(function($){
+!(function($, doc, win){
     $.widget('tify.tiFyControlCurtainMenu', {
         options: {
 
@@ -70,5 +70,6 @@
             var parentLevel = curLevel.closest('li').closest('.tiFyControlCurtainMenu-panel');
         }
     });
+
     $('[data-tify_control="curtain_menu"]').tiFyControlCurtainMenu();
-})(jQuery);
+})(jQuery, document, window);
