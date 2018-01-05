@@ -122,8 +122,8 @@ class Modal extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'              => 'tiFyControl-Modal-' . self::$Instance,
-            'container_id'    => 'tiFyControl-Modal--' . self::$Instance,
+            'id'              => 'tiFyControl-modal-' . self::$Instance,
+            'container_id'    => 'tiFyControl-modal--' . self::$Instance,
             'container_class' => '',
             'container_attrs' => [],
 
@@ -167,7 +167,7 @@ class Modal extends \tiFy\Core\Control\Factory
 
         // Attributs du conteneur
         $container_attrs['id'] = $container_id;
-        $container_attrs['class'] = "tiFyControl-Modal modal" . ($animation ? ' fade' : '') . "" . ($container_class ? " {$container_class}" : '');
+        $container_attrs['class'] = "tiFyControl-modal modal" . ($animation ? ' fade' : '') . "" . ($container_class ? " {$container_class}" : '');
         $container_attrs['data-modal'] = $id;
         foreach ($container_attrs as $k => $v) :
             $output .= " {$k}=\"{$v}\"";
@@ -278,8 +278,8 @@ class Modal extends \tiFy\Core\Control\Factory
     protected static function trigger($attrs = [], $echo = true)
     {
         $defaults = [
-            'id'              => 'tiFyControl-ModalTrigger-' . self::$Instance,
-            'container_id'    => 'tiFyControl-ModalTrigger--' . self::$Instance,
+            'id'              => 'tiFyControl-modalTrigger-' . self::$Instance,
+            'container_id'    => 'tiFyControl-modalTrigger--' . self::$Instance,
             'container_class' => 'btn btn-primary button-primary',
             'container_attrs' => [],
             'container_tag'   => 'button',
@@ -309,8 +309,8 @@ class Modal extends \tiFy\Core\Control\Factory
 
         // Attributs du conteneur
         $container_attrs['id'] = $container_id;
-        $container_attrs['class'] = "tiFyControl-ModalTrigger" . ($container_class ? " {$container_class}" : '');
-        $container_attrs['data-toggle'] = "tiFyControl-Modal";
+        $container_attrs['class'] = "tiFyControl-modalTrigger" . ($container_class ? " {$container_class}" : '');
+        $container_attrs['data-toggle'] = "tiFyControl-modal";
         $container_attrs['data-target'] = isset($modal['id']) ? $modal['id'] : "{$target}";
         if (($container_tag === 'a') && !isset($container_attrs['href'])) :
             $container_attrs['href'] = "#{$container_id}";

@@ -85,7 +85,7 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
         // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'              => 'tiFyControl-image_lightbox-' . self::$Instance,
+            'id'              => 'tiFyControl-imageLightbox-' . self::$Instance,
             // Id Html du conteneur
             'container_id'    => 'tiFyControlImageLightbox--' . self::$Instance,
             // Classe Html du conteneur

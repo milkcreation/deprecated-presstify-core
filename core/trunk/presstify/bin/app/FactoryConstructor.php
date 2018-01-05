@@ -40,7 +40,7 @@ abstract class FactoryConstructor extends \tiFy\App
         endif;
 
         // Traitement et déclaration des attributs de configuration
-        if ($attrs = $this->parseAttrs($attrs) ) :
+        if ($attrs = $this->parseAttrs($attrs)) :
             foreach ($attrs as $name => $value) :
                 $this->setAttr($name, $value);
             endforeach;

@@ -301,6 +301,26 @@ trait App
     }
 
     /**
+     * Récupération du chemin absolu vers le repertoire racine de presstiFy
+     *
+     * @return null|string
+     */
+    final public static function tFyAppRootDirname()
+    {
+        return tiFy::$AbsDir;
+    }
+
+    /**
+     * Récupération de l'url absolue vers le repertoire racine de presstiFy
+     *
+     * @return null|string
+     */
+    final public static function tFyAppRootUrl()
+    {
+        return tiFy::$AbsUrl;
+    }
+
+    /**
      * Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
      *
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
