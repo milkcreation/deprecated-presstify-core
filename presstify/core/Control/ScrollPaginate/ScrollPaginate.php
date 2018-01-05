@@ -172,6 +172,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             'item_display_cb'   => get_called_class() . '::itemDisplay'
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
+
         /**
          * @var string $id Identifiant de qualification du controleur
          * @var string $container_id ID HTML du controleur d'affichage

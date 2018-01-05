@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Lib\Walkers;
 
 abstract class Base
@@ -7,39 +8,41 @@ abstract class Base
      * Liste de éléments
      * @var array
      */
-    protected $Items        = [];
+    protected $Items = [];
 
     /**
      * Liste des attributs par défaut d'un élément
      * @var array
      */
     protected $ItemDefaults = [
-        'class'         => '',
-        'parent'        => '',
-        'content'       => ''
+        'class'   => '',
+        'parent'  => '',
+        'content' => '',
     ];
 
     /**
      * Element courant
      * @var mixed
      */
-    protected $Current      = null;
+    protected $Current = null;
 
     /**
      * Niveau de départ de l'indentation
+     * @var string Chaine de caractére d'occurence "\t"
      */
-    protected $StartIndent  = "";
+    protected $Pad = "";
 
     /**
      * Attributs de configuration
+     * @var array
      */
-    protected $Attrs        = [];
+    protected $Attrs = [];
 
     /**
      * Ordonnancement
      * @var bool|string (append|prepend)
      */
-    protected $Sort         = 'append';
+    protected $Sort = 'append';
 
     /**
      * CONTROLEURS
@@ -51,7 +54,7 @@ abstract class Base
      *
      * @return void|array
      */
-    final public function setItemList($items = array())
+    final public function setItemList($items = [])
     {
         foreach ($items as $item) :
             $this->Items[] = \wp_parse_args($item, $this->ItemDefaults);
@@ -81,31 +84,37 @@ abstract class Base
     {
         $key = array_search($id, array_column($this->Items, 'id'));
 
-        if (($key!== false) && isset($this->Items[$key])) :
+        if (($key !== false) && isset($this->Items[$key])) :
             return $this->Items[$key];
         endif;
     }
-    
+
     /**
      * Récupération d'attribut d'un élément de menu
+     *
+     * @param string $id Identifiant de qualification de l'élément
+     * @param string $name Identifiant de qualification de l'attribut à récupéré
+     * @param mixed $default Valeur de retour par défaut
+     *
+     * @return mixed
      */
-    final public function getItemAttr($id, $attr = 'id', $defaults = '')
+    final public function getItemAttr($id, $name = 'id', $default = '')
     {
-        if (! $attrs = $this->getItem($id)) :
-            return $defaults;
+        if (!$attrs = $this->getItem($id)) :
+            return $default;
         endif;
-        
-        if (isset($attrs[$attr])) :
-            return $attrs[$attr];
+
+        if (isset($attrs[$name])) :
+            return $attrs[$name];
         else :
-            return $defaults;
+            return $default;
         endif;
     }
 
     /**
      * Définition de l'élément courant
      *
-     * @param string $id Identifiant de qualification de l'élément
+     * @param string $id Identifiant de qualification de l'élément courant à définir
      *
      * @return string
      */
@@ -115,9 +124,9 @@ abstract class Base
     }
 
     /**
-     * Vérification si l'élément est courant
+     * Vérification si un élément est l'élément courant
      *
-     * @param string $id Identifiant de qualification de l'élément
+     * @param string $id Identifiant de qualification de l'élément à vérifier
      *
      * @return bool
      */
@@ -133,7 +142,7 @@ abstract class Base
     /**
      * Vérification si l'élément a un parent
      *
-     * @param string $id Identifiant de qualification de l'élément courant
+     * @param string $id Identifiant de qualification de l'élément à vérifier
      *
      * @return bool
      */
@@ -145,7 +154,7 @@ abstract class Base
     /**
      * Vérification si l'élément a au moins un enfant
      *
-     * @param string $id Identifiant de qualification de l'élément courant
+     * @param string $id Identifiant de qualification de l'élément à vérifier
      *
      * @return bool
      */
@@ -153,65 +162,136 @@ abstract class Base
     {
         return array_search($id, array_column($this->Items, 'parent'));
     }
-    
+
     /**
      * Récupération de l'indentation
+     *
+     * @param int $depth Niveau de profondeur de l'indentation
      *
      * @return string
      */
     final public function getIndent($depth = 0)
     {
-       return $this->StartIndent . str_repeat("\t", $depth);
+        return $this->Pad . str_repeat("\t", $depth);
+    }
+
+    /**
+     * Récupération de la liste des attributs de configuration
+     *
+     * @return array
+     */
+    public function getAttrList()
+    {
+        return $this->Attrs;
+    }
+
+    /**
+     * Vérification d'existance d'un attribut de configuration
+     *
+     * @param string $name Identifiant de qualification de l'attribut
+     *
+     * @return bool
+     */
+    public function issetAttr($name)
+    {
+        return isset($this->Attrs[$name]);
+    }
+
+    /**
+     * Récupération d'un attribut de configuration
+     *
+     * @param string $name Identifiant de qualification de l'attribut
+     * @param mixed $default Valeur de retour par défaut
+     *
+     * @return mixed
+     */
+    public function getAttr($name, $default = '')
+    {
+        if (!$this->issetAttr($name)) :
+            return $default;
+        endif;
+
+        return $this->Attrs[$name];
     }
 
     /**
      * Ouverture d'une liste de contenu d'éléments
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     final protected function start_content_items($item = null, $depth = 0, $parent = '')
     {
-        return is_callable($item && array($this, 'start_content_items_'. $item['id'])) ?
-            call_user_func(array($this, 'start_content_items_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_start_content_items'), $item, $depth, $parent);
+        return is_callable($item && [$this, 'start_content_items_' . $item['id']]) ?
+            call_user_func([$this, 'start_content_items_' . $item['id']], $item, $depth, $parent) :
+            call_user_func([$this, 'default_start_content_items'], $item, $depth, $parent);
     }
 
     /**
      * Fermeture d'une liste de contenu d'éléments
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     final protected function end_content_items($item = null, $depth = 0, $parent = '')
     {
-        return is_callable($item && array( $this, 'end_content_items_'. $item['id'])) ?
-            call_user_func(array($this, 'end_content_items_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_end_content_items'), $item, $depth, $parent);
+        return is_callable($item && [$this, 'end_content_items_' . $item['id']]) ?
+            call_user_func([$this, 'end_content_items_' . $item['id']], $item, $depth, $parent) :
+            call_user_func([$this, 'default_end_content_items'], $item, $depth, $parent);
     }
 
     /**
      * Ouverture d'un contenu d'élement
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final protected function start_content_item($item, $depth = 0, $parent = '')
+    final protected function start_content_item($item = null, $depth = 0, $parent = '')
     {
-        return is_callable(array( $this, 'start_content_item_'. $item['id'])) ?
-            call_user_func(array( $this, 'start_content_item_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array( $this, 'default_start_content_item'), $item, $depth, $parent);
+        return is_callable([$this, 'start_content_item_' . $item['id']]) ?
+            call_user_func([$this, 'start_content_item_' . $item['id']], $item, $depth, $parent) :
+            call_user_func([$this, 'default_start_content_item'], $item, $depth, $parent);
     }
 
     /**
      * Fermeture d'un contenu d'élement
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final protected function end_content_item($item, $depth = 0, $parent = '')
+    final protected function end_content_item($item = null, $depth = 0, $parent = '')
     {
-        return is_callable(array($this, 'end_content_item_'. $item['id'])) ?
-            call_user_func(array($this, 'end_content_item_'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_end_content_item'), $item, $depth, $parent);
+        return is_callable([$this, 'end_content_item_' . $item['id']]) ?
+            call_user_func([$this, 'end_content_item_' . $item['id']], $item, $depth, $parent) :
+            call_user_func([$this, 'default_end_content_item'], $item, $depth, $parent);
     }
 
     /**
      * Rendu d'un contenu d'élément
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final protected function content_item($item, $depth, $parent)
+    final protected function content_item($item = null, $depth = 0, $parent = '')
     {
-        return is_callable(array($this, 'content_item'. $item['id'])) ?
-            call_user_func(array($this, 'content_item'. $item['id']), $item, $depth, $parent) :
-            call_user_func(array($this, 'default_content_item'), $item, $depth, $parent);
+        return is_callable([$this, 'content_item' . $item['id']]) ?
+            call_user_func([$this, 'content_item' . $item['id']], $item, $depth, $parent) :
+            call_user_func([$this, 'default_content_item'], $item, $depth, $parent);
     }
 
     /**
@@ -235,10 +315,10 @@ abstract class Base
 
     /**
      * Itérateur d'affichage
-     * 
-     * @param array $items
-     * @param int $depth
-     * @param string $parent
+     *
+     * @param $items Liste des éléments à traiter
+     * @param $depth Niveau de profondeur courant
+     * @param $parent Identifiant de qualification de l'élément parent courant
      *
      * @return string
      */
@@ -256,32 +336,32 @@ abstract class Base
                 continue;
             endif;
 
-            if (! $opened) :
+            if (!$opened) :
                 $output .= $this->start_content_items($item, $depth, $parent);
                 $opened = true;
             endif;
-            
+
             $output .= $this->start_content_item($item, $depth, $parent);
             $output .= $this->content_item($item, $depth, $parent);
             $output .= $this->walk($items, ($depth + 1), $item['id']);
             $output .= $this->end_content_item($item, $depth, $parent);
-            
+
             $prevDepth = $depth;
         endforeach;
 
-        if($opened) :
+        if ($opened) :
             $output .= $this->end_content_items(null, $depth, $parent);
         endif;
-        
+
         return $output;
     }
 
     /**
      * Ordonnancement
      *
-     * @param array $items
-     * @param int $depth
-     * @param string $parent
+     * @param $items Liste des éléments à traiter
+     * @param $depth Niveau de profondeur courant
+     * @param $parent Identifiant de qualification de l'élément parent courant
      *
      * @return array
      */
@@ -303,7 +383,10 @@ abstract class Base
         endif;
 
         // Récupération des informations de position
-        $max = max($positions); $min = ($positions); $count = count($positions); $i = 1;
+        $max = max($positions);
+        $min = ($positions);
+        $count = count($positions);
+        $i = 1;
         $sorted = [];
 
         //
@@ -342,17 +425,24 @@ abstract class Base
 
     /**
      * Récupération de la classe HTML d'un élément de menu
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function getItemClass($item = null, $depth = 0, $parent = '')
     {
         // Bypass
-        if(!$item)
+        if (!$item) :
             return '';
+        endif;
 
         $classes = [];
         $classes[] = 'tiFyWalker-contentItem';
         $classes[] = "tiFyWalker-contentItem--depth{$depth}";
-        if(! empty($item['class'])) :
+        if (!empty($item['class'])) :
             $classes[] = $item['class'];
         endif;
 
@@ -361,41 +451,72 @@ abstract class Base
 
     /**
      * Ouverture par défaut d'une liste de contenus d'éléments
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function default_start_content_items($item = null, $depth = 0, $parent = '')
     {
         return $this->getIndent($depth) . "<div class=\"tiFyWalker-contentItems tiFyWalker-contentItems--depth{$depth}\">\n";
     }
-    
+
     /**
      * Fermeture par défaut d'une liste de contenus d'éléments
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function default_end_content_items($item = null, $depth = 0, $parent = '')
     {
         return $this->getIndent($depth) . "</div>\n";
     }
-    
+
     /**
      * Ouverture par défaut d'un contenu d'élement
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_start_content_item($item, $depth = 0, $parent = '')
-    {          
-        return $this->getIndent($depth) . "<div class=\"" . $this->getItemClass($item, $depth, $parent) . "\" id=\"tiFyWalker-contentItem--{$item['id']}\">\n";
+    public function default_start_content_item($item = null, $depth = 0, $parent = '')
+    {
+        return $this->getIndent($depth) . "<div class=\"" . $this->getItemClass($item, $depth,
+                $parent) . "\" id=\"tiFyWalker-contentItem--{$item['id']}\">\n";
     }
-    
+
     /**
      * Fermeture par défaut d'un contenu d'élement
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_end_content_item($item, $depth = 0, $parent = '')
+    public function default_end_content_item($item = null, $depth = 0, $parent = '')
     {
         return $this->getIndent($depth) . "</div>\n";
     }
-    
+
     /**
      * Rendu par défaut d'un contenu d'élément
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_content_item($item, $depth = 0, $parent = '')
+    public function default_content_item($item = null, $depth = 0, $parent = '')
     {
-        return ! empty($item['content']) ? $item['content'] : '';
+        return !empty($item['content']) ? $item['content'] : '';
     }
 }

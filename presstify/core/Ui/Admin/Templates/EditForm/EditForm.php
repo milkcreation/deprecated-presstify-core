@@ -1,8 +1,8 @@
 <?php
+
 namespace tiFy\Core\Ui\Admin\Templates\EditForm;
 
-use tiFy\Apps;
-use tiFy\Core\Fields\Fields;
+use tiFy\Core\Field\Field;
 
 class EditForm extends \tiFy\Core\Ui\Admin\Factory
 {
@@ -318,7 +318,7 @@ class EditForm extends \tiFy\Core\Ui\Admin\Factory
 
         switch ($type) :
             default:
-                return Fields::Text(['name' => $field_name, 'value' => $field_value], false);
+                return Field::Text(['name' => $field_name, 'value' => $field_value]);
                 break;
             case 'DATETIME' :
                 return "<input type=\"datetime\" name=\"{$field_name}\" value=\"{$field_value}\"/>";
@@ -326,7 +326,7 @@ class EditForm extends \tiFy\Core\Ui\Admin\Factory
             case 'BIGINT' :
             case 'INT' :
             case 'TINYINT' :
-                return Fields::Number(['name' => $field_name, 'value' => $field_value], false);
+                return Field::Number(['name' => $field_name, 'value' => $field_value]);
                 break;
             case 'LONGTEXT' :
                 // @todo rendre potentiellement récursif

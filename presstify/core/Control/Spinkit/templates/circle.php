@@ -5,7 +5,7 @@
  * @var string $type Type de controleur spinkit
  */
 ?>
-<div id="<?php echo $container_id; ?>" class="tiFyCoreControl-Spinner tiFyCoreControl-Spinner--<?php echo $type; ?><?php echo $container_class ? " {$container_class}" : '';?> sk-circle">
+<div id="<?php echo $container_id; ?>" class="tiFyCoreControl-spinkit tiFyCoreControl-spinkit--<?php echo $type; ?><?php echo $container_class ? " {$container_class}" : '';?> sk-circle">
     <div class="sk-circle1 sk-child"></div>
     <div class="sk-circle2 sk-child"></div>
     <div class="sk-circle3 sk-child"></div>

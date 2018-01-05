@@ -67,9 +67,9 @@ class Spinkit extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'container_id' => 'tiFyCoreControl-Spinner--' . self::$Instance,
+            'container_id'    => 'tiFyCoreControl-spinkit--' . self::$Instance,
             'container_class' => '',
-            'type' => 'spinner-pulse'
+            'type'            => 'spinner-pulse',
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
         extract($attrs);

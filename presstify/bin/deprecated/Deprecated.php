@@ -29,10 +29,13 @@ class Deprecated
         // Anciennes classe abstraites de la librairie libraries
         tiFy::classLoad('tiFy\Inherits', dirname(__FILE__) .'/lib/Inherits');
 
-        // Anciennes core/Control
+        // core/Control
         tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control', 'Deprecated');
 
-        // Anciennes core/Taboox
+        // core/Fields
+        tiFy::classLoad('tiFy\Core\Fields', dirname(__FILE__) .'/app/core/Fields', 'Deprecated');
+
+        // core/Taboox
         tiFy::classLoad('tiFy\Core\Taboox\Option', dirname(__FILE__) .'/app/core/Taboox/Option');
         tiFy::classLoad('tiFy\Core\Taboox\Post', dirname(__FILE__) .'/app/core/Taboox/Post');
     }

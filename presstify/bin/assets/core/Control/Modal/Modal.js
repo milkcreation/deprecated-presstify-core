@@ -420,8 +420,8 @@ if (typeof jQuery === 'undefined') {
 }(jQuery);
 
 jQuery(document).ready(function($){
-    $('.tiFyControl-Modal').modal();
-    $(document).on('click','.tiFyControl-ModalTrigger',function(e){
+    $('.tiFyControl-modal').modal();
+    $(document).on('click','.tiFyControl-modalTrigger',function(e){
         e.preventDefault();
 
         $('[data-modal="'+ $(this).data('target') + '"]').modal('show');

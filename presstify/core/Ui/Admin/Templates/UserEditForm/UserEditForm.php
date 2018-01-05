@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Ui\Admin\Templates\UserEditForm;
 
-use tiFy\Core\Fields\Fields;
+use tiFy\Core\Field\Field;
 
 class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
 {
@@ -154,17 +154,19 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_user_login($item)
     {
-        $attrs = [
-            'name' => 'user_login',
+        $args = [
+            'name'  => 'user_login',
             'value' => $item->user_login,
-            'container_id' => 'user_login'
+            'attrs' => [
+                'id' => 'user_login',
+            ],
         ];
 
         if (!$this->item->ID) :
-            $attrs['html_attrs']['disabled'] = 'disabled';
+            $args['attrs']['disabled'] = 'disabled';
         endif;
 
-        return Fields::Text($attrs, false);
+        return Field::Text($args);
     }
 
     /**
@@ -178,20 +180,22 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
     {
         global $wp_roles;
 
-        $attrs = [
-            'name' => 'role',
+        $args = [
+            'name'  => 'role',
             'value' => $item->role,
-            'container_id' => 'role'
+            'attrs' => [
+                'id' => 'role',
+            ]
         ];
 
         if ($roles = $this->getParam('roles')) :
             foreach ($roles as $role) :
                 $name = isset($wp_roles->role_names[$role]) ? \translate_user_role($wp_roles->role_names[$role]) : $role;
-                $attrs['options'][esc_attr($role)] = $name;
+                $args['options'][esc_attr($role)] = $name;
             endforeach;
         endif;
 
-        return Fields::Select($attrs, false);
+        return Field::Select($args);
     }
 
     /**
@@ -203,7 +207,15 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_email($item)
     {
-        return Fields::Text(['name' => 'email', 'value' => $item->user_email, 'container_id' => 'email'], false);
+        return Field::Text(
+            [
+                'name'  => 'email',
+                'value' => $item->user_email,
+                'attrs' => [
+                    'id' => 'email',
+                ],
+            ]
+        );
     }
 
     /**
@@ -215,7 +227,15 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_firstname($item)
     {
-        return Fields::Text(['name' => 'firstname', 'value' => $item->firstname, 'container_id' => 'firstname'], false);
+        return Field::Text(
+            [
+                'name' => 'firstname',
+                'value' => $item->firstname,
+                'attrs' => [
+                        'id' => 'firstname'
+                ]
+            ]
+        );
     }
 
     /**
@@ -227,7 +247,15 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_lastname($item)
     {
-        return Fields::Text(['name' => 'lastname', 'value' => $item->lastname, 'container_id' => 'lastname'], false);
+        return Field::Text(
+            [
+                'name' => 'lastname',
+                'value' => $item->lastname,
+                'attrs' => [
+                    'id' => 'lastname'
+                ]
+            ]
+        );
     }
 
     /**
@@ -239,7 +267,15 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_nickname($item)
     {
-        return Fields::Text(['name' => 'nickname', 'value' => $item->nickname, 'container_id' => 'nickname'], false);
+        return Field::Text(
+            [
+                'name'  => 'nickname',
+                'value' => $item->nickname,
+                'attrs' => [
+                    'id' => 'nickname',
+                ],
+            ]
+        );
     }
 
     /**
@@ -251,7 +287,15 @@ class UserEditForm extends \tiFy\Core\Ui\Admin\Templates\EditForm\EditForm
      */
     public function field_url($item)
     {
-        return Fields::Text(['name' => 'user_url', 'value' => $item->user_url, 'container_id' => 'user_url'], false);
+        return Field::Text(
+            [
+                'name'  => 'user_url',
+                'value' => $item->user_url,
+                'attrs' => [
+                    'id' => 'user_url',
+                ],
+            ]
+        );
     }
 
     /**

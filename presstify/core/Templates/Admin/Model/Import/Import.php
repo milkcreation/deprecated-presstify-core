@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Core\Templates\Admin\Model\Import;
 
-use tiFy\Core\Fields\Fields;
+use tiFy\Core\Field\Field;
 
 class   Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTable
 {                        
@@ -20,7 +20,7 @@ class   Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTa
 
     /**
      * Champs d'options du formulaire d'import
-     * @var \tiFy\Core\Fields\Factory[]
+     * @var \tiFy\Core\Field\Factory[]
      */
     protected $OptionsFields        = [];
 
@@ -298,7 +298,7 @@ class   Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTa
                 <tr>
                     <th><?php echo $option_field['label'];?></th>
                     <td>
-                        <?php Fields::{$option_field['type']}($option_field['attrs']);?>
+                        <?php Field::{$option_field['type']}($option_field['attrs'], true);?>
                     </td>
                 </tr>
                 <?php endforeach;?>

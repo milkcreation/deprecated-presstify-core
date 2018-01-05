@@ -24,12 +24,21 @@ class Control extends \tiFy\App\Core
         parent::__construct();
 
         // Déclaration des controleurs d'affichage natifs
-        foreach(glob(self::tFyAppDirname() .'/*/', GLOB_ONLYDIR) as $filename) :
-            $Name = basename($filename);
+        foreach(glob(self::tFyAppDirname() . '/*/', GLOB_ONLYDIR) as $filename) :
+            $id = basename($filename);
 
             // Déclaration du controleur d'affichage natif
-            if($factory = self::register("tiFy\\Core\\Control\\{$Name}\\{$Name}")) :
-                self::$Native[$Name] = $factory;
+            if($factory = self::register("tiFy\\Core\\Control\\{$id}\\{$id}")) :
+                self::$Native[$id] = $factory;
+            endif;
+        endforeach;
+
+        // Déclaration des controleurs d'affichage natifs dépréciés
+        foreach(glob(self::tFyAppRootDirname() . '/bin/deprecated/app/core/Control/*/', GLOB_ONLYDIR) as $filename) :
+            $id = basename($filename);
+            // Déclaration du controleur d'affichage natif
+            if($factory = self::register("tiFy\\Core\\Control\\{$id}\\{$id}")) :
+                self::$Native[$id] = $factory;
             endif;
         endforeach;
 
@@ -38,10 +47,55 @@ class Control extends \tiFy\App\Core
     }
 
     /**
-     * APPELS DYNAMIQUES
+     * DECLENCHEURS
      */
     /**
-     * Appel d'un controleur d'affichage natif
+     * Initialisation globale
+     *
+     * @return void
+     */
+    public function init()
+    {
+        // Déclaration des controleurs d'affichage personnalisés
+        do_action('tify_control_register');
+
+        // Auto-chargement de l'initialisation globale des contrôleurs d'affichage
+        foreach (self::$Factory as $Name => $factory) :
+            $classname = get_class($factory);
+
+            if (is_callable([$classname, 'init'])) :
+                call_user_func([$classname, 'init']);
+            endif;
+        endforeach;
+    }
+        
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Déclaration d'un controleur d'affichage
+     *
+     * @param string $classname
+     *
+     * @return null|\tiFy\Core\Control\Factory
+     */
+    final public static function register($classname)
+    {
+        // Bypass
+        if(!class_exists($classname)) :
+            return;
+        endif;
+
+        // Initialisation de la classe
+        $Instance = self::loadOverride($classname);
+
+        if(!empty($Instance->ID) && !isset(self::$Factory[$Instance->ID])) :
+            return self::$Factory[$Instance->ID] = $Instance;
+        endif;
+    }
+
+    /**
+     * Affichage ou récupération du contenu d'un controleur natif
      *
      * @param string $name Identifiant de qualification du controleur d'affichage
      * @param array $args {
@@ -74,93 +128,7 @@ class Control extends \tiFy\App\Core
 
         $classname = get_class($factory);
 
-        return call_user_func_array("{$classname}::display", compact('attrs', 'echo'));
-    }
-
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public function init()
-    {
-        // Déclaration des controleurs d'affichage personnalisés
-        do_action('tify_control_register');
-
-        // Auto-chargement de l'initialisation globale des contrôleurs d'affichage
-        foreach (self::$Factory as $Name => $factory) :
-            $classname = get_class($factory);
-
-            call_user_func("{$classname}::init");
-        endforeach;
-    }
-        
-    /**
-     * CONTROLEURS
-     */
-    /**
-     * Déclaration d'un controleur d'affichage
-     *
-     * @param string $classname
-     *
-     * @return null|\tiFy\Core\Control\Factory
-     */
-    final public static function register($classname)
-    {
-        // Bypass
-        if(!class_exists($classname)) :
-            return;
-        endif;
-
-        // Initialisation de la classe
-        $Instance = self::loadOverride($classname);
-
-        if(!empty($Instance->ID) && !isset(self::$Factory[$Instance->ID])) :
-            return self::$Factory[$Instance->ID] = $Instance;
-        endif;
-    }
-
-    /**
-     * Affichage d'un controleur
-     *
-     * @param string $ID Identifiant de qualification du controleur d'affichage
-     *
-     * @return static
-     */
-    final public static function display($ID)
-    {
-        if (!isset(self::$Factory[$ID])) :
-            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
-        endif;
-
-        $args = array_slice(func_get_args(), 1);
-
-        $classname = get_class(self::$Factory[$ID]);
-
-        return call_user_func_array("{$classname}::display", $args);
-    }
-
-    /**
-     * Mise en file des scripts d'un controleur
-     *
-     * @param string $ID Identifiant de qualification du controleur d'affichage
-     *
-     * @return static
-     */
-    final public static function enqueue_scripts($ID)
-    {
-        if (!isset(self::$Factory[$ID])) :
-            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
-        endif;
-
-        $args = array_slice(func_get_args(), 1);
-
-        $classname = get_class(self::$Factory[$ID]);
-
-        return call_user_func_array("{$classname}::enqueue_scripts", $args);
+        return call_user_func_array([$classname, 'display'], compact('attrs', 'echo'));
     }
 
     /**
@@ -174,13 +142,43 @@ class Control extends \tiFy\App\Core
     final public static function call($ID, $method)
     {
         if (!isset(self::$Factory[$ID])) :
-            return trigger_error(sprintf(__('le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
         endif;
 
         $args = array_slice(func_get_args(), 2);
 
         $classname = get_class(self::$Factory[$ID]);
 
-        return call_user_func_array("{$classname}::{$method}", $args);
+        if (!is_callable([$classname, $method])) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'a pas de méthode %s disponible.', 'tify'), $ID, $method));
+        endif;
+
+        return call_user_func_array([$classname, $method], $args);
+    }
+
+    /**
+     * Affichage d'un controleur
+     *
+     * @param string $id Identifiant de qualification du controleur d'affichage
+     * @param array $args Liste des attributs de configuration
+     *
+     * @return static
+     */
+    final public static function display($id, $args = [])
+    {
+        return self::call($id, 'display', $args);
+    }
+
+    /**
+     * Mise en file des scripts d'un controleur
+     *
+     * @param string $id Identifiant de qualification du controleur d'affichage
+     * @param array $args Liste des attributs de configuration
+     *
+     * @return static
+     */
+    final public static function enqueue_scripts($id, $args = [])
+    {
+        return self::call($id, 'enqueue_scripts', $args);
     }
 }

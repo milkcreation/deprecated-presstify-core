@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\Login;
 
-use tiFy\Core\Fields\Fields;
+use tiFy\Core\Field\Field;
 use tiFy\Core\Control\Notices\Notices;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -414,7 +414,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @param array $attrs {
      *      Liste des attributs de configuration du champ Identifiant
-     *      @see \tiFy\Core\Fields\Text\Text
+     *      @see \tiFy\Core\Field\Text\Text
      * }
      *
      * @return array
@@ -441,7 +441,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @param array $attrs {
      *      Liste des attributs de configuration du champ Mot de passe
-     *      @see \tiFy\Core\Fields\Password\Password
+     *      @see \tiFy\Core\Field\Password\Password
      * }
      *
      * @return array
@@ -467,7 +467,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @param array $attrs {
      *      Liste des attributs de configuration du champ Se souvenir de moi
-     *      @see \tiFy\Core\Fields\Checkbox\Checkbox
+     *      @see \tiFy\Core\Field\Checkbox\Checkbox
      * }
      *
      * @return array
@@ -493,7 +493,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @param array $attrs {
      *      Liste des attributs de configuration du champ bouton de soumission
-     *      @see \tiFy\Core\Fields\Submit\Submit
+     *      @see \tiFy\Core\Field\Submit\Submit
      * }
      *
      * @return array
@@ -598,8 +598,8 @@ class Factory extends \tiFy\App\FactoryConstructor
         $output .= "<form name=\"{$form_name}\" id=\"{$form_id}\" class=\"{$form_class}\" action=\"\" method=\"post\">";
 
         // Champs cachés requis
-        $output .= Fields::Hidden(['attrs' => ['name' => 'tiFyLogin', 'value' => $this->getId()]], false);
-        $output .= Fields::Hidden(['attrs' => ['name' => '_wpnonce', 'value' => \wp_create_nonce('tiFyLogin-in-' . $this->getId())]], false);
+        $output .= Field::Hidden(['attrs' => ['name' => 'tiFyLogin', 'value' => $this->getId()]]);
+        $output .= Field::Hidden(['attrs' => ['name' => '_wpnonce', 'value' => \wp_create_nonce('tiFyLogin-in-' . $this->getId())]]);
 
         // Champs cachés
         $output .= $this->hidden_fields();
@@ -771,10 +771,10 @@ class Factory extends \tiFy\App\FactoryConstructor
                 $label['attrs']['for'] = $attrs['attrs']['id'];
             endif;
             $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--username';
-            $output .= Fields::Label($label, false);
+            $output .= Field::Label($label);
         endif;
 
-        $output .= Fields::Text($attrs, false);
+        $output .= Field::Text($attrs);
         $output .= "</p>";
 
         return $output;
@@ -802,10 +802,10 @@ class Factory extends \tiFy\App\FactoryConstructor
                 $label['attrs']['for'] = $attrs['attrs']['id'];
             endif;
             $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--password';
-            $output .= Fields::Label($label, false);
+            $output .= Field::Label($label);
         endif;
 
-        $output .= Fields::Password($attrs, false);
+        $output .= Field::Password($attrs);
         $output .= "</p>";
 
         return $output;
@@ -825,7 +825,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         $output  = "";
         $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--remember\">";
 
-        $output .= Fields::Checkbox($attrs, false);
+        $output .= Field::Checkbox($attrs);
 
         if ($attrs['label']) :
             $label = [];
@@ -835,7 +835,7 @@ class Factory extends \tiFy\App\FactoryConstructor
                 $label['attrs']['for'] = $attrs['attrs']['id'];
             endif;
             $label['attrs']['class'] = 'tiFyLogin-FormFieldLabel tiFyLogin-FormFieldLabel--remember';
-            $output .= Fields::Label($label, false);
+            $output .= Field::Label($label, false);
         endif;
 
         $output .= "</p>";
@@ -856,7 +856,7 @@ class Factory extends \tiFy\App\FactoryConstructor
 
         $output  = "";
         $output .= "<p class=\"tiFyLogin-Part tiFyLogin-FormFieldContainer tiFyLogin-FormFieldContainer--submit\">";
-        $output .= Fields::Submit($attrs, false);
+        $output .= Field::Submit($attrs);
         $output .= "</p>";
 
         return $output;

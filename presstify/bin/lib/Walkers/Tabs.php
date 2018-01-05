@@ -4,17 +4,17 @@ namespace tiFy\Lib\Walkers;
 abstract class Tabs extends Base
 {
     /**
-     * identifiant de qualification de l'écran courant
+     * Identifiant de qualification de l'écran courant
      * @var null|\WP_Screen::$id
      */
     protected $ScreenId = null;
 
     /**
-     * Iterateur d'affichage
+     * Itérateur d'affichage
      *
-     * @param array $items
-     * @param int $depth
-     * @param string $parent
+     * @param $items Liste des éléments à traiter
+     * @param $depth Niveau de profondeur courant
+     * @param $parent Identifiant de qualification de l'élément parent courant
      *
      * @return string
      */
@@ -83,6 +83,12 @@ abstract class Tabs extends Base
 
     /**
      * Ouverture d'une liste d'éléments de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     final public function start_nav_items($item = null, $depth = 0, $parent = '')
     {
@@ -94,6 +100,12 @@ abstract class Tabs extends Base
 
     /**
      * Fermeture d'une liste d'éléments de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     final public function end_nav_items($item = null, $depth = 0, $parent = '')
     {
@@ -105,8 +117,14 @@ abstract class Tabs extends Base
 
     /**
      * Ouverture d'un élement de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final public function start_nav_item($item, $depth = 0, $parent = '')
+    final public function start_nav_item($item = null, $depth = 0, $parent = '')
     {
         return is_callable([$this, 'start_nav_item_' . $item['id']]) ? call_user_func([
             $this,
@@ -116,8 +134,14 @@ abstract class Tabs extends Base
 
     /**
      * Fermeture d'un élement de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final public function end_nav_item($item, $depth = 0, $parent = '')
+    final public function end_nav_item($item = null, $depth = 0, $parent = '')
     {
         return is_callable([$this, 'end_nav_item_' . $item['id']]) ? call_user_func([
             $this,
@@ -127,8 +151,14 @@ abstract class Tabs extends Base
 
     /**
      * Contenu d'un élément de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    final public function nav_item($item, $depth, $parent)
+    final public function nav_item($item = null, $depth = 0, $parent = '')
     {
         return is_callable([$this, 'nav_item' . $item['id']]) ? call_user_func([$this, 'nav_item' . $item['id']], $item,
             $depth, $parent) : call_user_func([$this, 'default_nav_item'], $item, $depth, $parent);
@@ -136,6 +166,12 @@ abstract class Tabs extends Base
 
     /**
      * Ouverture par défaut d'une liste d'éléments de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function default_start_nav_items($item = null, $depth = 0, $parent = '')
     {
@@ -156,6 +192,12 @@ abstract class Tabs extends Base
 
     /**
      * Fermeture par défaut d'une liste d'éléments de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function default_end_nav_items($item = null, $depth = 0, $parent = '')
     {
@@ -164,8 +206,14 @@ abstract class Tabs extends Base
 
     /**
      * Ouverture par défaut d'un élement de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_start_nav_item($item, $depth = 0, $parent = '')
+    public function default_start_nav_item($item = null, $depth = 0, $parent = '')
     {
         $output = "";
         $output .= $this->getIndent($depth) . "\t<li class=\"tiFyTabs-navItem tiFyTabs-navItem--depth{$depth}\" role=\"presentation\">\n";
@@ -181,8 +229,14 @@ abstract class Tabs extends Base
 
     /**
      * Fermeture par défaut d'un élement de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_end_nav_item($item, $depth = 0, $parent = '')
+    public function default_end_nav_item($item = null, $depth = 0, $parent = '')
     {
         $output = "";
         $output .= $this->getIndent($depth) . "\t\t</a>\n";
@@ -193,14 +247,26 @@ abstract class Tabs extends Base
 
     /**
      * Contenu par défaut d'un élément de navigation
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_nav_item($item, $depth = 0, $parent = '')
+    public function default_nav_item($item = null, $depth = 0, $parent = '')
     {
         return !empty($item['title']) ? $item['title'] : '';
     }
 
     /**
      * Ouverture par défaut d'une liste de contenus d'éléments
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
     public function default_start_content_items($item = null, $depth = 0, $parent = '')
     {
@@ -209,8 +275,14 @@ abstract class Tabs extends Base
 
     /**
      * Ouverture par défaut d'un contenu d'élement
+     *
+     * @param array $item Attribut de configuration de l'élément
+     * @param int $depth Niveau de profondeur courant
+     * @param string $parent Identifiant de qualification de l'élément parent courant
+     *
+     * @return string
      */
-    public function default_start_content_item($item, $depth = 0, $parent = '')
+    public function default_start_content_item($item = null, $depth = 0, $parent = '')
     {
         return $this->getIndent($depth) . "<div role=\"tabpanel\" class=\"tab-pane tiFyTabs-contentItem tiFyTabs-contentItem--depth{$depth}\" id=\"{$item['id']}\">\n";
     }
