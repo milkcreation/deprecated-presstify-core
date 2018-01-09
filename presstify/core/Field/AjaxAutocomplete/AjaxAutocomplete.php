@@ -1,7 +1,7 @@
 <?php
 /**
  * @name AjaxAutocomplete
- * @desc Selecteur d'éléments via un champs de saisie avec autocompletion
+ * @desc Selecteur d'éléments via un champ de saisie avec autocompletion
  * @see http://api.jqueryui.com/autocomplete/
  * @package presstiFy
  * @namespace tiFy\Core\Field\AjaxAutocomplete

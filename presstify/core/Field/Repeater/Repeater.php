@@ -1,7 +1,7 @@
 <?php
 /**
  * @name Repeater
- * @desc Répétiteur de champ
+ * @desc Répétiteur de champs
  * @package presstiFy
  * @namespace tiFy\Core\Field\Repeater
  * @version 1.1

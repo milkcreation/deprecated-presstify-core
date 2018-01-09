@@ -1,13 +1,13 @@
 <?php
 /**
- * @name Text
+ * @name ToggleSwitch
  * @desc Bouton de bascule on/off
  * @see http://php.quicoto.com/toggle-switches-using-input-radio-and-css3/
  * @see https://github.com/ghinda/css-toggle-switch
  * @see http://bashooka.com/coding/pure-css-toggle-switches/
  * @see https://proto.io/freebies/onoff/
  * @package presstiFy
- * @namespace tiFy\Core\Field\Text
+ * @namespace tiFy\Core\Field\ToggleSwitch
  * @version 1.1
  * @subpackage Core
  * @since 1.2.535
@@ -16,11 +16,11 @@
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Field\Switcher;
+namespace tiFy\Core\Field\ToggleSwitch;
 
 use tiFy\Core\Field\Field;
 
-class Switcher extends \tiFy\Core\Field\Factory
+class ToggleSwitch extends \tiFy\Core\Field\Factory
 {
     /**
      * DECLENCHEURS
@@ -32,8 +32,8 @@ class Switcher extends \tiFy\Core\Field\Factory
      */
     final protected function init()
     {
-        wp_register_style('tiFyCoreFieldSwitcher', self::tFyAppAssetsUrl('Switcher.css', get_class()), [], 170724);
-        wp_register_script('tiFyCoreFieldSwitcher', self::tFyAppAssetsUrl('Switcher.js', get_class()), ['jquery'], 170724);
+        wp_register_style('tiFyCoreFieldToggleSwitch', self::tFyAppAssetsUrl('ToggleSwitch.css', get_class()), [], 170724);
+        wp_register_script('tiFyCoreFieldToggleSwitch', self::tFyAppAssetsUrl('ToggleSwitch.js', get_class()), ['jquery'], 170724);
     }
 
     /**
@@ -43,8 +43,8 @@ class Switcher extends \tiFy\Core\Field\Factory
      */
     final protected function enqueue_scripts()
     {
-        wp_enqueue_style('tiFyCoreFieldSwitcher');
-        wp_enqueue_script('tiFyCoreFieldSwitcher');
+        wp_enqueue_style('tiFyCoreFieldToggleSwitch');
+        wp_enqueue_script('tiFyCoreFieldToggleSwitch');
     }
 
     /**
@@ -79,21 +79,21 @@ class Switcher extends \tiFy\Core\Field\Factory
         $defaults = [
             'before'          => '',
             'after'           => '',
-            'container_id'    => 'tiFyCoreField-switcher--' . $this->getIndex(),
+            'container_id'    => 'tiFyCoreField-toggleSwitch--' . $this->getIndex(),
             'container_class' => '',
-            'name'            => 'tiFyCoreField-switcher-' . $this->getIndex(),
+            'name'            => 'tiFyCoreField-toggleSwitch-' . $this->getIndex(),
             'value'           => 'on',
-            'label_on'        => _x('Oui', 'tiFyCoreFieldSwitcher', 'tify'),
-            'label_off'       => _x('Non', 'tiFyCoreFieldSwitcher', 'tify'),
+            'label_on'        => _x('Oui', 'tiFyCoreFieldToggleSwitch', 'tify'),
+            'label_off'       => _x('Non', 'tiFyCoreFieldToggleSwitch', 'tify'),
             'value_on'        => 'on',
             'value_off'       => 'off',
         ];
         $args = array_merge($defaults, $args);
 
         if (!isset($args['container_class'])) :
-            $args['container_class'] = 'tiFyCoreField-switcher';
+            $args['container_class'] = 'tiFyCoreField-toggleSwitch';
         else :
-            $args['container_class'] = 'tiFyCoreField-switcher ' . $args['container_class'];
+            $args['container_class'] = 'tiFyCoreField-toggleSwitch ' . $args['container_class'];
         endif;
 
         return $args;
@@ -108,26 +108,24 @@ class Switcher extends \tiFy\Core\Field\Factory
     {
 ?><?php $this->before(); ?>
 <div id="<?php echo $this->getAttr('container_id');?>" class="<?php echo $this->getAttr('container_class');?>">
-    <div class="tiFyCoreField-switcherWrapper">
+    <div class="tiFyCoreField-toggleSwitchWrapper">
         <?php
             Field::Radio(
                 [
-                    'after' => Field::Label(
-                        [
-                            'content' => $this->getAttr('label_on'),
-                            'attrs' => [
-                                'for' => $this->getId() . '--on',
-                                'class' => 'tiFyCoreField-switcherLabel tiFyCoreField-switcherLabel--on'
+                    'after'   => Field::Label( [
+                            'content' => $this->getAttr( 'label_on' ),
+                            'attrs'   => [
+                                'for'   => $this->getId() . '--on',
+                                'class' => 'tiFyCoreField-toggleSwitchLabel tiFyCoreField-toggleSwitchLabel--on'
                             ]
-                        ]
-                    ),
-                    'attrs' => [
-                        'id'    => $this->getId() . '--on',
-                        'class' => 'tiFyCoreField-switcherRadio tiFyCoreField-switcherRadio--on',
-                        'name'  => $this->getName(),
-                        'value' => $this->getAttr('value_on'),
+                        ] ),
+                    'attrs'   => [
+                        'id'           => $this->getId() . '--on',
+                        'class'        => 'tiFyCoreField-toggleSwitchRadio tiFyCoreField-toggleSwitchRadio--on',
                         'autocomplete' => 'off'
                     ],
+                    'name'    => $this->getName(),
+                    'value'   => $this->getAttr( 'value_on' ),
                     'checked' => $this->getValue()
                 ],
                 true
@@ -141,23 +139,23 @@ class Switcher extends \tiFy\Core\Field\Factory
                             'content' => $this->getAttr('label_off'),
                             'attrs' => [
                                 'for' => $this->getId() . '--off',
-                                'class' => 'tiFyCoreField-switcherLabel tiFyCoreField-switcherLabel--off'
+                                'class' => 'tiFyCoreField-toggleSwitchLabel tiFyCoreField-toggleSwitchLabel--off'
                             ]
                         ]
                     ),
                     'attrs' => [
                         'id'    => $this->getId() . '--off',
-                        'class' => 'tiFyCoreField-switcherRadio tiFyCoreField-switcherRadio--off',
-                        'name'  => $this->getName(),
-                        'value' => $this->getAttr('value_off'),
+                        'class' => 'tiFyCoreField-toggleSwitchRadio tiFyCoreField-toggleSwitchRadio--off',
                         'autocomplete' => 'off'
                     ],
+                    'name'    => $this->getName(),
+                    'value'   => $this->getAttr( 'value_off' ),
                     'checked' => $this->getValue()
                 ],
                 true
             );
         ?>
-        <span class="tiFyCoreField-switcherHandler"></span>
+        <span class="tiFyCoreField-toggleSwitchHandler"></span>
     </div>
 </div>
 <?php $this->after(); ?>

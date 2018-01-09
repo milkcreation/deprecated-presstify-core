@@ -95,7 +95,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <th scope="row"><?php _e('Envoyer un message de confirmation de réception à l\'utilisateur', 'tify'); ?></th>
                 <td>
                 <?php
-                    Field::Switcher(
+                    Field::ToggleSwitch(
                         [
                             'name'    => $this->OptionNames['confirmation'],
                             'checked' => ($notification = get_option($this->OptionNames['confirmation'], 'off')) ? $notification : 'off'
@@ -114,7 +114,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <td>
                     <div class="tify_input_email">
                     <?php
-                        Field::Text(
+                        Field::ToggleSwitch(
                             [
                                 'name'  => $this->OptionNames['sender'] . "[email]",
                                 'value' => $value['email'],
@@ -164,7 +164,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                     <th scope="row"><?php _e( 'Envoyer un message de notification aux administrateurs du site', 'tify' );?></th>
                     <td>
                     <?php
-                        Field::Switcher(
+                        Field::ToggleSwitch(
                             [
                                 'name'    => $this->OptionNames['notification'],
                                 'checked' => ($notification = get_option($this->OptionNames['notification'], 'off')) ? $notification : 'off'

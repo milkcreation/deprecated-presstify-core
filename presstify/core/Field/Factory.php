@@ -20,7 +20,7 @@ class Factory extends \tiFy\App\FactoryConstructor
      * Liste des fonctions d'aide à la saisie avec incrémentation automatique d'une instance d'affichage
      * @var array
      */
-    private static $DisplayHelpers = [];
+    private static $IncreaseHelpers = [];
 
     /**
      * CONSTRUCTEUR
@@ -74,13 +74,13 @@ class Factory extends \tiFy\App\FactoryConstructor
      */
     final public static function __callStatic($name, $arguments)
     {
-        if (!isset(self::$DisplayHelpers[get_called_class()])) :
-            self::$DisplayHelpers[get_called_class()] = [];
+        if (!isset(self::$IncreaseHelpers[get_called_class()])) :
+            self::$IncreaseHelpers[get_called_class()] = [];
         endif;
 
         $attrs = [];
 
-        if(in_array($name, self::$DisplayHelpers[get_called_class()])) :
+        if(in_array($name, self::$IncreaseHelpers[get_called_class()])) :
             ++self::$Index;
 
             if (isset($arguments[0])) :
@@ -449,9 +449,9 @@ class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    final public function addDisplayHelper($tag, $method)
+    final public function addIncreaseHelper($tag, $method)
     {
-        self::$DisplayHelpers[get_called_class()][$tag] = $method;
+        self::$IncreaseHelpers[get_called_class()][$tag] = $method;
         self::tFyAppAddHelper($tag, $method);
     }
 
