@@ -2,13 +2,13 @@
 /**
  * @see https://codex.wordpress.org/Roles_and_Capabilities
  */
-namespace tiFy\Core\Roles;
+namespace tiFy\Core\User\Role;
 
-class Roles extends \tiFy\App\Core
+class Role extends \tiFy\App
 {
     /**
      * Liste des classe de rappel d'un rôle déclaré
-     * @var \tiFy\Core\Roles\Factory[]
+     * @var \tiFy\Core\User\Role\Factory[]
      */
     private static $Factory = [];
 
@@ -41,7 +41,7 @@ class Roles extends \tiFy\App\Core
      */
     final public function init()
     {
-        do_action('tify_roles_register');
+        do_action('tify_user_role_register');
     }
 
     /**
@@ -63,7 +63,7 @@ class Roles extends \tiFy\App\Core
      *      }
      * }
      *
-     * @return \tiFy\Core\Roles\Factory
+     * @return \tiFy\Core\User\Role\Factory
      */
     public static function register($id, $attrs = [])
     {
@@ -73,7 +73,7 @@ class Roles extends \tiFy\App\Core
     /**
      * Récupération de la listes des objets route déclarés
      *
-     * @return void|\tiFy\Core\Roles\Factory[]
+     * @return void|\tiFy\Core\User\Role\Factory[]
      */
     public static function getList()
     {
@@ -85,7 +85,7 @@ class Roles extends \tiFy\App\Core
      *
      * @param string $id Ientifiant unique de qualification de la route
      *
-     * @return null|\tiFy\Core\Roles\Factory
+     * @return null|\tiFy\Core\User\Role\Factory
      */
     public static function get($id)
     {

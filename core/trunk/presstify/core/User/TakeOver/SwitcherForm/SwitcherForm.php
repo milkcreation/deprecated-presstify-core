@@ -22,20 +22,15 @@ use tiFy\Lib\User\User as UserLib;
 class SwitcherForm extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
+     * DECLENCHEURS
      */
-    protected $ID = 'take_over_switcher_form';
-
     /**
-     * CONSTRUCTEUR
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
         // Actions ajax
         $this->tFyAppAddAction(
             'wp_ajax_tiFyTakeOverSwitcherForm_get_users',
@@ -45,18 +40,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tiFyTakeOverSwitcherForm_get_users',
             'wp_ajax_get_users'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         \wp_register_script(
             'tify_control-take_over_switcher_form',
             self::tFyAppUrl(get_class()). '/SwitcherForm.js',
@@ -71,7 +55,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         Field::enqueue_scripts('SelectJs');
         \wp_enqueue_script('tify_control-take_over_switcher_form');
@@ -132,7 +116,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [

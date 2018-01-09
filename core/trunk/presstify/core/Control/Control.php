@@ -11,12 +11,6 @@ class Control extends \tiFy\App\Core
     public static $Factory = [];
 
     /**
-     * Liste des controleurs natifs de presstiFy
-     * @var \tiFy\Core\Control\Factory[]
-     */
-    public static $Native = [];
-
-    /**
      * CONSTRUCTEUR
      */
     public function __construct()
@@ -27,19 +21,14 @@ class Control extends \tiFy\App\Core
         foreach(glob(self::tFyAppDirname() . '/*/', GLOB_ONLYDIR) as $filename) :
             $id = basename($filename);
 
-            // Déclaration du controleur d'affichage natif
-            if($factory = self::register("tiFy\\Core\\Control\\{$id}\\{$id}")) :
-                self::$Native[$id] = $factory;
-            endif;
+            self::register($id, "tiFy\\Core\\Control\\{$id}\\{$id}");
         endforeach;
 
         // Déclaration des controleurs d'affichage natifs dépréciés
         foreach(glob(self::tFyAppRootDirname() . '/bin/deprecated/app/core/Control/*/', GLOB_ONLYDIR) as $filename) :
             $id = basename($filename);
-            // Déclaration du controleur d'affichage natif
-            if($factory = self::register("tiFy\\Core\\Control\\{$id}\\{$id}")) :
-                self::$Native[$id] = $factory;
-            endif;
+
+            self::register($id, "tiFy\\Core\\Control\\{$id}\\{$id}");
         endforeach;
 
         // Déclaration des événement de déclenchement
@@ -59,9 +48,15 @@ class Control extends \tiFy\App\Core
         // Déclaration des controleurs d'affichage personnalisés
         do_action('tify_control_register');
 
-        // Auto-chargement de l'initialisation globale des contrôleurs d'affichage
-        foreach (self::$Factory as $Name => $factory) :
-            $classname = get_class($factory);
+        // Auto-chargement de l'initialisation globale des champs
+        foreach (self::$Factory as $id => $instance) :
+            if (!$classname = get_class($instance)) :
+                continue;
+            endif;
+
+            // Définition des classes d'aide à la saisie
+            $_id = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', $id)));
+            $instance->addDisplayHelper('tify_control' . $_id, 'display');
 
             if (is_callable([$classname, 'init'])) :
                 call_user_func([$classname, 'init']);
@@ -72,28 +67,6 @@ class Control extends \tiFy\App\Core
     /**
      * CONTROLEURS
      */
-    /**
-     * Déclaration d'un controleur d'affichage
-     *
-     * @param string $classname
-     *
-     * @return null|\tiFy\Core\Control\Factory
-     */
-    final public static function register($classname)
-    {
-        // Bypass
-        if(!class_exists($classname)) :
-            return;
-        endif;
-
-        // Initialisation de la classe
-        $Instance = self::loadOverride($classname);
-
-        if(!empty($Instance->ID) && !isset(self::$Factory[$Instance->ID])) :
-            return self::$Factory[$Instance->ID] = $Instance;
-        endif;
-    }
-
     /**
      * Affichage ou récupération du contenu d'un controleur natif
      *
@@ -106,54 +79,80 @@ class Control extends \tiFy\App\Core
      *
      * @return null|callable
      */
-    final public static function __callStatic($name, $args)
+    final public static function __callStatic($id, $args)
     {
-        if (in_array($name, array_keys(self::$Factory))) :
-            trigger_error(sprintf(__('La possibilité d\'appeler un controleur d\'affichage en utilisant son ID est dépréciée. Pour les controleurs natifs vous devez utiliser le nom de la classe ou utilisez \tiFy\Core\Control::display(\'%s\');', 'tify'), $name));
-            $factory = self::$Factory[$name];
-        elseif (in_array($name, array_keys(self::$Native))) :
-            $factory = self::$Native[$name];
+        if (!isset(static::$Factory[$id])) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $id));
+        elseif ($classname = get_class(static::$Factory[$id])) :
+            $callable = [$classname, 'display'];
         else :
-            return trigger_error(sprintf(__('le controleur d\'affichage %1$s n\'est pas un controleur natif de presstiFy, utilisez \tiFy\Core\Control\Control::display(\'%1$s\');', 'tify'), $name));
+            $callable = static::$Factory[$id];
+        endif;
+        if (!is_callable($callable)) :
+            return trigger_error(sprintf(__('La méthode d\'affichage du controleur d\'affichage %s ne peut être appelée.', 'tify'), $id));
         endif;
 
-        $echo = isset($args[1]) ? $args[1] : true;
+        $echo = isset($args[1]) ? $args[1] : false;
+        $attrs = reset($args);
 
-        $id = null;
-        if (!isset($args[0])) :
-            $attrs = [];
+        if ($echo) :
+            call_user_func_array($callable, compact('attrs'));
         else :
-            $attrs = $args[0];
+            ob_start();
+            call_user_func_array($callable, compact('attrs'));
+            return ob_get_clean();
+        endif;
+    }
+
+    /**
+     * Déclaration d'un controleur d'affichage
+     *
+     * @param string $id Identifiant de qualification du controleur
+     * @param string $callback classes ou méthodes ou fonctions de rappel
+     *
+     * @return null|\tiFy\Core\Control\Factory
+     */
+    final public static function register($id, $callback)
+    {
+        if (class_exists($callback)) :
+            return self::$Factory[$id] = self::loadOverride($callback);
+        else :
+            return self::$Factory[$id] = (string)$callback;
         endif;
 
-        $classname = get_class($factory);
-
-        return call_user_func_array([$classname, 'display'], compact('attrs', 'echo'));
     }
 
     /**
      * Appel d'une méthode helper de contrôleur
      *
-     * @param string $ID Identifiant de qualification du controleur d'affichage
-     * @param string $méthod Nom de qualification de la méthode du controleur d'affichage
+     * @param string $id Identifiant de qualification du controleur
+     * @param string $method Nom de qualification de la méthode à appeler
      *
      * @return static
      */
-    final public static function call($ID, $method)
+    final public static function call($id, $method)
     {
-        if (!isset(self::$Factory[$ID])) :
-            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $ID));
+        $id = join('', array_map('ucfirst', preg_split('#_#', $id)));
+
+        $classname = get_class(static::$Factory[$id]);
+
+        if (!isset(static::$Factory[$id])) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $id));
+        elseif (!$classname && ($method !== 'display')) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'a pas de méthode %s disponible.', 'tify'), $id, $method));
+        elseif ($classname) :
+            $callable = [$classname, $method];
+        else :
+            $callable = static::$Factory[$id];
         endif;
 
         $args = array_slice(func_get_args(), 2);
 
-        $classname = get_class(self::$Factory[$ID]);
-
-        if (!is_callable([$classname, $method])) :
-            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'a pas de méthode %s disponible.', 'tify'), $ID, $method));
+        if (!is_callable($callable)) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'a pas de méthode %s disponible.', 'tify'), $id, $method));
         endif;
 
-        return call_user_func_array([$classname, $method], $args);
+        return call_user_func_array($callable, $args);
     }
 
     /**

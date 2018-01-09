@@ -29,11 +29,6 @@ namespace tiFy\Core\Control\CurtainMenu;
 class CurtainMenu extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     */
-    protected $ID = 'curtain_menu';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -41,7 +36,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-curtain_menu',
@@ -63,7 +58,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-curtain_menu');
         \wp_enqueue_script('tify_control-curtain_menu');
@@ -76,18 +71,17 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'              => 'tiFyControlCurtainMenu--' . self::$Instance,
+            'id'              => 'tiFyControlCurtainMenu--' . $this->getId(),
             // Id Html du conteneur
-            'container_id'    => 'tiFyControlCurtainMenu--' . self::$Instance,
+            'container_id'    => 'tiFyControlCurtainMenu--' . $this->getId(),
             // Classe Html du conteneur
             'container_class' => '',
             // Theme (light | dark | false)
@@ -130,10 +124,6 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         $output .= "\t</nav>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

@@ -19,12 +19,6 @@ use tiFy\Core\User\User;
 class ActionLink extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'take_over_action_link';
-
-    /**
      * CONTROLEURS
      */
     /**
@@ -44,7 +38,7 @@ class ActionLink extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($args = [], $echo = true)
+    protected function display($args = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [

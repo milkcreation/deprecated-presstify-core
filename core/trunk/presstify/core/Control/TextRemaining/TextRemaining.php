@@ -32,12 +32,6 @@ use tiFy\Lib\Chars;
 class TextRemaining extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'text_remaining';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -45,7 +39,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-text_remaining',
@@ -76,7 +70,7 @@ class TextRemaining extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         wp_enqueue_style('tify_control-text_remaining');
         wp_enqueue_script('tify_control-text_remaining');
@@ -88,29 +82,28 @@ class TextRemaining extends \tiFy\Core\Control\Factory
      * @param array $attrs {
      *      Attributs d'affichage du controleur
      *
-     * @param string $id Identifiant de qualification.
-     * @param string $container_id Id HTML du conteneur du controleur.
-     * @param string $feedback_area Id HTML du conteneur d'affichage des informations de saisie.
-     * @param string $name Nom du champ d'enregistrement
-     * @param string $selector Type de selecteur. textarea (défaut)|input.
-     * @param string $value Valeur du champ de saisie.
-     * @param array $attrs Attributs HTML du champ.
-     * @param int $length Nombre maximum de caractères attendus. 150 par défaut.
-     * @param bool $maxlength Activation de l'arrêt de la saisie en cas de dépassement. true par défaut.
+     *      @var string $id Identifiant de qualification.
+     *      @var string $container_id Id HTML du conteneur du controleur.
+     *      @var string $feedback_area Id HTML du conteneur d'affichage des informations de saisie.
+     *      @var string $name Nom du champ d'enregistrement
+     *      @var string $selector Type de selecteur. textarea (défaut)|input.
+     *      @var string $value Valeur du champ de saisie.
+     *      @var array $attrs Attributs HTML du champ.
+     *      @var int $length Nombre maximum de caractères attendus. 150 par défaut.
+     *      @var bool $maxlength Activation de l'arrêt de la saisie en cas de dépassement. true par défaut.
      *  }
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'            => 'tify_control_text_remaining-' . self::$Instance,
-            'container_id'  => 'tify_control_text_remaining-container-' . self::$Instance,
-            'feedback_area' => '#tify_control_text_remaining-feedback-' . self::$Instance,
-            'name'          => 'tify_control_text_remaining-' . self::$Instance,
-            'selector'      => 'textarea',    // textarea (default) // @TODO | input
+            'id'            => 'tify_control_text_remaining-' . $this->getId(),
+            'container_id'  => 'tify_control_text_remaining-container-' . $this->getId(),
+            'feedback_area' => '#tify_control_text_remaining-feedback-' . $this->getId(),
+            'name'          => 'tify_control_text_remaining-' . $this->getId(),
+            'selector'      => 'textarea',
             'value'         => '',
             'value_filter'  => true,
             'attrs'         => [],
@@ -167,10 +160,6 @@ class TextRemaining extends \tiFy\Core\Control\Factory
         endswitch;
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

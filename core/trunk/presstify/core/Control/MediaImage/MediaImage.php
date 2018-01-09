@@ -30,12 +30,6 @@ age
 class MediaImage extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'media_image';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -43,7 +37,7 @@ class MediaImage extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -66,9 +60,9 @@ class MediaImage extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
-        @ \wp_enqueue_media();
+        wp_enqueue_media();
         \wp_enqueue_style('tify_control-media_image');
         \wp_enqueue_script('tify_control-media_image');
     }
@@ -92,11 +86,10 @@ class MediaImage extends \tiFy\Core\Control\Factory
      *      @param string $media_library_button ' Texte d'ajout de l'image dans la Médiathèque. "Utiliser cette image" par défaut.
      *      @param bool $image_editable Activation de l'administrabilité de l'image
      *  }
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         if (!is_admin()) :
             return;
@@ -104,8 +97,8 @@ class MediaImage extends \tiFy\Core\Control\Factory
 
         // Traitement des attributs de configuration
         $defaults = [
-            'id'                   => 'tify_control_media_image-' . self::$Instance,
-            'name'                 => 'tify_control_media_image-' . self::$Instance,
+            'id'                   => 'tify_control_media_image-' . $this->getId(),
+            'name'                 => 'tify_control_media_image-' . $this->getId(),
             'value'                => 0,
             'default'              => '',
             'default_color'        => "#F4F4F4",
@@ -164,10 +157,6 @@ class MediaImage extends \tiFy\Core\Control\Factory
                 'tify') . "\" class=\"tify_control_media_image-reset tify_button_remove\" style=\"display:" . (($value && ($value != $default)) ? 'inherit' : 'none') . ";\"></a>";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

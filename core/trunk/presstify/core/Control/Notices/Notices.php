@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Notices;
 class Notices extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'notices';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class Notices extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -65,7 +59,7 @@ class Notices extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-notices');
         \wp_enqueue_script('tify_control-notices');
@@ -78,16 +72,15 @@ class Notices extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'text'        => '',
-            'id'          => 'tiFyControl-Notices--' . self::$Instance,
+            'text'        => 'Lorem ipsum dolor site amet',
+            'id'          => 'tiFyControl-Notices--' . $this->getId(),
             'class'       => '',
             'dismissible' => false,
             'type'        => 'info'
@@ -111,17 +104,6 @@ class Notices extends \tiFy\Core\Control\Factory
         $output .= "<div>{$text}</div>";
         $output .= "</div>";
 
-        if (!wp_style_is('tify_control-notices')) :
-            wp_enqueue_style('tify_control-notices');
-        endif;
-        if (!wp_script_is('tify_control-notices')) :
-            wp_enqueue_script('tify_control-notices');
-        endif;
-
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

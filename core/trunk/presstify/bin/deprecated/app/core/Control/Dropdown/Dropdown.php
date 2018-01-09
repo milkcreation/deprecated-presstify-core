@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Dropdown;
 class Dropdown extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'dropdown';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,17 +36,17 @@ class Dropdown extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-dropdown',
-            self::tFyAppUrl() . '/Dropdown.min.css',
+            self::tFyAppUrl(get_class()) . '/Dropdown.min.css',
             [],
             141212
         );
         \wp_register_script(
             'tify_control-dropdown',
-            self::tFyAppUrl() . '/Dropdown.min.js',
+            self::tFyAppUrl(get_class()) . '/Dropdown.min.js',
             ['jquery'],
             141212,
             true
@@ -64,7 +58,7 @@ class Dropdown extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-dropdown');
         \wp_enqueue_script('tify_control-dropdown');
@@ -81,14 +75,14 @@ class Dropdown extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Conteneur
-            'id'                => 'tify_control_dropdown-' . self::$Instance,
+            'id'                => 'tify_control_dropdown-' . $this->getId(),
             'class'             => 'tify_control_dropdown',
-            'name'              => 'tify_control_dropdown-' . self::$Instance,
+            'name'              => 'tify_control_dropdown-' . $this->getId(),
             'attrs'             => [],
 
             // Valeur            

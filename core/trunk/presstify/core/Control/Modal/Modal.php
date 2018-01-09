@@ -30,27 +30,6 @@ namespace tiFy\Core\Control\Modal;
 class Modal extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'modal';
-
-    /**
-     * CONSTRUCTEUR
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        /**
-         * Déclaration de la fonction d'aide à la saisie du controleur d'exécution de l'affichage d'une boîte de dialogue
-         */
-        $this->addInstanceHelper('tify_control_' . $this->ID . '_trigger', 'trigger');
-    }
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -58,8 +37,12 @@ class Modal extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function init()
+    final protected function init()
     {
+        // Déclaration des fonction d'aide à la saisie
+        $this->addDisplayHelper('tify_control_modal_trigger', 'trigger');
+
+        // Déclaration des scripts
         \wp_register_style(
             'tify_control-modal',
             self::tFyAppAssetsUrl('Modal.css', get_class()),
@@ -83,7 +66,7 @@ class Modal extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    final protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-modal');
         \wp_enqueue_script('tify_control-modal');
@@ -95,8 +78,8 @@ class Modal extends \tiFy\Core\Control\Factory
     /**
      * Affichage de la fenêtre de dialogue
      *
-     * @uses \tify_control_modal($attrs, $echo) - Appel depuis les templates uniquement
-     * @uses \tiFy\Core\Control\Control::Modal($attrs, $echo);|\tiFy\Core\Control\Control::display('modal', $attrs, $echo); - Appel depuis les classes et/ou méthodes
+     * @uses \tify_control_modal($attrs) - Appel depuis les templates uniquement
+     * @uses \tiFy\Core\Control\Control::Modal($attrs, true);|\tiFy\Core\Control\Control::display('Modal', $attrs); - Appel depuis les classes et/ou méthodes
      *
      * @param array $attrs {
      *      Liste des attributs de configuration
@@ -114,16 +97,15 @@ class Modal extends \tiFy\Core\Control\Factory
      *      @var bool|string $footer Affichage d'un bouton fermeture externe. Chaine de caractère à afficher ou booléen pour activer désactiver ou fonction/méthode d'affichage.
      *      @var bool $in_footer Ajout automatique de la fenêtre de dialogue dans le pied de page du site
      * }
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'              => 'tiFyControl-modal-' . self::$Instance,
-            'container_id'    => 'tiFyControl-modal--' . self::$Instance,
+            'id'              => 'tiFyControl-modal-' . $this->getId(),
+            'container_id'    => 'tiFyControl-modal--' . $this->getId(),
             'container_class' => '',
             'container_attrs' => [],
 
@@ -243,10 +225,8 @@ class Modal extends \tiFy\Core\Control\Factory
         if ($in_footer) :
             $footer = function () use ($output) { echo $output; };
             \add_action((!is_admin() ? 'wp_footer' : 'admin_footer'), $footer);
-        elseif ($echo) :
-            echo $output;
         else :
-            return $output;
+            echo $output;
         endif;
     }
 
@@ -254,7 +234,7 @@ class Modal extends \tiFy\Core\Control\Factory
      * Affichage d'un controleur d'exécution de l'affichage d'une boîte de dialogue
      *
      * @uses \tify_control_modal_trigger($attrs, $echo); - Appel depuis les templates uniquement
-     * @uses \tiFy\Core\Control\Control::call('modal', 'trigger', $attrs, $echo) - Appel depuis les classes et/ou méthodes
+     * @uses \tiFy\Core\Control\Control::call('Modal', 'trigger', $attrs, $echo) - Appel depuis les classes et/ou méthodes
      *
      * @param array $attrs {
      *      Liste des attributs de configuration
@@ -275,16 +255,16 @@ class Modal extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function trigger($attrs = [], $echo = true)
+    protected function trigger($attrs = [], $echo = true)
     {
         $defaults = [
-            'id'              => 'tiFyControl-modalTrigger-' . self::$Instance,
-            'container_id'    => 'tiFyControl-modalTrigger--' . self::$Instance,
+            'id'              => 'tiFyControl-modalTrigger-' . $this->getId(),
+            'container_id'    => 'tiFyControl-modalTrigger--' . $this->getId(),
             'container_class' => 'btn btn-primary button-primary',
             'container_attrs' => [],
             'container_tag'   => 'button',
             'text'            => __('Lancer', 'tify'),
-            'target'          => 'tiFyControl-Modal-' . self::$Instance,
+            'target'          => 'tiFyControl-Modal-' . $this->getId(),
             'modal'           => true
         ];
         $attrs = \wp_parse_args($attrs, $defaults);

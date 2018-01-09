@@ -2,7 +2,6 @@
 namespace tiFy\Core\Taboox;
 
 use tiFy\Core\Taboox\Display\Display;
-use tiFy\Core\Control\Tabs\Tabs;
 
 class Taboox extends \tiFy\App\Core
 {

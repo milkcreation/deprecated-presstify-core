@@ -12,17 +12,14 @@ namespace
     // --------------------------------------------------------------------------------------------------------------------------
     /* = CONTROL = */
     /** == Mise en file des scripts du contrôleur == **/
-    function tify_control_enqueue( $scripts )
+    function tify_control_enqueue($scripts)
     {
-
         if(is_string($scripts)) :
-            $scripts = array( $scripts );
+            $scripts = [$scripts];
         endif;
 
-        foreach( $scripts as $script ) :
-            if( isset( tiFy\Core\Control\Control::$Factory[$script] ) ) :
-                tiFy\Core\Control\Control::$Factory[$script]->enqueue_scripts();
-            endif;
+        foreach($scripts as $script) :
+            tiFy\Core\Control\Control::enqueue_scripts($script);
         endforeach;
     }
 

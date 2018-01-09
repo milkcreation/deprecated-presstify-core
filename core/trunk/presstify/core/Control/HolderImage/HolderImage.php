@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\HolderImage;
 class HolderImage extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'holder_image';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class HolderImage extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-holder_image',
@@ -57,7 +51,7 @@ class HolderImage extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-holder_image');
     }
@@ -69,11 +63,10 @@ class HolderImage extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
@@ -94,10 +87,6 @@ class HolderImage extends \tiFy\Core\Control\Factory
         $output .= "\t<div class=\"tiFyControlHolderImage-content\" style=\"font-size:{$attrs['font-size']}\">{$attrs['text']}</div>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

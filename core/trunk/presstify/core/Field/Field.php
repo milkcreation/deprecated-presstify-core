@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Core\Field;
 
 class Field extends \tiFy\App\Core
@@ -49,6 +50,11 @@ class Field extends \tiFy\App\Core
             if (!$classname = get_class($instance)) :
                 continue;
             endif;
+
+            // Définition des classes d'aide à la saisie
+            $_id = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', $id)));
+            $instance->addDisplayHelper('tify_control' . $_id, 'display');
+
             if (is_callable([$classname, 'init'])) :
                 call_user_func([$classname, 'init']);
             endif;
@@ -113,15 +119,17 @@ class Field extends \tiFy\App\Core
     }
 
     /**
-     * Appel d'une méthode helper de contrôleur
+     * Appel d'une méthode helper de champ
      *
      * @param string $id Identifiant de qualification du controleur de champ
-     * @param string $méthod Nom de qualification de la méthode à appeler
+     * @param string $method Nom de qualification de la méthode à appeler
      *
      * @return static
      */
     final public static function call($id, $method)
     {
+        $id = join('', array_map('ucfirst', preg_split('#_#', $id)));
+
         $classname = get_class(static::$Factory[$id]);
 
         if (!isset(static::$Factory[$id])) :
@@ -153,7 +161,7 @@ class Field extends \tiFy\App\Core
      */
     final public static function display($id, $args = [])
     {
-        return self::call($id, 'display', $args);
+        return self::call($id, 'display', $args, true);
     }
 
     /**

@@ -29,20 +29,15 @@ namespace tiFy\Core\Control\Calendar;
 class Calendar extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
+     * DECLENCHEURS
      */
-    protected $ID = 'calendar';
-
     /**
-     * CONSTRUCTEUR
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
         // Déclaration des Actions Ajax
         $this->tFyAppAddAction(
             'wp_ajax_tiFyControlCalendar',
@@ -52,18 +47,7 @@ class Calendar extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tiFyControlCalendar',
             'wp_ajax'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         // Déclaration des scripts
         \wp_register_style(
             'tify_control-calendar',
@@ -85,7 +69,7 @@ class Calendar extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-calendar');
         \wp_enqueue_script('tify_control-calendar');
@@ -96,7 +80,7 @@ class Calendar extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function wp_ajax()
+    public function wp_ajax()
     {
         self::display(
             [
@@ -113,32 +97,23 @@ class Calendar extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'       => 'tiFyCalendar--' . self::$Instance,
+            'id'       => 'tiFyCalendar--' . $this->getId(),
             'selected' => 'today'
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $path = [
-            self::getOverrideNamespace() . "\\Core\\Control\\Calendar\\" . $attrs['id']
-        ];
-        $className = self::getOverride('\tiFy\Core\Control\Calendar\Display', $path);
-
+        $className = self::tFyAppGetOverrideClass('tiFy\Core\Control\Calendar\Display');
         $display = new $className($attrs);
 
         $output = $display->output();
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+       echo $output;
     }
 }

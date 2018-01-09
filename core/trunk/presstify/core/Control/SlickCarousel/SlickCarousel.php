@@ -30,12 +30,6 @@ namespace tiFy\Core\Control\SlickCarousel;
 class SlickCarousel extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'slick_carousel';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -43,7 +37,7 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-slick_carousel',
@@ -64,7 +58,7 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
      * Identifiant de la classe
      * @var string
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-slick_carousel');
         \wp_enqueue_script('tify_control-slick_carousel');
@@ -77,25 +71,31 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'              => 'tiFyControl-slick_carousel-' . self::$Instance,
+            'id'              => 'tiFyControl-slick_carousel-' . $this->getId(),
             // Id Html du conteneur
-            'container_id'    => 'tiFyControlSlickCarousel--' . self::$Instance,
+            'container_id'    => 'tiFyControlSlickCarousel--' . $this->getId(),
             // Classe Html du conteneur
             'container_class' => '',
             // Options
             // @see http://kenwheeler.github.io/slick/#settings
             'options'         => [],
             // Liste des slides
-            'nodes'           => [],
+            'nodes'           => [
+                [
+                    'content' => '<img src="https://fr.facebookbrand.com/wp-content/uploads/2016/05/FB-fLogo-Blue-broadcast-2.png" />'
+                ],
+                [
+                    'content' => '<img src="https://fr.facebookbrand.com/wp-content/uploads/2016/05/YES-ThumbFinal_4.9.15-2.png" />'
+                ]
+            ],
         ];
         $attrs = wp_parse_args($attrs, $defaults);
         extract($attrs);
@@ -109,10 +109,6 @@ class SlickCarousel extends \tiFy\Core\Control\Factory
         $output .= $Walker->output($nodes);
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

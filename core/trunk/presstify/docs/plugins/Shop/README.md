@@ -21,7 +21,7 @@ products:
       taxonomy:             'product_cat'
 
 # @var array $roles Liste des roles
-# @see \tiFy\Core\Roles\Roles
+# @see \tiFy\Core\User\Role\Role
 roles:
   # @var string $id Identifiant de qualification du rôle
   shop_manager:

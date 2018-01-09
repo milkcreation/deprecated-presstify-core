@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Slider;
 class Slider extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'slider';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class Slider extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-slider',
@@ -64,7 +58,7 @@ class Slider extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-slider');
         \wp_enqueue_script('tify_control-slider');
@@ -77,17 +71,23 @@ class Slider extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'      => 'tiFyControl-slider' . self::$Instance,
+            'id'      => 'tiFyControl-slider' . $this->getId(),
             'class'   => '',
-            'slides'  => [],
+            'slides'  => [
+                [
+                    'src' => 'https://fr.facebookbrand.com/wp-content/uploads/2016/05/FB-fLogo-Blue-broadcast-2.png'
+                ],
+                [
+                    'src' => 'https://fr.facebookbrand.com/wp-content/uploads/2016/05/YES-ThumbFinal_4.9.15-2.png'
+                ]
+            ],
             'options' => [
                 'ratio' => '16:9'
             ]
@@ -96,11 +96,7 @@ class Slider extends \tiFy\Core\Control\Factory
 
         $output = static::output($attrs);
 
-        if ($echo) :
-            echo $output;
-        else:
-            return $output;
-        endif;
+        echo $output;
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Core\Field;
 
 class Factory extends \tiFy\App\FactoryConstructor
@@ -10,10 +11,16 @@ class Factory extends \tiFy\App\FactoryConstructor
     private static $Index = 0;
 
     /**
-     * Numéro d'instance courante
+     * Numéro d'instance d'affichage courante
      * @var int
      */
     private $CurrentIndex = 0;
+
+    /**
+     * Liste des fonctions d'aide à la saisie avec incrémentation automatique d'une instance d'affichage
+     * @var array
+     */
+    private static $DisplayHelpers = [];
 
     /**
      * CONSTRUCTEUR
@@ -60,36 +67,47 @@ class Factory extends \tiFy\App\FactoryConstructor
     /**
      * Appel dynamique des méthodes statiques
      *
+     * @param string $name Nom de la méthode à appeler
+     * @param array $arguments Liste des arguments passés dans l'appel de la méthode
+     *
      * @return null|static
      */
     final public static function __callStatic($name, $arguments)
     {
-        // Appel de la méthode statique du contrôleur
-        if (in_array($name, ['display', 'init', 'enqueue_scripts'])) :
-            if ($name === 'display') :
-                ++self::$Index;
+        if (!isset(self::$DisplayHelpers[get_called_class()])) :
+            self::$DisplayHelpers[get_called_class()] = [];
+        endif;
 
+        $attrs = [];
+
+        if(in_array($name, self::$DisplayHelpers[get_called_class()])) :
+            ++self::$Index;
+
+            if (isset($arguments[0])) :
                 $attrs = $arguments[0];
-                $instance = self::create($attrs);
-
-                // Traitement et déclaration des attributs de configuration
-                if ($attrs = $instance->parseAttrs($attrs)) :
-                    foreach ($attrs as $key => $value) :
-                        $instance->setAttr($key, $value);
-                    endforeach;
-                endif;
-            else :
-                $instance = self::create();
             endif;
+        endif;
 
-            if (method_exists($instance, $name)) :
-                return call_user_func_array([$instance, $name], $arguments);
+        $instance = self::create($attrs);
+
+        // Traitement et déclaration des attributs de configuration de la méthode d'affichage
+        if ($name === 'display') :
+            if ($attrs = $instance->parseAttrs($attrs)) :
+                foreach ($attrs as $key => $value) :
+                    $instance->setAttr($key, $value);
+                endforeach;
             endif;
+        endif;
+
+        if (method_exists($instance, $name)) :
+            return call_user_func_array([$instance, $name], $arguments);
         endif;
     }
 
     /**
      * Instanciation de la classe
+     *
+     * @param array $attrs Attributs de configuration
      *
      * @return self
      */
@@ -424,13 +442,27 @@ class Factory extends \tiFy\App\FactoryConstructor
     }
 
     /**
+     * Déclaration d'une fonction d'aide à la saisie
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $method Méthode de la classe à executer
+     *
+     * @return void
+     */
+    final public function addDisplayHelper($tag, $method)
+    {
+        self::$DisplayHelpers[get_called_class()][$tag] = $method;
+        self::tFyAppAddHelper($tag, $method);
+    }
+
+    /**
      * Affichage
      *
      * @param array $args Liste des attributs de configuration du champ
      *
      * @return string
      */
-    protected function display($attrs = [])
+    protected function display($args = [])
     {
         echo '';
     }
