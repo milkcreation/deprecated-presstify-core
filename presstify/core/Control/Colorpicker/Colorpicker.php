@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Colorpicker;
 class Colorpicker extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'colorpicker';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class Colorpicker extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-colorpicker',
@@ -69,7 +63,7 @@ class Colorpicker extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-colorpicker');
         \wp_enqueue_script('tify_control-colorpicker');
@@ -82,11 +76,10 @@ class Colorpicker extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
@@ -124,10 +117,6 @@ class Colorpicker extends \tiFy\Core\Control\Factory
         $output .= " value=\"$value\" />";
         $output .= "</div>";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo  $output;
     }
 }

@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\ImageLightbox;
 class ImageLightbox extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'image_lightbox';
-
-    /**
      * Groupes
      */
     protected static $Group = [];
@@ -47,7 +41,7 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_script(
             'tify_control-image_lightbox',
@@ -63,7 +57,7 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify-imagelightbox');
         \wp_enqueue_script('tify_control-image_lightbox');
@@ -76,18 +70,17 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'              => 'tiFyControl-imageLightbox-' . self::$Instance,
+            'id'              => 'tiFyControl-imageLightbox-' . $this->getId(),
             // Id Html du conteneur
-            'container_id'    => 'tiFyControlImageLightbox--' . self::$Instance,
+            'container_id'    => 'tiFyControlImageLightbox--' . $this->getId(),
             // Classe Html du conteneur
             'container_class' => '',
             // Groupe 
@@ -95,7 +88,7 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
             // Options
             'options'         => [],
             // Source de l'image
-            'src'             => '',
+            'src'             => 'https://fr.facebookbrand.com/wp-content/uploads/2016/05/FB-fLogo-Blue-broadcast-2.png',
             // Liste des slides
             'content'         => ''
         ];
@@ -144,10 +137,6 @@ class ImageLightbox extends \tiFy\Core\Control\Factory
             });
         endif;
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

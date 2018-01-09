@@ -20,12 +20,6 @@ use tiFy\Core\User\User;
 class AdminBar extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'take_over_admin_bar';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -33,7 +27,7 @@ class AdminBar extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function init()
+    final protected function init()
     {
         \wp_register_style(
             'tify_control-take_over_admin_bar',
@@ -48,7 +42,7 @@ class AdminBar extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    final protected function enqueue_scripts()
     {
         Control::enqueue_scripts('take_over_action_link');
         Control::enqueue_scripts('take_over_switcher_form');
@@ -71,7 +65,7 @@ class AdminBar extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [

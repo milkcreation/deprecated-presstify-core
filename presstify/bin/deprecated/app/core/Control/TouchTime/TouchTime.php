@@ -31,12 +31,6 @@ namespace tiFy\Core\Control\TouchTime;
 class TouchTime extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'touch_time';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -44,7 +38,7 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-touch_time',
@@ -66,7 +60,7 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-touch_time');
         \wp_enqueue_script('tify_control-touch_time');
@@ -83,16 +77,16 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         global $wp_locale;
 
         // Traitement des attributs de configuration
         $defaults = [
-            'container_id'    => 'tify_control_touch_time-wrapper-' . self::$Instance,
+            'container_id'    => 'tify_control_touch_time-wrapper-' . $this->getId(),
             'container_class' => '',
-            'id'              => 'tify_control_touch_time-' . self::$Instance,
-            'name'            => 'tify_control_touch_time-' . self::$Instance,
+            'id'              => 'tify_control_touch_time-' . $this->getId(),
+            'name'            => 'tify_control_touch_time-' . $this->getId(),
             'value'           => false,
             'show_none'       => false,
             // Permettre les dates de type 0000-00-00 00:00:00

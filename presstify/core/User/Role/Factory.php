@@ -1,5 +1,5 @@
 <?php
-namespace tiFy\Core\Roles;
+namespace tiFy\Core\User\Role;
 
 use tiFy\Core\Ui\Ui;
 

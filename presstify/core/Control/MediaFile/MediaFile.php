@@ -31,12 +31,6 @@ use tiFy\Lib\File;
 class MediaFile extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'media_file';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -44,7 +38,7 @@ class MediaFile extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-media_file',
@@ -66,9 +60,9 @@ class MediaFile extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
-        @ \wp_enqueue_media();
+        wp_enqueue_media();
         \wp_enqueue_style('tify_control-media_file');
         \wp_enqueue_script('tify_control-media_file');
     }
@@ -80,11 +74,10 @@ class MediaFile extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($args = [], $echo = true)
+    protected function display($args = [])
     {
         if (!is_admin()) :
             return;
@@ -92,8 +85,8 @@ class MediaFile extends \tiFy\Core\Control\Factory
 
         // Traitement des attributs de configuration
         $defaults = [
-            'id'       => 'tify_control_media_file-' . self::$Instance,
-            'name'     => 'tify_control_media_file-' . self::$Instance,
+            'id'       => 'tify_control_media_file-' . $this->getId(),
+            'name'     => 'tify_control_media_file-' . $this->getId(),
             'value'    => 0,    // Attachment ID
             'default'  => 0,    // Attachment ID
             'filetype' => '', // video || application/pdf || video/flv, video/mp4,
@@ -140,10 +133,6 @@ class MediaFile extends \tiFy\Core\Control\Factory
         $output .= "\t<a href=\"#{$id}\" class=\"tify_control_media_file-reset dashicons dashicons-no-alt\"></a>";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

@@ -11,6 +11,7 @@
  * @author Jordy Manner <jordy@tigreblanc.fr>
  * @copyright Milkcreation
  */
+
 namespace tiFy\Set\ContactToggle\Control;
 
 use tiFy\Core\Control\Control;
@@ -30,33 +31,6 @@ use tiFy\Core\Control\Control;
 class ContactToggle extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'contact_toggle';
-
-    /**
-     * CONSTRUCTEUR
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        /**
-         * Déclaration des actions Ajax
-         */
-        $this->tFyAppAddAction('wp_ajax_tiFySetCoreControl_ContactToggle', 'wp_ajax');
-        $this->tFyAppAddAction('wp_ajax_nopriv_tiFySetCoreControl_ContactToggle', 'wp_ajax');
-
-        /**
-         * Déclaration de la fonction d'aide à la saisie du controleur d'exécution de l'affichage d'une boîte de dialogue
-         */
-        $this->addInstanceHelper('tify_control_' . $this->ID . '_trigger', 'trigger');
-    }
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -64,8 +38,14 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function init()
+    final public function init()
     {
+        /**
+         * Déclaration des actions Ajax
+         */
+        $this->tFyAppAddAction('wp_ajax_tiFySetCoreControl_ContactToggle', 'wp_ajax');
+        $this->tFyAppAddAction('wp_ajax_nopriv_tiFySetCoreControl_ContactToggle', 'wp_ajax');
+
         \wp_register_script(
             'tify_control-contact_toggle',
             self::tFyAppAssetsUrl('ContactToggle.js', get_class()),
@@ -83,7 +63,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public static function enqueue_scripts()
+    final public function enqueue_scripts()
     {
         Control::enqueue_scripts('modal');
         \wp_enqueue_script('tify_control-contact_toggle');
@@ -203,7 +183,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [
@@ -275,7 +255,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function trigger($attrs = [], $echo = true)
+    protected function trigger($attrs = [], $echo = true)
     {
         $defaults = [
             'id'              => 'tiFySetContatToggleControl-ModalTrigger-' . self::$Instance,

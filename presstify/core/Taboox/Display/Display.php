@@ -1,7 +1,9 @@
 <?php
 namespace tiFy\Core\Taboox\Display;
 
+use tiFy\Core\Control\Control;
 use tiFy\Core\Control\Tabs\Tabs;
+
 
 class Display extends \tiFy\App\Factory
 {
@@ -85,8 +87,19 @@ class Display extends \tiFy\App\Factory
     final public function admin_enqueue_scripts()
     {
         if (\is_admin()) :
-            wp_enqueue_style('tiFyCoreTabooxDisplayAdmin', self::tFyAppUrl('tiFy\Core\Taboox\Taboox') . '/assets/css/Admin.css', ['tify_control-tabs'], '150216');
-            wp_enqueue_script('tiFyCoreTabooxDisplayAdmin', self::tFyAppUrl('tiFy\Core\Taboox\Taboox') . '/assets/js/Admin.js', ['tify_control-tabs'], '151019', true);
+            wp_enqueue_style(
+                'tiFyCoreTabooxDisplayAdmin',
+                self::tFyAppUrl('tiFy\Core\Taboox\Taboox') . '/assets/css/Admin.css',
+                ['tify_control-tabs'],
+                150216
+            );
+            wp_enqueue_script(
+                'tiFyCoreTabooxDisplayAdmin',
+                self::tFyAppUrl('tiFy\Core\Taboox\Taboox') . '/assets/js/Admin.js',
+                ['tify_control-tabs'],
+                151019,
+                true
+            );
         endif;
     }
 
@@ -199,11 +212,10 @@ class Display extends \tiFy\App\Factory
         $output .= "\t<div id=\"tiFyTaboox-Wrapper--" . $this->getId() . "\" class=\"tiFyTaboox-Wrapper\">";
         $output .= "\t\t<div class=\"tiFyTaboox-WrapperBack\"></div>";
         $output .= "\t\t<div class=\"tiFyTaboox-WrapperContent\">";
-        $output .= Tabs::display(
+        $output .= Control::Tabs(
             [
                 'nodes' => $nodes
-            ],
-            false
+            ]
         );
         $output .= "\t\t</div>";
         $output .= "\t</div>";

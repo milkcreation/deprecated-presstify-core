@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\DropdownMenu;
 class DropdownMenu extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'dropdown_menu';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class DropdownMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-dropdown_menu',
@@ -64,7 +58,7 @@ class DropdownMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-dropdown_menu');
         \wp_enqueue_script('tify_control-dropdown_menu');
@@ -77,18 +71,20 @@ class DropdownMenu extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'               => 'tify_control_dropdown_menu-' . self::$Instance,
+            'id'               => 'tify_control_dropdown_menu-' . $this->getId(),
             'class'            => 'tify_control_dropdown_menu',
             'selected'         => 0,
-            'links'            => [],
+            'links'            => [
+                'google' => '<a href="https://google.com">Google</a>',
+                'jquery' => '<a href="http://jquery.com">jQuery</a>',
+            ],
             'show_option_none' => __('Aucun', 'tify'),
 
             // Liste de selection
@@ -132,10 +128,6 @@ class DropdownMenu extends \tiFy\Core\Control\Factory
         $output .= "\t</ul>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

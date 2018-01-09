@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Progress;
 class Progress extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'progress';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class Progress extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -65,7 +59,7 @@ class Progress extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-progress');
         \wp_enqueue_script('tify_control-progress');
@@ -78,51 +72,49 @@ class Progress extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'    => 'tiFyControlProgress--' . self::$Instance,
-            'class' => '',
-            'title' => '',
-            'value' => 0,
-            'max'   => 100
+            'id'        => 'tiFyControlProgress--' . $this->getId(),
+            'class'     => '',
+            'title'     => '',
+            'value'     => 100,
+            'max'       => 100,
+            'in_footer' => false
         ];
         $attrs = wp_parse_args($attrs, $defaults);
+        extract($attrs);
 
-        $footer = function () use ($attrs) {
-            extract($attrs);
+        $percent = ceil(($value / $max) * 100);
 
-            $percent = ceil(($value / $max) * 100);
+        $output = "";
+        $output .= "<div id=\"{$id}\" class=\"tiFyControlProgress" . ($class ? ' ' . $class : '') . "\" data-tify_control=\"progress\">\n";
+        $output .= "\t<div class=\"tiFyControlProgress-content\">";
+        $output .= "\t\t<div class=\"tiFyControlProgress-contentHeader\">\n";
+        $output .= "\t\t\t<h3 class=\"tiFyControlProgress-headerTitle\" data-role=\"header-title\">{$title}</h3>\n";
+        $output .= "\t\t</div>\n";
+        $output .= "\t\t<div class=\"tiFyControlProgress-contentBody\">\n";
+        $output .= "\t\t\t<div class=\"tiFyControlProgress-bar\" style=\"background-position:-{$percent}% 0;\" data-role=\"bar\" data-max=\"" . intval($max) . "\">\n";
+        $output .= "\t\t\t\t<div class=\"tiFyControlProgress-indicator\" data-role=\"indicator\"></div>\n";
+        $output .= "\t\t\t</div>\n";
+        $output .= "\t\t\t<div class=\"tiFyControlProgress-infos\" data-role=\"info\"></div>\n";
+        $output .= "\t\t</div>\n";
+        $output .= "\t\t<div class=\"tiFyControlProgress-contentFooter\">\n";
+        $output .= "\t\t\t<button type=\"button\" class=\"tiFyButton--primary tiFyControlProgress-close\" data-role=\"close\">" . __('Annuler',
+                'tify') . "</button>\n";
+        $output .= "\t\t</div>\n";
+        $output .= "\t</div>\n";
+        $output .= "</div>\n";
 
-            $output = "";
-            $output .= "<div id=\"{$id}\" class=\"tiFyControlProgress" . ($class ? ' ' . $class : '') . "\" data-tify_control=\"progress\">\n";
-            $output .= "\t<div class=\"tiFyControlProgress-content\">";
-            $output .= "\t\t<div class=\"tiFyControlProgress-contentHeader\">\n";
-            $output .= "\t\t\t<h3 class=\"tiFyControlProgress-headerTitle\" data-role=\"header-title\">{$title}</h3>\n";
-            $output .= "\t\t</div>\n";
-            $output .= "\t\t<div class=\"tiFyControlProgress-contentBody\">\n";
-            $output .= "\t\t\t<div class=\"tiFyControlProgress-bar\" style=\"background-position:-{$percent}% 0;\" data-role=\"bar\" data-max=\"" . intval($max) . "\">\n";
-            $output .= "\t\t\t\t<div class=\"tiFyControlProgress-indicator\" data-role=\"indicator\"></div>\n";
-            $output .= "\t\t\t</div>\n";
-            $output .= "\t\t\t<div class=\"tiFyControlProgress-infos\" data-role=\"info\"></div>\n";
-            $output .= "\t\t</div>\n";
-            $output .= "\t\t<div class=\"tiFyControlProgress-contentFooter\">\n";
-            $output .= "\t\t\t<button class=\"tiFyButton--primary tiFyControlProgress-close\" data-role=\"close\">" . __('Annuler',
-                    'tify') . "</button>\n";
-            $output .= "\t\t</div>\n";
-            $output .= "\t</div>\n";
-            $output .= "\t<div id=\"{$id}-backdrop\" class=\"tiFyControlProgress-backdrop\"></div>\n";
-            $output .= "</div>\n";
-
+        if ($in_footer) :
+            $footer = function () use ($output) { echo $output; };
+            \add_action((!is_admin() ? 'wp_footer' : 'admin_footer'), $footer);
+        else :
             echo $output;
-        };
-
-        add_action('wp_footer', $footer);
-        add_action('admin_footer', $footer);
+        endif;
     }
 }

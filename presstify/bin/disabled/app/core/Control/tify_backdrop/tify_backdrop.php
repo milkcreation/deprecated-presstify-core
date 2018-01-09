@@ -1,4 +1,7 @@
 <?php
+/**
+ * @disabled
+ */
 function tify_backdrop(){
 	static $instance;
 	if( $instance++ )

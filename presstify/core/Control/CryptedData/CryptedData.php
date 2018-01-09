@@ -30,20 +30,18 @@ use \Defuse\Crypto\Crypto;
 class CryptedData extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
+     * DECLENCHEURS
      */
-    protected $ID = 'crypted_data';
-
     /**
-     * CONSTRUCTEUR
+     * DECLENCHEURS
+     */
+    /**
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
         // Actions ajax
         $this->tFyAppAddAction(
             'wp_ajax_tiFyControlCryptedData_encrypt',
@@ -69,21 +67,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tiFyControlCryptedData_generate',
             'wp_ajax_generate'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         \wp_register_style(
             'tify_control-crypted_data',
             self::tFyAppAssetsUrl('CryptedData.css', get_class()),
@@ -104,7 +88,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-crypted_data');
         \wp_enqueue_script('tify_control-crypted_data');
@@ -113,7 +97,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
     /**
      * Récupération Ajax de la valeur décryptée
      */
-    public static function wp_ajax_encrypt()
+    public function wp_ajax_encrypt()
     {
         $callback = !empty($_REQUEST['encrypt_cb']) ? wp_unslash($_REQUEST['encrypt_cb']) : "tiFy\\Core\\Control\\CryptedData\\CryptedData::encrypt";
         $response = call_user_func($callback, $_REQUEST['value'], $_REQUEST['data']);
@@ -128,7 +112,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
     /**
      * Récupération Ajax de la valeur décryptée
      */
-    public static function wp_ajax_decrypt()
+    public function wp_ajax_decrypt()
     {
         $callback = !empty($_REQUEST['decrypt_cb']) ? wp_unslash($_REQUEST['decrypt_cb']) : "tiFy\\Core\\Control\\CryptedData\\CryptedData::decrypt";
         $response = call_user_func($callback, $_REQUEST['value'], $_REQUEST['data']);
@@ -143,7 +127,7 @@ class CryptedData extends \tiFy\Core\Control\Factory
     /**
      * Génération Ajax d'une valeur décryptée
      */
-    final static public function wp_ajax_generate()
+    final public function wp_ajax_generate()
     {
         $callback = !empty($_REQUEST['generate_cb']) ? wp_unslash($_REQUEST['generate_cb']) : "tiFy\\Core\\Control\\CryptedData\\CryptedData::generate";
         $response = call_user_func($callback, $_REQUEST['data']);
@@ -155,6 +139,51 @@ class CryptedData extends \tiFy\Core\Control\Factory
         endif;
     }
 
+
+    /**
+     * Methode de rappel de la clé d'encryptage
+     */
+    public static function secretKey()
+    {
+        return SECURE_AUTH_SALT;
+    }
+
+    /**
+     * Methode de rappel d'encryptage
+     */
+    public static function encrypt($input, $data = [])
+    {
+        try {
+            $output = Crypto::encryptWithPassword($input, static::secretKey());
+        } catch (\Defuse\Crypto\Exception\CryptoException $e) {
+            $output = new \WP_Error('CryptedDataEncryptError', $e->getMessage());
+        }
+
+        return $output;
+    }
+
+    /**
+     * Methode de rappel de décryptage
+     */
+    public static function decrypt($input, $data = [])
+    {
+        try {
+            $output = Crypto::decryptWithPassword($input, static::secretKey());
+        } catch (\Defuse\Crypto\Exception\CryptoException $e) {
+            $output = new \WP_Error('CryptedDataDecryptError', $e->getMessage());
+        }
+
+        return $output;
+    }
+
+    /**
+     * Methode de rappel de generation
+     */
+    public static function generate($data = [])
+    {
+        return wp_generate_password(12, false, false);
+    }
+
     /**
      * CONTROLEURS
      */
@@ -162,22 +191,21 @@ class CryptedData extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // ID HTML du conteneur
-            'container_id'    => 'tiFyControlCryptedData--' . self::$Instance,
+            'container_id'    => 'tiFyControlCryptedData--' . $this->getId(),
             // Classe HTML du conteneur
             'container_class' => '',
             // Classe du champ de saisie
             'class'           => '',
             // Nom d'enregistrement de la valeur (readonly doit être à false)
-            'name'            => 'tiFyControlCryptedData' . self::$Instance,
+            'name'            => 'tiFyControlCryptedData' . $this->getId(),
             // Valeur encryptée (hashée)
             'value'           => '',
             // Controleur en lecture seule (désactive aussi l'enregistrement et le générateur)
@@ -226,54 +254,6 @@ class CryptedData extends \tiFy\Core\Control\Factory
         endif;
         $output .= "</div>\n";
 
-        if ($echo) {
-            echo $output;
-        }
-
-        return $output;
-    }
-
-    /**
-     * Methode de rappel de la clé d'encryptage
-     */
-    public static function secretKey()
-    {
-        return SECURE_AUTH_SALT;
-    }
-
-    /**
-     * Methode de rappel d'encryptage
-     */
-    public static function encrypt($input, $data = [])
-    {
-        try {
-            $output = Crypto::encryptWithPassword($input, static::secretKey());
-        } catch (\Defuse\Crypto\Exception\CryptoException $e) {
-            $output = new \WP_Error('CryptedDataEncryptError', $e->getMessage());
-        }
-
-        return $output;
-    }
-
-    /**
-     * Methode de rappel de décryptage
-     */
-    public static function decrypt($input, $data = [])
-    {
-        try {
-            $output = Crypto::decryptWithPassword($input, static::secretKey());
-        } catch (\Defuse\Crypto\Exception\CryptoException $e) {
-            $output = new \WP_Error('CryptedDataDecryptError', $e->getMessage());
-        }
-
-        return $output;
-    }
-
-    /**
-     * Methode de rappel de generation
-     */
-    public static function generate($data = [])
-    {
-        return wp_generate_password(12, false, false);
+        echo $output;
     }
 }

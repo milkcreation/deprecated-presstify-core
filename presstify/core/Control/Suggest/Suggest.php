@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Suggest;
 class Suggest extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'suggest';
-
-    /**
      * CONSTRUCTEUR
      *
      * @return void
@@ -62,7 +56,7 @@ class Suggest extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -92,7 +86,7 @@ class Suggest extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-suggest');
         \wp_enqueue_script('tify_control-suggest');
@@ -179,22 +173,22 @@ class Suggest extends \tiFy\Core\Control\Factory
     /**
      * Affichage
      *
-     * @param array $args
-     * @param string $echo
+     * @param array $attrs
+     *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Identification du controleur
-            'id'              => 'tiFyControlSuggest--' . self::$Instance,
+            'id'              => 'tiFyControlSuggest--' . $this->getId(),
             // Id Html du conteneur
-            'container_id'    => 'tiFyControlSuggest--' . self::$Instance,
+            'container_id'    => 'tiFyControlSuggest--' . $this->getId(),
             // Classe Html du conteneur
             'container_class' => '',
             // Nom de la variable de requête du champ de recherche
-            'name'            => 'tiFyControlSuggest-' . self::$Instance,
+            'name'            => 'tiFyControlSuggest-' . $this->getId(),
             // Valeur du champs de recherche
             'value'           => '',
             // Texte de remplacement du champ de recherche
@@ -288,11 +282,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         $output .= "\t<div id=\"tiFyControlSuggest-response--" . $id . "\" class=\"tiFyControlSuggest-response\"></div>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 
     /**

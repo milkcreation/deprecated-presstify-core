@@ -29,20 +29,15 @@ namespace tiFy\Core\Control\Findposts;
 class Findposts extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de qualification de la classe
-     * @var string
+     * DECLENCHEURS
      */
-    protected $ID = 'findposts';
-
     /**
-     * CONSTRUCTEUR
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
         // Déclaration des actions ajax
         $this->tFyAppAddAction(
             'wp_ajax_tify_control_findposts',
@@ -52,18 +47,7 @@ class Findposts extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tify_control_findposts',
             'wp_ajax'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         // Déclaration des scripts
         \wp_register_style(
             'tify_control-findposts',
@@ -84,7 +68,7 @@ class Findposts extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-findposts');
         \wp_enqueue_script('tify_control-findposts');
@@ -169,27 +153,26 @@ class Findposts extends \tiFy\Core\Control\Factory
      * @param array $attrs {
      *      Liste des attributs de configuration du controleur d'affichage
      *
-     *      @param string $id Identifiant de qualification
-     *      @param string $class Classe HTML du conteneur
-     *      @param string $name Nom du champ d'enregistrement
-     *      @param int $value ID de l'attachment.
-     *      @param bool $readonly Activation de l'administrabilité du champs. Lecture seule par défaut.
-     *      @param string $placeholder Texte d'aide à la saisie.
-     *      @param array $attrs Attributs HTML du champ.
-     *      @param string $ajax_action Action ajax de traitement de la requête.
-     *      @param array $query_args Argument de requête @see \WP_Query
+     *      @var string $id Identifiant de qualification
+     *      @var string $class Classe HTML du conteneur
+     *      @var string $name Nom du champ d'enregistrement
+     *      @var int $value ID de l'attachment.
+     *      @var bool $readonly Activation de l'administrabilité du champs. Lecture seule par défaut.
+     *      @var string $placeholder Texte d'aide à la saisie.
+     *      @var array $attrs Attributs HTML du champ.
+     *      @var string $ajax_action Action ajax de traitement de la requête.
+     *      @var array $query_args Argument de requête @see \WP_Query
      *  }
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         static $init;
 
         // Traitement des attributs de configuration
         $defaults = [
-            'id'          => 'tiFyControlFindposts-' . self::$Instance,
+            'id'          => 'tiFyControlFindposts-' . $this->getId(),
             'class'       => '',
             'name'        => '',
             'value'       => '',
@@ -242,11 +225,7 @@ class Findposts extends \tiFy\Core\Control\Factory
             );
         endif;
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 
     /**

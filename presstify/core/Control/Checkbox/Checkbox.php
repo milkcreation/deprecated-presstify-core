@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Checkbox;
 class Checkbox extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'checkbox';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class Checkbox extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         wp_register_style(
             'tify_control-checkbox',
@@ -64,7 +58,7 @@ class Checkbox extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-checkbox');
         \wp_enqueue_script('tify_control-checkbox');
@@ -77,17 +71,16 @@ class Checkbox extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'             => 'tify_control_checkbox-' . self::$Instance,
+            'id'             => 'tify_control_checkbox-' . $this->getId(),
             'class'          => 'tify_control_checkbox',
-            'name'           => 'tify_control_checkbox-' . self::$Instance,
+            'name'           => 'tify_control_checkbox-' . $this->getId(),
             'value'          => 0,
             'label'          => __('Aucun', 'tify'),
             'label_class'    => 'tify_control_checkbox-label',
@@ -124,10 +117,6 @@ class Checkbox extends \tiFy\Core\Control\Factory
         $output .= "\t</label>";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

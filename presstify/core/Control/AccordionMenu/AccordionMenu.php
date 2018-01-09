@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\AccordionMenu;
 class AccordionMenu extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'accordion_menu';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         // Déclaration des scripts
         \wp_register_style(
@@ -65,7 +59,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-accordion_menu');
         \wp_enqueue_script('tify_control-accordion_menu');
@@ -77,29 +71,42 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
     /**
      * Affichage
      *
-     * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
+     * @param array $attrs {
+     *      Liste des attributs de configuration
+     *
+     *      @var string $id Marqueur d'identification unique
+     *      @var string $container_id Id HTML du conteneur
+     *      @var string $container_class Classe HTML du conteneur
+     *      @var string $theme Couleur du thème (light|dark| false)
+     *      @var array $nodes Liste des greffons {
+     *      }
+     *      @var mixed $selected Selection active
+     * }
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            // Marqueur d'identification unique
-            'id'                => 'tiFyControlAccordionMenu-' . self::$Instance,
-            // Id Html du conteneur
-            'container_id'      => 'tiFyControlAccordionMenu--' . self::$Instance,
-            // Classe Html du conteneur
+            'id'                => 'tiFyControlAccordionMenu-' . $this->getId(),
+            'container_id'      => 'tiFyControlAccordionMenu--' . $this->getId(),
             'container_class'   => '',
-            // Theme (light | dark | false)
             'theme'             => 'dark',
-            // Entrées de menu
             'nodes'             => [],
-            // Selection active
             'selected'          => 0
         ];
         $attrs    = wp_parse_args($attrs, $defaults);
+
+        /**
+         *  @var string $id Marqueur d'identification unique
+         *  @var string $container_id Id HTML du conteneur
+         *  @var string $container_class Classe HTML du conteneur
+         *  @var string $theme Couleur du thème (light|dark| false)
+         *  @var array $nodes Liste des greffons {
+         *  }
+         *  @var mixed $selected Selection active
+         */
         extract($attrs);
 
         if (count($nodes) === 2) :
@@ -128,10 +135,6 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         $output .= "\t</nav>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        endif;
-
-        return $output;
+        echo $output;
     }
 }

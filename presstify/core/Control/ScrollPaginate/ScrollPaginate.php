@@ -32,31 +32,15 @@ use Symfony\Component\HttpFoundation\Request;
 class ScrollPaginate extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
+     * DECLENCHEURS
      */
-    protected $ID = 'scroll_paginate';
-
     /**
-     * Requête globale
-     * @var \Symfony\Component\HttpFoundation\Request::createFromGlobals
-     */
-    private static $Request = null;
-
-    /**
-     * CONSTRUCTEUR
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
-        // Définition de la requête globale
-        if (!self::$Request) :
-            self::$Request = Request::createFromGlobals();
-        endif;
-
         // Déclaration des Actions Ajax
         $this->tFyAppAddAction(
             'wp_ajax_tify_control_scroll_paginate',
@@ -66,18 +50,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tify_control_scroll_paginate',
             'wp_ajax'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         // Déclaration des scripts
         \wp_register_style(
             'tify_control-scroll_paginate',
@@ -99,7 +72,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-scroll_paginate');
         \wp_enqueue_script('tify_control-scroll_paginate');
@@ -114,10 +87,10 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
     {
         check_ajax_referer('tiFyControl-ScrollPaginate');
 
-        if ($options = self::$Request->request->get('options')) :
+        if ($options = self::tFyAppGetRequestVar('options', false, 'POST')) :
             $options = wp_unslash($options);
         endif;
-        $offset = self::$Request->request->get('offset');
+        $offset = self::tFyAppGetRequestVar('offset', 0, 'POST');
 
         $response = \call_user_func_array($options['query_items_cb'], compact('options', 'offset'));
 
@@ -147,18 +120,17 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *      @param string $query_items_cb Methode ou fonction de rappel de récupération de la liste des éléments
      *      @param string $item_display_cb Methode ou fonction de rappel d'affichage d'un élément
      * }
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         global $wp_query;
 
         // Traitement des arguments
         $defaults = [
-            'id'                => 'tiFyCoreControl-ScrollPaginate-' . self::$Instance,
-            'container_id'      => 'tiFyCoreControl-ScrollPaginate--' . self::$Instance,
+            'id'                => 'tiFyCoreControl-ScrollPaginate-' . $this->getId(),
+            'container_id'      => 'tiFyCoreControl-ScrollPaginate--' . $this->getId(),
             'container_class'   => '',
             'text'              => __('Voir plus', 'tify'),
             'ajax_action'       => 'tify_control_scroll_paginate',
@@ -168,8 +140,8 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             'target'            => '',
             'before_item'       => '<li>',
             'after_item'        => '</li>',
-            'query_items_cb'    => get_called_class() . '::queryItems',
-            'item_display_cb'   => get_called_class() . '::itemDisplay'
+            'query_items_cb'    => [$this, 'queryItems'],
+            'item_display_cb'   => [$this, 'itemDisplay']
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
@@ -213,11 +185,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             99
         );
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 
     /**
@@ -225,7 +193,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function queryItems($options = [], $offset = 0)
+    public function queryItems($options = [], $offset = 0)
     {
         /**
          * @var string $id Identifiant de qualification du controleur
@@ -293,7 +261,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function itemDisplay()
+    public function itemDisplay()
     {
         return self::tFyAppGetTemplatePart('item');
     }

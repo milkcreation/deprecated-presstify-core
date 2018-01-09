@@ -30,12 +30,6 @@ namespace tiFy\Core\Control\Spinkit;
 class Spinkit extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'spinkit';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -45,7 +39,7 @@ class Spinkit extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts($spinkit = null)
+    protected function enqueue_scripts($spinkit = null)
     {
         if (!$spinkit || !in_array($spinkit, ['rotating-plane', 'fading-circle', 'folding-cube', 'double-bounce', 'wave', 'wandering-cubes', 'spinner-pulse', 'chasing-dots', 'three-bounce', 'circle', 'cube-grid'])) :
             \wp_enqueue_style('spinkit');
@@ -61,25 +55,20 @@ class Spinkit extends \tiFy\Core\Control\Factory
      * Affichage du controleur
      *
      * @param array $attrs Attr
-     * @return stringBrowserFolderContent-itemIcon
+     *
+     * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'container_id'    => 'tiFyCoreControl-spinkit--' . self::$Instance,
+            'container_id'    => 'tiFyCoreControl-spinkit--' . $this->getId(),
             'container_class' => '',
             'type'            => 'spinner-pulse',
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
         extract($attrs);
 
-        if ($echo) :
-            self::tFyAppGetTemplatePart($attrs['type'], null, compact(array_keys($defaults)));
-        else :
-            ob_start();
-            self::tFyAppGetTemplatePart($attrs['type'], null, compact(array_keys($defaults)));
-            return ob_get_clean();
-        endif;
+        self::tFyAppGetTemplatePart($attrs['type'], null, compact(array_keys($defaults)));
     }
 }

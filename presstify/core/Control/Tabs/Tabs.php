@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\Tabs;
 class Tabs extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'tabs';
-
-    /**
      * CONSTRUCTEUR
      *
      * @return void
@@ -43,15 +37,7 @@ class Tabs extends \tiFy\Core\Control\Factory
     {
         parent::__construct();
 
-        // Déclaration des Actions Ajax
-        $this->tFyAppAddAction(
-            'wp_ajax_tiFyControlTabs',
-            'wp_ajax'
-        );
-        $this->tFyAppAddAction(
-            'wp_ajax_nopriv_tiFyControlTabs',
-            'wp_ajax'
-        );
+
     }
 
     /**
@@ -62,8 +48,18 @@ class Tabs extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
+        // Déclaration des Actions Ajax
+        $this->tFyAppAddAction(
+            'wp_ajax_tiFyControlTabs',
+            'wp_ajax'
+        );
+        $this->tFyAppAddAction(
+            'wp_ajax_nopriv_tiFyControlTabs',
+            'wp_ajax'
+        );
+
         // Déclaration des scripts
         \wp_register_style(
             'tify_control-tabs',
@@ -92,7 +88,7 @@ class Tabs extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-tabs');
         \wp_enqueue_script('tify_control-tabs');
@@ -133,18 +129,17 @@ class Tabs extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Marqueur d'identification unique
-            'id'              => 'tiFyControlTabs--' . self::$Instance,
+            'id'              => 'tiFyControlTabs--' . $this->getId(),
             // Id Html du conteneur
-            'container_id'    => 'tiFyControlTabs--' . self::$Instance,
+            'container_id'    => 'tiFyControlTabs--' . $this->getId(),
             // Classe Html du conteneur
             'container_class' => '',
             // Entrées de menu
@@ -176,10 +171,6 @@ class Tabs extends \tiFy\Core\Control\Factory
         $output .= $Walker::output($nodes);
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

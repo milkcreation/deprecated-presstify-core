@@ -29,12 +29,6 @@ namespace tiFy\Core\Control\DropdownColors;
 class DropdownColors extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'dropdown_colors';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -42,7 +36,7 @@ class DropdownColors extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-dropdown_colors',
@@ -64,7 +58,7 @@ class DropdownColors extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-dropdown_colors');
         \wp_enqueue_script('tify_control-dropdown_colors');
@@ -77,23 +71,24 @@ class DropdownColors extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Conteneur
-            'id'                => 'tify_control_dropdown_colors-' . self::$Instance,
+            'id'                => 'tify_control_dropdown_colors-' . $this->getId(),
             'class'             => 'tify_control_dropdown_colors',
-            'name'              => 'tify_control_dropdown_colors-' . self::$Instance,
+            'name'              => 'tify_control_dropdown_colors-' . $this->getId(),
             'attrs'             => [],
 
             // Valeur
             'selected'          => 0,
-            'choices'           => [],
+            'choices'           => [
+                '#FFF', '#000'
+            ],
             'show_option_none'  => false,
             'option_none_value' => '',
             'labels'            => [],
@@ -176,15 +171,11 @@ class DropdownColors extends \tiFy\Core\Control\Factory
         $output .= "\t</ul>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 
     /** == Affichage de la valeur == **/
-    protected static function displayValue($value = null, $label = '')
+    protected function displayValue($value = null, $label = '')
     {
         $output = "<span class=\"color-square" . ($value ? "" : " none") . "\" style=\"" . ($value ? "background-color:{$value}" : "") . "\"></span>\n";
         if ($label) :

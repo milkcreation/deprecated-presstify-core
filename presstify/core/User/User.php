@@ -34,6 +34,9 @@ class User extends \tiFy\App\Core
     {
         parent::__construct();
 
+        // Chargement des controleurs
+        new Role\Role;
+
         // Activation des permissions de prises de contrôle de comptes utilisateurs
         if ($take_over = self::tFyAppConfig('take_over')) :
             foreach ($take_over as $id => $attrs) :
@@ -57,12 +60,15 @@ class User extends \tiFy\App\Core
     final public function tify_control_register()
     {
         Control::register(
+            'TakeOverActionLink',
             'tiFy\Core\User\TakeOver\ActionLink\ActionLink'
         );
         Control::register(
+            'TakeOverAdminBar',
             'tiFy\Core\User\TakeOver\AdminBar\AdminBar'
         );
         Control::register(
+            'TakeOverSwitcherForm',
             'tiFy\Core\User\TakeOver\SwitcherForm\SwitcherForm'
         );
     }

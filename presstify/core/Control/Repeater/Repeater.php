@@ -29,19 +29,15 @@ namespace tiFy\Core\Control\Repeater;
 class Repeater extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
+     * DECLENCHEURS
      */
-    protected $ID = 'repeater';
-
     /**
-     * CONSTRUCTEUR
+     * Initialisation globale
      *
      * @return void
      */
-    public function __construct()
+    protected function init()
     {
-        parent::__construct();
-
         // Déclaration des Actions Ajax
         $this->tFyAppAddAction(
             'wp_ajax_tify_control_repeater_item',
@@ -51,18 +47,7 @@ class Repeater extends \tiFy\Core\Control\Factory
             'wp_ajax_nopriv_tify_control_repeater_item',
             'wp_ajax'
         );
-    }
 
-    /**
-     * DECLENCHEURS
-     */
-    /**
-     * Initialisation globale
-     *
-     * @return void
-     */
-    public static function init()
-    {
         // Déclaration des scripts
         \wp_register_style(
             'tify_control-repeater',
@@ -91,7 +76,7 @@ class Repeater extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-repeater');
         \wp_enqueue_script('tify_control-repeater');
@@ -102,7 +87,7 @@ class Repeater extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function wp_ajax()
+    public function wp_ajax()
     {
         check_ajax_referer('tiFyControlRepeater');
 
@@ -130,20 +115,19 @@ class Repeater extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             // Id Html du conteneur
-            'id'               => 'tiFyControlRepeater--' . self::$Instance,
+            'id'               => 'tiFyControlRepeater--' . $this->getId(),
             // Classe Html du conteneur
             'class'            => '',
             // Nom de la valeur a enregistrer
-            'name'             => 'tiFyControlRepeater-' . self::$Instance,
+            'name'             => 'tiFyControlRepeater-' . $this->getId(),
             // Valeur string | array indexé de liste des valeurs  
             'value'            => '',
             // Valeur par défaut string | array à une dimension 
@@ -199,13 +183,7 @@ class Repeater extends \tiFy\Core\Control\Factory
 
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            echo $output;
-        endif;
-
-        return $output;
+        echo $output;
     }
 
     /**
@@ -215,8 +193,7 @@ class Repeater extends \tiFy\Core\Control\Factory
      */
     public static function item($index, $value, $attrs = [])
     {
-        ?><input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>]" value="<?php echo $value; ?>"
-                 class="widefat"/><?php
+?><input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>]" value="<?php echo $value; ?>" class="widefat"/><?php
     }
 
     /**

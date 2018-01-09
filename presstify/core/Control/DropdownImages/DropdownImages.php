@@ -32,12 +32,6 @@ use tiFy\Statics\Media;
 class DropdownImages extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'dropdown_images';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -45,7 +39,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-dropdown_images',
@@ -67,7 +61,7 @@ class DropdownImages extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-dropdown_images');
         \wp_enqueue_script('tify_control-dropdown_images');
@@ -80,17 +74,16 @@ class DropdownImages extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'                => 'tify_control_dropdown_images-' . self::$Instance,
+            'id'                => 'tify_control_dropdown_images-' . $this->getId(),
             'class'             => 'tify_control_dropdown_images',
-            'name'              => 'tify_control_dropdown_images-' . self::$Instance,
+            'name'              => 'tify_control_dropdown_images-' . $this->getId(),
 
             // Liste de selection
             'picker'            => [
@@ -197,10 +190,6 @@ class DropdownImages extends \tiFy\Core\Control\Factory
         $output .= "\t</ul>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

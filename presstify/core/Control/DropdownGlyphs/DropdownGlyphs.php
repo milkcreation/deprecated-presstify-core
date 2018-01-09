@@ -15,6 +15,7 @@
 namespace tiFy\Core\Control\DropdownGlyphs;
 
 use tiFy\Lib\File;
+use tiFy\Core\ScriptLoader\ScriptLoader;
 
 /**
  * @Overrideable \App\Core\Control\DropdownGlyphs\DropdownGlyphs
@@ -31,12 +32,6 @@ use tiFy\Lib\File;
 class DropdownGlyphs extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'dropdown_glyphs';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -44,7 +39,7 @@ class DropdownGlyphs extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-dropdown_glyphs',
@@ -66,7 +61,7 @@ class DropdownGlyphs extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-dropdown_glyphs');
         \wp_enqueue_script('tify_control-dropdown_glyphs');
@@ -79,21 +74,20 @@ class DropdownGlyphs extends \tiFy\Core\Control\Factory
      * Affichage
      *
      * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
             'selected'         => 0,
-            'name'             => 'tify_control_dropdown_glyphs-' . self::$Instance,
-            'id'               => 'tify_control_dropdown_glyphs-' . self::$Instance,
+            'name'             => 'tify_control_dropdown_glyphs-' . $this->getId(),
+            'id'               => 'tify_control_dropdown_glyphs-' . $this->getId(),
             'links'            => [],
             'show_option_none' => ' ',
             // Chemin vers le feuille de style des glyphs
-            'css'              => '',//$this->master->script_loader->css['font-awesome']['dev'],
+            'css'              => ScriptLoader::get_src('font-awesome', 'css', 'dev'),
             // Prefixe des classes css à parser (requis)
             'prefix'           => 'fa',
             'cols'             => 32 // Nombre de colonnes d'icônes à afficher par ligne
@@ -169,10 +163,6 @@ class DropdownGlyphs extends \tiFy\Core\Control\Factory
         $output .= "\t</ul>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

@@ -35,12 +35,6 @@ namespace tiFy\Core\Control\Switcher;
 class Switcher extends \tiFy\Core\Control\Factory
 {
     /**
-     * Identifiant de la classe
-     * @var string
-     */
-    protected $ID = 'switch';
-
-    /**
      * DECLENCHEURS
      */
     /**
@@ -48,7 +42,7 @@ class Switcher extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function init()
+    protected function init()
     {
         \wp_register_style(
             'tify_control-switch',
@@ -70,7 +64,7 @@ class Switcher extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         \wp_enqueue_style('tify_control-switch');
         \wp_enqueue_script('tify_control-switch');
@@ -87,14 +81,14 @@ class Switcher extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected static function display($attrs = [], $echo = true)
+    protected function display($attrs = [], $echo = true)
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'              => 'tify_control_switcher-' . self::$Instance,
-            'container_id'    => 'tifyControlSwitcher--' . self::$Instance,
+            'id'              => 'tify_control_switcher-' . $this->getId(),
+            'container_id'    => 'tifyControlSwitcher--' . $this->getId(),
             'container_class' => '',
-            'name'            => 'tify_control_switcher-' . self::$Instance,
+            'name'            => 'tify_control_switcher-' . $this->getId(),
             'label_on'        => _x('Oui', 'tify_control_switch', 'tify'),
             'label_off'       => _x('Non', 'tify_control_switch', 'tify'),
             'value_on'        => 'on',

@@ -22,6 +22,6 @@ class ContactToggle extends \tiFy\App\Set
      */
     final public function tify_control_register()
     {
-        Control::register(self::getOverride('tiFy\Set\ContactToggle\Control\ContactToggle'));
+        Control::register('ContactToggle', self::getOverride('tiFy\Set\ContactToggle\Control\ContactToggle'));
     }
 }

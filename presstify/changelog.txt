@@ -1,8 +1,0 @@
-# 0.2.1512118
-- IMPORTANT : Modification de l'enregistrement natif des meta via l'utils de tiFy 
-# 0.2.151216
-- BUG FIX : wp_enqueue_media() des taboox dans current_screen empêchait l'ajout d'image à la une
-# 0.2.151215
-- tiFy_Db2 : Création du développement d'une version opérationnelle
-# 0.2.151214
-- Déplacement de la configuration yml dans des sous-dossiers config (impact theme + plugin) 

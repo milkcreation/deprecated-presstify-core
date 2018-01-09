@@ -2,97 +2,42 @@
 
 namespace tiFy\Core\Control;
 
-abstract class Factory extends \tiFy\App
+abstract class Factory extends \tiFy\App\FactoryConstructor
 {
     /**
-     * Instance
+     * Compteur d'instance d'affichage de la classe
      * @var int
      */
-    protected static $Instance = 0;
+    private static $Index = 0;
 
     /**
-     * Identifiant de la classe
-     * @var string
+     * Numéro d'instance d'affichage courante
+     * @var int
      */
-    protected $ID = '';
+    private $CurrentIndex = 0;
 
     /**
-     * Liste des fonctions d'aide à la saisie avec incrémentation automatique
+     * Liste des fonctions d'aide à la saisie avec incrémentation automatique d'une instance d'affichage
      * @var array
      */
-    private static $InstanceHelpers = [];
-
-    /**
-     * Liste des methodes de la classe pouvant être appelées depuis la méthode tiFy\Core\Control\Control::call()
-     * @var string
-     */
-    private static $CallableMethods = [];
+    private static $DisplayHelpers = [];
 
     /**
      * CONSTRUCTEUR
      *
+     * @param array $attrs Attributs de configuration
+     *
      * @return void
      */
-    public function __construct()
+    public function __construct($attrs = [])
     {
-        parent::__construct();
+        $this->CurrentIndex = self::$Index;
 
-        // Instanciation de la liste des fonctions d'aide à la saisie
-        self::$InstanceHelpers[get_called_class()] = [];
-
-        // Instanciation de la liste des méthodes pouvant être appelées depuis la méthode tiFy\Core\Control\Control::call()
-        self::$CallableMethods[get_called_class()] = [];
-
-        // Déclaration de la fonction d'aide à la saisie d'affichage principal du controleur
-        $tag = 'tify_control_'. $this->ID;
-        $method = 'display';
-        self::$InstanceHelpers[get_called_class()][$tag] = $method;
-        self::tFyAppAddHelper($tag, $method);
-
-        // Déclaration de la fonction d'aide à la saisie de mise en file des scripts
-        self::tFyAppAddHelper('tify_control_'. $this->ID .'_enqueue_scripts', 'enqueue_scripts');
-    }
-
-    /**
-     * Permission de récupération d'attributs de configuration
-     *
-     * @return null|string
-     */
-    public function __get($name)
-    {
-        if ($name === 'ID') :
-            return $this->ID;
+        if(isset($attrs['id'])) :
+            $this->Id = $attrs['id'];
+        else :
+            $this->Id = "tiFyCoreControl-". (new \ReflectionClass($this))->getShortName() . "-" . $this->getIndex();
         endif;
-    }
-
-    /**
-     * Permission de test d'existance d'attributs de configuration
-     *
-     * @return null|string
-     */
-    public function __isset($name)
-    {
-        if ($name === 'ID') :
-            return $this->ID;
-        endif;
-    }
-
-    /**
-     * Appel des méthodes statiques et déclenchement d'événements
-     *
-     * @return null|static
-     */
-    final public static function __callStatic($name, $arguments)
-    {
-        if (in_array($name, self::$InstanceHelpers[get_called_class()])) :
-            // Incrémentation du nombre d'instance
-            static::$Instance++;
-        elseif (!in_array($name, self::$CallableMethods[get_called_class()])) :
-            return trigger_error(sprintf(__('La méthode %s du controleur d\'affichage ne peut être appelée de cette manière.', 'tify'), $name));
-        endif;
-
-        // Appel de la méthode statique du contrôleur
-        return call_user_func_array("static::$name", $arguments);
     }
 
     /**
@@ -100,10 +45,8 @@ abstract class Factory extends \tiFy\App
      */
     /**
      * Initialisation globale
-     *
-     * @return void
      */
-    public static function init()
+    protected function init()
     {
 
     }
@@ -113,7 +56,7 @@ abstract class Factory extends \tiFy\App
      *
      * @return void
      */
-    public static function enqueue_scripts()
+    protected function enqueue_scripts()
     {
 
     }
@@ -122,35 +65,80 @@ abstract class Factory extends \tiFy\App
      * CONTROLEURS
      */
     /**
-     * Affichage
+     * Appel des méthodes statiques et déclenchement d'événements
      *
-     * @param array $attrs Liste des attributs de configuration
-     * @param bool $echo Activation de l'affichage
+     * @param string $name Nom de la méthode à appeler
+     * @param array $arguments Liste des arguments passés dans l'appel de la méthode
      *
-     * @return string
+     * @return null|static
      */
-    protected static function display($attrs = [], $echo = true)
+    final public static function __callStatic($name, $arguments)
     {
+        if (!isset(self::$DisplayHelpers[get_called_class()])) :
+            self::$DisplayHelpers[get_called_class()] = [];
+        endif;
 
+        $attrs = [];
+
+        if(in_array($name, self::$DisplayHelpers[get_called_class()])) :
+            ++self::$Index;
+
+            if (isset($arguments[0])) :
+                $attrs = $arguments[0];
+            endif;
+        endif;
+
+        $instance = self::create($attrs);
+        if (method_exists($instance, $name)) :
+            return call_user_func_array([$instance, $name], $arguments);
+        endif;
     }
 
     /**
-     * Ajout d'une fonction d'aide à la saisie avec incrémentation d'instance automatique
+     * Instanciation de la classe
      *
-     * @param string $tag Nom de qualification de la fonction
-     * @param string $method Nom de qualification de la méthode du controleur
+     * @param array $attrs Attributs de configuration
+     *
+     * @return self
+     */
+    final public static function create($attrs = [])
+    {
+        return new static($attrs);
+    }
+
+    /**
+     * Récupération de la valeur du compteur d'instance
+     *
+     * @return int
+     */
+    final public function getIndex()
+    {
+        return $this->CurrentIndex;
+    }
+
+    /**
+     * Déclaration d'une fonction d'aide à la saisie
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $method Méthode de la classe à executer
      *
      * @return void
      */
-    final protected function addInstanceHelper($tag, $method)
+    final public function addDisplayHelper($tag, $method)
     {
-        if (isset(self::$InstanceHelpers[get_called_class()][$tag])) :
-            return;
-        endif;
-
-        self::$CallableMethods[get_called_class()][] = $method;
-
-        self::$InstanceHelpers[get_called_class()][$tag] = $method;
+        self::$DisplayHelpers[get_called_class()][$tag] = $method;
         self::tFyAppAddHelper($tag, $method);
+    }
+
+    /**
+     * Affichage
+     *
+     * @param array $args Liste des attributs de configuration du champ
+     *
+     * @return string
+     */
+    protected function display($args = [])
+    {
+        echo '';
     }
 }
