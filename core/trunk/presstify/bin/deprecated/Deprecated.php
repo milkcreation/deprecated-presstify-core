@@ -30,10 +30,10 @@ class Deprecated
         tiFy::classLoad('tiFy\Inherits', dirname(__FILE__) .'/lib/Inherits');
 
         // core/Control
-        tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control', 'Deprecated');
+        tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control');
 
         // core/Fields
-        tiFy::classLoad('tiFy\Core\Fields', dirname(__FILE__) .'/app/core/Fields', 'Deprecated');
+        tiFy::classLoad('tiFy\Core\Fields', dirname(__FILE__) .'/app/core/Fields');
 
         // core/Taboox
         tiFy::classLoad('tiFy\Core\Taboox\Option', dirname(__FILE__) .'/app/core/Taboox/Option');

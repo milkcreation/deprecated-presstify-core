@@ -56,7 +56,7 @@ class Control extends \tiFy\App\Core
 
             // Définition des classes d'aide à la saisie
             $_id = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', $id)));
-            $instance->addDisplayHelper('tify_control' . $_id, 'display');
+            $instance->addIncreaseHelper('tify_control' . $_id, 'display');
 
             if (is_callable([$classname, 'init'])) :
                 call_user_func([$classname, 'init']);

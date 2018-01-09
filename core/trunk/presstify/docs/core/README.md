@@ -27,8 +27,8 @@ function my_tify_core_register()
     return Core::register(
         '%core_id%',
         array(
-            'param_1'	=> '',
-            'param_2'	=> ''
+            'param_1'   => '',
+            'param_2'   => ''
         )
     );
 }
@@ -57,8 +57,8 @@ class Config extends \tiFy\App\Config
     public function sets($attrs = array())
     {
         return array(
-            'param_1'	=> '',
-            'param_2'	=> ''
+            'param_1'   => '',
+            'param_2'   => ''
         );
     }
 }

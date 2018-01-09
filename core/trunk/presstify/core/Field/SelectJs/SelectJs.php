@@ -1,10 +1,9 @@
 <?php
 /**
  * @name SelectJs
- * @desc Liste de selection avec champ d'autocompletion
- * @see http://jqueryui.com/autocomplete/#combobox
+ * @desc Liste de selection enrichie
  * @package presstiFy
- * @namespace tiFy\Core\Field\Combobox
+ * @namespace tiFy\Core\Field\SelectJs
  * @version 1.1
  * @subpackage Core
  * @since 1.2.535

@@ -40,7 +40,7 @@ class Modal extends \tiFy\Core\Control\Factory
     final protected function init()
     {
         // Déclaration des fonction d'aide à la saisie
-        $this->addDisplayHelper('tify_control_modal_trigger', 'trigger');
+        $this->addIncreaseHelper('tify_control_modal_trigger', 'trigger');
 
         // Déclaration des scripts
         \wp_register_style(
