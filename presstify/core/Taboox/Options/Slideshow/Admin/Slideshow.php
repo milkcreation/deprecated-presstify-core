@@ -64,7 +64,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
                 'progressbar'        => false
             )
         );
-                
+
         \register_setting( $this->page, $this->args['name'] );
         
         $this->Action = 'tify_taboox_slideshow_item-'.self::$Instance;
@@ -81,7 +81,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
         wp_register_script( 'jQuery-tinyMCE', '//cdn.tinymce.com/4/jquery.tinymce.min.js', array( 'jquery', 'tinyMCE-editor' ), true );
         
         wp_enqueue_media();
-        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::tFyAppUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-switch', 'tify_control-suggest', 'tify_control-media_image', 'tify_control-touch_time' ), '160222' );
+        wp_enqueue_style( 'tiFyTabooxOptionSlideshowAdmin', self::tFyAppUrl( get_class() ) .'/Slideshow.css', array( 'tify_control-suggest', 'tify_control-media_image', 'tify_control-touch_time' ), '160222' );
         wp_enqueue_script( 'tiFyTabooxOptionSlideshowAdmin',self::tFyAppUrl( get_class() ) .'/Slideshow.js', array( 'jQuery-tinyMCE', 'tify_control-suggest', 'tify_control-media_image', 'tify_control-touch_time', 'jquery-ui-sortable' ), '160222', true );
         wp_localize_script( 
             'tiFyTabooxOptionSlideshowAdmin', 
@@ -117,7 +117,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
                         'attrs'       => ['data-duplicate' => $this->args['duplicate']]
                     ]
                 );
-                Control::Suggest($suggest_args);
+                Control::Suggest($suggest_args, true);
                 ?>
                 </div>
             <?php endif; ?>

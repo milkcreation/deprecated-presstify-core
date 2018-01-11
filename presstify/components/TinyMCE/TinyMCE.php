@@ -27,7 +27,7 @@ class TinyMCE extends \tiFy\App\Component
 	public function __construct()
 	{
 		parent::__construct();
-		
+
 		// Récupération de la configuration des plugins externe
 		if( $external_plugins = self::tFyAppConfig( 'external_plugins' ) ) :
 			self::$ExternalPluginsConfig = $external_plugins;
