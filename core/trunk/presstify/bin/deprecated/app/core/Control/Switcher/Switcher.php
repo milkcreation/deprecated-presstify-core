@@ -57,6 +57,7 @@ class Switcher extends \tiFy\Core\Control\Factory
             170724,
             true
         );
+        self::tFyAppAddHelper('tify_control_switch', 'display', 'tiFy\Core\Control\Switcher\Switcher');
     }
 
     /**

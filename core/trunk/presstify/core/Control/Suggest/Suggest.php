@@ -177,8 +177,9 @@ class Suggest extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected function display($attrs = [])
+    protected function display($args = [])
     {
+
         // Traitement des attributs de configuration
         $defaults = [
             // Identification du controleur
@@ -222,8 +223,8 @@ class Suggest extends \tiFy\Core\Control\Factory
             /// Données complémentaires traitées par la requête (optionel)
             'extras'             => []
         ];
-        $attrs = wp_parse_args($attrs, $defaults);
-        extract($attrs);
+        $args = wp_parse_args($args, $defaults);
+        extract($args);
 
         // Traitement des arguments
         /// Liste de selection
@@ -243,6 +244,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         /// Boutons et indicateur de chargement
         $search_before = '<button type="button" class="tiFyControlSuggest-button tiFyControlSuggest-button--search">';
         $search_after = '</button>';
+
         if (!$button_text) :
             $button_text = $search_before . '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" viewBox="0 0 40 40" enable-background="new 0 0 40 40" xml:space="preserve" fill="#000000"><g><rect x="20.2" y="28.4" transform="matrix(0.7071 0.7071 -0.7071 0.7071 30.809 -12.7615)" width="21.3" height="4.7"/><path d="M4.6,4.6c-6.1,6.1-6.1,15.9,0,22s15.9,6.1,22,0s6.1-15.9,0-22S10.6-1.5,4.6,4.6z M23.2,23.4   c-4.2,4.2-11.1,4.2-15.3,0s-4.2-11.1,0-15.3s11.1-4.2,15.3,0S27.4,19.2,23.2,23.4z"/></g></svg>' . $search_after;
         else :
@@ -278,6 +280,7 @@ class Suggest extends \tiFy\Core\Control\Factory
         $output .= "\t<input type=\"hidden\" class=\"tiFyControlSuggest-altInput\" name=\"{$name}\" value=\"{$value}\">";
         $output .= $button_text;
         $output .= $after;
+
         $output .= "\t<div class=\"tify_spinner\"><span></span></div>\n";
         $output .= "\t<div id=\"tiFyControlSuggest-response--" . $id . "\" class=\"tiFyControlSuggest-response\"></div>\n";
         $output .= "</div>\n";

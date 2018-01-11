@@ -603,10 +603,10 @@ class ScriptLoader extends \tiFy\App\Factory {
         self::$JsLib['moment'] = [
             'src'       => [
                 'local' => tiFy::$AbsUrl . '/bin/assets/vendor/moment.min.js',
-                'cdn'   => '//cdn.rawgit.com/moment/moment/develop/min/moment.min.js'
+                'cdn'   => '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'
             ],
             'deps'      => [],
-            'version'   => '2.10.2',
+            'version'   => '2.18.1',
             'in_footer' => true
         ];
 
