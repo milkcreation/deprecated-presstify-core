@@ -158,7 +158,7 @@ class Tabs extends \tiFy\Core\Control\Factory
         /**
          * @var \tiFy\Core\Control\Tabs\Nodes $Nodes
          */
-        $Nodes = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\Tabs\Nodes');
+        $Nodes = self::tFyAppLoadOverride('tiFy\Core\Control\Tabs\Nodes');
         $nodes = $Nodes->customs($nodes);
 
         $output = "";
@@ -167,7 +167,7 @@ class Tabs extends \tiFy\Core\Control\Factory
         /**
          * @var \tiFy\Core\Control\Tabs\Walker $Walker
          */
-        $Walker = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\Tabs\Walker');
+        $Walker = self::tFyAppLoadOverride('tiFy\Core\Control\Tabs\Walker');
         $output .= $Walker::output($nodes);
         $output .= "</div>\n";
 

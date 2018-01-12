@@ -2,119 +2,119 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Presstify\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-06 09:44+0100\n"
-"PO-Revision-Date: 2017-12-06 09:44+0100\n"
+"POT-Creation-Date: 2018-01-10 14:01+0100\n"
+"PO-Revision-Date: 2018-01-10 14:01+0100\n"
 "Last-Translator: Milkcreation <contact@milkcreation.fr>\n"
 "Language-Team: Milkcreation <contact@milkcreation.fr>\n"
-"Language: de_AT\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:2c,1\n"
-"X-Poedit-Basepath: ../..\n"
+"X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=n>1;\n"
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Poedit-SearchPath-0: .\n"
-"X-Poedit-SearchPathExcluded-0: node_modules\n"
-"X-Poedit-SearchPathExcluded-1: vendor\n"
-"X-Poedit-SearchPathExcluded-2: plugins/WebService/vendor\n"
+"X-Poedit-SearchPathExcluded-0: vendor\n"
+"X-Poedit-SearchPathExcluded-1: node_modules\n"
 
 #: @todo/core/Taboox/custom_background/custom_background.php:22
 msgid "Rétablir l'original"
-msgstr "Original wiederherstellen"
+msgstr ""
 
 #: @todo/core/Taboox/custom_fields/custom_fields.php:29
 msgid "Champs personnalisés"
-msgstr "Benutzerdefinierte Felder"
+msgstr ""
 
 #: @todo/core/Taboox/custom_fields/custom_fields.php:46
-#: bin/deprecated/app/core/Control/DynamicInputs/DynamicInputs.php:43
-#: core/Control/Repeater/Repeater.php:158 core/Roles/Factory.php:221
+#: bin/deprecated/app/core/Control/DynamicInputs/DynamicInputs.php:41
+#: core/Control/Repeater/Repeater.php:142 core/Field/Repeater/Repeater.php:154
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:501
+#: core/User/Role/Factory.php:221
 msgid "Ajouter"
-msgstr "Hinzufügen"
+msgstr ""
 
 #: @todo/core/Taboox/date_range/date_range.php:36
 msgid "date de début"
-msgstr "Anfangsdatum"
+msgstr ""
 
 #: @todo/core/Taboox/date_range/date_range.php:44
 msgid "date de fin"
-msgstr "Enddatum"
+msgstr ""
 
 #: @todo/core/Taboox/password_protect/password_protect.php:48
 msgid "Protection d'accès"
-msgstr "Zugriffsschutz"
+msgstr ""
 
 #: @todo/core/Taboox/password_protect/password_protect.php:52
 #: components/Login/Factory.php:452
 msgid "Mot de passe"
-msgstr "Passwort"
+msgstr ""
 
 #: @todo/core/Taboox/password_protect/password_protect.php:77
 msgid ""
 "Il s'agit d'un espace réservé aux professionnels, veuillez vous identifier "
 "afin de pouvoir y accèder"
 msgstr ""
-"Diese Seite ist für Geschäftspersonen reserviert, bitte melden Sie sich an "
-"um Zugang zu haben"
+"Il s'agit d'un espace réservé aux professionnels, veuillez vous identifier "
+"afin de pouvoir y accéder"
 
 #: @todo/core/Taboox/password_protect/password_protect.php:108
 msgid "Le mot de passe ne peut être vide"
-msgstr "Das Passwort darf nicht leer sein."
+msgstr ""
 
 #: @todo/core/Taboox/password_protect/password_protect.php:110
 msgid "Le mot de passe saisie ne correspond pas"
-msgstr "Das eingegebene Passwort ist ungültig."
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:37
 msgid "Url ou code d'intégration de la vidéo (iframe)"
-msgstr "URL oder Integrationscode des Videos (iFrame)"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:42
-#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:127
+#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:126
 msgid "ou"
-msgstr "oder"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:42
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:122
 msgid "Sélectionner une vidéo"
-msgstr "Ein Video auswählen"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:42
 msgid "Depuis la médiathèque"
-msgstr "Aus der Medienbibliothek"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:47
 msgid "Jaquette de la video"
-msgstr "Videocover"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:55
 msgid "Personnalisation de la jaquette de la vidéo"
-msgstr "Videocover anpassen"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:56
 msgid "Utiliser comme jaquette"
-msgstr "Als Videocover benutzen"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:58
 msgid "Modifier la jaquette"
-msgstr "Videocover bearbeiten"
+msgstr ""
 
 #: @todo/core/Taboox/simple_video/simple_video.php:61
 msgid "Supprimer la jaquette"
-msgstr "Videocover löschen"
+msgstr ""
 
 #: @todo/core/Taboox/taxonomy_image/taxonomy_image.php:24
 #: @todo/core/Taboox/taxonomy_image/taxonomy_image.php:61
 msgid "Galerie d'image"
-msgstr "Bildergalerie"
+msgstr ""
 
 #: @todo/core/Taboox/taxonomy_image/taxonomy_image.php:100
 #: components/CustomColumns/PostType/PostThumbnail/PostThumbnail.php:16
 msgid "Mini."
-msgstr "Mini."
+msgstr ""
 
 #: @todo/core/Taboox/threesixty_view/threesixty_view.php:34
 msgid "Nombre maximum de vues atteint"
@@ -132,54 +132,88 @@ msgstr ""
 msgid "Ajouter des images à la vue 360 degrés"
 msgstr ""
 
-#: bin/Apps.php:1128
+#: bin/Apps.php:1129
 msgid ""
 "Seules les extensions (plugins) et les jeux de fonctionnalités (set) sont en "
 "mesure de surcharger les controleurs des autres applications"
 msgstr ""
 
-#: bin/Apps.php:1138
+#: bin/Apps.php:1139
 msgid ""
 "Seules les extensions (plugins) et les jeux de fonctionnalités (set) sont en "
 "mesure de surcharger les gabarits des autres applications"
 msgstr ""
 
-#: bin/Apps.php:1169
+#: bin/Apps.php:1170
 msgid ""
 "Seules les composants natifs (core), dynamiques (components), les extensions "
 "(plugins) et les jeux de fonctionnalités (set) et leurs héritiers sont en "
 "mesure de charger des assets"
 msgstr ""
 
-#: bin/Apps.php:1192
+#: bin/Apps.php:1193
 msgid ""
 "Seules les composants natifs (core), dynamiques (components), les extensions "
 "(plugins) et les jeux de fonctionnalités (set) et leurs héritiers sont en "
 "mesure d'être surchargés dans le thème"
 msgstr ""
 
-#: bin/Apps.php:1226
+#: bin/Apps.php:1227
 msgid ""
 "Seuls les applications héritières sont en mesure de charger les gabarits "
 "dans le repertoire de l'application parente"
 msgstr ""
 
-#: bin/deprecated/app/core/Control/DynamicInputs/DynamicInputs.php:20
-#: core/Control/Repeater/Repeater.php:84
+#: bin/deprecated/app/core/Control/Dropdown/Dropdown.php:91
+#: components/CustomColumns/PostType/Subtitle/Subtitle.php:32
+#: core/Control/Checkbox/Checkbox.php:85
+#: core/Control/DropdownMenu/DropdownMenu.php:88
+#: core/Field/DatetimeJs/DatetimeJs.php:199
+#: core/Taboox/PostType/TaxonomyDropdown/Admin/TaxonomyDropdown.php:21
+#: core/Taboox/PostType/TaxonomySelect/Admin/TaxonomySelect.php:29
+#: core/Templates/Admin/Model/ListUser/ListUser.php:292
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:209
+msgid "Aucun"
+msgstr ""
+
+#: bin/deprecated/app/core/Control/DynamicInputs/DynamicInputs.php:18
+#: core/Control/Repeater/Repeater.php:69
 msgid "Nombre de valeur maximum atteinte"
 msgstr ""
 
-#: bin/deprecated/app/core/Control/Token/Token.php:99
-#: core/Control/CryptedData/CryptedData.php:224
+#: bin/deprecated/app/core/Control/Switcher/Switcher.php:92
+msgctxt "tify_control_switch"
+msgid "Oui"
+msgstr ""
+
+#: bin/deprecated/app/core/Control/Switcher/Switcher.php:93
+msgctxt "tify_control_switch"
+msgid "Non"
+msgstr ""
+
+#: bin/deprecated/app/core/Control/Token/Token.php:86
+#: core/Control/CryptedData/CryptedData.php:252
 msgid "Générer"
 msgstr ""
 
+#: bin/deprecated/app/core/Control/TouchTime/TouchTime.php:220
+#: bin/lib/Deprecated.php:336
+#, php-format
+msgid "%2$s %1$s %3$s"
+msgstr ""
+
+#: bin/deprecated/app/core/Control/TouchTime/TouchTime.php:233
+#, php-format
+msgid "%1$s %2$s %3$s"
+msgstr ""
+
 #: bin/deprecated/app/core/Taboox/Post/SurveyForm/SurveyForm.php:37
-#: core/Fields/Button/Button.php:49 core/Forms/Buttons/Submit/Submit.php:19
+#: core/Field/Button/Button.php:50 core/Field/Submit/Submit.php:48
+#: core/Forms/Buttons/Submit/Submit.php:19
 #: core/Taboox/PostType/SurveyForm/SurveyForm.php:37
 #: core/Templates/Admin/Model/Messager/Messager.php:358
 msgid "Envoyer"
-msgstr "Senden"
+msgstr ""
 
 #: bin/deprecated/app/core/Taboox/Post/SurveyForm/SurveyForm.php:128
 #: core/Taboox/PostType/SurveyForm/SurveyForm.php:128
@@ -240,29 +274,24 @@ msgstr ""
 #: bin/helpers/Components.php:68
 #, php-format
 msgid "Protected: %s"
-msgstr "Geschützt: %s"
+msgstr ""
 
 #: bin/helpers/Components.php:71
 #, php-format
 msgid "Private: %s"
-msgstr "Privat: %s"
+msgstr ""
 
-#: bin/helpers/Core.php:124
+#: bin/helpers/Core.php:121
 #, php-format
 msgid ""
 "La déclaration du formulaire %s n'est conforme, elle doit désormais contenir "
 "un identifiant et des attributs."
 msgstr ""
 
-#: bin/lib/Deprecated.php:336 core/Control/TouchTime/TouchTime.php:226
-#, php-format
-msgid "%2$s %1$s %3$s"
-msgstr "%2$s %1$s %3$s"
-
 #: bin/lib/Deprecated.php:341
 #, php-format
 msgid "à %1$s : %2$s"
-msgstr "bis %1$s: %2$s"
+msgstr ""
 
 #: bin/lib/Facebook/Login/Login.php:151
 msgid "Se connecter à Facebook"
@@ -511,7 +540,7 @@ msgstr ""
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:706
 #: core/Update/Factory.php:168
 msgid "Mettre à jour"
-msgstr "Aktualisieren"
+msgstr ""
 
 #: bin/lib/Upgrade.php:185 core/Update/Factory.php:355
 msgid "Mise à jour effectuée avec succès"
@@ -594,11 +623,11 @@ msgstr ""
 
 #: components/Breadcrumb/Template.php:94
 msgid "Accueil"
-msgstr "Startseite"
+msgstr ""
 
 #: components/Breadcrumb/Template.php:95
 msgid "Retour à l'accueil"
-msgstr "Zurück zur Startseite"
+msgstr ""
 
 #: components/Breadcrumb/Template.php:102
 #, php-format
@@ -608,7 +637,7 @@ msgstr ""
 #: components/Breadcrumb/Template.php:133 plugins/Seo/Seo.php:169
 #: plugins/Seo/Seo.php:309
 msgid "Erreur 404 - Impossible de trouver la page"
-msgstr "Fehler 404 - Keine Seite gefunden."
+msgstr ""
 
 #: components/Breadcrumb/Template.php:144
 #, php-format
@@ -627,7 +656,7 @@ msgstr ""
 #: components/Breadcrumb/Template.php:342 plugins/Seo/Seo.php:190
 #: plugins/Seo/Seo.php:202 plugins/Seo/Seo.php:326 plugins/Seo/Seo.php:338
 msgid "Actualités"
-msgstr "News"
+msgstr ""
 
 #: components/Breadcrumb/Template.php:324
 #, php-format
@@ -665,17 +694,6 @@ msgstr ""
 msgid "Sous-titre"
 msgstr ""
 
-#: components/CustomColumns/PostType/Subtitle/Subtitle.php:32
-#: core/Control/Checkbox/Checkbox.php:92 core/Control/Dropdown/Dropdown.php:97
-#: core/Control/DropdownMenu/DropdownMenu.php:92
-#: core/Fields/Touchtime/Touchtime.php:135
-#: core/Taboox/PostType/TaxonomyDropdown/Admin/TaxonomyDropdown.php:21
-#: core/Taboox/PostType/TaxonomySelect/Admin/TaxonomySelect.php:29
-#: core/Templates/Admin/Model/ListUser/ListUser.php:292
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:201
-msgid "Aucun"
-msgstr "Keine"
-
 #: components/CustomColumns/Taxonomy/Color/Color.php:14
 msgid "Couleur"
 msgstr ""
@@ -702,9 +720,9 @@ msgid "Personnalisation du lien"
 msgstr ""
 
 #: components/CustomFields/PostType/Permalink/Permalink.php:132
-#: core/Control/Progress/Progress.php:115
+#: core/Control/Progress/Progress.php:107
 msgid "Annuler"
-msgstr "Abbrechen"
+msgstr ""
 
 #: components/CustomFields/PostType/Permalink/Permalink.php:138
 msgid "Choisir parmi une liste de liens prédéfinis :"
@@ -747,7 +765,7 @@ msgstr ""
 #: core/Templates/Traits/Table/Actions.php:147
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:321
 msgid "Dupliquer"
-msgstr "Kopieren"
+msgstr ""
 
 #: components/Duplicate/PostType/PostType.php:106
 msgid "Le type du contenu original n'est pas autorisé à être dupliqué"
@@ -775,9 +793,8 @@ msgstr ""
 #: components/HookArchive/Taboox/Options/HookSelector/Admin/Walker_Taxonomy.php:40
 #: core/Router/Factory.php:37
 #: core/Taboox/Options/ContentHook/Admin/ContentHook.php:66
-#: plugins/CookieLaw/Taboox/Option/CookiePolicyPage/Admin/CookiePolicyPage.php:25
 msgid "Aucune page choisie"
-msgstr "Keine Seite ausgewählt"
+msgstr ""
 
 #: components/HookArchive/Taboox/Options/HookSelector/Admin/HookSelector.php:52
 #: components/HookArchive/Taboox/Options/HookSelector/Admin/Walker_Taxonomy.php:53
@@ -807,7 +824,7 @@ msgid "Aucune"
 msgstr ""
 
 #: components/InfiniteScroll/InfiniteScroll.php:88
-#: core/Control/ScrollPaginate/ScrollPaginate.php:133
+#: core/Control/ScrollPaginate/ScrollPaginate.php:135
 msgid "Voir plus"
 msgstr ""
 
@@ -839,9 +856,9 @@ msgid "Erreur lors de la tentative d'authentification"
 msgstr ""
 
 #: components/Login/Factory.php:425
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:26
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:31
 msgid "Identifiant"
-msgstr "Anmelden"
+msgstr ""
 
 #: components/Login/Factory.php:428
 msgid "Renseignez votre identifiant"
@@ -853,7 +870,7 @@ msgstr ""
 
 #: components/Login/Factory.php:478
 msgid "Se souvenir de moi"
-msgstr "Angemeldet bleiben"
+msgstr ""
 
 #: components/Login/Factory.php:506
 msgid "Se connecter"
@@ -869,7 +886,7 @@ msgstr ""
 
 #: components/Login/Factory.php:550
 msgid "Mot de passe oublié"
-msgstr "Passwort vergessen?"
+msgstr "Mot de passe oublié ?"
 
 #: components/Login/Factory.php:568
 msgid "le champ de l’identifiant est vide."
@@ -916,12 +933,12 @@ msgstr ""
 
 #: components/PdfViewer/PdfViewer.php:240
 msgid "Suivant"
-msgstr "Weiter"
+msgstr ""
 
 #: components/PdfViewer/PdfViewer.php:243 core/Medias/Download.php:75
 #: core/Taboox/PostType/Fileshare/Helpers/Fileshare.php:89
 msgid "Télécharger"
-msgstr "Herunterladen"
+msgstr ""
 
 #: components/Search/Factory.php:668
 msgid "Aucun résultat disponible, correspondant à vos critères de recherche."
@@ -941,11 +958,11 @@ msgstr ""
 
 #: components/TinyMCE/ExternalPlugins/Dashicons/Dashicons.php:54
 msgid "Police de caractères Wordpress"
-msgstr "Wordpress-Schriftart"
+msgstr ""
 
 #: components/TinyMCE/ExternalPlugins/FontAwesome/FontAwesome.php:57
 msgid "Police de caractères fontAwesome"
-msgstr "FontAwesome-Schriftart"
+msgstr ""
 
 #: components/TinyMCE/ExternalPlugins/Genericons/Genericons.php:56
 msgid "Police de caractères Genericons"
@@ -957,9 +974,9 @@ msgstr ""
 
 #: components/TinyMCE/ExternalPlugins/OwnGlyphs/OwnGlyphs.php:59
 msgid "Police de caractères personnalisée"
-msgstr "Benutzerdefinierte Schriftart"
+msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:125
+#: core/Control/AdminPanel/AdminPanel.php:120
 #: core/Options/templates/metaboxes.php:18
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:300
 #: core/Templates/Admin/Model/Copy of Import.php:516
@@ -969,202 +986,231 @@ msgstr "Benutzerdefinierte Schriftart"
 #: core/Templates/Admin/Model/Import.php:409
 #: core/Templates/Admin/Model/TabooxOption/TabooxOption.php:108
 #: core/Templates/Front/Model/Form.php:536
-#: core/Ui/Admin/Templates/EditForm/EditForm.php:388
-#: core/Ui/Admin/Templates/EditForm/EditForm.php:410
+#: core/Ui/Admin/Templates/EditForm/EditForm.php:356
+#: core/Ui/Admin/Templates/EditForm/EditForm.php:378
 msgid "Enregistrer"
-msgstr "Speichern"
+msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:129
+#: core/Control/AdminPanel/AdminPanel.php:124
 msgid "Panneau d'administration"
 msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:198
+#: core/Control/AdminPanel/AdminPanel.php:202
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:164
 #: plugins/Seo/Taboox/PostType/MetaTag/Admin/MetaTag.php:51
 msgid "Personnalisation"
-msgstr "Personalisierung"
+msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:398
+#: core/Control/AdminPanel/AdminPanel.php:421
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:258
 msgid "Ajouter un choix"
 msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:401
+#: core/Control/AdminPanel/AdminPanel.php:425
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:261
 msgid "Aucun choix ajouté"
 msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:427
+#: core/Control/AdminPanel/AdminPanel.php:454
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:440
 #, php-format
 msgid "Choix %s"
 msgstr ""
 
-#: core/Control/AdminPanel/AdminPanel.php:453
+#: core/Control/AdminPanel/AdminPanel.php:480
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:707
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:464
 msgid "Supprimer"
-msgstr "Löschen"
+msgstr ""
 
-#: core/Control/CookieNotice/CookieNotice.php:217
+#: core/Control/Control.php:85 core/Control/Control.php:140
+#, php-format
+msgid "Le controleur d'affichage %s n'est pas disponible."
+msgstr ""
+
+#: core/Control/Control.php:92
+#, php-format
+msgid ""
+"La méthode d'affichage du controleur d'affichage %s ne peut être appelée."
+msgstr ""
+
+#: core/Control/Control.php:142 core/Control/Control.php:152
+#, php-format
+msgid "Le controleur d'affichage %s n'a pas de méthode %s disponible."
+msgstr ""
+
+#: core/Control/CookieNotice/CookieNotice.php:195
 msgid "Masquer l'avertissement"
 msgstr ""
 
-#: core/Control/CookieNotice/CookieNotice.php:219
+#: core/Control/CookieNotice/CookieNotice.php:197
 msgid "Ignorer l'avertissement"
 msgstr ""
 
-#: core/Control/CurtainMenu/Walker.php:56
+#: core/Control/CurtainMenu/Walker.php:68
 msgid "Retour"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:122
+#: core/Control/Findposts/Findposts.php:106
 #: core/Templates/Traits/Table/Params.php:398
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:308
 msgid "No items found."
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:125
+#: core/Control/Findposts/Findposts.php:109
 msgid "Title"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:125
+#: core/Control/Findposts/Findposts.php:109
 msgid "Type"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:125
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:22
+#: core/Control/Findposts/Findposts.php:109
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:25
 msgid "Date"
-msgstr "Datum"
+msgstr ""
 
-#: core/Control/Findposts/Findposts.php:125
+#: core/Control/Findposts/Findposts.php:109
 msgid "Status"
-msgstr "Status"
+msgstr ""
 
-#: core/Control/Findposts/Findposts.php:128
+#: core/Control/Findposts/Findposts.php:112
 msgid "(no title)"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:134
+#: core/Control/Findposts/Findposts.php:118
 msgid "Published"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:137
+#: core/Control/Findposts/Findposts.php:121
 msgid "Scheduled"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:140
+#: core/Control/Findposts/Findposts.php:124
 msgid "Pending Review"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:143
+#: core/Control/Findposts/Findposts.php:127
 msgid "Draft"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:151
+#: core/Control/Findposts/Findposts.php:135
 msgid "Y/m/d"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:270
+#: core/Control/Findposts/Findposts.php:249
 msgid "Attach to existing content"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:272
+#: core/Control/Findposts/Findposts.php:251
 msgid "Close media attachment panel"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:286
+#: core/Control/Findposts/Findposts.php:265
 msgid "Search"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:289
+#: core/Control/Findposts/Findposts.php:268
 #: core/Taboox/Options/RelatedPosts/Admin/RelatedPosts.php:110
 #: core/Taboox/PostType/RelatedPosts/Admin/RelatedPosts.php:160
 msgid "Type :"
 msgstr ""
 
-#: core/Control/Findposts/Findposts.php:291
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:85
+#: core/Control/Findposts/Findposts.php:270
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:91
 msgid "Tous"
-msgstr "Alle"
+msgstr ""
 
-#: core/Control/Findposts/Findposts.php:304
+#: core/Control/Findposts/Findposts.php:283
 msgid "Select"
 msgstr ""
 
-#: core/Control/HolderImage/HolderImage.php:80
+#: core/Control/HolderImage/HolderImage.php:73
 msgid "Aucun visuel disponible"
 msgstr ""
 
-#: core/Control/MediaFile/MediaFile.php:110
+#: core/Control/MediaFile/MediaFile.php:103
 msgid "Aucun fichier choisi"
 msgstr ""
 
-#: core/Control/MediaFile/MediaFile.php:132
+#: core/Control/MediaFile/MediaFile.php:125
 msgid "Sélection du fichier média"
 msgstr ""
 
-#: core/Control/MediaFile/MediaFile.php:133
+#: core/Control/MediaFile/MediaFile.php:126
 msgid "Sélectionner"
 msgstr ""
 
-#: core/Control/MediaImage/MediaImage.php:117
+#: core/Control/MediaImage/MediaImage.php:110
 msgid "Personnalisation de l'image"
-msgstr "Bild anpassen"
+msgstr ""
 
-#: core/Control/MediaImage/MediaImage.php:118
+#: core/Control/MediaImage/MediaImage.php:111
 msgid "Utiliser cette image"
-msgstr "Bild benutzen"
+msgstr ""
 
-#: core/Control/MediaImage/MediaImage.php:144
+#: core/Control/MediaImage/MediaImage.php:137
 msgid "Modification de l'image"
-msgstr "Bild bearbeiten"
+msgstr ""
 
-#: core/Control/MediaImage/MediaImage.php:153
+#: core/Control/MediaImage/MediaImage.php:146
 #, php-format
 msgid "%dpx / %dpx"
-msgstr "%dpx / %dpx"
+msgstr ""
 
-#: core/Control/MediaImage/MediaImage.php:163
+#: core/Control/MediaImage/MediaImage.php:156
 msgid "Rétablir l'image originale"
-msgstr "Originalbild wiederherstellen"
+msgstr ""
 
-#: core/Control/Suggest/Suggest.php:85
+#: core/Control/Modal/Modal.php:266
+#: set/ContactToggle/Control/ContactToggle.php:266
+msgid "Lancer"
+msgstr ""
+
+#: core/Control/Modal/templates/footer.php:2
+#: plugins/OutdatedBrowser/OutdatedBrowser.php:60
+#: set/ContactToggle/Control/templates/footer.php:2
+#: set/CookieLaw/config/config.yml:8
+msgid "Fermer"
+msgstr ""
+
+#: core/Control/Modal/templates/header.php:5
+msgid "Fenêtre de dialogue PresstiFy"
+msgstr ""
+
+#: core/Control/ScrollPaginate/templates/item.php:6
+#: plugins/StarterKit/theme/templates/content_archive_item_body.php:11
+#, php-format
+msgid "Consulter - %s"
+msgstr ""
+
+#: core/Control/ScrollPaginate/templates/item.php:6
+#: plugins/StarterKit/theme/templates/content_archive_item_body.php:12
+msgid "Lire la suite"
+msgstr ""
+
+#: core/Control/Suggest/Suggest.php:79
 msgid "Aucun resultat trouvé"
 msgstr ""
 
-#: core/Control/Suggest/Suggest.php:201
+#: core/Control/Suggest/Suggest.php:195
 msgid "Votre recherche"
 msgstr ""
 
-#: core/Control/Switcher/Switcher.php:98
-msgctxt "tify_control_switch"
-msgid "Oui"
-msgstr "Ja"
-
-#: core/Control/Switcher/Switcher.php:99
-msgctxt "tify_control_switch"
-msgid "Non"
-msgstr "Nein"
-
-#: core/Control/Table/Table.php:82
+#: core/Control/Table/Table.php:84
 msgid "Aucun élément à afficher dans le tableau"
 msgstr ""
 
-#: core/Control/TextRemaining/TextRemaining.php:67
+#: core/Control/TextRemaining/TextRemaining.php:61
 msgid "caractères restants"
-msgstr "verbleibende Zeichen"
+msgstr ""
 
-#: core/Control/TextRemaining/TextRemaining.php:68
+#: core/Control/TextRemaining/TextRemaining.php:62
 msgid "caractère restant"
-msgstr "verbleibendes Zeichen"
+msgstr ""
 
-#: core/Control/TextRemaining/TextRemaining.php:69
+#: core/Control/TextRemaining/TextRemaining.php:63
 msgid "Aucun caractère restant"
-msgstr "Keine verbleibenden Zeichen"
-
-#: core/Control/TouchTime/TouchTime.php:239
-#, php-format
-msgid "%1$s %2$s %3$s"
 msgstr ""
 
 #: core/Cron/Admin/ViewList.php:13 core/Cron/Cron.php:71
@@ -1220,39 +1266,54 @@ msgstr ""
 #: core/Developper/DebugBar.php:81
 #, php-format
 msgid "v. %s"
-msgstr "v. %s"
+msgstr ""
 
 #: core/Developper/DebugBar.php:86
 #, php-format
 msgid "%s sec."
-msgstr "%s sec."
+msgstr ""
 
 #: core/Developper/DebugBar.php:92
 msgid "Smartphone"
-msgstr "Smartphone"
+msgstr ""
 
 #: core/Developper/DebugBar.php:95
 msgid "Tablette"
-msgstr "Tablet"
+msgstr ""
 
 #: core/Developper/DebugBar.php:98 core/Developper/DebugBar.php:101
 msgid "Plein écran"
-msgstr "Vollbild"
+msgstr ""
 
-#: core/Fields/Switcher/Switcher.php:66
-msgctxt "tiFyCoreFieldsSwitcher"
+#: core/Field/Field.php:82 core/Field/Field.php:136
+#, php-format
+msgid "Le champ %s n'est pas disponible."
+msgstr ""
+
+#: core/Field/Field.php:89
+#, php-format
+msgid "La méthode d'affichage du champ %s ne peut être appelée."
+msgstr ""
+
+#: core/Field/Field.php:138 core/Field/Field.php:148
+#, php-format
+msgid "Le champ  %s n'a pas de méthode %s disponible."
+msgstr ""
+
+#: core/Field/ToggleSwitch/ToggleSwitch.php:86
+msgctxt "tiFyCoreFieldToggleSwitch"
 msgid "Oui"
 msgstr ""
 
-#: core/Fields/Switcher/Switcher.php:67
-msgctxt "tiFyCoreFieldsSwitcher"
+#: core/Field/ToggleSwitch/ToggleSwitch.php:87
+msgctxt "tiFyCoreFieldToggleSwitch"
 msgid "Non"
 msgstr ""
 
 #: core/Forms/Addons/Mailer/Mailer.php:90
 #, php-format
 msgid "Vous avez une nouvelle demande de contact sur le site %s"
-msgstr "Sie haben auf der Website %s eine neue Kontaktanfrage erhalten."
+msgstr ""
 
 #: core/Forms/Addons/Mailer/Mailer.php:183
 msgid "Email de confirmation non configuré"
@@ -1275,73 +1336,73 @@ msgstr ""
 msgid "Envoyer un message de confirmation de réception à l'utilisateur"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:112
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:113
 msgid "Email de l'expéditeur (requis)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:121
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:122
 msgid "Email (requis)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:132
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:134
 msgid "Nom de l'expéditeur (optionnel)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:141
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:143
 msgid "Nom (optionnel)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:156
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:159
 msgid "Message de notification aux administrateurs"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:161
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:164
 msgid "Envoyer un message de notification aux administrateurs du site"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:181
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:185
 #: core/Templates/Admin/Model/Messager/Messager.php:292
 msgid "Ajouter un destinataire"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:213
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:217
 msgid "Email du destinataire (requis)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:222
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:226
 msgid "Email du destinataire"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:233
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:238
 msgid "Nom du destinataire (optionnel)"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:242
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:247
 msgid "Nom du destinataire"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:271
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:277
 #, php-format
 msgid "L'email \"%s\" ne peut être vide"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:272
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:281
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:278
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:287
 msgid "Expéditeur du message de confirmation de reception"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:280
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:286
 #, php-format
 msgid "Le format de l'email \"%s\" n'est pas valide"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:305
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:311
 #, php-format
 msgid ""
 "L'email du destinataire des messages de notification #%d ne peut être vide"
 msgstr ""
 
-#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:314
+#: core/Forms/Addons/Mailer/Taboox/Options/MailOptions/Admin/MailOptions.php:320
 #, php-format
 msgid ""
 "Le format de l'email du destinataire des messages de notification #%d n'est "
@@ -1351,17 +1412,17 @@ msgstr ""
 #: core/Forms/Addons/Mailer/templates/message.php:26
 #, php-format
 msgid "Nouvelle demande sur le site %1$s, <a href=\"%2$s\">%2$s<a>"
-msgstr "Neue Anfrage auf der Website %1$s, <a href=\"%2$s\">%2$s<a>"
+msgstr ""
 
 #: core/Forms/Addons/Record/Export.php:65
 #: core/Forms/Addons/Record/ListTable.php:200
 msgid "Tous les formulaires"
-msgstr "Alle Formulare"
+msgstr ""
 
 #: core/Forms/Addons/Record/Export.php:71
 #: core/Forms/Addons/Record/ListTable.php:206
 msgid "Filtrer"
-msgstr "Filtern"
+msgstr ""
 
 #: core/Forms/Addons/Record/ListTable.php:54
 msgid "Tous (hors corbeille)"
@@ -1370,17 +1431,17 @@ msgstr ""
 #: core/Forms/Addons/Record/ListTable.php:61
 #: core/Templates/Traits/Table/Actions.php:152
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:383
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:160
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:166
 msgid "Corbeille"
-msgstr "Papierkorb"
+msgstr ""
 
 #: core/Forms/Addons/Record/ListTable.php:76
 msgid "Formulaire"
-msgstr "Formular"
+msgstr ""
 
 #: core/Forms/Addons/Record/ListTable.php:135
 msgid "Mettre à la corbeille"
-msgstr "in den Papierkob verschieben"
+msgstr ""
 
 #: core/Forms/Addons/Record/ListTable.php:137
 #: core/Templates/Traits/Form/Actions.php:33
@@ -1392,7 +1453,7 @@ msgstr ""
 #: core/Templates/Traits/Table/Actions.php:141
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:290
 msgid "Supprimer définitivement"
-msgstr "unwiderruflich löschen"
+msgstr ""
 
 #: core/Forms/Addons/Record/ListTable.php:236
 msgid "(Formulaire introuvable)"
@@ -1415,7 +1476,7 @@ msgstr ""
 
 #: core/Forms/Addons/Record/Record.php:142
 msgid "Formulaires"
-msgstr "Formulare"
+msgstr ""
 
 #: core/Forms/Addons/Record/Record.php:158
 msgid "Enregistrements"
@@ -1440,7 +1501,7 @@ msgstr ""
 
 #: core/Forms/Addons/User/User.php:132
 msgid "Cet identifiant est déjà utilisé par un autre utilisateur"
-msgstr "Dieser Anmeldename wird bereits von einem anderen Benutzer verwendet."
+msgstr ""
 
 #: core/Forms/Addons/User/User.php:141
 msgid ""
@@ -1467,7 +1528,6 @@ msgstr ""
 #: core/Forms/Addons/User/User.php:179
 msgid "Cet email est déjà utilisé par un autre utilisateur"
 msgstr ""
-"Diese E-Mail-Adresse wird bereits von einem anderen Benutzer verwendet."
 
 #: core/Forms/Addons/User/User.php:186
 msgid "L'attribution de ce rôle n'est pas autorisée."
@@ -1479,8 +1539,6 @@ msgid ""
 "La taille du fichier téléchargé excède la valeur autorisée pour le champ \"%s"
 "\"."
 msgstr ""
-"Die Größe der hochgeladenen Datei überschreitet den erlaubten Wert für das "
-"Feld \"%s\"."
 
 #: core/Forms/FieldTypes/File/File.php:163
 #, php-format
@@ -1488,25 +1546,23 @@ msgid ""
 "ERREUR SYSTÈME : Le fichier du champs \"%s\" n'a été que partiellement "
 "téléchargé."
 msgstr ""
-"SYSTEMFEHLER: Die Datei für das Feld \"%s\" wurde nicht vollständig "
-"heruntergeladen."
 
 #: core/Forms/FieldTypes/File/File.php:167
 #, php-format
 msgid "Aucun fichier n'a été téléchargé dans le champs \"%s\"."
-msgstr "Es wurden keine Dateien in das Feld \"%s\" hochgeladen."
+msgstr ""
 
 #: core/Forms/FieldTypes/File/File.php:170
 msgid "ERREUR SYSTÈME : Le dossier temporaire est manquant"
-msgstr "SYSTEMFEHLER: Der temporäre Ordner fehlt."
+msgstr ""
 
 #: core/Forms/FieldTypes/File/File.php:173
 msgid "ERREUR SYSTÈME : Échec de l'écriture du fichier sur le disque."
-msgstr "SYSTEMFEHLER: Schreiben auf Festplatte ist fehlgeschlagen."
+msgstr ""
 
 #: core/Forms/FieldTypes/File/File.php:176
 msgid "ERREUR SYSTÈME : Une extension PHP a arrêté l'envoi de fichier."
-msgstr "SYSTEMFEHLER: Eine PHP-Erweiterung hat das Senden der Datei gestoppt."
+msgstr ""
 
 #: core/Forms/FieldTypes/File/File.php:184
 #, php-format
@@ -1551,23 +1607,21 @@ msgstr ""
 
 #: core/Forms/FieldTypes/SimpleCaptchaImage/SimpleCaptchaImage.php:75
 msgid "ERREUR SYSTÈME : Impossible de définir le code de sécurité"
-msgstr "SYSTEMFEHLER: Sicherheitscode konnte nicht definiert werden."
+msgstr ""
 
 #: core/Forms/FieldTypes/SimpleCaptchaImage/SimpleCaptchaImage.php:77
 msgid "La valeur du champs de sécurité doit être identique à celle de l'image"
-msgstr "Der Wert des Sicherheitsfeldes muss mit dem identisch sein"
+msgstr "La valeur du champ de sécurité doit être identique à celle de l'image"
 
 #: core/Forms/FieldTypes/SimpleCaptchaImage/SimpleCaptchaImage.php:88
 msgid "captcha introuvable"
-msgstr "Captcha nicht gefunden"
+msgstr ""
 
 #: core/Forms/Form/@todo/Files.php:79
 msgid ""
 "<h1>ERREUR SYSTEME</h1><p>Impossible de créer le dossier de stockage des "
 "fichiers téléchargés.</p>"
 msgstr ""
-"<h1>SYSTEMFEHLER</ h1><p>Ordner für heruntergeladene Dateien kann nicht "
-"erstellt werden.</ p>"
 
 #: core/Forms/Form/Field.php:362
 #, php-format
@@ -1577,12 +1631,12 @@ msgstr ""
 #: core/Forms/Form/Field.php:423
 #, php-format
 msgid "Le format du champ \"%s\" est invalide"
-msgstr "Das Format des Feldes \"%s\" ist ungültig."
+msgstr ""
 
 #: core/Forms/Form/Form.php:194
 msgid ""
 "Votre demande a bien été prise en compte et sera traitée dès que possible"
-msgstr "Ihre Anfrage wurde empfangen und wird schnellstmöglich bearbeitet."
+msgstr ""
 
 #: core/Forms/Form/Handle.php:36
 msgid ""
@@ -1590,8 +1644,6 @@ msgid ""
 "h2><p>Impossible de déterminer l'origine de la soumission de votre "
 "formulaire.</p>"
 msgstr ""
-"<h2> Fehler bei der Überprüfung des Formulars</h2><p>Die Herkunft der "
-"Übermittlung des Formulars konnte nicht ermittelt werden.</p>"
 
 #: core/Forms/Form/Handle.php:36
 msgid "Erreur de soumission de formulaire"
@@ -1602,8 +1654,6 @@ msgid ""
 "<h2>Erreur lors de la soumission du formulaire</h2><p>Votre session de "
 "soumission de formulaire est invalide ou arrivée à expiration</p>"
 msgstr ""
-"<h2>Fehler bei der Übermittlung des Formulars</h2><p>Die Session ist "
-"ungültig oder abgelaufen.</p>"
 
 #: core/Labels/Factory.php:50
 msgid "éléments"
@@ -1676,7 +1726,7 @@ msgstr ""
 #: core/Medias/Download.php:202 core/Medias/Download.php:215
 #: core/Upload/Upload.php:73 core/Upload/Upload.php:89
 msgid "Impossible de trouver le fichier"
-msgstr "Unmöglich die Datei zu finden"
+msgstr ""
 
 #: core/Medias/Download.php:214
 msgid "Le fichier n'existe pas"
@@ -1688,7 +1738,7 @@ msgstr ""
 
 #: core/Medias/Download.php:226 core/Upload/Upload.php:103
 msgid "Type de fichier erroné"
-msgstr "Dateityp fehlerhaft"
+msgstr ""
 
 #: core/Medias/Download.php:235
 msgid "Le type de fichier est interdit"
@@ -1696,7 +1746,7 @@ msgstr ""
 
 #: core/Medias/Download.php:236 core/Upload/Upload.php:116
 msgid "Type de fichier interdit"
-msgstr "Dateityp verboten"
+msgstr ""
 
 #: core/Medias/Download.php:248
 msgid "Le téléchargement de ce fichier n'est pas autorisé"
@@ -1704,22 +1754,18 @@ msgstr ""
 
 #: core/Medias/Download.php:249 core/Upload/Upload.php:132
 msgid "Téléchargement interdit"
-msgstr "Donwload verboten"
+msgstr ""
 
-#: core/Options/Options.php:194 core/Options/config/config.yml:11
+#: core/Options/Options.php:196 core/Options/config/config.yml:11
 msgid "Réglages des options du site"
 msgstr ""
 
-#: core/Options/Options.php:195 core/Options/config/config.yml:14
+#: core/Options/Options.php:197 core/Options/config/config.yml:14
 msgid "Options du site"
 msgstr ""
 
 #: core/Options/config/Config.php:81
 msgid "Mon greffon personnalisé"
-msgstr ""
-
-#: core/Roles/Factory.php:208
-msgid "Tous les utilisateurs"
 msgstr ""
 
 #: core/Router/Router.php:48
@@ -1739,19 +1785,19 @@ msgstr ""
 msgid "Cheatin&#8217; uh?"
 msgstr ""
 
-#: core/Taboox/Display/Display.php:184
+#: core/Taboox/Display/Display.php:208
 #: core/Templates/Admin/Model/TabooxOption/TabooxOption.php:98
 msgid "Réglages"
 msgstr ""
 
 #: core/Taboox/Options/ColorPalette/Admin/ColorPalette.php:79
 msgid "Ajouter une couleur"
-msgstr "Farbe hinzufügen"
+msgstr ""
 
 #: core/Taboox/Options/ColorPalette/Admin/ColorPalette.php:93
 #, php-format
 msgid "Nouvelle couleur #%d"
-msgstr "Neue Farbe #%d"
+msgstr ""
 
 #: core/Taboox/Options/ColorPalette/Helpers/MiscLinks.php:48
 #: core/Taboox/Options/MiscLinks/Helpers/MiscLinks.php:48
@@ -1763,13 +1809,13 @@ msgstr ""
 #: core/Taboox/PostType/CustomHeader/Admin/CustomHeader.php:44
 #: core/Taboox/Taxonomy/CustomHeader/Admin/CustomHeader.php:43
 msgid "Personnalisation de l'image d'entête"
-msgstr "Titelbild anpassen"
+msgstr ""
 
 #: core/Taboox/Options/CustomHeader/Admin/CustomHeader.php:27
 #: core/Taboox/PostType/CustomHeader/Admin/CustomHeader.php:45
 #: core/Taboox/Taxonomy/CustomHeader/Admin/CustomHeader.php:44
 msgid "Utiliser comme image d'entête"
-msgstr "Als Titelbild benutzen"
+msgstr ""
 
 #: core/Taboox/Options/MiscLinks/Admin/MiscLinks.php:41
 msgid "Ajouter un partenaire"
@@ -1803,59 +1849,59 @@ msgstr ""
 #: core/Taboox/Options/RelatedPosts/Admin/RelatedPosts.php:37
 #: core/Taboox/PostType/RelatedPosts/Admin/RelatedPosts.php:61
 msgid "Rechercher un contenu en relation"
-msgstr "Nach verwandten Produkten suchen"
+msgstr ""
 
 #: core/Taboox/Options/RelatedPosts/Admin/RelatedPosts.php:51
 #: core/Taboox/PostType/RelatedPosts/Admin/RelatedPosts.php:80
 msgid "Nombre maximum de contenu en relation atteint"
-msgstr "Maximale Anzahl verwandter Produkte erreicht."
+msgstr "Nombre maximum de contenus en relation atteint"
 
 #: core/Taboox/Options/RelatedPosts/Admin/RelatedPosts.php:114
 #: core/Taboox/PostType/RelatedPosts/Admin/RelatedPosts.php:164
 msgid "Statut :"
 msgstr ""
 
-#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:91
+#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:90
 msgid "Nombre maximum de vignettes atteint"
-msgstr "Maximale Anzahl der Vorschaubilder erreicht"
+msgstr ""
 
-#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:115
+#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:114
 msgid "Rechercher parmi les contenus du site"
 msgstr ""
 
-#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:133
+#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:132
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:250
 msgid "Vignette personnalisée"
 msgstr ""
 
-#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:141
+#: core/Taboox/Options/Slideshow/Admin/Slideshow.php:140
 msgid "Chargement ..."
-msgstr "Laden ..."
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:250
 msgid "Contenu du site"
 msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:267
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:20
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:23
 msgid "Titre"
-msgstr "Titel"
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:280
 msgid "Lien"
-msgstr "Link"
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:283
 msgid "Vignette cliquable"
-msgstr "Anklickbares Minibild"
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:288
 msgid "Saisissez l'url du site"
-msgstr "Geben Sie die URL der Website ein."
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:305
 msgid "Légende"
-msgstr "Legende"
+msgstr ""
 
 #: core/Taboox/Options/Slideshow/Admin/Slideshow.php:322
 msgid "A partir du"
@@ -1867,7 +1913,7 @@ msgstr ""
 
 #: core/Taboox/PostType/Fileshare/Admin/Fileshare.php:92
 msgid "Sélectionner les fichiers à associer"
-msgstr "Zu verknüpfende Dateien auswählen"
+msgstr ""
 
 #: core/Taboox/PostType/Fileshare/Admin/Fileshare.php:95
 msgid "Ajouter le fichier"
@@ -1875,11 +1921,11 @@ msgstr ""
 
 #: core/Taboox/PostType/Fileshare/Admin/Fileshare.php:95
 msgid "Ajouter des fichiers"
-msgstr "Dateien hinzufügen"
+msgstr ""
 
 #: core/Taboox/PostType/Fileshare/Helpers/Fileshare.php:70
 msgid "Télécharger le fichier"
-msgstr "Datei herunterladen"
+msgstr ""
 
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:171
 msgid "Vous êtes ici."
@@ -1887,7 +1933,7 @@ msgstr ""
 
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:235
 msgid "Marqueur principal"
-msgstr "Hauptmarker"
+msgstr ""
 
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:241
 msgid "Vous ne pouvez pas ajouter davantage de marqueurs principaux."
@@ -1959,7 +2005,7 @@ msgstr ""
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:582
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:795
 msgid "Ville"
-msgstr "Stadt"
+msgstr ""
 
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:590
 #: core/Taboox/PostType/GoogleMap/Admin/GoogleMap.php:804
@@ -1999,16 +2045,16 @@ msgstr ""
 
 #: core/Taboox/PostType/ImageGallery/Admin/ImageGallery.php:69
 msgid "Ajouter les images"
-msgstr "Hinzufügen von Bildern"
+msgstr ""
 
 #: core/Taboox/PostType/ImageGallery/Admin/ImageGallery.php:72
 msgid "Ajouter des images"
-msgstr "Hinzufügen von Bildern"
+msgstr ""
 
 #: core/Taboox/PostType/RelatedPosts/Helpers/templates/display.php:19
 #, php-format
 msgid "En savoir plus sur %s"
-msgstr "Weitere Infos zu %s"
+msgstr ""
 
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:29
 msgid "Une ligne"
@@ -2097,7 +2143,7 @@ msgstr ""
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:286
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:26
 msgid "Informations générales"
-msgstr "Allgemeine Informationen"
+msgstr ""
 
 #: core/Taboox/PostType/SurveyForm/Admin/SurveyForm.php:220
 msgid "Champ requis"
@@ -2154,27 +2200,27 @@ msgstr ""
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:82
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:123
 msgid "Ajouter la vidéo"
-msgstr "Video hinzufügen"
+msgstr ""
 
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:85
 msgid "Ajouter une vidéo"
-msgstr "Hinzufügen eines Videos"
+msgstr ""
 
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:105
 msgid "Sélectionner une jaquette"
-msgstr "Ein Cover auswählen"
+msgstr ""
 
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:106
 msgid "Ajouter la jaquette"
-msgstr "Ein Cover hinzufügen"
+msgstr ""
 
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:110
 msgid "Changer la jaquette"
-msgstr "Cover bearbeiten"
+msgstr ""
 
 #: core/Taboox/PostType/VideoGallery/Admin/VideoGallery.php:118
 msgid "Vidéo de la galerie ou iframe"
-msgstr "Video aus der Medienbibliothek oder von iFrame"
+msgstr ""
 
 #: core/Taboox/Taxonomy/Order/Admin/Order.php:22
 msgid "Choix de l'ordre"
@@ -2184,21 +2230,21 @@ msgstr ""
 msgid "(-1 pour masquer l'élément)"
 msgstr ""
 
-#: core/Templates/Admin/Admin.php:56 core/Ui/Admin/Factory.php:172
+#: core/Templates/Admin/Admin.php:56 core/Ui/Admin/Factory.php:200
 msgid "Options"
-msgstr "Optionen"
+msgstr "Options"
 
 #: core/Templates/Admin/Model/@todo/Dashboard/Dashboard.php:7
 msgid "A propos de PresstiFy"
-msgstr "Über PresstiFy"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Dashboard/Dashboard.php:14
 msgid "Tableau de bord Presstify"
-msgstr "Dashboard - PresstiFy"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Dashboard/Dashboard.php:38
 msgid "Version"
-msgstr "Version"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:97
 msgid "Extensions"
@@ -2214,7 +2260,7 @@ msgstr ""
 #: core/Templates/Traits/Table/Actions.php:129
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:228
 msgid "Activer"
-msgstr "Aktivieren"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:185
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:244
@@ -2222,7 +2268,7 @@ msgstr "Aktivieren"
 #: core/Templates/Traits/Table/Actions.php:135
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:259
 msgid "Désactiver"
-msgstr "Deaktivieren"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:200
 #, php-format
@@ -2232,15 +2278,15 @@ msgstr "Version %s"
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:205
 #, php-format
 msgid "Par %s"
-msgstr "Von %s"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:210
 msgid "Allez sur la page de l'extension"
-msgstr "Zur Erweiterungs-Seite gehen"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:218
 msgid "Activation/Désactivation des modules de l'extension"
-msgstr "Erweiterungsmodule aktivieren/deaktivieren"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:259
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:272
@@ -2249,7 +2295,7 @@ msgstr "Erweiterungsmodule aktivieren/deaktivieren"
 msgid ""
 "<h1>Action non permise</h1><p>Vous n'avez pas les habilitations suffisantes "
 "pour effectuer cette action.</p>"
-msgstr "<h1>Unzulässige Aktion</h1><p>Sie haben keine Berechtigung"
+msgstr ""
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:362
 msgctxt "Plugin installer group title"
@@ -2269,7 +2315,7 @@ msgstr ""
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:406
 #, php-format
 msgid "By %s"
-msgstr ""
+msgstr "Par %s"
 
 #: core/Templates/Admin/Model/@todo/Plugins/Plugins.php:440
 #, php-format
@@ -2333,15 +2379,15 @@ msgstr ""
 
 #: core/Templates/Admin/Model/AjaxExport/AjaxExport.php:34
 msgid "Numéroter les lignes"
-msgstr "Zeilen nummerieren"
+msgstr ""
 
 #: core/Templates/Admin/Model/AjaxExport/AjaxExport.php:38
 msgid "Oui"
-msgstr "Ja"
+msgstr ""
 
 #: core/Templates/Admin/Model/AjaxExport/AjaxExport.php:42
 msgid "Non"
-msgstr "Nein"
+msgstr ""
 
 #: core/Templates/Admin/Model/AjaxExport/AjaxExport.php:47
 msgid "Données d'export"
@@ -2397,7 +2443,7 @@ msgstr ""
 #: core/Templates/Admin/Model/Copy of Import.php:304
 #: core/Templates/Admin/Model/Import.php:219
 msgid "Mise à jour"
-msgstr "Aktualisierung"
+msgstr ""
 
 #: core/Templates/Admin/Model/Copy of Import.php:306
 #: core/Templates/Admin/Model/Import.php:221
@@ -2465,86 +2511,87 @@ msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:30
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:88
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:27
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:30
 msgid "Identifiant  (obligatoire)"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:31
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:96
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:29
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:32
 #: set/ContactForm/config/config.yml:25
 msgid "Prénom"
-msgstr "Vorname"
+msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:32
 #: core/Templates/Admin/Model/ListUser/ListUser.php:25
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:83
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:104
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:30
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:27
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:33
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:32
 #: set/ContactForm/config/config.yml:19
 msgid "Nom"
-msgstr "Nachname"
+msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:33
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:31
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:34
 msgid "Pseudonyme (obligatoire)"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:34
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:32
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:35
 msgid "Adresse de messagerie (obligatoire)"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:35
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:134
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:33
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:36
 msgid "Site web"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:36
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:148
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:34
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:37
 msgid "Nouveau mot de passe"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:37
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:35
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:38
 msgid "Répétez le nouveau mot de passe"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:89
+#: core/User/TakeOver/TakeOver.php:126 core/User/TakeOver/TakeOver.php:139
 msgid "Habilitations insuffisantes"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:90
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:85
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:91
 msgid ""
 "Désolé, mais vous n'êtes pas autorisé a éditer l'utilisateur depuis cette "
 "interface."
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:92
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:86
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:92
 msgid "Vous devriez plutôt essayer directement depuis"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:93
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:87
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:93
 msgid "Éditer l'utilisateur depuis l'interface de Wordpress"
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:93
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:88
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:94
 msgid " l'interface utilisateurs Wordpress."
 msgstr ""
 
 #: core/Templates/Admin/Model/EditUser/EditUser.php:160
 #: core/Templates/Admin/Model/ListUser/ListUser.php:28
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:28
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:30
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:31
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:35
 msgid "Rôle"
-msgstr "Position"
+msgstr ""
 
 #: core/Templates/Admin/Model/Export/Export.php:141
 #, php-format
@@ -2628,23 +2675,23 @@ msgstr ""
 
 #: core/Templates/Admin/Model/ListUser/ListUser.php:24
 msgid "Username"
-msgstr "Benutzername"
+msgstr ""
 
 #: core/Templates/Admin/Model/ListUser/ListUser.php:26
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:28
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:33
 msgid "E-mail"
-msgstr "E-Mail-Adresse"
+msgstr ""
 
 #: core/Templates/Admin/Model/ListUser/ListUser.php:27
 #: core/Templates/Front/Model/Form.php:509
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:29
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:34
 msgid "Enregistrement"
-msgstr "Registrierung"
+msgstr ""
 
 #: core/Templates/Admin/Model/ListUser/ListUser.php:281
-#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:184
+#: core/Ui/Admin/Templates/UserListTable/UserListTable.php:192
 msgid "d/m/Y à H:i"
-msgstr "d/m/y um H:i"
+msgstr ""
 
 #: core/Templates/Admin/Model/Messager/Messager.php:63
 msgid "Veuillez renseigner l'adresse de l'expéditeur de l'email."
@@ -2695,7 +2742,7 @@ msgid "Sujet :"
 msgstr ""
 
 #: core/Templates/Admin/Model/Table.php:624
-#: core/Ui/Admin/Templates/ListTable/ListTable.php:525
+#: core/Ui/Admin/Templates/ListTable/ListTable.php:468
 msgid "Chargement en cours ..."
 msgstr ""
 
@@ -2713,7 +2760,7 @@ msgstr ""
 
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:126
 msgid "E-mail (obligatoire)"
-msgstr "E-Mail-Adresse erforderlich"
+msgstr ""
 
 #: core/Templates/Admin/Model/TabooxEditUser/TabooxEditUser.php:142
 msgid "Informations de connexion"
@@ -2725,13 +2772,15 @@ msgstr ""
 
 #: core/Templates/Admin/Model/TabooxOption/TabooxOption.php:42
 msgid "Réglages des options"
-msgstr "Optionseinstellungen"
+msgstr ""
 
 #: core/Templates/Front/Model/AjaxListTable/AjaxListTable.php:122
 msgid "Aucun résultat ne correspond à la requête"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:671
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:723
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:1292
 #, php-format
 msgid "%s item"
 msgid_plural "%s items"
@@ -2739,33 +2788,41 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: core/Templates/Front/Model/Table.php:707
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:759
 msgid "First page"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:717
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:769
 msgid "Previous page"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:724
 #: core/Templates/Front/Model/Table.php:727
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:776
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:779
 msgid "Current Page"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:733
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:785
 #, php-format
 msgctxt "paging"
 msgid "%1$s of %2$s"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:740
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:792
 msgid "Next page"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:750
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:802
 msgid "Last page"
 msgstr ""
 
 #: core/Templates/Front/Model/Table.php:794
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:1022
 msgid "Select All"
 msgstr ""
 
@@ -2792,7 +2849,7 @@ msgstr ""
 
 #: core/Templates/Traits/Form/Actions.php:28
 msgid "Déplacer dans la corbeille"
-msgstr "in den Papierkorb verschieben"
+msgstr ""
 
 #: core/Templates/Traits/Form/Actions.php:29
 msgid "Déplacer l'élément dans la corbeille"
@@ -2801,7 +2858,7 @@ msgstr ""
 #: core/Templates/Traits/Form/Actions.php:34
 #: core/Templates/Traits/Table/Actions.php:158
 msgid "Rétablissement de l'élément"
-msgstr "Element wiederherstellen"
+msgstr ""
 
 #: core/Templates/Traits/Form/Notices.php:12
 #: core/Templates/Traits/Table/Notices.php:12
@@ -2837,11 +2894,11 @@ msgstr ""
 #: core/Templates/Traits/Table/Actions.php:142
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:291
 msgid "Suppression définitive de l'élément"
-msgstr "Element unwiderruflich löschen"
+msgstr ""
 
 #: core/Templates/Traits/Table/Actions.php:153
 msgid "Mise à la corbeille de l'élément"
-msgstr "Element in den Papierkob verschieben"
+msgstr ""
 
 #: core/Templates/Traits/Table/Actions.php:162
 msgid "Afficher le détail"
@@ -2854,7 +2911,7 @@ msgstr ""
 #: core/Templates/Traits/Table/Actions.php:204
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:351
 msgid "Modifier"
-msgstr "Bearbeiten"
+msgstr ""
 
 #: core/Templates/Traits/Table/Notices.php:24
 msgid "L'élément a été supprimé définitivement"
@@ -2869,7 +2926,7 @@ msgstr ""
 msgid "Filtre #%d"
 msgstr ""
 
-#: core/Ui/Admin/Templates/EditForm/EditForm.php:91
+#: core/Ui/Admin/Templates/EditForm/EditForm.php:59
 msgid "Impossible de créer un nouvel élément"
 msgstr ""
 
@@ -2886,8 +2943,9 @@ msgid "Mettre l'élément à la corbeille"
 msgstr ""
 
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:413
+#: core/User/TakeOver/ActionLink/ActionLink.php:104
 msgid "Rétablir"
-msgstr "Wiederherstellen"
+msgstr ""
 
 #: core/Ui/Admin/Templates/ListTable/Traits/RowActions.php:414
 msgid "Restauration de l'élément"
@@ -2934,17 +2992,17 @@ msgstr ""
 msgid "Last edited on %1$s at %2$s"
 msgstr ""
 
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:21
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:24
 msgid "Type de post"
 msgstr ""
 
-#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:122
+#: core/Ui/Admin/Templates/PostListTable/PostListTable.php:128
 msgid "Publié"
 msgid_plural "Publiés"
 msgstr[0] ""
 msgstr[1] ""
 
-#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:84
+#: core/Ui/Admin/Templates/UserEditForm/UserEditForm.php:90
 msgid "Habilitations d'accès insuffisantes"
 msgstr ""
 
@@ -2982,6 +3040,79 @@ msgid_plural "Les éléments ont été restaurés."
 msgstr[0] ""
 msgstr[1] ""
 
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:147
+msgid "List View"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:148
+msgid "Excerpt View"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:430
+msgid "Select bulk action"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:432
+msgid "Bulk Actions"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:442
+msgid "Apply"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:490
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:1268
+msgid "Show more details"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:552
+msgid "Filter by date"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:554
+msgid "All dates"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:567
+#, php-format
+msgid "%1$s %2$d"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:617
+#, php-format
+msgid "%s comment"
+msgid_plural "%s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:618
+#, php-format
+msgid "%s approved comment"
+msgid_plural "%s approved comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:619
+#, php-format
+msgid "%s pending comment"
+msgid_plural "%s pending comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:624
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:636
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:649
+msgid "No comments"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:636
+msgid "No approved comments"
+msgstr ""
+
+#: core/Ui/Common/Traits/Templates/ListTable/WpListTable.php:649
+msgid "No pending comments"
+msgstr ""
+
 #: core/Update/Factory.php:136
 msgid "La mise à jour est indisponible"
 msgstr ""
@@ -3015,68 +3146,95 @@ msgid ""
 "fichier n'est pas autorisé.</p>"
 msgstr ""
 
-#: plugins/CookieLaw/CookieLaw.php:57 set/CookieLaw/config/config.yml:5
-msgid "Accepter"
-msgstr "Ich bin einverstanden"
+#: core/User/Role/Factory.php:208
+msgid "Tous les utilisateurs"
+msgstr ""
 
-#: plugins/CookieLaw/CookieLaw.php:59 set/CookieLaw/config/config.yml:11
-msgid "En savoir plus"
-msgstr "Weitere Informationen"
+#: core/User/TakeOver/ActionLink/ActionLink.php:84
+msgid "Naviguer comme"
+msgstr ""
+
+#: core/User/TakeOver/ActionLink/ActionLink.php:89
+#, php-format
+msgid "Naviguer sur le site en tant que %s"
+msgstr ""
+
+#: core/User/TakeOver/ActionLink/ActionLink.php:109
+msgid "Rétablissement l'utilisateur principal"
+msgstr ""
+
+#: core/User/TakeOver/SwitcherForm/SwitcherForm.php:85
+#: core/User/TakeOver/SwitcherForm/SwitcherForm.php:164
+msgid "Choix de l'utilisateur"
+msgstr ""
+
+#: core/User/TakeOver/SwitcherForm/SwitcherForm.php:160
+msgid "Choix du role"
+msgstr ""
+
+#: core/User/TakeOver/TakeOver.php:126 core/User/TakeOver/TakeOver.php:139
+msgid ""
+"Vous ne disposez pas des habilitations suffisantes pour effectuer cette "
+"action. "
+msgstr ""
+
+#: core/User/TakeOver/TakeOver.php:147
+msgid "Il semblerait que tout ne se soit pas vraiment déroulé comme prévu ?!"
+msgstr ""
+
+#: core/User/TakeOver/TakeOver.php:147
+msgid "Erreur de traitement"
+msgstr ""
 
 #: plugins/OutdatedBrowser/OutdatedBrowser.php:58
 msgid "La version de votre navigateur est trop ancienne"
-msgstr "Ihr Browser ist veraltet."
+msgstr ""
 
 #: plugins/OutdatedBrowser/OutdatedBrowser.php:59
 msgid "Pour afficher de manière satisfaisante le contenu de ce site"
-msgstr "Um den Inhalt dieser Website zufriedenstellend zu sehen"
+msgstr ""
 
 #: plugins/OutdatedBrowser/OutdatedBrowser.php:59
 msgid "Télécharger Google Chrome"
-msgstr "Google Chrome herunterladen."
-
-#: plugins/OutdatedBrowser/OutdatedBrowser.php:60
-#: plugins/CookieLaw/config/config.yml:3 set/CookieLaw/config/config.yml:8
-msgid "Fermer"
-msgstr "Schließen"
+msgstr ""
 
 #: plugins/Seo/Seo.php:172 plugins/Seo/Seo.php:312
 msgid "Recherche de"
-msgstr "Ergebnisse für"
+msgstr ""
 
 #: plugins/Seo/Seo.php:188 plugins/Seo/Seo.php:200 plugins/Seo/Seo.php:324
 #: plugins/Seo/Seo.php:336
 #, php-format
 msgid "Actualités page %1$s sur %2$s"
-msgstr "News: Seite %1$s von %2$s"
+msgstr ""
 
 #: plugins/Seo/Seo.php:227 plugins/Seo/Seo.php:357
 #, php-format
 msgid "Mot clef : %1$s"
-msgstr "Stichwort: %1$s"
+msgstr ""
 
 #: plugins/Seo/Seo.php:233 plugins/Seo/Seo.php:363
 #, php-format
 msgid "Archive quotidienne : %1$s"
-msgstr "Tagesarchive: %1$s"
+msgstr ""
 
 #: plugins/Seo/Seo.php:235 plugins/Seo/Seo.php:365
 #, php-format
 msgid "Archive mensuelle : %1$s"
-msgstr "Monatsarchive: %1$s"
+msgstr ""
 
 #: plugins/Seo/Seo.php:237 plugins/Seo/Seo.php:367
 #, php-format
 msgid "Archive annuelle : %1$s"
-msgstr "Jahresarchive: %1$s"
+msgstr ""
 
 #: plugins/Seo/Seo.php:244 plugins/Seo/Seo.php:374
 msgid "Archives"
-msgstr "Archive"
+msgstr ""
 
 #: plugins/Seo/Seo.php:269 plugins/Seo/Seo.php:281
 msgid "Référencement"
-msgstr "Suchmaschinenoptimierung"
+msgstr ""
 
 #: plugins/Seo/Seo.php:288
 msgid "Metadonnées de l'Opengraph"
@@ -3084,75 +3242,179 @@ msgstr ""
 
 #: plugins/Seo/Seo.php:296
 msgid "Google Analytics"
-msgstr "Google Analytics"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/GoogleAnalytics/Admin/GoogleAnalytics.php:23
 msgid "Code Google Analytics"
-msgstr "Google Analytics ID"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/GoogleAnalytics/Admin/GoogleAnalytics.php:24
 msgid "Vers le site officiel de Google Analytics"
-msgstr "Zur offiziellen Google Analytics-Website"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/GoogleAnalytics/Admin/GoogleAnalytics.php:24
 msgid "Site Google Analytics"
-msgstr "Google Analytics-Website"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/OpenGraph/Admin/OpenGraph.php:31
 msgid "Activer l'OpenGraph"
-msgstr "OpenGraph aktivieren"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/OpenGraph/Admin/OpenGraph.php:39
 msgid "Image représentative du site (pour le partage)"
-msgstr "Identifizierungsbild der Website (zum Teilen)"
+msgstr ""
 
 #: plugins/Seo/Taboox/Options/OpenGraph/Admin/OpenGraph.php:40
 #, php-format
 msgid "HD : %s | LD : %s"
-msgstr "HD : %s | LD : %s"
+msgstr ""
 
 #: plugins/Seo/Taboox/PostType/MetaTag/Admin/MetaTag.php:56
 msgid "Balise titre"
-msgstr "Titel-Tag"
+msgstr ""
 
 #: plugins/Seo/Taboox/PostType/MetaTag/Admin/MetaTag.php:64
 msgid "Balise description"
-msgstr "Tag-Beschreibung"
+msgstr ""
 
 #: plugins/Seo/Taboox/PostType/MetaTag/Admin/MetaTag.php:85
 msgid "Url canonique"
-msgstr "Kanonische URL"
+msgstr ""
 
 #: plugins/Seo/Taboox/PostType/MetaTag/Admin/MetaTag.php:86
 msgid "Utilisateur avancé"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:85
+#: plugins/Shop/Admin/Edit/Edit.php:66
+msgid "Général"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:72
+msgid "Inventaire"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:78
+msgid "Expédition"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:84
+msgid "Produits liés"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:90
+msgid "Attributs"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:96
+msgid "Variations"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:102
+msgid "Avancé"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/Edit.php:204
+msgid "Données produit"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/general.php:16
+msgid "Tarif régulier (€)"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/inventory.php:16
+msgid "UGS"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/linked.php:16
+msgid "Produits groupés"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/linked.php:47
+msgid "Montée en gamme"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/linked.php:78
+msgid "Ventes croisées"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/linked.php:109
+msgid "Produits en relation"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/shipping.php:16
+msgid "Poids (kg)"
+msgstr ""
+
+#: plugins/Shop/Admin/Edit/templates/shipping.php:39
+msgid "Dimensions (cm)"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:90
+msgid "variations"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:91
+msgid "variation"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:105
+msgid "commandes"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:106
+msgid "commande"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:128
+msgid "remboursements"
+msgstr ""
+
+#: plugins/Shop/Factory/CustomTypes.php:129
+msgid "remboursement"
+msgstr ""
+
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:86
 msgid "Réglages de la catégorie de produits"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:101
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:102
 msgid "Icône représentative"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:105
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:108
 msgid "Ordre d'affichage"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:127
-#: plugins/Shop/Factory/Products/CategoryProduct.php:155
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:133
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:161
 msgctxt "taxonomy singular name"
 msgid "catégorie de produits"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:153
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:159
 msgctxt "taxonomy general name"
 msgid "Catégories de produits"
 msgstr ""
 
-#: plugins/Shop/Factory/Products/CategoryProduct.php:154
+#: plugins/Shop/Factory/ObjectTypes/Categorized.php:160
 msgctxt "taxonomy plural name"
 msgid "catégories de produits"
+msgstr ""
+
+#: plugins/Shop/Factory/Products.php:177
+msgid "Produit simple"
+msgstr ""
+
+#: plugins/Shop/Factory/Products.php:180
+msgid "Produit groupés"
+msgstr ""
+
+#: plugins/Shop/Factory/Products.php:183
+msgid "Produit externe/affiliation"
+msgstr ""
+
+#: plugins/Shop/Factory/Products.php:186
+msgid "Produit variable"
 msgstr ""
 
 #: plugins/Shop/config/Config.php:24 plugins/Shop/config/config.yml:4
@@ -3163,75 +3425,43 @@ msgstr ""
 msgid "Produits"
 msgstr ""
 
-#: plugins/Shop/config/Config.php:45 plugins/Shop/config/config.yml:16
+#: plugins/Shop/config/Config.php:45 plugins/Shop/config/config.yml:47
 msgid "Gestionnaire boutique"
 msgstr ""
 
-#: plugins/Shop/config/Config.php:52 plugins/Shop/config/config.yml:22
+#: plugins/Shop/config/Config.php:52 plugins/Shop/config/config.yml:53
 msgid "Gestionnaires"
 msgstr ""
 
-#: plugins/Shop/config/Config.php:60 plugins/Shop/config/config.yml:27
+#: plugins/Shop/config/Config.php:60 plugins/Shop/config/config.yml:58
 msgid "Tous les gestionnaires"
 msgstr ""
 
-#: plugins/Shop/config/Config.php:72 plugins/Shop/config/config.yml:32
+#: plugins/Shop/config/Config.php:72 plugins/Shop/config/config.yml:63
 msgid "Client"
-msgstr "Kunde"
+msgstr ""
 
-#: plugins/Shop/config/Config.php:79 plugins/Shop/config/config.yml:38
+#: plugins/Shop/config/Config.php:79 plugins/Shop/config/config.yml:69
 msgid "Clients"
 msgstr ""
 
-#: plugins/Shop/config/Config.php:87 plugins/Shop/config/config.yml:43
+#: plugins/Shop/config/Config.php:87 plugins/Shop/config/config.yml:74
 msgid "Tous les clients"
-msgstr "Alle Kunden"
-
-#: plugins/StarterKit/theme/404.php:17
-msgid "Page introuvable"
 msgstr ""
 
-#: plugins/StarterKit/theme/404.php:21
-msgid "La page que vous recherchez n'existe pas."
-msgstr ""
-
-#: plugins/StarterKit/theme/404.php:25
-msgid "Cliquez ici"
-msgstr ""
-
-#: plugins/StarterKit/theme/404.php:26
-msgid "pour retourner sur la page d'accueil"
-msgstr ""
-
-#: plugins/StarterKit/theme/app/GeneralTemplate.php:66
-msgid "Toutes les actualités"
-msgstr ""
-
-#: plugins/StarterKit/theme/app/GeneralTemplate.php:86
-#, php-format
-msgid "En relation avec %s"
-msgstr ""
-
-#: plugins/StarterKit/theme/app/GeneralTemplate.php:100
-#: plugins/StarterKit/theme/content-archive.php:9
-#, php-format
-msgid "Consulter - %s"
-msgstr ""
-
-#: plugins/StarterKit/theme/app/GeneralTemplate.php:100
-#: plugins/StarterKit/theme/content-archive.php:9
-msgid "Lire la suite"
-msgstr "Weiterlesen"
-
-#: plugins/StarterKit/theme/app/Theme.php:60
+#: plugins/StarterKit/theme/app/Theme.php:62
 msgid "Menu de navigation du principal (entête du site)"
 msgstr ""
 
-#: plugins/StarterKit/theme/app/Theme.php:61
+#: plugins/StarterKit/theme/app/Theme.php:66
 msgid "Menu de navigation du secondaire (entête du site)"
 msgstr ""
 
-#: plugins/StarterKit/theme/content-none.php:2
+#: plugins/StarterKit/theme/templates/content_header.php:6
+msgid "Toutes les actualités"
+msgstr ""
+
+#: plugins/StarterKit/theme/templates/content_none_body.php:2
 msgid "Aucun contenu"
 msgstr ""
 
@@ -3270,12 +3500,8 @@ msgstr ""
 msgid "Formulaire de contact"
 msgstr ""
 
-#: set/ContactToggle/Control/ContactToggle.php:59
-msgid "Contacter"
-msgstr ""
-
-#: set/ContactToggle/Control/ContactToggle.php:82
-msgid "Prendre contact"
+#: set/ContactToggle/Control/templates/header.php:5
+msgid "Fiche contact"
 msgstr ""
 
 #: set/CookieLaw/CookieLaw.php:75
@@ -3288,7 +3514,7 @@ msgstr ""
 
 #: core/Developper/config/config.yml:3
 msgid "Site inaccessible"
-msgstr "Website nicht erreichbar"
+msgstr ""
 
 #: core/Developper/config/config.yml:4
 msgid ""
@@ -3296,15 +3522,6 @@ msgid ""
 "strictement réservé au personnel habilité</h3><p>Veuillez vous identifier "
 "pour accéder à la consultation</p>"
 msgstr ""
-
-#: plugins/CookieLaw/config/config.yml:1 set/CookieLaw/config/config.yml:2
-msgid ""
-"En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de "
-"cookies pour vous proposer des services et offres adaptés à vos centres "
-"d’intérêts."
-msgstr ""
-"Mit der Nutzung dieser Website akzeptieren Sie die Verwendung von Cookies, "
-"um eine bestmögliche Nutzerfreundlichkeit zu bieten"
 
 #: set/ContactForm/config/config.yml:20
 msgid "Renseignez votre nom"
@@ -3324,7 +3541,7 @@ msgstr ""
 
 #: set/ContactForm/config/config.yml:38
 msgid "Sujet du message"
-msgstr "Betreff"
+msgstr ""
 
 #: set/ContactForm/config/config.yml:39
 msgid "Sujet de votre message"
@@ -3338,1381 +3555,474 @@ msgstr ""
 msgid "Votre message"
 msgstr ""
 
-#~ msgid "Loisirs"
-#~ msgstr "Unterhaltung"
+#: set/CookieLaw/config/config.yml:2
+msgid ""
+"En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de "
+"cookies pour vous proposer des services et offres adaptés à vos centres "
+"d’intérêts."
+msgstr ""
 
-#~ msgid "Commerces"
-#~ msgstr "Geschäfte"
+#: set/CookieLaw/config/config.yml:5
+msgid "Accepter"
+msgstr ""
 
-#~ msgid "Mairies"
-#~ msgstr "Rathäuser"
-
-#~ msgid "Transports"
-#~ msgstr "Verkehr"
-
-#~ msgid "Services"
-#~ msgstr "Dienste"
-
-#~ msgid "Éditer"
-#~ msgstr "Bearbeiten"
+#: set/CookieLaw/config/config.yml:11
+msgid "En savoir plus"
+msgstr ""
 
 #~ msgid "X"
 #~ msgstr "X"
 
-#~ msgid "Y"
-#~ msgstr "Y"
-
-#~ msgid "Infobulle"
-#~ msgstr "Tooltip"
-
-#~ msgid "Connexion"
-#~ msgstr "Anmeldung"
-
-#~ msgid "Se déconnecter"
-#~ msgstr "Abmelden"
-
 #~ msgid "Email de l'expéditeur"
-#~ msgstr "Absender-E-Mail-Adresse"
+#~ msgstr "Email du destinataire"
 
 #~ msgid "Nom de l'expéditeur"
-#~ msgstr "Absendername"
-
-#~ msgid "Réglages généraux"
-#~ msgstr "Einstellungen"
+#~ msgstr "Nom du destinataire"
 
 #~ msgid "Vous n'êtes pas habilité à administrer cette section"
-#~ msgstr "Sie haben keine Berechtigung"
-
-#~ msgid "La campagne a été enregistré avec succès"
-#~ msgstr "Die Kampagne wurde erfolgreich registriert"
-
-#~ msgid "Préparation du Message"
-#~ msgstr "Vorbereitung einer Nachricht"
-
-#~ msgid "Choix des destinataires"
-#~ msgstr "Wahl der Empfänger"
-
-#~ msgid "Options d'envoi"
-#~ msgstr "Sendungsoptionen"
-
-#~ msgid "Test et distribution"
-#~ msgstr "Test und Distribution"
-
-#~ msgid "Étape %d"
-#~ msgstr "Schritt %d"
-
-#~ msgid "Intitulé de la campagne"
-#~ msgstr "Kampagnentitel"
-
-#~ msgid "Brève description de la campagne"
-#~ msgstr "Kurze Beschreibung der Kampagne"
-
-#~ msgid ""
-#~ "Emails : abonné ou utilisateur Wordpress | Intitulés : liste/groupe de "
-#~ "diffusion ou rôle Wordpress"
-#~ msgstr ""
-#~ "E-Mails: Abonnent oder Wordpress-Nutzer\n"
-#~ "Titel: Mailing-Liste oder Wordpress-Rolle"
-
-#~ msgid "Abonné"
-#~ msgstr "Abonnent"
-
-#~ msgid "Liste de diffusion"
-#~ msgstr "Mailing-Liste"
-
-#~ msgid "Total :"
-#~ msgstr "Gesamt:"
-
-#~ msgid "Marqué le message comme important"
-#~ msgstr "Nachricht als wichtig markieren"
-
-#~ msgid "Suivi de l'ouverture des messages"
-#~ msgstr "Öffnen der Nachrichten folgen"
-
-#~ msgid "Suivi des clics depuis les liens du message"
-#~ msgstr "Klicks auf Nachrichtenlinks verfolgen"
-
-#~ msgid "Tester la campagne"
-#~ msgstr "Test der Kampagne"
-
-#~ msgid ""
-#~ "Ne soyez pas trop impatient et complétez d'abord toutes les étapes "
-#~ "précédentes"
-#~ msgstr "Bitte vervollständigen Sie erst alle vorherigen Schritte"
-
-#~ msgid ""
-#~ "Vous tentez de modifier un contenu qui n’existe pas. Peut-être a-t-il été "
-#~ "supprimé ?"
-#~ msgstr ""
-#~ "Sie versuchen einen nicht verfügbaren Inhalt zu bearbeiten. Vielleicht "
-#~ "wurde dieser bereits gelöscht?"
-
-#~ msgid "Brouillon"
-#~ msgstr "Entwurf"
-
-#~ msgid "Distribuée"
-#~ msgstr "Verteilt"
+#~ msgstr "Vous n'êtes pas autorisé à administrer cette section"
 
 #~ msgid "Description"
-#~ msgstr "Beschreibung"
-
-#~ msgid "(Pas de titre)"
-#~ msgstr "(Kein Titel)"
-
-#~ msgid "Envoi effectué"
-#~ msgid_plural "Envois effectués"
-#~ msgstr[0] "Sendung erfolgt"
-#~ msgstr[1] "Sendungen erfolgt"
-
-#~ msgid "sur"
-#~ msgstr "auf"
-
-#~ msgid "dernier envoi %s"
-#~ msgstr "zulest geschickt %s"
-
-#~ msgid "La liste de diffusion a été enregistrée avec succès"
-#~ msgstr "die Mailing-Liste wurde erfolgreich registriert"
-
-#~ msgid "Il y a déjà une autre liste de diffusion pourtant le même nom"
-#~ msgstr "Es gibt bereits eine andere Mailing-Liste mit dem gleichen Namen"
-
-#~ msgid "Intitulé de la liste de diffusion"
-#~ msgstr "Name der Mailing-Liste"
-
-#~ msgid "Brève description de la liste de diffusion"
-#~ msgstr "Kurze Beschreibung der Mailing-Liste"
-
-#~ msgid "La liste de diffusion a été rétablie"
-#~ msgstr "Die Mailing-Liste wurde wiederhergestellt"
-
-#~ msgid "Nombre d'abonnés"
-#~ msgstr "Anzahl der Abonnenten"
-
-#~ msgid "Téléphone"
-#~ msgstr "Telefon"
-
-#~ msgid "Posté"
-#~ msgstr "Eingestellt"
-
-#~ msgid "Différé"
-#~ msgstr "Verspätet"
-
-#~ msgid "Soft Bounced"
-#~ msgstr "Soft-Bounce"
-
-#~ msgid "Hard Bounced"
-#~ msgstr "Hard-Bounce"
-
-#~ msgid "Rejeté"
-#~ msgstr "Abgewiesen"
-
-#~ msgid "Filtre par campagne"
-#~ msgstr "Nach Kampagne filtern"
-
-#~ msgid "Toutes les campagnes"
-#~ msgstr "Alle Kampagnen"
-
-#~ msgid "Campagne"
-#~ msgstr "Kampagne"
-
-#~ msgid "Statut"
-#~ msgstr "Status"
-
-#~ msgid "Destinataire"
-#~ msgstr "Empfänger"
-
-#~ msgid "Jamais"
-#~ msgstr "Niemals"
-
-#~ msgid "d/m/Y à H:i:s"
-#~ msgstr "d/m/y um H:i"
-
-#~ msgid "L'adresse email de l'abonné doit être renseignée"
-#~ msgstr "Die E-Mail-Adresse des Abonnenten muss ausgefüllt sein"
-
-#~ msgid "Le format de l'adresse email n'est pas valide"
-#~ msgstr "Der Abonnent wurde erfolgreich gelöscht"
-
-#~ msgid "Adresse email de l'abonné"
-#~ msgstr "E-Mail-Adresse des Abonnenten"
-
-#~ msgid "Listes de diffusion"
-#~ msgstr "Mailing-Liste"
-
-#~ msgid "Inscrits"
-#~ msgstr "Registriert"
-
-#~ msgid "Désinscrits"
-#~ msgstr "nicht registriert"
-
-#~ msgid "En attente"
-#~ msgstr "Warten"
-
-#~ msgid "Depuis le"
-#~ msgstr "Seit"
-
-#~ msgid "Filtre par liste de diffusion"
-#~ msgstr "Filter Mailing-Liste"
-
-#~ msgid "Toutes les listes de diffusion"
-#~ msgstr "Alle Mailing-Listen"
-
-#~ msgid "(Pas d'email)"
-#~ msgstr "(Keine E-Mail)"
-
-#~ msgid "Indéterminé"
-#~ msgstr "unbestimmt"
-
-#~ msgid "Actif"
-#~ msgstr "Aktiv"
-
-#~ msgid "Identifiant (obligatoire)"
-#~ msgstr "Anmeldung erforderlich"
-
-#~ msgid "Mot de passe (obligatoire)"
-#~ msgstr "Passwort erforderlich"
-
-#~ msgid "Confirmation de mot de passe"
-#~ msgstr "Passwort bestätigen"
-
-#~ msgid "Confirmation de mot de passe (obligatoire)"
-#~ msgstr "Bestätigung des Passworts erforderlich"
-
-#~ msgid ""
-#~ "Les champs \"Mot de passe\" et \"Confirmation de mot de passe\" doivent "
-#~ "correspondre"
-#~ msgstr ""
-#~ "Die Felder \"Passwort\" und \"Bestätigung des Passworts\" müssen "
-#~ "übereinstimmen"
-
-#~ msgid "S'inscrire"
-#~ msgstr "Registrieren Sie sich"
-
-#~ msgid "Vos informations personnelles ont été mises à jour"
-#~ msgstr "Ihre persönlichen Informationen wurden aktualisiert"
-
-#~ msgid "Modifier mes paramètres"
-#~ msgstr "Kontoeinstellungen ändern"
-
-#~ msgid "Edit"
-#~ msgstr "Bearbeiten"
-
-#~ msgid "Instagram"
-#~ msgstr "Instagram"
-
-#~ msgid "Facebook"
-#~ msgstr "Facebook"
+#~ msgstr "Description"
 
 #~ msgid "Vers la page Facebook du site %s"
-#~ msgstr "Zur Facebook-Seite der Website \"%s\""
-
-#~ msgid "Identifiant de l'API Facebook"
-#~ msgstr "Facebook API ID"
-
-#~ msgid "Requis"
-#~ msgstr "Erforderlich"
-
-#~ msgid "Url de la page Facebook"
-#~ msgstr "URL der Facebook-Seite"
-
-#~ msgid "https://www.facebook.com/[nom de la page]"
-#~ msgstr "https://www.facebook.com/[Name der Seite]"
+#~ msgstr "Voir la page Facebook de %s"
 
 #~ msgid "Vers la page Google+ du site %s"
-#~ msgstr "Zur Google+-Seite der Website \"%s\""
-
-#~ msgid "Url de la page Google Plus"
-#~ msgstr "URL der Google+-Seite"
-
-#~ msgid "https://plus.google.com/[nom de la page]"
-#~ msgstr "https://plus.google.com/[Name der Seite]"
+#~ msgstr "Voir la page Google+ de %s"
 
 #~ msgid "Vers le compte Linkedin du site %s"
-#~ msgstr "Zur LinkedIn-Seite der Website \"%s\""
-
-#~ msgid "https://www.linkedin.com/profile/[nom du compte]"
-#~ msgstr "https://www.linkedin.com/profile/[Name des Kontos]"
+#~ msgstr "Voir le profil Linkedin de %s"
 
 #~ msgid "Vers le compte Twitter du site %s"
-#~ msgstr "Zum Twitter-Account der Website \"%s\""
-
-#~ msgid "Url du compte Twitter"
-#~ msgstr "URL des Twitter-Accounts"
-
-#~ msgid "https://twitter.com/[nom de la page]"
-#~ msgstr "https://twitter.com/[Name des Accounts]"
-
-#~ msgid "Twitter"
-#~ msgstr "Twitter"
-
-#~ msgid "Vimeo"
-#~ msgstr "Vimeo"
-
-#~ msgid "Url de la chaîne You Tube"
-#~ msgstr "URL des YouTube-Kanals"
-
-#~ msgid "https://www.youtube.com/channel/[nom de la chaîne]"
-#~ msgstr "https://www.youtube.com/channel/[Name des Kanals]"
-
-#~ msgid "YouTube"
-#~ msgstr "YouTube"
-
-#~ msgid "Réseaux sociaux"
-#~ msgstr "Soziale Netzwerke"
-
-#~ msgid "Campagnes"
-#~ msgstr "Kampagne"
-
-#~ msgid "Ajouter une campagne"
-#~ msgstr "Kampagne hinzufügen"
-
-#~ msgid "Ajouter une liste de diffusion"
-#~ msgstr "Mailing-Liste hinzufügen"
-
-#~ msgid "Rapport d'envoi"
-#~ msgstr "Zustellbericht"
-
-#~ msgid "Abonnés"
-#~ msgstr "Abonnenten"
-
-#~ msgid "Ajouter un abonné"
-#~ msgstr "Abonnent hinzufügen"
-
-#~ msgid "Membre"
-#~ msgstr "Mitglied"
-
-#~ msgid "Membres"
-#~ msgstr "Mitglieder"
-
-#~ msgid "Format de vidéo invalide"
-#~ msgstr "Ungültiges Videoformat"
-
-#~ msgid "0 comments"
-#~ msgstr "0 Kommentare"
-
-#~ msgid "1 comment"
-#~ msgstr "1 Kommentar"
-
-#~ msgid "Comments are Disabled"
-#~ msgstr "Kommentarfunktion ist deaktiviert"
-
-#~ msgid ""
-#~ "Taille originale : <a href=\"%1$s\" title=\"Lien vers la taille originale "
-#~ "de l'image\">%2$s &times; %3$s</a> Apparaît dans : <a href=\"%4$s\" title="
-#~ "\"Retour à  %5$s\" rel=\"gallery\">%6$s</a>."
-#~ msgstr ""
-#~ "Originalgröße: <a href=\"%1$s\" title=\"Mit der Originalgröße des Bildes "
-#~ "verknüpfen\">%2$s &times; %3$s</a> | Erscheint in: <a href=\"%4$s\" title="
-#~ "\"Zurück zu %5$s\\\\\\\" rel=\"Galerie\">%6$s</a>."
-
-#~ msgid "Sorry, no posts matched your criteria"
-#~ msgstr "Sorry, zu Ihren Kriterien wurden keine passenden Postings gefunden."
-
-#~ msgid "Name"
-#~ msgstr "Name"
-
-#~ msgid "Police de caractères Bootstrap"
-#~ msgstr "Bootstrap-Schriftart"
-
-#~ msgid "Transparent"
-#~ msgstr "Durchsichtig"
-
-#~ msgid "Aperçu de l'item"
-#~ msgstr "Artikelvorschau"
-
-#~ msgid "Afficher"
-#~ msgstr "Anzeigen"
-
-#~ msgid "Chargement en court ..."
-#~ msgstr "Laden ..."
-
-#~ msgid "Traitement terminé"
-#~ msgstr "Verarbeitung abgeschlossen"
-
-#~ msgid "Options d'export"
-#~ msgstr "Exportoptionen"
-
-#~ msgid "Afficher la date d'enregistrement"
-#~ msgstr "Registrierungsdatum anzeigen"
-
-#~ msgid "Choix des champs à exporter"
-#~ msgstr "Zu exportierende Felder auswählen"
-
-#~ msgid "Télecharger"
-#~ msgstr "Herunterladen"
+#~ msgstr "Voir le compte Twitter de %s"
 
 #~ msgid "La saisie de la protection antispam est incorrect"
-#~ msgstr "Die Spamschutzeingabe ist nicht richtig."
+#~ msgstr "La saisie de la protection antispam est incorrecte"
 
-#~ msgid "&Eacute;coles"
-#~ msgstr "Schulen"
+#~ msgid "0 comments"
+#~ msgstr "0 commentaire"
 
-#~ msgid "Tableau de bord"
-#~ msgstr "Anzahl der Verkaufsstellen"
+#~ msgid "1 comment"
+#~ msgstr "1 commentaire"
 
-#~ msgid "Chaines de caractères"
-#~ msgstr "Zeichenfolgen"
+#~ msgid "% comments"
+#~ msgstr "% commentaires"
 
-#~ msgid "Champs de saisie"
-#~ msgstr "Eingabefelder"
+#~ msgid "Comments are Disabled"
+#~ msgstr "Les commentaires sont désactivés"
 
-#~ msgid "Listes de selection"
-#~ msgstr "Auswahllisten"
+#~ msgid "Sorry, no posts matched your criteria"
+#~ msgstr "Désolé, aucun article ne correspond à vos critères de recherche"
 
 #~ msgid "Eléments riche"
-#~ msgstr "Komplexe Elemente"
-
-#~ msgid "HTML"
-#~ msgstr "HTML"
-
-#~ msgid "String"
-#~ msgstr "String"
-
-#~ msgid "Text Input"
-#~ msgstr "Text-Input"
-
-#~ msgid "Textarea"
-#~ msgstr "Textarea"
-
-#~ msgid "Password"
-#~ msgstr "Password"
-
-#~ msgid "Hidden (embedded datas)"
-#~ msgstr "Hidden (embedded datas)"
-
-#~ msgid "Radio Button"
-#~ msgstr "Radio Button"
-
-#~ msgid "Checkbox"
-#~ msgstr "Checkbox"
-
-#~ msgid "Dropdown"
-#~ msgstr "Dropdown"
-
-#~ msgid "Multi selection list"
-#~ msgstr "Multi selection list"
-
-#~ msgid "Le formulaire contient des erreurs :"
-#~ msgstr "Dieses Formular enthält Fehler:"
-
-#~ msgid ""
-#~ "<h2>Erreur lors de la vérification d'origine de la soumission de "
-#~ "formulaire</h2><p>Impossible de définir l'ID votre formulaire.<p>"
-#~ msgstr ""
-#~ "<h2> Fehler bei der Überprüfung des Übermittlungs-Formulars</h2><p>Nicht "
-#~ "möglich Ihr ID-Formular einzustellen.</p>"
-
-#~ msgid "Le champ \"%s\" ne peut être vide"
-#~ msgstr "Das Feld \"%s\" darf nicht leer sein."
-
-#~ msgid "Réglages des options de Presstify"
-#~ msgstr "PresstiFy-Optionseinstellungen"
-
-#~ msgid "Aucun réglage disponible pour cette section"
-#~ msgstr "Keine Einstellungen für diesen Abschnitt vorhanden."
-
-#~ msgid ""
-#~ "<h1>Téléchargement du fichier impossible</h1><p>Fichier non trouvé</p>"
-#~ msgstr ""
-#~ "<h1>Datei kann nicht heruntergeladen werden.</h1><p>Datei wurde nicht "
-#~ "gefunden.</p>"
-
-#~ msgid ""
-#~ "<h1>Téléchargement du fichier impossible</h1><p>Impossible de définir le "
-#~ "type de fichier</p>"
-#~ msgstr ""
-#~ "<h1>Datei kann nicht heruntergeladen werden.</h1><p>Unbekannter Dateityp</"
-#~ "p>"
-
-#~ msgid ""
-#~ "<h1>Téléchargement du fichier impossible</h1><p>Type de fichier interdit</"
-#~ "p>"
-#~ msgstr ""
-#~ "<h1>Datei kann nicht heruntergeladen werden.</h1><p>Dateityp verboten</p>"
-
-#~ msgid ""
-#~ "<h1>Téléchargement du fichier impossible</h1><p>Le téléchargement de ce "
-#~ "fichier n'est pas autorisé</p>"
-#~ msgstr ""
-#~ "<h1>Datei kann nicht heruntergeladen werden.</h1><p>Der Download dieser "
-#~ "Datei ist nicht gestattet.</p>"
-
-#~ msgid "Extensions & modules"
-#~ msgstr "Erweiterungen und Module"
-
-#~ msgid "Extensions/Modules"
-#~ msgstr "Erweiterungen/Module"
-
-#~ msgid "Extensions et Modules PresstiFy"
-#~ msgstr "PresstiFy-Erweiterungen und -Module"
-
-#~ msgid "Extension"
-#~ msgstr "Erweiterung"
-
-#~ msgid "%1$s : %2$s %3$s"
-#~ msgstr "%1$s : %2$s %3$s"
-
-#~ msgid "Format de contact invalide"
-#~ msgstr "Ungültiges Kontaktformat"
+#~ msgstr "Eléments riches"
 
 #~ msgid "Vous avez reçu nouvelle demande sur le site %1$s, %2$s"
-#~ msgstr "Sie haben neue Anfragen auf der Website %1$s, %2$s erhalten"
-
-#~ msgid "Informations Complémentaires"
-#~ msgstr "Weitere Informationen"
-
-#~ msgid "Diaporama"
-#~ msgstr "Diashow"
-
-#~ msgid "Diaporama de l'accueil"
-#~ msgstr "Diashow der Startseite"
-
-#~ msgid "Diaporama de la page d'accueil"
-#~ msgstr "Diashow der Startseite"
-
-#~ msgid "Configurer le Diaporama"
-#~ msgstr "Diashow konfigurieren"
-
-#~ msgid "Couleur du fond"
-#~ msgstr "Hintergrundfarbe"
-
-#~ msgid "%1$s"
-#~ msgstr "%1$s"
-
-#~ msgid "Ordre d'aff."
-#~ msgstr "Anzeigereihenfolge"
-
-#~ msgid "Indisponible"
-#~ msgstr "Nicht verfügbar"
-
-#~ msgid "Sous-titre (optionnel)"
-#~ msgstr "Untertitel (optional)"
-
-#~ msgid "Réglages du thème"
-#~ msgstr "Einstellungen des Themas"
-
-#~ msgid "Thème"
-#~ msgstr "Thema"
-
-#~ msgid "Réglage des options du thème"
-#~ msgstr "Optionen des Themas einstellen"
-
-#~ msgid "Field editor"
-#~ msgstr "Feldeditor"
-
-#~ msgid "Form preview"
-#~ msgstr "Formularvorschau"
+#~ msgstr "Vous avez reçu une nouvelle demande sur le site %1$s, %2$s"
 
 #~ msgid "(new)"
-#~ msgstr "(neu)"
-
-#~ msgid "Titles"
-#~ msgstr "Titel"
-
-#~ msgid "choices"
-#~ msgstr "Auswahl"
-
-#~ msgid "Checks"
-#~ msgstr "Checks"
-
-#~ msgid "Label :"
-#~ msgstr "Label:"
-
-#~ msgid "Placeholder :"
-#~ msgstr "Platzhalter:"
-
-#~ msgid "Required field :"
-#~ msgstr "Erforderliches Feld:"
-
-#~ msgid "yes"
-#~ msgstr "ja"
-
-#~ msgid "no"
-#~ msgstr "nein"
-
-#~ msgid "Field value :"
-#~ msgstr "Feldwert:"
-
-#~ msgid "No verification"
-#~ msgstr "Keine Überprüfung"
-
-#~ msgid "Delete"
-#~ msgstr "Löschen"
-
-#~ msgid "Add field"
-#~ msgstr "Feld hinzufügen"
-
-#~ msgid "Update field"
-#~ msgstr "Feld aktualisieren"
-
-#~ msgid "Filter"
-#~ msgstr "Filtern"
-
-#~ msgid "Précedent"
-#~ msgstr "Zurück"
-
-#~ msgid "-- non renseigné --"
-#~ msgstr "-- Keine Informationen --"
-
-#~ msgid "Formulaires dynamiques"
-#~ msgstr "Dynamische Formulare"
-
-#~ msgid "A propos des formulaires"
-#~ msgstr "Über Formulare"
-
-#~ msgid "Tableau de bord des formulaires"
-#~ msgstr "Formular-Dashboard"
-
-#~ msgid "Votre demande de contact sur le site %s"
-#~ msgstr "Ihre Kontaktanfrage auf der Website %s"
-
-#~ msgid "Tous les enregistrements"
-#~ msgstr "Alle Registrierungseinträge"
-
-#~ msgid "Enregistrement de formulaire"
-#~ msgstr "Registrierungsformular"
-
-#~ msgid "Champ dynamique"
-#~ msgstr "Dynamisches Feld"
-
-#~ msgid "File upload"
-#~ msgstr "Datei-Upload"
-
-#~ msgid ""
-#~ "<h1>ERREUR SYSTEME</h1><p>Impossible de déplacer le fichier du champs \"%s"
-#~ "\" dans le repertoire de stockage temporaire.</p>"
-#~ msgstr ""
-#~ "<h1>SYSTEMFEHLER</h1><p>Die Datei kann nicht vom Feld \"%s\" im "
-#~ "temporären Speicherordner verschoben werden.</p>"
-
-#~ msgid "Type de fichier non autorisé dans le champ \"%s\"."
-#~ msgstr "Unzulässiger Dateityp für das Feld \"%s\"."
-
-#~ msgid ""
-#~ "<h1>ERREUR SYSTEME</h1><p>Impossible de déplacer le fichier du champ \"%s"
-#~ "\".</p>"
-#~ msgstr ""
-#~ "<h1>SYSTEMFEHLER</h1><p>Die Datei kann nicht vom Feld \"%s\" verschoben "
-#~ "werden.</p>"
-
-#~ msgid "Ajax File upload"
-#~ msgstr "Ajax-Datei-Upload"
-
-#~ msgid "Déposez vos fichiers ici"
-#~ msgstr "Legen Sie Ihre Dateien hier ab."
-
-#~ msgid "Selectionnez un fichier"
-#~ msgstr "Wählen Sie eine Datei aus."
-
-#~ msgid "ReCaptcha"
-#~ msgstr "ReCaptcha"
-
-#~ msgid "Saisie incorrecte, essayez à nouveau"
-#~ msgstr "Falsche Eingabe, versuchen Sie es erneut"
+#~ msgstr "(nouveau)"
 
 #~ msgid "Saisissez le texte afficher"
-#~ msgstr "Geben Sie den angezeigten Text ein."
-
-#~ msgid "Entrez les nombre que vous entendez"
-#~ msgstr "Geben Sie die Zahlen ein"
-
-#~ msgid "Nouveau test"
-#~ msgstr "Neuer Test"
-
-#~ msgid "Test audio"
-#~ msgstr "Audiotest"
-
-#~ msgid "Test visuel"
-#~ msgstr "Optischer Test"
-
-#~ msgid "Aide"
-#~ msgstr "Hilfe"
-
-#~ msgid "Captcha Image"
-#~ msgstr "Captcha-Bild"
-
-#~ msgid "Captcha Introuvable"
-#~ msgstr "Captcha nicht gefunden"
-
-#~ msgid "code de sécu."
-#~ msgstr "Sicherheitscode"
-
-#~ msgid "tiFy Dropdown"
-#~ msgstr "tiFy Dropdown"
-
-#~ msgid "%1$s<span class=\"current\">News page %2$s of %3$s</span>"
-#~ msgstr "%1$s<span class=\"current\">News-Seite %2$s von %3$s</span>"
-
-#~ msgid "All News"
-#~ msgstr "Alle News"
-
-#~ msgid "All the News"
-#~ msgstr "Alle News"
-
-#~ msgid "Retour à %3$s"
-#~ msgstr "Zurück zu %3$s"
-
-#~ msgid "%1$s<span class=\"current\">Tag : %2$s</span>"
-#~ msgstr "%1$s<span class=\"current\">Tag: %2$s</span>"
-
-#~ msgid "%1$sDaily Archives: %2$s"
-#~ msgstr "%1$sTagesarchive: %2$s"
-
-#~ msgid "%1$sMonthly Archives: %2$s"
-#~ msgstr "%1$sMonatsarchive: %2$s"
-
-#~ msgid "%1$sYearly Archives: %2$s"
-#~ msgstr "%1$sJahresarchive: %2$s"
-
-#~ msgid "Blog Archives"
-#~ msgstr "Blogarchive"
-
-#~ msgid "Politique des cookies"
-#~ msgstr "Cookie-Politik"
-
-#~ msgid "Page d'affichage de la politique des cookies"
-#~ msgstr "Seite mit der Cookie-Richtlinie"
-
-#~ msgid "Mentions légales"
-#~ msgstr "Impressum"
-
-#~ msgid "Page d'affichage des mentions légales"
-#~ msgstr "Seite mit dem Impressum"
-
-#~ msgid "Les mentions légales"
-#~ msgstr "Impressum"
-
-#~ msgid "Ce site est actuellement en cours de développement"
-#~ msgstr "Diese Webseite befindet sich aktuell im Aufbau."
-
-#~ msgid "Son accès est strictement réservé au personnel habilité, "
-#~ msgstr "Der Zugriff ist nur von autorisierten Benutzerkonten möglich."
-
-#~ msgid "Veuillez vous identifier pour accéder à la consultation"
-#~ msgstr ""
-#~ "Bitte melden Sie sich an um die Seite korrekt angezeigt zu bekommen."
-
-#~ msgid "Affichage des archives (page de flux)"
-#~ msgstr "Archivanzeige (Feed-Seite)"
-
-#~ msgid "Archives \"%s\""
-#~ msgstr "Archiv \"%s\""
-
-#~ msgid "Vers %2$s"
-#~ msgstr "Zu %2$s"
-
-#~ msgid "Page %d"
-#~ msgstr "Seite %d"
-
-#~ msgid "page %d - "
-#~ msgstr "Seite %d -"
+#~ msgstr "Saisissez le texte affiché"
 
 #~ msgid "Recherche de \"%s\""
-#~ msgstr "Suche nach \"%s\""
+#~ msgstr "Résultats de la recherche \"%s\""
 
-#~ msgid "Vous êtes déjà connecté"
-#~ msgstr "Sie sind bereits angemeldet."
-
-#~ msgid "Cet espace est réservé aux utilisateurs connectés"
-#~ msgstr "Dieser Bereich ist nur registrierten Nutzern zugänglich"
-
-#~ msgid ""
-#~ "La modification de paramètres du compte est réservée uniquement aux "
-#~ "contributeurs de forum"
-#~ msgstr "Kontoeinstellungen können nur von Admins geändert werden"
-
-#~ msgid "Gras"
-#~ msgstr "Fett"
-
-#~ msgid "Mettre le texte en gras"
-#~ msgstr "Fett formatieren"
-
-#~ msgid "Italique"
-#~ msgstr "Kursiv"
-
-#~ msgid "Mettre le texte en italique"
-#~ msgstr "Kursiv formatieren"
-
-#~ msgid "Souligné"
-#~ msgstr "Unterstreichen"
-
-#~ msgid "Soulignement du texte"
-#~ msgstr "Text unterstreichen"
-
-#~ msgid "Barré"
-#~ msgstr "Durchstreichen"
-
-#~ msgid "Texte barré"
-#~ msgstr "Text durchstreichen"
-
-#~ msgid "Insérer un lien"
-#~ msgstr "Einen Hyperlink einfügen"
-
-#~ msgid "Saisissez l'adresse du site"
-#~ msgstr "Website -Adresse eingeben"
-
-#~ msgid "Récupération de mot de passe oublié"
-#~ msgstr "Passwort wiederherstellen"
-
-#~ msgid "Modification des paramètres du compte"
-#~ msgstr "Kontoeinstellungen bearbeiten"
-
-#~ msgid "Votre demande d'inscription au forum a été enregistrée"
-#~ msgstr "Ihre Registrierung wurde angenommen"
-
-#~ msgid "Page d'affichage de l'accès pro."
-#~ msgstr "Seite des Händler/Presse-Zugangs"
-
-#~ msgid "Nom d'utilisateur"
-#~ msgstr "Anmeldename"
-
-#~ msgid "Me connecter"
-#~ msgstr "Anmelden"
-
-#~ msgid ""
-#~ "Seuls les utilisateurs connectés sont habilités à modifier leur profil"
-#~ msgstr "Nur registrierte Benutzer dürfen ihr Profil ändern."
+#~ msgid "Forums"
+#~ msgstr "Forums"
 
 #~ msgid "Bienvenue dans l'espace client Calingaert"
-#~ msgstr "Willkommen im Kundenbereich"
-
-#~ msgid "Déjà inscrit"
-#~ msgstr "Bereits registriert"
-
-#~ msgid "Première visite"
-#~ msgstr "Erster Besuch"
-
-#~ msgid "Se deconnecter"
-#~ msgstr "Abmelden"
-
-#~ msgid "Mon compte"
-#~ msgstr "Mein Konto"
-
-#~ msgid "Créer un compte"
-#~ msgstr "Ein Konto erstellen"
-
-#~ msgid "Aucune ville choisie"
-#~ msgstr "Keine Stadt ausgewählt"
-
-#~ msgid "Modification de l'utilisateur : %s"
-#~ msgstr "Benutzer bearbeiten: %s"
-
-#~ msgid "Actif : %s"
-#~ msgstr "Aktiv: %s"
-
-#~ msgid "Création d'un nouvel utilisateur"
-#~ msgstr "Neuen Benutzer erstellen"
-
-#~ msgid "Édition d'utilisateur"
-#~ msgstr "Benutzer bearbeiten"
-
-#~ msgid "Mettre à jour l'utilisateur"
-#~ msgstr "Benutzer aktualisieren"
-
-#~ msgid "Liste des utilisateurs de l'espace pro."
-#~ msgstr "Benutzerliste für den Händler/Presse-Bereich"
-
-#~ msgid "Role"
-#~ msgstr "Position"
-
-#~ msgid "Remove"
-#~ msgstr "Entfernen"
-
-#~ msgid "None"
-#~ msgstr "Keine"
-
-#~ msgid "Accès Pro."
-#~ msgstr "Händler/Presse-Zugang"
-
-#~ msgid ""
-#~ "Cet espace est réservé aux utilisateurs possédant un compte accès pro."
-#~ msgstr "Dieser Bereich ist nur Händlern/Journalisten zugänglich."
-
-#~ msgid "Inscription à l'accès pro."
-#~ msgstr "Anmedlung zum Händler-/Pressebereich"
-
-#~ msgid "Listes des clients"
-#~ msgstr "Liste der Kunden"
-
-#~ msgid "Ajouter un client"
-#~ msgstr "Kunden hinzufügen"
-
-#~ msgid "Recherche de client"
-#~ msgstr "Kunden suchen"
-
-#~ msgid "Editer un client"
-#~ msgstr "Kunden bearbeiten"
-
-#~ msgid "L'utilisateur a été enregistrée avec succès"
-#~ msgstr "Der Nutzer wurde erfolgreich hinzugefügt"
-
-#~ msgid "Inactif"
-#~ msgstr "Inaktiv"
-
-#~ msgid "Tous les rôles"
-#~ msgstr "Alle Positionen"
-
-#~ msgid "Editer"
-#~ msgstr "Bearbeiten"
-
-#~ msgid "Ajouter un membre"
-#~ msgstr "Mitglied hinzufügen"
-
-#~ msgid "Réglage des options"
-#~ msgstr "Optionen"
-
-#~ msgid "Page  d'affichage de l'Accès Pro."
-#~ msgstr "Seite des Händler/Presse-Zugangs"
-
-#~ msgid "Formulaire d'inscription à l'accès pro"
-#~ msgstr "Anmeldeformular für den Händler/Presse-Bereich"
-
-#~ msgid "Votre demande d'inscription à l'espace pro. a été enregistrée"
-#~ msgstr "Ihre Registrierungsanfrage wurde erfasst"
-
-#~ msgid "En attente de validation"
-#~ msgstr "Auf Bestätigung warten"
-
-#~ msgid "Informations complémentaires"
-#~ msgstr "Weitere Informationen"
-
-#~ msgid "Date de début"
-#~ msgstr "Anfangsdatum"
-
-#~ msgid "Date de publication de l'article si vide"
-#~ msgstr "Veröffentlichungsdatum des Artikels, wenn leer"
-
-#~ msgid "Date de fin"
-#~ msgstr "Enddatum"
-
-#~ msgid "Date de début si vide"
-#~ msgstr "Anfangsdatum, wenn leer"
-
-#~ msgid "Titre original de l'article si vide"
-#~ msgstr "Originaltitel des Artikels, wenn leer"
-
-#~ msgid "Masquer le texte de description"
-#~ msgstr "Textbeschreibung verbergen"
-
-#~ msgid "Texte de description"
-#~ msgstr "Textbeschreibung"
-
-#~ msgid "Masquer le lien de suite de lecture vers le contenu"
-#~ msgstr "\"Weiterlesen\"-Button verbergen"
-
-#~ msgid "Intitulé du lien de suite de lecture vers le contenu"
-#~ msgstr "Titel des \"Weiterlesen\"-Button"
-
-#~ msgid "Citation"
-#~ msgstr "Zitat"
-
-#~ msgid "Site Web"
-#~ msgstr "Website"
-
-#~ msgid "Image"
-#~ msgstr "Bild"
-
-#~ msgid "Dailymotion"
-#~ msgstr "Dailymotion"
-
-#~ msgid "Flickr"
-#~ msgstr "Flickr"
-
-#~ msgid "Soundcloud"
-#~ msgstr "Soundcloud"
-
-#~ msgid "TwitPic"
-#~ msgstr "TwitPic"
-
-#~ msgid "Média"
-#~ msgstr "Media"
-
-#~ msgid "Sélectionner une image"
-#~ msgstr "Ein Bild auswählen"
-
-#~ msgid "Image de la médiathèque"
-#~ msgstr "Bild von der Mediathek"
-
-#~ msgid "Sélectionner une video"
-#~ msgstr "Ein Video auswählen"
-
-#~ msgid "Video de la médiathèque"
-#~ msgstr "Video von der Mediathek"
-
-#~ msgid "Crédit"
-#~ msgstr "Kredit"
-
-#~ msgid "En composition"
-#~ msgstr "Schreiben"
-
-#~ msgid "Prête à acheminer"
-#~ msgstr "Bereit zur Lieferung"
-
-#~ msgid "En preparation"
-#~ msgstr "In Vorbereitung"
-
-#~ msgid "En cours d'acheminement"
-#~ msgstr "Unterwegs"
-
-#~ msgid "Préparation en cours ..."
-#~ msgstr "Vorbereitung läuft"
-
-#~ msgid "Envoi en cours ..."
-#~ msgstr "Senden"
-
-#~ msgid "Emails prêts"
-#~ msgstr "E-Mails bereit"
-
-#~ msgid "Emails envoyés"
-#~ msgstr "E-Mails verschickt"
-
-#~ msgid "Campagnes d'emailing"
-#~ msgstr "E-Mail-Kampagnen"
-
-#~ msgid "Recherche de campagne"
-#~ msgstr "Kampagne suchen"
-
-#~ msgid "Éditer la campagne d'emailing"
-#~ msgstr "E-Mail-Kampagne bearbeiten"
-
-#~ msgid "L'email de l'expéditeur n'est pas valide"
-#~ msgstr "Die E-Mail-Adresse des Absenders ist nicht gültig"
-
-#~ msgid "Vous n’avez pas l’autorisation de modifier ce contenu."
-#~ msgstr "Sie haben keine Berechtigung diesen Inhalt zu bearbeiten."
-
-#~ msgid "Une campagne \"%s\" ne peuvent être éditée."
-#~ msgstr "Eine Kampagne \"%s\" kann nicht bearbeitet werden."
-
-#~ msgid "Tapez un email ou un intitulé"
-#~ msgstr "Eine E-Mail oder einen Titel schreiben"
-
-#~ msgid "Délivrer la campagne"
-#~ msgstr "Kampagne senden"
-
-#~ msgid "Programmer l'envoi"
-#~ msgstr "Programm senden"
-
-#~ msgid "à venir"
-#~ msgstr "demnächst"
-
-#~ msgid "Envoyer maintenant"
-#~ msgstr "Jetzt verschicken"
-
-#~ msgid "Étape précédente"
-#~ msgstr "Vorheriger Schritt"
-
-#~ msgid "Étape suivante"
-#~ msgstr "Nächster Schritt"
-
-#~ msgid "Sauver les modifications"
-#~ msgstr "Änderungen speichern"
-
-#~ msgid "La campagne a été dupliquée avec succès"
-#~ msgstr "Die Kampagne wurde erfolgreich kopiert"
-
-#~ msgid "La campagne a été mise à la corbeille"
-#~ msgstr "Die Kampagne wurde in der Papierkorb verschoben"
-
-#~ msgid "La campagne a été rétablie avec succès"
-#~ msgstr "Die Kampagne wurde wiederhergestellt"
-
-#~ msgid "Toutes"
-#~ msgstr "Alle"
-
-#~ msgid "État de distribution"
-#~ msgstr "Lieferzustand"
-
-#~ msgid "Éditer cet item"
-#~ msgstr "Dieses Element bearbeiten"
-
-#~ msgid "Reprendre"
-#~ msgstr "Wiederaufnehmen"
+#~ msgstr "Bienvenue dans l'espace pro"
 
 #~ msgid "Dupliquer de la campagne"
-#~ msgstr "Kampagne kopieren"
-
-#~ msgid "Publiée"
-#~ msgstr "Veröffentlicht"
-
-#~ msgid "Recherche de liste de diffusion"
-#~ msgstr "Mailing-Liste suchen"
-
-#~ msgid "Éditer la liste diffusion"
-#~ msgstr "Mailing-Liste bearbeiten"
-
-#~ msgid "La liste de diffusion a été supprimé avec succès"
-#~ msgstr "Die Mailing-Liste wurde erfolgreich gelöscht"
-
-#~ msgid "La liste de diffusion a été mise à la corbeille"
-#~ msgstr "Die Mailing-Liste wurde in den Papierkorb verschoben"
-
-#~ msgid "Supprimer cet item"
-#~ msgstr "Dieses Element löschen"
-
-#~ msgid "Envoyé"
-#~ msgstr "Gesendet"
-
-#~ msgid ""
-#~ "(État permanent) Adresse email de destination pour laquelle le message "
-#~ "n'a pu être distribué pour l'une des raisons suivantes : <br/>   - "
-#~ "L'adresse email est incorrecte (mal orthographiée)<br/>   - Cette adresse "
-#~ "email n’existe pas ou plus"
-#~ msgstr ""
-#~ "(Ständiger Zustand) die Nachricht wurde an folgende E-Mail-Adresse  nicht "
-#~ "gesendet, da: <br/> - Die E-Mail-Adresse nicht korrekt ist (falsch "
-#~ "geschrieben) <br/> - diese E-Mail-Adresse nicht existiert"
-
-#~ msgid ""
-#~ "(État temporaire) Adresse email de destination enregistrée en liste noire "
-#~ "pour les raisons suivantes :<br/>   - L'adresse email de destination est "
-#~ "déclaré comme un spam<br/>   - L'adresse email de destination est déclaré "
-#~ "comme désinscrit pour l'adresse email d'expédition<br/>   - L'adresse "
-#~ "email a été ajouté automatiquement dans la liste noire (Statut d'envoi "
-#~ "précédent en bounced)<br/>   - L'adresse email a été ajouté manuellement "
-#~ "dans la liste noire"
-#~ msgstr ""
-#~ "(Temporärer Zustand): Die E-Mail-Adresse wurde wegen folgenden Gründen "
-#~ "auf die schwarze Liste gesetzt: <br/> - Die E-Mail-Adresse ist als Spam "
-#~ "gekennzeichnet <br/> - Die E-Mail-Adresse ist als abgemeldet "
-#~ "gekennzeichnet <br/> - Die E-Mail-Adresse wurde automatisch auf die "
-#~ "schwarze Liste gesetzt (vorheriger Sendungsstatus in \"bounced\") <br/> - "
-#~ "Die E-Mail-Adresse wurde manuell auf die schwarze Liste gesetzt"
-
-#~ msgid ""
-#~ "(État temporaire) Adresse email de destination pour laquelle le message n"
-#~ "\\a pu être distribué pour l'une des raisons suivantes : <br/>   - La "
-#~ "boîte de réception du destinataire est pleine<br/>   - Le serveur de "
-#~ "reception du destinataire rencontre un dysfonctionnement<br/>   - Un "
-#~ "système de filtrage du serveur du destinataire, empêche la reception du "
-#~ "message"
-#~ msgstr ""
-#~ "(Temporärer Zustand): die Nachricht wurde an folgende E-Mail-Adresse  "
-#~ "nicht gesendet, da: <br/> das Postfach des Empfängers voll ist  <br/> der "
-#~ "Server des Empfängers eine Störung hat <br/> ein Filter auf dem Server "
-#~ "des Empfängers verhindert den Eingang der Nachricht"
-
-#~ msgid ""
-#~ "Le message a été envoyé au serveur d'envoi mais n'a pas encore été traité "
-#~ msgstr ""
-#~ "Die Nachricht wurde an den Sever zugestellt, aber bisher noch nicht "
-#~ "verarbeitet"
-
-#~ msgid "Rapport d'expédition"
-#~ msgstr "Sendungsbericht"
-
-#~ msgid "Recherche de destinataire"
-#~ msgstr "Suche nach einem Empfänger"
-
-#~ msgid "Expéditeur"
-#~ msgstr "Absender"
-
-#~ msgid "Ouverture"
-#~ msgstr "Öffnen"
-
-#~ msgid "Clics"
-#~ msgstr "Klicks"
-
-#~ msgid "Rafraichir"
-#~ msgstr "Aktualisieren"
-
-#~ msgid "Recherche d'abonné"
-#~ msgstr "Abonnent suchen"
-
-#~ msgid "Éditer un abonné"
-#~ msgstr "Abonnent bearbeiten"
-
-#~ msgid "Ajouter un autre abonné"
-#~ msgstr "einen anderen Abonnenten hinzufügen"
-
-#~ msgid "Cet email est déjà utilisé pour un autre abonné"
-#~ msgstr ""
-#~ "Diese E-Mail-Adresse wird bereits für einen anderen Benutzer verwendet."
-
-#~ msgid "L'utilisateur a été enregistré avec succès"
-#~ msgstr "Der Nutzer wurde erfolgreich hinzugefügt"
-
-#~ msgid ""
-#~ "Vous tentez de modifier un abonné qui n’existe pas. Peut-être a-t-il été "
-#~ "supprimé ?"
-#~ msgstr ""
-#~ "Versuchen Sie, einen Teilnehmer, der nicht existiert zu ändern. "
-#~ "Vielleicht wurde er entfernt?"
-
-#~ msgid "Vous n’avez pas l’autorisation de modifier cet abonné."
-#~ msgstr "Du bist nicht berechtigt, diesen Abonnenten zu bearbeiten."
-
-#~ msgid "L'abonné a été supprimé avec succès"
-#~ msgstr "Der Abonnent wurde erfolgreich gelöscht"
-
-#~ msgid "L'abonné a été mis à la corbeille"
-#~ msgstr "Der Abonnent wurde in den Papierkorb verschoben"
-
-#~ msgid "L'abonné a été rétabli"
-#~ msgstr "Der Abonnent ist wiederhergestellt"
-
-#~ msgid "Newsletters"
-#~ msgstr "Newsletter"
-
-#~ msgid "Apparence"
-#~ msgstr "Aussehen"
-
-#~ msgid "Palette de couleur"
-#~ msgstr "Farbpalette"
-
-#~ msgid "Choisissez un contenu à afficher dans le diaporama"
-#~ msgstr "Wählen Sie Inhalte für die Slideshow aus"
-
-#~ msgid "Ajouter un contenu du site"
-#~ msgstr "Einen Website-Inhalt hinzufügen"
-
-#~ msgid "Ajouter un lien personnalisé"
-#~ msgstr "Einen benutzerspezifischen Link hinzufügen"
-
-#~ msgid "Illustration de la vignette du diporama"
-#~ msgstr "Abbildung des Diashow-Vorschaubildes"
-
-#~ msgid "Google+"
-#~ msgstr "Google+"
-
-#~ msgid "Url du compte Linkedin"
-#~ msgstr "URL der LinkedIn-Seite"
-
-#~ msgid "Globales"
-#~ msgstr "Globale Optionen"
+#~ msgstr "Dupliquer la campagne"
 
 #~ msgid "Vers la chaîne YouTube+ du site %s"
-#~ msgstr "Zum YouTube-Kanal der Website \"%s\""
-
-#~ msgid "PresstiFy"
-#~ msgstr "PresstiFy"
-
-#~ msgctxt "../inc/tify_controls/tify_control/switch/switch.php:30"
-#~ msgid "Oui"
-#~ msgstr "Ja"
-
-#~ msgctxt "../inc/tify_controls/tify_control/switch/switch.php:31"
-#~ msgid "Non"
-#~ msgstr "Nein"
-
-#~ msgctxt ""
-#~ "../plugins/forms/add-ons/record/export.php:229 ../plugins/forms/add-ons/"
-#~ "record/export.php:241 ../plugins/premium/addons/timeline/timeline."
-#~ "php:331 ../plugins/premium/addons/timeline/timeline.php:348 ../plugins/"
-#~ "theme-manager/addons/homeslideshow/homeslidesh"
-#~ msgid "Oui"
-#~ msgstr "Ja"
-
-#~ msgctxt ""
-#~ "../plugins/forms/add-ons/record/export.php:233 ../plugins/forms/add-ons/"
-#~ "record/export.php:245 ../plugins/premium/addons/timeline/timeline."
-#~ "php:332 ../plugins/premium/addons/timeline/timeline.php:349 ../plugins/"
-#~ "theme-manager/addons/homeslideshow/homeslidesh"
-#~ msgid "Non"
-#~ msgstr "Nein"
-
-#~ msgid "Journaliste"
-#~ msgstr "Journalist"
-
-#~ msgid "Distributeur"
-#~ msgstr "Geschäftspartner"
-
-#~ msgid "Bigben Interne"
-#~ msgstr "Bigben-Team"
-
-#~ msgid "Formulaire d'inscription à l'espace Pro"
-#~ msgstr "Anmeldeformular für den Händler/Presse-Bereich"
-
-#~ msgid "Vous n'avez pas encore de compte Bigben Pro, demandez votre accès."
-#~ msgstr ""
-#~ "Sie haben noch keinen Händler/Presse-Zugang. Bitte fordern Sie diesen an."
-
-#~ msgid "Modifiez les informations de votre compte Bigben Pro."
-#~ msgstr "Die Daten Ihres Bigben-Händler/Presse-Kontos ändern"
-
-#~ msgid "Vous êtes :"
-#~ msgstr "Sie sind:"
-
-#~ msgid "Vous êtes (non modifiable) :"
-#~ msgstr "Sie sind (nicht veränderbar):"
-
-#~ msgid "Identifiant de connexion"
-#~ msgstr "Benutzername"
-
-#~ msgid "Identifiant de connexion (non modifiable)"
-#~ msgstr "Benutzername (nicht veränderbar)"
-
-#~ msgid "Société"
-#~ msgstr "Firma"
-
-#~ msgid "URL de la société"
-#~ msgstr "URL der Firma"
-
-#~ msgid "Nombre de point de vente"
-#~ msgstr "Anzahl der Verkaufsstellen"
-
-#~ msgid "Pays de distribution"
-#~ msgstr "Distributionsländer"
-
-#~ msgid "Produits concernés à cocher"
-#~ msgstr "Produktbereich"
-
-#~ msgid "Produits concernés à cocher (non modifiable)"
-#~ msgstr "Anzukreuzende Produktbereiche (nicht veränderbar)"
-
-#~ msgid "Audio"
-#~ msgstr "Audio"
-
-#~ msgid "Jeux vidéo"
-#~ msgstr "Games"
-
-#~ msgid "Accessoires Gaming"
-#~ msgstr "Gaming Zubehör"
-
-#~ msgid "Accessoires Smartphones/Tablettes"
-#~ msgstr "Smartphone-/Tablet-Zubehör"
-
-#~ msgid "Raison de votre demande"
-#~ msgstr "Grund der Anfrage"
-
-#~ msgid "Informations nouveautés"
-#~ msgstr "Informationen über Neuheiten"
+#~ msgstr "Voir la chaine Youtube de %s"
 
 #~ msgid ""
-#~ "Je souhaite recevoir les ajouts de nouveautés produits Bigben Interactive "
-#~ "par email"
+#~ "Seriez vous en train de tricher ?! Impossible de déterminer l'origine de "
+#~ "soumission de votre formulaire."
 #~ msgstr ""
-#~ "Ich möchte Informationen über neue Produkte von Bigben Interactive per E-"
-#~ "Mail erhalten."
+#~ "Seriez-vous en train de tricher ?! Impossible de déterminer l'origine de "
+#~ "soumission de votre formulaire."
 
-#~ msgid "Offres partenaires"
-#~ msgstr "Partnerangebote"
+#~ msgid "Admin Control Tools"
+#~ msgstr "Outils de contrôle de l'administration"
+
+#, fuzzy
+#~ msgid "Occupation"
+#~ msgstr "Options"
+
+#~ msgid "Custom"
+#~ msgstr "Personnalisé"
+
+#, fuzzy
+#~ msgid "Select list"
+#~ msgstr "Post sélectionné :"
+
+#~ msgid "Plugins options"
+#~ msgstr "Options des extensions"
+
+#~ msgid "Plugins Options | Milkcreation Plugins Pack"
+#~ msgstr "Option des extensions | Pack d'extensions Milkcreation"
+
+#~ msgid "%1$s %2$s, %3$s"
+#~ msgstr "%2$s %1$s %3$s"
+
+#~ msgid "@ %1$s : %2$s"
+#~ msgstr "à  %1$s : %2$s"
+
+#~ msgid "File not found"
+#~ msgstr "Fichier non trouvé"
+
+#, fuzzy
+#~ msgid "Wordpress plugin of access reading post"
+#~ msgstr "Extension Wordpress permettant le partage de fichier dans les post"
+
+#~ msgid "Admin User Enhanced"
+#~ msgstr "Gestion Utilisateur Amélirorée"
+
+#~ msgid "Wordpress plugin of admin user enhancement"
+#~ msgstr "Extension Wordpress d'amélioration de l'interface utilisateur"
+
+#~ msgid "Wordpress plugin of Admin control tools"
+#~ msgstr "Extension Wordpress d'outils de contrôle de l'administration"
+
+#~ msgid "Breadcrumb"
+#~ msgstr "Fil d'Arianne"
+
+#~ msgid "Wordpress plugin of Breadcrumb"
+#~ msgstr "Extension Wordpress de Fil d'Arianne"
+
+#~ msgid "Comment Attachment Files"
+#~ msgstr "Fichiers joints sur commentaires"
 
 #~ msgid ""
-#~ "Je souhaite recevoir les offres des partenaires de Bigben Interactive"
-#~ msgstr "Ich möchte Partnerangebote von Bigben Interactive erhalten."
+#~ "Wordpress plugin that allow users to join attachment file on her comments"
+#~ msgstr ""
+#~ "Extension Wordpress permettant aux utilisateurs de joindre des fichiers à "
+#~ "leurs commentaires"
 
-#~ msgid "Offres newsletter"
-#~ msgstr "Newsletterangebote"
+#~ msgid "Contact Form"
+#~ msgstr "Formulaire de Contact"
 
-#~ msgid "Je souhaite recevoir les offres newsletter de Bigben Interactive"
-#~ msgstr "Ich möchte Newsletterangebote von Bigben Interactive erhalten."
+#~ msgid "Wordpress plugin of a simple contact form"
+#~ msgstr "Extension Wordpress de simple formulaire de contact"
 
-#~ msgid "Protection anti-spam"
-#~ msgstr "Spam-Schutz"
+#, fuzzy
+#~ msgid "Evolved Contact Form"
+#~ msgstr "Formulaire de Contact"
+
+#, fuzzy
+#~ msgid "Wordpress plugin of an evolved contact form"
+#~ msgstr "Extension Wordpress de simple formulaire de contact"
+
+#~ msgid "Contextual Widgets"
+#~ msgstr "Widgets Contextuels"
+
+#~ msgid "Wordpress plugin of widget customization by post"
+#~ msgstr "Extension Wordpress de personnalisation de Widget par post"
+
+#~ msgid "Custom Columns"
+#~ msgstr "Colonnes personnalisées"
+
+#~ msgid "Wordpress plugin of custom columns"
+#~ msgstr "Extension Wordpress de colonnes personnalisées"
+
+#~ msgid "Custom Thumbs"
+#~ msgstr "Miniatures personnalisées"
+
+#~ msgid "Wordpress plugin of post-thumbnail customizing"
+#~ msgstr "Extension Wordpress de personnalisation des miniatures"
+
+#~ msgid "Events"
+#~ msgstr "&Eacute;vénements"
+
+#~ msgid "Wordpress plugin of post based events"
+#~ msgstr "Extension Wordpress d'événements basés sur les posts"
+
+#~ msgid "File Sharing"
+#~ msgstr "Partage de Fichier"
+
+#~ msgid "Wordpress plugin to allow file sharing in post"
+#~ msgstr "Extension Wordpress permettant le partage de fichier dans les post"
+
+#~ msgid "Forms"
+#~ msgstr "Formulaires"
+
+#~ msgid "Wordpress plugin to easily create forms"
+#~ msgstr "Extension Wordpress pour créer facilement des formulaires"
+
+#~ msgid "Wordpress plugin of forums based on comments"
+#~ msgstr "Extension Wordpress de forums basés sur les commentaires"
+
+#~ msgid "LDAP Connection"
+#~ msgstr "Connexion LDAP"
+
+#~ msgid "Wordpress plugin of LDAP connection"
+#~ msgstr "Extension Wordpress de connection LDAP"
+
+#~ msgid "Messenger"
+#~ msgstr "Messager"
+
+#~ msgid "Wordpress plugin that allow admins to edit information messages"
+#~ msgstr ""
+#~ "Extension Wordpress qui permet aux administrateurs d'éditer des messages "
+#~ "informatifs"
+
+#~ msgid "Ologons Taläntis"
+#~ msgstr "Ologons Taläntis"
+
+#~ msgid "Wordpress plugin of slideshow based on Ologons Taläntis"
+#~ msgstr "Extension Wordpress de diaporama basée sur Ologons Taläntis"
+
+#~ msgid "Pagination"
+#~ msgstr "Pagination"
+
+#~ msgid "Wordpress plugin of pagination"
+#~ msgstr "Extension Wordpress de pagination"
+
+#~ msgid "Petitions"
+#~ msgstr "Pétitions"
+
+#~ msgid "Wordpress plugin of Petitions"
+#~ msgstr "Extension Wordpress de pétitions"
+
+#~ msgid "Post Event Calendar (Deprecated)"
+#~ msgstr "Gestion d'événements (Déprecié)"
+
+#~ msgid "Wordpress plugin of Events (Deprecated)"
+#~ msgstr "Extension Wordpress de gestion d'événements"
+
+#~ msgid "Showcase"
+#~ msgstr "Vitrine"
+
+#~ msgid "Wordpress Plugin of Slideshow based on posts"
+#~ msgstr "Extension Wordpress de Diaporama basé sur les posts"
+
+#~ msgid "Slideshow"
+#~ msgstr "Diaporama"
+
+#~ msgid "Interactives SVG Maps"
+#~ msgstr "Cartes Cliquables Interactives en SVG"
+
+#~ msgid "Wordpress plugin of Interactive SVG Maps"
+#~ msgstr "Extension Wordpress pour créer des cartes cliquables interactives"
+
+#~ msgid "Thumbnail Area"
+#~ msgstr "Zone de miniatures"
+
+#~ msgid "Wordpress plugin to customize Thumbnail Area"
+#~ msgstr "Extension Wordpress pour personnaliser la zone de miniature"
+
+#~ msgid "Thumbnail Tools"
+#~ msgstr "Outils de miniatures"
+
+#, fuzzy
+#~ msgid "Wordpress plugin to customize Thumbnail Tools"
+#~ msgstr "Extension Wordpress pour personnaliser la zone de miniature"
+
+#~ msgid "TinyMCE"
+#~ msgstr "TinyMCE"
+
+#~ msgid "Wordpress plugin to activate TinyMCE Plugins"
+#~ msgstr ""
+#~ "Extension Wordpress de personnalisation de l'éditeur : Activation de "
+#~ "modules, de boutons ..."
+
+#~ msgid "Trombinoscope"
+#~ msgstr "Trombinoscope"
+
+#~ msgid "Wordpress plugin of Trombinoscope"
+#~ msgstr "Extension Wordpress de Trombinoscope"
+
+#~ msgid "Videos"
+#~ msgstr "Vidéos"
+
+#~ msgid "Wordpress plugin that allow join videos on posts"
+#~ msgstr "Extension Wordpress permettant de joindre des videos aux posts"
+
+#~ msgid "View Count"
+#~ msgstr "Compteur de vues"
+
+#~ msgid "Wordpress plugin to survey posts view"
+#~ msgstr "Extension Wordpress de contrôle de vue sur les posts"
+
+#~ msgid "Widgets Kit"
+#~ msgstr "Kit de Widgets"
+
+#~ msgid "Wordpress plugin of usual Widgets"
+#~ msgstr "Extension Wordpress de widgets utiles"
+
+#~ msgid "Milkcreation | Wordpress Extend Plugins Pack"
+#~ msgstr "Milkcreation | Wordpress Pack d'Extension &Eacute;tendu"
+
+#~ msgid "Plugins Pack"
+#~ msgstr "Pack d'extensions"
+
+#~ msgid "Plugins"
+#~ msgstr "Extensions"
+
+#~ msgid "You are not allow to change activation of this plugin"
+#~ msgstr "Vous n'êtes pas autorisé à changer l'activation de cette extension"
+
+#~ msgid "You are not allow to change activation of locked plugins"
+#~ msgstr ""
+#~ "Vous n'êtes pas autorisé à changer l'activation des extension verrouillée"
+
+#~ msgid "Plugin <strong>activated</strong>."
+#~ msgstr "Extension <strong>activée</strong>."
+
+#~ msgid "Selected plugins <strong>activated</strong>."
+#~ msgstr "Extensions sélectionnées <strong>activées</strong>."
+
+#~ msgid "Plugin <strong>deactivated</strong>."
+#~ msgstr "Extension <strong>désactivée</strong>."
+
+#~ msgid "Selected plugins <strong>deactivated</strong>."
+#~ msgstr "Extensions sélectionnées <strong>désactivées</strong>."
+
+#~ msgid "Admin Plugins | Milkcreation Plugins Pack"
+#~ msgstr "Administration des extensions | Pack d'extensions Milkcreation"
+
+#~ msgid "Plugin"
+#~ msgstr "Extension"
+
+#~ msgid "Active <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Active <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Activée <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Activées <span class=\"count\">(%s)</span>"
+
+#~ msgid "Inactive <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Inactive <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Inactif <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Inactifs <span class=\"count\">(%s)</span>"
+
+#~ msgid "Locked <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Locked <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Verrouillée <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Verrouillées <span class=\"count\">(%s)</span>"
+
+#~ msgid "Unlocked <span class=\"count\">(%s)</span>"
+#~ msgid_plural "Unlocked <span class=\"count\">(%s)</span>"
+#~ msgstr[0] "Déverrouillée <span class=\"count\">(%s)</span>"
+#~ msgstr[1] "Déverrouillées <span class=\"count\">(%s)</span>"
+
+#~ msgid "Activated by default"
+#~ msgstr "Activée par défaut"
+
+#~ msgid "Deactivated by default"
+#~ msgstr "Désactivée par défaut"
+
+#~ msgid "Deactivate"
+#~ msgstr "Désactiver"
+
+#~ msgid "Activate"
+#~ msgstr "Activer"
+
+#~ msgid "Activated"
+#~ msgstr "Activée"
+
+#~ msgid "Deactivated"
+#~ msgstr "Désactivée"
+
+#~ msgid "(locked)"
+#~ msgstr "(Verrouiller)"
+
+#~ msgid "Visit plugin site"
+#~ msgstr "Aller sur le site de l'extension"
+
+#~ msgid "Tools"
+#~ msgstr "Outils"
+
+#~ msgid "File don't exists"
+#~ msgstr "Le fichier est introuvable"
+
+#~ msgid "Zip Files"
+#~ msgstr "Fichier zip"
+
+#~ msgid "Wordpress plugin to allow export zip archives of site files"
+#~ msgstr "Extension Wordpress permettant l'export de fichiers zip du site"
+
+#, fuzzy
+#~ msgid "Deativate"
+#~ msgstr "Désactiver"
+
+#~ msgid "Maps (Deprecated)"
+#~ msgstr "Cartes (Dépreciée)"
+
+#~ msgid "Wordpress plugins of dynamics SVG clickable maps (Deprecated)"
+#~ msgstr "Extension Wordpress de Cartes dynamique en SVG (Déprecié)"
+
+#~ msgid "Maps"
+#~ msgstr "Cartes"
+
+#~ msgid "Readmore"
+#~ msgstr "Lire la suite"
+
+#~ msgid "No item."
+#~ msgstr "Aucun élément"
+
+#~ msgid "&laquo;"
+#~ msgstr "&laquo;"
+
+#~ msgid "&raquo;"
+#~ msgstr "&raquo;"
+
+#~ msgid "View All"
+#~ msgstr "View All"
 
 #~ msgid ""
-#~ "Les demandes d’accès à l'Espace Pro sont étudiées sous 7 jours ouvrés. Si "
-#~ "vous ne recevez pas de code d'accès une fois ce délai dépassé, merci de "
-#~ "contacter le service Télévente avec votre numéro de client."
+#~ "Use this widget to display a list of posts according to its type in "
+#~ "widget's areas"
 #~ msgstr ""
-#~ "Anträge für einen Zugang zum Händler-/Presse-Bereich werden innerhalb von "
-#~ "7 Arbeitstagen bearbeitet. Sollten Sie innerhalb dieser Zeitspanne keinen "
-#~ "Zugangscode erhalten, setzen Sie sich bitte unter Angabe Ihrer "
-#~ "Kundennummer mit dem telefonischen Vertriebs"
+#~ "Utiliser ce widget pour afficher une liste de post selon leur type dans "
+#~ "une zone de widget."
 
-#~ msgid "Les données de votre compte ont été mises à jour"
-#~ msgstr "Ihr Konto wurde aktualisiert."
+#~ msgid "List of Posts by Type"
+#~ msgstr "Liste de post par type"
 
-#~ msgid "Le format de l'email n'est pas valide"
-#~ msgstr "Das E-Mail-Format is nicht gültig"
+#~ msgid "Title : "
+#~ msgstr "Titre :"
+
+#~ msgid "Use template part : "
+#~ msgstr "Utiliser le modèle du thème :"
+
+#~ msgid "Post Type : "
+#~ msgstr "Type de post"
+
+#~ msgid "Selected posts: "
+#~ msgstr "Liste des posts sélectionnés :"
+
+#~ msgid "Showcase thumbnail"
+#~ msgstr "Image de la vitrine"
+
+#~ msgid "Display in showcase"
+#~ msgstr "Afficher dans la vitrine"
+
+#~ msgid "Add a showcase thumbnail"
+#~ msgstr "Ajout d'une image dans la vitrine"
+
+#~ msgid "Remove from showcase"
+#~ msgstr "Retirer de la vitrine"
+
+#~ msgid "Activate showcase for post types"
+#~ msgstr "Types de post pour lesquels activer la vitrine "
+
+#~ msgid "Milk Showcase - dynamic gallery by Milkcreation"
+#~ msgstr "Milk Showcase - Galerie dynamique par Milkcreation"
+
+#~ msgid "Showcase Theme Options"
+#~ msgstr "Options de la vitrine"
+
+#~ msgid "Slideshow of a Showcase"
+#~ msgstr "Diaporama d'images d'une vitrine"
+
+#~ msgid "Showcase:"
+#~ msgstr "Vitrine:"
+
+#~ msgid "Select a showcase"
+#~ msgstr "Choisir une vitrine"

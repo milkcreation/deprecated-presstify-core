@@ -14,7 +14,7 @@
 
 namespace tiFy\Core\User\TakeOver\ActionLink;
 
-use tiFy\Core\User\User;
+use tiFy\Core\User\TakeOver\TakeOver;
 
 class ActionLink extends \tiFy\Core\Control\Factory
 {
@@ -62,7 +62,7 @@ class ActionLink extends \tiFy\Core\Control\Factory
         extract($_args);
 
         // Bypass - L'identification de qualification ne fait référence à aucune classe de rappel déclarée
-        if (!$takeOver = User::getTakeOver($take_over_id)) :
+        if (!$takeOver = TakeOver::get($take_over_id)) :
             return;
         endif;
 

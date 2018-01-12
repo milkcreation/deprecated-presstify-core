@@ -1,11 +1,24 @@
 <?php
-namespace tiFy\Components\Login;
+/**
+ * @name Login
+ * @desc Interface d'authentification utilisateur
+ * @package presstiFy
+ * @namespace tiFy\Core\User\Login
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.535
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
 
-final class Login extends \tiFy\App\Component
+namespace tiFy\Core\User\Login;
+
+final class Login extends \tiFy\App
 {
     /**
      * Liste des classes de rappel des interfaces d'authentification
-     * @var \tiFy\Components\Login\Factory[]
+     * @var \tiFy\Core\User\Login\Factory[]
      */
     private static $Factory   = [];
 
@@ -17,6 +30,13 @@ final class Login extends \tiFy\App\Component
     public function __construct()
     {
         parent::__construct();
+
+        // Déclaration des interfaces d'authentification configurées
+        if ($logins = self::tFyAppConfig('login', [], 'tiFy\Core\User\User')) :
+            foreach ($logins as $id => $attrs) :
+                self::register($id, $attrs);
+            endforeach;
+        endif;
 
         // Déclaration des événenements de déclenchement
         $this->tFyAppAddAction('init');
@@ -32,13 +52,6 @@ final class Login extends \tiFy\App\Component
      */
     final public function init()
     {
-        // Déclaration des interfaces d'authentification configurées
-        if ($logins = self::tFyAppConfig()) :
-            foreach ($logins as $id => $attrs) :
-                self::register($id, $attrs);
-            endforeach;
-        endif;
-
         // Déclaration des interfaces d'authentification ponctuelles
         do_action('tify_login_register');
     }
@@ -52,10 +65,9 @@ final class Login extends \tiFy\App\Component
      * @param string $id Identification de qualification du formulaire d'authentification
      * @param array $attrs Attributs de configuration
      *
-     * @return \tiFy\Components\Login\Factory
+     * @return \tiFy\Core\User\Login\Factory
      */
-    /** ==  == **/
-    public static function register( $id, $attrs = [])
+    public static function register($id, $attrs = [])
     {
         $defaults = [
             'cb'    => ''
@@ -73,10 +85,9 @@ final class Login extends \tiFy\App\Component
         if ($attrs['cb']) :
             $path[] = $attrs['cb'];
         endif;
+        $path[] = self::tFyAppOverrideAppNamespace() . '\\'. self::tFyAppFormatAsClassname($id);
 
-        $path[] = "\\". self::getOverrideNamespace() . "\\Login\\". self::sanitizeControllerName( $id );    
-
-        $callback = self::getOverride('\tiFy\Components\Login\Factory', $path);
+        $callback = self::tFyAppGetOverride('\tiFy\Core\User\Login\Factory', $path);
 
         return self::$Factory[$id] = new $callback($id, $attrs);
     }
@@ -99,7 +110,7 @@ final class Login extends \tiFy\App\Component
      * Affichage d'un élément de gabarit
      *
      * @param string $id Identification de qualification d'un formulaire d'authentification déclaré
-     * @param string $template Méthode de la classe \tiFy\Components\Login\Factory d'affichage
+     * @param string $template Méthode de la classe \tiFy\Core\User\Login\Factory d'affichage
      *
      * @return string
      */

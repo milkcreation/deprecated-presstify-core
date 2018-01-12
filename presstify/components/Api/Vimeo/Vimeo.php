@@ -22,7 +22,7 @@ class Vimeo extends \Vimeo\Vimeo
      * Initialisation
      * @param array $attrs
      */
-    public static function tiFyApiInit( $attrs = array() )
+    public static function create( $attrs = array() )
     {
         return new static( $attrs['client_id'], $attrs['client_secret'], ( ! empty( $attrs['access_token'] ) ? $attrs['access_token'] : null ) );
     }

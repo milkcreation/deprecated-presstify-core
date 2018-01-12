@@ -137,7 +137,7 @@ trait App
     {
         if ($tag && ! \function_exists($tag)) :
             $classname = self::_tFyAppParseClassname($classname);
-            eval('function ' . $tag . '() { return call_user_func_array("' . $classname . '::' . $method . '", func_get_args()); }');
+            eval('function ' . $tag . '() { return call_user_func_array("' . $classname . '::' . $method . '", func_get_args());}');
         endif;
     }
 
@@ -483,6 +483,26 @@ trait App
      * SURCHAGES - Controleurs
      */
     /**
+     * Formatage d'une chaine de caractère en nom de classe
+     * ex: my-class_name => MyClass_Name
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public static function tFyAppFormatAsClassname($string)
+    {
+        $string = implode('', array_map('ucfirst', explode('-', $string)));
+        $string = implode('_', array_map('ucfirst', explode('_', $string)));
+
+        if(preg_match('/^tiFy/', $string)) :
+            $string = lcfirst($string);
+        endif;
+
+        return $string;
+    }
+
+    /**
      * Récupération d'une classe de surcharge
      *
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
@@ -490,12 +510,12 @@ trait App
      *
      * @return null|string
      */
-    final public static function tFyAppGetOverrideClass($classname = null, $path = [])
+    final public static function tFyAppGetOverride($classname = null, $path = [])
     {
         $classname = self::_tFyAppParseClassname($classname);
 
         if (empty($path)) :
-            $path = self::tFyAppOverrideClassPath($classname);
+            $path = self::tFyAppOverrideNamespaceList($classname);
         endif;
 
         foreach ((array)$path as $override) :
@@ -519,9 +539,9 @@ trait App
      *
      * @return null|object
      */
-    public static function tFyAppLoadOverrideClass($classname = null, $path = [], $passed_args = '')
+    public static function tFyAppLoadOverride($classname = null, $path = [], $passed_args = '')
     {
-        if ($classname = self::tFyAppGetOverrideClass($classname, $path)) :
+        if ($classname = self::tFyAppGetOverride($classname, $path)) :
             if (!empty($passed_args)) :
                 return new $classname(compact('passed_args'));
             else :
@@ -531,23 +551,66 @@ trait App
     }
 
     /**
-     * Récupération de la liste des chemins de surcharge d'une classe
+     * Récupération de l'espace de nom de surcharge principal
      *
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return string[]
+     * @return null|string
      */
-    public static function tFyAppOverrideClassPath($classname = null)
+    public static function tFyAppOverrideAppNamespace($classname = null)
     {
         $classname = self::_tFyAppParseClassname($classname);
+        $sub = preg_replace("/^tiFy\\\/", "", ltrim(self::tFyAppNamespace($classname), '\\'));
 
-        $path = [];
-        foreach ((array)self::tFyAppOverrideClassNamespaceList($classname) as $namespace) :
-            $namespace = ltrim($namespace, '\\');
-            $path[]    = $namespace . "\\" . preg_replace("/^tiFy\\\/", "", ltrim($classname, '\\'));
+        if (($app = tiFy::getConfig('app')) && !empty($app['namespace'])) :
+            return $app['namespace'] . ($sub ? "\\{$sub}" : '');
+        endif;
+    }
+
+    /**
+     * Récupération de la liste des espaces de nom de surcharge des jeux de fonctionnalités
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    public static function tFyAppOverrideSetsNamespaceList($classname = null)
+    {
+        $classname = self::_tFyAppParseClassname($classname);
+        $sub = self::tFyAppOverrideAppNamespace($classname);
+
+        $namespaces = [];
+        foreach ((array)Apps::querySet() as $_classname => $attrs) :
+            if($_classname === $classname) :
+                continue;
+            endif;
+            $namespaces[] = "{$attrs['Namespace']}" . ($sub ? "\\{$sub}" : '');
         endforeach;
 
-        return $path;
+        return $namespaces;
+    }
+
+    /**
+     * Récupération de la liste des espaces de nom de surcharge des jeux de fonctionnalités
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    public static function tFyAppOverridePluginsNamespaceList($classname = null)
+    {
+        $classname = self::_tFyAppParseClassname($classname);
+        $sub = self::tFyAppOverrideAppNamespace($classname);
+
+        $namespaces = [];
+        foreach ((array)Apps::queryPlugins() as $_classname => $attrs) :
+            if($_classname === $classname) :
+                continue;
+            endif;
+            $namespaces[] = "tiFy\\Plugins\\" . $attrs['Id'] . ($sub ? "\\{$sub}" : '');
+        endforeach;
+
+        return $namespaces;
     }
 
     /**
@@ -557,32 +620,29 @@ trait App
      *
      * @return string[]
      */
-    public static function tFyAppOverrideClassNamespaceList($classname = null)
+    public static function tFyAppOverrideNamespaceList($classname = null)
     {
-        $classname = self::_tFyAppParseClassname($classname);
+        $namespaces = [];
 
-        $namespaces = array();
-
-        if (($app = tiFy::getConfig('app')) && !empty($app['namespace'])) :
-            $namespaces[] = $app['namespace'];
+        if ($app = self::tFyAppOverrideAppNamespace($classname)) :
+            $namespaces[] = $app;
         endif;
 
-        foreach ((array)Apps::querySet() as $_classname => $attrs) :
-            if($_classname === $classname) :
-                continue;
-            endif;
-            $namespaces[] = "{$attrs['Namespace']}\\App";
-        endforeach;
+        if ($sets = self::tFyAppOverrideSetsNamespaceList($classname)) :
+            foreach($sets as $set) :
+                $namespaces[] = $set;
+            endforeach;
+        endif;
 
-        foreach ((array)Apps::queryPlugins() as $_classname => $attrs) :
-            if($_classname === $classname) :
-                continue;
-            endif;
-            $namespaces[] = "tiFy\\Plugins\\" . $attrs['Id'] . "\\App";
-        endforeach;
+        if ($plugins = self::tFyAppOverridePluginsNamespaceList($classname)) :
+            foreach($plugins as $plugin) :
+                $namespaces[] = $plugin;
+            endforeach;
+        endif;
 
         return $namespaces;
     }
+
 
     /**
      * SURCHAGES - Gabarits

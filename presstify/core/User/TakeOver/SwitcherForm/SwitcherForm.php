@@ -14,10 +14,9 @@
 
 namespace tiFy\Core\User\TakeOver\SwitcherForm;
 
-use tiFy\Core\User\User;
 use tiFy\Core\Field\Field;
-
-use tiFy\Lib\User\User as UserLib;
+use tiFy\Core\User\TakeOver\TakeOver;
+use tiFy\Lib\User\User;
 
 class SwitcherForm extends \tiFy\Core\Control\Factory
 {
@@ -43,7 +42,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
 
         \wp_register_script(
             'tify_control-take_over_switcher_form',
-            self::tFyAppUrl(get_class()). '/SwitcherForm.js',
+            self::tFyAppAssetsUrl('SwitcherForm.js', get_class()),
             [],
             171218,
             true
@@ -72,7 +71,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
         check_ajax_referer('tiFyTakeOverSwitcherForm-getUsers');
 
         // Récupération de la liste de choix des utilisateurs
-        $user_options = UserLib::userQueryKeyValue(
+        $user_options = User::userQueryKeyValue(
             'ID',
             'display_name',
             [
@@ -130,7 +129,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
         extract($attrs);
 
         // Bypass - L'identification de qualification ne fait référence à aucune classe de rappel déclarée
-        if (!$takeOver = User::getTakeOver($take_over_id)) :
+        if (!$takeOver = TakeOver::get($take_over_id)) :
             return;
 
         // Bypass - L'utilisateur n'est pas habilité à utiliser l'interface
@@ -155,7 +154,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
             if (!$role = \get_role($allowed_role)) :
                 continue;
             endif;
-            $role_options[$allowed_role] = UserLib::roleDisplayName($allowed_role);
+            $role_options[$allowed_role] = User::roleDisplayName($allowed_role);
         endforeach;
         $role_options = [-1 => __('Choix du role', 'tify')] + $role_options;
 

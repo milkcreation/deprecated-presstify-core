@@ -117,7 +117,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
             $query_args = [];
         endif;
 
-        $Nodes = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\AccordionMenu\Nodes');
+        $Nodes = self::tFyAppLoadOverride('tiFy\Core\Control\AccordionMenu\Nodes');
         switch ($type) :
             case 'terms' :
                 $nodes = $Nodes->terms($query_args,['selected' => $selected]);
@@ -130,7 +130,7 @@ class AccordionMenu extends \tiFy\Core\Control\Factory
         $output = "";
         $output .= "<div id=\"{$container_id}\" class=\"tiFyControlAccordionMenu tiFyControlAccordionMenu--{$theme}" . ($container_class ? ' ' . $container_class : '') . "\" data-tify_control=\"accordion_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlAccordionMenu-nav\">\n";
-        $Walker = self::tFyAppLoadOverrideClass('tiFy\Core\Control\AccordionMenu\Walker');
+        $Walker = self::tFyAppLoadOverride('tiFy\Core\Control\AccordionMenu\Walker');
         $output .= $Walker->output($nodes);
         $output .= "\t</nav>\n";
         $output .= "</div>\n";

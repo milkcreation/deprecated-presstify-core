@@ -1,9 +1,8 @@
 <?php
-namespace tiFy\Components\Login;
+namespace tiFy\Core\User\Login;
 
 use tiFy\Core\Field\Field;
 use tiFy\Core\Control\Notices\Notices;
-use Symfony\Component\HttpFoundation\Request;
 
 class Factory extends \tiFy\App\FactoryConstructor
 {
@@ -18,11 +17,8 @@ class Factory extends \tiFy\App\FactoryConstructor
     {
         parent::__construct($id, $attrs);
 
-        // Classe de traitement des requête
-        $request = Request::createFromGlobals();
-
         // Bypass
-        if (!$tify_login = $request->get('tiFyLogin', false)) :
+        if (!$tify_login = self::tFyAppGetRequestVar('tiFyLogin', false)) :
             return;
         endif;
 
@@ -30,7 +26,7 @@ class Factory extends \tiFy\App\FactoryConstructor
             return;
         endif;
 
-        $action = $request->get('action', 'login');
+        $action = self::tFyAppGetRequestVar('action', 'login');
         switch ($action) :
             default :
                 break;
@@ -46,9 +42,6 @@ class Factory extends \tiFy\App\FactoryConstructor
         endswitch;
     }
 
-    /**
-     * DECLENCHEURS
-     */
     /**
      * CONTROLEURS
      */
@@ -431,7 +424,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $attrs['attrs']['name'] = 'log';
+        $attrs['name'] = 'log';
 
         return $attrs;
     }
@@ -457,7 +450,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $attrs['attrs']['name'] = 'pwd';
+        $attrs['name'] = 'pwd';
 
         return $attrs;
     }
@@ -483,7 +476,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $attrs['attrs']['name'] = 'remember';
+        $attrs['name'] = 'remember';
 
         return $attrs;
     }
@@ -508,7 +501,7 @@ class Factory extends \tiFy\App\FactoryConstructor
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $attrs['attrs']['name'] = 'submit';
+        $attrs['name'] = 'submit';
 
         return $attrs;
     }
@@ -598,8 +591,17 @@ class Factory extends \tiFy\App\FactoryConstructor
         $output .= "<form name=\"{$form_name}\" id=\"{$form_id}\" class=\"{$form_class}\" action=\"\" method=\"post\">";
 
         // Champs cachés requis
-        $output .= Field::Hidden(['attrs' => ['name' => 'tiFyLogin', 'value' => $this->getId()]]);
-        $output .= Field::Hidden(['attrs' => ['name' => '_wpnonce', 'value' => \wp_create_nonce('tiFyLogin-in-' . $this->getId())]]);
+        $output .= Field::Hidden(
+            [
+                'name' => 'tiFyLogin',
+                'value' => $this->getId()
+            ]
+        );
+        $output .= Field::Hidden(
+            [
+                'name' => '_wpnonce',
+                'value' => \wp_create_nonce('tiFyLogin-in-' . $this->getId())]
+        );
 
         // Champs cachés
         $output .= $this->hidden_fields();

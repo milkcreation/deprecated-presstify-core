@@ -15,7 +15,7 @@
 namespace tiFy\Core\User\TakeOver\AdminBar;
 
 use tiFy\Core\Control\Control;
-use tiFy\Core\User\User;
+use tiFy\Core\User\TakeOver\TakeOver;
 
 class AdminBar extends \tiFy\Core\Control\Factory
 {
@@ -31,7 +31,7 @@ class AdminBar extends \tiFy\Core\Control\Factory
     {
         \wp_register_style(
             'tify_control-take_over_admin_bar',
-            self::tFyAppUrl(get_class()). '/AdminBar.css',
+            self::tFyAppAssetsUrl('AdminBar.css', get_class()),
             [],
             171218
         );
@@ -81,14 +81,14 @@ class AdminBar extends \tiFy\Core\Control\Factory
         extract($attrs);
 
         // Bypass - L'identification de qualification ne fait référence à aucune classe de rappel déclarée
-        if (!$takeOver = User::getTakeOver($take_over_id)) :
+        if (!$takeOver = TakeOver::get($take_over_id)) :
             return;
         endif;
 
         $output  = "";
         $output .= "<div class=\"tiFyTakeOver-Control--admin_bar\">";
-        $output .= Control::display('take_over_switcher_form', compact('take_over_id'), false);
-        $output .= Control::display('take_over_action_link', compact('take_over_id'), false);
+        $output .= Control::TakeOverSwitcherForm(compact('take_over_id'));
+        $output .= Control::TakeOverActionLink(compact('take_over_id'));
         $output .= "</div>";
 
         if ($in_footer) :
