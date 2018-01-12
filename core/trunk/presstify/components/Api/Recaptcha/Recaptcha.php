@@ -23,7 +23,7 @@ class Recaptcha extends \ReCaptcha\ReCaptcha
      * Initialisation
      * @param array $attrs
      */
-    public static function tiFyApiInit( $attrs = array() )
+    public static function create( $attrs = array() )
     {
         if( ! ini_get( 'allow_url_fopen' ) ) :
             // allow_url_fopen = Off            

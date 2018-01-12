@@ -25,9 +25,9 @@ class Languages extends \tiFy\App\Factory
     public function plugins_loaded()
     {
         // Chargement des traductions
-        load_textdomain(
-            'tify', 
-            tiFy::$AbsDir . '/bin/languages/tify-' . get_locale() . '.mo' 
+        load_muplugin_textdomain(
+            'tify',
+            '/presstify/languages/'
         );
     }
 }

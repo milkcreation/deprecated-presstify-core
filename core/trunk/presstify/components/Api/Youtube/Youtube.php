@@ -35,7 +35,7 @@ class Youtube extends \Madcoda\Youtube\Youtube
      *
      * @return void
      */
-    public static function tiFyApiInit($attrs = [])
+    public static function create($attrs = [])
     {
         return self::$Inst = new static($attrs, is_ssl());
     }

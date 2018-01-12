@@ -34,7 +34,7 @@ class GoogleMap extends \Ivory\GoogleMap\Map
      * Initialisation
      * @param array $attrs
      */
-    public static function tiFyApiInit( $attrs = array() )
+    public static function create( $attrs = array() )
     {
         if( ! empty( $attrs['key'] ) ) :
             self::$Helper = MapHelperBuilder::create()->build();

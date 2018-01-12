@@ -109,7 +109,7 @@ class Calendar extends \tiFy\Core\Control\Factory
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
 
-        $className = self::tFyAppGetOverrideClass('tiFy\Core\Control\Calendar\Display');
+        $className = self::tFyAppGetOverride('tiFy\Core\Control\Calendar\Display');
         $display = new $className($attrs);
 
         $output = $display->output();

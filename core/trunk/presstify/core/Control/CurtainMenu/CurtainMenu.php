@@ -102,7 +102,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
             $query_args = [];
         endif;
 
-        $Nodes = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\CurtainMenu\Nodes');
+        $Nodes = self::tFyAppLoadOverride('tiFy\Core\Control\CurtainMenu\Nodes');
 
         switch ($type) :
             case 'terms' :
@@ -118,7 +118,7 @@ class CurtainMenu extends \tiFy\Core\Control\Factory
         $output .= "<div id=\"{$container_id}\" class=\"tiFyControlCurtainMenu tiFyControlCurtainMenu--{$theme}" . ($container_class ? ' ' . $container_class : '') . "\" data-tify_control=\"curtain_menu\">\n";
         $output .= "\t<nav class=\"tiFyControlCurtainMenu-nav\">\n";
         $output .= "\t\t<div class=\"tiFyControlCurtainMenu-panel tiFyControlCurtainMenu-panel--open\">\n";
-        $Walker = self::tFyAppLoadOverrideClass('\tiFy\Core\Control\CurtainMenu\Walker');
+        $Walker = self::tFyAppLoadOverride('tiFy\Core\Control\CurtainMenu\Walker');
         $output .= $Walker->output($nodes, ['selected' => $selected]);
         $output .= "\t\t</div>\n";
         $output .= "\t</nav>\n";

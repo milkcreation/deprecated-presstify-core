@@ -23,6 +23,7 @@ namespace
     {
         return \tiFy\Components\ArchiveFilters\ArchiveFilters::Display( $echo );
     }
+
     /*** === Déclaration d'un filtre === ***/
     function tify_archive_filters_register( $obj_type = 'post', $obj = 'post_type', $args = array() )
     {
@@ -155,11 +156,11 @@ namespace
      * @param string $callback Classe de rappel de l'interface d'authentification
      * @param array $attrs Attributs de configuration de l'interface d'authentification
      *
-     * @return \tiFy\Components\Login\Factory
+     * @return \tiFy\Core\User\Login\Factory
      */
     function tify_login_register($id, $callback, $attrs = [])
     {
-        return tiFy\Components\Login\Login::register($id, $callback, $attrs);
+        return tiFy\Core\User\Login\Login::register($id, $callback, $attrs);
     }
 
     /**
@@ -173,7 +174,7 @@ namespace
      */
     function tify_login_form($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'login_form', $attrs, $echo);
+        return tiFy\Core\User\Login\Login::display($id, 'login_form', $attrs, $echo);
     }
 
     /**
@@ -187,7 +188,7 @@ namespace
      */
     function tify_login_form_errors($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'login_form_errors', $attrs, $echo);
+        return tiFy\Core\User\Login\Login::display($id, 'login_form_errors', $attrs, $echo);
     }
 
     /**
@@ -202,7 +203,7 @@ namespace
     /** == Affichage des erreurs de traitement de formulaire == **/
     function tify_login_logout_link($id, $attrs = [], $echo = true)
     {
-        return tiFy\Components\Login\Login::display( $id, 'logout_link', $attrs, $echo);
+        return tiFy\Core\User\Login\Login::display($id, 'logout_link', $attrs, $echo);
     }
     
     // --------------------------------------------------------------------------------------------------------------------------

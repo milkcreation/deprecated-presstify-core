@@ -85,6 +85,9 @@ final class tiFy
         // Instanciation des librairies proriétaires
         new Libraries;
 
+        // Initialisation de la gestion des traductions
+        new Languages;
+
         // Chargement des librairies tierces
         if (file_exists(tiFy::$AbsDir .'/vendor/autoload.php')) :
             require_once tiFy::$AbsDir .'/vendor/autoload.php';

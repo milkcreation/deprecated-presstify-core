@@ -9,6 +9,7 @@
  * @copyright Tigre Blanc Digital
  * @version 1.2.369
  */
+
 namespace tiFy\Components\Api;
 
 class Api extends \tiFy\App\Component
@@ -28,10 +29,10 @@ class Api extends \tiFy\App\Component
     ];
     
     /**
-     * Liste des classes de rappel
+     * Liste des classes de rappel des API
      * @var object[]
      */
-    private static $Api             = [];
+    private static $Factory         = [];
     
     /**
      * CONSTRUCTEUR
@@ -56,30 +57,37 @@ class Api extends \tiFy\App\Component
     /**
      * Déclaration
      *
-     * @param string $api Nom de l'api. Doit faire parti des api permises.
+     * @param string $id Identifiant de qualification de l'Api. Doit faire parti des api permises.
      * @param array $attrs Attributs de configuration
      *
      * @return null|object
      */
-    public function register($api, $attrs = [])
+    public function register($id, $attrs = [])
     {
         // Bypass
-        if( ! in_array( $api, self::$Allowed ) )
+        if (!in_array($id, self::$Allowed)) :
             return;
+        endif;
             
-        $ClassName = self::sanitizeControllerName($api);
-        $ClassName = "tiFy\\Components\\Api\\{$ClassName}\\". $ClassName;
+        $classname = self::tFyAppFormatAsClassname($id);
+        $class = "tiFy\\Components\\Api\\{$classname}\\{$classname}";
 
-        return self::$Api[$api] = $ClassName::tiFyApiInit($attrs);
+        if (class_exists($class)) :
+            return self::$Factory[$id] = $class::create($attrs);
+        endif;
     }
     
     /**
      * Récupération
+     *
+     * @param string $id Identifiant de qualification de l'Api. Doit faire parti des api permises.
+     *
+     * @return null|object
      */
-    public static function get($api)
+    public static function get($id)
     {
-        if(isset(self::$Api[$api])) :
-            return self::$Api[$api];
+        if(isset(self::$Factory[$id])) :
+            return self::$Factory[$id];
         endif;
     }
 }

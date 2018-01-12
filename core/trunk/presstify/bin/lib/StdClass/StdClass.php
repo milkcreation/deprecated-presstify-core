@@ -22,7 +22,7 @@ class StdClass
         $classname = implode('_', array_map('ucfirst', explode('_', $classname)));
                 
         return $classname;
-    }    
+    }
     
     /** 
      * Récupération de la liste des espaces de nom de surcharge
