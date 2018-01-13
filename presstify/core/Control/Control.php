@@ -56,6 +56,7 @@ class Control extends \tiFy\App\Core
 
             // Définition des classes d'aide à la saisie
             $_id = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', $id)));
+
             $instance->addIncreaseHelper('tify_control' . $_id, 'display');
 
             if (is_callable([$classname, 'init'])) :
@@ -63,47 +64,10 @@ class Control extends \tiFy\App\Core
             endif;
         endforeach;
     }
-        
+
     /**
      * CONTROLEURS
      */
-    /**
-     * Affichage ou récupération du contenu d'un controleur natif
-     *
-     * @param string $name Identifiant de qualification du controleur d'affichage
-     * @param array $args {
-     *      Liste des attributs de configuration
-     *
-     *      @var array $attrs Attributs de configuration du champ
-     *      @var bool $echo Activation de l'affichage du champ
-     *
-     * @return null|callable
-     */
-    final public static function __callStatic($id, $args)
-    {
-        if (!isset(static::$Factory[$id])) :
-            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $id));
-        elseif ($classname = get_class(static::$Factory[$id])) :
-            $callable = [$classname, 'display'];
-        else :
-            $callable = static::$Factory[$id];
-        endif;
-        if (!is_callable($callable)) :
-            return trigger_error(sprintf(__('La méthode d\'affichage du controleur d\'affichage %s ne peut être appelée.', 'tify'), $id));
-        endif;
-
-        $echo = isset($args[1]) ? $args[1] : false;
-        $attrs = reset($args);
-
-        if ($echo) :
-            call_user_func_array($callable, compact('attrs'));
-        else :
-            ob_start();
-            call_user_func_array($callable, compact('attrs'));
-            return ob_get_clean();
-        endif;
-    }
-
     /**
      * Déclaration d'un controleur d'affichage
      *
@@ -123,6 +87,40 @@ class Control extends \tiFy\App\Core
     }
 
     /**
+     * Affichage ou récupération du contenu d'un controleur natif
+     *
+     * @param string $name Identifiant de qualification du controleur d'affichage
+     * @param array $args {
+     *      Liste des attributs de configuration
+     *
+     *      @var array $attrs Attributs de configuration du champ
+     *      @var bool $echo Activation de l'affichage du champ
+     *
+     * @return null|callable
+     */
+    final public static function __callStatic($id, $args)
+    {
+        if (!isset(static::$Factory[$id])) :
+            return trigger_error(sprintf(__('Le controleur d\'affichage %s n\'est pas disponible.', 'tify'), $id));
+        elseif ($classname = get_class(static::$Factory[$id])) :
+            $callable = [$classname, 'display'];
+
+            if (!isset($args[0])) :
+                $args[0] = [];
+            endif;
+            $args[1] = isset($args[1]) ? $args[1] : false;
+        else :
+            $callable = static::$Factory[$id];
+        endif;
+
+        if (!is_callable($callable)) :
+            return trigger_error(sprintf(__('La méthode d\'affichage du controleur d\'affichage %s ne peut être appelée.', 'tify'), $id));
+        endif;
+
+        return call_user_func_array($callable, $args);
+    }
+
+    /**
      * Appel d'une méthode helper de contrôleur
      *
      * @param string $id Identifiant de qualification du controleur
@@ -133,6 +131,10 @@ class Control extends \tiFy\App\Core
     final public static function call($id, $method)
     {
         $id = join('', array_map('ucfirst', preg_split('#_#', $id)));
+
+        if (!isset(static::$Factory[$id])) :
+            return;
+        endif;
 
         $classname = get_class(static::$Factory[$id]);
 

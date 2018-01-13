@@ -23,11 +23,14 @@ class Deprecated
         // Ancien environnement des applicatifs
         tiFy::classLoad('tiFy\Environment', dirname(__FILE__) .'/env');
 
-        // Anciennes classe abstraites de la librairie libraries
+        // Anciennes librairies des classes abstraites
         tiFy::classLoad('tiFy\Abstracts', dirname(__FILE__) .'/lib/Abstracts');
 
-        // Anciennes classe abstraites de la librairie libraries
+        // Anciennes librairies des classes héritées
         tiFy::classLoad('tiFy\Inherits', dirname(__FILE__) .'/lib/Inherits');
+
+        // Anciennes librairie Facebook
+        tiFy::classLoad('tiFy\Lib\Facebook', dirname(__FILE__) .'/lib/Facebook');
 
         // core/Control
         tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control');

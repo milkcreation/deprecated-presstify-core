@@ -34,6 +34,7 @@
         "phpdocumentor/reflection-docblock": "^3.2.2",
         "codeitnowin/barcode": "^2.1",
         "league/flysystem": "^1.0",
-        "league/event": "^2.1"
+        "league/event": "^2.1",
+        "league/container": "^2.4"
     }
 }

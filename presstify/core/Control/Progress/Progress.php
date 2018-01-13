@@ -84,7 +84,7 @@ class Progress extends \tiFy\Core\Control\Factory
             'title'     => '',
             'value'     => 100,
             'max'       => 100,
-            'in_footer' => false
+            'in_footer' => true
         ];
         $attrs = wp_parse_args($attrs, $defaults);
         extract($attrs);

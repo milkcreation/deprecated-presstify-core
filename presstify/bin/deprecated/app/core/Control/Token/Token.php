@@ -26,7 +26,7 @@ class Token extends \tiFy\Core\Control\Factory {
     }
 
     /* = AFFICHAGE = */
-    protected function display( $args = [], $echo = true )
+    protected function display($args = [])
     {
         $defaults = [
             // Conteneur
@@ -88,11 +88,7 @@ class Token extends \tiFy\Core\Control\Factory {
         }
         $output .= "</div>\n";
 
-        if ( $echo ) {
-            echo $output;
-        } else {
-            return $output;
-        }
+        echo $output;
     }
 
     /** == Génération de clé via AJAX == **/

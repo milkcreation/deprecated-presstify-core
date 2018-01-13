@@ -19,6 +19,10 @@ namespace
         endif;
 
         foreach($scripts as $script) :
+            // Rétrocompatibilité
+            if ($script === 'switch') :
+                $script = 'switcher';
+            endif;
             tiFy\Core\Control\Control::enqueue_scripts($script);
         endforeach;
     }

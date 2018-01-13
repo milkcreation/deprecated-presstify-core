@@ -26,7 +26,7 @@ class DynamicInputs extends Factory {
     }
 
     /* = AFFICHAGE = */
-    protected function display( $args = [], $echo = true )
+    protected function display($args = [])
     {
         static $instance = 0;
         $instance ++;
@@ -110,10 +110,6 @@ class DynamicInputs extends Factory {
 
         $output .= "</div>\n";
 
-        if ( $echo ) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }
