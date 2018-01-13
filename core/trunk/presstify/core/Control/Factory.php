@@ -79,7 +79,6 @@ abstract class Factory extends \tiFy\App\FactoryConstructor
         endif;
 
         $attrs = [];
-
         if(in_array($name, self::$IncreaseHelpers[get_called_class()])) :
             ++self::$Index;
 
@@ -89,6 +88,24 @@ abstract class Factory extends \tiFy\App\FactoryConstructor
         endif;
 
         $instance = self::create($attrs);
+
+        // Rétrocompatibilité
+        if ($name === 'display') :
+            if (!isset($arguments[0])) :
+                $arguments[0] = [];
+            endif;
+            $echo = isset($arguments[0]['echo']) ? $arguments[0]['echo'] : (isset($arguments[1]) ? $arguments[1] : true);
+
+            if ($echo) :
+                call_user_func_array([$instance, $name], $arguments);
+                return;
+            else :
+                ob_start();
+                call_user_func_array([$instance, $name], $arguments);
+                return ob_get_clean();
+            endif;
+        endif;
+
         if (method_exists($instance, $name)) :
             return call_user_func_array([$instance, $name], $arguments);
         endif;

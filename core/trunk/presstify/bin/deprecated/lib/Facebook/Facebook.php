@@ -32,7 +32,7 @@ class Facebook
 		// Instanciation du SDK PHP
 		session_start();
 
-		$this->SDK = new Facebook\Facebook(
+		$this->SDK = new \Facebook\Facebook(
 			array(
 		  		'app_id' 				=> $this->app_id,
 		  		'app_secret' 			=> $this->app_secret,

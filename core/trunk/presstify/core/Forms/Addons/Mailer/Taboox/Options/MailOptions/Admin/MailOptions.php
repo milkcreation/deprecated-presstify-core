@@ -71,7 +71,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
      */
     public function admin_enqueue_scripts()
     {
-        Field::enqueue_scripts('Switcher');
+        Field::enqueue_scripts('ToggleSwitch');
         Control::enqueue_scripts('repeater');
     }
 
@@ -114,7 +114,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <td>
                     <div class="tify_input_email">
                     <?php
-                        Field::ToggleSwitch(
+                        Field::Text(
                             [
                                 'name'  => $this->OptionNames['sender'] . "[email]",
                                 'value' => $value['email'],
@@ -186,7 +186,8 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                     'value'          => get_option($this->OptionNames['recipients']),
                     'name'           => $this->OptionNames['recipients'],
                     'item_cb'        => get_called_class() . '::recipients_item_cb'
-                ]
+                ],
+                true
             );
         ?>
     <?php endif;?>

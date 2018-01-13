@@ -82,7 +82,7 @@ class Switcher extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
@@ -117,10 +117,6 @@ class Switcher extends \tiFy\Core\Control\Factory
         $output .= "\t</div>\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }

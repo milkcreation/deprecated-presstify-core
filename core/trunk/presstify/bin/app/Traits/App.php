@@ -560,7 +560,7 @@ trait App
     public static function tFyAppOverrideAppNamespace($classname = null)
     {
         $classname = self::_tFyAppParseClassname($classname);
-        $sub = preg_replace("/^tiFy\\\/", "", ltrim(self::tFyAppNamespace($classname), '\\'));
+        $sub = preg_replace("/^tiFy\\\/", "", ltrim($classname, '\\'));
 
         if (($app = tiFy::getConfig('app')) && !empty($app['namespace'])) :
             return $app['namespace'] . ($sub ? "\\{$sub}" : '');
@@ -870,6 +870,65 @@ trait App
     public static function tFyAppGetRequestVar($key, $default = '', $type = '')
     {
         return self::tFyAppCallRequestVar('get', compact('key', 'default'), $type);
+    }
+
+    /**
+     * Conteneur d’injection de dépendances
+     * @see http://container.thephpleague.com/
+     *
+     * @return \League\Container\Container
+     */
+    public static function tFyAppContainer()
+    {
+        return tiFy::getContainer();
+    }
+
+    /**
+     * Ajout d'un conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return mixed
+     */
+    public static function tFyAppAddContainer($alias, $concrete = null)
+    {
+        return self::tFyAppContainer()->add($alias, $concrete);
+    }
+
+    /**
+     * Déclaration d'un conteneur d’injection de dépendances unique
+     *
+     * @param string $alias
+     *
+     * @return mixed
+     */
+    public static function tFyAppShareContainer($alias, $concrete = null)
+    {
+        return self::tFyAppContainer()->share($alias, $concrete);
+    }
+
+    /**
+     * Vérification d'existance conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return \League\Container\Container
+     */
+    public static function tFyAppHasContainer($alias)
+    {
+        return self::tFyAppContainer()->has($alias);
+    }
+
+    /**
+     * Récupérateur d'un conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return \League\Container\Container
+     */
+    public static function tFyAppGetContainer($alias, $args = [])
+    {
+        return self::tFyAppContainer()->get($alias, $args);
     }
 
     /**

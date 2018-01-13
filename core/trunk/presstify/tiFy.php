@@ -4,13 +4,14 @@
  * @namespace tiFy
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.549.180112
+ * @version 1.2.551.180113
  */
 
 namespace tiFy;
 
 use \tiFy\Lib\File;
 use Symfony\Component\HttpFoundation\Request;
+use League\Container\Container;
 
 final class tiFy
 {
@@ -38,7 +39,13 @@ final class tiFy
      * @var \Symfony\Component\HttpFoundation\Request
      */
     private static $GlobalRequest;
-    
+
+    /**
+     * Classe de rappel ddu conteneur d'injection de dépendance
+     * @var \League\Container\Container
+     */
+    private static $Container;
+
     /**
      * Attributs de configuration
      * @var mixed
@@ -218,7 +225,22 @@ final class tiFy
             return call_user_func_array([$object, $method], $args);
         endif;
     }
-    
+
+    /**
+     * Conteneur d'injection de dépendances
+     * @see http://container.thephpleague.com/
+     *
+     * @return \League\Container\Container
+     */
+    public static function getContainer()
+    {
+        if (!self::$Container) :
+            self::$Container = new Container();
+        endif;
+
+        return self::$Container;
+    }
+
     /**
      * Récupération d'attributs de configuration globale
      * 

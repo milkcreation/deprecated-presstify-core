@@ -95,21 +95,21 @@ class ColorPalette extends \tiFy\Core\Taboox\Options\Admin
         $output  = "";
         $output .= "<li>";
         // Champs de saisie
-        $output .= tify_control_colorpicker( 
-                array( 
-                    'name'         => "{$name}[colors][{$index}][hex]", 
-                    'value'     => $value['hex'],
-                    'attrs'        => array( 'autocomplete' => 'off' ),
-                    'options'    => array(
-                        'showInitial'             => false,
-                        'showInput'             => true,
-                        'showSelectionPalette'     => true,
-                        'showButtons'             => true,
-                        'allowEmpty'             => false
-                    ),
-                    'echo'         => false
-                ) 
-            );
+        $output .= tify_control_colorpicker(
+            [
+                'name'    => "{$name}[colors][{$index}][hex]",
+                'value'   => $value['hex'],
+                'attrs'   => ['autocomplete' => 'off'],
+                'options' => [
+                    'showInitial'          => false,
+                    'showInput'            => true,
+                    'showSelectionPalette' => true,
+                    'showButtons'          => true,
+                    'allowEmpty'           => false
+                ],
+            ],
+            false
+        );
         $output .= "<div class=\"title\"><input type=\"text\" name=\"{$name}[colors][{$index}][title]\" value=\"{$value['title']}\" /></div>";
         $output .= "<input type=\"hidden\" name=\"{$name}[order][]\" value=\"{$index}\"/>";    
         // Contrôleurs

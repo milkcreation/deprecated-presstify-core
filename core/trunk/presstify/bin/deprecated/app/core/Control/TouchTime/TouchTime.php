@@ -77,7 +77,7 @@ class TouchTime extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    protected function display($attrs = [], $echo = true)
+    protected function display($attrs = [])
     {
         global $wp_locale;
 
@@ -241,10 +241,6 @@ class TouchTime extends \tiFy\Core\Control\Factory
         $output .= "\t<input type=\"" . ($debug ? 'text' : 'hidden') . "\" value=\"{$value}\" id=\"{$id}\" class=\"tify_control_touch_time-input\" name=\"{$name}\" autocomplete=\"off\" readonly=\"readonly\">\n";
         $output .= "</div>\n";
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 }
