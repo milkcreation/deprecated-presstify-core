@@ -38,7 +38,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public function init()
+    protected function init()
     {
         /**
          * Déclaration des actions Ajax
@@ -63,7 +63,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return void
      */
-    final public function enqueue_scripts()
+    protected function enqueue_scripts()
     {
         Control::enqueue_scripts('modal');
         \wp_enqueue_script('tify_control-contact_toggle');
@@ -74,7 +74,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    public static function wp_ajax()
+    public function wp_ajax()
     {
         check_ajax_referer('tiFySetContatToggleControl-Modal');
 
@@ -187,8 +187,8 @@ class ContactToggle extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'id'              => 'tiFySetContatToggleControl-Modal-' . self::$Instance,
-            'container_id'    => 'tiFySetContatToggleControl-Modal--' . self::$Instance,
+            'id'              => 'tiFySetContatToggleControl-Modal-' . $this->getId(),
+            'container_id'    => 'tiFySetContatToggleControl-Modal--' . $this->getId(),
             'container_class' => '',
             'container_attrs' => [],
 
@@ -258,13 +258,13 @@ class ContactToggle extends \tiFy\Core\Control\Factory
     protected function trigger($attrs = [], $echo = true)
     {
         $defaults = [
-            'id'              => 'tiFySetContatToggleControl-ModalTrigger-' . self::$Instance,
-            'container_id'    => 'tiFySetContatToggleControl-ModalTrigger--' . self::$Instance,
+            'id'              => 'tiFySetContatToggleControl-ModalTrigger-' . $this->getId(),
+            'container_id'    => 'tiFySetContatToggleControl-ModalTrigger--' . $this->getId(),
             'container_class' => 'btn btn-primary button-primary',
             'container_attrs' => [],
             'container_tag'   => 'button',
             'text'            => __('Lancer', 'tify'),
-            'target'          => 'tiFySetContatToggleControl-Modal-' . self::$Instance,
+            'target'          => 'tiFySetContatToggleControl-Modal-' . $this->getId(),
             'modal'           => true
         ];
         $attrs = \wp_parse_args($attrs, $defaults);
@@ -289,7 +289,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
 
         // Attributs du conteneur
         $container_attrs['id'] = $container_id;
-        $container_attrs['class'] = "tiFyControl-ModalTrigger tiFySetContatToggleControl-ModalTrigger" . ($container_class ? " {$container_class}" : '');
+        $container_attrs['class'] = "tiFyControl-modalTrigger tiFySetContatToggleControl-ModalTrigger" . ($container_class ? " {$container_class}" : '');
         $container_attrs['data-toggle'] = "tiFyControl-Modal";
         $container_attrs['data-target'] = isset($modal['id']) ? $modal['id'] : "{$target}";
         if (($container_tag === 'a') && !isset($container_attrs['href'])) :
@@ -320,11 +320,7 @@ class ContactToggle extends \tiFy\Core\Control\Factory
             call_user_func(get_called_class() . '::display', $modal);
         endif;
 
-        if ($echo) :
-            echo $output;
-        else :
-            return $output;
-        endif;
+        echo $output;
     }
 
     /**

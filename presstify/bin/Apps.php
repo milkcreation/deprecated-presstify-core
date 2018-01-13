@@ -1,6 +1,7 @@
 <?php
 namespace tiFy;
 
+use tiFy\tiFy;
 use tiFy\Lib\File;
 use Symfony\Component\Yaml\Yaml;
 use tiFy\Core\Db\Db;
@@ -188,6 +189,7 @@ final class Apps
             $ReflectionClass = new \ReflectionClass($classname);
             $ClassName = $ReflectionClass->getName();
             $ShortName = $ReflectionClass->getShortName();
+            $LowerName = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', lcfirst($ShortName))));
             $Namespace = $ReflectionClass->getNamespaceName();
             
             // Chemins
@@ -244,6 +246,7 @@ final class Apps
             'ReflectionClass',
             'ClassName',
             'ShortName',
+            'LowerName',
             'Namespace',
             // Chemins d'accès
             'Filename',
@@ -987,7 +990,7 @@ final class Apps
                 // Définition de la liste des chemins vers les repertoires de surcharge
                 self::setOverridePath($classname);
 
-                $Instance = new $attrs['ClassName'];
+                tiFy::getContainer()->share('tiFy.' . $type . '.' . $attrs['LowerName'], new $attrs['ClassName']);
             endforeach;
         endforeach;
 
