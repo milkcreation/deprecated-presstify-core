@@ -4,7 +4,7 @@
  * @namespace tiFy
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.551.180113
+ * @version 1.2.553.180113
  */
 
 namespace tiFy;
