@@ -95,6 +95,8 @@ class Options extends \tiFy\App\Core
         if (self::getAttr('render') === 'metaboxes') :
             wp_enqueue_style('tiFyCoreOptionsTemplateMetaboxes', self::tFyAppUrl() . '/assets/css/metaboxes.css', [], 171030);
         endif;
+
+        do_action('tify_options_enqueue_scripts');
     }
 
 
