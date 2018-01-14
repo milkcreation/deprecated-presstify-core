@@ -26,7 +26,8 @@ final class Templates extends \tiFy\App\Core
         new Admin\Admin;
         new Front\Front;
 
-        $this->tFyAppActionAdd('init', null, 9);
+        // Déclaration des événements
+        $this->appAddAction('init', null, 9);
     }    
     
     /**

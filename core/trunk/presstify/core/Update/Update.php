@@ -9,36 +9,41 @@
  * @copyright Tigre Blanc Digital
  * @version 1.1.369
  */
+
 namespace tiFy\Core\Update;
 
 class Update extends \tiFy\App\Core
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
-     */
-    protected $tFyAppActions              = array(
-        'init'
-    ); 
-    
-    /**
      * Classes de rappel
      * @var \tiFy\Core\Update\Factory[]
      */
-    private static $Factories           = array();
+    private static $Factories = [];
 
     /**
-     * DECLENCHEURS
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('init');
+    }
+
+    /**
+     * EVENEMENTS
      */
     /**
      * Initialisation globale
-     * 
+     *
      * @return void
      */
     final public function init()
     {
-        foreach(self::tFyAppConfig() as $id => $attrs) :
+        foreach (self::tFyAppConfig() as $id => $attrs) :
             self::register($id, $attrs);
         endforeach;
 
@@ -52,18 +57,18 @@ class Update extends \tiFy\App\Core
      * Déclaration
      * @param string $id Identifiant unique
      * @param mixed $attrs Attributs de mise à jour
-     * 
+     *
      * @return \tiFy\Core\Update\Factory
      */
-    final public static function register($id, $attrs = array())
+    final public static function register($id, $attrs = [])
     {
-        if( isset(self::$Factories[$id])) :
+        if (isset(self::$Factories[$id])) :
             return;
         endif;
-        
-        $path = self::getOverridePath("\\tiFy\\Core\\Update\\". self::sanitizeControllerName($id));
+
+        $path = self::getOverridePath("\\tiFy\\Core\\Update\\" . self::sanitizeControllerName($id));
         $FactoryClass = self::getOverride('\tiFy\Core\Update\Factory', $path);
-        
+
         return self::$Factories[$id] = new $FactoryClass($id, $attrs);
     }
 }

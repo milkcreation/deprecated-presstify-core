@@ -18,7 +18,26 @@ class Search extends \tiFy\App\Component
     private static $Factory                 = [];
 
     /**
-     * DECLENCHEURS
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('pre_get_posts', null, 0);
+        $this->appAddAction('init', null, 20);
+        $this->appAddFilter('query_vars', null, 99);
+        $this->appAddFilter('search_template', null, 10, 3);
+
+        // Chargement des fonctions d'aide à la saisie
+        require self::tFyAppDirname() . '/Helpers.php';
+    }
+
+    /**
+     * EVENEMENTS
      */
     /**
      * Initialisation global
@@ -107,7 +126,7 @@ class Search extends \tiFy\App\Component
     final public function search_template($template, $type, $templates)
     {
         return $template;
-        $this->tFyAppActionAdd('template_include', null, 99);
+        $this->appAddAction('template_include', null, 99);
     }
 
     /**
@@ -121,22 +140,6 @@ class Search extends \tiFy\App\Component
     /**
      * CONTROLEURS
      */
-    /**
-     * Initialisation
-     */
-    public function tFyAppOnInit()
-    {
-        // Définition des actions
-        self::tFyAppActionAdd('pre_get_posts', null, 0);
-        self::tFyAppActionAdd('init', null, 20);
-
-        // Définition des filtres
-        self::tFyAppFilterAdd('query_vars', null, 99);
-        self::tFyAppFilterAdd('search_template', null, 10, 3);
-
-        require self::tFyAppDirname() . '/Helpers.php';
-    }
-
     /**
      * Déclaration de requête
      *

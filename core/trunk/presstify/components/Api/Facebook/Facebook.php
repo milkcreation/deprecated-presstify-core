@@ -68,7 +68,7 @@ class Facebook extends \Facebook\Facebook
                     $attrs = [];
                 endif;
 
-                $Mod = self::tFyAppFormatAsClassname($mod);
+                $Mod = self::tFyAppUpperName($mod);
                 $Cb = "tiFy\\Components\\Api\\Facebook\\Mod\\{$Mod}\\{$Mod}::create";
 
                 if (is_callable($Cb)) :

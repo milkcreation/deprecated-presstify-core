@@ -3,17 +3,23 @@ namespace tiFy\Core\Templates\Admin;
 
 use \tiFy\Core\Templates\Templates;
 
-class Admin extends \tiFy\App\Factory
+class Admin extends \tiFy\App
 {
     /**
-     * Liste des actions à déclencher
-     */ 
-    protected $tFyAppActions                = array(
-        'admin_menu'    
-    );
-    
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('admin_menu');
+    }
+
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Initialisation du menu d'administration

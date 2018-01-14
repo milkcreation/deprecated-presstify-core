@@ -1,45 +1,57 @@
 <?php
+
 namespace tiFy\Core\Taboox\Taxonomy\Order\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class Order extends Helpers
+class Order extends \tiFy\App
 {
-	/* = ARGUMENTS = */
-	// Identifiant des fonctions
-	protected $ID 				= 'term_order';
-	
-	// Liste des methodes à translater en Helpers
-	protected $Helpers 			= array( 'Get' );
-		
-	/* == Récupération de l'url de l'image d'entête == **/
-	public static function Get( $taxonomy, $args = array() )
-	{
-		return get_terms(
-			wp_parse_args(
-				array( 
-					'taxonomy' 		=> $taxonomy,
-					'meta_query'	=> array(
-					    array(
-					       'relation'      => 'OR',
-    						array(
-    							'key' 		=> '_order',
-    							'value'		=> 0,
-    							'compare'	=> '>=',
-    							'type'		=> 'NUMERIC'
-    						),
-                            array(
-        						'key' 		=> '_order',
-                                'compare'	=> 'NOT EXISTS',
-                           )
-				        )
-					),
-					'orderby'		=>'meta_value_num', 
-					'order'			=>'ASC' 					
-				),
-				$args
-			)
-		);
-	}
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des fonctions d'aide à la saisie
+        $this->appAddHelper('tify_taboox_term_order_get', 'get');
+    }
+
+    /**
+     * Récupération de la liste des éléments
+     *
+     * @param int Identifiant de qualification du post
+     * @param array $args Liste des attributs de récupération
+     *
+     * @return array Liste des identifiants de qualification des posts en relation
+     */
+    public static function get($taxonomy, $args = [])
+    {
+        return get_terms(
+            wp_parse_args(
+                [
+                    'taxonomy'   => $taxonomy,
+                    'meta_query' => [
+                        [
+                            'relation' => 'OR',
+                            [
+                                'key'     => '_order',
+                                'value'   => 0,
+                                'compare' => '>=',
+                                'type'    => 'NUMERIC',
+                            ],
+                            [
+                                'key'     => '_order',
+                                'compare' => 'NOT EXISTS',
+                            ],
+                        ],
+                    ],
+                    'orderby'    => 'meta_value_num',
+                    'order'      => 'ASC',
+                ],
+                $args
+            )
+        );
+    }
 }
 

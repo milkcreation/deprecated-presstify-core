@@ -1,10 +1,24 @@
 <?php
+
 namespace App\Core\Options;
 
 use \tiFy\Core\Options\Options;
 
 class Config extends \tiFy\App\Config
 {
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('tify_options_register_node');
+    }
+
     /**
      * CONFIGURATION
      */
@@ -19,48 +33,35 @@ class Config extends \tiFy\App\Config
     {
         return [
             // @var string $hookname Identifiant de qualification de la page d'accroche d'affichage.
-            'hookname'      => 'settings_page_tify_options',
+            'hookname'   => 'settings_page_tify_options',
 
             // @var string $menu_slug Identifiant de qualification du menu.
-            'menu_slug'     => 'tify_options',
+            'menu_slug'  => 'tify_options',
 
             // @var string $cap Habilitation d'accès
-            'cap'           => 'manage_options',
+            'cap'        => 'manage_options',
 
             // @var string $page_title Intitulé de la page
-            'page_title'    => "<?php _e('Options du thème', 'tify'); ?>",
+            'page_title' => "<?php _e('Options du thème', 'tify'); ?>",
 
             // @var string $menu_title
-            'menu_title'    => "<?php bloginfo('name'); ?>",
+            'menu_title' => "<?php bloginfo('name'); ?>",
 
             // @var array $admin_page Attributs de configuration de la page des options
-            'admin_page'    => [],
+            'admin_page' => [],
 
             // @var array $admin_bar Attributs de configuration de la barre d'administration
-            'admin_bar'     => [],
+            'admin_bar'  => [],
 
             // @var array $box Attributs de configuration de la boite à onglet
-            'box'           => [],
+            'box'        => [],
 
             // @var array $nodes Liste des greffons
-            'nodes'         => [],
+            'nodes'      => [],
 
             // @var string $render Style d'affichage de la page (standard|metaboxes|@todo méthode personnalisée|@todo function personnalisée).
-            'render'        => 'standard'
+            'render'     => 'standard',
         ];
-    }
-
-    /**
-     * DECLARATION
-     */
-    /**
-     * Initialisation
-     *
-     * @return void
-     */
-    public function tFyAppOnInit()
-    {
-        self::tFyAppActionAdd('tify_options_register_node');
     }
 
     /**
@@ -72,8 +73,8 @@ class Config extends \tiFy\App\Config
     public function tify_options_register_node()
     {
         Options::registerNode(
-            // Attributs de configuration du greffon
-            // @see tiFy\Core\Taboox\Taboox::registerNode
+        // Attributs de configuration du greffon
+        // @see tiFy\Core\Taboox\Taboox::registerNode
             [
                 // @var string $id Identifiant du greffon.
                 'id'     => '%%node_id%%',

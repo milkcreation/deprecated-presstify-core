@@ -2,7 +2,10 @@
 /**
  * @Overridable 
  */
+
 namespace tiFy\Core\Forms\FieldTypes\tiFyCheckbox;
+
+use tiFy\Core\Control\Control;
 
 class tiFyCheckbox extends \tiFy\Core\Forms\FieldTypes\Factory
 {
@@ -26,7 +29,7 @@ class tiFyCheckbox extends \tiFy\Core\Forms\FieldTypes\Factory
 	public function display()
 	{		
 		if( ! self::$Instance ) :
-			tify_control_enqueue( 'checkbox' );
+            Control::enqueue_scripts('Checkbox');
 		endif;
 		
 		self::$Instance++;
@@ -35,7 +38,7 @@ class tiFyCheckbox extends \tiFy\Core\Forms\FieldTypes\Factory
 		$output = "";
 		foreach( (array) $this->field()->getAttr( 'choices' ) as $value => $label ) :
 			$checked = ( is_array( $selected ) ) ? in_array( $value, $selected ) : $selected;
-			$output .= tify_control_checkbox( 
+			$output .= Control::Checkbox(
 				array(
 					'id'				=> $this->getInputID(),
 					'class'				=> join( ' ', $this->getInputClasses() ),
@@ -43,8 +46,7 @@ class tiFyCheckbox extends \tiFy\Core\Forms\FieldTypes\Factory
 					'checked'			=> $checked,
 					'value'				=> $value,
 					'label'				=> $label,
-					'label_class'		=> 'choice-title',
-					'echo'				=> false
+					'label_class'		=> 'choice-title'
 				)
 			);
 		endforeach;

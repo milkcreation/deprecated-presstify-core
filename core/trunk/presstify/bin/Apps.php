@@ -881,8 +881,15 @@ final class Apps
 
         // Composants natifs
         new Core;
-        // Enregistrement des composants natifs inclus dans PresstiFy
+        // Enregistrement des composants système
         foreach (glob(tiFy::$AbsDir . '/core/*', GLOB_ONLYDIR) as $dirname) :
+            $id = basename($dirname);
+            $attrs = isset(self::$Config['Core'][$id]) ? self::$Config['Core'][$id] : array();
+            Core::register($id, $attrs);
+        endforeach;
+
+        // Enregistrement des composants système dépréciés
+        foreach (glob(tiFy::$AbsDir . '/bin/deprecated/app/core/*', GLOB_ONLYDIR) as $dirname) :
             $id = basename($dirname);
             $attrs = isset(self::$Config['Core'][$id]) ? self::$Config['Core'][$id] : array();
             Core::register($id, $attrs);

@@ -5,12 +5,6 @@ use \tiFy\App\Factory;
 
 class SurveyForm extends App
 {
-	/* = ARGUMENTS = */
-	/** @see https://codex.wordpress.org/Plugin_API/Action_Reference **/
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'tify_form_register',
-	);
 	/** == Nom == **/
 	public $name = '_survey_form_field';
 	/** == Identifiant du formulaire == **/
@@ -21,8 +15,24 @@ class SurveyForm extends App
 	protected $currentSurveyFormSubmit = true;
 	/** == Enquête courante == **/
 	protected $currentSurvey;
-	
-	/* = DÉCLARATION DU FORMULAIRE DE L'ENQUÊTE COURANTE = */
+
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('tify_form_register');
+    }
+
+    /**
+     * EVENENEMENTS
+     */
+    /* = DÉCLARATION DU FORMULAIRE DE L'ENQUÊTE COURANTE = */
 	public function tify_form_register()
 	{
 		$this->currentSurvey = get_option( 'tify_content_hook_current_survey' );

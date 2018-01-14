@@ -2,6 +2,7 @@
 namespace tiFy\Core\Forms;
 
 use \tiFy\Core\Forms\Forms;
+use \tiFy\Core\Control\Control;
 
 class Factory
 {
@@ -35,7 +36,7 @@ class Factory
      */
     final public function tify_form_loaded()
     {
-        tify_control_enqueue( 'notices' );
+        Control::enqueue_scripts('Notices');
         
         Forms::setCurrent( $this );
         $this->Form->handle()->proceed();

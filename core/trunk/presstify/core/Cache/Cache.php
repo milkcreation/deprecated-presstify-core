@@ -25,13 +25,13 @@ class Cache extends \tiFy\App\Core
         return;
         parent::__construct();
 
-        // Définition des actions de déclenchement
-        self::tFyAppActionAdd('init');
-        self::tFyAppActionAdd('wp_head', null, 0);
+        // Déclaration des événements
+        $this->appAddAction('init');
+        $this->appAddAction('wp_head', null, 0);
     }
 
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      *

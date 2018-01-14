@@ -9,76 +9,65 @@
  * @copyright Milkcreation
  * @version 1.2.369
  */
+
 namespace tiFy\Components\AdminUI; 
 
 class AdminUI extends \tiFy\App\Component
 {
     /**
-     * Liste des actions à déclencher
-     * @var callable[]
-     */
-    protected $tFyAppActions                  = array(
-        'init',
-        'widgets_init',
-        'admin_menu',
-        'add_meta_boxes',
-        'admin_bar_menu',
-        'admin_footer_text',
-        'wp_before_admin_bar_render'
-    );
-
-    /**
-     * Ordre de priorité d'exécution des actions
-     * @var mixed[]
-     */
-    protected $tFyAppActionsPriority       = array(
-        'init'                  => 99,
-        'admin_menu'            => 99,
-        'add_meta_boxes'        => 99,
-        'admin_bar_menu'        => 11
-    );
-
-    /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
         parent::__construct();
-        
-        foreach( (array) array_keys( self::tFyAppConfigDefault() ) as $prop ) :
-            if( self::tFyAppConfig( $prop ) ) :
-                $value = is_array( self::tFyAppConfigDefault( $prop ) ) ? wp_parse_args( self::tFyAppConfig( $prop ), self::tFyAppConfigDefault( $prop ) ) : self::tFyAppConfig( $prop );
+
+        // Traitement des attributs de configuration
+        foreach ((array)array_keys(self::tFyAppConfigDefault()) as $prop) :
+            if (self::tFyAppConfig($prop)) :
+                $value = is_array(self::tFyAppConfigDefault($prop)) ? wp_parse_args(self::tFyAppConfig($prop),
+                    self::tFyAppConfigDefault($prop)) : self::tFyAppConfig($prop);
             else :
-                $value = self::tFyAppConfigDefault( $prop );
+                $value = self::tFyAppConfigDefault($prop);
             endif;
             self::tFyAppConfigSetAttr($prop, $value);
         endforeach;
-        
-        if( self::tFyAppConfig( 'disable_post' ) ) :
-            add_action( 'admin_init', array( $this, 'disable_post_dashboard_meta_box' ) );
-            add_action( 'admin_menu', array( $this, 'disable_post_remove_menu' )  );
-            add_filter( 'nav_menu_meta_box_object', array( $this, 'disable_post_nav_menu_meta_box_object' ) );
-            add_action( 'wp_before_admin_bar_render', array( $this, 'disable_post_wp_before_admin_bar_render' ) );
+
+        // Définition des événements
+        $this->appAddAction('init', null, 99);
+        $this->appAddAction('widgets_init');
+        $this->appAddAction('admin_menu', null, 99);
+        $this->appAddAction('add_meta_boxes', null, 99);
+        $this->appAddAction('admin_bar_menu', null, 11);
+        $this->appAddAction('admin_footer_text');
+        $this->appAddAction('wp_before_admin_bar_render');
+
+        if (self::tFyAppConfig('disable_post')) :
+            $this->appAddAction('admin_init', 'disable_post_dashboard_meta_box');
+            $this->appAddAction('admin_menu', 'disable_post_remove_menu');
+            $this->appAddFilter('nav_menu_meta_box_object', 'disable_post_nav_menu_meta_box_object');
+            $this->appAddAction('wp_before_admin_bar_render', 'disable_post_wp_before_admin_bar_render');
         endif;
-        
-        if( self::tFyAppConfig( 'disable_comment' ) ) :
-            add_action( 'init', array( $this, 'disable_comment_init' ) );
-            add_action( 'wp_widgets_init', array( $this, 'disable_comment_wp_widgets_init' ) );
-            add_action( 'admin_menu', array( $this, 'disable_comment_remove_menu' ) );
-            add_action( 'wp_before_admin_bar_render', array( $this, 'disable_comment_wp_before_admin_bar_render' ) );
+
+        if (self::tFyAppConfig('disable_comment')) :
+            $this->appAddAction('init', 'disable_comment_init');
+            $this->appAddAction('wp_widgets_init', 'disable_comment_wp_widgets_init');
+            $this->appAddAction('admin_menu', 'disable_comment_remove_menu');
+            $this->appAddAction('wp_before_admin_bar_render', 'disable_comment_wp_before_admin_bar_render');
         endif;
-        
-        if( self::tFyAppConfig( 'disable_post_category' ) ) :
-            add_action( 'init', array( $this, 'disable_post_category' ) );
+
+        if (self::tFyAppConfig('disable_post_category')) :
+            $this->appAddAction('init', 'disable_post_category');
         endif;
-        
-        if( self::tFyAppConfig( 'disable_post_tag' ) ) :
-            add_action( 'init', array( $this, 'disable_post_tag' ) );
+
+        if (self::tFyAppConfig('disable_post_tag')) :
+            $this->appAddAction('init', 'disable_post_tag');
         endif;
     }
 
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Inititalisation globale

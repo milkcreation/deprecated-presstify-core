@@ -69,7 +69,7 @@ class Api extends \tiFy\App\Component
             return;
         endif;
             
-        $classname = self::tFyAppFormatAsClassname($id);
+        $classname = self::tFyAppUpperName($id);
         $class = "tiFy\\Components\\Api\\{$classname}\\{$classname}";
 
         if (class_exists($class)) :

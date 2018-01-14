@@ -1,8 +1,6 @@
 <?php
 namespace tiFy;
 
-use tiFy\tiFy;
-
 class Libraries extends \tiFy\App\Factory
 {
     /**

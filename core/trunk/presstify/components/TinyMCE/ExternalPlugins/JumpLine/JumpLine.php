@@ -1,28 +1,37 @@
 <?php
 namespace tiFy\Components\TinyMCE\ExternalPlugins\JumpLine;
 
+use tiFy\Components\TinyMCE\TinyMCE;
+
 class JumpLine extends \tiFy\App\Factory
 {
-	/* = ARGUMENTS = */
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'admin_init',
-		'admin_head',
-		'admin_print_styles',
-		'wp_enqueue_scripts'
-	);
-	
-	/* = CONSTRUCTEUR = */
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
 	public function __construct()
 	{
 		parent::__construct();
 
 		// Déclaration du plugin
-		\tiFy\Components\TinyMCE\TinyMCE::registerExternalPlugin( 'jumpline', self::tFyAppUrl() . '/plugin.js' );
+		TinyMCE::registerExternalPlugin( 'jumpline', self::tFyAppUrl() . '/plugin.js' );
+
+        // Déclaration des événements
+        $this->appAddAction('admin_init');
+        $this->appAddAction('admin_head');
+        $this->appAddAction('admin_print_styles');
+        $this->appAddAction('wp_enqueue_scripts');
 	}
-	
-	/* = DECLENCHEURS = */
-	/** == Initialisation de l'interface d'administration de Wordpress == **/
+
+    /**
+     * EVENEMENTS
+     */
+    /**
+     * Initialisation de l'interface d'administration
+     *
+     * @return void
+     */
 	final public function admin_init()
 	{
 		if ( ( current_user_can( 'edit_posts' ) || current_user_can( 'edit_pages' ) ) && get_user_option( 'rich_editing' ) )

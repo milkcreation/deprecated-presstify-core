@@ -24,8 +24,8 @@ class Labels extends \tiFy\App\Core
             endforeach;
         endif;
 
-        // Déclaration des événements de déclenchement
-        $this->tFyAppActionAdd('init', null, 9);
+        // Déclaration des événements
+        $this->appAddAction('init', null, 9);
     }
 
     /**

@@ -1,21 +1,23 @@
 <?php
 namespace tiFy;
 
-use tiFy\tiFy;
-
-class Languages extends \tiFy\App\Factory
+class Languages extends \tiFy\App
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
+     * CONSTRUCTEUR
+     *
+     * @return void
      */
-    protected $tFyAppActions                = array(
-        'plugins_loaded'
-    );
-    
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Définition des événements
+        $this->appAddAction('plugins_loaded');
+    }
+
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Après le chargement des plugins

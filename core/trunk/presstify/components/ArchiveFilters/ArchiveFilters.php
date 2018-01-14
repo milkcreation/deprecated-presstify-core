@@ -4,63 +4,44 @@ namespace tiFy\Components\ArchiveFilters;
 class ArchiveFilters extends \tiFy\App\Component
 {
     /**
-     * Liste des actions à déclencher
-     */
-    protected $tFyAppActions                = array(
-        'wp_loaded',
-        'wp_enqueue_scripts'
-    );     
-    
-    /**
-     * Liste des Filtres à déclencher
-     */ 
-    protected $CallFilters                = array(
-        'posts_clauses'
-    );
-    
-    /**
-     * Ordres de priorité d'exécution des filtres
-     */
-    protected $CallFiltersPriorityMap    = array(
-        'posts_clauses'    => 99
-    );
-    
-    /**
-     * Nombre d'arguments autorisé lors de l'appel des filtres
-     */
-    protected $CallFiltersArgsMap        = array(
-        'posts_clauses' => 2
-    );
-    
-    /**
      * Environnements permis
-     */ 
-    private static $AllowedObj                 =  array(
-        'post_type', 'taxonomy'    
-    );
-    
+     * @var array
+     */
+    private static $AllowedObj = [
+        'post_type',
+        'taxonomy',
+    ];
+
     /**
      * Liste des filtres déclarés
+     * @var array
      */
-    private static $Filters                = array();
-    
+    private static $Filters = [];
+
     /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
         parent::__construct();
         
-        // Traitement de la configuration
+        // Traitement des attributs de configuration
         foreach( (array) self::tFyAppConfig() as $obj => $attrs ) :
             foreach( (array) $attrs as $obj_type => $args ) :
                 self::Register( $obj_type, $obj, $args );
             endforeach;
-        endforeach;    
+        endforeach;
+
+        // Définition des événements
+        $this->appAddAction('wp_loaded');
+        $this->appAddAction('wp_enqueue_scripts');
+        $this->appAddFilter('posts_clauses', null, 99, 2);
     }
     
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Conditions de requête personnalisés

@@ -34,12 +34,33 @@ class Cron extends \tiFy\App\Core
     private static $Schedules = [];
 
     /**
-     * DECLENCHEURS
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des tâches planifiées configurées
+        foreach ((array)self::tFyAppConfig() as $schedule_id => $schedules_attrs) :
+            self::register($schedule_id, $schedules_attrs);
+        endforeach;
+
+        // Déclaration des événements
+        $this->appAddAction('init');
+        $this->appAddAction('tify_templates_register');
+    }
+
+    /**
+     * EVENEMENTS
      */
     /**
      * Initialisation globale
+     *
+     * @return void
      */
-    public static function init()
+    public function init()
     {
         // Enregistrement de tâche planifiée
         do_action('tify_cron_register');
@@ -58,7 +79,7 @@ class Cron extends \tiFy\App\Core
     /**
      * Déclaration de templates
      */
-    public static function tify_templates_register()
+    public function tify_templates_register()
     {
         Templates::register(
             'tFyCoreCronList',
@@ -78,21 +99,6 @@ class Cron extends \tiFy\App\Core
     /**
      * CONTROLEURS
      */
-    /**
-     * Initialisation
-     */
-    public function tFyAppOnInit()
-    {
-        // Définition des actions
-        $this->tFyAppActionAdd('init');
-        $this->tFyAppActionAdd('tify_templates_register');
-
-        // Déclaration des tâches planifiées configurées
-        foreach ((array)self::tFyAppConfig() as $schedule_id => $schedules_attrs) :
-            self::register($schedule_id, $schedules_attrs);
-        endforeach;
-    }
-
     /**
      * Déclaration
      */

@@ -1,28 +1,24 @@
 <?php
+
 namespace tiFy\Core\Router\Taboox\Helpers;
 
 use tiFy\Core\Router\Router;
 
-class ContentHook extends \tiFy\Core\Taboox\Helpers
+class ContentHook extends \tiFy\App
 {
     /**
-     * Intitulés des prefixes des fonctions
-     * @var string
+     * CONSTRUCTEUR
+     *
+     * @return void
      */
-     protected $Prefix          = 'tify_router';
+    public function __construct()
+    {
+        parent::__construct();
 
-    /**
-     * Identifiant des fonctions
-     * @var string
-     */
-    //
-    protected $ID               = 'content_hook';
-
-    /**
-     * Liste des methodes à translater en fonction d'aide à la saisie
-     * @var array
-     */
-    protected $Helpers          = ['is', 'get'];
+        // Définition des fonctions d'aide à la saisie
+        $this->appAddHelper('tify_router_content_hook_is', 'is');
+        $this->appAddHelper('tify_router_content_hook_is', 'get');
+    }
 
     /**
      * Vérification d'existance (fonctionnel après init 25)

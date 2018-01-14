@@ -1,9 +1,5 @@
 <?php
-/**
- * @see \_deprecated_constructor();
- * @see \_deprecated_file();
- * @see \_deprecated_hook();
- */
+
 namespace tiFy\Deprecated;
 
 use tiFy\tiFy;
@@ -17,30 +13,12 @@ class Deprecated
      */
     public function __construct()
     {
-        // Anciennes fonction d'aide à la saisie
-        require dirname(__FILE__) . '/helpers/Helpers.php';
-        
-        // Ancien environnement des applicatifs
+        tiFy::classLoad('tiFy\Components', dirname(__FILE__) .'/app/components');
+        tiFy::classLoad('tiFy\Core', dirname(__FILE__) .'/app/core');
         tiFy::classLoad('tiFy\Environment', dirname(__FILE__) .'/env');
+        tiFy::classLoad('tiFy\Lib', dirname(__FILE__) .'/lib');
 
-        // Anciennes librairies des classes abstraites
-        tiFy::classLoad('tiFy\Abstracts', dirname(__FILE__) .'/lib/Abstracts');
-
-        // Anciennes librairies des classes héritées
-        tiFy::classLoad('tiFy\Inherits', dirname(__FILE__) .'/lib/Inherits');
-
-        // Anciennes librairie Facebook
-        tiFy::classLoad('tiFy\Lib\Facebook', dirname(__FILE__) .'/lib/Facebook');
-
-        // core/Control
-        tiFy::classLoad('tiFy\Core\Control', dirname(__FILE__) .'/app/core/Control');
-
-        // core/Fields
-        tiFy::classLoad('tiFy\Core\Fields', dirname(__FILE__) .'/app/core/Fields');
-
-        // core/Taboox
-        tiFy::classLoad('tiFy\Core\Taboox\Option', dirname(__FILE__) .'/app/core/Taboox/Option');
-        tiFy::classLoad('tiFy\Core\Taboox\Post', dirname(__FILE__) .'/app/core/Taboox/Post');
+        require dirname(__FILE__) . '/helpers/Helpers.php';
     }
     
     /**

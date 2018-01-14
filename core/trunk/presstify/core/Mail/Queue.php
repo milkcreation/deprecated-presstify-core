@@ -4,7 +4,7 @@ namespace tiFy\Core\Mail;
 use tiFy\Core\Db\Db;
 use tiFy\Core\Cron\Cron;
 
-class Queue extends \tiFy\App\Factory
+class Queue extends \tiFy\App
 {
     /**
      * Classe de rappel de la base de données
@@ -13,7 +13,20 @@ class Queue extends \tiFy\App\Factory
     protected static $Db = null;
 
     /**
-     * DECLENCHEURS
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('tify_cron_register');
+    }
+
+    /**
+     * EVENEMENTS
      */
     /**
      * Déclaration de la tâche planifiée
@@ -46,15 +59,6 @@ class Queue extends \tiFy\App\Factory
     /**
      * CONTROLEURS
      */
-    /**
-     * Initialisation
-     */
-    public function tFyAppOnInit()
-    {
-        // Déclaration des événements
-        $this->tFyAppActionAdd('tify_cron_register');
-    }
-
     /**
      * Initialisation de la table de base de données
      */

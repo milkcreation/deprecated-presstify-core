@@ -26,7 +26,7 @@ class PostThumbnail extends \tiFy\Components\CustomColumns\PostType
     public function admin_enqueue_scripts()
     {
         HolderImage::enqueue_scripts('holder_image');
-        $this->tFyAppActionAdd('admin_print_styles');
+        $this->appAddAction('admin_print_styles');
     }
 
     /**

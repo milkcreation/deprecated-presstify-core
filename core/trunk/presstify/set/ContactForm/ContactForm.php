@@ -1,22 +1,17 @@
 <?php
+
 namespace tiFy\Set\ContactForm;
 
 use tiFy\Core\Forms\Forms;
-use tiFy\Core\Options\Options;
 use tiFy\Core\Router\Router;
 use tiFy\Core\Router\Taboox\Helpers\ContentHook;
 
 class ContactForm extends \tiFy\App\Set
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
-     */
-    protected $tFyAppActions = ['tify_form_register', 'tify_router_register'];
-
-    /**
      * CONSTRUCTEUR
+     *
+     * @return void
      */
     public function __construct()
     {
@@ -25,16 +20,19 @@ class ContactForm extends \tiFy\App\Set
         // Initialisation des fonctions d'aide à la saisie
         include self::tFyAppDirname() . '/Helpers.php';
 
+        // Déclaration des événements
+        $this->appAddAction('tify_form_register');
+        $this->appAddAction('tify_router_register');
         add_filter('the_content', 'tiFy\Set\ContactForm\ContactForm::the_content');
     }
 
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Déclaration de formulaire
      *
-     * @return void
+     * @return \tiFy\Core\Forms\Factory
      */
     public function tify_form_register()
     {
@@ -49,16 +47,19 @@ class ContactForm extends \tiFy\App\Set
     /**
      * Déclaration de route
      *
-     * @return void
+     * @return null|\tiFy\Core\Router\Factory
      */
     public function tify_router_register()
     {
         // Bypass
-        if(! $router = self::tFyAppConfig('router'))
+        if(! $router = self::tFyAppConfig('router')) :
             return;
+        endif;
 
-        $defaults = ['title' => __('Formulaire de contact', 'tify'), 'option_name' => 'tiFySetContactForm-hook_id'];
-
+        $defaults = [
+            'title'       => __('Formulaire de contact', 'tify'),
+            'option_name' => 'tiFySetContactForm-hook_id',
+        ];
         $args = is_bool($router) ? $defaults : \wp_parse_args($router, $defaults);
 
         return Router::register(

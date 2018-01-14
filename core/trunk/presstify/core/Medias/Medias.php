@@ -16,9 +16,9 @@ class Medias extends \tiFy\App\Core
         new Download;
 
         // Déclaration des événements de déclenchement
-        $this->tFyAppFilterAdd('wp_get_attachment_url', null, 10, 2);
-        $this->tFyAppFilterAdd('get_attached_file', null, 10, 2);
-        $this->tFyAppFilterAdd('wp_calculate_image_srcset', null, 10, 5);
+        $this->appAddFilter('wp_get_attachment_url', null, 10, 2);
+        $this->appAddFilter('get_attached_file', null, 10, 2);
+        $this->appAddFilter('wp_calculate_image_srcset', null, 10, 5);
     }
         
     /**

@@ -21,9 +21,9 @@ class Upload extends \tiFy\App
         parent::__construct();
 
         // Définition des événements de déclenchement
-        $this->tFyAppActionAdd('template_redirect');
-        $this->tFyAppActionAdd('tify_upload_register');
-        $this->tFyAppFilterAdd('query_vars');
+        $this->appAddAction('template_redirect');
+        $this->appAddAction('tify_upload_register');
+        $this->appAddFilter('query_vars');
     }
 
     /**

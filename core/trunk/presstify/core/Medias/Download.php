@@ -31,10 +31,10 @@ class Download extends \tiFy\App
         self::$Request = Request::createFromGlobals();
 
         // Définition des événements de déclenchement
-        $this->tFyAppActionAdd('tify_medias_download_register');
-        $this->tFyAppFilterAdd('media_row_actions', null, 99, 3);
-        $this->tFyAppActionAdd('admin_init');
-        $this->tFyAppActionAdd('template_redirect');
+        $this->appAddAction('tify_medias_download_register');
+        $this->appAddAction('admin_init');
+        $this->appAddAction('template_redirect');
+        $this->appAddFilter('media_row_actions', null, 99, 3);
     }
 
     /**

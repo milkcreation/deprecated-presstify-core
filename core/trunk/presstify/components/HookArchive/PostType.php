@@ -147,7 +147,7 @@ final class PostType extends Factory
 			endforeach;
 
 			if( ! empty( $hook_id ) && ( $post = get_post( $hook_id ) ) ) :
-			    $Template = Breadcrumb::getController( 'template' );
+			    $Template = $this->appGetContainer('tiFy.components.breadcrumb.template');
 						
 				$Template::resetParts();
 			
@@ -195,7 +195,7 @@ final class PostType extends Factory
 					$ancestors .= sprintf( '<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>', get_permalink( $parent ), esc_html( wp_strip_all_tags( get_the_title( $parent ) ) ) );
 			endif;	
 			
-			$Template = Breadcrumb::getController( 'template' );
+			$Template = $this->appGetContainer('tiFy.components.breadcrumb.template');
 			$part = array( 'name' => esc_html( wp_strip_all_tags( get_the_title( $hook_id ) ) ) );
 			
 			$output = $ancestors . $Template::currentRender( $part );
