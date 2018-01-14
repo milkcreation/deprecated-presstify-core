@@ -15,7 +15,6 @@ use League\Container\Container;
 
 final class tiFy
 {
-    
     /**
      * Chemin absolu vers la racine de l'environnement
      * @var string
@@ -64,26 +63,33 @@ final class tiFy
      */
     public function __construct($AbsPath = null)
     {
-        if (defined('WP_INSTALLING') && (WP_INSTALLING === true))
+        if (defined('WP_INSTALLING') && (WP_INSTALLING === true)) :
             return;
+        endif;
 
         // Définition des chemins absolus
         self::$AbsPath = $AbsPath ? $AbsPath : ABSPATH;
         self::$AbsDir = dirname(__FILE__);
 
         // Définition des constantes d'environnement
-        if (! defined('TIFY_CONFIG_DIR'))
+        if (! defined('TIFY_CONFIG_DIR')) :
             define( 'TIFY_CONFIG_DIR', get_template_directory() . '/config');
-        if (! defined('TIFY_CONFIG_EXT'))
+        endif;
+        if (! defined('TIFY_CONFIG_EXT')) :
             define('TIFY_CONFIG_EXT', 'yml');
+        endif;
         /// Répertoire des plugins
-        if (! defined('TIFY_PLUGINS_DIR'))
+        if (! defined('TIFY_PLUGINS_DIR')) :
             define('TIFY_PLUGINS_DIR', self::$AbsDir . '/plugins');
+        endif;
         
         // Instanciation du moteur
         self::classLoad('tiFy', self::$AbsDir .'/bin');
-        
-        // Instanciation des depréciations
+
+        // Instanciation des controleurs en maintenance
+        self::classLoad('tiFy\Maintenance', self::$AbsDir . '/bin/maintenance', 'Maintenance');
+
+        // Instanciation des controleurs dépréciés
         self::classLoad('tiFy\Deprecated', self::$AbsDir . '/bin/deprecated', 'Deprecated');
         
         // Instanciation des l'environnement des applicatifs
@@ -128,6 +134,38 @@ final class tiFy
     /**
      * CONTROLEURS
      */
+    /**
+     * Formatage lower_name d'une chaine de caratère
+     * Converti une chaine de caractère CamelCase en snake_case
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function formatLowerName($name)
+    {
+        return join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', lcfirst($name))));
+    }
+
+    /**
+     * Formatage UpperName d'une chaine de caratère
+     * Converti une chaine de caractère snake_case en CamelCase
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function formatUpperName($name)
+    {
+        $name = join('', array_map('ucfirst', preg_split('/_|-/', $name)));
+
+        if(preg_match('/^tiFy/', $name)) :
+            $name = lcfirst($name);
+        endif;
+
+        return $name;
+    }
+
     /**
      * Chargement automatique des classes
      * 

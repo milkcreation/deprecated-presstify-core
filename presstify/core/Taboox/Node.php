@@ -9,7 +9,7 @@ class Node extends \tiFy\Core\Taboox\Factory
      * Liste des classes de rappel des méthodes d'aides à la saisie.
      * @var array
      */
-    protected $Helpers  = [];
+    protected $_Helpers  = [];
 
     /**
      * Classe de rappel de l'interface d'administration
@@ -52,7 +52,7 @@ class Node extends \tiFy\Core\Taboox\Factory
             call_user_func([$this->AdminUi, 'init']);
         endif;
 
-        foreach ($this->Helpers as $helper) :
+        foreach ($this->_Helpers as $helper) :
             if (!class_exists($helper)) :
                 continue;
             endif;
@@ -167,8 +167,8 @@ class Node extends \tiFy\Core\Taboox\Factory
 
             if (!empty($helpers)) :
                 foreach ($helpers as $helper) :
-                    if (!in_array($helpers, $this->Helpers)) :
-                        array_push($this->Helpers, $helper);
+                    if (!in_array($helpers, $this->_Helpers)) :
+                        array_push($this->_Helpers, $helper);
                     endif;
                 endforeach;
             endif;

@@ -6,22 +6,29 @@ use tiFy\Core\Control\Control;
 class ContactToggle extends \tiFy\App\Set
 {
     /**
-     * Liste des actions à déclencher
-     * @var string[]
-     * @see https://codex.wordpress.org/Plugin_API/Action_Reference
+     * CONSTRUCTEUR
+     *
+     * @return void
      */
-    protected $tFyAppActions = array(
-        'tify_control_register'
-    );
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('tify_control_register');
+    }
 
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Déclaration de Control
      */
     final public function tify_control_register()
     {
-        Control::register('ContactToggle', self::getOverride('tiFy\Set\ContactToggle\Control\ContactToggle'));
+        Control::register(
+            'ContactToggle',
+            'tiFy\Set\ContactToggle\Control\ContactToggle'
+        );
     }
 }

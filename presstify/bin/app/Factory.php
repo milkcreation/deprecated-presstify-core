@@ -9,12 +9,8 @@ use tiFy\Environment\Traits\Old;
 abstract class Factory extends \tiFy\App
 {
     use Traits\Controllers,
-        Traits\Helpers,
-        Traits\HelpersNew,
         Old
         {
-            Traits\Helpers::__construct     as private __HelpersConstruct;
-            Traits\HelpersNew::__construct  as private __HelpersNewConstruct;
             Old::__construct                as private __OldConstruct;
             Old::__get                      as private __OldGet;
             Old::__isset                    as private __OldIsset;
@@ -115,8 +111,38 @@ abstract class Factory extends \tiFy\App
             \add_filter($tag, $function_to_add, $priority, $accepted_args);
         endforeach;
 
-        $this->__HelpersConstruct();
-        $this->__HelpersNewConstruct();
+        // Dépréciation des déclaration d'actions ancienne génération
+        if (!empty($this->tFyAppActions)) :
+            trigger_error(
+                sprintf(
+                    __(
+                        'Cette syntaxe de déclaration des actions est dépréciée depuis la version %s de tiFy.' .
+                        'Veuillez rectifier %s en utilisant la déclaration $this->appAddAction().',
+                        'tify'
+                    ),
+                    '1.2.553',
+                    get_called_class()
+                )
+            );
+            exit;
+        endif;
+
+        // Dépréciation des déclaration des fonctions d'aide à la saisie ancienne génération
+        if (!empty($this->Helpers)) :
+            trigger_error(
+                sprintf(
+                    __(
+                        'Cette syntaxe de déclaration des fonctions d\'aide à la saisie est dépréciée depuis la version %s de tiFy.' .
+                        'Veuillez rectifier %s en utilisant la déclaration $this->appAddHelper().',
+                        'tify'
+                    ),
+                    '1.2.553',
+                    get_called_class()
+                )
+            );
+            exit;
+        endif;
+
     }
 
     /**

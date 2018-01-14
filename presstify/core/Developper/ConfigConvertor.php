@@ -1,27 +1,29 @@
 <?php
 namespace tiFy\Components\DevTools\Tools\ConfigConvertor;
 
-use tiFy\App\Factory;
-
-class ConfigConvertor extends App
+class ConfigConvertor extends \tiFy\App
 {
-	/* = ARGUMENTS = */
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'admin_menu',
-		'current_screen',
-		'wp_ajax_tiFy_ConfigConvertor_Process'
-	); 
-	
-	// Fonctions de rappel des actions
-	protected $tFyAppActionsMethods	= array(
-		'wp_ajax_tiFy_ConfigConvertor_Process' => 'wp_ajax_process'	
-	);
-	
 	// Configuration
 	private $Hookname = null;
-	
-	/* = DECLENCHEURS = */
+
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('admin_menu');
+        $this->appAddAction('current_screen');
+        $this->appAddAction('wp_ajax_tiFy_ConfigConvertor_Process', 'wp_ajax');
+    }
+
+    /**
+     * EVENEMENTS
+     */
 	/** == == **/
 	final public function admin_menu()
 	{
@@ -38,7 +40,7 @@ class ConfigConvertor extends App
 	}
 	
 	/** == == **/
-	final public function wp_ajax_process( )
+	final public function wp_ajax()
 	{
 		$data = stripslashes(  preg_replace('/(\n|\t|\r)+/', ' ', $_POST['data'] ) );
 		eval( "\$output = ". $data );

@@ -2,25 +2,12 @@
 
 namespace tiFy\Core\Taboox\PostType\RelatedPosts\Helpers;
 
-use tiFy\Core\Taboox\Helpers;
-
-class RelatedPosts extends Helpers
+class RelatedPosts extends \tiFy\App
 {
-
     /**
-     * Identifiant des fonctions d'aide à la saisie
+     * Liste des attributs de récupération par défaut
+     * @var array
      */
-    protected $ID = 'related_posts';
-
-    /**
-     * Liste des méthodes à convertir en fonction d'aide à la saisie
-     */
-    protected $Helpers = ['has', 'get', 'display'];
-
-    /**
-     * Attributs par défaut
-     */
-    // 
     public static $DefaultAttrs = [
         'name'        => '_tify_taboox_related_posts',
         'post_type'   => 'any',
@@ -29,15 +16,40 @@ class RelatedPosts extends Helpers
     ];
 
     /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des fonctions d'aide à la saisie
+        $this->appAddHelper('tify_taboox_related_posts_has', 'has');
+        $this->appAddHelper('tify_taboox_related_posts_get', 'get');
+        $this->appAddHelper('tify_taboox_related_posts_display', 'display');
+    }
+
+    /**
      * Vérification d'existance d'élément
+     *
+     * @param int|WP_Post $post Identifiant de qualification ou object Post Wordpress
+     * @param array $args Liste des attributs de récupération
+     *
+     * @return bool
      */
     public static function has($post = 0, $args = [])
     {
-        return static::Get($post, $args);
+        return static::get($post, $args);
     }
 
     /**
      * Récupération de la liste des éléments
+     *
+     * @param int|WP_Post $post Identifiant de qualification ou object Post Wordpress
+     * @param array $args Liste des attributs de récupération
+     *
+     * @return array Liste des identifiants de qualification des posts en relation
      */
     public static function get($post = 0, $args = [])
     {
@@ -62,6 +74,12 @@ class RelatedPosts extends Helpers
 
     /**
      * Affichage de la liste des éléments
+     *
+     * @param int|WP_Post $post Identifiant de qualification ou object Post Wordpress
+     * @param array $args Liste des attributs de récupération
+     * @param bool $echo Activation de l'affichage
+     *
+     * @return string Gabarit d'affichage de la liste des éléments
      */
     public static function display($post = 0, $args = [], $echo = true)
     {
@@ -70,12 +88,10 @@ class RelatedPosts extends Helpers
             return;
         endif;
 
-        static $instances = 0;
-        $instances++;
-
+        // Traitement des attributs de récupération
         $args = \wp_parse_args($args, static::$DefaultAttrs);
 
-        $output              = "";
+        // Requête de récupération des posts en relation
         $wp_query = new \WP_Query(
             [
                 'post_type'      => 'any',
@@ -87,14 +103,14 @@ class RelatedPosts extends Helpers
         if ($wp_query->have_posts()) :
             ob_start();
             self::tFyAppGetTemplatePart('display', null, compact('args', 'wp_query'));
-            $output .= ob_get_clean();
+            $output = ob_get_clean();
         endif;
         \wp_reset_query();
 
         if ($echo) :
             echo $output;
+        else :
+            return $output;
         endif;
-
-        return $output;
     }
 }

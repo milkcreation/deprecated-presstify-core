@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Core\Templates\Front;
 
 use \tiFy\Core\Templates\Templates;
@@ -8,16 +9,16 @@ class Factory extends \tiFy\Core\Templates\Factory
     /**
      * Contexte d'exécution
      */
-    protected static $Context               = 'front';
-    
+    protected static $Context = 'front';
+
     /**
      * Liste des modèles prédéfinis
      */
-    protected static $Models                = array(
+    protected static $Models = [
         'AjaxListTable',
         'EditForm',
-        'ListTable'
-    );
+        'ListTable',
+    ];
 
     /**
      * CONSTRUCTEUR
@@ -32,9 +33,9 @@ class Factory extends \tiFy\Core\Templates\Factory
         parent::__construct($id, $attrs);
 
         // Déclaration des événements de déclenchement
-        $this->tFyAppActionAdd('init');
-        $this->tFyAppActionAdd('template_redirect');
-        $this->tFyAppActionAdd('wp_enqueue_scripts');
+        $this->appAddAction('init');
+        $this->appAddAction('template_redirect');
+        $this->appAddAction('wp_enqueue_scripts');
     }
 
     /**
@@ -78,10 +79,14 @@ class Factory extends \tiFy\Core\Templates\Factory
             return $factory->getDb();
         };
         $this->Template->label = function ($label = '') use ($factory) {
-            if (func_num_args()) return $factory->getLabel(func_get_arg(0));
+            if (func_num_args()) {
+                return $factory->getLabel(func_get_arg(0));
+            }
         };
         $this->Template->getConfig = function ($attr, $default = '') use ($factory) {
-            if (func_num_args()) return call_user_func_array([$factory, 'getAttr'], func_get_args());
+            if (func_num_args()) {
+                return call_user_func_array([$factory, 'getAttr'], func_get_args());
+            }
         };
 
         if (!$this->getAttr('base_url')) :
@@ -121,7 +126,8 @@ class Factory extends \tiFy\Core\Templates\Factory
             $rewrite_base = '/';
         endif;
 
-        if (!preg_match('/^' . preg_quote($rewrite_base . ltrim($this->getAttr('route'), '//'), '/') . '\/?$/', Front::getRoute())) :
+        if (!preg_match('/^' . preg_quote($rewrite_base . ltrim($this->getAttr('route'), '//'), '/') . '\/?$/',
+            Front::getRoute())) :
             return;
         endif;
 

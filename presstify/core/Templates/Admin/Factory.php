@@ -4,15 +4,6 @@ namespace tiFy\Core\Templates\Admin;
 class Factory extends \tiFy\Core\Templates\Factory
 {
     /**
-     * Liste des actions à déclencher
-     */
-    protected $tFyAppActions                    = array(
-        'init',
-        'admin_init',
-        'current_screen'    
-    ); 
-    
-    /**
      * Contexte d'execution
      */ 
     protected static $Context                = 'admin';
@@ -36,10 +27,25 @@ class Factory extends \tiFy\Core\Templates\Factory
         'ListUser',   
         'TabooxEditUser',
         'TabooxOption'
-    );    
-    
+    );
+
     /**
-     * DECLENCHEURS
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct($id, $attrs = [])
+    {
+        parent::__construct($id, $attrs = []);
+
+        // Déclaration des événements
+        $this->appAddAction('init');
+        $this->appAddAction('admin_init');
+        $this->appAddAction('current_screen');
+    }
+
+    /**
+     * EVENEMENTS
      */
     /**
      * Initialisation globale

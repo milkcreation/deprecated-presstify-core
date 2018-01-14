@@ -44,23 +44,23 @@ class Factory extends \tiFy\App\Factory
         switch ($this->getAttr('object')) :
             case 'post_type' :
                 // Initialisation de la vue courante
-                $this->tFyAppFilterAdd("manage_edit-{$object_type}_columns", '_header');
+                $this->appAddFilter("manage_edit-{$object_type}_columns", '_header');
 
-                $this->tFyAppActionAdd("manage_{$object_type}_posts_custom_column", '_content', 25, 2);
+                $this->appAddFilter("manage_{$object_type}_posts_custom_column", '_content', 25, 2);
                 break;
 
             case 'taxonomy' :
                 // Initialisation de la vue courante
-                $this->tFyAppFilterAdd("manage_edit-{$object_type}_columns", '_header');
+                $this->appAddFilter("manage_edit-{$object_type}_columns", '_header');
 
-                $this->tFyAppFilterAdd("manage_{$object_type}_custom_column", '_content', 25, 3);
+                $this->appAddFilter("manage_{$object_type}_custom_column", '_content', 25, 3);
                 break;
 
             case 'custom' :
                 // Initialisation de la vue courante
-                $this->tFyAppFilterAdd("manage_{$object_type}_columns", '_header');
+                $this->appAddFilter("manage_{$object_type}_columns", '_header');
 
-                $this->tFyAppFilterAdd("manage_{$object_type}_custom_column", '_content', 25, 3);
+                $$this->appAddFilter("manage_{$object_type}_custom_column", '_content', 25, 3);
                 break;
         endswitch;
     }

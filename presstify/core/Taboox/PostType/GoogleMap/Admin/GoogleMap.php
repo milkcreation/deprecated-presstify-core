@@ -1,13 +1,14 @@
 <?php
-namespace tiFy\Core\Taboox\PostType\GoogleMap\Admin;
-
-use tiFy\Lib\Utils as tiFyLibUtils;
-
 /**
  * Interface de gestion de localisations
  * @since 1.0.344 Refonte de l'interface de gestion de localisations
  * @author pitcho
  */
+
+namespace tiFy\Core\Taboox\PostType\GoogleMap\Admin;
+
+use tiFy\Lib\Utils as tiFyLibUtils;
+
 class GoogleMap extends \tiFy\Core\Taboox\PostType\Admin
 {
     /**

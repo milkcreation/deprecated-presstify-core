@@ -85,7 +85,7 @@ final class Login extends \tiFy\App
         if ($attrs['cb']) :
             $path[] = $attrs['cb'];
         endif;
-        $path[] = self::tFyAppOverrideAppNamespace() . '\\'. self::tFyAppFormatAsClassname($id);
+        $path[] = self::tFyAppOverrideAppNamespace() . '\\'. self::tFyAppUpperName($id);
 
         $callback = self::tFyAppGetOverride('\tiFy\Core\User\Login\Factory', $path);
 

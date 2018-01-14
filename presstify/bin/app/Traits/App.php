@@ -9,6 +9,166 @@ trait App
     /**
      * EVENEMENTS
      */
+
+    /**
+     * Ajout d'une action
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_action()
+     */
+    public function appAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    {
+        return self::tFyAppAddAction($tag, $class_method, $priority, $accepted_args, $classname);
+    }
+
+    /**
+     * Ajout d'un filtre
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer.
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_filter()
+     */
+    public function appAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    {
+        return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args, $classname);
+    }
+
+    /**
+     * AIDE A LA SAISIE
+     */
+    /**
+     * Ajout d'une fonction d'aide à la saisie
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $method Méthode de la classe à executer
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_filter()
+     */
+    final public function appAddHelper($tag, $method = '', $classname = null)
+    {
+        return self::tFyAppAddHelper($tag, $method, $classname);
+    }
+
+    /**
+     * FORMATAGE
+     */
+    /**
+     * Formatage lower_name d'une chaine de caractère
+     * Converti une chaine de caractère CamelCase en snake_case
+     *
+     * @param null|string $name
+     *
+     * @return string
+     */
+    public function appLowerName($name)
+    {
+        return self::tFyAppLowerName($name);
+    }
+
+    /**
+     * Formatage UpperName d'une chaine de caratère
+     * Converti une chaine de caractère snake_case en CamelCase
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public function appUpperName($name)
+    {
+        return self::tFyAppUpperName($name);
+    }
+
+    /**
+     * CONTENEUR
+     */
+    /**
+     * Ajout d'un conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return mixed
+     */
+    public function appAddContainer($alias, $concrete = null)
+    {
+        return tiFy::getContainer()->add($alias, $concrete);
+    }
+
+    /**
+     * Déclaration d'un conteneur d’injection de dépendances unique
+     *
+     * @param string $alias
+     *
+     * @return mixed
+     */
+    public function appShareContainer($alias, $concrete = null)
+    {
+        return tiFy::getContainer()->share($alias, $concrete);
+    }
+
+    /**
+     * Vérification d'existance conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return \League\Container\Container
+     */
+    public function appHasContainer($alias)
+    {
+        return tiFy::getContainer()->has($alias);
+    }
+
+    /**
+     * Récupérateur d'un conteneur d’injection de dépendances
+     *
+     * @param string $alias
+     *
+     * @return \League\Container\Container
+     */
+    public function appGetContainer($alias, $args = [])
+    {
+        return tiFy::getContainer()->get($alias, $args);
+    }
+
+    /**
+     * SURCHARGE
+     */
+    /**
+     * Récupération d'une classe de surcharge
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     * @param array $path Liste des chemins à parcourir
+     *
+     * @return null|string
+     */
+    public function appGetOverride($classname = null, $path = [])
+    {
+        return self::tFyAppGetOverride($classname, $path);
+    }
+
+    /**
+     * Instanciation d'une classe de surcharge
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     * @param array $path Liste des chemins à parcourir
+     * @param mixed $passed_args Argument passé au moment de l'instantiaction de la class
+     *
+     * @return null|object
+     */
+    public function appLoadOverride($classname = null, $path = [], $passed_args = '')
+    {
+        return self::tFyAppLoadOverride($classname, $path, $passed_args);
+    }
+
     /**
      * Lancement à l'initialisation de la classe
      *
@@ -480,26 +640,32 @@ trait App
      * SURCHARGES
      */
     /**
-     * SURCHAGES - Controleurs
+     * FORMATAGE
      */
     /**
-     * Formatage d'une chaine de caractère en nom de classe
-     * ex: my-class_name => MyClass_Name
+     * Formatage lower_name d'une chaine de caractère
+     * Converti une chaine de caractère CamelCase en snake_case
      *
-     * @param string $string
+     * @param null|string $name
      *
      * @return string
      */
-    public static function tFyAppFormatAsClassname($string)
+    public static function tFyAppLowerName($name)
     {
-        $string = implode('', array_map('ucfirst', explode('-', $string)));
-        $string = implode('_', array_map('ucfirst', explode('_', $string)));
+        return tiFy::formatLowerName($name);
+    }
 
-        if(preg_match('/^tiFy/', $string)) :
-            $string = lcfirst($string);
-        endif;
-
-        return $string;
+    /**
+     * Formatage UpperName d'une chaine de caratère
+     * Converti une chaine de caractère snake_case en CamelCase
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function tFyAppUpperName($name)
+    {
+        return tiFy::formatUpperName($name);
     }
 
     /**

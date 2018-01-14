@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\App;
 
 abstract class Plugin extends \tiFy\App\Factory
@@ -7,7 +8,7 @@ abstract class Plugin extends \tiFy\App\Factory
      * Données de plugin
      * @var mixed
      */
-    protected static $PluginData    = array();
+    protected static $PluginData = [];
 
     /**
      * CONSTRUCTEUR
@@ -30,14 +31,14 @@ abstract class Plugin extends \tiFy\App\Factory
     {
         $classname = get_called_class();
         $attrs = self::tFyAppAttrList($classname);
-        
-        if (! static::$PluginData[$classname]) :
+
+        if (!static::$PluginData[$classname]) :
             static::$PluginData[$classname] = \get_plugin_data($attrs['Filename']);
         endif;
-        
-        if (! $data) :
-            return isset(static::$PluginData[$classname]) ? static::$PluginData[$classname] : array();
-         elseif (isset(static::$PluginData[$classname][$data])) :
+
+        if (!$data) :
+            return isset(static::$PluginData[$classname]) ? static::$PluginData[$classname] : [];
+        elseif (isset(static::$PluginData[$classname][$data])) :
             return static::$PluginData[$classname][$data];
         endif;
     }

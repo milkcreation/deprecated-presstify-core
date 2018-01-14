@@ -50,7 +50,7 @@ class NavMenu extends \tiFy\App\Component
         if (isset($attrs['walker'])) :
             $path[] = $attrs['walker'];
         endif;
-        $path[] = "\\" . self::getOverrideNamespace() . "\\Components\\NavMenu\\" . self::sanitizeControllerName($id) . "\\Walker";
+        $path[] = "\\" . self::getOverrideNamespace() . "\\Components\\NavMenu\\" . self::tFyAppUpperName($id) . "\\Walker";
         foreach (self::getOverrideNamespaceList() as $namespace) :
             $path[] = $namespace . "\\Components\\NavMenu\\Walker";
         endforeach;
@@ -124,7 +124,7 @@ class NavMenu extends \tiFy\App\Component
             return;
         endif;
 
-        $nodes_path[] = "\\" . self::getOverrideNamespace() . "\\Components\\NavMenu\\" . self::sanitizeControllerName($id) . "\\Nodes";
+        $nodes_path[] = "\\" . self::getOverrideNamespace() . "\\Components\\NavMenu\\" . self::tFyAppUpperName($id) . "\\Nodes";
         $nodes_path[] = "\\" . self::getOverrideNamespace() . "\\Components\\NavMenu\\Nodes";
         $Nodes = self::loadOverride('\tiFy\Components\NavMenu\Nodes');
         $nodes = $Nodes->customs(self::$Nodes[$id]);

@@ -17,6 +17,7 @@ trait Controllers
 	 */
 	/**
 	 * Définition d'un controleur
+     * @deprecated
      *
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
@@ -36,6 +37,8 @@ trait Controllers
     
     /**
      * Récupération d'un controleur déclaré
+     * @deprecated
+     *
      */
     public static function getController($id)
     {

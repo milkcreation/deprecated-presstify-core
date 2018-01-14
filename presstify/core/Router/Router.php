@@ -78,6 +78,8 @@ class Router extends \tiFy\App\Core
      *      @param string list_order Ordre d'affichage de la liste de selection de l'interface d'administration
      *      @param string show_option_none Intitulé de la liste de selection de l'interface d'administration lorsqu'aucune relation n'a été établie
      * }
+     *
+     * @return \tiFy\Core\Router\Factory
      */
     public static function register($id, $attrs = [])
     {

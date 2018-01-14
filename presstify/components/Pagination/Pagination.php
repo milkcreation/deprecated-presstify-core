@@ -3,16 +3,30 @@ namespace tiFy\Components\Pagination;
 
 class Pagination extends \tiFy\App\Component
 {
-	/* = ARGUMENTS = */
-	// Liste des actions à déclencher
-	protected $tFyAppActions				= array(
-		'init',
-		'wp_enqueue_scripts'	
-	);
-	
 	static $Instance = 1;
-	
-	/* = MISE EN FILE DES SCRIPTS = */
+
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Déclaration des événements
+        $this->appAddAction('init');
+        $this->appAddAction('wp_enqueue_scripts');
+    }
+
+    /**
+     * EVENEMENTS
+     */
+    /**
+     * Initialisation globale
+     *
+     * @return void
+     */
 	final public function init()
 	{
 		wp_register_style( 'tiFyPagination', self::tFyAppUrl() ."/theme/base.css", array(), '160318' );

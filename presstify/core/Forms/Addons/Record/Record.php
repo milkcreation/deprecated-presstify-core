@@ -48,15 +48,6 @@ use tiFy\Core\Templates\Templates;
 
 class Record extends \tiFy\Core\Forms\Addons\Factory
 {
-    /* = ARGUMENTS = */
-    // Liste des actions à déclencher
-    protected $tFyAppActions                = array(
-        'admin_init',
-        'tify_templates_register',
-        'tify_db_register',
-        'tify_upload_register'
-    ); 
-    
     // Définition de l'identifiant
     public $ID = 'record';
     
@@ -123,6 +114,12 @@ class Record extends \tiFy\Core\Forms\Addons\Factory
         $this->callbacks = array(
             'handle_successfully'    => array( $this, 'cb_handle_successfully' )
         );
+
+        // Déclaration des événements
+        $this->appAddAction('admin_init');
+        $this->appAddAction('tify_templates_register');
+        $this->appAddAction('tify_db_register');
+        $this->appAddAction('tify_upload_register');
     }
 
     /* = DECLENCHEURS = */

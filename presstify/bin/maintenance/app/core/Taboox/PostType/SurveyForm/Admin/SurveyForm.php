@@ -1,4 +1,5 @@
 <?php
+
 namespace Theme\tiFy\Core\Taboox\PostType\SurveyForm\Admin;
 
 class SurveyForm extends \tiFy\Core\Taboox\PostType\Admin

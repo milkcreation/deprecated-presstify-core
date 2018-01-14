@@ -42,10 +42,10 @@ class Mail extends \tiFy\App\Core
         new Queue;
 
         // Déclenchement d'événements
-        $this->tFyAppFilterAdd('password_change_email', null, 99, 3);
-        $this->tFyAppFilterAdd('email_change_email', null, 99, 3);
-        $this->tFyAppFilterAdd('retrieve_password_title', null, 99, 3);
-        $this->tFyAppFilterAdd('wp_mail');
+        $this->appAddFilter('password_change_email', null, 99, 3);
+        $this->appAddFilter('email_change_email', null, 99, 3);
+        $this->appAddFilter('retrieve_password_title', null, 99, 3);
+        $this->appAddFilter('wp_mail');
 
         // Définition des paramètres généraux
         foreach ((array)self::tFyAppConfig('global') as $param => $value) :

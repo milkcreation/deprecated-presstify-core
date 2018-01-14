@@ -1,48 +1,57 @@
 <?php
+
 namespace tiFy\Components\CustomFields;
 
 final class CustomFields extends \tiFy\App\Component
 {
-	/* = ARGUMENTS = */
-	/** == ACTIONS == **/
-	// Liste des Actions à déclencher
-	protected 		$tFyAppActions		= array(
-		'current_screen'
-	);
+    /**
+     * Liste des classes de rappel de champ personnalisé
+     * @var array
+     */
+    private static $Factory = [];
 
-	/** == CONFIGURATION == **/
-	public static 	$Factories			= array();
-	
-	/* = ACTIONS = */
-	/** == Initialisation globale == **/
-	public function __construct()
-	{
-		parent::__construct();
-		
-		foreach( array( 'post_type', 'taxonomy' ) as $env ) :
-			foreach( (array) self::tFyAppConfig( $env ) as $type => $custom_fields ) :
-				foreach( (array) $custom_fields as $cfk => $cfv ) :
-					if( is_int($cfk) ) :
-						$ClassName 	= $cfv;
-						$args		= array();
-					else :
-						$ClassName 	= $cfk;
-						$args		= $cfv;
-					endif;				
-					
-					if( \class_exists( $ClassName ) ) :						
-						new $ClassName( $type, $args );
-						continue;
-					else :
-						$_env =  join( '', array_map( 'ucfirst', preg_split( '/_/', $env ) ) );
-					
-						$ClassName = "\\tiFy\\Components\\CustomFields\\{$_env}\\{$ClassName}\\{$ClassName}";
-						if( ! \class_exists( $ClassName ) )
-							continue;
-						new $ClassName( $type, $args );	
-					endif;
-				endforeach;
-			endforeach;
-		endforeach;
-	}
+    /**
+     * CONSTRUCTEUR
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Traitement des attributs de configuration
+        foreach (['post_type', 'taxonomy'] as $object_type) :
+            if (!$object_names = self::tFyAppConfig($object_type)) :
+                continue;
+            endif;
+
+            foreach ($object_names as $object_name => $fields) :
+                if (empty($fields)) :
+                    continue;
+                endif;
+
+                foreach ($fields as $key => $value) :
+                    if (is_int($key)) :
+                        $classname = $value;
+                        $attrs = [];
+                    else :
+                        $classname = $key;
+                        $attrs = $value;
+                    endif;
+
+                    if (\class_exists($classname)) :
+                    else :
+                        $ObjectType = $this->appUpperName($object_type);
+                        $classname = "\\tiFy\\Components\\CustomFields\\{$ObjectType}\\{$classname}\\{$classname}";
+
+                        if (!\class_exists($classname)) :
+                            continue;
+                        endif;
+                    endif;
+
+                    new $classname($object_name, $attrs);
+                endforeach;
+            endforeach;
+        endforeach;
+    }
 }

@@ -1,8 +1,11 @@
 <?php
 namespace
 {
-    /* = GLOBAL = */
-    /** == Déclaration dynamique d'un composant == **/
+    /**
+     * Déclaration dynamique d'un composant
+     *
+     * @return \tiFy\App\Component
+     */
     function tify_component_register($component)
     {
         add_action( "tify_components_register", function() use ($component)
