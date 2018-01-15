@@ -30,7 +30,7 @@ class Breadcrumb extends \tiFy\App\Component
         parent::__construct();
 
         // Définition des conteneurs de dépendances
-        $this->appAddContainer('tiFy.components.breadcrumb.template', $this->appLoadOverride('\tiFy\Components\Breadcrumb\Template'));
+        $this->appAddContainer('tiFy\Components\Breadcrumb\Template', $this->appLoadOverride('\tiFy\Components\Breadcrumb\Template'));
 
         // Definition des événements
         $this->appAddAction('init');
@@ -78,7 +78,7 @@ class Breadcrumb extends \tiFy\App\Component
     {
         global $post;
 
-        $Template = self::tFyAppGetContainer('tiFy.components.breadcrumb.template');
+        $Template = self::tFyAppGetContainer('tiFy\Components\Breadcrumb\Template');
 
         $config = wp_parse_args($args, self::tFyAppConfig());
         extract($config, EXTR_SKIP);

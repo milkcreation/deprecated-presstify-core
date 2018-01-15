@@ -36,7 +36,7 @@ class Factory extends \tiFy\Core\Templates\Factory
      */
     public function __construct($id, $attrs = [])
     {
-        parent::__construct($id, $attrs = []);
+        parent::__construct($id, $attrs);
 
         // Déclaration des événements
         $this->appAddAction('init');
