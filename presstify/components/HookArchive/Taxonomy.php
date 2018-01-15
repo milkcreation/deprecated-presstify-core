@@ -255,7 +255,7 @@ final class Taxonomy extends Factory
                     }
                 endif;
 
-                $Template = $this->appGetContainer('tiFy.components.breadcrumb.template');
+                $Template = $this->appGetContainer('tiFy\Components\Breadcrumb\Template');
                 $part = ['name' => esc_html(wp_strip_all_tags(get_the_title()))];
 
                 $term_link = sprintf('<li class="tiFyBreadcrumb-Item"><a href="%1$s" class="tiFyBreadcrumb-ItemLink">%2$s</a></li>',
@@ -285,7 +285,7 @@ final class Taxonomy extends Factory
                 }
             endif;
 
-            $Template = $this->appGetContainer('tiFy.components.breadcrumb.template');
+            $Template = $this->appGetContainer('tiFy\Components\Breadcrumb\Template');
             $part = ['name' => esc_html(wp_strip_all_tags(get_the_title($hook_id)))];
 
             $output = $ancestors . $Template::currentRender($part);

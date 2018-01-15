@@ -200,7 +200,7 @@ class Factory extends \tiFy\App\FactoryConstructor
             'logout_link'   => [],
             'lost_password_link' => [],
             'roles'         => ['subscriber'],
-            'redirect_url'  => (is_ssl() ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'],
+            'redirect_url'  => site_url('/'),
             'attempt'       => -1,
             'errors_map'    => []
         ];

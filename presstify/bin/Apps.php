@@ -997,7 +997,7 @@ final class Apps
                 // Définition de la liste des chemins vers les repertoires de surcharge
                 self::setOverridePath($classname);
 
-                tiFy::getContainer()->share('tiFy.' . $type . '.' . $attrs['LowerName'], new $attrs['ClassName']);
+                tiFy::getContainer()->share($attrs['ClassName'], new $attrs['ClassName']);
             endforeach;
         endforeach;
 
