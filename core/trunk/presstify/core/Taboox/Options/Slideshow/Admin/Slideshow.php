@@ -161,7 +161,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
      * @param number $index
      * @return string
      */
-    private function item_render( $slide, $index = 0 )
+    protected function item_render( $slide, $index = 0 )
     {
         if(!$index) :
             $index = uniqid();
