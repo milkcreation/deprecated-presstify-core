@@ -75,7 +75,7 @@ class Slideshow extends \tiFy\App
             return static::$Attrs;
         endif;
 
-        return static::$Attrs = static::parseAttr($args);
+        return static::$Attrs = static::parseAttrs($args);
     }
 
     /**
