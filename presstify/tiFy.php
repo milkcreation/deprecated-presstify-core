@@ -139,12 +139,13 @@ final class tiFy
      * Converti une chaine de caractère CamelCase en snake_case
      *
      * @param string $name
+     * @param string $separator
      *
      * @return string
      */
-    public static function formatLowerName($name)
+    public static function formatLowerName($name, $separator = '_')
     {
-        return join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', lcfirst($name))));
+        return join($separator, array_map('lcfirst', preg_split('#(?=[A-Z])#', lcfirst($name))));
     }
 
     /**

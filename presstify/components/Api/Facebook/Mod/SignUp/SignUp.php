@@ -1,21 +1,20 @@
 <?php
 /**
- * @name Login
- * @desc Authentification d'un utilisateur via un compte Facebook
- * @see https://developers.facebook.com/docs/php/howto/example_facebook_login#login
+ * @name SignUp
+ * @desc Inscription d'un utilisateur via un compte Facebook
  * @package presstiFy
  * @namespace tiFy\Components\Api\Facebook\Mod\Login\Login
  * @version 1.1
  * @subpackage Core
- * @since 1.2.546
+ * @since 1.2.553
  *
  * @author Jordy Manner <jordy@tigreblanc.fr>
  * @copyright Milkcreation
  */
 
-namespace tiFy\Components\Api\Facebook\Mod\Login;
+namespace tiFy\Components\Api\Facebook\Mod\SignUp;
 
-class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
+class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
 {
     /**
      * CONTROLEURS
@@ -27,7 +26,7 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
      *
      * @return string
      */
-    final public static function url($action = 'login', $permissions = ['email'])
+    final public static function url($action = 'signup', $permissions = ['email'], $base_url = null)
     {
         if (!$fb = self::tFyAppGetContainer('tiFy\Components\Api\Facebook\Facebook')) :
             return;
@@ -40,7 +39,7 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
                 [
                     'tify_api_fb_connect' => (string)$action
                 ],
-                home_url('/')
+                $base_url ? : home_url('/')
             ),
             (array)$permissions
         );
@@ -63,30 +62,31 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
     final public static function trigger($args = [])
     {
         $defaults = [
-            'action'     => 'login',
+            'action'     => 'signup',
             'permissions' => ['email'],
-            'text'       => __('Connexion avec Facebook', 'tify'),
-            'attrs'      => []
+            'text'       => __('Inscription avec Facebook', 'tify'),
+            'attrs'      => [],
+            'base_url'   => home_url('/')
         ];
         $args     = array_merge($defaults, $args);
 
-        $url = self::url($args['action'], $args['permissions']);
+        $url = self::url($args['action'], $args['permissions'], $args['base_url']);
 
         echo "<a href=\"" . esc_url($url) . "\">{$args['text']}</a>";
     }
 
     /**
-     * Traitement de l'authentification via Facebook
+     * Traitement de l'inscription via Facebook
      *
      * @param string $action
      * @param \tiFy\Components\Api\Facebook\Facebook $fb Classe de rappel du SDK Facebook
      *
      * @return string
      */
-    public function handler($action = 'login', $fb)
+    public function handler($action = 'signup', $fb)
     {
         // Bypass
-        if ($action !== 'login') :
+        if ($action !== 'signup') :
             return;
         endif;
 
@@ -126,7 +126,7 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
         if (!$fb_user_id = $tokenMetadata->getUserId()) :
             return $fb->error(new \WP_Error(
                 401,
-                __('Impossible de de définir les données du jeton d\'authentification Facebook.', 'tify'),
+                __('Impossible de définir les données du jeton d\'authentification Facebook.', 'tify'),
                 ['title' => __('Récupération des données du jeton d\'accès en échec', 'tify')])
             );
         endif;
@@ -142,30 +142,43 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
             ]);
 
         // Bypass - Aucun utilisateur correspondant à l'identifiant utilisateur Facebook.
-        if (!$count = $user_query->get_total()) :
+        if ($count = $user_query->get_total()) :
             return $fb->error(new \WP_Error(
                 401,
-                __('Aucun utilisateur ne correspond à votre compte Facebook.', 'tify'),
-                ['title' => __('Utilisateur non trouvé', 'tify')])
-            );
-        elseif ($count > 1) :
-            return $fb->error(new \WP_Error(
-                401,
-                __('ERREUR SYSTEME : Votre compte Facebook semble être associé à plusieurs compte > Authentification impossible.', 'tify'),
-                ['title' => __('Nombre d\'utilisateurs trouvés, invalide', 'tify')])
+                __('Un utilisateur est déjà enregistré avec ce compte Facebook.', 'tify'),
+                ['title' => __('Utilisateur existant', 'tify')])
             );
         endif;
-        $results = $user_query->get_results();
 
-        // Définition des données utilisateur
-        $user = reset($results);
+        // Récupération des informations utilisateur
+        $response = $fb->userInfos(['id', 'email', 'name', 'first_name', 'last_name', 'short_name']);
+        if (is_wp_error($response['error'])) :
+            return $fb->error($response['error']);
+        endif;
 
-        // Authentification
-        \wp_clear_auth_cookie();
-        \wp_set_auth_cookie((int)$user->ID);
+        // Cartographie des données utilisateur
+        $userdata = [
+            'user_login'    => 'fb-' . $response['infos']['id'],
+            'user_pass'     => '',
+            'user_email'    => $response['infos']['email'],
+            'display_name'  => $response['infos']['name'],
+            'first_name'    => $response['infos']['first_name'],
+            'last_name'     => $response['infos']['last_name'],
+            'nickname'      => $response['infos']['short_name'],
+            'role'          => 'subscriber'
+        ];
+        $user_id = \wp_insert_user($userdata);
 
-        // Redirection
-        \wp_redirect(home_url('/'));
-        exit;
+        if (is_wp_error($user_id)) :
+            return $fb->error($user_id);
+        elseif (\update_user_meta($user_id, '_tify_facebook_user_id', $response['infos']['id'])) :
+            // Authentification
+            \wp_clear_auth_cookie();
+            \wp_set_auth_cookie((int)$user_id);
+
+            // Redirection
+            \wp_redirect(home_url('/'));
+            exit;
+        endif;
     }
 }

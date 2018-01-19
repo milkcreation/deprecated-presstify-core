@@ -1,7 +1,7 @@
 <?php
 namespace tiFy\Components\CustomColumns;
 
-class Factory extends \tiFy\App\Factory
+class Factory extends \tiFy\App
 {
     /**
      * Instance
@@ -60,7 +60,7 @@ class Factory extends \tiFy\App\Factory
                 // Initialisation de la vue courante
                 $this->appAddFilter("manage_{$object_type}_columns", '_header');
 
-                $$this->appAddFilter("manage_{$object_type}_custom_column", '_content', 25, 3);
+                $this->appAddFilter("manage_{$object_type}_custom_column", '_content', 25, 3);
                 break;
         endswitch;
     }

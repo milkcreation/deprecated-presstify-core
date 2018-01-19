@@ -35,6 +35,9 @@
         "codeitnowin/barcode": "^2.1",
         "league/flysystem": "^1.0",
         "league/event": "^2.1",
-        "league/container": "^2.4"
+        "league/container": "^2.4",
+        "league/route": "^3.0",
+        "zendframework/zend-diactoros": "^1.7",
+        "symfony/psr-http-message-bridge": "^1.0"
     }
 }

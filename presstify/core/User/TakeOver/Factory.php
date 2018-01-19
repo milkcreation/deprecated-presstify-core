@@ -65,6 +65,10 @@ class Factory extends \tiFy\App\FactoryConstructor
 
         // Déclaration des événements de déclenchement
         $this->tFyAppAddAction('wp_loaded');
+
+        if (!is_user_logged_in()) :
+            $this->clearCookies();
+        endif;
     }
 
     /**

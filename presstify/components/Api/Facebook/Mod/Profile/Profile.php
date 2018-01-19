@@ -13,11 +13,11 @@
  * @copyright Milkcreation
  */
 
-namespace tiFy\Components\Api\Facebook\Mod\AccountLinking;
+namespace tiFy\Components\Api\Facebook\Mod\Profile;
 
 use tiFy\Core\Control\Control;
 
-class AccountLinking extends \tiFy\Components\Api\Facebook\Mod\Factory
+class Profile extends \tiFy\Components\Api\Facebook\Mod\Factory
 {
     /**
      * CONTROLEURS
@@ -35,8 +35,8 @@ class AccountLinking extends \tiFy\Components\Api\Facebook\Mod\Factory
             $instance->setInit();
 
             // Initialisation des événements de déclenchement
-            $instance->tFyAppAddAction('show_user_profile', 'show_user_profile');
-            $instance->tFyAppAddAction('tify_api_fb_connect_associate', 'on_associate');
+            $instance->appAddAction('show_user_profile', 'show_user_profile');
+            $instance->appAddAction('tify_api_fb_connect_associate', 'on_associate');
             //$instance->tFyAppAddAction('tify_api_fb_connect_dissociate', 'on_dissociate');
         endif;
 
