@@ -62,7 +62,7 @@ class Api extends \tiFy\App\Component
      *
      * @return null|object
      */
-    public function register($id, $attrs = [])
+    public static function register($id, $attrs = [])
     {
         // Bypass
         if (!in_array($id, self::$Allowed)) :
@@ -73,7 +73,7 @@ class Api extends \tiFy\App\Component
         $class = "tiFy\\Components\\Api\\{$classname}\\{$classname}";
 
         if (class_exists($class)) :
-            return self::$Factory[$id] = $class::create($attrs);
+            self::$Factory[$id] = self::tFyAppShareContainer($class, $class::create($attrs));
         endif;
     }
     

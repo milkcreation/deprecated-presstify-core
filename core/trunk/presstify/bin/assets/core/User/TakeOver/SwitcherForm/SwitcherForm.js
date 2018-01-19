@@ -1,4 +1,5 @@
 jQuery(document).ready(function($){
+
     // Récupération de la liste des utilisateurs liés
     $(document).on('tify_select.add', '.tiFyTakeOverSwitcherForm-selectField--role', function(e){
         // Bypass
@@ -24,6 +25,7 @@ jQuery(document).ready(function($){
             }
         )
             .done(function(resp){
+                console.log(resp);
                 $users.before(resp).tiFyFieldSelectJs('destroy');
                 $('.tiFyTakeOverSwitcherForm-selectField--user').tiFyFieldSelectJs();
             });

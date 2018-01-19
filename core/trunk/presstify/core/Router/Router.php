@@ -1,4 +1,5 @@
 <?php
+
 namespace tiFy\Core\Router;
 
 use tiFy\Core\Options\Options;
@@ -9,7 +10,7 @@ class Router extends \tiFy\App\Core
      * Liste des objets route déclarés
      * @var \tiFy\Core\Router\Factory[]
      */
-    private static $Factory          = [];
+    private static $Factory = [];
 
     /**
      * CONSTRUCTEUR
@@ -20,18 +21,21 @@ class Router extends \tiFy\App\Core
     {
         parent::__construct();
 
-        foreach ((array)self::tFyAppConfig() as $id => $attrs) :
-            self::register($id, $attrs);
-        endforeach;
+        // Traitement des paramètres de configuration
+        if ($config = self::tFyAppConfig()) :
+            foreach ($config as $id => $attrs) :
+                self::register($id, $attrs);
+            endforeach;
+        endif;
 
         do_action('tify_router_register');
 
-        // Déclaration des événements de déclenchement
-        $this->tFyAppAddAction('tify_options_register_node');
+        // Déclaration des événements
+        $this->appAddAction('tify_options_register_node');
     }
 
     /**
-     * DECLENCHEURS
+     * EVENEMENTS
      */
     /**
      * Déclaration de sections de boîte à onglet de l'interface d'administration des options
@@ -43,20 +47,20 @@ class Router extends \tiFy\App\Core
         endif;
 
         Options::registerNode(
-            array(
-                'id'        => 'tifyCoreRouter-optionsNode',
-                'title'     => __('Routes', 'tify')
-            )
+            [
+                'id' => 'tifyCoreRouter-optionsNode',
+                'title' => __('Routes', 'tify')
+            ]
         );
 
         Options::registerNode(
-            array(
-                'id'        => 'tifyCoreRouter-optionsNode--contentHook',
-                'parent'    => 'tifyCoreRouter-optionsNode',
-                'title'     => __('Pages de contenu spéciales', 'tify'),
-                'cb'        => 'tiFy\Core\Router\Taboox\Admin\ContentHook',
-                'helpers'   => 'tiFy\Core\Router\Taboox\Helpers\ContentHook'
-            )
+            [
+                'id' => 'tifyCoreRouter-optionsNode--contentHook',
+                'parent' => 'tifyCoreRouter-optionsNode',
+                'title' => __('Pages de contenu spéciales', 'tify'),
+                'cb' => 'tiFy\Core\Router\Taboox\Admin\ContentHook',
+                'helpers' => 'tiFy\Core\Router\Taboox\Helpers\ContentHook'
+            ]
         );
     }
 
@@ -70,13 +74,13 @@ class Router extends \tiFy\App\Core
      * @param array $attrs {
      *      Liste des attributs de configuration.
      *
-     *      @param string $title Intitulé de la route
-     *      @param string $desc Texte de descritpion de la route
-     *      @param string object_type Type d'objet (post|taxonomy) en relation avec la route
-     *      @param string object_name Nom de qualification de l'objet en relation (ex: post, page, category, tag ...)
-     *      @param string option_name Clé d'index d'enregistrement en base de données
-     *      @param string list_order Ordre d'affichage de la liste de selection de l'interface d'administration
-     *      @param string show_option_none Intitulé de la liste de selection de l'interface d'administration lorsqu'aucune relation n'a été établie
+     * @param string $title Intitulé de la route
+     * @param string $desc Texte de descritpion de la route
+     * @param string object_type Type d'objet (post|taxonomy) en relation avec la route
+     * @param string object_name Nom de qualification de l'objet en relation (ex: post, page, category, tag ...)
+     * @param string option_name Clé d'index d'enregistrement en base de données
+     * @param string list_order Ordre d'affichage de la liste de selection de l'interface d'administration
+     * @param string show_option_none Intitulé de la liste de selection de l'interface d'administration lorsqu'aucune relation n'a été établie
      * }
      *
      * @return \tiFy\Core\Router\Factory

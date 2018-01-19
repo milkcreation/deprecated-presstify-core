@@ -26,31 +26,31 @@ class Handle
     
     /** == == **/
     public function proceed()
-    {        
+    {
         // Bypass
         if( ! $nonce = $this->getQueryVar( $this->Form->getNonce() ) )
-            return false;    
-                        
+            return false;
+
         /// Provenance de la soumission du formulaire    
         if( ! wp_verify_nonce( $nonce, 'submit_'. $this->Form->getUID() ) ) :
             wp_die( __( '<h2>Erreur lors de la vérification d\'origine de la soumission de formulaire</h2><p>Impossible de déterminer l\'origine de la soumission de votre formulaire.</p>', 'tify' ), __( 'Erreur de soumission de formulaire', 'tify' ), array( 'form_id' => $this->Form->getID() ) );
         endif;
-        
+
         // Définition de la session
         $this->Form->transport()->initSession();
         
         /// Vérification de la validité de la session existante
         if( ! $this->Form->transport()->getTransient() )
             wp_die( __( '<h2>Erreur lors de la soumission du formulaire</h2><p>Votre session de soumission de formulaire est invalide ou arrivée à expiration</p>', 'tify' ) );
-             
+
         // Traitement des variables de requête
         if( ! $this->_parseQueryVars() )
             return;
-           
+
         // Vérification des champs de formulaire
         if( ! $this->_checkQueryVars() )
             return;
-       
+
         // Affichage du formulaire pour l'étape suivante
         //if( $this->master->steps->next() )
             //return;
@@ -236,9 +236,9 @@ class Handle
                 
                 $this->addError( $message, $data );
             endif;
-        endforeach;    
+        endforeach;
     
-        if( $this->hasError() ) :
+        if($this->hasError()) :
             return false;
         else :
             return true;

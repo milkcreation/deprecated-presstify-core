@@ -31,11 +31,11 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
     protected function init()
     {
         // Actions ajax
-        $this->tFyAppAddAction(
+        $this->appAddAction(
             'wp_ajax_tiFyTakeOverSwitcherForm_get_users',
             'wp_ajax_get_users'
         );
-        $this->tFyAppAddAction(
+        $this->appAddAction(
             'wp_ajax_nopriv_tiFyTakeOverSwitcherForm_get_users',
             'wp_ajax_get_users'
         );

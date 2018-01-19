@@ -7,23 +7,187 @@ use tiFy\Apps;
 trait App
 {
     /**
+     * FORMATAGE
+     */
+    /**
+     * Formatage lower_name d'une chaine de caractère
+     * Converti une chaine de caractère CamelCase en snake_case
+     *
+     * @param null|string $name
+     * @param string $separator
+     * @return string
+     */
+    final public function appLowerName($name = null, $separator = '_')
+    {
+        return self::tFyAppLowerName($name, $separator);
+    }
+
+    /**
+     * Formatage UpperName d'une chaine de caratère
+     * Converti une chaine de caractère snake_case en CamelCase
+     *
+     * @param null|string $name
+     *
+     * @return string
+     */
+    final public function appUpperName($name = null)
+    {
+        return self::tFyAppUpperName($name);
+    }
+
+    /**
+     * ATTRIBUTS
+     */
+    /**
+     * Récupération de la liste des attributs de l'applicatif
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return array {
+     *      Liste des attributs de configuration
+     *
+     *      @var null|string $Id Identifiant de qualification de l'applicatif
+     *      @var string $Type Type d'applicatif Components|Core|Plugins|Set|Customs
+     *      @var \ReflectionClass $ReflectionClass Informations sur la classe
+     *      @var string $ClassName Nom complet et unique de la classe (espace de nom inclus)
+     *      @var string $ShortName Nom court de la classe
+     *      @var string $Namespace Espace de Nom
+     *      @var string $Filename Chemin absolu vers le fichier de la classe
+     *      @var string $Dirname Chemin absolu vers le repertoire racine de la classe
+     *      @var string $Url Url absolue vers le repertoire racine de la classe
+     *      @var string $Rel Chemin relatif vers le repertoire racine de la classe
+     *      @var mixed $Config Attributs de configuration de configuration de l'applicatif
+     *      @var array $OverridePath {
+     *          Liste des chemins vers le repertoire de stockage des gabarits de l'applicatif
+     *
+     *          @var array $app {
+     *              Attributs du repertoire des gabarits de l'application
+     *
+     *              @var string $url Url vers le repertoire des gabarits
+     *              @var string $path Chemin absolu vers le repertoire des gabarits
+     *              @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *              @var string $baseurl Url vers le repertoire racine
+     *              @var string $basedir Chemin absolu vers le repertoire
+     *          }
+     *          @var array $theme {
+     *              Attributs du repertoire des gabarits de surcharge du theme actif
+     *
+     *              @var string $url Url vers le repertoire des gabarits
+     *              @var string $path Chemin absolu vers le repertoire des gabarits
+     *              @var string $subdir Chemin relatif vers le sous-repertoire des gabarits
+     *              @var string $baseurl Url vers le repertoire racine
+     *              @var string $basedir Chemin absolu vers le repertoire
+     *          }
+     *      }
+     * }
+     */
+    final public function appAttrList($classname = null)
+    {
+        return self::tFyAppAttrList($classname);
+    }
+
+    /**
+     * Récupération d'un attribut de l'applicatif
+     *
+     * @param string $attr Id|Type|ReflectionClass|ClassName|ShortName|Namespace|Filename|Dirname|Url|Rel|Config|OverridePath
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|mixed
+     */
+    final public function appAttr($attr, $classname = null)
+    {
+        return self::tFyAppAttr($attr, $classname);
+    }
+
+    /**
+     * Récupération du nom complet de la classe (Espace de nom inclus)
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public function appClassname($classname = null)
+    {
+        return self::tFyAppClassname($classname);
+    }
+
+    /**
+     * Récupération du nom cours de la classe (hors espace de nom)
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public function appShortname($classname = null)
+    {
+        return self::tFyAppShortname($classname);
+    }
+
+    /**
+     * Récupération de l'espace de nom
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public function appNamespace($classname = null)
+    {
+        return self::tFyAppNamespace($classname);
+    }
+
+    /**
+     * Récupération du chemin absolu vers le repertoire racine de la classe
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public static function appDirname($classname = null)
+    {
+        return self::tFyAppDirname($classname);
+    }
+
+    /**
+     * Récupération de l'url absolue vers le repertoire racine de la classe
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public static function appUrl($classname = null)
+    {
+        return self::tFyAppUrl($classname);
+    }
+
+    /**
+     * Récupération du chemin relatif vers le repertoire racine de la classe
+     *
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|string
+     */
+    final public static function appRel($classname = null)
+    {
+        return self::tFyAppRel($classname);
+    }
+
+    /**
      * EVENEMENTS
      */
-
     /**
      * Ajout d'une action
      *
      * @param string $tag Identification de l'accroche
-     * @param string $class_method Méthode de la classe à executer
+     * @param string $method Méthode de la classe à executer
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|callable \add_action()
      */
-    public function appAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    final public function appAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
-        return self::tFyAppAddAction($tag, $class_method, $priority, $accepted_args, $classname);
+        return self::tFyAppAddAction($tag, $method, $priority, $accepted_args, $classname);
     }
 
     /**
@@ -37,7 +201,7 @@ trait App
      *
      * @return null|callable \add_filter()
      */
-    public function appAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    final public function appAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
         return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args, $classname);
     }
@@ -60,37 +224,19 @@ trait App
     }
 
     /**
-     * FORMATAGE
-     */
-    /**
-     * Formatage lower_name d'une chaine de caractère
-     * Converti une chaine de caractère CamelCase en snake_case
-     *
-     * @param null|string $name
-     *
-     * @return string
-     */
-    public function appLowerName($name)
-    {
-        return self::tFyAppLowerName($name);
-    }
-
-    /**
-     * Formatage UpperName d'une chaine de caratère
-     * Converti une chaine de caractère snake_case en CamelCase
-     *
-     * @param string $name
-     *
-     * @return string
-     */
-    public function appUpperName($name)
-    {
-        return self::tFyAppUpperName($name);
-    }
-
-    /**
      * CONTENEUR
      */
+    /**
+     * Conteneur d’injection de dépendances
+     * @see http://container.thephpleague.com/
+     *
+     * @return \League\Container\Container
+     */
+    public function appContainer()
+    {
+        return self::tFyAppContainer();
+    }
+
     /**
      * Ajout d'un conteneur d’injection de dépendances
      *
@@ -171,6 +317,7 @@ trait App
 
     /**
      * Lancement à l'initialisation de la classe
+     * @deprecated
      *
      * @return void
      */
@@ -180,38 +327,35 @@ trait App
      * Ajout d'une action
      *
      * @param string $tag Identification de l'accroche
-     * @param string $class_method Méthode de la classe à executer
+     * @param string $method Méthode de la classe à executer
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return null|callable \add_action()
      */
-    final public function tFyAppAddAction($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    final public function tFyAppAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
-        if (!$class_method) :
-            $class_method = $tag;
+        if (!$method) :
+            $method = $tag;
         endif;
 
-        if (!$classname) :
-            if ((new \ReflectionMethod($this, $class_method))->isStatic()) :
-                $classname = get_called_class();
-            else :
-                $classname = $this;
+        if (is_string($method) && !preg_match('#::#', $method)) :
+            if (!$classname) :
+                if ((new \ReflectionMethod($this, $method))->isStatic()) :
+                    $classname = get_called_class();
+                else :
+                    $classname = $this;
+                endif;
             endif;
+            $method = [$classname, $method];
         endif;
 
-        if (!method_exists($classname, $class_method)) :
+        if (!is_callable($method)) :
             return;
         endif;
 
-        if (is_object($classname)) :
-            $function_to_add = [$classname, $class_method];
-        else :
-            $function_to_add = [$classname, $class_method];
-        endif;
-
-        return \add_action($tag, $function_to_add, $priority, $accepted_args);
+        return \add_action($tag, $method, $priority, $accepted_args);
     }
 
     /**
@@ -295,7 +439,7 @@ trait App
      */
     final public function tFyAppAddHelper($tag, $method = '', $classname = null)
     {
-        if ($tag && ! \function_exists($tag)) :
+        if ($tag && !\function_exists($tag)) :
             $classname = self::_tFyAppParseClassname($classname);
             eval('function ' . $tag . '() { return call_user_func_array("' . $classname . '::' . $method . '", func_get_args());}');
         endif;
@@ -647,24 +791,33 @@ trait App
      * Converti une chaine de caractère CamelCase en snake_case
      *
      * @param null|string $name
+     * @param string $separator
      *
      * @return string
      */
-    public static function tFyAppLowerName($name)
+    public static function tFyAppLowerName($name, $separator = '_')
     {
-        return tiFy::formatLowerName($name);
+        if (!$name) :
+            $name = self::tFyAppShortname();
+        endif;
+
+        return tiFy::formatLowerName($name, $separator);
     }
 
     /**
      * Formatage UpperName d'une chaine de caratère
      * Converti une chaine de caractère snake_case en CamelCase
      *
-     * @param string $name
+     * @param null|string $name
      *
      * @return string
      */
     public static function tFyAppUpperName($name)
     {
+        if (!$name) :
+            $name = self::tFyAppShortname();
+        endif;
+
         return tiFy::formatUpperName($name);
     }
 
@@ -1123,6 +1276,20 @@ trait App
     public static function tFyAppGetRequestVar($key, $default = '', $type = '')
     {
         return self::tFyAppCallRequestVar('get', compact('key', 'default'), $type);
+    }
+
+    /**
+     * Définition d'une variable de requête globale
+     *
+     * @param string $key Identifiant de qualification de l'argument de requête
+     * @param mixed $value Valeur de retour
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public static function tFyAppAddRequestVar($parameters = [], $type = '')
+    {
+        return self::tFyAppCallRequestVar('add', compact('parameters'), $type);
     }
 
     /**
