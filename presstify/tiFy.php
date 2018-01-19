@@ -4,7 +4,7 @@
  * @namespace tiFy
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.567.180117
+ * @version 1.2.571.180119
  */
 
 namespace tiFy;
@@ -49,7 +49,7 @@ final class tiFy
      * Attributs de configuration
      * @var mixed
      */
-    protected static $Config            = array();
+    protected static $Config            = [];
 
     /**
      * Classe de chargement automatique
