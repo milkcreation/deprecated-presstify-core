@@ -33,7 +33,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
             $this->args,
             [
                 'name'      => 'tify_taboox_slideshow',
-                // Interface de recherche de contenu du site 
+                // Interface de recherche de contenu du site
                 'suggest'   => true,     // Booléen | array @see tify_control_suggest
                 // Autorise les doublons
                 'duplicate' => false,
@@ -164,7 +164,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
      * @param number $index
      * @return string
      */
-    private function item_render($slide, $index = 0)
+    protected function item_render($slide, $index = 0)
     {
         if (!$index) :
             $index = uniqid();
@@ -220,7 +220,7 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Admin
 
         $output .= "\n\t<div class=\"col col-right\">";
 
-        /// ID 
+        /// ID
         $output .= "\n\t\t<input type=\"hidden\" class=\"tiFyTabooxSlideshowInputField-postIdInput\" name=\"{$name}[{$index}][post_id]\" value=\"" . $slide['post_id'] . "\" />";
 
         foreach ($this->args['attrs'] as $attr) :
