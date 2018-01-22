@@ -342,12 +342,18 @@ class Form
         if( isset( $this->Options[ $option ] ) )    
             return $this->Options[ $option ];
     }
-        
-    /** == Récupération d'un champ == **/
-    public function getField( $slug )
+
+    /**
+     * Récupération de l'object champ selon son identifiant
+     *
+     * @param string $slug Identifiant de qualification du champs
+     *
+     * @return \tiFy\Core\Forms\Form\Field
+     */
+    public function getField($slug)
     {
-        foreach( (array) $this->fields() as $field ) : 
-            if( $field->getSlug() === $slug ) :
+        foreach ((array)$this->fields() as $field) :
+            if ($field->getSlug() === $slug) :
                 return $field;
             endif;
         endforeach;
