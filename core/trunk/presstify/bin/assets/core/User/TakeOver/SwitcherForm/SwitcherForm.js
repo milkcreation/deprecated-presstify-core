@@ -25,7 +25,6 @@ jQuery(document).ready(function($){
             }
         )
             .done(function(resp){
-                console.log(resp);
                 $users.before(resp).tiFyFieldSelectJs('destroy');
                 $('.tiFyTakeOverSwitcherForm-selectField--user').tiFyFieldSelectJs();
             });

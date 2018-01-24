@@ -175,22 +175,6 @@ trait App
      * EVENEMENTS
      */
     /**
-     * Ajout d'une action
-     *
-     * @param string $tag Identification de l'accroche
-     * @param string $method Méthode de la classe à executer
-     * @param int $priority Priorité d'execution
-     * @param int $accepted_args Nombre d'argument permis
-     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
-     *
-     * @return null|callable \add_action()
-     */
-    final public function appAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
-    {
-        return self::tFyAppAddAction($tag, $method, $priority, $accepted_args, $classname);
-    }
-
-    /**
      * Ajout d'un filtre
      *
      * @param string $tag Identification de l'accroche
@@ -204,6 +188,22 @@ trait App
     final public function appAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
         return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args, $classname);
+    }
+
+    /**
+     * Ajout d'une action
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $method Méthode de la classe à executer
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return null|callable \add_action()
+     */
+    final public function appAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    {
+        return self::tFyAppAddAction($tag, $method, $priority, $accepted_args, $classname);
     }
 
     /**
@@ -316,25 +316,17 @@ trait App
     }
 
     /**
-     * Lancement à l'initialisation de la classe
-     * @deprecated
-     *
-     * @return void
-     */
-    public function tFyAppOnInit() { }
-
-    /**
-     * Ajout d'une action
+     * Ajout d'un filtre
      *
      * @param string $tag Identification de l'accroche
-     * @param string $method Méthode de la classe à executer
+     * @param string $method Méthode de la classe à executer.
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_action()
+     * @return null|callable \add_filter()
      */
-    final public function tFyAppAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    final public function tFyAppAddFilter($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
         if (!$method) :
             $method = $tag;
@@ -355,77 +347,23 @@ trait App
             return;
         endif;
 
-        return \add_action($tag, $method, $priority, $accepted_args);
+        return \add_filter($tag, $method, $priority, $accepted_args);
     }
 
     /**
      * Ajout d'une action
-     * @deprecated
      *
      * @param string $tag Identification de l'accroche
-     * @param string $class_method Méthode de la classe à executer
-     * @param int $priority Priorité d'execution
-     * @param int $accepted_args Nombre d'argument permis
-     *
-     * @return null|callable \add_action()
-     */
-    final public function tFyAppActionAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
-    {
-        return self::tFyAppAddAction($tag, $class_method, $priority, $accepted_args);
-    }
-
-    /**
-     * Ajout d'un filtre
-     *
-     * @param string $tag Identification de l'accroche
-     * @param string $class_method Méthode de la classe à executer.
+     * @param string $method Méthode de la classe à executer
      * @param int $priority Priorité d'execution
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_filter()
+     * @return null|callable \add_action()
      */
-    final public function tFyAppAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
+    final public function tFyAppAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
-        if (!$class_method) :
-            $class_method = $tag;
-        endif;
-
-        if (!$classname) :
-            if ((new \ReflectionMethod($this, $class_method))->isStatic()) :
-                $classname = get_called_class();
-            else :
-                $classname = $this;
-            endif;
-        endif;
-
-        if (!method_exists($classname, $class_method)) :
-            return;
-        endif;
-
-        if (is_object($classname)) :
-            $function_to_add = [$classname, $class_method];
-        else :
-            $function_to_add = [$classname, $class_method];
-        endif;
-
-        return \add_filter($tag, $function_to_add, $priority, $accepted_args);
-    }
-
-    /**
-     * Ajout d'un filtre
-     * @deprecated
-     *
-     * @param string $tag Identification de l'accroche
-     * @param string $class_method Méthode de la classe à executer.
-     * @param int $priority Priorité d'execution
-     * @param int $accepted_args Nombre d'argument permis
-     *
-     * @return null|callable \add_filter()
-     */
-    final public function tFyAppFilterAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
-    {
-        return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args);
+        return self::tFyAppAddFilter($tag, $method, $priority, $accepted_args, $classname);
     }
 
     /**
@@ -1332,7 +1270,7 @@ trait App
      *
      * @param string $alias
      *
-     * @return \League\Container\Container
+     * @return bool
      */
     public static function tFyAppHasContainer($alias)
     {
@@ -1351,9 +1289,6 @@ trait App
         return self::tFyAppContainer()->get($alias, $args);
     }
 
-    /**
-     * CONTROLEURS
-     */
     /**
      * Traitement du nom de la classe
      *
@@ -1421,5 +1356,49 @@ trait App
         foreach($objVars AS $key => $value) :
             $this->{$key} = $value;
         endforeach;
+    }
+
+
+    /**
+     * DEPRECATED
+     */
+    /**
+     * Lancement à l'initialisation de la classe
+     * @deprecated
+     *
+     * @return void
+     */
+    public function tFyAppOnInit() { }
+
+    /**
+     * Ajout d'un filtre
+     * @deprecated
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer.
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     *
+     * @return null|callable \add_filter()
+     */
+    final public function tFyAppFilterAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    {
+        return self::tFyAppAddFilter($tag, $class_method, $priority, $accepted_args);
+    }
+
+    /**
+     * Ajout d'une action
+     * @deprecated
+     *
+     * @param string $tag Identification de l'accroche
+     * @param string $class_method Méthode de la classe à executer
+     * @param int $priority Priorité d'execution
+     * @param int $accepted_args Nombre d'argument permis
+     *
+     * @return null|callable \add_action()
+     */
+    final public function tFyAppActionAdd($tag, $class_method = '', $priority = 10, $accepted_args = 1)
+    {
+        return self::tFyAppAddAction($tag, $class_method, $priority, $accepted_args);
     }
 }

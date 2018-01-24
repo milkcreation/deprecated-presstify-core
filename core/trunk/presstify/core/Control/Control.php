@@ -160,14 +160,14 @@ class Control extends \tiFy\App\Core
     /**
      * Affichage d'un controleur
      *
-     * @param string $id Identifiant de qualification du controleur d'affichage
+     * @param string $name Nom de qualification du controleur d'affichage
      * @param array $args Liste des attributs de configuration
      *
      * @return static
      */
-    final public static function display($id, $args = [])
+    final public static function display($name, $args = [], $echo = true)
     {
-        return self::call($id, 'display', $args);
+        return self::call($name, 'display', $args);
     }
 
     /**

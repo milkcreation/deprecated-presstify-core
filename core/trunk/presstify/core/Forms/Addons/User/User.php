@@ -74,8 +74,11 @@ class User extends \tiFy\Core\Forms\Addons\Factory
      */
     public function cb_form_set_current($Form)
     {
-        // Mise à jour des rôles
-        foreach ($this->getRoles() as $name => $attrs) :
+        //
+        /**
+         * Mise à jour des rôles
+         * @deprecated Le rôle doit être crée par le biais de \tiFy\Core\User\Role
+         foreach ($this->getRoles() as $name => $attrs) :
             // Création du rôle
             if (!$role = get_role($name)) :
                 $role = add_role($name, $attrs['display_name']);
@@ -90,7 +93,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
                 endforeach;
             endif;
         endforeach;
-
+        */
         // Modification des attributs de champs
         foreach ($this->fields() as $field) :
             // Bypass
@@ -231,16 +234,16 @@ class User extends \tiFy\Core\Forms\Addons\Factory
         endif;
 
         // Traitement du rôle
-        if( ! $request_data[ 'role' ] ) :
-            if( is_user_logged_in() ) :
-                $request_data[ 'role' ] = current( wp_get_current_user()->roles );
-            elseif( $names = $this->getRoleNames() ) :
-                $request_data[ 'role' ] = current( $names );
+        if (!$request_data['role']) :
+            if (is_user_logged_in()) :
+                $request_data['role'] = current(wp_get_current_user()->roles);
+            elseif ($names = $this->getRoleNames()) :
+                $request_data['role'] = current($names);
             else :
-                $request_data[ 'role' ] = get_option( 'default_role', 'subscriber' );
+                $request_data['role'] = get_option('default_role', 'subscriber');
             endif;
         endif;
-        
+
         // Traitement de l'affichage de la barre d'administration
         if( $this->hasRole( $request_data[ 'role' ] ) ) :
             $show_admin_bar_front =  ! $this->getRoleAttr( $request_data[ 'role' ], 'show_admin_bar_front', false ) ? 'false' : '';
@@ -298,7 +301,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     }
     
     /** == Récupération de l'ID Utilisateur == **/
-    final protected function getUserID()
+    final public function getUserID()
     {
         return $this->UserID;
     }
@@ -308,20 +311,35 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     {
         return $this->isProfile;
     }
-    
-    /** == Récupération des attributs des rôles == **/
+
+    /**
+     * Récupération de la liste des attributs de configuration d'un rôle
+     *
+     * @return array
+     */
     final protected function getRoles()
     {
-        if( $this->Roles ) 
+        if ($this->Roles) :
             return $this->Roles;
-        
-        $roles = $this->getFormAttr( 'roles', array() );    
-        
-        foreach( $roles as $name => &$attrs ) :
-            $role = $this->parseRole( $name, $attrs );
-        endforeach;        
-        
-        return $this->Roles = $roles;
+        endif;
+
+        $_roles = [];
+        if ($roles = (array)$this->getFormAttr('roles', [])) :
+            foreach ($roles as $name => $attrs) :
+                if (is_int($name) && is_string($attrs)) :
+                    $name = $attrs; $attrs= [];
+                endif;
+                $_roles[$name] = array_merge(
+                    [
+                        'capabilities'              => [],
+                        'show_admin_bar_front'      => false
+                    ],
+                    $attrs
+                );
+            endforeach;
+        endif;
+
+        return $this->Roles = $_roles;
     }
     
     /** == Récupération des rôles == **/
@@ -330,18 +348,7 @@ class User extends \tiFy\Core\Forms\Addons\Factory
         if( $roles = $this->getRoles() )
             return array_keys( $roles );
     }    
-    
-    /** == Traitement des rôles == **/
-    final protected function parseRole( $name, $attrs = array() )
-    {
-        $defaults = array(
-            'display_name'              => $name,
-            'capabilities'              => array(),
-            'show_admin_bar_front'      => false
-        );
-        return wp_parse_args( $attrs, $defaults );
-    }
-    
+
     /** == Vérifie l'existance d'un rôle == **/
     final protected function hasRole( $name )
     {
@@ -362,7 +369,8 @@ class User extends \tiFy\Core\Forms\Addons\Factory
     /** == Vérifie si une donnée utilisateur native == **/
     final protected function isNativeUserData( $userdata )
     {
-        return in_array($userdata,
+        return in_array(
+            $userdata,
             [
                 'user_login',
                 'role',

@@ -123,7 +123,7 @@ class Checker
 			'digit' 		=> 1,
 			'letter'		=> 1,
 			'maj'			=> 1,
-			'special_char' 	=> 1,	
+			'special_char' 	=> 0,
 			'min'			=> 8,
 			'max'			=> 16			
 		);
@@ -147,6 +147,7 @@ class Checker
 		
 		if( preg_match( '/'. $regex .'/', $value ) )
 			return true;
+
 		return false;
 	}
 	

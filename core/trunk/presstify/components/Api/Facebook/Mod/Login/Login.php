@@ -38,7 +38,7 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
         return $helper->getLoginUrl(
             add_query_arg(
                 [
-                    'tify_api_fb_connect' => (string)$action
+                    'tify_api_fb' => (string)$action
                 ],
                 home_url('/')
             ),
@@ -94,7 +94,7 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
         $response = $fb->connect(
             add_query_arg(
                 [
-                    'tify_api_fb_connect' => $action
+                    'tify_api_fb' => $action
                 ],
                 home_url('/')
             )

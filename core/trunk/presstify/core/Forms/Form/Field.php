@@ -157,7 +157,6 @@ class Field
         $attrs = $this->getAttr('addons');
 
         foreach ((array)$this->form()->addons() as $id => $addon) :
-            //var_dump($addon);
             $this->Addons[$id] = $addon;
             $addon->setField($this,
                 (isset($attrs[$id]) ? (array)$attrs[$id] : []));

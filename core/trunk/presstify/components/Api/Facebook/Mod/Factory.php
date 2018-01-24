@@ -14,6 +14,6 @@ class Factory extends \tiFy\App
         parent::__construct();
 
         // Déclaration des événements
-        $this->appAddAction('tify_api_fb_connect', (is_callable($callable) ? $callable : 'handler'), 10, 2);
+        $this->appAddAction('tify_api_fb', (is_callable($callable) ? $callable : 'handler'), 10, 2);
     }
 }

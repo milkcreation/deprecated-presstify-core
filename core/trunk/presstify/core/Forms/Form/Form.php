@@ -12,33 +12,34 @@ class Form
     /// Attributs par défaut
     private $DefaultAttrs    = array(
         // Attributs de configuration
-        'prefix'                => 'tiFyForm_',
-        
+        'prefix'          => 'tiFyForm_',
+
         // DOM
         /// Identifiant HTML du conteneur
-        'container_id'             => 'tiFyForm-Container--%s',
+        'container_id'    => 'tiFyForm-Container--%s',
         /// Classe HTML du conteneur
-        'container_class'         => '',
+        'container_class' => '',
         /// Identifiant HTML de la balise form
-        'form_id'                 => 'tiFyForm-Content--%s',
+        'form_id'         => 'tiFyForm-Content--%s',
         /// Classe HTML de la balise form
-        'form_class'             => '',
+        'form_class'      => '',
         /// Pré-affichage avant la balise form        
-        'before'                 => '',
+        'before'          => '',
         /// Post-affichage après la balise form
-        'after'                 => '',
-            
+        'after'           => '',
+
         // Attributs HTML de la balise form    
-        'method'                => 'post',
-        'action'                => '',
-        'enctype'                => '',
-        
+        'method'          => 'post',
+        'action'          => '',
+        'enctype'         => '',
+
         // Attributs de paramètrage
-        'addons'                => array(),
-        'buttons'               => array(),        
-        'fields'                => array(),
-        'notices'               => array(),
-        'options'               => array()            
+        'addons'          => [],
+        'buttons'         => [],
+        'fields'          => [],
+        'notices'         => [],
+        'options'         => [],
+        'callbacks'       => []
     );
     
     // Paramètres
@@ -63,8 +64,11 @@ class Form
     // Contrôleurs
     /// Addons
     private $Addons            = array();
-    
-    /// Callbacks
+
+    /**
+     * Controleur des méthodes de rappel de court-circuitage
+     * @var null|\tiFy\Core\Forms\Form\Callbacks
+     */
     private $Callbacks        = null;
     
     /// Champs de formulaire
@@ -80,7 +84,7 @@ class Form
     private $Transport        = null;
 
     /* = CONSTRUCTEUR = */
-    public function __construct( $id, $attrs = array() )
+    public function __construct($id, $attrs = [])
     {
         // Définition de l'identifiant
         $this->ID = $id;
@@ -98,6 +102,9 @@ class Form
         // Définition des attributs
         $this->Attrs = Helpers::parseArgs( $attrs, $this->DefaultAttrs );
 
+        // Définition des méthodes de rappel de court-circuitage
+        $this->_setCallbacks();
+
         // Définition des boutons
         $this->_setButtons();
         
@@ -112,7 +119,7 @@ class Form
         
         // Définition des champs
         $this->_setFields();
-        
+
         // Court circuitage des attributs formulaire
         $this->call( 'form_set_attrs', array( $this ) );
     }
@@ -247,6 +254,32 @@ class Form
         foreach( $positions as $pos ) :
             $fields[$pos]->setOrder( $pos+1 );
             $this->Fields[] = $fields[$pos];
+        endforeach;
+    }
+
+    /**
+     * Définition des méthodes de rappel de court-circuitage
+     *
+     * @return void
+     */
+    private function _setCallbacks()
+    {
+        if (!$callbacks = $this->getAttr('callbacks')) :
+            return;
+        endif;
+
+        foreach ($callbacks as $hookname => $attrs) :
+            if (is_callable($attrs)) :
+                $callable = $attrs;
+                $priority = 10;
+            elseif (isset($attrs['cb'])) :
+                $callable = $attrs['cb'];
+                $priority = isset($attrs['priority']) ? $attrs['priority'] : 10;
+            else:
+                continue;
+            endif;
+
+            $this->callbacks()->set($hookname, $callable, $priority);
         endforeach;
     }
     
@@ -395,8 +428,11 @@ class Form
     {
         return $this->Buttons;
     }
-    
-    /** == Traitement du formulaire == **/ 
+
+    /**
+     * Récupération du controleur des méthodes de rappel de court-circuitage
+     * @var null|\tiFy\Core\Forms\Form\Callbacks
+     */
     public function callbacks()
     {
         return $this->Callbacks;

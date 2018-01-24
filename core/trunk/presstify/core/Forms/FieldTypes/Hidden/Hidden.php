@@ -2,6 +2,7 @@
 /**
  * @Overridable 
  */
+
 namespace tiFy\Core\Forms\FieldTypes\Hidden;
 
 use tiFy\Core\Forms\FieldTypes\Factory;
@@ -28,7 +29,7 @@ class Hidden extends Factory
 		if( $this->isSupport( 'label' ) ) :	
 			$output .= $this->displayLabel();
 		endif;
-		
+
 		// Affichage du champ de saisie
 		$output .= "<input type=\"hidden\"";
 		/// ID HTML

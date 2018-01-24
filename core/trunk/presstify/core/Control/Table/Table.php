@@ -83,50 +83,26 @@ class Table extends \tiFy\Core\Control\Factory
             ],
             'none'    => __('Aucun élément à afficher dans le tableau', 'tify')
         ];
+
+        /**
+         * @var array $columns
+         * @var array $datas
+         */
         $attrs = wp_parse_args($attrs, $defaults);
         extract($attrs);
 
-        $n = count($columns);
+        $count = count($columns); $num = 0;
+?>
+<div class="tiFyTable">
+    <?php self::tFyAppGetTemplatePart('head', null, compact('datas', 'columns', 'count', 'num')); ?>
+    <?php reset($columns);?>
 
-        $output = "";
-        $output .= "<div class=\"tiFyTable\">\n";
-        $output .= "\t<div class=\"tiFyTableHead\">\n";
-        $output .= "\t\t<div class=\"tiFyTableHeadTr tiFyTableTr\">\n";
-        foreach ($columns as $column => $label) :
-            $output .= "\t\t\t<div class=\"tiFyTableCell{$n} tiFyTableHeadTh tiFyTableHeadTh--{$column} tiFyTableTh tiFyTableTh--{$column}\">{$label}</div>\n";
-        endforeach;
-        $output .= "\t\t</div>\n";
-        $output .= "\t</div>\n";
-        reset($columns);
+    <?php self::tFyAppGetTemplatePart('body', null, compact('datas', 'columns', 'count', 'num', 'none')); ?>
+    <?php reset($columns);?>
 
-        $i = 0;
-        $output .= "\t<div class=\"tiFyTableBody\">\n";
-        if ($datas) :
-            foreach ($datas as $row => $dr) :
-                $output .= "\t\t<div class=\"tiFyTableBodyTr tiFyTableBodyTr--{$row} tiFyTableTr tiFyTableTr-" . (($i++ % 2 === 0) ? 'even' : 'odd') . "\">\n";
-                foreach ($columns as $column => $label) :
-                    $output .= "\t\t\t<div class=\"tiFyTableCell{$n} tiFyTableBodyTd tiFyTableBodyTd--{$column} tiFyTableTd\">{$dr[$column]}</div>\n";
-                endforeach;
-                $output .= "\t\t</div>\n";
-            endforeach;
-        else :
-            $output .= "\t\t<div class=\"tiFyTableBodyTr tiFyTableBodyTr--empty tiFyTableTr\">\n";
-            $output .= "\t\t\t<div class=\"tiFyTableCell1 tiFyTableBodyTd tiFyTableBodyTd--empty tiFyTableTd\">{$none}</div>\n";
-            $output .= "\t\t</div>\n";
-        endif;
-        $output .= "\t</div>\n";
-        reset($columns);
-
-        $output .= "\t<div class=\"tiFyTableFoot\">\n";
-        $output .= "\t\t<div class=\"tiFyTableFootTr tiFyTableTr\">\n";
-        foreach ($columns as $column => $label) :
-            $output .= "\t\t\t<div class=\"tiFyTableCell{$n} tiFyTableFootTh tiFyTableFootTh--{$column} tiFyTableTh tiFyTableTh--{$column}\">{$label}</div>\n";
-        endforeach;
-        $output .= "\t\t</div>\n";
-        $output .= "\t</div>\n";
-
-        $output .= "</div>\n";
-
-        echo $output;
+    <?php self::tFyAppGetTemplatePart('foot', null, compact('datas', 'columns', 'count', 'num')); ?>
+    <?php reset($columns);?>
+</div>
+<?php
     }
 }
