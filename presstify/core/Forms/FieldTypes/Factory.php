@@ -5,7 +5,7 @@ namespace tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\FieldTypes;
 use tiFy\Core\Forms\Form\Helpers;
 
-abstract class Factory extends \tiFy\App\Factory
+abstract class Factory extends \tiFy\App
 {
 
     /* = ARGUMENTS = */

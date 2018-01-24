@@ -1,44 +1,66 @@
 <?php
+
 namespace tiFy\Core\Forms\Form;
 
-class Callbacks
+class Callbacks extends \tiFy\Core\Forms\Form\AbstractDependency
 {
-	/* = ARGUMENTS = */
-	// Paramètres
-	/// Formulaire de référence
-	private $Form					= null;
-		
-	// Fonctions de rappel déclarées
-	public $Registered	= array();
-	
-	/* = CONSTRUCTEUR = */
-	public function __construct( \tiFy\Core\Forms\Form\Form $Form )
-	{			
-		// Définition du formulaire de référence
-		$this->Form = $Form;
-	}	
-	
-	/* = CONTROLEURS = */
-	/** == == **/
-	public function call( $hook, $args = array() )
-	{
-	    if( $this->Form->factory() !== null ) :
-            $this->Form->factory()->call( $hook, $args );
-		endif;
-	    
-	    if( ! isset( $this->Registered[$hook] ) )
-			return;
-		
-		ksort( $this->Registered[$hook] );
-		
-		foreach( $this->Registered[$hook] as $priority => $functions ) :
-			foreach( $functions as $attrs ) :
-				call_user_func_array( $attrs['cb'], $args );
-			endforeach;
-		endforeach;
-		
-	}
-		
+    /**
+     * Liste des fonctions de rappel déclarées
+     * @var array
+     */
+	public $Registered	= [];
+
+    /**
+     * CONTROLEURS
+     */
+    /**
+     * Appel d'une méthode de court-circuitage
+     *
+     * @param string $hookname Nom de qualification du court-circuitage
+     * @param array $args Liste des arguments passés dans l'appel de la méthode
+     *
+     * @return null|callable
+     */
+    public function call($hookname, $args = [])
+    {
+        if ($this->getForm()->factory() !== null) :
+            $this->getForm()->factory()->call($hookname, $args);
+        endif;
+
+        if (!isset($this->Registered[$hookname])) :
+            return;
+        endif;
+
+        ksort($this->Registered[$hookname]);
+
+        foreach ($this->Registered[$hookname] as $priority => $functions) :
+            foreach ($functions as $attrs) :
+                if (is_callable($attrs)) :
+                    $callable = $attrs;
+                elseif (isset($attrs['cb'])) :
+                    $callable = $attrs['cb'];
+                else :
+                    continue;
+                endif;
+                call_user_func_array($callable, $args);
+            endforeach;
+        endforeach;
+    }
+
+    /**
+     * Définition d'une méthode de rappel de court-circuitage
+     *
+     * @param string $hookname Nom de qualification du court-circuitage
+     * @param array $callable Méthode ou fonction de rappel
+     * @param int Ordre de priorité d'éxecuction
+     *
+     * @return void
+     */
+    public function set($hookname, $callable, $priority = 10)
+    {
+        $this->Registered[$hookname][(int)$priority][] = $callable;
+    }
+
 	/** == Définition des fonctions de callback == **/
 	private function _set( $hookname, $id, $callback, $priority, $type = 'core' )
 	{	
@@ -62,68 +84,4 @@ class Callbacks
 	{
 	 	$this->_set( $hookname, $field_type_id, $callback, $priority, 'field_type' );
 	}
-	 	
-	/** == Execution des fonctions de callback 
-	public static function call( $hookname, $args = array() )
-	{		
-			// Bypass
-		if( empty( self::$Functions[$hookname] ) )
-			return;
-		
-		$callbacks = array(); 
-		foreach( (array) self::$Functions[$hookname] as $type => $priorities ) :
-			switch( $type ) :
-				case 'addons' :	
-					ksort( $priorities );
-					foreach( (array) $priorities as $priority => $attrs ) :							
-						foreach( (array) $attrs as $name => $functions ) :	
-							if( ! Forms::getCurrent()->hasAddon( $name ) )
-								continue;
-							foreach( (array) $functions as $function )	:
-								if( empty( $callbacks[$priority] ) )
-									$callbacks[$priority] = array();
-								array_push( $callbacks[$priority], array( $function, $args ) );								
-							endforeach;
-						endforeach;
-					endforeach;
-					break;
-				case 'field_type' :	
-					ksort( $priorities );
-					foreach( (array) $priorities as $priority => $attrs ) :							
-						foreach( (array) $attrs as $name => $functions ) : 
-							if( ! $this->master->field_types->has_type( $name ) )
-								continue;
-							foreach( (array) $functions as $function ) :						
-								if( empty( $callbacks[$priority] ) )
-									$callbacks[$priority] = array();
-								array_push( $callbacks[$priority], array( $function, $args ) );	
-							endforeach;
-						endforeach;
-					endforeach;
-					break;
-				case 'core' :						
-					ksort( $priorities );
-					foreach( (array) $priorities as $priority => $attrs ) :							
-						foreach( (array) $attrs as $name => $functions ) :							
-							if( ! in_array( $name, array( 'buttons', 'datas', 'dirs', 'errors', 'steps' ) ) )
-								continue;
-							foreach( (array) $functions as $function ) :										
-								if( empty( $callbacks[$priority] ) )
-									$callbacks[$priority] = array();
-								array_push( $callbacks[$priority], array( $function, $args ) );	
-							endforeach;
-						endforeach;
-					endforeach;
-					break;
-			endswitch;
-		endforeach;
-		
-		if( ! empty( $callbacks ) )
-			ksort( $callbacks );
-		foreach( $callbacks as $priority => $sets ) :
-			foreach( $sets as $set ) :
-				call_user_func_array( $set[0], $set[1] );
-			endforeach;
-		endforeach;
-	}== **/	
 }	

@@ -1,0 +1,3 @@
+<?php
+?>
+<<?php echo $tag; ?><?php echo $attrs?>><?php echo $content; ?></<?php echo $tag; ?>>

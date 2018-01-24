@@ -37,7 +37,7 @@ class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
         return $helper->getLoginUrl(
             add_query_arg(
                 [
-                    'tify_api_fb_connect' => (string)$action
+                    'tify_api_fb' => (string)$action
                 ],
                 $base_url ? : home_url('/')
             ),
@@ -94,7 +94,7 @@ class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
         $response = $fb->connect(
             add_query_arg(
                 [
-                    'tify_api_fb_connect' => $action
+                    'tify_api_fb' => $action
                 ],
                 home_url('/')
             )
@@ -120,10 +120,9 @@ class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
                 __('Action impossible, vous êtes déjà authentifié sur le site', 'tify'),
                 ['title' => __('Authentification existante', 'tify')])
             );
-        endif;
 
         // Bypass - L'identifiant utilisateur Facebook n'est pas disponible
-        if (!$fb_user_id = $tokenMetadata->getUserId()) :
+        elseif (!$fb_user_id = $tokenMetadata->getUserId()) :
             return $fb->error(new \WP_Error(
                 401,
                 __('Impossible de définir les données du jeton d\'authentification Facebook.', 'tify'),

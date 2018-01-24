@@ -95,12 +95,12 @@ class Facebook extends \Facebook\Facebook
      */
     final public function wp_loaded()
     {
-        if (!$action = self::tFyAppGetRequestVar('tify_api_fb_connect', false)) :
+        if (!$action = self::tFyAppGetRequestVar('tify_api_fb', false)) :
             return;
         endif;
 
         // Tentative de traitement
-        return do_action_ref_array('tify_api_fb_connect', [$action, &$this]);
+        return do_action_ref_array('tify_api_fb', [$action, &$this]);
     }
 
     /**

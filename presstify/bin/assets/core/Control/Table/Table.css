@@ -20,11 +20,11 @@
     padding: 0.8em 1em;
 }
 
-.tiFyTableTr-even .tiFyTableTd {
+.tiFyTableTr-even{
     background-color: #FFF;
 }
 
-.tiFyTableTr-odd .tiFyTableTd {
+.tiFyTableTr-odd {
     background-color: #F4F4F4;
 }
 

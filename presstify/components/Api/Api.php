@@ -27,13 +27,7 @@ class Api extends \tiFy\App\Component
         'vimeo',
         'facebook'
     ];
-    
-    /**
-     * Liste des classes de rappel des API
-     * @var object[]
-     */
-    private static $Factory         = [];
-    
+
     /**
      * CONSTRUCTEUR
      *
@@ -57,23 +51,26 @@ class Api extends \tiFy\App\Component
     /**
      * Déclaration
      *
-     * @param string $id Identifiant de qualification de l'Api. Doit faire parti des api permises.
+     * @param string $name Identifiant de qualification de l'Api. Doit faire parti des api permises.
      * @param array $attrs Attributs de configuration
      *
      * @return null|object
      */
-    public static function register($id, $attrs = [])
+    public static function register($name, $attrs = [])
     {
         // Bypass
-        if (!in_array($id, self::$Allowed)) :
+        if (!in_array($name, self::$Allowed)) :
             return;
         endif;
             
-        $classname = self::tFyAppUpperName($id);
+        $classname = self::tFyAppUpperName($name);
         $class = "tiFy\\Components\\Api\\{$classname}\\{$classname}";
 
         if (class_exists($class)) :
-            self::$Factory[$id] = self::tFyAppShareContainer($class, $class::create($attrs));
+            $factory = $class::create($attrs);
+            self::tFyAppShareContainer($class, $factory);
+
+            return $factory;
         endif;
     }
     
@@ -84,10 +81,11 @@ class Api extends \tiFy\App\Component
      *
      * @return null|object
      */
-    public static function get($id)
+    public static function get($name)
     {
-        if(isset(self::$Factory[$id])) :
-            return self::$Factory[$id];
+        $Name = self::tFyAppUpperName($name);
+        if (self::tFyAppHasContainer("tiFy\\Components\\Api\\{$Name}\\{$Name}")) :
+            return self::tFyAppGetContainer("tiFy\\Components\\Api\\{$Name}\\{$Name}");
         endif;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 /**
- * @name Link
- * @desc Lien
+ * @name Trigger
+ * @desc Bouton d'action
  * @package presstiFy
- * @namespace tiFy\Core\Control\Link
+ * @namespace tiFy\Core\Control\Trigger\Trigger
  * @version 1.1
  * @subpackage Core
  * @since 1.2.535
@@ -12,9 +12,9 @@
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Control\Link;
+namespace tiFy\Core\Control\Trigger;
 
-class Link extends \tiFy\Core\Control\Factory
+class Trigger extends \tiFy\Core\Control\Factory
 {
     /**
      * CONTROLEURS
@@ -35,6 +35,7 @@ class Link extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
+            'tag'     => 'button',
             'attrs'   => [],
             'content' => __('Cliquer', 'tify')
         ];
@@ -54,6 +55,6 @@ class Link extends \tiFy\Core\Control\Factory
             endforeach;
         endif;
 
-?><a <?php echo implode(' ', $tag_attrs);?>><?php echo $args['content']; ?></a><?php
+?><<?php echo $args['tag']; ?> <?php echo implode(' ', $tag_attrs);?>><?php echo $args['content']; ?></<?php echo $args['tag']; ?>><?php
     }
 }
