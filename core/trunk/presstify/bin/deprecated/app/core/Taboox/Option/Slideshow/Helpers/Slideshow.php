@@ -12,6 +12,6 @@ class Slideshow extends \tiFy\Core\Taboox\Options\Slideshow\Helpers\Slideshow
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Options\Slideshow\Helpers\Slideshow', '1.2.472', '\tiFy\Core\Taboox\Options\Slideshow\Helpers\Slideshow');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Option\Slideshow\Helpers\Slideshow', '1.2.472', '\tiFy\Core\Taboox\Options\Slideshow\Helpers\Slideshow');
     }
 }

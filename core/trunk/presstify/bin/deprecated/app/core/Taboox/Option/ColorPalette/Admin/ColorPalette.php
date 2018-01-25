@@ -14,6 +14,6 @@ class ColorPalette extends \tiFy\Core\Taboox\Options\ColorPalette\Admin\ColorPal
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Options\ColorPalette\Admin\ColorPalette', '1.2.472', '\tiFy\Core\Taboox\Options\ColorPalette\Admin\ColorPalette');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Option\ColorPalette\Admin\ColorPalette', '1.2.472', '\tiFy\Core\Taboox\Options\ColorPalette\Admin\ColorPalette');
     }
 }

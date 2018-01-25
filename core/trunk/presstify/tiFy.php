@@ -4,7 +4,7 @@
  * @namespace tiFy
  * @author Jordy Manner
  * @copyright Tigre Blanc Digital
- * @version 1.2.578.180124
+ * @version 1.2.579.180125
  */
 
 namespace tiFy;
@@ -82,7 +82,7 @@ final class tiFy
         if (! defined('TIFY_PLUGINS_DIR')) :
             define('TIFY_PLUGINS_DIR', self::$AbsDir . '/plugins');
         endif;
-        
+
         // Instanciation du moteur
         self::classLoad('tiFy', self::$AbsDir .'/bin');
 
@@ -123,7 +123,7 @@ final class tiFy
         
         // Instanciation des jeux de fonctionnalités complémentaires
         self::classLoad('tiFy\Set', tiFy::$AbsDir . '/set');
-        
+
         // Instanciation des fonctions d'aide au développement
         new Helpers;
         

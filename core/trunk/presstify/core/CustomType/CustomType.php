@@ -94,7 +94,6 @@ class CustomType extends \tiFy\App\Core
             if( ! isset( $args['taxonomies'] ) )
                 continue;
 
-            exit;
             $taxonomies = ! is_string( $args['taxonomies'] ) ? $args['taxonomies'] : array_map( 'trim', explode( ',', $args['taxonomies'] ) );
             
             foreach( $taxonomies as $taxonomy ) :

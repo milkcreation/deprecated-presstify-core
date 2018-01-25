@@ -14,6 +14,6 @@ class CustomHeader extends \tiFy\Core\Taboox\Options\CustomHeader\Admin\CustomHe
     {
         parent::__construct();
 
-        Deprecated::addFunction('\tiFy\Core\Taboox\Options\CustomHeader\Admin\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\Options\CustomHeader\Admin\CustomHeader');
+        Deprecated::addFunction('\tiFy\Core\Taboox\Option\CustomHeader\Admin\CustomHeader', '1.2.472', '\tiFy\Core\Taboox\Options\CustomHeader\Admin\CustomHeader');
     }
 }
