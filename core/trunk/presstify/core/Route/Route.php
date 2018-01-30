@@ -43,42 +43,23 @@ class Route extends \tiFy\App\Core
         $this->Container = new Container;
 
         // Définition du traitement de la réponse
-        $this->Container->share('tfy.route.response', function () {
+        $this->Container->share('tiFy.core.route.response', function () {
             $response = new Response;
 
             return (new DiactorosFactory())->createResponse($response);
         });
 
         // Définition du traitement de la requête
-        $this->Container->share('tfy.route.request', function () {
-            /**
-             * Suppression du slash de fin dans l'url
-             * @see https://symfony.com/doc/current/routing/redirect_trailing_slash.html
-             * @see https://stackoverflow.com/questions/30830462/how-to-deal-with-extra-in-phpleague-route
-             *
-             * @var \Symfony\Component\HttpFoundation\Request $request
-             */
-            $request = tiFy::getGlobalRequest();
+        $this->Container->share('tiFy.core.route.request', function () {
 
-            $pathInfo = $request->getPathInfo();
-            $requestUri = $request->getRequestUri();
-            $method = $request->getMethod();
-
-            if (($pathInfo != '/') && (substr($pathInfo, -1) == '/') && ($method === 'GET')) :
-
-                $url = str_replace($pathInfo, rtrim($pathInfo, '/'), $requestUri);
-                wp_safe_redirect($url, 301);
-                exit;
-            endif;
-
-            return (new DiactorosFactory())->createRequest($request);
+            return (new DiactorosFactory())->createRequest(tiFy::getGlobalRequest());
         });
 
         // Définition du traitement de l'affichage
-        $this->Container->share('tfy.route.emitter', new SapiEmitter);
+        $this->Container->share('tiFy.core.route.emitter', new SapiEmitter);
 
         // Définition du traitement des routes
-        $this->Container->share('tfy.route.collection', new RouteCollection($this->Container));
+        $this->Container->share('tiFy.core.route.collection', new RouteCollection($this->Container));
 
         // Déclaration des événements
         $this->appAddAction('init', null, 0);
@@ -102,15 +83,41 @@ class Route extends \tiFy\App\Core
     {
         do_action('tify_route_register');
 
+        // Bypass
+        if (!$this->Map) :
+            return;
+        endif;
+
         // Définition de la cartographie des routes
         foreach ($this->Map as $name => $attrs) :
             $this->_set($name);
         endforeach;
 
+        /**
+         * Suppression du slash de fin dans l'url
+         * @see https://symfony.com/doc/current/routing/redirect_trailing_slash.html
+         * @see https://stackoverflow.com/questions/30830462/how-to-deal-with-extra-in-phpleague-route
+         *
+         * @var \Symfony\Component\HttpFoundation\Request $request
+         */
+        $request = tiFy::getGlobalRequest();
+
+        $pathInfo = $request->getPathInfo();
+        $requestUri = $request->getRequestUri();
+        $method = $request->getMethod();
+
+        if (($pathInfo != '/') && (substr($pathInfo, -1) == '/') && ($method === 'GET')) :
+
+            $url = str_replace($pathInfo, rtrim($pathInfo, '/'), $requestUri);
+            wp_safe_redirect($url, 301);
+            exit;
+        endif;
+
+        // Traitement des routes
         try {
             $this->Response = $this->getContainer('collection')->dispatch(
-                $this->Container->get('tfy.route.request'),
-                $this->Container->get('tfy.route.response')
+                $this->Container->get('tiFy.core.route.request'),
+                $this->Container->get('tiFy.core.route.response')
             );
         } catch (\League\Route\Http\Exception\NotFoundException $e) {
 
@@ -127,7 +134,7 @@ class Route extends \tiFy\App\Core
     /**
      * Définition d'une route
      *
-     * @param $name Identifiant de qualification de la route
+     * @param string $name Identifiant de qualification de la route
      *
      * @return \League\Route\Route
      */
@@ -174,7 +181,7 @@ class Route extends \tiFy\App\Core
      */
     final public function getContainer($alias)
     {
-        return $this->Container->get('tfy.route.' . $alias);
+        return $this->Container->get('tiFy.core.route.' . $alias);
     }
 
     /**
@@ -191,12 +198,15 @@ class Route extends \tiFy\App\Core
      * @param string $name Identifiant de qualification de la route
      * @param array $attrs Attributs de configuration
      *
-     * @return array
+     * @return null|array
      */
     final public static function register($name, $attrs = [])
     {
+        /**
+         * @var \tiFy\Core\Route\Route $instance
+         */
         if (!$instance = self::tFyAppGetContainer('tiFy\Core\Route\Route')) :
-            return;
+            return null;
         endif;
 
         $defaults = [
@@ -219,8 +229,11 @@ class Route extends \tiFy\App\Core
      */
     final public static function url($name, $replacements = [])
     {
+        /**
+         * @var \tiFy\Core\Route\Route $instance
+         */
         if (!$instance = self::tFyAppGetContainer('tiFy\Core\Route\Route')) :
-            return;
+            return '';
         endif;
 
         try {
@@ -245,7 +258,7 @@ class Route extends \tiFy\App\Core
 
             return $url;
         } catch (InvalidArgumentException $e) {
-            return;
+            return '';
         }
     }
 
@@ -253,7 +266,7 @@ class Route extends \tiFy\App\Core
      * Redirection vers une autre route
      *
      * @param string $name Identifiant de qualification de la route
-     * @param int $status_code Codede redirection
+     * @param int $status_code Code de redirection
      *
      * @return void
      */
@@ -278,19 +291,19 @@ class Route extends \tiFy\App\Core
     /**
      * Récupération des arguments de la route courante
      *
-     * @return string
+     * @return array
      */
     final public static function args()
     {
-        return self::tFyAppGetRequestVar('tify_route_args', [], 'ATTRIBUTES');
+        return (array)self::tFyAppGetRequestVar('tify_route_args', [], 'ATTRIBUTES');
     }
 
     /**
      * Récupération du nom de la route courante
      *
-     * @param $name Identifiant de qualification de la route
+     * @param string $name Identifiant de qualification de la route
      *
-     * @return string
+     * @return bool
      */
     final public static function is($name)
     {
@@ -300,7 +313,7 @@ class Route extends \tiFy\App\Core
     /**
      * Vérification d'affichage courant d'une route déclarée
      *
-     * @return string
+     * @return bool
      */
     final public static function has()
     {

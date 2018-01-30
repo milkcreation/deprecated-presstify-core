@@ -106,6 +106,7 @@ class SelectJs extends \tiFy\Core\Field\Factory
             'duplicate'       => false,
             'sortable'        => true,
             'max'             => -1,
+            'picker_class'    => '',
             'picker'          => []
         ];
         $args = array_merge($defaults, $args);
@@ -341,7 +342,7 @@ class SelectJs extends \tiFy\Core\Field\Factory
             </ul>
         </div>
 
-        <div id="tiFyCoreField-selectJsPicker--<?php echo $this->getId(); ?>" class="tiFy-selectPicker tiFyCoreField-selectJsPicker">
+        <div id="tiFyCoreField-selectJsPicker--<?php echo $this->getId(); ?>" class="tiFy-selectPicker tiFyCoreField-selectJsPicker <?php echo $this->getAttr('picker_class'); ?>">
             <ul id="tiFyCoreField-selectJsPickerItems--<?php echo $this->getId(); ?>" class="tiFy-selectPickerItems tiFyCoreField-selectJsPickerItems">
             <?php if ($items = $this->getOptionList()) : ?>
                 <?php foreach($items as $item) :?>

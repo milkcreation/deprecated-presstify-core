@@ -17,6 +17,15 @@ class Factory extends \tiFy\App\FactoryConstructor
     {
         parent::__construct($id, $attrs);
 
+        // Déclaration des événement
+        $this->appAddAction('wp_loaded');
+    }
+
+    /**
+     *
+     */
+    public function wp_loaded()
+    {
         // Bypass
         if (!$tify_login = self::tFyAppGetRequestVar('tiFyLogin', false)) :
             return;
@@ -31,12 +40,12 @@ class Factory extends \tiFy\App\FactoryConstructor
             default :
                 break;
             case 'login' :
-                $this->tFyAppAddFilter('authenticate', 'authenticate', 50, 3);
-                $this->tFyAppAddAction('wp_login', 'on_login_success', 10, 2);
+                $this->appAddFilter('authenticate', 'authenticate', 50, 3);
+                $this->appAddAction('wp_login', 'on_login_success', 10, 2);
                 $this->_login();
                 break;
             case 'logout' :
-                $this->tFyAppAddAction('wp_logout', 'on_logout_success');
+                $this->appAddAction('wp_logout', 'on_logout_success');
                 $this->_logout();
                 break;
         endswitch;
