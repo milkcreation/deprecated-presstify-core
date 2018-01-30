@@ -16,6 +16,7 @@ namespace tiFy\Core\User;
 
 use tiFy\Core\User\Login\Login;
 use tiFy\Core\User\Role\Role;
+use tiFy\Core\User\Session\Session;
 use tiFy\Core\User\SignUp\SignUp;
 use tiFy\Core\User\TakeOver\TakeOver;
 
@@ -33,6 +34,7 @@ class User extends \tiFy\App\Core
         // Chargement des controleurs
         new Login;
         new Role;
+        new Session;
         new SignUp;
         new TakeOver;
     }

@@ -15,6 +15,8 @@
 
 namespace tiFy\Components\Api\Facebook\Mod\Login;
 
+use tiFy\Core\Layout\Layout;
+
 class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
 {
     /**
@@ -52,10 +54,10 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
      * @param array $args {
      *      Liste des attributs de configuration
      *
-     *      @var string $action
-     *      @var array $permissions
-     *      @var string $text
-     *      @var array $attr Attributs de la balise HTML
+     * @var string $action
+     * @var array $permissions
+     * @var string $text
+     * @var array $attr Attributs de la balise HTML
      * }
      *
      * @return string
@@ -63,16 +65,26 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
     final public static function trigger($args = [])
     {
         $defaults = [
-            'action'     => 'login',
+            'action'      => 'login',
             'permissions' => ['email'],
-            'text'       => __('Connexion avec Facebook', 'tify'),
-            'attrs'      => []
+            'text'        => __('Connexion avec Facebook', 'tify'),
+            'attrs'       => []
         ];
-        $args     = array_merge($defaults, $args);
+        $args = array_merge($defaults, $args);
 
         $url = self::url($args['action'], $args['permissions']);
 
-        echo "<a href=\"" . esc_url($url) . "\">{$args['text']}</a>";
+        $args['attrs']['href'] = esc_url($url);
+        $args['attrs']['title'] = empty($args['attrs']['title']) ? $args['text'] : $args['attrs']['title'];
+        $args['attrs']['class'] = empty($args['attrs']['class']) ? 'FacebookTrigger' : 'FacebookTrigger ' . $args['attrs']['class'];
+
+        echo Layout::Tag(
+            [
+                'tag'     => 'a',
+                'attrs'   => $args['attrs'],
+                'content' => $args['text']
+            ]
+        );
     }
 
     /**
@@ -116,43 +128,43 @@ class Login extends \tiFy\Components\Api\Facebook\Mod\Factory
         // Bypass - L'utilisateur est déjà authentifié
         elseif (is_user_logged_in()) :
             return $fb->error(new \WP_Error(
-                500,
-                __('Action impossible, vous êtes déjà authentifié sur le site', 'tify'),
-                ['title' => __('Authentification existante', 'tify')])
+                    500,
+                    __('Action impossible, vous êtes déjà authentifié sur le site', 'tify'),
+                    ['title' => __('Authentification existante', 'tify')])
             );
         endif;
 
         // Bypass - L'identifiant utilisateur Facebook n'est pas disponible
         if (!$fb_user_id = $tokenMetadata->getUserId()) :
             return $fb->error(new \WP_Error(
-                401,
-                __('Impossible de de définir les données du jeton d\'authentification Facebook.', 'tify'),
-                ['title' => __('Récupération des données du jeton d\'accès en échec', 'tify')])
+                    401,
+                    __('Impossible de de définir les données du jeton d\'authentification Facebook.', 'tify'),
+                    ['title' => __('Récupération des données du jeton d\'accès en échec', 'tify')])
             );
         endif;
 
         // Réquête de récupération d'utilisateur correspondant à l'identifiant Facebook
         $user_query = new \WP_User_Query([
-                'meta_query' => [
-                    [
-                        'key'   => '_tify_facebook_user_id',
-                        'value' => $fb_user_id
-                    ]
+            'meta_query' => [
+                [
+                    'key'   => '_tify_facebook_user_id',
+                    'value' => $fb_user_id
                 ]
-            ]);
+            ]
+        ]);
 
         // Bypass - Aucun utilisateur correspondant à l'identifiant utilisateur Facebook.
         if (!$count = $user_query->get_total()) :
             return $fb->error(new \WP_Error(
-                401,
-                __('Aucun utilisateur ne correspond à votre compte Facebook.', 'tify'),
-                ['title' => __('Utilisateur non trouvé', 'tify')])
+                    401,
+                    __('Aucun utilisateur ne correspond à votre compte Facebook.', 'tify'),
+                    ['title' => __('Utilisateur non trouvé', 'tify')])
             );
         elseif ($count > 1) :
             return $fb->error(new \WP_Error(
-                401,
-                __('ERREUR SYSTEME : Votre compte Facebook semble être associé à plusieurs compte > Authentification impossible.', 'tify'),
-                ['title' => __('Nombre d\'utilisateurs trouvés, invalide', 'tify')])
+                    401,
+                    __('ERREUR SYSTEME : Votre compte Facebook semble être associé à plusieurs compte > Authentification impossible.', 'tify'),
+                    ['title' => __('Nombre d\'utilisateurs trouvés, invalide', 'tify')])
             );
         endif;
         $results = $user_query->get_results();

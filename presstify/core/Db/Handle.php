@@ -93,10 +93,35 @@ class Handle
     /**
      *
      */
+    public function prepare($query, $args)
+    {
+        return $this->Db->sql()->prepare($query, $args);
+    }
+
+    /**
+     *
+     */
+    public function query($query)
+    {
+        return $this->Db->sql()->query($query);
+    }
+
+    /**
+     *
+     */
     public function replace($data = [], $format = null)
     {
-        return $this->Db->sql()->replace($this->Db->Name, $data, $format);
+        return $this->Db->sql()->replace($this->Db->getName(), $data, $format);
     }
+
+    /**
+     *
+     */
+    public function delete($where, $where_format = null)
+    {
+        return $this->Db->sql()->delete($this->Db->getName(), $where, $where_format);
+    }
+
 
     /** == Valeur de la prochaine clé primaire == **/
     public function next()

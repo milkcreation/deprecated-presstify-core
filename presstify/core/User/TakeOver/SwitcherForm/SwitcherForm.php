@@ -90,6 +90,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
                 'options'         => $user_options,
                 'value'           => -1,
                 'disabled'        => $disabled,
+                'picker_class'    => 'tiFyTakeOverSwitcherForm-selectFieldPicker--user',
                 'picker'          => [
                     'filter'    => true
                 ]
@@ -119,7 +120,15 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
-            'take_over_id' => ''
+            'take_over_id' => '',
+            'role_select'   => [
+                'container_class'   => '',
+                'picker_class'      => ''
+            ],
+            'user_select'   => [
+                'container_class'   => '',
+                'picker_class'      => ''
+            ]
         ];
         $attrs = array_merge($defaults, $attrs);
 
@@ -181,19 +190,21 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
         $output .= Field::SelectJs(
             [
                 'name'            => 'role',
-                'container_class' => 'tiFyTakeOverSwitcherForm-selectField--role',
+                'container_class' => 'tiFyTakeOverSwitcherForm-selectField--role ' . $role_select['container_class'],
                 'options'         => $role_options,
                 'value'           => -1,
+                'picker_class'    => 'tiFyTakeOverSwitcherForm-selectFieldPicker--role ' . $role_select['picker_class'],
                 'filter'          => false
             ]
         );
         $output .= Field::SelectJs(
             [
                 'name'            => 'user_id',
-                'container_class' => 'tiFyTakeOverSwitcherForm-selectField--user',
+                'container_class' => 'tiFyTakeOverSwitcherForm-selectField--user ' . $user_select['container_class'],
                 'options'         => $user_options,
                 'value'           => -1,
                 'disabled'        => true,
+                'picker_class'    => 'tiFyTakeOverSwitcherForm-selectFieldPicker--user ' . $user_select['picker_class'],
                 'picker'          => [
                     'filter'    => true
                 ]

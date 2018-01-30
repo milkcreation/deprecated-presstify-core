@@ -14,6 +14,8 @@
 
 namespace tiFy\Components\Api\Facebook\Mod\SignUp;
 
+use tiFy\Core\Layout\Layout;
+
 class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
 {
     /**
@@ -72,7 +74,17 @@ class SignUp extends \tiFy\Components\Api\Facebook\Mod\Factory
 
         $url = self::url($args['action'], $args['permissions'], $args['base_url']);
 
-        echo "<a href=\"" . esc_url($url) . "\">{$args['text']}</a>";
+        $args['attrs']['href'] = esc_url($url);
+        $args['attrs']['title'] = empty($args['attrs']['title']) ? $args['text'] : $args['attrs']['title'];
+        $args['attrs']['class'] = empty($args['attrs']['class']) ? 'FacebookTrigger' : 'FacebookTrigger ' . $args['attrs']['class'];
+
+        echo Layout::Tag(
+            [
+                'tag'     => 'a',
+                'attrs'   => $args['attrs'],
+                'content' => $args['text']
+            ]
+        );
     }
 
     /**

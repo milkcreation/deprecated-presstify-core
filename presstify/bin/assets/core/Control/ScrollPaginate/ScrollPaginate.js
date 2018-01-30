@@ -10,12 +10,11 @@ var tify_scroll_paginate_xhr, tify_scroll_paginate;
             return;
         }
 
-        /*
         $(window).scroll(function (e) {
-            if ((tify_infinite_scroll_xhr === undefined) && !$(this).hasClass('ty_iscroll_complete') && isScrolledIntoView($(handler)))
+            if ((tify_scroll_paginate_xhr === undefined) && !$target.hasClass('tiFyCoreControl-ScrollPaginateComplete') && isScrolledIntoView($(handler))) {
                 $(handler).trigger('click');
+            }
         });
-        */
 
         $(document).on('click', handler, function (e) {
             // Bypass plus d'élément à charger
@@ -43,6 +42,7 @@ var tify_scroll_paginate_xhr, tify_scroll_paginate;
                 }
             )
                 .done(function(data, textStatus, jqXHR){
+                    console.log(data);
                     $target.append(data.html);
                     if (data.complete) {
                         $target.addClass('tiFyCoreControl-ScrollPaginateComplete tiFyCoreControl-ScrollPaginateComplete--target');

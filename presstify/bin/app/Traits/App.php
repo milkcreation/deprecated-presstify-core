@@ -183,7 +183,7 @@ trait App
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_filter()
+     * @return null|true
      */
     final public function appAddFilter($tag, $class_method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
@@ -199,7 +199,7 @@ trait App
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_action()
+     * @return null|true
      */
     final public function appAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
@@ -266,7 +266,7 @@ trait App
      *
      * @param string $alias
      *
-     * @return \League\Container\Container
+     * @return bool
      */
     public function appHasContainer($alias)
     {
@@ -316,6 +316,68 @@ trait App
     }
 
     /**
+     * REQUETE
+     */
+    /**
+     * Appel d'une méthode de requête global
+     * @see https://symfony.com/doc/current/components/http_foundation.html
+     * @see http://api.symfony.com/4.0/Symfony/Component/HttpFoundation/ParameterBag.html
+     *
+     * @param string $method Nom de la méthode à appeler (all|keys|replace|add|get|set|has|remove|getAlpha|getAlnum|getBoolean|getDigits|getInt|filter)
+     * @param array $args Tableau associatif des arguments passés dans la méthode.
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public function appRequestCall($method, $args = [], $type = '')
+    {
+        return self::tFyAppCallRequestVar($method, $args, $type);
+    }
+
+    /**
+     * Vérification d'existance d'une variable de requête globale
+     *
+     * @param string $key Identifiant de qualification de l'argument de requête
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public function appRequestHas($key, $type = '')
+    {
+        return self::tFyAppHasRequestVar($key, $type);
+    }
+
+    /**
+     * Récupération d'une variable de requête globale
+     *
+     * @param string $key Identifiant de qualification de l'argument de requête
+     * @param mixed $default Valeur de retour par défaut
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public function appRequestGet($key, $default = '', $type = '')
+    {
+        return self::tFyAppGetRequestVar($key, $default, $type);
+    }
+
+    /**
+     * Définition d'une variable de requête globale
+     *
+     * @param array $parameters Liste des paramètres. Tableau associatif
+     * @param string $type Type de requête à traiter POST|GET|COOKIE|FILES|SERVER ...
+     *
+     * @return mixed
+     */
+    public function appRequestAdd($parameters = [], $type = '')
+    {
+        return self::tFyAppAddRequestVar($parameters, $type);
+    }
+
+    /**
+     * METHODES STATIQUES
+     */
+    /**
      * Ajout d'un filtre
      *
      * @param string $tag Identification de l'accroche
@@ -324,7 +386,7 @@ trait App
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_filter()
+     * @return null|true
      */
     final public function tFyAppAddFilter($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
@@ -344,7 +406,7 @@ trait App
         endif;
 
         if (!is_callable($method)) :
-            return;
+            return null;
         endif;
 
         return \add_filter($tag, $method, $priority, $accepted_args);
@@ -359,7 +421,7 @@ trait App
      * @param int $accepted_args Nombre d'argument permis
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
-     * @return null|callable \add_action()
+     * @return null|true
      */
     final public function tFyAppAddAction($tag, $method = '', $priority = 10, $accepted_args = 1, $classname = null)
     {
@@ -389,7 +451,7 @@ trait App
     /**
      * Définition d'attributs de l'applicatif
      *
-     * @param $attrs Liste des attributs à définir
+     * @param array $attrs Liste des attributs à définir
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
      * @return bool
