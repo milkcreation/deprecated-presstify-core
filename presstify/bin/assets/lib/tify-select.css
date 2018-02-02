@@ -111,7 +111,7 @@
 }
 
 .tiFy-select[aria-multiple="false"] .tiFy-selectSelectedItems {
-    position: absolute;
+    position: relative;
     top: 0;
     right: 0;
     left: 0;
@@ -257,6 +257,10 @@
     color: #FFF;
 }
 
+.tiFy-selectPickerItems > li[aria-disabled="true"] {
+    color: #AAA;
+}
+
 .tiFy-selectPicker[aria-duplicable="true"] .tiFy-selectPickerItems > li[aria-selected="true"] {
     background-color: #DDD;
     color: inherit;
@@ -266,6 +270,12 @@
 .tiFy-selectPicker[aria-duplicable="true"] .tiFy-selectPickerItems > li[aria-selected="true"]:hover {
     background-color: DodgerBlue;
     color: #FFF;
+}
+
+.tiFy-selectPickerItems > li[aria-disabled="true"]:hover {
+    background-color: #FFF;
+    color: #AAA;
+    cursor: inherit;
 }
 
 .tiFy-selectPickerLoader {

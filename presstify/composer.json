@@ -38,6 +38,7 @@
         "league/container": "^2.4",
         "league/route": "^3.0",
         "zendframework/zend-diactoros": "^1.7",
-        "symfony/psr-http-message-bridge": "^1.0"
+        "symfony/psr-http-message-bridge": "^1.0",
+        "league/period": "^3.4"
     }
 }

@@ -159,7 +159,6 @@ class SelectJs extends \tiFy\Core\Field\Factory
         );
 
         // Formatage de la liste des choix de selection disponibles
-
         foreach ($args['options'] as &$item) :
             if ($args['select_cb'] && is_callable($args['select_cb'])) :
                 $item['select'] = call_user_func_array($args['select_cb'], compact('item', 'args'));
@@ -214,7 +213,7 @@ class SelectJs extends \tiFy\Core\Field\Factory
      *
      *      @var string $id Identifiant de qualification de l'élément
      *      @var mixed $value Valeur de retour
-     *      @var string $label Initulé de qualification
+     *      @var string $label Intitulé de qualification
      *      @var bool $group
      *      @var string $parent
      * }
@@ -239,7 +238,7 @@ class SelectJs extends \tiFy\Core\Field\Factory
      *
      *      @var string $id Identifiant de qualification de l'élément
      *      @var mixed $value Valeur de retour
-     *      @var string $label Initulé de qualification
+     *      @var string $label Intitulé de qualification
      *      @var bool $group
      *      @var string $parent
      * }
@@ -350,6 +349,9 @@ class SelectJs extends \tiFy\Core\Field\Factory
                     data-label="<?php echo $item['label']; ?>"
                     data-value="<?php echo $item['value']; ?>"
                     data-select="<?php echo $item['select']; ?>"
+                    <?php if (in_array('disabled', $item['attrs'])) : ?>
+                    aria-disabled="true"
+                    <?php endif; ?>
                 >
                     <?php echo $item['picker'];?>
                 </li

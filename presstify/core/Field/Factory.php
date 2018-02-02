@@ -225,7 +225,7 @@ class Factory extends \tiFy\App\FactoryConstructor
             if (!isset($option['label'])) :
                 $option['label'] = $option['value'];
             endif;
-            $option['label'] = esc_attr($option['label']);
+            $option['label'] = $option['label'];
             $_options[] = $option;
         endforeach;
         $args['options'] = $_options;

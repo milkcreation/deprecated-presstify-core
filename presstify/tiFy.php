@@ -137,32 +137,53 @@ final class tiFy
     /**
      * Formatage lower_name d'une chaine de caratère
      * Converti une chaine de caractère CamelCase en snake_case
+     * ex : _tiFyTest1_Test2 > _tiFy-test1_test2
      *
      * @param string $name
-     * @param string $separator
      *
      * @return string
      */
-    public static function formatLowerName($name, $separator = '_')
+    public static function formatLowerName($name)
     {
-        return join($separator, array_map('lcfirst', preg_split('#(?=[A-Z])#', lcfirst($name))));
+        $parts = [];
+        if (preg_match('#^_?tiFy#', $name, $match)) :
+            $parts[] = reset($match);
+            $name = preg_replace('#^_?tiFy#', '', $name);
+        endif;
+        $parts += array_map('lcfirst', preg_split('#(?=[A-Z])#', $name));
+
+        if ($parts) :
+            $name = '';
+            foreach($parts as $k => $part) :
+                if (empty($part)) :
+                    continue;
+                elseif (!$k && preg_match('#^_?tiFy#', $part)) :
+                    $name = $part;
+                else :
+                    $name .= preg_match('#_$#', $part) ? $part : "{$part}-";
+                endif;
+            endforeach;
+            $name = rtrim($name, '-');
+        endif;
+
+        return $name;
     }
 
     /**
      * Formatage UpperName d'une chaine de caratère
      * Converti une chaine de caractère snake_case en CamelCase
+     * ex : _tiFy-test1_test2 > _tiFyTest1_Test2
      *
-     * @param string $name
+     * @param string $name Chaîne de caractère à traiter
+     * @param bool $underscore Conservation des underscore
      *
      * @return string
      */
-    public static function formatUpperName($name)
+    public static function formatUpperName($name, $underscore = true)
     {
-        $name = join('', array_map('ucfirst', preg_split('/_|-/', $name)));
-
-        if(preg_match('/^tiFy/', $name)) :
-            $name = lcfirst($name);
-        endif;
+        $name = join(($underscore ? '_' : ''), array_map('ucfirst', preg_split('#_#', $name)));
+        $name = join('', array_map('ucfirst', preg_split('#-#', $name)));
+        $name = preg_replace('#^(_)?(T)(iFy)#', '$1t$3', $name);
 
         return $name;
     }

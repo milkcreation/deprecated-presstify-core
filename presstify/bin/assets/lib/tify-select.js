@@ -24,7 +24,8 @@
         }
     };
 
-    $.widget('tify.tiFySelect', {
+    $.widget(
+        'tify.tiFySelect', {
         // Définition des options par défaut
         options: {
             disabled:     false,
@@ -702,7 +703,7 @@
                 });
 
             // Activation de la selection d'un élément dans la liste de selection
-            $('> li', self.pickerList).
+            $('> li:not([aria-disabled="true"])', self.pickerList).
                 on('click.tify_select.picker_item_select.' + self.instance.uuid,
                     function () {
                         var item = self._getAttrs($(this));

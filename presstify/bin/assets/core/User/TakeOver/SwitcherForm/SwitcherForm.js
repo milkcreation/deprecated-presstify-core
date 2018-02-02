@@ -21,6 +21,7 @@ jQuery(document).ready(function($){
             {
                 action:         o.ajax_action,
                 _ajax_nonce:    o.ajax_nonce,
+                fields:         o.fields,
                 role:           role
             }
         )

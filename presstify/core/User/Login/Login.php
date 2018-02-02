@@ -53,7 +53,7 @@ final class Login extends \tiFy\App
     final public function init()
     {
         // Déclaration des interfaces d'authentification ponctuelles
-        do_action('tify_login_register');
+        do_action('tify_user_login_register');
     }
 
     /**
