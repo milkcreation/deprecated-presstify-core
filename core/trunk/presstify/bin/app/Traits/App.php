@@ -14,25 +14,25 @@ trait App
      * Converti une chaine de caractère CamelCase en snake_case
      *
      * @param null|string $name
-     * @param string $separator
      * @return string
      */
-    final public function appLowerName($name = null, $separator = '_')
+    final public function appLowerName($name = null)
     {
-        return self::tFyAppLowerName($name, $separator);
+        return self::tFyAppLowerName($name);
     }
 
     /**
      * Formatage UpperName d'une chaine de caratère
      * Converti une chaine de caractère snake_case en CamelCase
      *
-     * @param null|string $name
+     * @param null|string $name Chaine de caractère à traité. Nom de la classe par défaut.
+     * @param bool $underscore Conservation des underscores
      *
      * @return string
      */
-    final public function appUpperName($name = null)
+    final public function appUpperName($name = null, $underscore = true)
     {
-        return self::tFyAppUpperName($name);
+        return self::tFyAppUpperName($name, $underscore);
     }
 
     /**
@@ -795,30 +795,31 @@ trait App
      *
      * @return string
      */
-    public static function tFyAppLowerName($name, $separator = '_')
+    public static function tFyAppLowerName($name = null)
     {
         if (!$name) :
             $name = self::tFyAppShortname();
         endif;
 
-        return tiFy::formatLowerName($name, $separator);
+        return tiFy::formatLowerName($name);
     }
 
     /**
      * Formatage UpperName d'une chaine de caratère
      * Converti une chaine de caractère snake_case en CamelCase
      *
-     * @param null|string $name
+     * @param null|string $name Chaine de caractère à traité. Nom de la classe par défaut.
+     * @param bool $underscore Conservation des underscore
      *
      * @return string
      */
-    public static function tFyAppUpperName($name)
+    public static function tFyAppUpperName($name = null, $underscore = true)
     {
         if (!$name) :
             $name = self::tFyAppShortname();
         endif;
 
-        return tiFy::formatUpperName($name);
+        return tiFy::formatUpperName($name, $underscore);
     }
 
     /**

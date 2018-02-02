@@ -152,7 +152,7 @@ class WalkerOptions extends \tiFy\Lib\Walkers\Base
     public function default_content_item($item = null, $depth = 0, $parent = '')
     {
         if (!$item['group']) :
-            return ! empty($item['label']) ? $item['label'] : '';
+            return ! empty($item['label']) ? esc_attr($item['label']) : '';
         endif;
     }
 }
