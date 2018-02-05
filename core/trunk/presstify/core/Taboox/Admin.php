@@ -20,9 +20,6 @@ class Admin extends \tiFy\App\Factory
     public $args            = [];
 
     /**
-     * DECLENCHEURS
-     */
-    /**
      * Initialisation globale
      *
      * @return void
@@ -64,9 +61,6 @@ class Admin extends \tiFy\App\Factory
 
     }
 
-    /**
-     * CONTROLEURS
-     */
     /**
      * Initialisation de la classe
      */

@@ -49,14 +49,11 @@ abstract class ColumnFactory extends App
     protected $Content = '';
 
     /**
-     * Appel de la classe en tant que fonction
+     * CONSTRUCTEUR
      *
      * @param array $attrs {
      *      Liste des attributs de configuration
      *
-     *      @var string $id Identifiant de qualification
-     *      @var string $object_type Type d'objet
-     *      @var string $object_name Identifiant de qualification du type d'objet
      *      @var string $column_name Identifiant de qualification de la colonne
      *      @var string $title Intitulé de la colonne
      *      @var int $position Position de la colonne dans la table
@@ -65,16 +62,34 @@ abstract class ColumnFactory extends App
      *
      * @return void
      */
-    public function __invoke($attrs = [])
+    public function __construct($attrs)
     {
+        parent::__construct();
+
         // Définition des variables d'environnement
-        foreach (['id', 'object_type', 'object_name', 'column_name', 'title', 'position'] as $attr) :
+        foreach (['column_name', 'title', 'position'] as $attr) :
             if (isset($attrs[$attr])) :
                 $Attr = $this->appUpperName($attr, false);
                 $this->{$Attr} = $attrs[$attr];
             endif;
         endforeach;
         $this->Content = !isset($attrs['content']) ? [$this, 'content'] : $attrs['content'];
+    }
+
+
+    /**
+     * @param $id
+     * @param $object_type
+     * @param $object_name
+     *
+     *
+     */
+    public function __invoke($id, $object_type, $object_name)
+    {
+        // Définition des variables d'environnement
+        $this->Id = $id;
+        $this->ObjectType = $object_type;
+        $this->ObjectName = $object_name;
 
         // Déclaration des événements
         $this->appAddAction('current_screen');

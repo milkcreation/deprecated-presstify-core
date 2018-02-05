@@ -149,6 +149,7 @@ class CustomType extends \tiFy\App\Core
      */
     public static function registerPostType($post_type, $args = [])
     {
+
         if (!isset(self::$PostTypes[$post_type])) :
             return self::$PostTypes[$post_type] = $args;
         endif;
@@ -207,11 +208,11 @@ class CustomType extends \tiFy\App\Core
                 $post_type_args[$allowed_arg] = $args[$allowed_arg];
              endif;
         endforeach;
-        
-        \register_post_type( 
+
+        \register_post_type(
             $post_type, 
             $post_type_args 
-        );      
+        );
     }
     
     /**
