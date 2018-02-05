@@ -140,10 +140,11 @@ final class tiFy
      * ex : _tiFyTest1_Test2 > _tiFy-test1_test2
      *
      * @param string $name
+     * @param string $separator Caractère de séparation d'occurences
      *
      * @return string
      */
-    public static function formatLowerName($name)
+    public static function formatLowerName($name, $separator = '-')
     {
         $parts = [];
         if (preg_match('#^_?tiFy#', $name, $match)) :
@@ -160,10 +161,10 @@ final class tiFy
                 elseif (!$k && preg_match('#^_?tiFy#', $part)) :
                     $name = $part;
                 else :
-                    $name .= preg_match('#_$#', $part) ? $part : "{$part}-";
+                    $name .= preg_match('#_$#', $part) ? $part : "{$part}{$separator}";
                 endif;
             endforeach;
-            $name = rtrim($name, '-');
+            $name = rtrim($name, $separator);
         endif;
 
         return $name;

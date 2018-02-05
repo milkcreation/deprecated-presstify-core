@@ -14,11 +14,13 @@ trait App
      * Converti une chaine de caractère CamelCase en snake_case
      *
      * @param null|string $name
+     * @param string $separator
+     *
      * @return string
      */
-    final public function appLowerName($name = null)
+    final public function appLowerName($name = null, $separator = '-')
     {
-        return self::tFyAppLowerName($name);
+        return self::tFyAppLowerName($name, $separator);
     }
 
     /**
@@ -142,7 +144,7 @@ trait App
      *
      * @return null|string
      */
-    final public static function appDirname($classname = null)
+    final public function appDirname($classname = null)
     {
         return self::tFyAppDirname($classname);
     }
@@ -154,7 +156,7 @@ trait App
      *
      * @return null|string
      */
-    final public static function appUrl($classname = null)
+    final public function appUrl($classname = null)
     {
         return self::tFyAppUrl($classname);
     }
@@ -166,7 +168,7 @@ trait App
      *
      * @return null|string
      */
-    final public static function appRel($classname = null)
+    final public function appRel($classname = null)
     {
         return self::tFyAppRel($classname);
     }
@@ -795,13 +797,13 @@ trait App
      *
      * @return string
      */
-    public static function tFyAppLowerName($name = null)
+    public static function tFyAppLowerName($name = null, $separator = '-')
     {
         if (!$name) :
             $name = self::tFyAppShortname();
         endif;
 
-        return tiFy::formatLowerName($name);
+        return tiFy::formatLowerName($name, $separator);
     }
 
     /**

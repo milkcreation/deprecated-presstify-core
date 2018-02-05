@@ -79,25 +79,34 @@ final class ObjectNameFactory extends App
         if (is_array($controller)) :
             $args = $controller;
             $controller = 'tiFy\Core\Column\ColumnPostType';
-        elseif (!class_exists($controller)) :
+        elseif (is_object($controller) || class_exists($controller)) :
+            $args = [];
+        else :
             return null;
         endif;
 
-        // Définition des attributs de configuration
-        $args['id'] = $name;
-        $args['object_type'] = $this->ObjectType;
-        $args['object_name'] = $this->ObjectName;
+        // Instanciation
+        if (!is_object($controller)) :
+            $call = new $controller($args);
+        else :
+            $call = $controller;
+        endif;
 
-        // Déclaration de la dépendance
-        $columnController = new $controller;
-        $this->appShareContainer(
-            "tify.core.column.{$this->ObjectType}.{$this->ObjectName}.{$name}",
-            $columnController($args)
-        );
+        $call($name, $this->ObjectType, $this->ObjectName);
     }
 
     /**
      * Ajout d'un colonne
+     *
+     * @param string $name Identifiant de qualification du controleur d'affichage
+     * @param array|ColumnFactory $controller {
+     *      Liste des attributs de configuration|Classe de rappel
+     *
+     *      @var string $column_name Identifiant de qualification de la colonne
+     *      @var string $title Intitulé de la colonne
+     *      @var int $position Position de la colonne dans la table
+     *      @var string|callable $content Affichage du rendu de la cellule
+     * }
      *
      * @return $this
      */
