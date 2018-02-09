@@ -13,7 +13,6 @@
         "redeyeventures/geopattern": "^1.1",
         "html2text/html2text": "^4.0",
         "google/recaptcha": "^1.1",
-        "bacon/bacon-qr-code": "^1.0",
         "mexitek/phpcolors": "^0.4.0",
         "facebook/graph-sdk": "^5.5",
         "guzzlehttp/guzzle": "^6.2",
@@ -39,6 +38,8 @@
         "league/route": "^3.0",
         "zendframework/zend-diactoros": "^1.7",
         "symfony/psr-http-message-bridge": "^1.0",
-        "league/period": "^3.4"
+        "league/period": "^3.4",
+        "symfony/serializer": "^3.4",
+        "endroid/qr-code": "^2.5"
     }
 }

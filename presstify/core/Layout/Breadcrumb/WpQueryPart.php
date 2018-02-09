@@ -52,7 +52,12 @@ class WpQueryPart
 
         // Page liste des articles du blog
         elseif (is_home()) :
-            $this->Parts[] = $this->currentHome();
+            if (get_option('page_for_posts')) :
+                $this->Parts[] = $this->linkRoot();
+                $this->Parts[] = $this->currentHome();
+            else :
+                $this->Parts[] = $this->linkRoot();
+            endif;
 
         // Page de contenu de type fichier média
         elseif (is_attachment()) :
