@@ -2,6 +2,7 @@
 namespace tiFy\Core\Templates\Admin\Model;
 
 use tiFy\Apps;
+use tiFy\App\Traits\App as TraitsApp;
 use tiFy\Core\Templates\Admin\Helpers;
 
 /** 
@@ -12,7 +13,7 @@ if( ! class_exists( 'WP_List_Table' ) )
     
 abstract class Table extends \WP_List_Table
 {
-    use \tiFy\Core\Templates\Traits\Factory;
+    use TraitsApp;
     use \tiFy\Core\Templates\Traits\Table\Actions;
     use \tiFy\Core\Templates\Traits\Table\Notices;
     use \tiFy\Core\Templates\Traits\Table\Params;
@@ -107,7 +108,7 @@ abstract class Table extends \WP_List_Table
     /** == ! IMPORTANT : court-circuitage du constructeur natif de WP_List_Table == **/
     public function __construct()
     {
-        Apps::register($this);    
+        self::_tFyAppRegister($this);
     }
     
     /* = METHODES MAGIQUES = */
@@ -460,12 +461,13 @@ jQuery(document).ready( function($){
     /**
      * Contenu par défaut des colonnes
      */
-    public function column_default( $item, $column_name )
+    public function column_default($item, $column_name)
     {
         // Bypass 
-        if( ! isset( $item->{$column_name} ) )
+        if (!isset($item->{$column_name})) :
             return;
-        
+        endif;
+
         $col_type = strtoupper( $this->db()->getColAttr( $column_name, 'type' ) );
 
         switch( $col_type ) :

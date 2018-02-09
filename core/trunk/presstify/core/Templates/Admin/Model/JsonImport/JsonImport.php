@@ -4,9 +4,6 @@ namespace tiFy\Core\Templates\Admin\Model\JsonImport;
 class JsonImport extends \tiFy\Core\Templates\Admin\Model\FileImport\FileImport
 {
     /**
-     * TRAITEMENT
-     */
-    /**
      * Récupération de la réponse
      *
      * @return object[]
@@ -16,7 +13,7 @@ class JsonImport extends \tiFy\Core\Templates\Admin\Model\FileImport\FileImport
         $p = $this->parse_query_args();
 
         if (empty($p['filename'])) :
-            return;
+            return [];
         endif;
 
         $items = [];

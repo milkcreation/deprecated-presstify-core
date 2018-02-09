@@ -37,7 +37,7 @@
 }
 
 .tiFyTableCell3 {
-    width: 33.334%;
+    width: 33.33333%;
 }
 
 .tiFyTableCell4 {
@@ -66,6 +66,10 @@
 
 .tiFyTableCell10 {
     width: 10%;
+}
+
+.tiFyTableCell-label {
+    display: none;
 }
 
 .tiFyTableHeadTr {

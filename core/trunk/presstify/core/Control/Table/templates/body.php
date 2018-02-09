@@ -7,6 +7,7 @@
     <div class="tiFyTableBodyTr tiFyTableBodyTr--<?php echo $row; ?> tiFyTableTr tiFyTableTr-<?php echo ($num++ % 2 === 0) ? 'even' : 'odd'; ?>">
         <?php foreach ($columns as $name => $label) : ?>
         <div class="tiFyTableCell<?php echo $count; ?> tiFyTableBodyTd tiFyTableBodyTd--<?php echo $name; ?> tiFyTableTd">
+            <span class="tiFyTableCell-label"><?php echo $label; ?></span>
             <?php echo $dr[$name];?>
         </div>
         <?php endforeach; ?>

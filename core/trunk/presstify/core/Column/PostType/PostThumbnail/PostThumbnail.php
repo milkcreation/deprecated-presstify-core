@@ -35,8 +35,8 @@ class PostThumbnail extends ColumnPostType
      */
     public function admin_print_styles()
     {
-        $column_name = $this->getColumnName();
 
+        $column_name = $this->getColumnName();
         ?><style type="text/css">.wp-list-table th#<?php echo $column_name; ?>,.wp-list-table td.<?php echo $column_name; ?>{width:80px;text-align:center;} .wp-list-table td.<?php echo$column_name; ?> img{max-width:80px;max-height:60px;}</style><?php
     }
 

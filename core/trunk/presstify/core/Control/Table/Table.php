@@ -70,6 +70,8 @@ class Table extends \tiFy\Core\Control\Factory
     {
         // Traitement des attributs de configuration
         $defaults = [
+            'header'  => true,
+            'footer'  => true,
             'columns' => [
                 'Lorem', 'Ipsum'
             ],
@@ -91,18 +93,27 @@ class Table extends \tiFy\Core\Control\Factory
         $attrs = wp_parse_args($attrs, $defaults);
         extract($attrs);
 
-        $count = count($columns); $num = 0;
-?>
-<div class="tiFyTable">
-    <?php self::tFyAppGetTemplatePart('head', null, compact('datas', 'columns', 'count', 'num')); ?>
-    <?php reset($columns);?>
+        $count = count($columns);
+        $num = 0;
+        ?>
+        <div class="tiFyTable">
+            <?php
+            if ($header) :
+                self::tFyAppGetTemplatePart('head', null, compact('datas', 'columns', 'count', 'num'));
+                reset($columns);
+            endif;
+            ?>
 
-    <?php self::tFyAppGetTemplatePart('body', null, compact('datas', 'columns', 'count', 'num', 'none')); ?>
-    <?php reset($columns);?>
+            <?php self::tFyAppGetTemplatePart('body', null, compact('datas', 'columns', 'count', 'num', 'none')); ?>
+            <?php reset($columns); ?>
 
-    <?php self::tFyAppGetTemplatePart('foot', null, compact('datas', 'columns', 'count', 'num')); ?>
-    <?php reset($columns);?>
-</div>
-<?php
+            <?php
+            if ($footer) :
+                self::tFyAppGetTemplatePart('foot', null, compact('datas', 'columns', 'count', 'num'));
+                reset($columns);
+            endif;
+            ?>
+        </div>
+        <?php
     }
 }

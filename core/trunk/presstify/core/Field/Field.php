@@ -2,6 +2,30 @@
 
 namespace tiFy\Core\Field;
 
+/**
+ * Class Field
+ * @package tiFy\Core\Field
+ *
+ * @method static AjaxAutocomplete(array $args)
+ * @method static AjaxSelect(array $args)
+ * @method static Button(array $args)
+ * @method static Checkbox(array $args)
+ * @method static DatetimeJS(array $args)
+ * @method static File(array $args)
+ * @method static Hidden(array $args)
+ * @method static Label(array $args)
+ * @method static Number(array $args)
+ * @method static NumberJS(array $args)
+ * @method static Password(array $args)
+ * @method static Radio(array $args)
+ * @method static Repeater(array $args)
+ * @method static Select(array $args)
+ * @method static SelectJS(array $args)
+ * @method static Submit(array $args)
+ * @method static Text(array $args)
+ * @method static Textarea(array $args)
+ * @method static ToggleSwitch(array $args)
+ */
 class Field extends \tiFy\App\Core
 {
     /**
