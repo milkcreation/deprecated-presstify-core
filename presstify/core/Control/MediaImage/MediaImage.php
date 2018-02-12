@@ -20,8 +20,7 @@ namespace tiFy\Core\Control\MediaImage;
  * <?php
  * namespace \App\Core\Control\MediaImage
  *
- * class MediaImage extends \tiFy\Core\Control\MediaImage\MediaIm
-age
+ * class MediaImage extends \tiFy\Core\Control\MediaImage\MediaImage
  * {
  *
  * }
@@ -62,7 +61,7 @@ class MediaImage extends \tiFy\Core\Control\Factory
      */
     protected function enqueue_scripts()
     {
-        wp_enqueue_media();
+        @ wp_enqueue_media();
         \wp_enqueue_style('tify_control-media_image');
         \wp_enqueue_script('tify_control-media_image');
     }
@@ -116,8 +115,12 @@ class MediaImage extends \tiFy\Core\Control\Factory
 
         // Calcul du ratio
         $ratio = 100 * ($height / $width);
-        add_action('admin_print_footer_scripts', create_function('',
-            'echo "<style type=\"text/css\">#' . $id . ':before{padding-top:' . $ratio . '%;}</style>";'));
+        add_action(
+            'admin_print_footer_scripts',
+            function() use ($id, $ratio) {
+                echo "<style type=\"text/css\">#{$id}:before{padding-top:{$ratio}%;}</style>";
+            }
+        );
 
         // Traitement de la valeur
         $default = (is_numeric($default) && ($default_image = wp_get_attachment_image_src($default,

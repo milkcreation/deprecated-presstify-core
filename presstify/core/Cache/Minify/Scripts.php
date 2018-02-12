@@ -47,8 +47,18 @@ class Scripts extends ScriptsDependencies
             $this->concat['head']['deps'] = array_diff($this->concat['head']['deps'], $this->concat['head']['handles']);
             $wp_scripts->add(
                 'minifyJs-header',
-                site_url('/wp-content/mu-plugins/presstify/core/Cache/Minify/min/') . '?f=' . join(',', array_map(create_function('$src', 'return trim( $src, "/" );'), $this->concat['head']['src'])), $this->concat['head']['deps']
-            );
+                site_url(
+                    '/wp-content/mu-plugins/presstify/core/Cache/Minify/min/') . '?f=' .
+                    join(',',
+                        array_map(
+                            function ($src) {
+                                return trim($src, "/");
+                            },
+                            $this->concat['head']['src']
+                        )
+                    ),
+                    $this->concat['head']['deps']
+                );
             $wp_scripts->enqueue('minifyJs-header');
         endif;
 
@@ -57,8 +67,18 @@ class Scripts extends ScriptsDependencies
             $this->concat['footer']['deps'] = array_diff($this->concat['footer']['deps'], $this->concat['footer']['handles']);
             $wp_scripts->add(
                 'minifyJs-footer',
-                site_url('/wp-content/mu-plugins/presstify/core/Cache/Minify/min/') . '?f=' . join(',', array_map(create_function('$src', 'return trim( $src, "/" );'), $this->concat['footer']['src'])), $this->concat['footer']['deps']
-            );
+                site_url(
+                    '/wp-content/mu-plugins/presstify/core/Cache/Minify/min/') . '?f=' .
+                    join(',',
+                        array_map(
+                            function ($src) {
+                                return trim($src, "/");
+                            },
+                            $this->concat['footer']['src']
+                        )
+                    ),
+                    $this->concat['footer']['deps']
+                );
             $wp_scripts->add_data('minifyJs-footer', 'group', 1);
             $wp_scripts->enqueue('minifyJs-footer');
         endif;
