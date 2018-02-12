@@ -36,6 +36,6 @@ function mkpbx_custom_background_render( $post, $args = array()){
  */
 function mkpbx_custom_background_replace( $default ){
 	if( is_singular()&& post_custom( '_custom_background' ) )
-		add_filter( "theme_mod_background_image", create_function( '', 'return post_custom( "_custom_background" );') );
+		add_filter( "theme_mod_background_image", function(){return post_custom( "_custom_background" );});
 }
 add_action('wp_enqueue_scripts', 'mkpbx_custom_background_replace' );

@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
                     }
                 )
                     .done(function(resp) {
-                        console.log(resp);
+
                     })
                     .always(function () {
                         $closest.fadeOut(function () {

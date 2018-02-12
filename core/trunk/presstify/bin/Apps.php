@@ -1152,11 +1152,11 @@ final class Apps
         endif;
 
         $subdir  = \wp_normalize_path($attrs['OverrideNamespace']);
-        $subdir  = preg_replace_callback('#^(Core|Components|Plugins|Set)\/(.*)#',
-            function ($m) {
-                return count($m === 2) ? strtolower($m[1]) . '/' . $m[2] : $m;
+        $_subdir  = preg_replace_callback('#^(Core|Components|Plugins|Set)\/(.*)#',
+            function ($m) use($subdir) {
+                return (is_array($m) && (count($m) === 3)) ? strtolower($m[1]) . '/' . $m[2] : $subdir;
             }, $subdir);
-        $subdir  = \untrailingslashit($subdir);
+        $subdir  = \untrailingslashit($_subdir);
         $_subdir = $subdir ? '/' . $subdir : '';
 
         // Chemins vers le repertoire de stockage des ressources commplémentaires (assets)

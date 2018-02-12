@@ -3,7 +3,6 @@
         "monolog/monolog": "^1.22",
         "league/csv": "^8.2",
         "defuse/php-encryption": "^2.0",
-        "pelago/emogrifier": "^1.2",
         "symfony/yaml": "^3.3",
 	"symfony/http-foundation": "^3.3",
         "symfony/finder": "^3.3",
@@ -40,6 +39,7 @@
         "symfony/psr-http-message-bridge": "^1.0",
         "league/period": "^3.4",
         "symfony/serializer": "^3.4",
-        "endroid/qr-code": "^2.5"
+        "endroid/qr-code": "^2.5",
+        "pelago/emogrifier": "^2.0"
     }
 }
