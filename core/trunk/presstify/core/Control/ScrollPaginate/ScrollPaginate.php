@@ -235,7 +235,7 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
             while ($query_post->have_posts()) : $query_post->the_post();
                 $html .= $options['before_item'];
                 ob_start();
-                call_user_func_array($options['item_display_cb'], [$options, $offset]);
+                call_user_func_array($options['item_display_cb'], [$options, $offset, $query_post->current_post]);
                 $html .= ob_get_clean();
                 $html .= $options['after_item'];
             endwhile;
@@ -251,8 +251,8 @@ class ScrollPaginate extends \tiFy\Core\Control\Factory
      *
      * @return string
      */
-    final public static function itemDisplay($options = [], $offset = 0)
+    final public static function itemDisplay($options = [], $offset = 0, $index = 0)
     {
-        return self::tFyAppGetTemplatePart('item', $options['id'], compact('options', 'offset'));
+        return self::tFyAppGetTemplatePart('item', $options['id'], compact('options', 'offset', 'index'));
     }
 }
