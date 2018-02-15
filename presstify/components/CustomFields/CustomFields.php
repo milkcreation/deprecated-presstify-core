@@ -41,7 +41,7 @@ final class CustomFields extends \tiFy\App\Component
 
                     if (\class_exists($classname)) :
                     else :
-                        $ObjectType = $this->appUpperName($object_type);
+                        $ObjectType = $this->appUpperName($object_type, false);
                         $classname = "\\tiFy\\Components\\CustomFields\\{$ObjectType}\\{$classname}\\{$classname}";
 
                         if (!\class_exists($classname)) :
