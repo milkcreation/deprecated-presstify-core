@@ -3,18 +3,20 @@
  * @name MetaTitle
  * @desc Controleur d'affichage de la balise meta title de l'entête du site
  * @package presstiFy
- * @namespace \tiFy\Core\Layout\MetaTitle
+ * @namespace \tiFy\Core\Layouts\MetaTitle
  * @version 1.1
- * @subpackage Core
+ * @subpackage Components
  * @since 1.2.571
  *
  * @author Jordy Manner <jordy@tigreblanc.fr>
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Layout\MetaTitle;
+namespace tiFy\Components\Layouts\MetaTitle;
 
-class MetaTitle extends \tiFy\Core\Layout\Factory
+use tiFy\Core\Layout\AbstractFactory;
+
+class MetaTitle extends AbstractFactory
 {
     /**
      * Liste des éléments contenus dans le fil d'ariane
@@ -29,7 +31,7 @@ class MetaTitle extends \tiFy\Core\Layout\Factory
      *
      * @return array
      */
-    final protected function parseAttrs($attrs = [])
+    final protected function parse($attrs = [])
     {
         $defaults = [
             'separator'       => '&nbsp;|&nbsp;',
@@ -37,7 +39,7 @@ class MetaTitle extends \tiFy\Core\Layout\Factory
         ];
         $attrs = array_merge($defaults, $attrs);
 
-        if ($parts = $this->getAttr('parts', [])) :
+        if ($parts = $this->get('parts', [])) :
             self::$Parts = $parts;
         endif;
 
@@ -90,13 +92,10 @@ class MetaTitle extends \tiFy\Core\Layout\Factory
     final protected function display()
     {
         // Définition des arguments de template
-        $separator = $this->getAttr('separator');
+        $separator = $this->get('separator');
         $parts = $this->getPartList();
 
         // Récupération du template d'affichage
-        ob_start();
-        echo implode($separator, $parts);
-
-        return ob_get_clean();
+        return implode($separator, $parts);
     }
 }

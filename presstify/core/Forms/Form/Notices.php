@@ -62,38 +62,46 @@ class Notices
         if( isset( $this->Notices[ $code ] ) )
             return $this->Notices[ $code ];        
     }
-      
-    /** == Définition de notice == **/
-    public function add( $code, $message, $data = '' )
+
+    /**
+     * Définition de notice
+     *
+     * @param $code
+     * @param string $message
+     * @param $data
+     *
+     * @return void
+     */
+    public function add($code, $message, $data = '')
     {
         $uid = uniqid();
-        
+
         $this->Notices[$code][$uid] = $message;
-                
-        if ( ! empty( $data ) ) :
-            $defaults = array(
-                'slug'      => null,
-                'type'      => '',                
-                'check'     => '',
-                'order'     => 0
-            );
-            $data = wp_parse_args( (array) $data, $defaults );
+
+        if (!empty($data)) :
+            $defaults = [
+                'slug'  => null,
+                'type'  => '',
+                'check' => '',
+                'order' => 0
+            ];
+            $data = wp_parse_args((array)$data, $defaults);
 
             // Données protégées
-            if( isset( $data['_uid'] ) ) :
-                unset( $data['_uid'] );
+            if (isset($data['_uid'])) :
+                unset($data['_uid']);
             endif;
             $data['_uid'] = $uid;
-            
-            if( isset( $data['_message'] ) ) :
-                unset( $data['_message'] );
+
+            if (isset($data['_message'])) :
+                unset($data['_message']);
             endif;
-            $data['_message'] = $message;            
-            
+            $data['_message'] = $message;
+
             $this->Datas[$code][$uid] = $data;
         endif;
     }
-    
+
     /** == Nombre de notice == **/
     public function count( $code = 'error' )
     {

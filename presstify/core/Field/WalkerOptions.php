@@ -2,7 +2,9 @@
 
 namespace tiFy\Core\Field;
 
-class WalkerOptions extends \tiFy\Lib\Walkers\Base
+use tiFy\Lib\Walkers\Base;
+
+class WalkerOptions extends Base
 {
     /**
      * Récupération de la classe HTML d'un élément
@@ -154,5 +156,7 @@ class WalkerOptions extends \tiFy\Lib\Walkers\Base
         if (!$item['group']) :
             return ! empty($item['label']) ? esc_attr($item['label']) : '';
         endif;
+
+        return '';
     }
 }

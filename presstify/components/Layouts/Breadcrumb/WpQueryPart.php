@@ -1,6 +1,6 @@
 <?php
 
-namespace tiFy\Core\Layout\Breadcrumb;
+namespace tiFy\Components\Layouts\Breadcrumb;
 
 use tiFy\Core\Layout\Layout;
 
@@ -27,7 +27,7 @@ class WpQueryPart
     /**
      * Récupération de la liste des éléments de contenu relatif à la requête globale de Wordpress
      *
-     * @return void
+     * @return array
      */
     public function getList()
     {

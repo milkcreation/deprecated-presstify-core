@@ -167,9 +167,9 @@ class ScriptLoader extends \tiFy\App
             ],
 
             /// TiFy - Select
-            'tify-select'             => [
+            'tifyselect'             => [
                 'src'     => [
-                    'local' => tiFy::$AbsUrl . '/bin/assets/lib/tify-select' . $min . '.css',
+                    'local' => tiFy::$AbsUrl . '/bin/assets/lib/tifyselect' . $min . '.css',
                 ],
                 'deps'    => [],
                 'version' => 180103,
@@ -434,9 +434,9 @@ class ScriptLoader extends \tiFy\App
             ],
 
             /// TiFy - Select
-            'tify-select'          => [
+            'tifyselect'          => [
                 'src'       => [
-                    'local' => tiFy::$AbsUrl . '/bin/assets/lib/tify-select' . $min . '.js',
+                    'local' => tiFy::$AbsUrl . '/bin/assets/lib/tifyselect' . $min . '.js',
                 ],
                 'deps'      => ['jquery-ui-widget', 'jquery-ui-sortable'],
                 'version'   => 180103,

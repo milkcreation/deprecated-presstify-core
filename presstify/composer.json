@@ -40,6 +40,9 @@
         "league/period": "^3.4",
         "symfony/serializer": "^3.4",
         "endroid/qr-code": "^2.5",
-        "pelago/emogrifier": "^2.0"
+        "pelago/emogrifier": "^2.0",
+        "league/booboo": "^2.0",
+        "league/plates": "^3.3",
+        "league/glide": "^1.3"
     }
 }

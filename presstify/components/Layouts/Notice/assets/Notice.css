@@ -1,0 +1,40 @@
+.tiFyLayout-notice {
+    position: relative;
+    background-color: #FFF;
+}
+
+.tiFyLayout-notice--success {
+    border-left: solid 3px #46B450;
+}
+
+.tiFyLayout-notice--info {
+    border-left: solid 3px #00A0D2;
+}
+
+.tiFyLayout-notice--warning {
+    border-left: solid 3px #FFB900;
+}
+
+.tiFyLayout-notice--error {
+    border-left: solid 3px #DC3232;
+}
+
+.tiFyLayout-notice > div {
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.tiFyLayout-notice > [aria-dismiss="tiFyLayout-notice"] {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    padding: 5px;
+    z-index: 1;
+
+    font-size: 24px;
+    line-height: 24px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}

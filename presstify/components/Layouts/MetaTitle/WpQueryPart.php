@@ -1,8 +1,6 @@
 <?php
 
-namespace tiFy\Core\Layout\MetaTitle;
-
-use tiFy\Core\Layout\Layout;
+namespace tiFy\Components\Layouts\MetaTitle;
 
 class WpQueryPart
 {
@@ -15,7 +13,7 @@ class WpQueryPart
     /**
      * Récupération de la liste des éléments de contenu relatif à la requête globale de Wordpress
      *
-     * @return void
+     * @return array
      */
     public function getList()
     {
@@ -83,7 +81,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page non trouvée 404
      *
-     * @return array
+     * @return string
      */
     public function current404()
     {
@@ -95,7 +93,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de résultats de recherche
      *
-     * @return array
+     * @return string
      */
     public function currentSearch()
     {
@@ -107,16 +105,16 @@ class WpQueryPart
     /**
      * Récupération de l'élèment de page liste de contenus associés à une taxonomie
      *
-     * @return array
+     * @return string
      */
     public function currentTax()
     {
         /**
-         * @var \WP_Taxonomy $tax Taxonomie courante
+         * @var \WP_Term $term Terme de taxonomie courant
          */
-        $tax = get_queried_object();
+        $term = get_queried_object();
 
-        $part = sprintf('%s : %s', get_taxonomy($tax->taxonomy)->label, $tax->name);
+        $part = sprintf('%s : %s', get_taxonomy($term->taxonomy)->label, $term->name);
 
         return $part;
     }
@@ -124,7 +122,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste des articles d'actualités (blog)
      *
-     * @return array
+     * @return string
      */
     public function currentHome()
     {
@@ -138,7 +136,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page de contenu seul (is_attachment|is_single|is_page)
      *
-     * @return array
+     * @return string
      */
     public function currentPost()
     {
@@ -150,7 +148,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de contenus relatifs à une catégorie
      *
-     * @return array
+     * @return string
      */
     public function currentCategory()
     {
@@ -167,7 +165,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de contenus seul relatifs à un mot-clef
      *
-     * @return array
+     * @return string
      */
     public function currentTag()
     {
@@ -184,7 +182,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de contenus relatifs à un auteur
      *
-     * @return array
+     * @return string
      */
     public function currentAuthor()
     {
@@ -198,7 +196,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de contenus relatifs à une date
      *
-     * @return array
+     * @return string
      */
     public function currentDate()
     {
@@ -216,7 +214,7 @@ class WpQueryPart
     /**
      * Récupération de l'élèment lors de l'affichage d'une page liste de contenus
      *
-     * @return array
+     * @return string
      */
     public function currentArchive()
     {

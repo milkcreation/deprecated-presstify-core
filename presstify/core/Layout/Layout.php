@@ -2,14 +2,16 @@
 
 namespace tiFy\Core\Layout;
 
-class Layout extends \tiFy\App\Core
-{
-    /**
-     * Liste des noms de qualification des controleurs d'affichage déclarés
-     * @var array
-     */
-    private static $Containers = [];
+use tiFy\App\Core;
 
+/**
+ * @method \tiFy\Components\Layouts\Breadcrumb\Breadcrumb Breadcrumb(array $attrs = [])
+ * @method \tiFy\Components\Layouts\MetaTitle\MetaTitle MetaTitle(array $attrs = [])
+ * @method \tiFy\Components\Layouts\Notice\Notice Notice(array $attrs = [])
+ * @method \tiFy\Components\Layouts\Tag\Tag Tag(array $attrs = [])
+ */
+final class Layout extends Core
+{
     /**
      * CONSTRUCTEUR
      *
@@ -20,19 +22,16 @@ class Layout extends \tiFy\App\Core
         parent::__construct();
 
         // Déclaration des controleurs d'affichage natifs
-        foreach(glob(self::tFyAppDirname() . '/*/', GLOB_ONLYDIR) as $filename) :
+        foreach(glob($this->appAbsDir() . '/components/Layouts/*/', GLOB_ONLYDIR) as $filename) :
             $name = basename($filename);
 
-            self::register($name, "tiFy\\Core\\Layout\\{$name}\\{$name}");
+            self::register($name, "tiFy\\Components\\Layouts\\{$name}\\{$name}::make");
         endforeach;
 
         // Déclaration des événements
         $this->appAddAction('init');
     }
 
-    /**
-     * DECLENCHEURS
-     */
     /**
      * Initialisation globale
      *
@@ -42,41 +41,21 @@ class Layout extends \tiFy\App\Core
     {
         // Déclaration des controleurs d'affichage personnalisés
         do_action('tify_layout_register');
-
-        // Initialisation de la déclaration des layout
-        foreach (self::$Containers as $name) :
-            if(!self::has($name)) :
-                continue;
-            endif;
-
-            $callable = self::get($name);
-
-            if (!is_object($callable)) :
-                continue;
-            endif;
-
-            if (!method_exists($callable, 'init')) :
-                continue;
-            endif;
-
-            $callable->init();
-        endforeach;
     }
 
-    /**
-     * CONTROLEURS
-     */
     /**
      * Déclaration d'un controleur d'affichage
      *
      * @param string $name Nom de qualification du controleur d'affichage
      * @param mixed $callable classe ou méthode ou fonction de rappel
      *
-     * @return null|callable|\tiFy\Core\Layout\Factory
+     * @return null|callable|\tiFy\Core\Layout\AbstractFactory
      */
-    final public static function register($name, $callable)
+    public static function register($name, $callable)
     {
-        if (is_callable($callable)) :
+        if (self::has($name)) :
+            return null;
+        elseif (is_callable($callable)) :
             self::tFyAppAddContainer($name, $callable);
         elseif (class_exists($callable)) :
             self::tFyAppAddContainer($name, $callable);
@@ -84,7 +63,9 @@ class Layout extends \tiFy\App\Core
             return null;
         endif;
 
-        array_push(self::$Containers, $name);
+        $return = self::get($name);
+
+        return $return;
     }
 
     /**
@@ -94,7 +75,7 @@ class Layout extends \tiFy\App\Core
      *
      * @return bool
      */
-    final public static function has($name)
+    public static function has($name)
     {
         return self::tFyAppHasContainer($name);
     }
@@ -104,13 +85,15 @@ class Layout extends \tiFy\App\Core
      *
      * @param string $name Nom de qualification du controleur d'affichage
      *
-     * @return mixed
+     * @return mixed|\tiFy\Core\Layout\AbstractFactory
      */
-    final public static function get($name, $attrs = [])
+    public static function get($name)
     {
         if (self::has($name)) :
-            return self::tFyAppGetContainer($name, $attrs);
+            return self::tFyAppGetContainer($name);
         endif;
+
+        return null;
     }
 
     /**
@@ -125,53 +108,30 @@ class Layout extends \tiFy\App\Core
      *
      * @return null|callable
      */
-    final public static function __callStatic($name, $arguments)
+    public static function __callStatic($name, $arguments)
     {
-        if(!self::has($name)) :
+        if(!$callable = self::get($name)) :
             return null;
         endif;
 
-        return self::get($name, $arguments);
-    }
-
-    /**
-     * Affichage d'un controleur
-     *
-     * @param string $name Nom de qualification du controleur d'affichage
-     * @param array $args Liste des attributs de configuration
-     *
-     * @return null|callable
-     */
-    final public static function display($name, $args = [])
-    {
-        if(!self::has($name)) :
-            return null;
-        endif;
-
-        echo self::get($name, [$args]);
+        return call_user_func_array($callable, $arguments);
     }
 
     /**
      * Mise en file des scripts d'un controleur
      *
-     * @param string $id Identifiant de qualification du controleur d'affichage
+     * @param string $name Identifiant de qualification du controleur d'affichage
      * @param array $args Liste des attributs de configuration
      *
      * @return null|callable
      */
-    final public static function enqueue_scripts($name, $args = [])
+    public static function enqueue($name, $args = [])
     {
-        if(!self::has($name)) :
+        if(!$callable = self::get($name)) :
             return null;
         endif;
 
-        $callable = self::get($name);
-
-        if (!is_object($callable)) :
-            return null;
-        endif;
-
-        if (!method_exists($callable, 'enqueue_scripts')) :
+        if (!is_object($callable) || !method_exists($callable, 'enqueue_scripts')) :
             return null;
         endif;
 

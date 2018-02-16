@@ -1160,7 +1160,7 @@ final class Apps
         $_subdir = $subdir ? '/' . $subdir : '';
 
         // Chemins vers le repertoire de stockage des ressources commplémentaires (assets)
-        if (in_array($attrs['Type'], ['Core', 'Components','Set', 'Plugins']) || $attrs['Parent']) :
+        if (in_array($attrs['Type'], ['Core', 'Components', 'Set', 'Plugins']) || $attrs['Parent']) :
             $OverridePath['assets'] = [
                 'path'    => tiFy::$AbsDir . '/bin/assets' . $_subdir,
                 'url'     => tiFy::$AbsUrl . '/bin/assets' . $_subdir,
@@ -1170,15 +1170,14 @@ final class Apps
                 'error'   => false
             ];
         else :
+            $subdir = 'assets';
             $OverridePath['assets'] = [
-                'path'    => $attrs['Dirname'],
-                'url'     => $attrs['Url'],
-                'subdir'  => '',
+                'path'    => $attrs['Dirname'] . "/{$subdir}",
+                'url'     => $attrs['Url'] . "/{$subdir}",
+                'subdir'  => $subdir,
                 'basedir' => $attrs['Dirname'],
                 'baseurl' => $attrs['Url'],
-                'error'   => new \WP_Error('OverridePathAssetsUnavailable',
-                    __('Seules les composants natifs (core), dynamiques (components), les extensions (plugins) et les jeux de fonctionnalités (set) et leurs héritiers sont en mesure de charger des assets',
-                        'tify'))
+                'error'   => false
             ];
         endif;
 

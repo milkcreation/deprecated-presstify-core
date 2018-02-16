@@ -11,6 +11,9 @@ namespace tiFy;
 
 use \tiFy\Lib\File;
 use Symfony\Component\HttpFoundation\Request;
+use League\BooBoo\BooBoo;
+use League\BooBoo\Formatter\HtmlFormatter;
+use League\BooBoo\Handler\CallableHandler;
 use League\Container\Container;
 
 final class tiFy
@@ -105,7 +108,15 @@ final class tiFy
         if (file_exists(tiFy::$AbsDir .'/vendor/autoload.php')) :
             require_once tiFy::$AbsDir .'/vendor/autoload.php';
         endif;
-        
+
+        // Affichage des erreurs
+        /*$formatter = new HtmlFormatter;
+        $handler = new CallableHandler([$this, 'displayError']);
+        $formatter->setErrorLimit(E_ALL);
+
+        $error_handler = new BooBoo([$formatter], [$handler]);
+        $error_handler->register();*/
+
         // Instanciation des fonctions d'aides au développement
         self::classLoad('tiFy\Helpers', __DIR__ .'/helpers');
         
@@ -130,10 +141,14 @@ final class tiFy
         // Instanciation des applicatifs
         new Apps;
     }
-        
-    /**
-     * CONTROLEURS
-     */
+
+    public function displayError($e)
+    {
+        echo $e->getMessage();
+
+        exit;
+    }
+
     /**
      * Formatage lower_name d'une chaine de caratère
      * Converti une chaine de caractère CamelCase en snake_case
