@@ -19,7 +19,10 @@ class Handler extends \tiFy\App\FactoryConstructor
      */
     final public function template_redirect()
     {
-        // Bypass
+        /**
+         * Bypass
+         * @var \tiFy\Core\Route\Route $route
+         */
         if (!$route = $this->appGetContainer('tiFy\Core\Route\Route')) :
             return;
         endif;
@@ -27,15 +30,10 @@ class Handler extends \tiFy\App\FactoryConstructor
             return;
         endif;
 
-        // Récupération des arguments
-        $args = self::tFyAppGetRequestVar('tify_route_args', [], 'ATTRIBUTES');
-
         // Récupération de la sortie
         $body = '';
         if ($this->return instanceof \tiFy\Core\Route\View) :
-            ob_start();
-            $this->return->render($args);
-            $body = ob_get_clean();
+            $body = $this->return->render();
         elseif(is_string($this->return)) :
             $body = $this->return;
         endif;

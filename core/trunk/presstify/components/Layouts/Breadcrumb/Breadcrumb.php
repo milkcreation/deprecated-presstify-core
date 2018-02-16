@@ -3,18 +3,20 @@
  * @name Breadcrumb
  * @desc Controleur d'affichage de fil d'ariane
  * @package presstiFy
- * @namespace \tiFy\Core\Layout\Breadcrumb
+ * @namespace \tiFy\Components\Layouts\Breadcrumb
  * @version 1.1
- * @subpackage Core
+ * @subpackage Components
  * @since 1.2.571
  *
  * @author Jordy Manner <jordy@tigreblanc.fr>
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Layout\Breadcrumb;
+namespace tiFy\Components\Layouts\Breadcrumb;
 
-class Breadcrumb extends \tiFy\Core\Layout\Factory
+use tiFy\Core\Layout\AbstractFactory;
+
+class Breadcrumb extends AbstractFactory
 {
     /**
      * Liste des éléments contenus dans le fil d'ariane
@@ -37,7 +39,7 @@ class Breadcrumb extends \tiFy\Core\Layout\Factory
     {
         // Déclaration des scripts
         \wp_register_style(
-            'tiFyCore-layoutBreadcrumb',
+            'tiFyLayoutBreadcrumb',
             self::tFyAppAssetsUrl('Breadcrumb.css', get_class()),
             [],
             180122
@@ -51,30 +53,7 @@ class Breadcrumb extends \tiFy\Core\Layout\Factory
      */
     final public function enqueue_scripts()
     {
-        \wp_enqueue_style('tiFyCore-layoutBreadcrumb');
-    }
-
-    /**
-     * Traitement des attributs de configuration
-     *
-     * @param array $attrs Liste des attributs de configuration
-     *
-     * @return array
-     */
-    final protected function parseAttrs($attrs = [])
-    {
-        $defaults = [
-            'container_id'    => 'tiFyCore-layoutBreadcrumb--' . $this->getIndex(),
-            'container_class' => '',
-            'parts'           => [],
-        ];
-        $attrs = array_merge($defaults, $attrs);
-
-        if ($parts = $this->getAttr('parts', [])) :
-            self::$Parts = $parts;
-        endif;
-
-        return $attrs;
+        \wp_enqueue_style('tiFyLayoutBreadcrumb');
     }
 
     /**
@@ -161,13 +140,13 @@ class Breadcrumb extends \tiFy\Core\Layout\Factory
         endif;
 
         // Définition des arguments de template
-        $container_id = $this->getAttr('container_id');
-        $container_class = $this->getAttr('container_class', '');
+        $container_id = $this->get('container_id');
+        $container_class = $this->get('container_class', '');
         $parts = $this->getPartList();
 
         // Récupération du template d'affichage
         ob_start();
-        self::tFyAppGetTemplatePart('breadcrumb', null, compact('container_id', 'container_class', 'parts'));
+        self::tFyAppGetTemplatePart('breadcrumb', $this->getId(), compact('container_id', 'container_class', 'parts'));
 
         return ob_get_clean();
     }

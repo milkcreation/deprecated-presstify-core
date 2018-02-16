@@ -29,9 +29,6 @@ namespace tiFy\Core\Control\Repeater;
 class Repeater extends \tiFy\Core\Control\Factory
 {
     /**
-     * DECLENCHEURS
-     */
-    /**
      * Initialisation globale
      *
      * @return void
@@ -91,7 +88,7 @@ class Repeater extends \tiFy\Core\Control\Factory
     {
         check_ajax_referer('tiFyControlRepeater');
 
-        $index = $_POST['index'];
+        $index = self::parseIndex($_POST['index']);
         $value = $_POST['value'];
         $attrs = $_POST['attrs'];
 
@@ -128,9 +125,9 @@ class Repeater extends \tiFy\Core\Control\Factory
             'class'            => '',
             // Nom de la valeur a enregistrer
             'name'             => 'tiFyControlRepeater-' . $this->getId(),
-            // Valeur string | array indexé de liste des valeurs  
+            // Valeur string | array indexé de liste des valeurs
             'value'            => '',
-            // Valeur par défaut string | array à une dimension 
+            // Valeur par défaut string | array à une dimension
             'default'          => '',
             // Action de récupération via ajax
             'ajax_action'      => 'tify_control_repeater_item',
@@ -163,10 +160,13 @@ class Repeater extends \tiFy\Core\Control\Factory
         $output .= "\t<ul class=\"tiFyControlRepeater-Items" . ($order ? ' tiFyControlRepeater-Items--sortable' : '') . "\">";
         if (!empty($value)) :
             foreach ((array)$value as $i => $v) :
+                $i = self::parseIndex($i);
+
                 $v = (!is_array($v)) ? ($v ? $v : $default) : wp_parse_args($v, (array)$default);
                 ob_start();
-                $parsed_attrs['item_cb'] ? call_user_func($parsed_attrs['item_cb'], $i, $v,
-                    $parsed_attrs) : self::item($i, $v, $parsed_attrs);
+                $parsed_attrs['item_cb']
+                    ? call_user_func($parsed_attrs['item_cb'], $i, $v, $parsed_attrs)
+                    : self::item($i, $v, $parsed_attrs);
                 $item = ob_get_clean();
 
                 $output .= self::itemWrap($item, $i, $v, $parsed_attrs);
@@ -187,13 +187,27 @@ class Repeater extends \tiFy\Core\Control\Factory
     }
 
     /**
+     * Génération d'un indice aléatoire
+     *
+     * @return string
+     */
+    public static function parseIndex($index)
+    {
+        if (!is_numeric($index)) :
+            return $index;
+        endif;
+
+        return uniqid();
+    }
+
+    /**
      * Champs d'édition d'un élément
      *
      * @return string
      */
     public static function item($index, $value, $attrs = [])
     {
-?><input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>]" value="<?php echo $value; ?>" class="widefat"/><?php
+        ?><input type="text" name="<?php echo $attrs['name']; ?>[<?php echo $index; ?>]" value="<?php echo $value; ?>" class="widefat"/><?php
     }
 
     /**

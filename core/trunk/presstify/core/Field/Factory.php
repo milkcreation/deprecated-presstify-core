@@ -225,7 +225,7 @@ class Factory extends \tiFy\App\FactoryConstructor
             if (!isset($option['label'])) :
                 $option['label'] = $option['value'];
             endif;
-            $option['label'] = $option['label'];
+
             $_options[] = $option;
         endforeach;
         $args['options'] = $_options;
@@ -325,7 +325,7 @@ class Factory extends \tiFy\App\FactoryConstructor
     final public function getHtmlAttrs()
     {
         if (!$attrs = $this->getAttr('attrs')) :
-            return;
+            return [];
         endif;
 
         $html_attrs = [];
@@ -368,6 +368,20 @@ class Factory extends \tiFy\App\FactoryConstructor
     }
 
     /**
+     * Récupération des attributs des options de liste de sélection
+     *
+     * @return string[]
+     */
+    final public function getOptionValues()
+    {
+        if (!$options = $this->getOptionList()) :
+            return [];
+        endif;
+
+        return array_column($options, 'value');
+    }
+
+    /**
      * Récupération des attributs d'une option de liste de sélection selon sa valeur
      *
      * @param mixed $value Valeur de l'option à récupérer
@@ -377,7 +391,7 @@ class Factory extends \tiFy\App\FactoryConstructor
     final public function getOption($value)
     {
         if (!$options = $this->getOptionList()) :
-            return;
+            return null;
         endif;
 
         foreach($options as $option) :

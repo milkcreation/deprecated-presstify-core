@@ -49,7 +49,7 @@ Text::display([]);
 
 ```php
 <?php
-tify_field_ajax_autocomplete([]);
+tify_field_select_js([]);
 ?>
 ```
 
@@ -151,14 +151,6 @@ tify_field_modal_trigger();
 ## Liste des controleurs d'affichage natifs
 
 ### Natifs 
-
-#### AjaxAutocomplete
-
-Selecteur d'éléments via un champ de saisie avec autocompletion
-
-#### AjaxSelect
-
-Liste de selection Ajax
 
 #### Button
 

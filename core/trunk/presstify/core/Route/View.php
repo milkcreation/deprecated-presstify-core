@@ -2,10 +2,9 @@
 
 namespace tiFy\Core\Route;
 
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
+use tiFy\App;
 
-class View extends \tiFy\App
+class View extends App
 {
     /**
      * Chemin vers le template d'affichage
@@ -14,15 +13,34 @@ class View extends \tiFy\App
     private $Path = '';
 
     /**
+     * Liste des arguments passés à la vue
+     * @var array
+     */
+    private $Args = [];
+
+    /**
+     * Traitement de la classe comme une chaîne de caractère
+     * @internal Affichage du rendu
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->render();
+    }
+
+    /**
      * Déclaration
      *
      * @param $name
      *
      * @return self
      */
-    public static function register($path)
+    public static function register($path, $args = [])
     {
-        return (new self)->setPath($path);
+        return (new self)
+            ->path($path)
+            ->with($args);
     }
 
     /**
@@ -32,7 +50,7 @@ class View extends \tiFy\App
      *
      * @return $this
      */
-    private function setPath($path)
+    private function path($path)
     {
         $this->Path = $path;
 
@@ -40,14 +58,32 @@ class View extends \tiFy\App
     }
 
     /**
-     * Affichage du gabarit
+     * Définition du chemin
      *
-     * @param array $args
+     * @param $path
+     *
+     * @return $this
+     */
+    private function with($args)
+    {
+        $this->Args = array_merge(
+            $args,
+            $this->Args
+        );
+
+        return $this;
+    }
+
+
+    /**
+     * Affichage du gabarit
      *
      * @return string
      */
-    public function render($args = [])
+    public function render()
     {
-        self::tFyAppGetTemplatePart($this->Path, null, $args);
+        ob_start();
+        self::tFyAppGetTemplatePart($this->Path, null, $this->Args);
+        return ob_get_clean();
     }
 }

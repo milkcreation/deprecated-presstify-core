@@ -1,7 +1,7 @@
 jQuery(document).ready(function($){
 
     // Récupération de la liste des utilisateurs liés
-    $(document).on('tify_select.add', '.tiFyTakeOverSwitcherForm-selectField--role', function(e){
+    $(document).on('tifyselectadd', '.tiFyTakeOverSwitcherForm-selectField--role', function(e){
         // Bypass
         if(!$(this).val()) {
             return;
@@ -14,7 +14,7 @@ jQuery(document).ready(function($){
             o = $.parseJSON(decodeURIComponent($form.data('options')));
 
         // Désactivation du champs de selection des utilisateurs durant la requête de récupération des éléments
-        $users.tiFyFieldSelectJs('disable');
+        $users.tifyselect('disable');
 
         $.post(
             tify_ajaxurl,
@@ -26,13 +26,13 @@ jQuery(document).ready(function($){
             }
         )
             .done(function(resp){
-                $users.before(resp).tiFyFieldSelectJs('destroy');
-                $('.tiFyTakeOverSwitcherForm-selectField--user').tiFyFieldSelectJs();
+                $users.before(resp).tifyselect('destroy');
+                $('.tiFyTakeOverSwitcherForm-selectField--user').tifyselect();
             });
     });
 
     // Soumission automatique du formulaire à l'issue de la selction d'un utilisateur
-    $(document).on('tify_select.add', '.tiFyTakeOverSwitcherForm-selectField--user', function(){
+    $(document).on('tifyselectadd', '.tiFyTakeOverSwitcherForm-selectField--user', function(){
         if($(this).val() > 0) {
             $(this).closest('form').submit();
         }

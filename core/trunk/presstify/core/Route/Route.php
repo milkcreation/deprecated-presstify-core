@@ -136,13 +136,13 @@ class Route extends \tiFy\App\Core
      *
      * @param string $name Identifiant de qualification de la route
      *
-     * @return \League\Route\Route
+     * @return null|\League\Route\Route
      */
     private function _set($name)
     {
         // Bypass
         if (!isset($this->Map[$name])) :
-            return;
+            return null;
         endif;
 
         /**
@@ -266,13 +266,14 @@ class Route extends \tiFy\App\Core
      * Redirection vers une autre route
      *
      * @param string $name Identifiant de qualification de la route
+     * @param string $args Arguments passé dans l'url
      * @param int $status_code Code de redirection
      *
      * @return void
      */
-    final public static function redirect($name, $status_code = 301)
+    final public static function redirect($name, $args = [], $status_code = 301)
     {
-        if ($redirect_url = self::url($name)) :
+        if ($redirect_url = self::url($name, $args)) :
             \wp_redirect($redirect_url, $status_code);
             exit;
         endif;

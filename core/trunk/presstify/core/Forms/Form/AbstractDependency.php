@@ -41,7 +41,7 @@ abstract class AbstractDependency extends \tiFy\App
     /**
      * Récupération d'un champ selon son identifiant de qualification
      *
-     * @param $slug Identifiant de qualification
+     * @param string $slug Identifiant de qualification
      *
      * @return null|\tiFy\Core\Forms\Form\Field
      */
@@ -88,7 +88,7 @@ abstract class AbstractDependency extends \tiFy\App
     {
         // Bypass
         if (!$notices = $this->getNotices()) :
-            return;
+            return false;
         endif;
 
         return $notices->has('error');
@@ -106,7 +106,7 @@ abstract class AbstractDependency extends \tiFy\App
     {
         // Bypass
         if (!$notices = $this->getNotices()) :
-            return;
+            return null;
         endif;
 
         return $notices->add('error', $message, $data);
@@ -117,13 +117,13 @@ abstract class AbstractDependency extends \tiFy\App
      *
      * @param array $args Attributs de récupération de la liste des erreurs
      *
-     * @return void
+     * @return array
      */
     public function getErrors($args = [])
     {
         // Bypass
         if (!$notices = $this->getNotices()) :
-            return;
+            return [];
         endif;
 
         return $notices->getByData('error', $args);

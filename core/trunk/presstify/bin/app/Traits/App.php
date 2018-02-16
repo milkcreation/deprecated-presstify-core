@@ -138,6 +138,26 @@ trait App
     }
 
     /**
+     * Récupération du chemin absolu de la racine de tiFy
+     *
+     * @return string
+     */
+    final public function appAbsDir()
+    {
+        return self::tFyAppAbsDir();
+    }
+
+    /**
+     * Récupération de l'url absolue de la racine de tiFy
+     *
+     * @return string
+     */
+    final public function appAbsUrl()
+    {
+        return self::tFyAppAbsUrl();
+    }
+
+    /**
      * Récupération du chemin absolu vers le repertoire racine de la classe
      *
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
@@ -568,6 +588,26 @@ trait App
     final public static function tFyAppNamespace($classname = null)
     {
         return self::tFyAppAttr('Namespace', $classname);
+    }
+
+    /**
+     * Récupération du chemin absolu de la racine de tiFy
+     *
+     * @return string
+     */
+    final public static function tFyAppAbsDir()
+    {
+        return tiFy::$AbsDir;
+    }
+
+    /**
+     * Récupération de l'url absolue de la racine de tiFy
+     *
+     * @return string
+     */
+    final public function tFyAppAbsUrl()
+    {
+        return tiFy::$AbsUrl;
     }
 
     /**

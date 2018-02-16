@@ -3,18 +3,20 @@
  * @name Tag
  * @desc Affichage de balise Html
  * @package presstiFy
- * @namespace tiFy\Core\Layout\Tag\Tag
+ * @namespace tiFy\Components\Layouts\Tag\Tag
  * @version 1.1
- * @subpackage Core
+ * @subpackage Components
  * @since 1.2.535
  *
  * @author Jordy Manner <jordy@tigreblanc.fr>
  * @copyright Milkcreation
  */
 
-namespace tiFy\Core\Layout\Tag;
+namespace tiFy\Components\Layouts\Tag;
 
-class Tag extends \tiFy\Core\Layout\Factory
+use tiFy\Core\Layout\AbstractFactory;
+
+class Tag extends AbstractFactory
 {
     /**
      * Liste des attributs de la balise Html
@@ -23,12 +25,13 @@ class Tag extends \tiFy\Core\Layout\Factory
     private $TagAttrs = [];
 
     /**
-     * CONTROLEURS
-     */
-    /**
+     * Traitement des attributs de configuration
      *
+     * @param array $attrs Liste des attributs de configuration
+     *
+     * @return array
      */
-    public function parseAttrs($args = [])
+    public function parse($args = [])
     {
         // Traitement des attributs de configuration
         $defaults = [
@@ -61,9 +64,9 @@ class Tag extends \tiFy\Core\Layout\Factory
      */
     protected function display()
     {
-        $tag = $this->getAttr('tag', 'div');
+        $tag = $this->get('tag', 'div');
         $attrs = $this->TagAttrs ? ' '. implode(' ', $this->TagAttrs) : '';
-        $content = $this->getAttr('content');
+        $content = $this->get('content');
 
         ob_start();
         self::tFyAppGetTemplatePart('tag', null, compact('tag', 'attrs', 'content'));
