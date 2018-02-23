@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name Breadcrumb
  * @desc Controleur d'affichage de fil d'ariane
@@ -16,19 +17,53 @@ namespace tiFy\Components\Layouts\Breadcrumb;
 
 use tiFy\Core\Layout\AbstractFactory;
 
+/**
+ * @param array $attrs {
+ *      Liste des attributs de configuration
+ *
+ *      @var string $id Identifiant de qualification du controleur d'affichage.
+ *      @var string $container_id ID HTML du conteneur de l'élément.
+ *      @var string $container_class Classes HTML du conteneur de l'élément.
+ *      @var string[]|array[]|object[]|callable[] $parts Liste des élements du fil d'ariane.
+ * }
+ */
 class Breadcrumb extends AbstractFactory
 {
     /**
      * Liste des éléments contenus dans le fil d'ariane
      * @var array
      */
-    private static $Parts = [];
+    private $Parts = [];
 
     /**
      * Indicateur de désactivation d'affichage du fil d'ariane
      * @var bool
      */
-    private static $Disabled = false;
+    private $Disabled = false;
+
+    /**
+     * Traitement des attributs de configuration
+     *
+     * @param array $attrs Liste des attributs de configuration
+     *
+     * @return array
+     */
+    final protected function parse($attrs = [])
+    {
+        $defaults = [
+            'container_id'    => 'tiFyLayout-breadcrumb--' . $this->getIndex(),
+            'container_class' => '',
+            'parts'           => []
+        ];
+        $attrs = array_merge($defaults, $attrs);
+
+        $class = "tiFyLayout-breadcrumb tiFyLayout-breadcrumb--" . $this->getId();
+        $attrs['container_class'] = $attrs['container_class']
+            ? $class . " " . $attrs['container_class']
+            : $class;
+
+        return $attrs;
+    }
 
     /**
      * Initialisation globale
@@ -59,35 +94,74 @@ class Breadcrumb extends AbstractFactory
     /**
      * Récupération de la liste des éléments contenus dans le fil d'ariane
      *
-     * @return array
+     * @return string[]
      */
-    private function getPartList()
+    private function parsePartList()
     {
-        if (!self::$Parts) :
-            self::$Parts = (new WpQueryPart())->getList();
+        if (!$this->Parts) :
+            $this->Parts = (new WpQueryPart())->getList();
         endif;
 
-        return self::$Parts;
+        $parts = [];
+        foreach($this->Parts as $part) :
+            $parts[] = $this->parsePart($part);
+        endforeach;
+
+        return $parts;
+    }
+
+    /**
+     * Traitement d'un élément de contenu du fil d'arianne
+     *
+     * @param string|array|object|callable $part Element du fil d'ariane.
+     *
+     * @return string
+     */
+    private function parsePart($part)
+    {
+        if (is_string($part)) :
+            return $part;
+        elseif (is_object($part) && is_string((string) $part)) :
+            return (string)$part;
+        elseif (is_callable($part)) :
+
+        elseif (is_array($part)) :
+            $defaults = [
+                'class'     => '',
+                'content'   => ''
+            ];
+            $part = array_merge($defaults, $part);
+
+            return "<li class=\"{$part['class']}\">{$part['content']}</li>";
+        endif;
+
+        return '';
     }
 
     /**
      * Ajout d'un élément de contenu au fil d'arianne
      *
-     * @param array {
-     *      Liste des attributs de configuration de l'élément
-     *
-     * }
+     * @param string|array|object|callable $part Element du fil d'ariane.
      *
      * @return $this
      */
-    final public function addPart($attrs)
+    final public function addPart($part)
     {
-        $defaults = [
-            'class'     => '',
-            'content'   => ''
-        ];
+        array_push($this->Parts, $part);
 
-        self::$Parts[] = array_merge($defaults, $attrs);
+        return $this;
+    }
+
+    /**
+     * Ajout d'un élément de contenu en début de chaîne du fil d'arianne
+     *
+     * @param string|array|object|callable $part Element du fil d'ariane.
+     *
+     * @return $this
+     */
+    final public function prependPart($part)
+    {
+        array_unshift($this->Parts, $part);
 
         return $this;
     }
@@ -97,9 +171,9 @@ class Breadcrumb extends AbstractFactory
      *
      * @return $this
      */
-    public function reset()
+    public function resetParts()
     {
-        self::$Parts = [];
+        $this->Parts = [];
 
         return $this;
     }
@@ -111,7 +185,7 @@ class Breadcrumb extends AbstractFactory
      */
     public function disable()
     {
-        self::$Disabled = true;
+        $this->Disabled = true;
 
         return $this;
     }
@@ -123,7 +197,7 @@ class Breadcrumb extends AbstractFactory
      */
     public function enable()
     {
-        self::$Disabled = false;
+        $this->Disabled = false;
 
         return $this;
     }
@@ -135,18 +209,20 @@ class Breadcrumb extends AbstractFactory
      */
     final protected function display()
     {
-        if (self::$Disabled) :
+        if ($this->Disabled) :
             return '';
         endif;
 
         // Définition des arguments de template
+        $id = $this->getId();
+        $index = $this->getIndex();
         $container_id = $this->get('container_id');
         $container_class = $this->get('container_class', '');
-        $parts = $this->getPartList();
+        $parts = $this->parsePartList();
 
         // Récupération du template d'affichage
         ob_start();
-        self::tFyAppGetTemplatePart('breadcrumb', $this->getId(), compact('container_id', 'container_class', 'parts'));
+        self::tFyAppGetTemplatePart('breadcrumb', $this->getId(), compact('id', 'index', 'container_id', 'container_class', 'parts'));
 
         return ob_get_clean();
     }

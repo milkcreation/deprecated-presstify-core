@@ -23,8 +23,8 @@ class WalkerOptions extends Base
         endif;
 
         $classes = [];
-        $classes[] = 'tiFyCoreField-itemOption';
-        $classes[] = "tiFyCoreField-itemOption--depth{$depth}";
+        $classes[] = 'tiFyField-itemOption';
+        $classes[] = "tiFyField-itemOption--depth{$depth}";
         if (!empty($item['class'])) :
             $classes[] = $item['class'];
         endif;
@@ -45,7 +45,7 @@ class WalkerOptions extends Base
     {
         $attrs = $item['attrs'];
 
-        $attrs['id'] = "tiFyCoreField-itemOption--{$item['id']}";
+        $attrs['id'] = "tiFyField-itemOption--{$item['id']}";
         
         $attrs['class'] = $this->getItemClass($item, $depth, $parent);
 

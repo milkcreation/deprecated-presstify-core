@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * @name Route
+ * @desc Gestionnaire de routage de page
+ * @package presstiFy
+ * @namespace \tiFy\Core\Route
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.596
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
+
 namespace tiFy\Core\Route;
 
 use tiFy\tiFy;
@@ -64,11 +77,8 @@ class Route extends \tiFy\App\Core
         // Déclaration des événements
         $this->appAddAction('init', null, 0);
 
-        // Déclaration des fonctions d'aide à la saisie
-        $this->appAddHelper('tify_route_url', 'url');
-        $this->appAddHelper('tify_route_current', 'current');
-        $this->appAddHelper('tify_route_args', 'args');
-        $this->appAddHelper('tify_route_is', 'is');
+        // Instanciation des fonctions d'aide à la saisie
+        require_once $this->appDirname() . '/Helpers.php';
     }
 
     /**
@@ -220,7 +230,26 @@ class Route extends \tiFy\App\Core
     }
 
     /**
-     * Récupération de l'url d'une route
+     * Vérifie la correspondance du nom de qualification d'une route existante avec la valeur soumise.
+     *
+     * @param string $name Identifiant de qualification de la route à vérifier
+     *
+     * @return bool
+     */
+    final public static function exists($name)
+    {
+        /**
+         * @var \tiFy\Core\Route\Route $instance
+         */
+        if (!$instance = self::tFyAppGetContainer('tiFy\Core\Route\Route')) :
+            return false;
+        endif;
+
+        return isset($instance->Map[$name]);
+    }
+
+    /**
+     * Récupération de l'url d'une route déclarée
      *
      * @param string $name Identifiant de qualification de la route
      * @param array $replacements Arguments de remplacement
@@ -263,11 +292,11 @@ class Route extends \tiFy\App\Core
     }
 
     /**
-     * Redirection vers une autre route
+     * Redirection de page vers une route déclarée.
      *
      * @param string $name Identifiant de qualification de la route
-     * @param string $args Arguments passé dans l'url
-     * @param int $status_code Code de redirection
+     * @param array $args Liste arguments passés en variable de requête dans l'url
+     * @param int $status_code Code de redirection. @see https://fr.wikipedia.org/wiki/Liste_des_codes_HTTP
      *
      * @return void
      */
@@ -280,44 +309,44 @@ class Route extends \tiFy\App\Core
     }
 
     /**
-     * Récupération du nom de la route courante
+     * Récupération du nom de qualification de la route courante à afficher.
      *
      * @return string
      */
-    final public static function current()
+    final public static function currentName()
     {
         return (string)self::tFyAppGetRequestVar('tify_route_name', '', 'ATTRIBUTES');
     }
 
     /**
-     * Récupération des arguments de la route courante
+     * Récupération des arguments de requête passés dans la route courante.
      *
      * @return array
      */
-    final public static function args()
+    final public static function currentArgs()
     {
         return (array)self::tFyAppGetRequestVar('tify_route_args', [], 'ATTRIBUTES');
     }
 
     /**
-     * Récupération du nom de la route courante
+     * Vérifie la correspondance du nom de qualification la route courante avec la valeur soumise.
      *
-     * @param string $name Identifiant de qualification de la route
+     * @param string $name Identifiant de qualification de la route à vérifier
      *
      * @return bool
      */
-    final public static function is($name)
+    final public static function isCurrent($name)
     {
-        return ($name === self::current());
+        return ($name === self::currentName());
     }
 
     /**
-     * Vérification d'affichage courant d'une route déclarée
+     * Vérifie si la page d'affichage courante correspond à une route déclarée
      *
      * @return bool
      */
-    final public static function has()
+    final public static function hasCurrent()
     {
-        return self::current() !== '';
+        return (self::currentName() !== '');
     }
 }

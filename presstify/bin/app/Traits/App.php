@@ -140,7 +140,7 @@ trait App
     /**
      * Récupération du chemin absolu de la racine de tiFy
      *
-     * @return string
+     * @return resource
      */
     final public function appAbsDir()
     {
@@ -593,7 +593,7 @@ trait App
     /**
      * Récupération du chemin absolu de la racine de tiFy
      *
-     * @return string
+     * @return resource
      */
     final public static function tFyAppAbsDir()
     {

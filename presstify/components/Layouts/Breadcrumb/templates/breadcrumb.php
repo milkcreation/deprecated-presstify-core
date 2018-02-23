@@ -1,15 +1,13 @@
 <?php
 /**
+ * @var string $id Identifiant de qualification du controleur d'affichage
+ * @var int $index Instance d'appel du controleur d'affichage
  * @var string $container_id Id du conteneur HTML
  * @var string $container_class Classe du conteneur HTML
- * @var $parts Liste des éléments contenus dans le fil d'ariane
+ * @var array $parts Liste des éléments contenus dans le fil d'ariane
  */
 ?>
 
-<ol id="<?php echo $container_id;?>" class="tiFyCore-layoutBreadcrumb <?php echo $container_class;?>">
-    <?php foreach ($parts as $part) :?>
-    <li class="<?php echo $part['class']; ?>">
-        <?php echo $part['content']; ?>
-    </li>
-    <?php endforeach;?>
+<ol id="<?php echo $container_id;?>" class="<?php echo $container_class; ?>">
+    <?php foreach ($parts as $part) : echo $part; endforeach;?>
 </ol>

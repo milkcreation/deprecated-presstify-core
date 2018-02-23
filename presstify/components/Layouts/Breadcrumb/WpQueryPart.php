@@ -208,9 +208,9 @@ class WpQueryPart
     public function currentTax()
     {
         /**
-         * @var \WP_Taxonomy $tax Taxonomie courante
+         * @var \WP_Term $term Terme de taxonomie courante
          */
-        $tax = get_queried_object();
+        $term = get_queried_object();
 
         $part = [
             'class'   => $this->ItemWrapperClass,
@@ -220,7 +220,7 @@ class WpQueryPart
                     'attrs'   => [
                         'class' => $this->ItemContentClass
                     ],
-                    'content' => sprintf('%s : %s', get_taxonomy($tax->taxonomy)->label, $tax->name),
+                    'content' => sprintf('%s : %s', get_taxonomy($term->taxonomy)->label, $term->name),
                 ]
             )
         ];
@@ -436,7 +436,7 @@ class WpQueryPart
     /**
      * @todo Suppression des redondances current précédentes
      *
-     * @return \tiFy\Core\Layout\Tag
+     * @return \tiFy\Components\Layouts\Tag\Tag
      */
     protected function partCurrent($attrs)
     {
@@ -446,7 +446,7 @@ class WpQueryPart
     /**
      * @todo Suppression des redondances link précédentes
      *
-     * @return \tiFy\Core\Layout\Tag
+     * @return \tiFy\Components\Layouts\Tag\Tag
      */
     protected function partLink($attrs)
     {
@@ -461,7 +461,7 @@ class WpQueryPart
     protected function getAncestorsPartList()
     {
         if (is_attachment()) :
-            if ($parents = get_ancestors(get_the_ID(), get_post_type())) :
+            if ($parents = \get_ancestors(get_the_ID(), get_post_type())) :
                 if (('post' === get_post_type(reset($parents))) && ($page_for_posts = get_option('page_for_posts'))) :
                     $title = $this->getPostTitle($page_for_posts);
 
@@ -539,6 +539,7 @@ class WpQueryPart
                         )
                     ];
                 endif;
+
             // Le type de contenu autorise les pages d'archives
             elseif (($post_type_obj = get_post_type_object(get_post_type())) && $post_type_obj->has_archive) :
                 $title = $post_type_obj->labels->name;

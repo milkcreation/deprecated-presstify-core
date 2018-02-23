@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name AdminUI
  * @desc Personnalisation de l'interface d'administration de Wordpress

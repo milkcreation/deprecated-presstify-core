@@ -1301,12 +1301,12 @@ msgid "Le champ  %s n'a pas de méthode %s disponible."
 msgstr ""
 
 #: core/Field/ToggleSwitch/ToggleSwitch.php:86
-msgctxt "tiFyCoreFieldToggleSwitch"
+msgctxt "tiFyFieldToggleSwitch"
 msgid "Oui"
 msgstr ""
 
 #: core/Field/ToggleSwitch/ToggleSwitch.php:87
-msgctxt "tiFyCoreFieldToggleSwitch"
+msgctxt "tiFyFieldToggleSwitch"
 msgid "Non"
 msgstr ""
 

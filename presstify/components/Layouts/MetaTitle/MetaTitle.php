@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name MetaTitle
  * @desc Controleur d'affichage de la balise meta title de l'entête du site

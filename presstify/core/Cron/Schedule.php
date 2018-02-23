@@ -62,6 +62,9 @@ class Schedule
     {
         // Définition des paramètres
         foreach (['id', 'title', 'desc', 'timestamp', 'hook', 'recurrence', 'args', 'log'] as $attr) :
+            if (!isset($attrs[$attr])) :
+                continue;
+            endif;
             $Attr = ucfirst($attr);
             $this->{$Attr} = $attrs[$attr];
         endforeach;

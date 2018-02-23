@@ -71,7 +71,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
      */
     public function admin_enqueue_scripts()
     {
-        Field::enqueue_scripts('ToggleSwitch');
+        Field::enqueue('ToggleSwitch');
         Control::enqueue_scripts('repeater');
     }
 

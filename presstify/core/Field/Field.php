@@ -1,37 +1,46 @@
 <?php
 
+/**
+ * @name Field
+ * @desc Gestion de controleurs d'affichage
+ * @package presstiFy
+ * @namespace \tiFy\Core\Field
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.596
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
+
 namespace tiFy\Core\Field;
+
+use tiFy\App\Core;
 
 /**
  * Class Field
  * @package tiFy\Core\Field
  *
- * @method static Button(array $args)
- * @method static Checkbox(array $args)
- * @method static DatetimeJS(array $args)
- * @method static File(array $args)
- * @method static Hidden(array $args)
- * @method static Label(array $args)
- * @method static Number(array $args)
- * @method static NumberJS(array $args)
- * @method static Password(array $args)
- * @method static Radio(array $args)
- * @method static Repeater(array $args)
- * @method static Select(array $args)
- * @method static SelectJs(array $args)
- * @method static Submit(array $args)
- * @method static Text(array $args)
- * @method static Textarea(array $args)
- * @method static ToggleSwitch(array $args)
+ * @method static \tiFy\Components\Fields\Button\Button Button(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Checkbox\Checkbox Checkbox(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\DatetimeJs\DatetimeJs DatetimeJs(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\File\File File(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Hidden\Hidden Hidden(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Label\Label Label(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Number\Number Number(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\NumberJs\NumberJs NumberJs(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Password\Password Password(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Radio\Radio Radio(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Repeater\Repeater Repeater(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Select\Select Select(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\SelectJs\SelectJs SelectJs(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Submit\Submit Submit(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Text\Text Text(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\Textarea\Textarea Textarea(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Fields\ToggleSwitch\ToggleSwitch ToggleSwitch(string $id = null, array $attrs = [])
  */
-class Field extends \tiFy\App\Core
+class Field extends Core
 {
-    /**
-     * Liste des classes ou méthodes ou fonctions de rappel des controleurs de champs déclarés
-     * @var array
-     */
-    private static $Factory = [];
-
     /**
      * CONSTRUCTEUR
      *
@@ -41,23 +50,19 @@ class Field extends \tiFy\App\Core
     {
         parent::__construct();
 
-        // Déclaration des champs
-        foreach (glob(self::tFyAppDirname() . '/*', GLOB_ONLYDIR) as $filename) :
-            $id = basename($filename);
+        // Déclaration des controleurs d'affichage natifs
+        foreach(glob($this->appAbsDir() . '/components/Fields/*/', GLOB_ONLYDIR) as $filename) :
+            $name = basename($filename);
 
-            self::register(
-                $id,
-                "tiFy\\Core\\Field\\{$id}\\{$id}"
-            );
+            self::register($name, "tiFy\\Components\\Fields\\{$name}\\{$name}::make");
         endforeach;
 
-        // Déclaration des événement de déclenchement
-        $this->tFyAppAddAction('init');
+        require_once $this->appAbsDir() . '/components/Fields/Helpers.php';
+
+        // Déclaration des événements
+        $this->appAddAction('init');
     }
 
-    /**
-     * DECLENCHEURS
-     */
     /**
      * Initialisation globale
      *
@@ -65,137 +70,114 @@ class Field extends \tiFy\App\Core
      */
     public function init()
     {
+        // Déclaration des champs personnalisés
         do_action('tify_field_register');
-
-        // Auto-chargement de l'initialisation globale des champs
-        foreach (static::$Factory as $id => $instance) :
-            if (!$classname = get_class($instance)) :
-                continue;
-            endif;
-
-            // Définition des classes d'aide à la saisie
-            $_id = join('_', array_map('lcfirst', preg_split('#(?=[A-Z])#', $id)));
-            $instance->addIncreaseHelper('tify_field' . $_id, 'display');
-
-            if (is_callable([$classname, 'init'])) :
-                call_user_func([$classname, 'init']);
-            endif;
-        endforeach;
     }
 
     /**
-     * CONTROLEURS
-     */
-    /**
-     * Appel de l'affichage d'un contrôleur de champ
+     * Déclaration d'un controleur d'affichage
      *
-     * @param string $id Identifiant de qualification du contrôleur de champ
+     * @param string $name Nom de qualification du controleur d'affichage
+     * @param mixed $callable classe ou méthode ou fonction de rappel
+     *
+     * @return null|callable|\tiFy\Core\Layout\AbstractFactory
+     */
+    public static function register($name, $callable)
+    {
+        if (self::has($name)) :
+            return null;
+        elseif (is_callable($callable)) :
+            self::tFyAppAddContainer("tify.field.{$name}", $callable);
+        elseif (class_exists($callable)) :
+            self::tFyAppAddContainer("tify.field.{$name}", $callable);
+        else :
+            return null;
+        endif;
+
+        $return = self::get($name);
+
+        return $return;
+    }
+
+    /**
+     * Vérification d'existance d'un controleur d'affichage
+     *
+     * @param string $name Nom de qualification du controleur d'affichage
+     *
+     * @return bool
+     */
+    public static function has($name)
+    {
+        return self::tFyAppHasContainer("tify.field.{$name}");
+    }
+
+    /**
+     * Récupération d'un controleur d'affichage
+     *
+     * @param string $name Nom de qualification du controleur d'affichage
+     *
+     * @return mixed|\tiFy\Core\Layout\AbstractFactory
+     */
+    public static function get($name)
+    {
+        if (self::has($name)) :
+            return self::tFyAppGetContainer("tify.field.{$name}");
+        endif;
+
+        return null;
+    }
+
+    /**
+     * Affichage ou récupération du contenu d'un controleur natif
+     *
+     * @param string $name Nom de qualification du controleur d'affichage
      * @param array $args {
      *      Liste des attributs de configuration
      *
      *      @var array $attrs Attributs de configuration du champ
      *      @var bool $echo Activation de l'affichage du champ
      *
-     * return null|callable
+     * @return null|callable
      */
-    final public static function __callStatic($id, $args = [])
+    public static function __callStatic($name, $arguments)
     {
-        if (!isset(static::$Factory[$id])) :
-            return trigger_error(sprintf(__('Le champ %s n\'est pas disponible.', 'tify'), $id));
-        elseif ($classname = get_class(static::$Factory[$id])) :
-            $callable = [$classname, 'display'];
-        else :
-            $callable = static::$Factory[$id];
-        endif;
-        if (!is_callable($callable)) :
-            return trigger_error(sprintf(__('La méthode d\'affichage du champ %s ne peut être appelée.', 'tify'), $id));
+        if(!$callable = self::get($name)) :
+            return null;
         endif;
 
-        $echo = isset($args[1]) ? $args[1] : false;
-        $attrs = reset($args);
-
-        if ($echo) :
-            call_user_func_array($callable, compact('attrs'));
-        else :
-            ob_start();
-            call_user_func_array($callable, compact('attrs'));
-            return ob_get_clean();
-        endif;
+        return call_user_func_array($callable, $arguments);
     }
 
     /**
-     * Déclaration d'un champs
+     * Mise en file des scripts d'un controleur
      *
-     * @param string Identifiant de qualification du champ
-     * @param string classes ou méthodes ou fonctions de rappel
-     *
-     * @return void
-     */
-    final public static function register($id, $callback)
-    {
-        if (class_exists($callback)) :
-            return self::$Factory[$id] = new $callback;
-        else :
-            return self::$Factory[$id] = (string)$callback;
-        endif;
-    }
-
-    /**
-     * Appel d'une méthode helper de champ
-     *
-     * @param string $id Identifiant de qualification du controleur de champ
-     * @param string $method Nom de qualification de la méthode à appeler
-     *
-     * @return static
-     */
-    final public static function call($id, $method)
-    {
-        $id = join('', array_map('ucfirst', preg_split('#_#', $id)));
-
-        $classname = get_class(static::$Factory[$id]);
-
-        if (!isset(static::$Factory[$id])) :
-            return trigger_error(sprintf(__('Le champ %s n\'est pas disponible.', 'tify'), $id));
-        elseif (!$classname && ($method !== 'display')) :
-            return trigger_error(sprintf(__('Le champ  %s n\'a pas de méthode %s disponible.', 'tify'), $id, $method));
-        elseif ($classname) :
-            $callable = [$classname, $method];
-        else :
-            $callable = static::$Factory[$id];
-        endif;
-
-        $args = array_slice(func_get_args(), 2);
-
-        if (!is_callable($callable)) :
-            return trigger_error(sprintf(__('Le champ  %s n\'a pas de méthode %s disponible.', 'tify'), $id, $method));
-        endif;
-
-        return call_user_func_array($callable, $args);
-    }
-
-    /**
-     * Affichage d'un controleur
-     *
-     * @param string $id Identifiant de qualification du champ
+     * @param string $name Identifiant de qualification du controleur d'affichage
      * @param array $args Liste des attributs de configuration
      *
-     * @return static
+     * @return null|callable
      */
-    final public static function display($id, $args = [])
+    public static function enqueue($name, $args = [])
     {
-        return self::call($id, 'display', $args, true);
+        if(!$callable = self::get($name)) :
+            return null;
+        endif;
+
+        if (!is_object($callable) || !method_exists($callable, 'enqueue_scripts')) :
+            return null;
+        endif;
+
+        return $callable->enqueue_scripts($args);
     }
 
     /**
-     * Mise en file des scripts
+     * @deprecated
      *
-     * @param string $id Identifiant de qualification du champ
-     * @param array $args Liste des attributs de configuration
+     * {@inheritdoc}
      *
-     * @return static
+     * @return null|callable
      */
-    final public static function enqueue_scripts($id, $args = [])
+    public static function enqueue_scripts($name, $args = [])
     {
-        return self::call($id, 'enqueue_scripts', $args);
+        return self::enqueue($name, $args = []);
     }
 }
