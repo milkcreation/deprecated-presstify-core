@@ -18,7 +18,7 @@ $input_text = Field::Text([]);
 <?php
 use tiFy\Core\Field\Field;
 
-Field::Text([], true);
+echo Field::Text([]);
 ?>
 ```
 
@@ -28,7 +28,7 @@ Field::Text([], true);
 <?php
 use tiFy\Core\Field\Field;
 
-Field::display('Text', [], true);
+echo Field::display('Text', []);
 ?>
 ```
 
@@ -65,7 +65,7 @@ add_action('wp_enqueue_scripts', 'my_enqueue_scripts');
 
 function my_enqueue_scripts()
 {
-    Field::enqueue_scripts('Text', []);
+    Field::enqueue('Text', []);
 }
 
 ?>
@@ -123,7 +123,7 @@ function my_enqueue_scripts()
 <?php
 use tiFy\Core\Field\Field;
 
-Field::call('Text', 'trigger', [], true);
+echo Field::call('Text', 'trigger', []);
 ?>
 ```
 

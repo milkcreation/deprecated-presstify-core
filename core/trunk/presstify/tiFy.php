@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name PresstiFy
  * @namespace tiFy
@@ -20,13 +21,13 @@ final class tiFy
 {
     /**
      * Chemin absolu vers la racine de l'environnement
-     * @var string
+     * @var resource
      */
     public static $AbsPath;
     
     /**
      * Chemin absolu vers la racine de presstiFy
-     * @var string
+     * @var resource
      */
     public static $AbsDir;
     

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name Notice
  * @desc Controleur d'affichage de message de notification
@@ -16,9 +17,22 @@ namespace tiFy\Components\Layouts\Notice;
 
 use tiFy\Core\Layout\AbstractFactory;
 
+/**
+ * @param array $attrs {
+ *      Liste des attributs de configuration
+ *
+ *      @var string $id Identifiant de qualification du controleur d'affichage.
+ *      @var string $container_id ID HTML du conteneur de l'élément.
+ *      @var string $container_class Classes HTML du conteneur de l'élément.
+ *      @var string $text Texte de notification. défaut 'Lorem ipsum dolor site amet'.
+ *      @var string $dismissible Bouton de masquage de la notification.
+ *      @var string $type Type de notification info|warning|success|error. défaut info.
+ * }
+ */
 class Notice extends AbstractFactory
 {
     /**
+
      * Initialisation globale
      *
      * @return void
@@ -55,11 +69,8 @@ class Notice extends AbstractFactory
     /**
      * Traitement des attributs de configuration
      *
-     * @param array $attrs {
-     *      Liste des attributs de configuration
+     * @param array $attrs Liste des attributs de configuration
      *
-     *
-     * }
      * @return array
      */
     final protected function parse($attrs = [])
@@ -73,7 +84,7 @@ class Notice extends AbstractFactory
         ];
         $attrs = array_merge($defaults, $attrs);
 
-        $class = "tiFyLayout-notice tiFyLayout-notice--" . strtolower($attrs['type']);
+        $class = "tiFyLayout-notice tiFyLayout-notice--" . $this->getId() . " tiFyLayout-notice--" . strtolower($attrs['type']);
         $attrs['container_class'] = $attrs['container_class']
             ? $class . " " . $attrs['container_class']
             : $class;

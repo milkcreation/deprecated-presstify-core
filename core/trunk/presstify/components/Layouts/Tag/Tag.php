@@ -16,6 +16,16 @@ namespace tiFy\Components\Layouts\Tag;
 
 use tiFy\Core\Layout\AbstractFactory;
 
+/**
+ * @param array $attrs {
+ *      Liste des attributs de configuration
+ *
+ *      @var string $id Identifiant de qualification du controleur d'affichage.
+ *      @var string $tag Balise HTML div|span|a|... défaut div.
+ *      @var array $attrs Liste des attributs de balise HTML.
+ *      @var string $content Contenu de la balise HTML.
+ * }
+ */
 class Tag extends AbstractFactory
 {
     /**
@@ -27,7 +37,7 @@ class Tag extends AbstractFactory
     /**
      * Traitement des attributs de configuration
      *
-     * @param array $attrs Liste des attributs de configuration
+     * @param array $attrs Liste des attributs de configuration de la classe
      *
      * @return array
      */
@@ -64,12 +74,15 @@ class Tag extends AbstractFactory
      */
     protected function display()
     {
+        $id = $this->getId();
+        $index = $this->getIndex();
         $tag = $this->get('tag', 'div');
-        $attrs = $this->TagAttrs ? ' '. implode(' ', $this->TagAttrs) : '';
+        $tag_attrs = $this->TagAttrs;
+        $_tag_attrs = $tag_attrs ? ' '. implode(' ', $tag_attrs) : '';
         $content = $this->get('content');
 
         ob_start();
-        self::tFyAppGetTemplatePart('tag', null, compact('tag', 'attrs', 'content'));
+        self::tFyAppGetTemplatePart('tag', $this->getId(), compact('id', 'index', 'tag', 'tag_attrs', '_tag_attrs', 'content'));
 
         return ob_get_clean();
     }

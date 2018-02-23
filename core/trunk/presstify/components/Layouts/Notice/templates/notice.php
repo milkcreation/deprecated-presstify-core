@@ -1,9 +1,11 @@
 <?php
 /**
- * @var string $container_id
- * @var string $container_class
- * @var bool|string $dismissible
- * @var string $text
+ * @var string $id Identifiant de qualification du controleur d'affichage.
+ * @var int $index Instance d'appel du controleur d'affichage.
+ * @var string $container_id ID de la balise HTML de conteneur.
+ * @var string $container_class Classe de la balise HTML de conteneur.
+ * @var bool|string $dismissible Bouton de masquage du controleur d'affichage.
+ * @var string $text Texte du message de notification.
  */
 ?>
 

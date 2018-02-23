@@ -9,6 +9,12 @@ abstract class AbstractFactory
     use TraitsApp;
 
     /**
+     * Liste des instances
+     * @var
+     */
+    private static $Instance = [];
+
+    /**
      * Indicateur d'instanciation
      * @var bool
      */
@@ -68,25 +74,58 @@ abstract class AbstractFactory
     }
 
     /**
+     * Initialisation
+     *
+     * @return self
+     */
+    final public static function make()
+    {
+        return new static();
+    }
+
+    /**
      * Instanciation
      *
+     * @param string $id Identifiant de qualification du controleur d'affichage
      * @param array Attributs de configuration
      *
      * @return $this
      */
-    final public function __invoke($attrs = [])
+    final public function __invoke($id = null, $attrs = [])
     {
-        $this->set('_index', ++$this->Index);
-        $this->set('_id', 'tiFyLayout-' . $this->appShortname() . '--' . $this->getIndex());
+        $lower_name = $this->appLowerName();
+        $instance_prefix = "tify.layout.{$lower_name}";
+
+        if (is_array($id)) :
+            $attrs = $id;
+            $id = null;
+        endif;
+
+        if (is_null($id) && isset($attrs['id'])) :
+            $id = $attrs['id'];
+        elseif (is_null($id)) :
+            $id = uniqid();
+        endif;
+
+        if (!isset(self::$Instance["{$instance_prefix}.{$id}"])) :
+            $instance = $this;
+            $this->set('index', ++$this->Index);
+            $this->set('id', $id);
+            self::$Instance["{$instance_prefix}.{$id}"] = $instance;
+        else :
+            $instance = self::$Instance["{$instance_prefix}.{$id}"];
+        endif;
 
         // Traitement des attributs de configuration
         if ($attrs = $this->parse($attrs)) :
             foreach ($attrs as $name => $value) :
-                $this->set($name, $value);
+                if (!in_array($name, ['id', 'index'])) :
+                    $this->set($name, $value);
+                endif;
             endforeach;
         endif;
 
-        return $this;
+        return $instance;
     }
 
     /**
@@ -100,14 +139,6 @@ abstract class AbstractFactory
     }
 
     /**
-     * Initialisation
-     */
-    final public static function make()
-    {
-        return new static();
-    }
-
-    /**
      * Initialisation des événements
      *
      * @return void
@@ -116,10 +147,6 @@ abstract class AbstractFactory
     {
         if (method_exists($this, 'init')) :
             $this->appAddAction('init');
-        endif;
-
-        if (file_exists($this->appDirname() . '/Helpers.php')) :
-            require_once $this->appDirname() . '/Helpers.php';
         endif;
     }
 
@@ -214,7 +241,7 @@ abstract class AbstractFactory
      */
     final public function getIndex()
     {
-        return $this->get('_index');
+        return $this->get('index');
     }
 
     /**
@@ -224,7 +251,7 @@ abstract class AbstractFactory
      */
     final public function getId()
     {
-        return $this->get('_id');
+        return $this->get('id');
     }
 
     /**

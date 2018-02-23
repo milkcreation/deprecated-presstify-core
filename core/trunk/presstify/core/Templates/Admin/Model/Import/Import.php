@@ -298,7 +298,7 @@ class   Import extends \tiFy\Core\Templates\Admin\Model\AjaxListTable\AjaxListTa
                 <tr>
                     <th><?php echo $option_field['label'];?></th>
                     <td>
-                        <?php Field::{$option_field['type']}($option_field['attrs'], true);?>
+                        <?php echo Field::{$option_field['type']}($option_field['attrs']);?>
                     </td>
                 </tr>
                 <?php endforeach;?>

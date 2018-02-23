@@ -1,14 +1,27 @@
 <?php
 
+/**
+ * @name Layout
+ * @desc Gestion de controleurs d'affichage
+ * @package presstiFy
+ * @namespace \tiFy\Core\Layout
+ * @version 1.1
+ * @subpackage Core
+ * @since 1.2.596
+ *
+ * @author Jordy Manner <jordy@tigreblanc.fr>
+ * @copyright Milkcreation
+ */
+
 namespace tiFy\Core\Layout;
 
 use tiFy\App\Core;
 
 /**
- * @method \tiFy\Components\Layouts\Breadcrumb\Breadcrumb Breadcrumb(array $attrs = [])
- * @method \tiFy\Components\Layouts\MetaTitle\MetaTitle MetaTitle(array $attrs = [])
- * @method \tiFy\Components\Layouts\Notice\Notice Notice(array $attrs = [])
- * @method \tiFy\Components\Layouts\Tag\Tag Tag(array $attrs = [])
+ * @method static \tiFy\Components\Layouts\Breadcrumb\Breadcrumb Breadcrumb(string $id = null, array $attrs = [])
+ * @method static \tiFy\Components\Layouts\MetaTitle\MetaTitle MetaTitle(string $id = null,array $attrs = [])
+ * @method static \tiFy\Components\Layouts\Notice\Notice Notice(string $id = null,array $attrs = [])
+ * @method static \tiFy\Components\Layouts\Tag\Tag Tag(string $id = null,array $attrs = [])
  */
 final class Layout extends Core
 {
@@ -27,6 +40,8 @@ final class Layout extends Core
 
             self::register($name, "tiFy\\Components\\Layouts\\{$name}\\{$name}::make");
         endforeach;
+
+        require_once $this->appAbsDir() . '/components/Layouts/Helpers.php';
 
         // Déclaration des événements
         $this->appAddAction('init');
@@ -56,9 +71,9 @@ final class Layout extends Core
         if (self::has($name)) :
             return null;
         elseif (is_callable($callable)) :
-            self::tFyAppAddContainer($name, $callable);
+            self::tFyAppAddContainer("tify.layout.{$name}", $callable);
         elseif (class_exists($callable)) :
-            self::tFyAppAddContainer($name, $callable);
+            self::tFyAppAddContainer("tify.layout.{$name}", $callable);
         else :
             return null;
         endif;
@@ -77,7 +92,7 @@ final class Layout extends Core
      */
     public static function has($name)
     {
-        return self::tFyAppHasContainer($name);
+        return self::tFyAppHasContainer("tify.layout.{$name}");
     }
 
     /**
@@ -90,7 +105,7 @@ final class Layout extends Core
     public static function get($name)
     {
         if (self::has($name)) :
-            return self::tFyAppGetContainer($name);
+            return self::tFyAppGetContainer("tify.layout.{$name}");
         endif;
 
         return null;

@@ -56,7 +56,7 @@ class SwitcherForm extends \tiFy\Core\Control\Factory
      */
     protected function enqueue_scripts()
     {
-        Field::enqueue_scripts('SelectJs');
+        Field::enqueue('SelectJs');
         \wp_enqueue_script('tify_control-take_over_switcher_form');
     }
 
