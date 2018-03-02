@@ -1,8 +1,0 @@
-/*
-	By Osvaldas Valutis, www.osvaldas.info
-	Available for use under the MIT License
-	
-	@see https://osvaldas.info/image-lightbox-responsive-touch-friendly
-	@see https://osvaldas.info/examples/image-lightbox-responsive-touch-friendly/
-*/
-#imagelightbox{position:fixed;z-index:9999;-ms-touch-action:none;touch-action:none;}
