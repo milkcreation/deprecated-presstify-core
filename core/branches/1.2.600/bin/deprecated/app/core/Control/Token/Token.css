@@ -1,0 +1,77 @@
+/* = SELECTEUR = */
+[data-tify_control='token']{
+	position:relative;
+}
+[data-tify_control='token'] .tify_control_token-wrapper::before{
+	position:absolute;
+	font-family: "dashicons";
+	content: "\f112";
+	top:50%; right:5px;
+	font-size:20px;
+	margin-top:-10px;
+	line-height:1.1;
+	color:#AAA;
+}
+[data-tify_control='token'].load .tify_control_token-wrapper::before{
+	content: "\f463";
+	margin-top:-10px;
+	 -webkit-animation: fa-spin 2s infinite linear;
+  	animation: 			fa-spin 2s infinite linear;
+}
+[data-tify_control='token'] .tify_control_token-wrapper{
+	position:relative;
+	display:inline-block;
+	font-size:14px;
+}
+[data-tify_control='token'] .tify_control_token-wrapper input.tify_control_token-plain{
+	padding-right:25px;
+	width:100%;
+}
+
+/** == Bouton de masquage == **/
+[data-tify_control='token'] .tify_control_token-unmask::before{
+	position:absolute;
+	font-family: "dashicons";
+	content: "\f530";
+	top:50%; left:5px;
+	font-size:20px;
+	margin-top:-10px;
+	line-height:1.1;
+	cursor:pointer;
+	z-index:1;
+}
+[data-tify_control='token'] .tify_control_token-unmask.active::before{
+	content: "\f177";
+}
+[data-tify_control='token'] .tify_control_token-unmask{
+	position:absolute;
+	content: "";
+	width:30px;
+	top:1px; bottom:1px; left:0;
+	background-color:#F4F4F4;
+	border:solid 1px #DDD;
+	box-shadow:0px 0px 1px 0px #ccc;
+}
+[data-tify_control='token'].maskable .tify_control_token-wrapper{
+	margin-left:30px;
+}
+@-webkit-keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}
+@keyframes fa-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+    transform: rotate(359deg);
+  }
+}

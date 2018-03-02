@@ -1,0 +1,31 @@
+[data-tify_control='repeater']{
+	position:relative;
+}
+.tiFyControlRepeater-Item{
+	position:relative;
+	border:solid 1px #E4E4E4;
+	padding:10px 25px;
+	background-color:#FFF;
+}
+.tiFyControlRepeater-Items--sortable .tiFyControlRepeater-Item::before{
+    position:absolute;
+    top:50%; left:2px;
+    display:block;
+    margin-top:-8px;
+    line-height:1;
+    
+    font-family:'dashicons';
+    content: "\f333";
+    font-size:16px;
+    color:#AAA;
+    cursor:move;
+}
+.tiFyControlRepeater-ItemPlaceholder{
+    background-color:#F9F9F9;
+    border:dashed 2px #DDD;
+    padding:8px 23px;
+    min-height:20px;
+}
+.tiFyControlRepeater-ItemPlaceholder::before{
+    display:none;
+}
