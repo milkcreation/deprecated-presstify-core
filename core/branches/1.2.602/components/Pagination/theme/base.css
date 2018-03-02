@@ -1,0 +1,23 @@
+/** Pagination**/
+.tiFyPagination{
+	width:100%;
+	text-align:center;
+}
+.tiFyPagination-Item::before,
+.tiFyPagination-Item::after{
+	display:none;
+}
+.tiFyPagination-Item{
+	float:none;
+	display:inline-block;
+	text-indent:0;
+}
+.tiFyPagination-ItemPage{
+	display:block;	
+    position: relative;
+    padding: 6px 12px;
+    text-align:center;
+}
+.tiFyPagination-ItemPage--link{	
+	text-decoration: none;
+}

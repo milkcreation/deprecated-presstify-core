@@ -1,0 +1,100 @@
+# Personnalisation de l'entrée de menu logo de l'adminbar
+admin_bar_menu_logo :
+
+# Nettoyage des entrées de menu de la barre d'administration
+## ex : [ 'wp_logo', 'about', 'wporg', 'documentation', 'support-forums', 'feedback', 'site-name', 'view-site', 'updates', 'comments', 'new-content', 'my-account', 'disable_post', 'disable_post_category', 'disable_post_tag', 'disable_comment' ]
+remove_admin_bar_menu:
+
+#-------------------------------------------------------------------------------------------------------
+# Personnalisation du texte  du pied de page de l'interface d'administration
+admin_footer_text:
+
+#-------------------------------------------------------------------------------------------------------
+# Nettoyage des entrées de menu de l'interface d'administration
+# ex: [ 'dashboard', 'posts', 'media', 'pages', 'comments', 'appearence', 'plugins', 'users', 'tools', 'settings' ]
+# alt: [ 'index.php', 'edit.php', 'upload.php', 'edit.php?post_type=page', 'edit-comments.php', 'themes.php', 'plugins.php', 'users.php', 'tools.php', 'options-general.php' ]
+remove_menu:
+
+#------------------------------------------------------------------------------------------------------- 
+# Nettoyage des entrées de menu de l'interface d'administration
+# ex: [ 'pages', 'calendar', 'archives', 'links', 'meta', 'search', 'text', 'categories', 'recent posts', 'recent comments', 'rss', 'tag cloud', 'nav menu' ]
+unregister_widget:
+
+#-------------------------------------------------------------------------------------------------------  
+# Suppression de support  
+## Suppression de support des propriétés d'articles
+## ex: [ 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'post-formats' ]
+remove_support_post:
+
+## Suppression de support des propriétés de page
+## ex: [ 'title', 'editor', 'author', 'thumbnail', 'page-attributes', 'custom-fields', 'comments', 'revisions' ]
+remove_support_page:
+
+## Suppression de support des propriétés d'un type de post personnalisé (%%custom_post_type%%)
+## ex: remove_support_%%custom_post_type%% : [ 'title', 'editor' ]
+
+#-------------------------------------------------------------------------------------------------------
+# Suppression des boîtes de saisie
+## Suppression des boîtes de saisie du tableau de bord
+## ex: [ 'recent_comments', 'incoming_links', 'plugins', 'recent_drafts', 'activity', 'primary', 'secondary' ]
+remove_dashboard_meta_box:
+
+## Suppression des boîtes de saisie des articles
+## ex: { authordiv: 'normal', categorydiv: 'side', commentstatusdiv: 'normal', commentsdiv: 'normal', formatdiv: 'normal', postcustom: 'normal', postexcerpt: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side', tagsdiv-post_tag: 'side', trackbacksdiv: 'normal' }
+remove_meta_box_post:
+
+## Suppression des boîtes de saisie des pages
+## ex: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
+remove_meta_box_page:
+
+## Suppression des boîtes de saisie d'un type de post personnalisé (%%custom_post_type%%)
+# ex: { authordiv: 'normal', commentstatusdiv: 'normal', commentsdiv: 'normal', pageparentdiv: 'side', postcustom: 'normal', postimagediv: 'normal', revisionsdiv: 'normal', slugdiv: 'normal', submitdiv: 'side' }
+# remove_meta_box_%%custom_post_type%% :
+
+#-------------------------------------------------------------------------------------------------------
+# Désactivation des interfaces commentaire
+disable_comment:              false
+
+#-------------------------------------------------------------------------------------------------------
+# Désactivation des catégories d'articles
+disable_post_category:        false
+
+#-------------------------------------------------------------------------------------------------------
+# Désactivation des etiquettes (mot-clefs) d'articles
+disable_post_tag:             false
+
+#-------------------------------------------------------------------------------------------------------
+# Désactivation de taxonomy pour un type de post personnalisé
+#unregister_taxonomy_for_%%custom_post_type%% : [ 'taxonomy1', 'taxonomy2' ]
+
+#-------------------------------------------------------------------------------------------------------
+# Désactivation des articles
+disable_post:                 false
+
+#-------------------------------------------------------------------------------------------------------
+# Mise à jour automatique du coeur de Wordpress
+# true (defaut tous ) | 'all' | [ 'dev', 'minor', 'major' ]
+# dev   : autorise la montée en version de développement (ex : 3.7-alpha-25000 -> 3.7-alpha-25678 -> 3.7-beta1 -> 3.7-beta2)  
+# minor : autorise la montée en sous version (ex : 3.7.0 -> 3.7.1 -> 3.7.2 -> 3.7.4)  
+# major : autorise la montée en version (ex : 3.7.0 -> 3.8.0 -> 3.9.1 )
+# @todo
+auto_update_core:             true
+
+# Envoi d'un mail d'alerte à l'administrateur
+# @todo
+auto_core_update_send_email:  true
+
+#-------------------------------------------------------------------------------------------------------
+# Mise à jour automatique des plugins de Wordpress
+# @todo
+auto_update_plugin:           true
+
+#-------------------------------------------------------------------------------------------------------
+# Mise à jour automatique des themes de Wordpress
+# @todo
+auto_update_theme:            true
+
+#-------------------------------------------------------------------------------------------------------
+# Mise à jour automatique des themes de Wordpress
+# @todo
+auto_update_translation:      true
