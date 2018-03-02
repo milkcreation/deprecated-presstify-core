@@ -1,0 +1,29 @@
+# @var string $hookname Identifiant de qualification de la page d'accroche d'affichage.
+hookname :    'settings_page_tify_options'
+
+# @var string $menu_slug Identifiant de qualification du menu.
+menu_slug :   'tify_options'
+
+# @var string $cap Habilitation d'accès
+cap :         'manage_options'
+
+# @var string $page_title Intitulé de la page
+page_title :  "<?php _e('Réglages des options du site', 'tify'); ?>"
+
+# @var string $menu_title
+menu_title :  "<?php _e('Options du site', 'tify'); ?>"
+
+# @var array $admin_page Attributs de configuration de la page des options
+admin_page :  []
+
+# @var array $admin_bar Attributs de configuration de la barre d'administration
+admin_bar :   []
+
+# @var array $box Attributs de configuration de la boite à onglet
+box :         []
+
+# @var array $nodes Liste des greffons
+nodes :       []
+
+# @var string $render Style d'affichage de la page (standard|metaboxes|@todo méthode personnalisée|@todo function personnalisée).
+render :     'standard'

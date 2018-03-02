@@ -1,0 +1,12 @@
+#tiFySecurityLogin
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+RewriteRule ^tiFy_login/? /wp-login.php [QSA,L]
+RewriteRule ^tiFy_logout/? /wp-login.php?action=logout [QSA,L]
+RewriteRule ^tiFy_resetpass/? /wp-login.php?action=resetpass [QSA,L]
+RewriteRule ^tiFy_lostpassword/? /wp-login.php?action=lostpassword [QSA,L]
+RewriteRule ^tiFy_register/? /wp-login.php?action=register [QSA,L]
+RewriteRule ^tiFy_postpass/? /wp-login.php?action=postpass [QSA,L]
+</IfModule>
+#!tiFySecurityLogin

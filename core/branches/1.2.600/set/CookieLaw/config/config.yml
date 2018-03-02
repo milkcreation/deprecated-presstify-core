@@ -1,0 +1,20 @@
+# @var string $text Texte de notification
+text: <?php _e( 'En poursuivant votre navigation sur ce site, vous acceptez l’utilisation de cookies pour vous proposer des services et offres adaptés à vos centres d’intérêts.', 'tify' );?>
+
+# Texte du bouton de validation
+valid_text: <?php _e('Accepter', 'tify');?>
+
+# Texte du bouton de fermeture
+close_text: <?php _e('Fermer', 'tify');?>
+
+# Texte du bouton d'affichage des règles de cookie
+rules_text: <?php _e('En savoir plus', 'tify');?>
+
+# @var \tiFy\Core\Router\Factory $router Attributs de configuration du router d'affiliation de la pages des règles de cookie
+router: true
+
+# @var bool $enqueue_scripts Activation de l'affichage sur toutes les pages du site
+display: true
+
+# @var bool $enqueue_scripts Activation de la mise en file automatique des scripts (CSS+JS) sur toutes les pages du site
+enqueue_scripts: true
