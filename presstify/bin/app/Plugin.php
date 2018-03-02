@@ -2,7 +2,9 @@
 
 namespace tiFy\App;
 
-abstract class Plugin extends \tiFy\App\Factory
+use tiFy\App\Factory;
+
+abstract class Plugin extends Factory
 {
     /**
      * Données de plugin

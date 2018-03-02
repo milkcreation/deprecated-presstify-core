@@ -69,6 +69,9 @@ class Handler extends \tiFy\App\FactoryConstructor
         // Appel du controleur de route
         $cb = $this->getAttr('cb');
 
+        // Ajout de la requête et de la réponse HTTP (PSR-7) à la liste des arguments
+        array_push($args, $request, $response);
+
         if (is_callable($cb)) :
             $this->return = call_user_func_array($cb, $args);
         elseif(class_exists($cb)) :

@@ -64,7 +64,6 @@ class Route extends \tiFy\App\Core
 
         // Définition du traitement de la requête
         $this->Container->share('tiFy.core.route.request', function () {
-
             return (new DiactorosFactory())->createRequest(tiFy::getGlobalRequest());
         });
 
@@ -167,7 +166,7 @@ class Route extends \tiFy\App\Core
         $path = ($sub = trim(basename(dirname($_SERVER['PHP_SELF'])), '/')) ? "/{$sub}/" . ltrim($path, '/') : $path;
 
         // Traitement de la méthode
-        $method = ($method === 'any') ? ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'] : $method;
+        $method = ($method === 'any') ? ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'] : array_map('strtoupper', (array)$method);
 
         $scheme = tiFy::getGlobalRequest()->getScheme();
         $host = tiFy::getGlobalRequest()->getHost();
@@ -209,6 +208,8 @@ class Route extends \tiFy\App\Core
      * @param array $attrs Attributs de configuration
      *
      * @return null|array
+     *
+     * @throws
      */
     final public static function register($name, $attrs = [])
     {
@@ -220,13 +221,14 @@ class Route extends \tiFy\App\Core
         endif;
 
         $defaults = [
-            'method' => 'any',
-            'group' => '',
-            'path' => '/',
-            'cb' => '',
+            'method'   => 'any',
+            'group'    => '',
+            'path'     => '/',
+            'cb'       => '',
             'strategy' => ''
         ];
-        $instance->Map[$name] = array_merge($defaults, $attrs);
+
+        return $instance->Map[$name] = array_merge($defaults, $attrs);
     }
 
     /**
