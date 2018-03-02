@@ -95,12 +95,11 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <th scope="row"><?php _e('Envoyer un message de confirmation de réception à l\'utilisateur', 'tify'); ?></th>
                 <td>
                 <?php
-                    Field::ToggleSwitch(
+                    echo Field::ToggleSwitch(
                         [
                             'name'    => $this->OptionNames['confirmation'],
                             'checked' => ($notification = get_option($this->OptionNames['confirmation'], 'off')) ? $notification : 'off'
-                        ],
-                        true
+                        ]
                     );
                 ?>
                 </td>
@@ -114,7 +113,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <td>
                     <div class="tify_input_email">
                     <?php
-                        Field::Text(
+                        echo Field::Text(
                             [
                                 'name'  => $this->OptionNames['sender'] . "[email]",
                                 'value' => $value['email'],
@@ -123,8 +122,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                                     'size'         => 40,
                                     'autocomplete' => 'off'
                                 ]
-                            ],
-                            true
+                            ]
                         );
                     ?>
                     </div>
@@ -135,7 +133,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                 <td>
                     <div class="tify_input_user">
                     <?php
-                        Field::Text(
+                        echo Field::Text(
                             [
                                 'name'  => $this->OptionNames['sender'] . "[name]",
                                 'value' => $value['name'],
@@ -144,8 +142,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                                     'size'         => 40,
                                     'autocomplete' => 'off'
                                 ]
-                            ],
-                            true
+                            ]
                         );
                     ?>
                     </div>
@@ -164,12 +161,11 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                     <th scope="row"><?php _e( 'Envoyer un message de notification aux administrateurs du site', 'tify' );?></th>
                     <td>
                     <?php
-                        Field::ToggleSwitch(
+                        echo Field::ToggleSwitch(
                             [
                                 'name'    => $this->OptionNames['notification'],
                                 'checked' => ($notification = get_option($this->OptionNames['notification'], 'off')) ? $notification : 'off'
-                            ],
-                            true
+                            ]
                         );
                     ?>
                     </td>
@@ -219,7 +215,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
         <td>
             <div class="tify_input_email">
             <?php
-                Field::Text(
+                echo Field::Text(
                     [
                         'name'  => "{$attrs['name']}[{$index}][email]",
                         'value' => $value['email'],
@@ -228,8 +224,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                             'size'         => 40,
                             'autocomplete' => 'off'
                         ]
-                    ],
-                    true
+                    ]
                 );
             ?>
             </div>
@@ -240,7 +235,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
         <td>
             <div class="tify_input_user">
             <?php
-                Field::Text(
+                echo Field::Text(
                     [
                         'name'  => "{$attrs['name']}[{$index}][name]",
                         'value' => $value['name'],
@@ -249,8 +244,7 @@ class MailOptions extends \tiFy\Core\Taboox\Options\Admin
                             'size'         => 40,
                             'autocomplete' => 'off'
                         ]
-                    ],
-                    true
+                    ]
                 );
             ?>
             </div>

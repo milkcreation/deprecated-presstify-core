@@ -1,9 +1,11 @@
 <?php
 namespace tiFy;
 
+use tiFy\App\Traits\App as TraitsApp;
+
 abstract class App
 {
-    use App\Traits\App;
+    use TraitsApp;
 
     /**
      * CONSTRUCTEUR

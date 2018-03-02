@@ -14,12 +14,12 @@ use tiFy\Core\Field\Field;
  */
 function tify_field_button($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Button($attrs);
+    $field = (string)Field::Button($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -35,12 +35,12 @@ function tify_field_button($attrs = [], $echo = true)
  */
 function tify_field_checkbox($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Checkbox($attrs);
+    $field = (string)Field::Checkbox($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -52,16 +52,16 @@ function tify_field_checkbox($attrs = [], $echo = true)
  * }
  * @param bool $echo Activation de l'affichage. défaut true.
  *
- * @return mixed
+ * @return string
  */
 function tify_field_datetime_js($attrs = [], $echo = true)
 {
-    $layout = (string)Field::DatetimeJs($attrs);
+    $field = (string)Field::DatetimeJs($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -77,12 +77,12 @@ function tify_field_datetime_js($attrs = [], $echo = true)
  */
 function tify_field_file($attrs = [], $echo = true)
 {
-    $layout = (string)Field::File($attrs);
+    $field = (string)Field::File($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -98,12 +98,12 @@ function tify_field_file($attrs = [], $echo = true)
  */
 function tify_field_hidden($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Hidden($attrs);
+    $field = (string)Field::Hidden($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -119,12 +119,12 @@ function tify_field_hidden($attrs = [], $echo = true)
  */
 function tify_field_label($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Label($attrs);
+    $field = (string)Field::Label($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -140,12 +140,12 @@ function tify_field_label($attrs = [], $echo = true)
  */
 function tify_field_number($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Number($attrs);
+    $field = (string)Field::Number($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -161,12 +161,12 @@ function tify_field_number($attrs = [], $echo = true)
  */
 function tify_field_number_js($attrs = [], $echo = true)
 {
-    $layout = (string)Field::NumberJs($attrs);
+    $field = (string)Field::NumberJs($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -182,12 +182,12 @@ function tify_field_number_js($attrs = [], $echo = true)
  */
 function tify_field_password($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Password($attrs);
+    $field = (string)Field::Password($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -203,12 +203,12 @@ function tify_field_password($attrs = [], $echo = true)
  */
 function tify_field_radio($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Radio($attrs);
+    $field = (string)Field::Radio($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -224,12 +224,12 @@ function tify_field_radio($attrs = [], $echo = true)
  */
 function tify_field_repeater($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Repeater($attrs);
+    $field = (string)Field::Repeater($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -245,12 +245,12 @@ function tify_field_repeater($attrs = [], $echo = true)
  */
 function tify_field_select($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Select($attrs);
+    $field = (string)Field::Select($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -266,12 +266,12 @@ function tify_field_select($attrs = [], $echo = true)
  */
 function tify_field_select_js($attrs = [], $echo = true)
 {
-    $layout = (string)Field::SelectJs($attrs);
+    $field = (string)Field::SelectJs($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -287,12 +287,12 @@ function tify_field_select_js($attrs = [], $echo = true)
  */
 function tify_field_submit($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Submit($attrs);
+    $field = (string)Field::Submit($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -308,12 +308,12 @@ function tify_field_submit($attrs = [], $echo = true)
  */
 function tify_field_text($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Text($attrs);
+    $field = (string)Field::Text($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -329,12 +329,12 @@ function tify_field_text($attrs = [], $echo = true)
  */
 function tify_field_textarea($attrs = [], $echo = true)
 {
-    $layout = (string)Field::Textarea($attrs);
+    $field = (string)Field::Textarea($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }
 
@@ -350,11 +350,11 @@ function tify_field_textarea($attrs = [], $echo = true)
  */
 function tify_field_toggle_switch($attrs = [], $echo = true)
 {
-    $layout = (string)Field::ToggleSwitch($attrs);
+    $field = (string)Field::ToggleSwitch($attrs);
 
     if ($echo) :
-        echo $layout;
+        echo $field;
     else :
-        return $layout;
+        return $field;
     endif;
 }

@@ -194,6 +194,20 @@ trait App
     }
 
     /**
+     * Récupération d'attributs de configuration de l'application
+     *
+     * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
+     * @param void|mixed $default Valeur par défaut de retour
+     * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
+     *
+     * @return mixed
+     */
+    final public function appConfig($attr = null, $default = '', $classname = null)
+    {
+        return self::tFyAppConfig($attr, $default, $classname);
+    }
+
+    /**
      * EVENEMENTS
      */
     /**
@@ -770,7 +784,7 @@ trait App
     }
 
     /**
-     * Récupération d'attributs de configuration de l'applicatif
+     * Récupération d'attributs de configuration de l'application
      *
      * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
      * @param void|mixed $default Valeur par défaut de retour

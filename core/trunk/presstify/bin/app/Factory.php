@@ -3,10 +3,11 @@
 namespace tiFy\App;
 
 use tiFy\tiFy;
+use tiFy\App;
 use tiFy\Apps;
 use tiFy\Environment\Traits\Old;
 
-abstract class Factory extends \tiFy\App
+abstract class Factory extends App
 {
     use Traits\Controllers,
         Old
