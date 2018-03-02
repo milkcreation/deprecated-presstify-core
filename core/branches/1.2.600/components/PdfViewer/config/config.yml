@@ -1,4 +1,0 @@
-# MISE EN FILE AUTOMATIQUE DES SCRIPTS
-enqueue_scripts:        true
-# ACTIVATION DE LA FONCTIONNALITÉ D'AFFICHAGE EN MODE MODAL (à déclarer en dépendance de vos scripts si enqueue_scripts est à false )
-modal:                  false
