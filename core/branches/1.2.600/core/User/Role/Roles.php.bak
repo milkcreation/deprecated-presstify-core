@@ -1,0 +1,104 @@
+<?php
+namespace tiFy\Core\Roles;
+
+class Roles extends \tiFy\App\Factory
+{
+    /* = ARGUMENTS = */
+    // Habilitations
+    public $allowed_users = [];
+    public $cap = 'manage_tify';
+
+    /* = CONSTRUCTEUR = */
+    public function __construct()
+    {
+        add_action('init', [$this, 'wp_init'], 99);
+    }
+
+    /* = ACTIONS ET FILTRES WORDPRESS = */
+    /** == Initialisation globale == **/
+    public function wp_init()
+    {
+        if (empty($this->master->params['config']['allowed_users'])) {
+            return;
+        }
+
+        // Actions et Filtres Wordpress
+        $this->allowed_users = $this->master->params['config']['allowed_users'];
+        add_action('admin_menu', [$this, 'wp_admin_menu']);
+        add_filter('map_meta_cap', [$this, 'wp_map_meta_cap'], 99, 4);
+    }
+
+    /** == Modification des habilitations == **/
+    public function wp_map_meta_cap($caps, $cap, $user_id, $args)
+    {
+        $user = get_userdata($user_id);
+        switch ($cap) :
+            default :
+                $caps = apply_filters('tify_map_meta_cap', $caps, $cap, $user_id, $args, $this);
+                break;
+            case 'activate_plugins' :
+            case 'update_core' :
+            case 'update_plugins' :
+            case 'update_themes' :
+            case 'install_plugins' :
+            case 'install_themes' :
+            case 'delete_plugins' :
+            case 'delete_themes' :
+            case 'switch_themes':
+            case 'edit_plugins' :
+            case 'edit_themes' :
+                if (!$user || !in_array($user->user_login, $this->allowed_users)) {
+                    $caps = ['do_not_allow'];
+                }
+                break;
+            case $this->cap :
+                if ($user && in_array($user->user_login, $this->allowed_users)) {
+                    $caps = ['exist'];
+                } else {
+                    $caps = ['do_not_allow'];
+                }
+                break;
+        endswitch;
+
+        return $caps;
+    }
+
+    /** == Menu d'administration == **/
+    final public function wp_admin_menu()
+    {
+        if ($this->user_can()) {
+            return;
+        }
+
+        global $submenu;
+
+        // Thèmes
+        remove_submenu_page('themes.php', 'themes.php');
+        unset($submenu['themes.php'][6]); // Customize
+
+        // Outils
+        remove_menu_page('tools.php');
+
+        // Options
+        remove_submenu_page('options-general.php', 'options-general.php');
+        remove_submenu_page('options-general.php', 'options-writing.php');
+        remove_submenu_page('options-general.php', 'options-reading.php');
+        remove_submenu_page('options-general.php', 'options-media.php');
+        remove_submenu_page('options-general.php', 'options-permalink.php');
+    }
+
+    /* == CONTRÔLEUR == */
+    /** == Vérifie si un utilisateur est habilité pour PressTiFY == **/
+    final public function user_can($user_id = 0)
+    {
+        if (!$user_id) {
+            $user_id = get_current_user_id();
+        }
+
+        if ($userdata = get_userdata($user_id)) {
+            return in_array($userdata->user_login, $this->allowed_users);
+        }
+
+        return false;
+    }
+}

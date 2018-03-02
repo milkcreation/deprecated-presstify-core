@@ -1,0 +1,35 @@
+[data-tify_control="touch_time"]{
+	font-size:16px;
+}
+[data-tify_control="touch_time"] *{
+	vertical-align:middle;
+}
+[data-tify_control="touch_time"] input[type="number"],
+[data-tify_control="touch_time"] select,
+[data-tify_control="touch_time"] [data-tify_control="dropdown"]{	
+	line-height:100%;
+	height:2em;
+	margin:0;
+	box-shadow:none;
+}
+[data-tify_control="touch_time"].invalid input[type="number"],
+[data-tify_control="touch_time"].invalid select,
+[data-tify_control="touch_time"].invalid [data-tify_control="dropdown"]{
+	border-color:red;
+}
+
+[data-tify_control="touch_time"] input[type="number"]{
+	width:3.6em;
+}
+[data-tify_control="touch_time"] select,
+[data-tify_control="touch_time"] [data-tify_control="dropdown"]{
+	width:5em;
+}
+[data-tify_control="touch_time"] input[type="number"].tify_control_touch_time-handler-yyyy{
+	width:5em;
+}
+[data-tify_control="touch_time"] i{	
+	line-height:100%;
+	height:1em;
+	margin:0;
+}

@@ -1,0 +1,17 @@
+google:
+  key:
+google-analytics:
+  key:
+google-map:
+  key:
+recaptcha:
+  sitekey:
+  secretkey:
+youtube:
+  key:
+vimeo:
+  client_id:
+  client_secret:
+facebook:
+  app_id:
+  app_secret:

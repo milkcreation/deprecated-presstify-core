@@ -1,0 +1,20 @@
+# Awesome PHP :
+https://github.com/ziadoz/awesome-php
+
+# PSR4 Class Loader :
+http://www.php-fig.org/psr/psr-4/examples/
+https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-4-autoloader-examples.md
+
+# CORE
+## ENTITY
+### ADMINVIEW : IMPORT
+https://github.com/PHPOffice/PHPExcel
+
+# COMPONENT
+## SMTP
+https://gist.github.com/franz-josef-kaiser/5840282
+
+# PLUGINS
+## WISTIFY
+http://templates.mailchimp.com/development/
+http://blog.simple-mail.fr/2014/11/07/guide-eviter-etre-considere-spam/
