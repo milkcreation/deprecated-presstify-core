@@ -1,0 +1,5 @@
+# LISTE DES MODIFICATIONS
+
+## 1.2.553
+
+- Dépréciation des Helpers ancienne génération des App
