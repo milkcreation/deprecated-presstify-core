@@ -1,0 +1,61 @@
+#tiFySet-CookieLaw {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 100px;
+    text-align: center;
+    z-index: 1500;
+    background-color: #2B2B2B;
+    color: #FFF;
+}
+
+.tiFySet-CookieLawText {
+    margin-bottom: 10px;
+}
+
+.tiFySet-CookieLawButton {
+    display: inline-block;
+    margin: 0 2px;
+    padding: 0.6em 1.2em;
+
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.tiFySet-CookieLawButton,
+.tiFySet-CookieLawButton:visited {
+    color: #FFF;
+    border: solid 1px #FFF;
+}
+
+.tiFySet-CookieLawButton:hover,
+.tiFySet-CookieLawButton:active,
+.tiFySet-CookieLawButton:focus {
+    color: #999;
+    border-color: #999;
+}
+
+.tiFySet-CookieLawCloseLink {
+    display: block;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-decoration: none;
+    color: #FFF;
+    font-size: 14px;
+    line-height: 1;
+}
+
+.tiFySet-CookieLawCloseLink:hover,
+.tiFySet-CookieLawCloseLink:active,
+.tiFySet-CookieLawCloseLink:focus,
+.tiFySet-CookieLawCloseLink:visited {
+    color: #FFF;
+}
+
+.tiFySet-CookieLawCloseLink::before {
+    content: "\f158";
+    font: normal 16px/1 dashicons;
+    vertical-align: middle;
+}
