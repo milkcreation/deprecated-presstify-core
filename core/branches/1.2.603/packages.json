@@ -1,0 +1,7 @@
+{
+    "packages": {
+        "presstify/presstify": {
+            "1.2.600": { @composer.json }
+        }
+    }
+}

@@ -1,0 +1,104 @@
+.tify_dropdown_glyphs{
+	position:relative;
+}
+.tify_dropdown_glyphs.disabled{
+	opacity:0.5;
+}
+.tify_dropdown_glyphs > .selected{
+	position:relative;
+	cursor:pointer;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+	display:inline-block;
+	background-color:#F4F4F4;
+}
+.tify_dropdown_glyphs > .selected > b{
+	display:block;
+	margin-right:15px;
+	width:55px; height:55px; line-height:55px;
+	padding:5px;
+	text-align:center;
+	font-size:45px;
+	border-right-width:1px;
+	border-right-style:solid;
+	border-right-color:#E4E4E4;
+	background-color:#FFF;
+}
+.tify_dropdown_glyphs > .selected > b > span,
+.tify_dropdown_glyphs > .selected > b > span:before{
+	font-size:45px;
+	width:45px; height:45px;
+	line-height: 1;
+	display:inline-block;
+}
+.tify_dropdown_glyphs > .selected > .caret{
+	position:absolute;
+	right:4px; top:50%;
+	margin-top:-2px;
+	border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid;
+    display: inline-block;
+    height: 0;
+    margin-left: 4px;
+    vertical-align: middle;
+    width: 0;
+    cursor:pointer;
+}
+.tify_dropdown_glyphs ul,
+.tify_dropdown_glyphs li{
+	margin:0; padding:0;
+}
+.tify_dropdown_glyphs > ul{
+	position:absolute;
+	top:auto;
+	left:0;
+	display:none;
+	z-index:99;
+	background-color:#FFF;
+}
+.tify_dropdown_glyphs.active > ul{
+	display:inherit;
+	max-height:10em;
+	border-width:1px;
+	border-style:solid;
+	border-color:#E4E4E4;
+	margin-top:-1px;
+}
+.tify_dropdown_glyphs > ul > li{
+	background-color:#FFF;
+}
+.tify_dropdown_glyphs > ul > li > ul:before,
+.tify_dropdown_glyphs > ul > li > ul:after{
+	display:table;
+	content: " ";
+}
+.tify_dropdown_glyphs > ul > li > ul:after{
+	clear:both;
+}
+.tify_dropdown_glyphs > ul > li > ul > li{
+	float:left;
+	padding:2px;
+}
+.tify_dropdown_glyphs > ul > li > ul > li > label{
+	display:block;
+	background-color:#FFF;	
+	margin:0;
+	text-align:center;
+	width:25px; height:25px;
+	line-height:25px;
+}
+.tify_dropdown_glyphs > ul > li > ul > li > label > span{
+	font-size:24px;
+}
+.tify_dropdown_glyphs > ul > li > ul > li > label:hover{
+	background-color:#F4F4F4;
+}
+.tify_dropdown_glyphs > ul > li > ul > li.checked > label{
+	background-color:DodgerBlue;
+	color:#FFF;
+}
+.tify_dropdown_glyphs > ul > li > ul > li > label > input{
+	display:none;
+}

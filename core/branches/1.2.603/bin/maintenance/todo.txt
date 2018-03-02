@@ -1,0 +1,22 @@
+# CORE
+## CONTROL
+### TEXT REMAINING
+- Permettre de gérer le nombre de lignes 
+
+# Vendor
+## ASSETS
+- Intégrer la librairie JS nude.js
+- Intégrer la librairies JS profanityfilter
+
+## UTILS
+- remplacer les occurences de hex2rgb en sscanf
+
+# PLUGINS
+## SEO
+- Gestion de la balise auteur
+- Admin Notice lorsque les robots sont désactivés
+## THEMATIZER
+- Génération automatique de contenu : 
+	@ressources
+	http://loripsum.net/ et api
+	pour les images utiliser : https://unsplash.it/
