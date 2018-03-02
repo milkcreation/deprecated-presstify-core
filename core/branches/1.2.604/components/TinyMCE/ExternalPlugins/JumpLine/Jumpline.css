@@ -1,8 +1,0 @@
-hr.linebreak,
-hr.jumpline {
-    background-color: transparent;
-    border: 0;
-    height:0.01em;
-    margin:0.5em 0;
-    clear:both;
-}
