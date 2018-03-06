@@ -3,6 +3,7 @@ namespace tiFy\App\Traits;
 
 use tiFy\tiFy;
 use tiFy\Apps;
+use Illuminate\Support\Arr;
 
 trait App
 {
@@ -786,7 +787,7 @@ trait App
     /**
      * Récupération d'attributs de configuration de l'application
      *
-     * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié
+     * @param null|string $attr Attribut de configuration, renvoie la liste complète des attributs de configuration si non qualifié.
      * @param void|mixed $default Valeur par défaut de retour
      * @param object|string $classname Instance (objet) ou Nom de la classe de l'application
      *
@@ -798,10 +799,8 @@ trait App
 
         if (!$attr) :
             return $Config;
-        elseif (isset($Config[$attr])) :
-            return $Config[$attr];
         else :
-            return $default;
+            return Arr::get($Config, $attr, $default);
         endif;
     }
 

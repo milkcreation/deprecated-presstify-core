@@ -1,0 +1,31 @@
+{
+  "packages": {
+    "presstify/framework": {
+      "1.2.600": {
+        "name": "presstify/framework",
+        "description" : "version stable du Framework PresstiFy",
+        "config": {
+          "secure-http": false,
+          "sort-packages": true,
+          "http-basic": {
+            "svn.milkcreation.fr": {
+              "username": "dump",
+              "password": "h4n7kRjE4GM5"
+            }
+          }
+        },
+        "repositories": [
+          {
+            "type": "vcs",
+            "url": "http://svn.milkcreation.fr/presstify/core/trunk/presstify",
+            "branches-path": "branches",
+            "tags-path": "tags",
+            "trunk-path": "trunk"
+          }
+        ],
+        "minimum-stability": "dev",
+        "prefer-stable": true
+      }
+    }
+  }
+}

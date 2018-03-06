@@ -140,7 +140,7 @@ final class Session extends \tiFy\App
      *
      * @param string $name Nom de qualification de la session
      *
-     * @return null|Factory
+     * @return null|object|Factory
      */
     public static function get($name)
     {
