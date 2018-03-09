@@ -26,8 +26,8 @@ class Make
     {
         $this->Db = $Db;
 
-        if (did_action('init')) :
-            add_action('init', [$this, 'init'], 100);
+        if (!did_action('init')) :
+            add_action('init', [$this, 'init'], 0);
         else :
             $this->init();
         endif;

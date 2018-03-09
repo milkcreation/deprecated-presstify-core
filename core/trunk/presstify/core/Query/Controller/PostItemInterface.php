@@ -2,27 +2,8 @@
 
 namespace tiFy\Core\Query\Controller;
 
-interface PostInterface
+interface PostItemInterface
 {
-    /**
-     * Instanciation
-     *
-     * @param string|int|\WP_Post|null $id Nom de qualification du post WP (slug, post_name)|Identifiant de qualification du post WP|Object post WP|Post WP  de la page courante
-     *
-     * @return null|self|object
-     */
-    public static function make($id = null);
-
-    /**
-     * Instanciation selon un attribut particulier
-     *
-     * @param string $key Identifiant de qualification de l'attribut. défaut name.
-     * @param string $value Valeur de l'attribut
-     *
-     * @return null|self|object
-     */
-    public static function by($key = 'name', $value);
-
     /**
      * Récupération de l'object Post Wordpress associé
      *

@@ -1,187 +1,214 @@
 <?php
+
 namespace tiFy\Core\Forms;
 
-use \tiFy\Core\Forms\Forms;
-use \tiFy\Core\Control\Control;
+use tiFy\App\Traits\App as TraitsApp;
+use tiFy\Core\Control\Control;
+use tiFy\Core\Forms\Form\Form;
+use tiFy\Core\Forms\Form\Field;
 
 class Factory
 {
+    use TraitsApp;
+
     /**
      * Classe de rappel du Formulaire
+     * @var Form
      */
-    private $Form;    
-    
+    private $Form;
+
     /**
      * CONSTRUCTEUR
-     * 
-     * @param string $id
-     * @param array $attrs
+     *
+     * @param string $id Identifiant de qualification du formulaire
+     * @param array $attrs Attribut de configuration du formulaire
+     *
+     * @return void
      */
-    public function __construct( $id, $attrs = array() )
+    public function __construct($id, $attrs = [])
     {
         // Traitement des attributs de formulaire
-        $attrs = $this->setAttrs( $attrs );
-        
-        // Instanciation
-        $this->Form = new \tiFy\Core\Forms\Form\Form( $id, $attrs );
-        
-        add_action( 'tify_form_loaded', array( $this, 'tify_form_loaded') );
+        $attrs = $this->setAttrs($attrs);
+
+        // Initialisation du formulaire associé
+        $this->Form = new Form($id, $attrs);
+
+        // Déclenchement des événements
+        $this->appAddAction('tify_form_loaded');
     }
-    
+
     /**
-     * DECLENCHEURS
-     */
-    /** 
-     * Au chargement complet des formulaires
+     * A l'issue du chargement complet de la liste des formulaires déclarés
+     *
+     * @return void
      */
     final public function tify_form_loaded()
     {
         Control::enqueue_scripts('Notices');
-        
-        Forms::setCurrent( $this );
+
+        Forms::setCurrent($this);
         $this->Form->handle()->proceed();
         Forms::resetCurrent();
     }
-    
-    /**
-     * CONTROLEURS
-     */
+
     /**
      * Récupération de la classe de rappel du formulaire
+     *
+     * @return Form
      */
     final public function getForm()
     {
         return $this->Form;
     }
-    
+
     /**
-     * Récupération d'un champs
+     * Récupération d'un champ.
+     *
+     * @param string $field_slug Identifiant de qualification du champ
+     *
+     * @return Field
      */
-    final public function getField( $field_slug )
+    final public function getField($field_slug)
     {
-        return $this->getForm()->getField( $field_slug );
+        return $this->getForm()->getField($field_slug);
     }
-    
+
     /**
-     * Execution des surcharges de méthode de rappel
+     * Execution des surcharges d'événements.
+     * @internal La méthode de surcharge de la classe on_{callback} doit exister.
+     * @see \tiFy\Core\Forms\Form\Callbacks
+     *
+     * @param string $callback Identifiant de qualification de la méthode de rappel. ex. handle_successfully.
+     *
+     * @return callable
      */
-    final public function call( $callback, $args = array() )
+    final public function call($callback, $args = [])
     {
-        if( method_exists( $this, 'on_' . $callback ) ) :
-            return call_user_func_array( array( $this, 'on_' . $callback ), $args );     
+        if (method_exists($this, 'on_' . $callback)) :
+            return call_user_func_array([$this, 'on_' . $callback], $args);
         endif;
+
+        return \__return_null();
     }
-    
+
     /**
-     * Traitement des variables de requête au moment de la soumission
+     * Traitement des variables de requête au moment de la soumission du formulaire.
+     * @internal La méthode de surcharge de la classe parse_query_var_{field_slug} doit exister.
+     *
+     * @param string $field_slug Identifiant de qualification du champ
+     * @param mixed $value Valeur du champs
+     *
+     * @return callable
      */
-    final public function parseQueryVar( $field_slug, $value )
+    final public function parseQueryVar($field_slug, $value)
     {
-        if( method_exists( $this, 'parse_query_var_' . $field_slug ) ) :
-            return call_user_func( array( $this, 'parse_query_var_' . $field_slug ), $value );
-        else :
-            return call_user_func( array( $this, 'parse_query_vars' ), $field_slug, $value );
-        endif;       
+        if (method_exists($this, 'parse_query_var_' . $field_slug)) :
+            return call_user_func([$this, 'parse_query_var_' . $field_slug], $value);
+        endif;
+
+        return call_user_func([$this, 'parse_query_vars'], $field_slug, $value);
     }
-    
+
     /**
-     * Vérification d'intégrité des variables de requêtes
-     */ 
-    final public function checkQueryVar( $field_obj, $errors )
-    {    
-        if( method_exists( $this, 'check_query_var_' . $field_obj->getSlug() ) ) :
-            return call_user_func( array( $this, 'check_query_var_' . $field_obj->getSlug() ), $errors, $field_obj );
-        else :
-            return call_user_func( array( $this, 'check_query_vars' ), $errors, $field_obj );
-        endif; 
+     * Vérification d'intégrité des variables de requête au moment de la soumission du formulaire.
+     *
+     * @param Field $field_obj Classe de rappel du champ à vérifier.
+     * @param mixed $errors Liste des erreurs relative à la vérification préalable.
+     *
+     * @return callable
+     */
+    final public function checkQueryVar($field_obj, $errors)
+    {
+        if (method_exists($this, 'check_query_var_' . $field_obj->getSlug())) :
+            return call_user_func([$this, 'check_query_var_' . $field_obj->getSlug()], $errors, $field_obj);
+        endif;
+
+        return call_user_func([$this, 'check_query_vars'], $errors, $field_obj);
     }
-    
+
     /**
      * Définition des attributs de formulaire
+     *
+     * @param array Liste des attributs de configuration du formulaire.
+     *
+     * @return array
      */
-    final public function setAttrs( $attrs )
+    private function setAttrs($attrs)
     {
-        $pieces = array( 'addons', 'buttons', 'fields', 'notices', 'options' );
-        foreach( $pieces as $piece ) :
-            if( ! empty( $attrs[$piece] ) ) :
-                ${$piece} = $attrs[$piece];                
+        /**
+         * @var array $addons
+         * @var array $buttons
+         * @var array $fields
+         * @var array $notices
+         * @var array $options
+         */
+        $pieces = ['addons', 'buttons', 'fields', 'notices', 'options'];
+
+        foreach ($pieces as $piece) :
+            if (!empty($attrs[$piece])) :
+                ${$piece} = $attrs[$piece];
             else :
-                ${$piece} = array();
+                ${$piece} = [];
             endif;
-            unset( $attrs[$piece] );
+            unset($attrs[$piece]);
         endforeach;
-                
+
         // Globaux
-        if( $matches = preg_grep( '/^set_form_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $attr = preg_replace( '/^set_form_/', '', $method );
-                if( in_array( $attr, $pieces ) )
+        if ($matches = preg_grep('/^set_form_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $attr = preg_replace('/^set_form_/', '', $method);
+                if (in_array($attr, $pieces)) {
                     continue;
-                
-                $args = isset( $attrs[$attr] ) ? $attrs[$attr] : null;                   
-                $attrs[$attr] = call_user_func( array( $this, $method ), $args );
+                }
+
+                $args = isset($attrs[$attr]) ? $attrs[$attr] : null;
+                $attrs[$attr] = call_user_func([$this, $method], $args);
             endforeach;
-        endif;        
-        
-        // Addons @todo
-        $addons = $this->setAddons( $addons );
-        
+        endif;
+
+        // Addons
+        $addons = $this->setAddons($addons);
+
         // Boutons     
-        $buttons = $this->setButtons( $buttons );
+        $buttons = $this->setButtons($buttons);
 
         // Champs
-        $fields = $this->setFields( $fields );
-        
+        $fields = $this->setFields($fields);
+
         // Notices @todo
-                
+
         // Options @todo
-        $attrs += compact( $pieces );
+
+        $attrs += compact($pieces);
 
         return $attrs;
     }
-    
-    /**
-     * Définition des boutons de formulaire
-     */
-    final public function setAddons( $items = array() )
-    {
-        $slugs = ( ! empty( $items ) ) ? \array_flip( \array_column( $items, 'slug' ) ) : array();
-        
-        if( $matches = preg_grep( '/^set_addon_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $slug = preg_replace( '/^set_addon_/', '', $method );
-                
-                if( isset( $slugs[$slug] ) ) :
-                    $k = $slugs[$slug]; $attrs = $items[$k];
-                else :
-                    $k = count( $items ); $attrs = array();
-                endif;
-                
-                $items[$slug] = call_user_func( array( $this, $method ), $attrs );
-            endforeach;
-        endif;
 
-        return $items;
-    }
-    
     /**
-     * Définition des boutons de formulaire
+     * Définition des surchages de déclaration d'addons
+     * @internal La méthode de surcharge de la declaration set_addon_{addon_id} doit exister.
+     *
+     * @param array $items Liste des addons déclarés dans les attributs de configuration.
+     *
+     * @return array
      */
-    final public function setButtons( $items = array() )
+    private function setAddons($items = [])
     {
-        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
-        
-        if( $matches = preg_grep( '/^set_button_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $slug = preg_replace( '/^set_button_/', '', $method );
-                
-                if( isset( $slugs[$slug] ) ) :
-                    $k = $slugs[$slug]; $attrs = $items[$k];
+        $slugs = (!empty($items)) ? \array_flip(\array_column($items, 'slug')) : [];
+
+        if ($matches = preg_grep('/^set_addon_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $slug = preg_replace('/^set_addon_/', '', $method);
+
+                if (isset($slugs[$slug])) :
+                    $k = $slugs[$slug];
+                    $attrs = $items[$k];
                 else :
-                    $k = count( $items ); $attrs = array();
+                    $k = count($items);
+                    $attrs = [];
                 endif;
-                
-                $items[$slug] = call_user_func( array( $this, $method ), $attrs );
+
+                $items[$slug] = call_user_func([$this, $method], $attrs);
             endforeach;
         endif;
 
@@ -189,57 +216,108 @@ class Factory
     }
 
     /**
-     * Définition des champs de formulaire
+     * Définition des surchages de déclaration de boutons d'action
+     * @internal La méthode de surcharge de la declaration set_button_{button_id} doit exister.
+     *
+     * @return array
      */
-    final public function setFields( $items = array() )
+    private function setButtons($items = [])
     {
-        $slugs = ( ! empty( $items ) ) ? array_flip( array_column( $items, 'slug' ) ) : array();
+        $slugs = (!empty($items)) ? array_flip(array_column($items, 'slug')) : [];
 
-        if( $matches = preg_grep( '/^set_field_(.*)/', get_class_methods( $this ) ) ) :
-            foreach( $matches as $method ) :
-                $slug = preg_replace( '/^set_field_/', '', $method );
-                
-                if( isset( $slugs[$slug] ) ) :
-                    $k = $slugs[$slug]; $attrs = $items[$k];
+        if ($matches = preg_grep('/^set_button_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $slug = preg_replace('/^set_button_/', '', $method);
+
+                if (isset($slugs[$slug])) :
+                    $k = $slugs[$slug];
+                    $attrs = $items[$k];
                 else :
-                    $k = count( $items ); $attrs = array();
+                    $k = count($items);
+                    $attrs = [];
                 endif;
-                
-                $items[$k] = wp_parse_args( array( 'slug' => $slug ), call_user_func( array( $this, $method ), $attrs ) );
+
+                $items[$slug] = call_user_func([$this, $method], $attrs);
             endforeach;
         endif;
-        
+
+        return $items;
+    }
+
+    /**
+     * Définition des surchages de déclaration des champs de formulaire
+     * @internal La méthode de surcharge de la declaration set_field_{field_slug} doit exister.
+     *
+     * @return array
+     */
+    private function setFields($items = [])
+    {
+        $slugs = (!empty($items)) ? array_flip(array_column($items, 'slug')) : [];
+
+        if ($matches = preg_grep('/^set_field_(.*)/', get_class_methods($this))) :
+            foreach ($matches as $method) :
+                $slug = preg_replace('/^set_field_/', '', $method);
+
+                if (isset($slugs[$slug])) :
+                    $k = $slugs[$slug];
+                    $attrs = $items[$k];
+                else :
+                    $k = count($items);
+                    $attrs = [];
+                endif;
+
+                $items[$k] = wp_parse_args(['slug' => $slug], call_user_func([$this, $method], $attrs));
+            endforeach;
+        endif;
+
         return $items;
     }
 
     /**
      * Liste des classes HTML du formulaire
+     *
+     * @param Form $form Classe de rappel du formulaire
+     * @param array $classes Liste des classes du formulaire déclarées dans la configuration.
+     *
+     * @return array
      */
-    final public function formClasses( $form, $classes )
+    final public function formClasses($form, $classes)
     {
-        return is_callable( array( $this, 'form_classes' ) ) ? 
-            call_user_func( array( $this, 'form_classes' ), $form, $classes ) :
-            $classes;
+        return is_callable([$this, 'form_classes'])
+            ? call_user_func([$this, 'form_classes'], $form, $classes)
+            : $classes;
     }
 
     /**
-     * Ouverture de l'affichage d'un champ
+     * Balise d'ouverture du conteneur d'un champ
+     * @internal La méthode de surcharge de la declaration field_open_{field_slug} doit exister.
+     *
+     * @param Field $field Classe de rappel du champ.
+     * @param string $id ID HTML de la balise du conteneur d'ouverture du champ.
+     * @param string $class Class HTML de la balise du conteneur d'ouverture du champ.
+     *
+     * @return string
      */
-    final public function fieldOpen( $field, $id, $class )
+    final public function fieldOpen($field, $id, $class)
     {
-        return is_callable( array( $this, 'field_open_'. $field->getSlug() ) ) ? 
-            call_user_func( array( $this, 'field_open_'. $field->getSlug() ), $field, $id, $class ) :
-            call_user_func( array( $this, 'fields_open' ), $field, $id, $class );
+        return is_callable([$this, 'field_open_' . $field->getSlug()])
+            ? call_user_func([$this, 'field_open_' . $field->getSlug()], $field, $id, $class)
+            : call_user_func([$this, 'fields_open'], $field, $id, $class);
     }
 
     /**
-     * Fermeture de l'affichage d'un champ
+     * Balise de fermeture du conteneur d'un champ
+     * @internal La méthode de surcharge de la declaration field_close_{field_slug} doit exister.
+     *
+     * @param Field $field Classe de rappel du champ.
+     *
+     * @return string
      */
-    final public function fieldClose( $field )
+    final public function fieldClose($field)
     {
-        return is_callable( array( $this, 'field_close_'. $field->getSlug() ) ) ? 
-            call_user_func( array( $this, 'field_close_'. $field->getSlug() ), $field ) :
-            call_user_func( array( $this, 'fields_close' ), $field );
+        return is_callable([$this, 'field_close_' . $field->getSlug()])
+            ? call_user_func([$this, 'field_close_' . $field->getSlug()], $field)
+            : call_user_func([$this, 'fields_close'], $field);
     }
 
     /**
@@ -311,10 +389,7 @@ class Factory
             call_user_func( array( $this, 'button_classes_'. $button->getID() ), $button, $classes ) :
             call_user_func( array( $this, 'buttons_classes' ), $button, $classes );
     }
-    
-    /**
-     * SURCHARGE
-     */
+
     /**
      * Traitement par défaut des variables de requête au moment de la soumission
      */

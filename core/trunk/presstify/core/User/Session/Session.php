@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @name Session
  * @desc Gestion d'enregistrement de données de session
@@ -41,7 +42,7 @@ final class Session extends \tiFy\App
         parent::__construct();
 
         // Déclaration des événements
-        $this->appAddAction('init', null, 9);
+        $this->appAddAction('init', null, 0);
         //$this->appAddAction('wp_footer');
     }
 
@@ -104,7 +105,7 @@ final class Session extends \tiFy\App
     /**
      * Déclaration d'une session
      *
-     * @return null|\tiFy\Core\User\Session\Factory
+     * @return null|StoreInterface
      */
     public static function register($name, $attrs = [])
     {
@@ -113,14 +114,16 @@ final class Session extends \tiFy\App
         endif;
 
         // Déclaration du controleur d'injection
-        self::tFyAppShareContainer("tify.core.user.session.{$name}", new Factory($name, $attrs));
+        self::tFyAppShareContainer("tify.user.session.{$name}", new Store($name, $attrs));
 
         // Définition
-        if ($factory = self::get($name)) :
+        if ($store = self::get($name)) :
             array_push(self::$SessionNames, $name);
 
-            return $factory;
+            return $store;
         endif;
+
+        return null;
     }
 
     /**
@@ -132,7 +135,7 @@ final class Session extends \tiFy\App
      */
     public static function has($name)
     {
-        return self::tFyAppHasContainer("tify.core.user.session.{$name}");
+        return self::tFyAppHasContainer("tify.user.session.{$name}");
     }
 
     /**
@@ -140,12 +143,12 @@ final class Session extends \tiFy\App
      *
      * @param string $name Nom de qualification de la session
      *
-     * @return null|object|Factory
+     * @return null|object|StoreInterface
      */
     public static function get($name)
     {
         if (self::has($name)) :
-            return self::tFyAppGetContainer("tify.core.user.session.{$name}");
+            return self::tFyAppGetContainer("tify.user.session.{$name}");
         endif;
     }
 
@@ -154,7 +157,7 @@ final class Session extends \tiFy\App
      *
      * @return void
      */
-    final public function cleanup()
+    public function cleanup()
     {
         if (!defined('WP_SETUP_CONFIG') && !defined('WP_INSTALLING')) :
             self::$Db->handle()->query(self::$Db->handle()->prepare("DELETE FROM " . self::$Db->getName() . " WHERE session_expiry < %d", time()));

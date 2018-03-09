@@ -2,27 +2,8 @@
 
 namespace tiFy\Core\Query\Controller;
 
-interface UserInterface
+interface UserItemInterface
 {
-    /**
-     * Instanciation
-     *
-     * @param string|int|\WP_User|null $id Login utilisateur Wordpress|Identifiant de qualification Wordpress|Objet utilisateur Wordpress|Utilisateur Wordpress courant
-     *
-     * @return null|self|object
-     */
-    public static function make($id = null);
-
-    /**
-     * Instanciation selon un attribut particulier
-     *
-     * @param string $key Identifiant de qualification de l'attribut. défaut login.
-     * @param string $value Valeur de l'attribut
-     *
-     * @return null|self|object
-     */
-    public static function by($key = 'login', $value);
-
     /**
      * Récupération de l'identifiant de qualification Wordpress de l'utilisateur
      * @return int
@@ -94,4 +75,25 @@ interface UserInterface
      * @return string
      */
     public function getDescription();
+
+    /**
+     * Vérifie si l'utilisateur est connecté
+     * @bool
+     */
+    public function isLoggedIn();
+
+    /**
+     * Récupération de la liste des roles
+     * @return array
+     */
+    public function getRoles();
+
+    /**
+     * Vérification de l'appartenance à un role
+     *
+     * @param string $role Identifiant de qualification du rôle
+     *
+     * @return bool
+     */
+    public function hasRole($role);
 }
