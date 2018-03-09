@@ -2,17 +2,14 @@
 
 namespace tiFy\Core\Forms\Form;
 
-class Callbacks extends \tiFy\Core\Forms\Form\AbstractDependency
+class Callbacks extends AbstractDependency
 {
     /**
      * Liste des fonctions de rappel déclarées
      * @var array
      */
-	public $Registered	= [];
+    public $Registered = [];
 
-    /**
-     * CONTROLEURS
-     */
     /**
      * Appel d'une méthode de court-circuitage
      *
@@ -28,7 +25,7 @@ class Callbacks extends \tiFy\Core\Forms\Form\AbstractDependency
         endif;
 
         if (!isset($this->Registered[$hookname])) :
-            return;
+            return null;
         endif;
 
         ksort($this->Registered[$hookname]);
@@ -61,27 +58,27 @@ class Callbacks extends \tiFy\Core\Forms\Form\AbstractDependency
         $this->Registered[$hookname][(int)$priority][] = $callable;
     }
 
-	/** == Définition des fonctions de callback == **/
-	private function _set( $hookname, $id, $callback, $priority, $type = 'core' )
-	{	
-		$this->Registered[$hookname][$priority][] = array( 'id' => $id, 'type' => $type, 'cb' => $callback );
-	}
-		
-	/** == Définition des fonctions de rappel des addons == **/
-	public function setAddons( $hookname, $addon_id, $callback, $priority = 10 )
-	{
-	 	$this->_set( $hookname, $addon_id, $callback, $priority, 'addons' );	 	
-	}
-	
-	/** == Définition des fonctions de rappel des contrôleurs == **/
-	public function setCore( $hookname, $controller_id, $callback, $priority = 10 )
-	{
-	 	$this->_set( $hookname, $controller_id, $callback, $priority, 'core' );	 	
-	}
-	 
-	/** == Définition des fonctions de rappel des types de champ == **/
-	public function setFieldType( $hookname, $field_type_id, $callback, $priority = 10 )
-	{
-	 	$this->_set( $hookname, $field_type_id, $callback, $priority, 'field_type' );
-	}
-}	
+    /** == Définition des fonctions de callback == **/
+    private function _set($hookname, $id, $callback, $priority, $type = 'core')
+    {
+        $this->Registered[$hookname][$priority][] = ['id' => $id, 'type' => $type, 'cb' => $callback];
+    }
+
+    /** == Définition des fonctions de rappel des addons == **/
+    public function setAddons($hookname, $addon_id, $callback, $priority = 10)
+    {
+        $this->_set($hookname, $addon_id, $callback, $priority, 'addons');
+    }
+
+    /** == Définition des fonctions de rappel des contrôleurs == **/
+    public function setCore($hookname, $controller_id, $callback, $priority = 10)
+    {
+        $this->_set($hookname, $controller_id, $callback, $priority, 'core');
+    }
+
+    /** == Définition des fonctions de rappel des types de champ == **/
+    public function setFieldType($hookname, $field_type_id, $callback, $priority = 10)
+    {
+        $this->_set($hookname, $field_type_id, $callback, $priority, 'field_type');
+    }
+}

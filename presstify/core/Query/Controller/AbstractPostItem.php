@@ -2,10 +2,10 @@
 
 namespace tiFy\Core\Query\Controller;
 
-use tiFy\App\Traits\App as TraitsApp;
 use Illuminate\Support\Fluent;
+use tiFy\App\Traits\App as TraitsApp;
 
-abstract class AbstractPost extends Fluent implements PostInterface
+abstract class AbstractPostItem extends Fluent implements PostItemInterface
 {
     use TraitsApp;
 
@@ -14,24 +14,6 @@ abstract class AbstractPost extends Fluent implements PostInterface
      * @var \WP_Post
      */
     protected $object;
-
-    /**
-     * Type d'objet Wordpress
-     * @var string
-     */
-    private $objectType = 'post';
-
-    /**
-     * Controleur
-     * @var string
-     */
-    const CONTROLLER = '';
-
-    /**
-     * Identifiant de qualification du type de post Wordpress relatif
-     * @var array|string
-     */
-    const OBJECTNAME = '';
 
     /**
      * CONSTRUCTEUR
@@ -45,122 +27,6 @@ abstract class AbstractPost extends Fluent implements PostInterface
         $this->object = $wp_post;
 
         parent::__construct($this->object->to_array());
-    }
-
-    /**
-     * Court-circuitage de l'implémentation
-     *
-     * @return void
-     */
-    protected function __clone()
-    {
-
-    }
-
-    /**
-     * Court-circuitage de l'implémentation
-     *
-     * @return void
-     */
-    protected function __wakeup()
-    {
-
-    }
-
-    /**
-     * Instanciation
-     *
-     * @param string|int|\WP_Post|null $id Nom de qualification du post WP (slug, post_name)|Identifiant de qualification du post WP|Object post WP|Post WP  de la page courante
-     *
-     * @return null|static|object
-     */
-    public static function make($id = null)
-    {
-        if (is_string($id)) :
-            return self::by('name', $id);
-        elseif (!$id) :
-            $post = get_the_ID();
-        else :
-            $post = $id;
-        endif;
-
-        if (!$post = \get_post($post)) :
-            return null;
-        endif;
-
-        if (!$post instanceof \WP_Post) :
-            return null;
-        endif;
-
-        $objectName = static::getObjectName();
-        if ($objectName !== 'any') :
-            $post_types =  (array)$objectName;
-            if (!in_array($post->post_type, $post_types)) :
-                return null;
-            endif;
-        endif;
-
-        $name = 'tify.query.post.' . $post->ID;
-        if (self::tFyAppHasContainer($name)) :
-            return self::tFyAppGetContainer($name);
-        endif;
-
-        $Instance = ($controller = static::getController()) ? new $controller($post): new static($post);
-        self::tFyAppShareContainer($name, $Instance);
-
-        return $Instance;
-    }
-
-    /**
-     * Instanciation selon un attribut particulier
-     *
-     * @param string $key Identifiant de qualification de l'attribut. défaut name.
-     * @param string $value Valeur de l'attribut
-     *
-     * @return null|static|object
-     */
-    public static function by($key = 'name', $value)
-    {
-        $args = [
-            'post_type'      => static::getObjectName(),
-            'posts_per_page' => 1
-        ];
-
-        switch ($key) :
-            default :
-            case 'post_name' :
-            case 'name' :
-                $args['name'] = $value;
-                break;
-        endswitch;
-
-        $wp_query = new \WP_Query;
-        $posts = $wp_query->query($args);
-        if ($wp_query->found_posts) :
-            return self::make(reset($posts));
-        endif;
-
-        return null;
-    }
-
-    /**
-     * Récupération du controleur
-     *
-     * @return string
-     */
-    public static function getController()
-    {
-        return static::CONTROLLER;
-    }
-
-    /**
-     * Récupération de l'identifiant de qualification du rôle de l'utilisateur Wordpress relatif
-     *
-     * @return string|array
-     */
-    public static function getObjectName()
-    {
-        return static::OBJECTNAME ? (array)static::OBJECTNAME : 'any';
     }
 
     /**

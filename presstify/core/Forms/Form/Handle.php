@@ -2,7 +2,7 @@
 
 namespace tiFy\Core\Forms\Form;
 
-class Handle extends \tiFy\Core\Forms\Form\AbstractDependency
+class Handle extends AbstractDependency
 {
     /**
      * Liste des arguments de requête globaux
@@ -145,13 +145,14 @@ class Handle extends \tiFy\Core\Forms\Form\AbstractDependency
         $vars    = array();
         
         // Traitement des valeurs de champs de formulaire
-        foreach( (array) $fields as $field ) :    
-            $vars[ $field->getSlug() ] = null;
-        
-            // Bypass des champs qui ne doivent pas à être traiter par la requête        
-            if( ! $field->typeSupport( 'request' ) )            
+        foreach( (array) $fields as $field ) :
+            // Bypass des champs qui ne doivent pas à être traiter par la requête
+            if( ! $field->typeSupport( 'request' ) ) :
                 continue;
-                    
+            endif;
+
+            $vars[ $field->getSlug() ] = null;
+
             $value = ( isset( $values[ $field->getName() ] ) ) ? $values[ $field->getName() ] : null;//$field->getValue();
                     
             $this->getForm()->call( 'handle_parse_query_field_value', array( &$value, $field, $this ) );
@@ -167,6 +168,11 @@ class Handle extends \tiFy\Core\Forms\Form\AbstractDependency
         $this->getForm()->call( 'handle_parse_query_fields_vars', array( &$this->FieldsVars, $fields, $this ) );
                 
         foreach( (array) $fields as $field ) :
+            // Bypass des champs qui ne doivent pas à être traiter par la requête
+            if( ! $field->typeSupport( 'request' ) ) :
+                continue;
+            endif;
+
             $field->setValue( $this->FieldsVars[ $field->getSlug() ] );
         endforeach;
    

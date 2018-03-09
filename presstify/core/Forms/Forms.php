@@ -47,6 +47,7 @@ class Forms extends \tiFy\App\Core
         // Addons
         // Instanciation
         Addons::init();
+
         // Déclaration des addons personnalisés
         do_action('tify_form_register_addon');
     }
@@ -58,9 +59,9 @@ class Forms extends \tiFy\App\Core
      */
     final public function init()
     {
-        if (is_admin()) {
+        if (is_admin()) :
             $this->registration();
-        }
+        endif;
     }
 
     /** == Déclaration des formulaires pour les requêtes ajax - !!! Modifier pour AddonAjaxSubmit puis rétablie pour AddonRecord

@@ -41,7 +41,7 @@ class Field
         'label'           => true,
 
         // Attributs HTML
-        'type'            => 'text',
+        'type'            => 'input',
         'name'            => '',
         'value'           => '',
         'placeholder'     => '',
@@ -166,7 +166,8 @@ class Field
     /** == Définition des options de champ == **/
     private function _setOptions()
     {
-        $this->type()->initOptions($this->Attrs['options']);
+        $options = isset($this->Attrs['options']) ? $this->Attrs['options'] : [];
+        $this->type()->initOptions($options);
     }
 
     /** == Définition du type de champ == **/
@@ -223,10 +224,12 @@ class Field
     }
 
     /** == Récupération d'un attribut de champ == **/
-    public function getAttr($attr = 'ID')
+    public function getAttr($attr = 'ID', $default = '')
     {
         if (isset($this->Attrs[$attr])) {
             return $this->Attrs[$attr];
+        } else {
+            return $default;
         }
     }
 

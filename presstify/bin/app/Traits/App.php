@@ -279,7 +279,7 @@ trait App
      *
      * @param string $alias
      *
-     * @return mixed
+     * @return \League\Container\Definition\DefinitionInterface
      */
     public function appAddContainer($alias, $concrete = null)
     {
@@ -1364,7 +1364,7 @@ trait App
      *
      * @param string $alias
      *
-     * @return mixed
+     * @return \League\Container\Definition\DefinitionInterface
      */
     public static function tFyAppAddContainer($alias, $concrete = null)
     {

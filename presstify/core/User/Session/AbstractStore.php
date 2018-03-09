@@ -2,74 +2,81 @@
 
 namespace tiFy\Core\User\Session;
 
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Cookie;
+use tiFy\App\Traits\App as TraitsApp;
 
-final class Factory extends \tiFy\App\FactoryConstructor
+abstract class AbstractStore implements StoreInterface
 {
+    use TraitsApp;
+
+    /**
+     * Nom de qualification de la session
+     * @var string
+     */
+    protected $name;
+
     /**
      * Identifiant de qualification du cookie de stockage de session
      * @var string
      */
-    private $CookieName = '';
+    protected $cookieName = '';
 
     /**
-     * Listes des attributs de qualification de session portés par le cookie
+     * Listes des clés de qualification de session portés par le cookie
      * @var string[]
      */
-    private $CookieArgs = ['session_key', 'session_expiration', 'session_expiring', 'cookie_hash'];
+    protected $cookieKeys = ['session_key', 'session_expiration', 'session_expiring', 'cookie_hash'];
 
     /**
-     * Liste des attributs de qualification de session
-     * @var array
+     * Liste des clés de qualification de session
+     * @var string[]
      */
-    private $Session = [];
+    protected $sessionKeys = ['session_name', 'session_key', 'session_expiration', 'session_expiring', 'cookie_hash'];
 
     /**
-     * Liste des variables de session enregistrées en base
+     * Liste des attributs de qualification de la session
      * @var array
      */
-    private $Datas = [];
+    protected $session = [];
+
+    /**
+     * Liste des données de session enregistrées en base
+     * @var array
+     */
+    protected $attributes = [];
 
     /**
      * Indicateur de modification des variables de session
      * @var bool
      */
-    private $Changed = false;
+    protected $changed = false;
 
     /**
      * CONSTRUCTEUR
      *
-     * @param string $id Identifiant de qualification
+     * @param string $name Identifiant de qualification de la session
      * @param array $attrs Attributs de configuration
      *
      * @return void
      */
-    public function __construct($id, $attrs = [])
+    public function __construct($name, $attrs = [])
     {
-        // Bypass
-        /*if (is_admin() && !defined('DOING_AJAX')) :
-            return;
-        endif;
-        if (defined('DOING_CRON')) :
-            return;
-        endif;
-        */
-        parent::__construct($id, $attrs);
+        // Définition du nom de qualification de la session
+        $this->name = $name;
 
         // Définition de l'identifiant de qualification du cookie de stockage de session
-        $this->CookieName = $this->getId() . "-" . COOKIEHASH;
+        $this->cookieName = $this->getName() . "-" . COOKIEHASH;
 
         // Déclaration des événements
-        $this->appAddAction('init');
-        $this->appAddAction('wp', null, 99);
+        $this->appAddAction('init', 0);
+        $this->appAddAction('wp_loaded', null, 0);
         $this->appAddAction('wp_logout');
         $this->appAddAction('shutdown');
     }
 
-    /**
-     * EVENEMENTS
-     */
     /**
      * Initialisation globale
      *
@@ -86,7 +93,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    public function wp()
+    public function wp_loaded()
     {
         // Définition du cookie de session
         $this->setCookie();
@@ -115,48 +122,13 @@ final class Factory extends \tiFy\App\FactoryConstructor
     }
 
     /**
-     * CONTROLEURS
-     */
-    /**
-     * Récupération de la classe de rappel de la table de base de données
-     *
-     * @return \tiFy\Core\Db\Factory
-     */
-    private function getDb()
-    {
-        try {
-            $Db = Session::getDb();
-
-            return $Db;
-        } catch (\Exception $e) {
-            wp_die($e->getMessage(), __('ERREUR SYSTEME', 'tify'), $e->getCode());
-            exit;
-        }
-    }
-
-    /**
-     * Récupération du nom de qualification du cookie d'enregistrement de correspondance de session
+     * Récupération du nom de qualification de la session
      *
      * @return string
      */
-    private function getCookieName()
+    public function getName()
     {
-        return $this->CookieName;
-    }
-
-    /**
-     * Récupération du hashage de cookie
-     *
-     * @param int|string $session_key Identifiant de qualification de l'utilisateur courant
-     * @param int $expiration Timestamp d'expiration du cookie
-     *
-     * @return string
-     */
-    private function getCookieHash($session_key, $expiration)
-    {
-        $to_hash = $session_key . '|' . $expiration;
-
-        return hash_hmac('md5', $to_hash, \wp_hash($to_hash));
+        return $this->name;
     }
 
     /**
@@ -164,16 +136,13 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return string
      */
-    private function getKey()
+    public function getKey()
     {
-        require_once(ABSPATH . 'wp-includes/class-phpass.php');
-        $hasher = new \PasswordHash(8, false);
-
-        return md5($hasher->get_random_bytes(32));
+        return Str::random(32);
     }
 
     /**
-     * Récupération d'un, plusieurs ou tous les attributs de qualification de la session.
+     * Récupération d'un ou plusieurs ou tous les attributs de qualification de la session.
      *
      * @param array $session_args Liste des attributs de retour session_key|session_expiration|session_expiring|cookie_hash. Renvoi tous si vide.
      *
@@ -182,19 +151,19 @@ final class Factory extends \tiFy\App\FactoryConstructor
     public function getSession($session_args = [])
     {
         // Récupération des attributs de qualification de la session
-        if (!$session = $this->Session) :
+        if (!$session = $this->session) :
             return null;
         endif;
         extract($session);
 
         if (empty($session_args)) :
-            $session_args = $this->CookieArgs;
+            $session_args = $this->sessionKeys;
         elseif (!is_array($session_args)) :
             $session_args = (array)$session_args;
         endif;
 
         // Limitation des attributs retournés à la liste des attributs autorisés
-        $session_args = array_intersect($session_args, $this->CookieArgs);
+        $session_args = array_intersect($session_args, $this->sessionKeys);
 
         if (count($session_args) > 1) :
             return compact($session_args);
@@ -208,7 +177,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return int
      */
-    private function nextSessionExpiration()
+    public function nextSessionExpiration()
     {
         return time() + intval(60 * 60 * 48);
     }
@@ -218,7 +187,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return int
      */
-    private function nextSessionExpiring()
+    public function nextSessionExpiring()
     {
         return time() + intval(60 * 60 * 47);
     }
@@ -228,7 +197,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return array
      */
-    private function initSession()
+    public function initSession()
     {
         /**
          * @var array $cookie {
@@ -245,10 +214,10 @@ final class Factory extends \tiFy\App\FactoryConstructor
 
             if (time() > $session_expiring) :
                 $session_expiration = $this->nextSessionExpiration();
-                $this->updateExpiration($session_key, $session_expiration);
+                $this->updateDbExpiration($session_key, $session_expiration);
             endif;
 
-            $this->Datas = $this->getDatas($session_key);
+            $this->attributes = $this->getDbDatas($session_key);
         else :
             $session_key = $this->getKey();
             $session_expiration = $this->nextSessionExpiration();
@@ -257,7 +226,35 @@ final class Factory extends \tiFy\App\FactoryConstructor
         $session_expiring = $this->nextSessionExpiring();
         $cookie_hash = $this->getCookieHash($session_key, $session_expiration);
 
-        return $this->Session = compact($this->CookieArgs);
+        return $this->session = array_merge(
+            ['session_name' => $this->getName()],
+            compact($this->cookieKeys)
+        );
+    }
+
+    /**
+     * Récupération du nom de qualification du cookie d'enregistrement de correspondance de session
+     *
+     * @return string
+     */
+    public function getCookieName()
+    {
+        return $this->cookieName;
+    }
+
+    /**
+     * Récupération du hashage de cookie
+     *
+     * @param int|string $session_key Identifiant de qualification de l'utilisateur courant
+     * @param int $expiration Timestamp d'expiration du cookie
+     *
+     * @return string
+     */
+    public function getCookieHash($session_key, $expiration)
+    {
+        $to_hash = $session_key . '|' . $expiration;
+
+        return hash_hmac('md5', $to_hash, \wp_hash($to_hash));
     }
 
     /**
@@ -265,7 +262,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return mixed
      */
-    private function getCookie()
+    public function getCookie()
     {
         if (!$cookie = $this->appRequestGet($this->getCookieName(), '', 'COOKIE')) :
             return false;
@@ -276,7 +273,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
         endif;
 
         // Vérification de correspondance entre les attributs servis par le cookie et les données attendues.
-        if (array_diff(array_keys($cookie), $this->CookieArgs)) :
+        if (array_diff(array_keys($cookie), $this->cookieKeys)) :
             return false;
         endif;
 
@@ -294,7 +291,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
             return false;
         endif;
 
-        return compact($this->CookieArgs);
+        return compact($this->cookieKeys);
     }
 
     /**
@@ -305,10 +302,10 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    private function setCookie()
+    public function setCookie()
     {
         // Récupération des attributs de qualification de la session
-        $session = $this->getSession();
+        $session = $this->getSession($this->cookieKeys);
 
         // Définition du cookie
         $response = new Response();
@@ -330,7 +327,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    private function clearCookie()
+    public function clearCookie()
     {
         $response = new Response();
         $response->headers->clearCookie(
@@ -343,54 +340,20 @@ final class Factory extends \tiFy\App\FactoryConstructor
     }
 
     /**
-     * Récupération de la liste des variables de session enregistrés en base.
+     * Récupération de la classe de rappel de la table de base de données
      *
-     * @param mixed $session_key Clé de qualification de la session
-     *
-     * @return array
+     * @return \tiFy\Core\Db\Factory
      */
-    private function getDatas($session_key)
+    public function getDb()
     {
-        if (defined('WP_SETUP_CONFIG')) :
-            return [];
-        endif;
+        try {
+            $Db = Session::getDb();
 
-        $value = $this->getDb()->select()->cell(
-            'session_value',
-            [
-                'session_name' => $this->getId(),
-                'session_key'  => $session_key
-            ]
-        );
-
-        return maybe_unserialize($value);
-    }
-
-    /**
-     * Enregistrement des variables de session en base.
-     *
-     * @return mixed
-     */
-    private function save()
-    {
-        if (!$this->Changed) :
-            return false;
-        endif;
-
-        // Récupération des attributs de session
-        $session = $this->getSession();
-
-        $this->getDb()->handle()->replace(
-            [
-                'session_name'   => $this->getId(),
-                'session_key'    => $session['session_key'],
-                'session_value'  => maybe_serialize($this->Datas),
-                'session_expiry' => $session['session_expiration']
-            ],
-            ['%s', '%s', '%s', '%d']
-        );
-
-        $this->Changed = false;
+            return $Db;
+        } catch (\Exception $e) {
+            wp_die($e->getMessage(), __('ERREUR SYSTEME', 'tify'), $e->getCode());
+            exit;
+        }
     }
 
     /**
@@ -401,7 +364,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    private function updateExpiration($session_key, $expiration)
+    public function updateDbExpiration($session_key, $expiration)
     {
         $this->getDb()->sql()->update(
             $this->getDb()->getName(),
@@ -409,10 +372,65 @@ final class Factory extends \tiFy\App\FactoryConstructor
                 'session_expiry' => $expiration
             ],
             [
-                'session_name' => $this->getId(),
+                'session_name' => $this->getName(),
                 'session_key'  => $session_key
             ]
         );
+    }
+
+    /**
+     * Récupération de la liste des variables de session enregistrés en base.
+     *
+     * @param mixed $session_key Clé de qualification de la session
+     *
+     * @return array
+     */
+    public function getDbDatas($session_key)
+    {
+        if (defined('WP_SETUP_CONFIG')) :
+            return [];
+        endif;
+
+        if (
+            $value = $this->getDb()->select()->cell(
+                'session_value',
+                [
+                    'session_name' => $this->getName(),
+                    'session_key'  => $session_key
+                ]
+            )
+        ) :
+            $value = array_map('maybe_unserialize', $value);
+        endif;
+
+        return $value;
+    }
+
+    /**
+     * Enregistrement des variables de session en base.
+     *
+     * @return void
+     */
+    public function save()
+    {
+        if (!$this->changed) :
+            return;
+        endif;
+
+        // Récupération des attributs de session
+        $session = $this->getSession();
+
+        $this->getDb()->handle()->replace(
+            [
+                'session_name'   => $session['session_name'],
+                'session_key'    => $session['session_key'],
+                'session_value'  => \maybe_serialize($this->attributes),
+                'session_expiry' => $session['session_expiration']
+            ],
+            ['%s', '%s', '%s', '%d']
+        );
+
+        $this->changed = false;
     }
 
     /**
@@ -420,7 +438,7 @@ final class Factory extends \tiFy\App\FactoryConstructor
      *
      * @return void
      */
-    private function destroy()
+    public function destroy()
     {
         // Suppression du cookie
         $this->clearCookie();
@@ -433,39 +451,68 @@ final class Factory extends \tiFy\App\FactoryConstructor
         );
 
         // Réinitialisation des variables de classe
-        $this->Session = [];
-        $this->Datas = [];
-        $this->Changed = false;
+        $this->session = [];
+        $this->attributes = [];
+        $this->changed = false;
     }
 
     /**
-     * Récupération d'une variable de session.
+     * Récupération de la liste de toutes les données de session.
      *
-     * @param string $name Identifiant de qualification de la variable
+     * @return array
+     */
+    public function all()
+    {
+        return $this->attributes;
+    }
+
+    /**
+     * Récupération d'une donnée de session.
+     *
+     * @param string $key Identifiant de qualification de la variable
      * @param mixed $default Valeur de retour par défaut
      *
-     * @return array|string
+     * @return mixed
      */
-    public function get($name, $default = '')
+    public function get($key, $default = null)
     {
-        return isset($this->Datas[$name]) ? \maybe_unserialize($this->Datas[$name]) : $default;
+        return Arr::get($this->attributes, $key, $default);
     }
 
     /**
-     * Définition d'une variable de session.
+     * Définition d'une donnée de session.
      *
-     * @param string $name Identifiant de qualification de la variable
+     * @param string $key Identifiant de qualification de la variable
      * @param mixed $value Valeur de la variable
      *
      * @return $this
      */
-    public function add($name, $value)
+    public function put($key, $value = null)
     {
-        if ($value !== $this->get($name)) :
-            $this->Datas[$name] = \maybe_serialize($value);
-            $this->Changed = true;
+        if ($value !== $this->get($key)) :
+            if (! is_array($key)) :
+                $key = [$key => $value];
+            endif;
+            foreach ($key as $arrayKey => $arrayValue) :
+                Arr::set($this->attributes, $arrayKey, $arrayValue);
+            endforeach;
+
+            $this->changed = true;
         endif;
 
         return $this;
+    }
+
+    /**
+     * Récupération d'une donnée et procède à sa suppression.
+     *
+     * @param  string  $key Identifiant de qualification de la variable
+     * @param  string  $default Valeur de retour par défaut
+     *
+     * @return mixed
+     */
+    public function pull($key, $default = null)
+    {
+        return Arr::pull($this->attributes, $key, $default);
     }
 }
